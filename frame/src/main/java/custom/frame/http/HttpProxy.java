@@ -94,30 +94,6 @@ public class HttpProxy implements HttpConstants, BaseNetCode {
         return port;
     }
 
-    @Override
-    public void setBaseIp(String baseIp) {
-        if (!TextUtils.isEmpty(baseIp))
-            putString(PRE_BASE_IP, baseIp);
-    }
-
-    @Override
-    public void setBaseCallbackIp(String baseCallbackIp) {
-        if (!TextUtils.isEmpty(baseCallbackIp))
-            putString(PRE_BASE_CALLBACK_IP, baseCallbackIp);
-    }
-
-    @Override
-    public void setBaseIpPort(String baseIpPort) {
-        if (!TextUtils.isEmpty(baseIpPort))
-            putString(PRE_BASE_IP_PORT, baseIpPort);
-    }
-
-    @Override
-    public void setBaseCallbackIpPort(String baseCallbackIpPort) {
-        if (!TextUtils.isEmpty(baseCallbackIpPort))
-            putString(PRE_BASE_CALLBACK_IP_PORT, baseCallbackIpPort);
-    }
-
     /**
      * 存放String 值
      */

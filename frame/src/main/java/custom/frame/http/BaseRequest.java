@@ -32,7 +32,6 @@ import custom.frame.http.listener.ResponseListener;
 import custom.frame.log.MLog;
 
 /**
- * Created by luozi on 2015/12/29.
  * baseRequest include requestString and requestBaseResponse and requestList
  */
 public class BaseRequest<T> extends HttpProxy {

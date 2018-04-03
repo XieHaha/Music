@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -55,7 +54,8 @@ public abstract class BaseActivity extends AppCompatActivity
     protected final void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);//状态栏透明
+//        //状态栏透明
+//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         AppManager.getInstance().addActivity(this);
         befordCreateView(savedInstanceState);
         int layoutID = getLayoutID();
@@ -343,11 +343,4 @@ public abstract class BaseActivity extends AppCompatActivity
         //移除任务队列
         if (task != null && requestList != null) { requestList.remove(task); }
     }
-
-//    //=============================================字体设置回调
-//    @Override
-//    protected void attachBaseContext(Context newBase)
-//    {
-//        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-//    }
 }

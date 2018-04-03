@@ -8,4 +8,63 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="splashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--启动页全屏 隐藏标题栏-->
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowNoTitle">true</item>
+        <!--启动页添加背景，可以解决启动APP时  黑屏、白屏的情况-->
+        <!--<item name="android:background">@mipmap/splash_bg</item>-->
+    </style>
+
+    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <!--添加此属性 会导致activity转场动画执行时看到桌面背景-->
+        <!--<item name="android:windowIsTranslucent">true</item>-->
+    </style>
+
+    <style name="trans_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <!-- 边框 -->
+        <item name="android:windowIsFloating">false</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsTranslucent">false</item>
+        <!-- 半透明 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 无标题 -->
+        <item name="android:windowBackground">@color/app_translucent</item>
+        <!-- 背景透明 -->
+        <item name="android:backgroundDimEnabled">false</item>
+        <!-- 模糊 -->
+        <item name="android:windowAnimationStyle">@null</item>
+        <!--默认动画属性-->
+    </style>
+
+
+    <!---主要分割线->横 -->
+    <style name="LineHorizontalStyle_Main">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/app_hei_line</item>
+        <item name="android:background">@color/app_main_divideline</item>
+    </style>
+
+    <!---次要分割线->横 -->
+    <style name="LineHorizontalStyle_Minor">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/app_hei_line</item>
+        <item name="android:background">@color/app_parting_minor_bg</item>
+    </style>
+    <style name="RippleBtnMaxCircleStyle">
+        <item name="rv_centered">true</item>
+        <item name="rv_holdBgInPressing">true</item>
+        <item name="rv_pressBgType">circleFitMax</item>
+    </style>
+
+
 </resources>

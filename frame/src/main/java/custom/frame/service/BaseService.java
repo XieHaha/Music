@@ -158,7 +158,9 @@ public class BaseService extends Service implements serviceInterface, ResponseLi
     public void onResponseCancel(Tasks task) {
         //移除任务队列
         if (task != null && requestList != null)
+        {
             requestList.remove(task);
+        }
     }
 
 }

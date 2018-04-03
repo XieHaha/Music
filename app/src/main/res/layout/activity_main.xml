@@ -1,18 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.activity.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <FrameLayout
+        android:id="@+id/act_main_tab_frameLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="55dp"
+        android:background="@color/app_alpha_bg" />
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <custom.widgets.ripples.RippleLinearLayout
+                android:id="@+id/act_main_tab1"
+                style="@style/RippleBtnMaxCircleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_launcher_background" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/main_tab_msg"
+                    android:textColor="@color/tab_txt_color_selector"
+                    android:textSize="@dimen/app_txt_minor" />
+            </custom.widgets.ripples.RippleLinearLayout>
+
+            <custom.widgets.ripples.RippleLinearLayout
+                android:id="@+id/act_main_tab2"
+                style="@style/RippleBtnMaxCircleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_launcher_background" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/main_tab_doc"
+                    android:textColor="@color/tab_txt_color_selector"
+                    android:textSize="@dimen/app_txt_minor" />
+            </custom.widgets.ripples.RippleLinearLayout>
+
+            <custom.widgets.ripples.RippleLinearLayout
+                android:id="@+id/act_main_tab3"
+                style="@style/RippleBtnMaxCircleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_launcher_background" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/main_tab_case"
+                    android:textColor="@color/tab_txt_color_selector"
+                    android:textSize="@dimen/app_txt_minor" />
+            </custom.widgets.ripples.RippleLinearLayout>
+
+            <custom.widgets.ripples.RippleLinearLayout
+                android:id="@+id/act_main_tab4"
+                style="@style/RippleBtnMaxCircleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_launcher_background" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="@string/main_tab_my"
+                    android:textColor="@color/tab_txt_color_selector"
+                    android:textSize="@dimen/app_txt_minor" />
+            </custom.widgets.ripples.RippleLinearLayout>
+
+        </LinearLayout>
+
+        <View style="@style/LineHorizontalStyle_Main" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

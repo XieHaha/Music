@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">医患通</string>
+
+
+    <!--splash activity-->
+    <string name="txt_splash_btn">开始使用</string>
+    <string name="txt_splash">医患通</string>
+    <string name="txt_splash_type">-医生端-</string>
+
+    <!--main  activity-->
+    <string name="main_tab_msg">消息</string>
+    <string name="main_tab_doc">医生</string>
+    <string name="main_tab_case">病例</string>
+    <string name="main_tab_my">我的</string>
 </resources>
