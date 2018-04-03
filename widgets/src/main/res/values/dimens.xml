@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="gap_around">16dp</dimen>
+
+    <dimen name="img_width">64dp</dimen>
+    <dimen name="img_space">8dp</dimen>
+    <dimen name="image_space">10dp</dimen>
+</resources>

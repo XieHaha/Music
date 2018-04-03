@@ -1,0 +1,34 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipe_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000">
+
+
+    <custom.widgets.stickyview.StickyScrollView
+        android:id="@+id/roll_root_stickyview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff">
+
+        <LinearLayout
+            android:id="@+id/roll_root_stickyview_scrollview_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/roll_root_stickyview_paddingview"
+                android:layout_width="match_parent"
+                android:layout_height="1000dp"
+                android:background="#00000000"
+                android:tag="sticky-nottransparent" />
+        </LinearLayout>
+    </custom.widgets.stickyview.StickyScrollView>
+
+    <custom.widgets.stickyview.FloatView
+        android:id="@+id/roll_root_floatview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>

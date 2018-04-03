@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <declare-styleable name="CircleImageView">
+        <attr name="border_width" format="dimension"/>
+        <attr name="border_color" format="color"/>
+    </declare-styleable>
+
+    <!-- 状态栏-->
+    <declare-styleable name="CustomActionBar">
+        <attr name="statusColor" format="color"/>
+    </declare-styleable>
+
+    <!-- progress bar-->
+    <declare-styleable name="CircularProgress">
+        <attr name="borderWidth" format="dimension"/>
+        <attr name="borderColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="RippleView">
+        <attr name="rv_alpha" format="integer"/>
+        <attr name="rv_rippleDuration" format="integer"/>
+        <attr name="rv_zoomDuration" format="integer"/>
+        <attr name="rv_rippleColor" format="color"/>
+        <attr name="rv_pressColor" format="color"/>
+        <attr name="rv_centered" format="boolean"/>
+        <attr name="rv_pressBgType" format="enum">
+            <enum name="rect" value="0"/>
+            <enum name="circleFitMin" value="1"/>
+            <enum name="circleFitMax" value="2"/>
+        </attr>
+        <attr name="rv_ripplePadding" format="dimension"/>
+        <attr name="rv_zoom" format="boolean"/>
+        <attr name="rv_zoomScale" format="float"/>
+        <attr name="rv_pressBgEnable" format="boolean"/>
+        <attr name="rv_holdBgInPressing" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="RollView">
+        <attr name="contentLayout" format="reference"/>
+        <attr name="floatLayout" format="reference"/>
+        <attr name="startHeight" format="dimension"/>
+        <attr name="releaseTouch" format="boolean"/>
+        <attr name="stickyBackground" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="CustomRatingBar">
+        <attr name="starImagePadding" format="dimension"/>
+        <attr name="starCount" format="integer"/>
+        <attr name="starNum" format="integer"/>
+        <attr name="starEmpty" format="reference"/>
+        <attr name="starFill" format="reference"/>
+        <attr name="clickable" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="SubsamplingScaleImageView">
+        <attr name="src" format="reference"/>
+        <attr name="assetName" format="string"/>
+        <attr name="panEnabled" format="boolean"/>
+        <attr name="zoomEnabled" format="boolean"/>
+        <attr name="quickScaleEnabled" format="boolean"/>
+        <attr name="tileBackgroundColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="NavigaterPageIndex">
+        <attr name="paddingBottom" format="dimension"/>
+        <attr name="indexPadding" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="ImageLoadingView">
+        <attr name="pointRadius" format="dimension"/>
+        <attr name="pointColor" format="color"/>
+        <attr name="loadingVIewRadius" format="dimension"/>
+        <attr name="loadingSpeed" format="integer"/>
+    </declare-styleable>
+
+</resources>
