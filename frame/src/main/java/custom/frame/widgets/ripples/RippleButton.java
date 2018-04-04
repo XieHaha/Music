@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package custom.widgets.ripples;
+package custom.frame.widgets.ripples;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -43,21 +43,21 @@ import android.view.MotionEvent;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
-import android.widget.TextView;
+import android.widget.Button;
 
 import custom.widgets.R;
-import custom.widgets.ripples.listener.OnClickConfirmListener;
-import custom.widgets.ripples.listener.OnRippleCompleteListener;
+import custom.frame.widgets.ripples.listener.OnClickConfirmListener;
+import custom.frame.widgets.ripples.listener.OnRippleCompleteListener;
 
 /**
  * RippleView custom layout
- * <p/>
+ * <p>
  * Custom Layout that allows to use Ripple UI pattern above API 21
  *
  * @author luozisong
  * @version 2016.0303
  */
-public class RippleTextView extends TextView {
+public class RippleButton extends Button {
 
     private int WIDTH;
     private int HEIGHT;
@@ -76,12 +76,12 @@ public class RippleTextView extends TextView {
     private float zoomScale = 1.03f;
     private ScaleAnimation scaleAnimation;
     private boolean hasToZoom = false;
-    private boolean isCentered = true;
+    private boolean isCentered = false;
     private boolean holdBgInPressing = true;
     private Paint circlePaint, pressPaint;
     private Bitmap originBitmap;
-    private int rippleColor = getResources().getColor(R.color.rippelColor);//default white
-    private int pressBgColor = getResources().getColor(R.color.pressColor);//default white
+    private int rippleColor;
+    private int pressBgColor;
     private boolean pressBgEnable = true;
     private int ripplePadding = 0;
     private GestureDetector gestureDetector;
@@ -91,16 +91,16 @@ public class RippleTextView extends TextView {
     private OnRippleCompleteListener onCompletionListener;
     private OnClickConfirmListener onClickConfirmListener = null;
 
-    public RippleTextView(Context context) {
+    public RippleButton(Context context) {
         super(context);
     }
 
-    public RippleTextView(Context context, AttributeSet attrs) {
+    public RippleButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    public RippleTextView(Context context, AttributeSet attrs, int defStyle) {
+    public RippleButton(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context, attrs);
     }
@@ -114,6 +114,8 @@ public class RippleTextView extends TextView {
     private void init(final Context context, final AttributeSet attrs) {
         if (isInEditMode())
             return;
+        rippleColor = getResources().getColor(R.color.rippelColor);//default white
+        pressBgColor = getResources().getColor(R.color.pressColor);//default white
 
         final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RippleView);
         rippleColor = typedArray.getColor(R.styleable.RippleView_rv_rippleColor, rippleColor);//default white
@@ -168,7 +170,7 @@ public class RippleTextView extends TextView {
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
                 if (onClickConfirmListener != null)
-                    onClickConfirmListener.onConfirmClick(RippleTextView.this);
+                    onClickConfirmListener.onConfirmClick(RippleButton.this);
                 return super.onSingleTapConfirmed(e);
             }
 
@@ -412,14 +414,14 @@ public class RippleTextView extends TextView {
             @Override
             public void onAnimationEnd(Animator animation) {
                 if (onCompletionListener != null)
-                    onCompletionListener.onComplete(RippleTextView.this);
+                    onCompletionListener.onComplete(RippleButton.this);
                 stopBgAnim();
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
                 if (onCompletionListener != null)
-                    onCompletionListener.onComplete(RippleTextView.this);
+                    onCompletionListener.onComplete(RippleButton.this);
                 stopBgAnim();
             }
 

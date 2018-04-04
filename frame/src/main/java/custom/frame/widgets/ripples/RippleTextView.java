@@ -21,7 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package custom.widgets.ripples;
+
+package custom.frame.widgets.ripples;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -42,11 +43,11 @@ import android.view.MotionEvent;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import custom.widgets.R;
-import custom.widgets.ripples.listener.OnClickConfirmListener;
-import custom.widgets.ripples.listener.OnRippleCompleteListener;
+import custom.frame.widgets.ripples.listener.OnClickConfirmListener;
+import custom.frame.widgets.ripples.listener.OnRippleCompleteListener;
 
 /**
  * RippleView custom layout
@@ -56,8 +57,8 @@ import custom.widgets.ripples.listener.OnRippleCompleteListener;
  * @author luozisong
  * @version 2016.0303
  */
-public class RippleRelativeLayout extends RelativeLayout
-{
+public class RippleTextView extends TextView {
+
     private int WIDTH;
     private int HEIGHT;
     private int rippleDuration = 300;
@@ -75,8 +76,8 @@ public class RippleRelativeLayout extends RelativeLayout
     private float zoomScale = 1.03f;
     private ScaleAnimation scaleAnimation;
     private boolean hasToZoom = false;
-    private boolean isCentered = false;
-    private boolean holdBgInPressing = false;
+    private boolean isCentered = true;
+    private boolean holdBgInPressing = true;
     private Paint circlePaint, pressPaint;
     private Bitmap originBitmap;
     private int rippleColor = getResources().getColor(R.color.rippelColor);//default white
@@ -84,23 +85,22 @@ public class RippleRelativeLayout extends RelativeLayout
     private boolean pressBgEnable = true;
     private int ripplePadding = 0;
     private GestureDetector gestureDetector;
+
     private ValueAnimator bgAnim = null;
+
     private OnRippleCompleteListener onCompletionListener;
     private OnClickConfirmListener onClickConfirmListener = null;
 
-    public RippleRelativeLayout(Context context)
-    {
+    public RippleTextView(Context context) {
         super(context);
     }
 
-    public RippleRelativeLayout(Context context, AttributeSet attrs)
-    {
+    public RippleTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    public RippleRelativeLayout(Context context, AttributeSet attrs, int defStyle)
-    {
+    public RippleTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context, attrs);
     }
@@ -111,129 +111,129 @@ public class RippleRelativeLayout extends RelativeLayout
      * @param context Context used to create this view
      * @param attrs   Attribute used to initialize fields
      */
-    private void init(final Context context, final AttributeSet attrs)
-    {
-        if (isInEditMode()) { return; }
+    private void init(final Context context, final AttributeSet attrs) {
+        if (isInEditMode())
+            return;
+
         final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RippleView);
-        rippleColor = typedArray.getColor(R.styleable.RippleView_rv_rippleColor, rippleColor);
-        pressBgColor = typedArray.getColor(R.styleable.RippleView_rv_pressColor, pressBgColor);
-        pressBgEnable = typedArray.getBoolean(R.styleable.RippleView_rv_pressBgEnable,
-                                              pressBgEnable);
+        rippleColor = typedArray.getColor(R.styleable.RippleView_rv_rippleColor, rippleColor);//default white
+        pressBgColor = typedArray.getColor(R.styleable.RippleView_rv_pressColor, pressBgColor);//default white
+        pressBgEnable = typedArray.getBoolean(R.styleable.RippleView_rv_pressBgEnable, pressBgEnable);
         pressBgType = typedArray.getInt(R.styleable.RippleView_rv_pressBgType, pressBgType);
         hasToZoom = typedArray.getBoolean(R.styleable.RippleView_rv_zoom, hasToZoom);
         isCentered = typedArray.getBoolean(R.styleable.RippleView_rv_centered, isCentered);
-        holdBgInPressing = typedArray.getBoolean(R.styleable.RippleView_rv_holdBgInPressing,
-                                                 holdBgInPressing);
-        rippleDuration = typedArray.getInteger(R.styleable.RippleView_rv_rippleDuration,
-                                               rippleDuration);
+        holdBgInPressing = typedArray.getBoolean(R.styleable.RippleView_rv_holdBgInPressing, holdBgInPressing);
+        rippleDuration = typedArray.getInteger(R.styleable.RippleView_rv_rippleDuration, rippleDuration);
         rippleAlpha = typedArray.getInteger(R.styleable.RippleView_rv_alpha, rippleAlpha);
-        ripplePadding = typedArray.getDimensionPixelSize(R.styleable.RippleView_rv_ripplePadding,
-                                                         ripplePadding);
+        ripplePadding = typedArray.getDimensionPixelSize(R.styleable.RippleView_rv_ripplePadding, ripplePadding);
         zoomScale = typedArray.getFloat(R.styleable.RippleView_rv_zoomScale, zoomScale);
         zoomDuration = typedArray.getInt(R.styleable.RippleView_rv_zoomDuration, zoomDuration);
         pressBgAlpha = rippleAlpha / 2;
         typedArray.recycle();
+
         circlePaint = new Paint();
         circlePaint.setAntiAlias(true);
         circlePaint.setStyle(Paint.Style.FILL);
         circlePaint.setColor(rippleColor);
         circlePaint.setAlpha(rippleAlpha);
+
         pressPaint = new Paint();
         pressPaint.setAntiAlias(true);
         pressPaint.setStyle(Paint.Style.FILL);
         pressPaint.setColor(pressBgColor);
         pressPaint.setAlpha(pressBgAlpha);
+
+
         this.setWillNotDraw(false);
-        gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener()
-        {
+
+        gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+
+
             @Override
-            public void onLongPress(MotionEvent event)
-            {
+            public void onLongPress(MotionEvent event) {
                 super.onLongPress(event);
                 animateRipple(event);
                 sendClickEvent(true);
             }
 
+
             @Override
-            public boolean onSingleTapUp(MotionEvent event)
-            {
+            public boolean onSingleTapUp(MotionEvent event) {
                 animateRipple(event);
                 sendClickEvent(false);
                 return super.onSingleTapUp(event);
             }
 
+
             @Override
-            public boolean onSingleTapConfirmed(MotionEvent e)
-            {
+            public boolean onSingleTapConfirmed(MotionEvent e) {
                 if (onClickConfirmListener != null)
-                {
-                    onClickConfirmListener.onConfirmClick(RippleRelativeLayout.this);
-                }
+                    onClickConfirmListener.onConfirmClick(RippleTextView.this);
                 return super.onSingleTapConfirmed(e);
             }
 
             @Override
-            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
-                    float distanceY)
-            {
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
                 if (holdBgInPressing)
-                {
                     stopBgAnim();
-                }
                 return super.onScroll(e1, e2, distanceX, distanceY);
             }
+
         });
+
         this.setDrawingCacheEnabled(true);
         this.setClickable(true);
     }
 
+
     @Override
-    public void draw(Canvas canvas)
-    {
+    public void draw(Canvas canvas) {
         super.draw(canvas);
-        if (isInEditMode()) { return; }
+        if (isInEditMode()) return;
         canvas.save();
         // There is problem on Android M where canvas.restore() seems to be called automatically
         // For now, don't call canvas.restore() manually on Android M (API 23)
-        if (Build.VERSION.SDK_INT != 23)
-        {
+        if (Build.VERSION.SDK_INT != 23) {
             canvas.restore();
         }
-        switch (pressBgType)
-        {
-            case 0:
+
+
+        switch (pressBgType) {
+            case 0://rect
                 /**
                  * draw ripple
                  * */
-                circlePaint.setAlpha((int)(((radiusMax - currRadius) / radiusMax) * 100));
+                circlePaint.setAlpha((int) (((radiusMax - currRadius) / radiusMax) * 100));
                 canvas.drawCircle(x, y, currRadius, circlePaint);
+
                 /**
                  * draw circle
                  * */
                 RectF vRect = new RectF(0, 0, WIDTH, HEIGHT);
                 pressPaint.setAlpha(currAlpha);
                 canvas.drawRect(vRect, pressPaint);
+
                 break;
-            case 1:
+            case 1://circle fit min
                 /**
                  * draw ripple
                  * */
-                circlePaint.setAlpha(
-                        (int)((((radiusMin / 2) - currRadius) / (radiusMin / 2)) * 100));
+                circlePaint.setAlpha((int) ((((radiusMin / 2) - currRadius) / (radiusMin / 2)) * 100));
                 canvas.drawCircle(x, y, currRadius, circlePaint);
+
                 /**
                  * draw circle
                  * */
                 pressPaint.setAlpha(currAlpha);
                 canvas.drawCircle(WIDTH / 2, HEIGHT / 2, radiusMin / 2, pressPaint);
                 break;
-            case 2:
+            case 2://circle fit max
                 /**
                  * draw ripple
                  * */
-                circlePaint.setAlpha(
-                        (int)((((radiusMax / 2) - currRadius) / (radiusMax / 2)) * 100));
+                circlePaint.setAlpha((int) ((((radiusMax / 2) - currRadius) / (radiusMax / 2)) * 100));
                 canvas.drawCircle(x, y, currRadius, circlePaint);
+
                 /**
                  * draw circle
                  * */
@@ -241,14 +241,16 @@ public class RippleRelativeLayout extends RelativeLayout
                 canvas.drawCircle(WIDTH / 2, HEIGHT / 2, radiusMax / 2, pressPaint);
                 break;
         }
+
+
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh)
-    {
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         WIDTH = w;
         HEIGHT = h;
+
         scaleAnimation = new ScaleAnimation(1.0f, zoomScale, 1.0f, zoomScale, w / 2, h / 2);
         scaleAnimation.setDuration(zoomDuration);
         scaleAnimation.setRepeatMode(Animation.REVERSE);
@@ -258,16 +260,14 @@ public class RippleRelativeLayout extends RelativeLayout
     private boolean ACTION_CANCEL = false;
 
     @Override
-    public boolean onTouchEvent(MotionEvent event)
-    {
-        switch (event.getAction())
-        {
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 startBgAnim();
                 ACTION_CANCEL = false;
                 break;
             case MotionEvent.ACTION_UP:
-                if (!holdBgInPressing) { stopBgAnim(); }
+                if (!holdBgInPressing) stopBgAnim();
                 break;
             case MotionEvent.ACTION_MOVE:
                 break;
@@ -275,43 +275,22 @@ public class RippleRelativeLayout extends RelativeLayout
                 ACTION_CANCEL = true;
                 stopBgAnim();
                 break;
+
         }
         gestureDetector.onTouchEvent(event);
         return super.onTouchEvent(event);
     }
 
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent event)
-    {
-        switch (event.getAction())
-        {
-            case MotionEvent.ACTION_DOWN:
-                startBgAnim();
-                ACTION_CANCEL = false;
-                break;
-            case MotionEvent.ACTION_UP:
-                if (!holdBgInPressing) { stopBgAnim(); }
-                break;
-            case MotionEvent.ACTION_MOVE:
-                break;
-            case MotionEvent.ACTION_CANCEL:
-                ACTION_CANCEL = true;
-                stopBgAnim();
-                break;
-        }
-        gestureDetector.onTouchEvent(event);
-        return super.onInterceptTouchEvent(event);
-    }
 
     /**
      * Launch Ripple animation for the current view with a MotionEvent
      *
      * @param event MotionEvent registered by the Ripple gesture listener
      */
-    public void animateRipple(MotionEvent event)
-    {
+    public void animateRipple(MotionEvent event) {
         createAnimation(event.getX(), event.getY());
     }
+
 
     /**
      * Launch Ripple animation for the current view centered at x and y position
@@ -319,8 +298,7 @@ public class RippleRelativeLayout extends RelativeLayout
      * @param x Horizontal position of the ripple center
      * @param y Vertical position of the ripple center
      */
-    public void animateRipple(final float x, final float y)
-    {
+    public void animateRipple(final float x, final float y) {
         createAnimation(x, y);
     }
 
@@ -330,49 +308,47 @@ public class RippleRelativeLayout extends RelativeLayout
      * @param x Horizontal position of the ripple center
      * @param y Vertical position of the ripple center
      */
-    private void createAnimation(final float x, final float y)
-    {
-        if (this.isEnabled())
-        {
-            if (hasToZoom) { this.startAnimation(scaleAnimation); }
+    private void createAnimation(final float x, final float y) {
+        if (this.isEnabled()) {
+            if (hasToZoom)
+                this.startAnimation(scaleAnimation);
             /**
              * get max radius
              * */
             radiusMax = Math.max(WIDTH, HEIGHT);
             radiusMin = Math.min(WIDTH, HEIGHT);
+
             radiusMax -= ripplePadding;
             radiusMin -= ripplePadding;
-            if (isCentered)
-            {
+
+            if (isCentered) {
                 this.x = getMeasuredWidth() / 2;
                 this.y = getMeasuredHeight() / 2;
-            }
-            else
-            {
+            } else {
                 this.x = x;
                 this.y = y;
             }
-            if (originBitmap == null) { originBitmap = getDrawingCache(true); }
+
+            if (originBitmap == null)
+                originBitmap = getDrawingCache(true);
+
             startRippleAnim();
         }
     }
 
+
     /**
      * 绘制矩形的渐变背景色
      */
-    private void startBgAnim()
-    {
-        if (this.isEnabled() && pressBgEnable)
-        {
+    private void startBgAnim() {
+        if (this.isEnabled() && pressBgEnable) {
             bgAnim = ValueAnimator.ofFloat(0, pressBgAlpha);
             bgAnim.setDuration(pressBgDuration);
-            bgAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
-            {
+            bgAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
-                public void onAnimationUpdate(ValueAnimator animation)
-                {
-                    if (ACTION_CANCEL) { return; }
-                    currAlpha = (int)Double.parseDouble(animation.getAnimatedValue().toString());
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    if (ACTION_CANCEL) return;
+                    currAlpha = (int) Double.parseDouble(animation.getAnimatedValue().toString());
                     invalidate();
                 }
             });
@@ -383,18 +359,16 @@ public class RippleRelativeLayout extends RelativeLayout
     /**
      * 停止背景色叠加
      */
-    private void stopBgAnim()
-    {
-        if (!pressBgEnable) { return; }
-        if (bgAnim != null && bgAnim.isRunning()) { bgAnim.cancel(); }
+    private void stopBgAnim() {
+        if (!pressBgEnable) return;
+        if (bgAnim != null && bgAnim.isRunning()) bgAnim.cancel();
+
         bgAnim = ValueAnimator.ofFloat(currAlpha, 0);
         bgAnim.setDuration(pressBgDuration);
-        bgAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
-        {
+        bgAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
-            public void onAnimationUpdate(ValueAnimator animation)
-            {
-                currAlpha = (int)Double.parseDouble(animation.getAnimatedValue().toString());
+            public void onAnimationUpdate(ValueAnimator animation) {
+                currAlpha = (int) Double.parseDouble(animation.getAnimatedValue().toString());
                 invalidate();
             }
         });
@@ -404,14 +378,12 @@ public class RippleRelativeLayout extends RelativeLayout
     /**
      * start ripple anim
      */
-    public void startRippleAnim()
-    {
+    public void startRippleAnim() {
         float finalRadius = 0;
         /**
          * 根据类型判断背景类型
          * */
-        switch (pressBgType)
-        {
+        switch (pressBgType) {
             case 0:
                 finalRadius = radiusMax;
                 break;
@@ -424,90 +396,75 @@ public class RippleRelativeLayout extends RelativeLayout
         }
         final ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, finalRadius);
         valueAnimator.setDuration(rippleDuration);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
-        {
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
-            public void onAnimationUpdate(ValueAnimator animation)
-            {
-                currRadius = (float)Double.parseDouble(animation.getAnimatedValue().toString());
+            public void onAnimationUpdate(ValueAnimator animation) {
+                currRadius = (float) Double.parseDouble(animation.getAnimatedValue().toString());
                 invalidate();
             }
         });
-        valueAnimator.addListener(new Animator.AnimatorListener()
-        {
+        valueAnimator.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart(Animator animation)
-            {
+            public void onAnimationStart(Animator animation) {
+
             }
 
             @Override
-            public void onAnimationEnd(Animator animation)
-            {
+            public void onAnimationEnd(Animator animation) {
                 if (onCompletionListener != null)
-                { onCompletionListener.onComplete(RippleRelativeLayout.this); }
+                    onCompletionListener.onComplete(RippleTextView.this);
                 stopBgAnim();
             }
 
             @Override
-            public void onAnimationCancel(Animator animation)
-            {
+            public void onAnimationCancel(Animator animation) {
                 if (onCompletionListener != null)
-                { onCompletionListener.onComplete(RippleRelativeLayout.this); }
+                    onCompletionListener.onComplete(RippleTextView.this);
                 stopBgAnim();
             }
 
             @Override
-            public void onAnimationRepeat(Animator animation)
-            {
+            public void onAnimationRepeat(Animator animation) {
+
             }
         });
         valueAnimator.start();
     }
+
 
     /**
      * Send a click event if parent view is a Listview instance
      *
      * @param isLongClick Is the event a long click ?
      */
-    private void sendClickEvent(final Boolean isLongClick)
-    {
-        if (getParent() instanceof AdapterView)
-        {
-            final AdapterView adapterView = (AdapterView)getParent();
+    private void sendClickEvent(final Boolean isLongClick) {
+        if (getParent() instanceof AdapterView) {
+            final AdapterView adapterView = (AdapterView) getParent();
             final int position = adapterView.getPositionForView(this);
             final long id = adapterView.getItemIdAtPosition(position);
-            if (isLongClick)
-            {
+            if (isLongClick) {
                 if (adapterView.getOnItemLongClickListener() != null)
-                {
-                    adapterView.getOnItemLongClickListener()
-                               .onItemLongClick(adapterView, this, position, id);
-                }
-            }
-            else
-            {
+                    adapterView.getOnItemLongClickListener().onItemLongClick(adapterView, this, position, id);
+            } else {
                 if (adapterView.getOnItemClickListener() != null)
-                {
-                    adapterView.getOnItemClickListener()
-                               .onItemClick(adapterView, this, position, id);
-                }
+                    adapterView.getOnItemClickListener().onItemClick(adapterView, this, position, id);
             }
         }
     }
 
-    private Bitmap getCircleBitmap(final int radius)
-    {
-        final Bitmap output = Bitmap.createBitmap(originBitmap.getWidth(), originBitmap.getHeight(),
-                                                  Bitmap.Config.ARGB_8888);
+    private Bitmap getCircleBitmap(final int radius) {
+        final Bitmap output = Bitmap.createBitmap(originBitmap.getWidth(), originBitmap.getHeight(), Bitmap.Config.ARGB_8888);
         final Canvas canvas = new Canvas(output);
         final Paint paint = new Paint();
-        final Rect rect = new Rect((int)(x - radius), (int)(y - radius), (int)(x + radius),
-                                   (int)(y + radius));
+        final Rect rect = new Rect((int) (x - radius), (int) (y - radius), (int) (x + radius), (int) (y + radius));
+
         paint.setAntiAlias(true);
         canvas.drawARGB(0, 0, 0, 0);
         canvas.drawCircle(x, y, radius, paint);
+
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(originBitmap, rect, rect, paint);
+
         return output;
     }
 
@@ -517,18 +474,16 @@ public class RippleRelativeLayout extends RelativeLayout
      * @param rippleColor New color resource
      */
     @ColorRes
-    public void setRippleColor(int rippleColor)
-    {
+    public void setRippleColor(int rippleColor) {
         this.rippleColor = getResources().getColor(rippleColor);
     }
 
-    public int getRippleColor()
-    {
+    public int getRippleColor() {
         return rippleColor;
     }
 
-    public Boolean isCentered()
-    {
+
+    public Boolean isCentered() {
         return isCentered;
     }
 
@@ -537,13 +492,11 @@ public class RippleRelativeLayout extends RelativeLayout
      *
      * @param isCentered
      */
-    public void setCentered(final Boolean isCentered)
-    {
+    public void setCentered(final Boolean isCentered) {
         this.isCentered = isCentered;
     }
 
-    public int getRipplePadding()
-    {
+    public int getRipplePadding() {
         return ripplePadding;
     }
 
@@ -552,13 +505,11 @@ public class RippleRelativeLayout extends RelativeLayout
      *
      * @param ripplePadding New Ripple padding in pixel, default is 0px
      */
-    public void setRipplePadding(int ripplePadding)
-    {
+    public void setRipplePadding(int ripplePadding) {
         this.ripplePadding = ripplePadding;
     }
 
-    public Boolean isZooming()
-    {
+    public Boolean isZooming() {
         return hasToZoom;
     }
 
@@ -567,13 +518,11 @@ public class RippleRelativeLayout extends RelativeLayout
      *
      * @param hasToZoom Do the child views have to zoom ? default is False
      */
-    public void setZooming(Boolean hasToZoom)
-    {
+    public void setZooming(Boolean hasToZoom) {
         this.hasToZoom = hasToZoom;
     }
 
-    public float getZoomScale()
-    {
+    public float getZoomScale() {
         return zoomScale;
     }
 
@@ -582,13 +531,11 @@ public class RippleRelativeLayout extends RelativeLayout
      *
      * @param zoomScale Value of scale animation, default is 1.03f
      */
-    public void setZoomScale(float zoomScale)
-    {
+    public void setZoomScale(float zoomScale) {
         this.zoomScale = zoomScale;
     }
 
-    public int getZoomDuration()
-    {
+    public int getZoomDuration() {
         return zoomDuration;
     }
 
@@ -597,13 +544,11 @@ public class RippleRelativeLayout extends RelativeLayout
      *
      * @param zoomDuration Duration, default is 200ms
      */
-    public void setZoomDuration(int zoomDuration)
-    {
+    public void setZoomDuration(int zoomDuration) {
         this.zoomDuration = zoomDuration;
     }
 
-    public int getRippleDuration()
-    {
+    public int getRippleDuration() {
         return rippleDuration;
     }
 
@@ -612,13 +557,12 @@ public class RippleRelativeLayout extends RelativeLayout
      *
      * @param rippleDuration Duration, default is 400ms
      */
-    public void setRippleDuration(int rippleDuration)
-    {
+    public void setRippleDuration(int rippleDuration) {
         this.rippleDuration = rippleDuration;
     }
 
-    public int getRippleAlpha()
-    {
+
+    public int getRippleAlpha() {
         return rippleAlpha;
     }
 
@@ -627,39 +571,37 @@ public class RippleRelativeLayout extends RelativeLayout
      *
      * @param rippleAlpha Alpha value between 0 and 255, default is 90
      */
-    public void setRippleAlpha(int rippleAlpha)
-    {
+    public void setRippleAlpha(int rippleAlpha) {
         this.rippleAlpha = rippleAlpha;
     }
 
-    public void setOnRippleCompleteListener(OnRippleCompleteListener listener)
-    {
+    public void setOnRippleCompleteListener(OnRippleCompleteListener listener) {
         this.onCompletionListener = listener;
     }
 
-    public void setOnClickConfirmListener(OnClickConfirmListener onClickConfirmListener)
-    {
+    public void setOnClickConfirmListener(OnClickConfirmListener onClickConfirmListener) {
         this.onClickConfirmListener = onClickConfirmListener;
     }
 
-    public PressBgType getPressBgType()
-    {
+
+    public PressBgType getPressBgType() {
         return PressBgType.values()[pressBgType];
     }
 
-    public void setPressBgType(final PressBgType pressBgType)
-    {
+    public void setPressBgType(final PressBgType pressBgType) {
         this.pressBgType = pressBgType.ordinal();
     }
 
-    public enum PressBgType
-    {
-        REXT(0), CIRCLE_FIT_MIN(1), CIRCLE_FIT_MAX(2);
+    public enum PressBgType {
+        REXT(0),
+        CIRCLE_FIT_MIN(1),
+        CIRCLE_FIT_MAX(2);
+
         int type;
 
-        PressBgType(int type)
-        {
+        PressBgType(int type) {
             this.type = type;
         }
     }
+
 }

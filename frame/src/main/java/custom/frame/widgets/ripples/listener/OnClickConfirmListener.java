@@ -1,4 +1,4 @@
-package custom.widgets.ripples.listener;
+package custom.frame.widgets.ripples.listener;
 
 import android.view.View;
 

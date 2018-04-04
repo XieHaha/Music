@@ -1,4 +1,4 @@
-package custom.widgets.statusbar;
+package custom.frame.widgets.statusbar;
 
 import android.content.Context;
 import android.content.res.TypedArray;

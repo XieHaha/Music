@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package custom.widgets.ripples;
+package custom.frame.widgets.ripples;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -43,25 +43,25 @@ import android.view.MotionEvent;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.LinearLayout;
 
 import custom.widgets.R;
-import custom.widgets.ripples.listener.OnClickConfirmListener;
-import custom.widgets.ripples.listener.OnRippleCompleteListener;
+import custom.frame.widgets.ripples.listener.OnClickConfirmListener;
+import custom.frame.widgets.ripples.listener.OnRippleCompleteListener;
 
 /**
  * RippleView custom layout
- * <p>
+ * <p/>
  * Custom Layout that allows to use Ripple UI pattern above API 21
  *
  * @author luozisong
  * @version 2016.0303
  */
-public class RippleButton extends Button {
+public class RippleLinearLayout extends LinearLayout {
 
     private int WIDTH;
     private int HEIGHT;
-    private int rippleDuration = 300;
+    private int rippleDuration = 500;
     private int pressBgDuration = 200;
     private int rippleAlpha = 90;
     private int pressBgAlpha = 45;
@@ -77,11 +77,11 @@ public class RippleButton extends Button {
     private ScaleAnimation scaleAnimation;
     private boolean hasToZoom = false;
     private boolean isCentered = false;
-    private boolean holdBgInPressing = true;
+    private boolean holdBgInPressing = false;
     private Paint circlePaint, pressPaint;
     private Bitmap originBitmap;
-    private int rippleColor;
-    private int pressBgColor;
+    private int rippleColor = getResources().getColor(R.color.rippelColor);//default white
+    private int pressBgColor = getResources().getColor(R.color.pressColor);//default white
     private boolean pressBgEnable = true;
     private int ripplePadding = 0;
     private GestureDetector gestureDetector;
@@ -91,16 +91,16 @@ public class RippleButton extends Button {
     private OnRippleCompleteListener onCompletionListener;
     private OnClickConfirmListener onClickConfirmListener = null;
 
-    public RippleButton(Context context) {
+    public RippleLinearLayout(Context context) {
         super(context);
     }
 
-    public RippleButton(Context context, AttributeSet attrs) {
+    public RippleLinearLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    public RippleButton(Context context, AttributeSet attrs, int defStyle) {
+    public RippleLinearLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context, attrs);
     }
@@ -114,8 +114,6 @@ public class RippleButton extends Button {
     private void init(final Context context, final AttributeSet attrs) {
         if (isInEditMode())
             return;
-        rippleColor = getResources().getColor(R.color.rippelColor);//default white
-        pressBgColor = getResources().getColor(R.color.pressColor);//default white
 
         final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RippleView);
         rippleColor = typedArray.getColor(R.styleable.RippleView_rv_rippleColor, rippleColor);//default white
@@ -170,7 +168,7 @@ public class RippleButton extends Button {
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
                 if (onClickConfirmListener != null)
-                    onClickConfirmListener.onConfirmClick(RippleButton.this);
+                    onClickConfirmListener.onConfirmClick(RippleLinearLayout.this);
                 return super.onSingleTapConfirmed(e);
             }
 
@@ -283,6 +281,27 @@ public class RippleButton extends Button {
         return super.onTouchEvent(event);
     }
 
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                startBgAnim();
+                ACTION_CANCEL = false;
+                break;
+            case MotionEvent.ACTION_UP:
+                if (!holdBgInPressing) stopBgAnim();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                ACTION_CANCEL = true;
+                stopBgAnim();
+                break;
+
+        }
+        gestureDetector.onTouchEvent(event);
+        return super.onInterceptTouchEvent(event);
+    }
 
     /**
      * Launch Ripple animation for the current view with a MotionEvent
@@ -414,14 +433,14 @@ public class RippleButton extends Button {
             @Override
             public void onAnimationEnd(Animator animation) {
                 if (onCompletionListener != null)
-                    onCompletionListener.onComplete(RippleButton.this);
+                    onCompletionListener.onComplete(RippleLinearLayout.this);
                 stopBgAnim();
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
                 if (onCompletionListener != null)
-                    onCompletionListener.onComplete(RippleButton.this);
+                    onCompletionListener.onComplete(RippleLinearLayout.this);
                 stopBgAnim();
             }
 
@@ -605,5 +624,4 @@ public class RippleButton extends Button {
             this.type = type;
         }
     }
-
 }

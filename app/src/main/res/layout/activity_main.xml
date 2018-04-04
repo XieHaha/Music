@@ -24,7 +24,7 @@
             android:background="@color/white"
             android:orientation="horizontal">
 
-            <custom.widgets.ripples.RippleLinearLayout
+            <custom.frame.widgets.ripples.RippleLinearLayout
                 android:id="@+id/act_main_tab1"
                 style="@style/RippleBtnMaxCircleStyle"
                 android:layout_width="wrap_content"
@@ -45,9 +45,9 @@
                     android:text="@string/main_tab_msg"
                     android:textColor="@color/tab_txt_color_selector"
                     android:textSize="@dimen/app_txt_minor" />
-            </custom.widgets.ripples.RippleLinearLayout>
+            </custom.frame.widgets.ripples.RippleLinearLayout>
 
-            <custom.widgets.ripples.RippleLinearLayout
+            <custom.frame.widgets.ripples.RippleLinearLayout
                 android:id="@+id/act_main_tab2"
                 style="@style/RippleBtnMaxCircleStyle"
                 android:layout_width="wrap_content"
@@ -69,9 +69,9 @@
                     android:text="@string/main_tab_doc"
                     android:textColor="@color/tab_txt_color_selector"
                     android:textSize="@dimen/app_txt_minor" />
-            </custom.widgets.ripples.RippleLinearLayout>
+            </custom.frame.widgets.ripples.RippleLinearLayout>
 
-            <custom.widgets.ripples.RippleLinearLayout
+            <custom.frame.widgets.ripples.RippleLinearLayout
                 android:id="@+id/act_main_tab3"
                 style="@style/RippleBtnMaxCircleStyle"
                 android:layout_width="wrap_content"
@@ -92,9 +92,9 @@
                     android:text="@string/main_tab_case"
                     android:textColor="@color/tab_txt_color_selector"
                     android:textSize="@dimen/app_txt_minor" />
-            </custom.widgets.ripples.RippleLinearLayout>
+            </custom.frame.widgets.ripples.RippleLinearLayout>
 
-            <custom.widgets.ripples.RippleLinearLayout
+            <custom.frame.widgets.ripples.RippleLinearLayout
                 android:id="@+id/act_main_tab4"
                 style="@style/RippleBtnMaxCircleStyle"
                 android:layout_width="wrap_content"
@@ -115,7 +115,7 @@
                     android:text="@string/main_tab_my"
                     android:textColor="@color/tab_txt_color_selector"
                     android:textSize="@dimen/app_txt_minor" />
-            </custom.widgets.ripples.RippleLinearLayout>
+            </custom.frame.widgets.ripples.RippleLinearLayout>
 
         </LinearLayout>
 

@@ -1,1 +1,1 @@
-include ':app', ':frame', ':volley',':widgets'
+include ':app', ':frame', ':volley'

@@ -14,7 +14,7 @@ import com.yht.yihuantong.ui.fragment.MsgFragment;
 import com.yht.yihuantong.ui.fragment.MyFragment;
 
 import custom.frame.ui.activity.BaseActivity;
-import custom.widgets.ripples.RippleLinearLayout;
+import custom.frame.widgets.ripples.RippleLinearLayout;
 
 public class MainActivity extends BaseActivity
 {
