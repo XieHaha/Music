@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.yht.yihuantong.R;
@@ -44,7 +45,8 @@ public class SplashActivity extends BaseActivity
 
     private void startMainPage()
     {
-        Intent intent = new Intent(this, MainActivity.class);
+//        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
         overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
@@ -77,6 +79,8 @@ public class SplashActivity extends BaseActivity
      */
     protected void hideBottomUIMenu()
     {
+        //状态栏透明
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         //隐藏虚拟按键，并且全屏
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB &&
             Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT)
@@ -88,8 +92,7 @@ public class SplashActivity extends BaseActivity
         {
             View decorView = getWindow().getDecorView();
             int uiOptions =
-                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY |
-                    View.SYSTEM_UI_FLAG_FULLSCREEN;
+                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
             decorView.setSystemUiVisibility(uiOptions);
         }
     }

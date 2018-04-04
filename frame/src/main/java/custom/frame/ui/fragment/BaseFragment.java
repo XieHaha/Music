@@ -12,7 +12,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import custom.base.entity.base.BaseResponse;
+import custom.frame.bean.BaseResponse;
 import custom.frame.R;
 import custom.frame.http.IRequest;
 import custom.frame.http.Tasks;

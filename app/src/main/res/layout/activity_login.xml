@@ -3,4 +3,129 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:src="@color/app_main_color"
+        android:scaleType="centerCrop"
+        android:layout_height="175dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="@string/txt_title"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/app_main_title"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_marginTop="24dp"
+        android:layout_height="@dimen/app_title_bar_height" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="175dp"
+        android:orientation="vertical"
+        android:paddingTop="26dp"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="@string/txt_login"
+            android:textSize="24sp"
+            android:paddingLeft="25dp"
+            android:textColor="#ff333333"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="@string/txt_login_hint"
+            android:textSize="15sp"
+            android:paddingLeft="25dp"
+            android:layout_marginTop="10dp"
+            android:textColor="#ff333333"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="手机号"
+            android:paddingLeft="26dp"
+            android:layout_marginTop="13dp"
+            android:textColor="#ff999999"
+            android:textSize="12dp" />
+
+        <EditText
+            android:layout_width="300dp"
+            android:textColor="#ff000000"
+            android:textSize="15sp"
+            android:maxLength="11"
+            android:hint="输入手机号"
+            android:inputType="phone"
+            android:layout_marginLeft="25dp"
+            android:layout_height="48dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="验证码"
+            android:paddingLeft="26dp"
+            android:layout_marginTop="12dp"
+            android:textColor="#ff999999"
+            android:textSize="12dp" />
+
+        <RelativeLayout
+            android:layout_width="300dp"
+            android:layout_marginLeft="25dp"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/act_login_verifycode"
+                android:layout_width="300dp"
+                android:textColor="#ff000000"
+                android:textSize="15sp"
+                android:hint="输入验证码"
+                android:maxEms="10"
+                android:layout_height="48dp" />
+
+            <TextView
+                android:id="@+id/act_login_verify"
+                android:layout_width="93dp"
+                android:textColor="@color/app_main_color"
+                android:textSize="10sp"
+                android:gravity="center"
+                android:layout_alignParentRight="true"
+                android:text="获取短信验证码"
+                android:background="@drawable/corner_main_color_bg"
+                android:layout_height="30dp" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="32dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/act_splash_btn"
+            android:layout_width="300dp"
+            android:textColor="@color/color_white"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/txt_title"
+            android:background="@drawable/btn_main_color_selector"
+            android:layout_height="46dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="阅读用户协议"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:textColor="#ffe73278"
+            android:textSize="10dp" />
+    </LinearLayout>
+
+
 </RelativeLayout>

@@ -11,19 +11,28 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import custom.base.entity.base.BaseResponse;
-import custom.base.utils.ToastUtil;
+import custom.frame.bean.BaseResponse;
+import custom.frame.utils.ToastUtil;
 import custom.frame.R;
 import custom.frame.http.IRequest;
 import custom.frame.http.Tasks;
 import custom.frame.http.listener.ResponseListener;
 import custom.frame.log.MLog;
+import custom.frame.permission.OnPermissionCallback;
+import custom.frame.permission.Permission;
+import custom.frame.permission.PermissionHelper;
 import custom.frame.ui.ConstantsCommon;
 
 public abstract class BaseActivity extends AppCompatActivity
         implements ActivityInterface, ResponseListener<BaseResponse>, View.OnClickListener,
-                   ConstantsCommon
+                   OnPermissionCallback, ConstantsCommon
 {
+    /**
+     * 权限管理类
+     */
+    protected PermissionHelper permissionHelper;
+    private boolean isRequest = true;
+    private boolean isRequestPhone = true;
     /**
      * 任务队列列表
      */
@@ -54,8 +63,8 @@ public abstract class BaseActivity extends AppCompatActivity
     protected final void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-//        //状态栏透明
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //        //状态栏透明
+        //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         AppManager.getInstance().addActivity(this);
         befordCreateView(savedInstanceState);
         int layoutID = getLayoutID();
@@ -67,6 +76,11 @@ public abstract class BaseActivity extends AppCompatActivity
         {
             setContentView(getLayoutView());
         }
+        /**
+         * 权限管理类
+         */
+        permissionHelper = PermissionHelper.getInstance(this);
+        permissionHelper.request(new String[] { Permission.READ_PHONE_STATE });
         init();
         init(savedInstanceState);
     }
@@ -268,21 +282,6 @@ public abstract class BaseActivity extends AppCompatActivity
     }
 
     /**
-     * 显示toast
-     *
-     * @param resId
-     */
-    protected void showToast(int resId)
-    {
-        ToastUtil.releaseShow(this, resId);
-    }
-
-    protected void showToast(String text)
-    {
-        ToastUtil.releaseShow(this, text);
-    }
-
-    /**
      * 得到本类名
      */
     protected String getMTag()
@@ -304,7 +303,6 @@ public abstract class BaseActivity extends AppCompatActivity
     @Override
     public void onResponseError(Tasks task, Exception e)
     {
-        ToastUtil.debugShow(this, "baseActivity：" + e.getMessage());
     }
 
     @Override
@@ -342,5 +340,80 @@ public abstract class BaseActivity extends AppCompatActivity
     {
         //移除任务队列
         if (task != null && requestList != null) { requestList.remove(task); }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults)
+    {
+        if (permissions == null)
+        {
+            return;
+        }
+        permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onPermissionGranted(@NonNull String[] permissionName)
+    {
+        isRequest = true;
+        isRequestPhone = true;
+    }
+
+    @Override
+    public void onPermissionDeclined(@NonNull String[] permissionName)
+    {
+        if (permissionName == null)
+        {
+            return;
+        }
+        for (String permission : permissionName)
+        {
+            if (Permission.STORAGE[0].equals(permission) ||
+                Permission.STORAGE[1].equals(permission))
+            {
+                ToastUtil.toast(getApplicationContext(), R.string.dialog_no_storage_permission_tip);
+                break;
+            }
+            if (Permission.READ_PHONE_STATE.equals(permission))
+            {
+                ToastUtil.toast(getApplicationContext(), R.string.dialog_no_read_phone_state_tip);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onPermissionPreGranted(@NonNull String permissionsName)
+    {
+        isRequest = true;
+        isRequestPhone = true;
+    }
+
+    @Override
+    public void onPermissionNeedExplanation(@NonNull String permissionName)
+    {
+        if (isRequest)
+        {
+            isRequest = false;
+            permissionHelper.requestAfterExplanation(Permission.STORAGE);
+        }
+        if (isRequestPhone)
+        {
+            isRequestPhone = false;
+            permissionHelper.requestAfterExplanation(Permission.READ_PHONE_STATE);
+        }
+    }
+
+    @Override
+    public void onPermissionReallyDeclined(@NonNull String permissionName)
+    {
+    }
+
+    @Override
+    public void onNoPermissionNeeded(@NonNull Object permissionName)
+    {
+        isRequest = true;
+        isRequestPhone = true;
     }
 }

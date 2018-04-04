@@ -1,8 +1,8 @@
 package custom.frame.log;
 
 
-import custom.base.data.Global;
-import custom.base.data.Mode;
+import custom.frame.bean.Global;
+import custom.frame.bean.Mode;
 
 public final class MLog {
     private static final String tag = "dianzhuang";

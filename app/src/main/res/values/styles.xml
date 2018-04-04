@@ -16,6 +16,17 @@
         <!--<item name="android:background">@mipmap/splash_bg</item>-->
     </style>
 
+    <!--当我们从 A1 启动 A2 时，A1 从屏幕上消失，这个动画叫做 android:activityOpenExitAnimation-->
+    <!--当我们从 A1 启动 A2 时，A2 出现在屏幕上，这个动画叫做 android:activityOpenEnterAnimation-->
+    <!--当我们从 A2 退出回到 A1 时，A2 从屏幕上消失，这个叫做 android:activityCloseExitAnimation-->
+    <!--当我们从 A2 退出回到 A1 时，A1 出现在屏幕上，这个叫做 android:activityCloseEnterAnimation-->
+    <style name="activitystyle" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/anim_right_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/anim_left_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/anim_left_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/anim_right_out</item>
+    </style>
+
     <style name="BaseAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -24,7 +35,7 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:windowActionBar">false</item>
         <item name="windowActionBar">false</item>
-        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowAnimationStyle">@style/activitystyle</item>
         <!--添加此属性 会导致activity转场动画执行时看到桌面背景-->
         <!--<item name="android:windowIsTranslucent">true</item>-->
     </style>
@@ -64,6 +75,11 @@
         <item name="rv_centered">true</item>
         <item name="rv_holdBgInPressing">true</item>
         <item name="rv_pressBgType">circleFitMax</item>
+    </style>
+
+    <style name="line_inner">
+        <item name="android:layout_height">1px</item>
+        <item name="android:background">@color/cebebeb</item>
     </style>
 
 

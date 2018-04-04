@@ -26,8 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import custom.base.data.Global;
-import custom.base.entity.base.BaseResponse;
+import custom.frame.bean.Global;
+import custom.frame.bean.BaseResponse;
 import custom.frame.http.listener.ResponseListener;
 import custom.frame.log.MLog;
 

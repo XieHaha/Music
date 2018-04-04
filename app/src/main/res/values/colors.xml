@@ -23,4 +23,6 @@
     <!--字体颜色-->
     <color name="color_white">#ffffffff</color>
 
+    <color name="cebebeb">#ebebeb</color>
+
 </resources>

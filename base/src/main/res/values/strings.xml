@@ -1,7 +1,0 @@
-<resources>
-    <string name="app_name">Base</string>
-
-    <!-- sd卡 -->
-    <string name="sd_smallsize">SD卡剩余空间不足</string>
-    <string name="no_sdcard">SD卡已拔出</string>
-</resources>

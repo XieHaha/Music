@@ -2,14 +2,64 @@
     <string name="app_name">医患通</string>
 
 
-    <!--splash activity-->
+    <!--启动页 引导页-->
     <string name="txt_splash_btn">开始使用</string>
     <string name="txt_splash">医患通</string>
     <string name="txt_splash_type">-医生端-</string>
 
-    <!--main  activity-->
+    <!--登录界面-->
+    <string name="txt_title">登录</string>
+    <string name="txt_complete_btn">完成</string>
+    <string name="txt_complete_title">完善信息</string>
+    <string name="txt_complete_content">完善个人信息</string>
+    <string name="txt_complete_content_job">完善职业信息</string>
+    <string name="txt_complete_content_hint">请上传头像并输入您的姓名</string>
+    <string name="txt_complete_next">下一步</string>
+    <string name="txt_complete_back">上一步</string>
+    <string name="txt_complete_cancel">跳过</string>
+    <string name="txt_login">登录账号</string>
+    <string name="txt_get_verify_code_again">重新发送</string>
+    <string name="txt_login_hint">请输入您的手机号码,\n以登录您的离校登记记录</string>
+
+    <!--主页-->
     <string name="main_tab_msg">消息</string>
     <string name="main_tab_doc">医生</string>
     <string name="main_tab_case">病例</string>
     <string name="main_tab_my">我的</string>
+
+    <!--信息界面-->
+    <!--ImageAlbumFragment-->
+    <string name="tip_max_checked">最多选择%s张图片</string>
+    <string name="txt_photo_count">%s张</string>
+    <string name="txt_image_album_name">所有图片</string>
+    <string name="txt_lbl_preview">预览</string>
+    <string name="txt_open_file_fail">无法打开文件</string>
+
+
+    <!--Toast-->
+    <string name="toast_save_image_failed">保存图片失败</string>
+    <string name="toast_save_image_success">保存图片成功</string>
+    <string name="toast_need_pic_requirement">请选择宽高都不小于20像素的图片</string>
+
+    <!--dialog-->
+    <string name="dialog_public_title">温馨提示</string>
+    <string name="dialog_txt_confirm">确定</string>
+    <string name="txt_cancel">取消</string>
+    <string name="toast_public_the_camera_is_not_available">照相机不可用</string>
+    <string name="toast_public_video_not_available">视频不可用</string>
+    <!--permission-->
+    <string name="toast_public_current_no_network">当前无网络连接</string>
+    <string name="dialog_no_camera_permission_tip">无法打开摄像头，请检查是否已经打开摄像头权限</string>
+    <string name="dialog_no_storage_permission_tip">无法访问存储空间，请检查是否已经打开存储权限</string>
+    <string name="dialog_no_audio_permission_tip">无法启用录音，请检查是否已经打开录音权限</string>
+    <string name="dialog_no_location_permission_tip">无法获取位置信息，请检查是否已经打开位置信息权限</string>
+    <string name="dialog_no_audio_camera_permission_tip">无法启用相机和录音，请检查是否已经打开相机和录音权限</string>
+    <string name="dialog_no_read_phone_state_tip">无法获取手机信息，请检查是否已经打开电话权限</string>
+    <string name="dialog_no_camera_tip">无法打开摄像头</string>
+    <string name="dialog_no_storage_tip">无法访问存储空间</string>
+    <string name="dialog_no_audio_tip">无法启用录音</string>
+    <string name="dialog_no_permission_tip">，请检查是否打开相关权限</string>
+    <string name="dialog_no_record_tip">无法录像，请检查是否打开相机和录音权限</string>
+
+    <string name="dialog_discard_before_vedio">确认将丢弃之前已拍摄的视频</string>
 </resources>

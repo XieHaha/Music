@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.android.volley.RequestParams;
 
-import custom.base.entity.base.BaseResponse;
+import custom.frame.bean.BaseResponse;
 import custom.frame.http.listener.ResponseListener;
 
 import static custom.frame.http.data.HttpConstants.Method.GET;
