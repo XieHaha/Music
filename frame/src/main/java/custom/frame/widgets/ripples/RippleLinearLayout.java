@@ -45,7 +45,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 
-import custom.widgets.R;
+import custom.frame.R;
 import custom.frame.widgets.ripples.listener.OnClickConfirmListener;
 import custom.frame.widgets.ripples.listener.OnRippleCompleteListener;
 

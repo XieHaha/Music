@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import custom.widgets.R;
+import custom.frame.R;
 
 /**
  * Created by luozi on 2015/9/15.
