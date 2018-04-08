@@ -10,6 +10,10 @@ import com.yht.yihuantong.R;
 
 import custom.frame.ui.activity.BaseActivity;
 
+/**
+ * 职业信息完善
+ * @author DUNDUN
+ */
 public class CompleteInfo2Activity extends BaseActivity
 {
     @Override

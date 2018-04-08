@@ -6,25 +6,8 @@ public interface HttpConstants
      * 基础网络连接地址
      */
     String URL_PREFIX = "http://";
-    String BASE_IP = "139.224.34.5";
-    String BASE_CALLBACK_IP = "139.224.33.114";
-    String BASE_IP_PORT = "80";
-    String BASE_CALLBACK_IP_PORT = "9090";
-    /**
-     * ip pre name
-     */
-    String PREFER_NAME = "com.yht.ip";
-
-    /**
-     * 得到支付回调地址
-     */
-    String getPayCallbackUrl();
-
-    /**
-     * 得到充值回调地址
-     */
-    String getRechargeCallbackUrl();
-
+    String BASE_IP = "39.107.249.194";
+    String BASE_IP_PORT = "8080";
     /**
      * 分页的页数大小
      */
@@ -85,17 +68,8 @@ public interface HttpConstants
     String getBaseIp();
 
     /**
-     * 得到基础回调ip
-     */
-    String getBaseCallbackIp();
-
-    /**
      * 得到基础ip端口号
      */
     String getBaseIpPort();
 
-    /**
-     * 得到回调ip端口号
-     */
-    String getBaseCallbackIpPort();
 }

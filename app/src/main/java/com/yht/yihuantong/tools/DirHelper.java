@@ -21,7 +21,7 @@ public final class DirHelper
     /**
      * 程序根目录
      */
-    public static String PATH_APP_ROOT = "justim";
+    public static String PATH_APP_ROOT = "YHT";
 
     public static void init(String appName)
     {

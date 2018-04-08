@@ -4,6 +4,8 @@
 
     <!--title bar 高度-->
     <dimen name="app_title_bar_height">48dp</dimen>
+    <!--图片库  图片大小-->
+    <dimen name="app_picture_size">120dp</dimen>
 
     <!--标题栏字体大小-->
     <dimen name="app_main_title">18sp</dimen>

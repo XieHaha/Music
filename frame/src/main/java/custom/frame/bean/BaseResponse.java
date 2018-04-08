@@ -9,7 +9,7 @@ public class BaseResponse implements Serializable {
     /**
      * 请求响应码
      */
-    String code;
+    int code;
     /**
      * 请求响应文本
      */
@@ -20,11 +20,11 @@ public class BaseResponse implements Serializable {
      */
     Object data;
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public BaseResponse setCode(String code) {
+    public BaseResponse setCode(int code) {
         this.code = code;
         return this;
     }

@@ -9,5 +9,9 @@ public enum Tasks
      * 获取验证码
      */
     GET_VERIFY_CODE,
+    /**
+     * 上传文件
+     */
+    UPLOAD_FILE,
 }
 

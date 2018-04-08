@@ -8,6 +8,6 @@ public interface BaseNetCode {
     /**
      * 请求成功编码
      */
-    String REQUEST_SUCCESS = "200";
+    int REQUEST_SUCCESS = 200;
 
 }

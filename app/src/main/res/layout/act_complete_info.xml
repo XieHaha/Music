@@ -75,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="姓名"
-            android:paddingLeft="26dp"
+            android:paddingLeft="27dp"
             android:layout_marginTop="18dp"
             android:textColor="#ff999999"
             android:textSize="12dp" />
@@ -86,7 +86,6 @@
             android:textSize="15sp"
             android:maxLength="11"
             android:hint="请输入您的姓名"
-            android:inputType="phone"
             android:layout_marginLeft="25dp"
             android:layout_height="48dp" />
 

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/public_title_bar"
+        android:id="@+id/top_bar" />
+
+    <LinearLayout
+        android:id="@+id/act_health_card_viewpager_title"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/top_bar">
+
+        <Button
+            android:id="@+id/act_health_card_byaccount"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/app_translucent"
+            android:gravity="center"
+            android:text="基础信息"
+            android:textColor="@color/app_main_color"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/act_health_card_bycode"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/app_translucent"
+            android:gravity="center"
+            android:text="病例"
+            android:textColor="@color/app_main_color"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/act_health_card_indicator"
+        android:layout_width="100dp"
+        android:layout_height="2dp"
+        android:layout_below="@+id/act_health_card_viewpager_title"
+        android:background="@color/app_main_color" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/act_health_card_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/act_health_card_indicator"></android.support.v4.view.ViewPager>
+
+
+</RelativeLayout>
