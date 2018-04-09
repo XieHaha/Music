@@ -17,7 +17,6 @@ import android.view.WindowManager;
 
 import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.YiHTApplication;
 import com.yht.yihuantong.tools.DirHelper;
 import com.yht.yihuantong.ui.dialog.ActionSheetDialog;
 import com.yht.yihuantong.utils.AllUtils;
@@ -308,8 +307,7 @@ public class CompleteInfoActivity extends BaseActivity
                 }
                 else
                 {
-                    YiHTApplication.toast(this, getResources().getString(
-                            R.string.toast_public_current_no_network));
+                    ToastUtil.toast(this,R.string.toast_public_current_no_network);
                 }
                 //上传完成，替换本地图片
                 ivHeadImg.setImageURI(cutFileUri);

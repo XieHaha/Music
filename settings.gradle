@@ -1,1 +1,1 @@
-include ':app', ':frame', ':volley'
+include ':app', ':frame', ':volley','easeui'

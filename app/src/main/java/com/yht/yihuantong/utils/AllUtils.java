@@ -219,7 +219,7 @@ public class AllUtils
         }
         catch (Exception e)
         {
-//            LogUtils.e(TAG, e.getMessage(), e);
+            LogUtils.e(TAG, e.getMessage(), e);
         }
         return 0f;
     }
@@ -365,7 +365,7 @@ public class AllUtils
         }
         catch (Exception e)
         {
-//            LogUtils.e(TAG, e.getMessage(), e);
+            LogUtils.e(TAG, e.getMessage(), e);
         }
         return "";
     }
@@ -415,7 +415,7 @@ public class AllUtils
         }
         catch (Exception e)
         {
-//            LogUtils.e(TAG, e.getMessage(), e);
+            LogUtils.e(TAG, e.getMessage(), e);
         }
         return bytes;
     }
@@ -490,7 +490,7 @@ public class AllUtils
         }
         catch (SocketException e)
         {
-//            LogUtils.e(TAG, e.getMessage(), e);
+            LogUtils.e(TAG, e.getMessage(), e);
         }
         return "127.0.0.1";
     }
