@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/app_minor_bg"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/public_title_bar"
+        android:id="@+id/top_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_below="@id/top_bar"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="75dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="头像"
+                android:layout_marginLeft="16dp"
+                android:layout_centerVertical="true"
+                android:textColor="#333333"
+                android:textSize="15sp"
+                android:layout_height="wrap_content" />
+
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/act_user_info_headimg"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="36dp"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/icon_default_imgs"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#50ffffff" />
+
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="15dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:alpha="0.5"
+                android:src="@mipmap/icon_arrow_right" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_alignParentBottom="true"
+                android:background="@color/app_main_divideline"
+                android:layout_height="1px" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="姓名"
+                android:layout_marginLeft="16dp"
+                android:layout_centerVertical="true"
+                android:textColor="#333333"
+                android:textSize="15sp"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_marginLeft="95dp"
+                android:layout_marginRight="16dp"
+                android:background="@null"
+                android:textColor="#333333"
+                android:textSize="15sp"
+                android:text="暂无记录"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_alignParentBottom="true"
+                android:background="@color/app_main_divideline"
+                android:layout_height="1px" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="职称"
+                android:layout_marginLeft="16dp"
+                android:layout_centerVertical="true"
+                android:textColor="#333333"
+                android:textSize="15sp"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_marginLeft="95dp"
+                android:layout_marginRight="16dp"
+                android:background="@null"
+                android:textColor="#333333"
+                android:textSize="15sp"
+                android:text="暂无记录"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_alignParentBottom="true"
+                android:background="@color/app_main_divideline"
+                android:layout_height="1px" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="科室"
+                android:layout_marginLeft="16dp"
+                android:layout_centerVertical="true"
+                android:textColor="#333333"
+                android:textSize="15sp"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_marginLeft="95dp"
+                android:layout_marginRight="16dp"
+                android:background="@null"
+                android:textColor="#333333"
+                android:textSize="15sp"
+                android:text="暂无记录"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_alignParentBottom="true"
+                android:background="@color/app_main_divideline"
+                android:layout_height="1px" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="医院"
+                android:layout_marginLeft="16dp"
+                android:layout_centerVertical="true"
+                android:textColor="#333333"
+                android:textSize="15sp"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_marginLeft="95dp"
+                android:layout_marginRight="16dp"
+                android:background="@null"
+                android:textColor="#333333"
+                android:textSize="15sp"
+                android:text="暂无记录"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_alignParentBottom="true"
+                android:background="@color/app_main_divideline"
+                android:layout_height="1px" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="简介"
+                android:layout_marginLeft="16dp"
+                android:layout_centerVertical="true"
+                android:textColor="#333333"
+                android:textSize="15sp"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_marginLeft="95dp"
+                android:layout_marginRight="16dp"
+                android:background="@null"
+                android:textColor="#333333"
+                android:textSize="15sp"
+                android:text="暂无记录"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_alignParentBottom="true"
+                android:background="@color/app_main_divideline"
+                android:layout_height="1px" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</RelativeLayout>
