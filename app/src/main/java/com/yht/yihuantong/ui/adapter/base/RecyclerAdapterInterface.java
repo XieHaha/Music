@@ -1,4 +1,4 @@
-package com.yht.yihuantong.ui.adapter;
+package com.yht.yihuantong.ui.adapter.base;
 
 import android.view.View;
 

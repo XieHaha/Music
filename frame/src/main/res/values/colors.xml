@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#E73278</color>
 
     <color name="rippelColor">#cccccc</color>
     <color name="pressColor">#cccccc</color>
@@ -16,7 +16,7 @@
     <color name="app_main_divideline">#d9dbdc</color>      <!-- DivideLine-->
 
     <!-- app主题色 (38,140,250)-->
-    <color name="app_main_color">#FF4081</color>
+    <color name="app_main_color">#E73278</color>
 
     <!--字体颜色-->
     <color name="color_white">#ffffffff</color>

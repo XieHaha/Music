@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.adapter.FragmentVpAdapter;
 import com.yht.yihuantong.ui.fragment.BaseInfoFragment;
-import com.yht.yihuantong.ui.fragment.HealthRecordFragment;
+import com.yht.yihuantong.ui.fragment.CaseRecordFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public class HealthCardActivity extends BaseActivity
     /**
      * 患者病例
      */
-    private HealthRecordFragment healthRecordFragment;
+    private CaseRecordFragment caseRecordFragment;
     private List<Fragment> fragmentList = new ArrayList<>();
 
     @Override
@@ -79,9 +79,9 @@ public class HealthCardActivity extends BaseActivity
             }
         });
         baseInfoFragment = new BaseInfoFragment();
-        healthRecordFragment = new HealthRecordFragment();
+        caseRecordFragment = new CaseRecordFragment();
         fragmentList.add(baseInfoFragment);
-        fragmentList.add(healthRecordFragment);
+        fragmentList.add(caseRecordFragment);
         fragmentVpAdapter = new FragmentVpAdapter(getSupportFragmentManager(), fragmentList);
         viewPager.setAdapter(fragmentVpAdapter);
         viewPager.setCurrentItem(0);

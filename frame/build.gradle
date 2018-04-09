@@ -28,5 +28,5 @@ dependencies {
     api files('libs/httpclient-4.2.5.jar')
     api files('libs/httpcore-4.2.4.jar')
     api 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support:recyclerview-v7:25.3.1'
+    api 'com.android.support:recyclerview-v7:26.1.0'
 }

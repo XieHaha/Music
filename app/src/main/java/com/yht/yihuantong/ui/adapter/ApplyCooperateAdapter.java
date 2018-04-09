@@ -4,9 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.fragment.PatientsFragment;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,19 +15,19 @@ import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.ui.adapter.BaseViewHolder;
 
 /**
- * Created by dundun on 2018-4-8.
+ * 申请合作医生列表适配器
+ *
+ * @author DUNDUN
  */
-public class DocListAdapter extends BaseRecyclerAdapter<String>
+public class ApplyCooperateAdapter extends BaseRecyclerAdapter<String>
 {
-    private PatientsFragment fragment;
     private Context context;
     private HashMap<String, Boolean> mMemoryCache;
 
-    public DocListAdapter(PatientsFragment fragment, List<String> list)
+    public ApplyCooperateAdapter(Context context, List<String> list)
     {
         super(list);
-        this.fragment = fragment;
-        context = fragment.getContext();
+        this.context = context;
         mMemoryCache = new HashMap<>();
     }
 
@@ -35,7 +35,7 @@ public class DocListAdapter extends BaseRecyclerAdapter<String>
     public BaseViewHolder onCreateViewHolder(ViewGroup parent)
     {
         View view = LayoutInflater.from(parent.getContext())
-                                  .inflate(R.layout.item_doc_list, parent, false);
+                                  .inflate(R.layout.item_cooperate_list, parent, false);
         return new DynamicHolder(view);
     }
 
@@ -48,9 +48,13 @@ public class DocListAdapter extends BaseRecyclerAdapter<String>
 
     public class DynamicHolder extends BaseViewHolder<String>
     {
+        LinearLayout llLayout;
+
         public DynamicHolder(View itemView)
         {
             super(itemView);
+            llLayout = itemView.findViewById(R.id.item_cooperate_list_layout);
+            llLayout.setVisibility(View.VISIBLE);
         }
 
         @Override

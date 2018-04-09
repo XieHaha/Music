@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 import java.util.List;
 
 /**
- * Created by luozi on 2015/9/10.
+ * viewpager适配器
+ * @author DUNDUN
  */
 public class FragmentVpAdapter extends FragmentStatePagerAdapter {
 

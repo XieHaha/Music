@@ -2,20 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:background="@color/app_minor_bg"
     android:layout_height="match_parent">
 
     <include layout="@layout/public_title_bar" />
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/fragment_cooperate_swipe_layout"
+        android:id="@+id/act_apply_cooperate_swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <custom.frame.widgets.recyclerview.AutoLoadRecyclerView
-            android:id="@+id/fragment_cooperate_recycler_view"
+            android:id="@+id/act_apply_cooperate_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </android.support.v4.widget.SwipeRefreshLayout>
-
 </LinearLayout>

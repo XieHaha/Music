@@ -12,8 +12,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import custom.frame.bean.BaseResponse;
 import custom.frame.R;
+import custom.frame.bean.BaseResponse;
 import custom.frame.http.IRequest;
 import custom.frame.http.Tasks;
 import custom.frame.http.listener.ResponseListener;

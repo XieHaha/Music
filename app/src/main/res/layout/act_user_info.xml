@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/app_minor_bg"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/bg_img"
+        android:layout_width="match_parent"
+        android:src="@color/app_main_color"
+        android:scaleType="centerCrop"
+        android:layout_height="300dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="24dp"
+        android:layout_height="@dimen/app_title_bar_height">
+
+        <ImageView
+            android:id="@+id/public_title_bar_back"
+            android:layout_width="@dimen/app_title_bar_height"
+            android:paddingLeft="16dp"
+            android:layout_height="@dimen/app_title_bar_height"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="@string/txt_complete_cancel"
+            android:textColor="@color/color_white"
+            android:textSize="15sp"
+            android:paddingLeft="10dp"
+            android:paddingRight="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:layout_height="@dimen/app_title_bar_height" />
+
+    </RelativeLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/act_user_info_headimg"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="77dp"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/icon_default_imgs"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#50ffffff" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:layout_marginTop="37dp"
+        android:text="姓名"
+        android:layout_below="@id/act_user_info_headimg"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_below="@id/bg_img"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="职称"
+                android:layout_marginLeft="16dp"
+                android:layout_centerVertical="true"
+                android:textColor="#999999"
+                android:textSize="15sp"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_marginLeft="95dp"
+                android:layout_marginRight="16dp"
+                android:background="@null"
+                android:textColor="#333333"
+                android:textSize="15sp"
+                android:text="暂无记录"
+                android:layout_height="match_parent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_alignParentBottom="true"
+                android:background="@color/app_main_divideline"
+                android:layout_height="1px" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="医院"
+                android:layout_marginLeft="16dp"
+                android:layout_centerVertical="true"
+                android:textColor="#999999"
+                android:textSize="15sp"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_marginLeft="95dp"
+                android:layout_marginRight="16dp"
+                android:background="@null"
+                android:textColor="#333333"
+                android:textSize="15sp"
+                android:text="暂无记录"
+                android:layout_height="match_parent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_alignParentBottom="true"
+                android:background="@color/app_main_divideline"
+                android:layout_height="1px" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="科室"
+                android:layout_marginLeft="16dp"
+                android:layout_centerVertical="true"
+                android:textColor="#999999"
+                android:textSize="15sp"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_marginLeft="95dp"
+                android:layout_marginRight="16dp"
+                android:background="@null"
+                android:textColor="#333333"
+                android:textSize="15sp"
+                android:text="暂无记录"
+                android:layout_height="match_parent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_alignParentBottom="true"
+                android:background="@color/app_main_divideline"
+                android:layout_height="1px" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="简介"
+                android:layout_marginLeft="16dp"
+                android:layout_centerVertical="true"
+                android:textColor="#999999"
+                android:textSize="15sp"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_marginLeft="95dp"
+                android:layout_marginRight="16dp"
+                android:background="@null"
+                android:textColor="#333333"
+                android:textSize="15sp"
+                android:text="暂无记录"
+                android:layout_height="match_parent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_alignParentBottom="true"
+                android:background="@color/app_main_divideline"
+                android:layout_height="1px" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.activity.HealthCardActivity;
-import com.yht.yihuantong.ui.adapter.DocListAdapter;
+import com.yht.yihuantong.ui.adapter.PatientsListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class PatientsFragment extends BaseFragment
 {
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
-    private DocListAdapter docListAdapter;
+    private PatientsListAdapter patientsListAdapter;
     private List<String> msgList = new ArrayList<>();
 
     @Override
@@ -56,7 +56,7 @@ public class PatientsFragment extends BaseFragment
         {
             msgList.add("消息--" + i);
         }
-        docListAdapter = new DocListAdapter(this, msgList);
+        patientsListAdapter = new PatientsListAdapter(this, msgList);
     }
 
     @Override
@@ -67,8 +67,8 @@ public class PatientsFragment extends BaseFragment
         autoLoadRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        autoLoadRecyclerView.setAdapter(docListAdapter);
-        docListAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener<String>()
+        autoLoadRecyclerView.setAdapter(patientsListAdapter);
+        patientsListAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener<String>()
         {
             @Override
             public void onItemClick(View v, int position, String item)

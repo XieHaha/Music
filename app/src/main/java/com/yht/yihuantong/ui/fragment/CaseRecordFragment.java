@@ -18,7 +18,7 @@ import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
  *
  * @author DUNDUN
  */
-public class HealthRecordFragment extends BaseFragment
+public class CaseRecordFragment extends BaseFragment
 {
     private LinearLayout llAddNewHealth;
     private AutoLoadRecyclerView autoLoadRecyclerView;
