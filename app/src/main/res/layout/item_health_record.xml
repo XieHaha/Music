@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:layout_centerVertical="true"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="第一次会诊"
+            android:textColor="#333333"
+            android:textSize="15sp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/fragment_base_info_sex"
+            android:layout_width="wrap_content"
+            android:text="2001-01-01"
+            android:layout_marginTop="5dp"
+            android:textColor="#999999"
+            android:textSize="15sp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="15dp"
+        android:src="@mipmap/icon_default_imgs"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp"
+        android:layout_height="15dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:background="@color/app_main_divideline"
+        android:layout_height="1px" />
+
+</RelativeLayout>

@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.fragment.DocFragment;
+import com.yht.yihuantong.ui.fragment.PatientsFragment;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,11 +19,11 @@ import custom.frame.ui.adapter.BaseViewHolder;
  */
 public class DocListAdapter extends BaseRecyclerAdapter<String>
 {
-    private DocFragment fragment;
+    private PatientsFragment fragment;
     private Context context;
     private HashMap<String, Boolean> mMemoryCache;
 
-    public DocListAdapter(DocFragment fragment, List<String> list)
+    public DocListAdapter(PatientsFragment fragment, List<String> list)
     {
         super(list);
         this.fragment = fragment;

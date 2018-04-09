@@ -38,6 +38,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 个人信息编辑  头像、名字
+ *
  * @author DUNDUN
  */
 public class CompleteInfoActivity extends BaseActivity

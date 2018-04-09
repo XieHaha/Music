@@ -4,16 +4,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import custom.frame.bean.BaseResponse;
-import custom.frame.utils.ToastUtil;
 import custom.frame.R;
+import custom.frame.bean.BaseResponse;
 import custom.frame.http.IRequest;
 import custom.frame.http.Tasks;
 import custom.frame.http.listener.ResponseListener;
@@ -22,6 +20,7 @@ import custom.frame.permission.OnPermissionCallback;
 import custom.frame.permission.Permission;
 import custom.frame.permission.PermissionHelper;
 import custom.frame.ui.ConstantsCommon;
+import custom.frame.utils.ToastUtil;
 
 public abstract class BaseActivity extends AppCompatActivity
         implements ActivityInterface, ResponseListener<BaseResponse>, View.OnClickListener,
@@ -48,16 +47,7 @@ public abstract class BaseActivity extends AppCompatActivity
     /**
      * 返回按钮对象
      */
-    private LinearLayout backBtn;
-    /**
-     * 标题栏文本控件
-     */
-    private TextView tvTitle;
-    /**
-     * 标题名称
-     */
-    @NonNull
-    private String titleName;
+    private ImageView backBtn;
 
     @Override
     protected final void onCreate(Bundle savedInstanceState)
@@ -106,9 +96,8 @@ public abstract class BaseActivity extends AppCompatActivity
      */
     private void init(@NonNull Bundle savedInstanceState)
     {
-        titleName = isInitBackBtn();
         initBackViews();
-        if (isInitBackBtn() != null)
+        if (isInitBackBtn())
         {
             initBackBtn();
         }
@@ -122,8 +111,7 @@ public abstract class BaseActivity extends AppCompatActivity
     {
         try
         {
-            backBtn = (LinearLayout)findViewById(R.id.top_bar_back);
-            tvTitle = (TextView)findViewById(R.id.top_bar_title_name);
+            backBtn = findViewById(R.id.public_title_bar_back);
         }
         catch (Exception e)
         {
@@ -138,6 +126,7 @@ public abstract class BaseActivity extends AppCompatActivity
     {
         try
         {
+            backBtn.setVisibility(View.VISIBLE);
             backBtn.setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -146,7 +135,6 @@ public abstract class BaseActivity extends AppCompatActivity
                     finish();
                 }
             });
-            tvTitle.setText(titleName);
         }
         catch (Exception e)
         {
@@ -160,25 +148,17 @@ public abstract class BaseActivity extends AppCompatActivity
      * @return 如果不想baseactivity自动设置监听返回按钮的话就传回null，
      * 系统则不会自动设置监听,但是会初始化控件
      */
-    protected String isInitBackBtn()
+    protected boolean isInitBackBtn()
     {
-        return null;
+        return false;
     }
 
     /**
      * 得到返回按钮控件
      */
-    public LinearLayout getBackBtnView()
+    public ImageView getBackBtnView()
     {
         return backBtn;
-    }
-
-    /**
-     * 得到标题文本控件
-     */
-    public TextView getTitleView()
-    {
-        return tvTitle;
     }
 
     @Override

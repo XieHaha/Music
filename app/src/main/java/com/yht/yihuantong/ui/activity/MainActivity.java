@@ -8,8 +8,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.fragment.CaseFragment;
-import com.yht.yihuantong.ui.fragment.DocFragment;
+import com.yht.yihuantong.ui.fragment.CooperateDocFragment;
+import com.yht.yihuantong.ui.fragment.PatientsFragment;
 import com.yht.yihuantong.ui.fragment.MsgFragment;
 import com.yht.yihuantong.ui.fragment.MyFragment;
 
@@ -26,7 +26,7 @@ public class MainActivity extends BaseActivity
     @Override
     public int getLayoutID()
     {
-        return R.layout.activity_main;
+        return R.layout.act_main;
     }
 
     /**
@@ -108,7 +108,7 @@ public class MainActivity extends BaseActivity
         hideAll(transaction);
         if (docFragment == null)
         {
-            docFragment = new DocFragment();
+            docFragment = new PatientsFragment();
             transaction.add(R.id.act_main_tab_frameLayout, docFragment);
         }
         else
@@ -126,7 +126,7 @@ public class MainActivity extends BaseActivity
         hideAll(transaction);
         if (caseFragment == null)
         {
-            caseFragment = new CaseFragment();
+            caseFragment = new CooperateDocFragment();
             transaction.add(R.id.act_main_tab_frameLayout, caseFragment);
         }
         else

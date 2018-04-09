@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/public_title_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:background="@color/app_minor_bg"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:layout_height="30dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="基本信息"
+                    android:textColor="#999999"
+                    android:layout_centerVertical="true"
+                    android:textSize="12sp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="*为必填项"
+                    android:textColor="#ff3333"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:textSize="12sp"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="诊断"
+                    android:layout_marginLeft="16dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="95dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@null"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:text="暂无记录"
+                    android:layout_height="match_parent" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/app_main_divideline"
+                    android:layout_height="1px" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="就诊时间"
+                    android:layout_marginLeft="16dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="95dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@null"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:text="暂无记录"
+                    android:layout_height="match_parent" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/app_main_divideline"
+                    android:layout_height="1px" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="科室"
+                    android:layout_marginLeft="16dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="95dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@null"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:text="暂无记录"
+                    android:layout_height="match_parent" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/app_main_divideline"
+                    android:layout_height="1px" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="医院"
+                    android:layout_marginLeft="16dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="95dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@null"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:text="暂无记录"
+                    android:layout_height="match_parent" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/app_main_divideline"
+                    android:layout_height="1px" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="主诉"
+                    android:layout_marginLeft="16dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="95dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@null"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:text="暂无记录"
+                    android:layout_height="match_parent" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/app_main_divideline"
+                    android:layout_height="1px" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="现病史"
+                    android:layout_marginLeft="16dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="95dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@null"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:text="暂无记录"
+                    android:layout_height="match_parent" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/app_main_divideline"
+                    android:layout_height="1px" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="重要病史"
+                    android:layout_marginLeft="16dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="95dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@null"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:text="暂无记录"
+                    android:layout_height="match_parent" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/app_main_divideline"
+                    android:layout_height="1px" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="体格检查"
+                    android:layout_marginLeft="16dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="95dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@null"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:text="暂无记录"
+                    android:layout_height="match_parent" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/app_main_divideline"
+                    android:layout_height="1px" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="治疗"
+                    android:layout_marginLeft="16dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="95dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@null"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:text="暂无记录"
+                    android:layout_height="match_parent" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/app_main_divideline"
+                    android:layout_height="1px" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:text="辅助检查"
+                android:textColor="#999999"
+                android:gravity="center_vertical"
+                android:layout_centerVertical="true"
+                android:textSize="12sp"
+                android:paddingLeft="16dp"
+                android:background="@color/app_minor_bg"
+                android:layout_height="30dp" />
+
+            <custom.frame.widgets.gridview.AutoGridView
+                android:id="@+id/act_publish_dynamic_auto_gridView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:text="2018-04-09 医生创建"
+                android:textColor="#999999"
+                android:layout_centerVertical="true"
+                android:textSize="12sp"
+                android:paddingTop="12dp"
+                android:paddingLeft="16dp"
+                android:background="@color/app_minor_bg"
+                android:layout_height="56dp" />
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

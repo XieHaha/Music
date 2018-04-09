@@ -7,12 +7,12 @@
     <include layout="@layout/public_title_bar" />
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/fragment_doc_swipe_layout"
+        android:id="@+id/fragment_patients_swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <custom.frame.widgets.recyclerview.AutoLoadRecyclerView
-            android:id="@+id/fragment_doc_recycler_view"
+            android:id="@+id/fragment_patients_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </android.support.v4.widget.SwipeRefreshLayout>

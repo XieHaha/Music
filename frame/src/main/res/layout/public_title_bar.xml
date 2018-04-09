@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/app_main_color"
+    android:layout_height="@dimen/app_title_bar_height">
+
+    <ImageView
+        android:id="@+id/public_title_bar_back"
+        android:layout_width="24dp"
+        android:layout_height="16dp"
+        android:layout_marginLeft="16dp"
+        android:visibility="gone"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/icon_back" />
+
+    <TextView
+        android:id="@+id/public_title_bar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        tools:text="标题"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/app_main_title" />
+
+    <ImageView
+        android:id="@+id/public_title_bar_more"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"
+        android:paddingLeft="8dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/icon_back" />
+
+    <TextView
+        android:id="@+id/public_title_bar_more_txt"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        tools:text="更多"
+        android:visibility="gone"
+        android:gravity="center_vertical"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/color_white"
+        android:textSize="@dimen/app_txt_minor" />
+</RelativeLayout>

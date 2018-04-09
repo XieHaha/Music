@@ -66,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="@string/main_tab_doc"
+                    android:text="@string/main_tab_patients"
                     android:textColor="@color/tab_txt_color_selector"
                     android:textSize="@dimen/app_txt_minor" />
             </custom.frame.widgets.ripples.RippleLinearLayout>
@@ -89,7 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="@string/main_tab_case"
+                    android:text="@string/main_tab_cooperate"
                     android:textColor="@color/tab_txt_color_selector"
                     android:textSize="@dimen/app_txt_minor" />
             </custom.frame.widgets.ripples.RippleLinearLayout>
