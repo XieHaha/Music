@@ -11,7 +11,7 @@
         <ImageView
             android:id="@+id/bg_img"
             android:layout_width="match_parent"
-            android:src="@color/app_main_color"
+            android:src="@mipmap/img_user_bg"
             android:scaleType="centerCrop"
             android:layout_height="300dp" />
 
@@ -38,7 +38,7 @@
                 android:layout_alignParentRight="true"
                 android:paddingBottom="15dp"
                 android:layout_centerVertical="true"
-                android:src="@mipmap/icon_default_imgs" />
+                android:src="@mipmap/icon_edit" />
 
         </RelativeLayout>
 

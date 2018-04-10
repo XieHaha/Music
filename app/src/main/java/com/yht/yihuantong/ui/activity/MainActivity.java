@@ -11,7 +11,7 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.fragment.CooperateDocFragment;
 import com.yht.yihuantong.ui.fragment.PatientsFragment;
 import com.yht.yihuantong.ui.fragment.MsgFragment;
-import com.yht.yihuantong.ui.fragment.MyFragment;
+import com.yht.yihuantong.ui.fragment.UserFragment;
 
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.widgets.ripples.RippleLinearLayout;
@@ -144,7 +144,7 @@ public class MainActivity extends BaseActivity
         hideAll(transaction);
         if (myFragment == null)
         {
-            myFragment = new MyFragment();
+            myFragment = new UserFragment();
             transaction.add(R.id.act_main_tab_frameLayout, myFragment);
         }
         else

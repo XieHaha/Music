@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import custom.frame.bean.BaseResponse;
+import custom.frame.bean.LoginSuccessBean;
 import custom.frame.http.listener.ResponseListener;
 
 import static custom.frame.http.data.HttpConstants.Method.POST;
@@ -86,7 +87,7 @@ public class IRequest extends BaseRequest {
         merchant.put("code", code);
         merchant.put("role", role);
         return requestBaseResponseByJson("/relog/relog", Tasks.LOGIN_AND_REGISTER,
-                String.class, merchant, listener);
+                LoginSuccessBean.class, merchant, listener);
     }
 
     /**

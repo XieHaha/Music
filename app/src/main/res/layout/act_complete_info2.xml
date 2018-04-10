@@ -5,132 +5,132 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:src="@color/app_main_color"
+        android:layout_height="175dp"
         android:scaleType="centerCrop"
-        android:layout_height="175dp" />
+        android:src="@mipmap/img_login_bg" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="24dp"
-        android:layout_height="@dimen/app_title_bar_height">
+        android:layout_height="@dimen/app_title_bar_height"
+        android:layout_marginTop="24dp">
 
         <TextView
             android:layout_width="wrap_content"
-            android:text="@string/txt_complete_title"
-            android:textColor="@color/app_white_color"
-            android:textSize="@dimen/app_main_title"
+            android:layout_height="@dimen/app_title_bar_height"
             android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:layout_height="@dimen/app_title_bar_height" />
+            android:text="@string/txt_complete_title"
+            android:textColor="@color/app_white_color"
+            android:textSize="@dimen/app_main_title" />
 
         <TextView
             android:id="@+id/act_complete_info2_back"
             android:layout_width="wrap_content"
-            android:text="@string/txt_complete_back"
-            android:textColor="@color/app_white_color"
-            android:textSize="15sp"
+            android:layout_height="@dimen/app_title_bar_height"
+            android:gravity="center"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:gravity="center"
-            android:layout_height="@dimen/app_title_bar_height" />
+            android:text="@string/txt_complete_back"
+            android:textColor="@color/app_white_color"
+            android:textSize="15sp" />
 
     </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_marginTop="175dp"
+        android:layout_height="match_parent"
         android:layout_marginBottom="88dp"
-        android:layout_height="match_parent">
+        android:layout_marginTop="175dp">
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingTop="26dp"
-            android:layout_height="match_parent">
+            android:paddingTop="26dp">
 
             <TextView
                 android:layout_width="wrap_content"
-                android:text="@string/txt_complete_content_job"
-                android:textSize="24sp"
+                android:layout_height="wrap_content"
                 android:paddingLeft="25dp"
+                android:text="@string/txt_complete_content_job"
                 android:textColor="#ff333333"
-                android:layout_height="wrap_content" />
+                android:textSize="24sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="所在医院"
-                android:paddingLeft="26dp"
                 android:layout_marginTop="18dp"
+                android:paddingLeft="26dp"
+                android:text="所在医院"
                 android:textColor="#ff999999"
                 android:textSize="12dp" />
 
             <EditText
                 android:layout_width="300dp"
-                android:textColor="#ff000000"
-                android:textSize="15sp"
-                android:maxLength="11"
+                android:layout_height="48dp"
+                android:layout_marginLeft="25dp"
                 android:hint=""
                 android:inputType="phone"
-                android:layout_marginLeft="25dp"
-                android:layout_height="48dp" />
+                android:maxLength="11"
+                android:textColor="#ff000000"
+                android:textSize="15sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:paddingLeft="26dp"
                 android:text="所在科室"
-                android:paddingLeft="26dp"
-                android:layout_marginTop="14dp"
                 android:textColor="#ff999999"
                 android:textSize="12dp" />
 
             <EditText
                 android:layout_width="300dp"
-                android:textColor="#ff000000"
-                android:textSize="15sp"
-                android:maxLength="11"
+                android:layout_height="48dp"
+                android:layout_marginLeft="25dp"
                 android:hint=""
                 android:inputType="phone"
-                android:layout_marginLeft="25dp"
-                android:layout_height="48dp" />
+                android:maxLength="11"
+                android:textColor="#ff000000"
+                android:textSize="15sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:paddingLeft="26dp"
                 android:text="职称"
-                android:paddingLeft="26dp"
-                android:layout_marginTop="14dp"
                 android:textColor="#ff999999"
                 android:textSize="12dp" />
 
             <EditText
                 android:layout_width="300dp"
-                android:textColor="#ff000000"
-                android:textSize="15sp"
-                android:maxLength="11"
+                android:layout_height="48dp"
+                android:layout_marginLeft="25dp"
                 android:hint=""
                 android:inputType="phone"
-                android:layout_marginLeft="25dp"
-                android:layout_height="48dp" />
+                android:maxLength="11"
+                android:textColor="#ff000000"
+                android:textSize="15sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="个人简介"
-                android:paddingLeft="26dp"
                 android:layout_marginTop="14dp"
+                android:paddingLeft="26dp"
+                android:text="个人简介"
                 android:textColor="#ff999999"
                 android:textSize="12dp" />
 
             <EditText
                 android:layout_width="300dp"
-                android:textColor="#ff000000"
-                android:textSize="15sp"
-                android:maxLength="11"
+                android:layout_height="48dp"
+                android:layout_marginLeft="25dp"
                 android:hint=""
                 android:inputType="phone"
-                android:layout_marginLeft="25dp"
-                android:layout_height="48dp" />
+                android:maxLength="11"
+                android:textColor="#ff000000"
+                android:textSize="15sp" />
 
         </LinearLayout>
     </ScrollView>
@@ -139,16 +139,16 @@
     <TextView
         android:id="@+id/act_complete_info2"
         android:layout_width="300dp"
-        android:layout_marginTop="134dp"
-        android:textColor="@color/app_white_color"
-        android:textSize="16sp"
-        android:layout_centerHorizontal="true"
+        android:layout_height="46dp"
         android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="32dp"
+        android:layout_marginTop="134dp"
+        android:background="@drawable/btn_main_color_selector"
         android:gravity="center"
         android:text="@string/txt_complete_btn"
-        android:background="@drawable/btn_main_color_selector"
-        android:layout_height="46dp" />
+        android:textColor="@color/app_white_color"
+        android:textSize="16sp" />
 
 
 </RelativeLayout>

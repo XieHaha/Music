@@ -2,27 +2,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rl_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/app_white_color">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/iv_start"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
+        android:src="@mipmap/img_splash_bg"
         android:fitsSystemWindows="true"></ImageView>
 
     <LinearLayout
         android:id="@+id/act_splash_layout"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:visibility="gone"
+        android:visibility="visible"
         android:gravity="center_horizontal"
         android:layout_height="match_parent">
 
         <ImageView
             android:layout_width="120dp"
             android:layout_marginTop="120dp"
+            android:visibility="gone"
             android:src="@mipmap/ic_launcher"
             android:layout_height="120dp" />
 
@@ -31,7 +32,7 @@
             android:text="@string/txt_splash"
             android:textColor="@color/app_white_color"
             android:textSize="30sp"
-            android:layout_marginTop="56dp"
+            android:layout_marginTop="365dp"
             android:layout_height="wrap_content" />
 
         <TextView
