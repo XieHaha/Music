@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         tools:text="标题"
-        android:textColor="@color/color_white"
+        android:textColor="@color/app_white_color"
         android:textSize="@dimen/app_main_title" />
 
     <ImageView
@@ -45,6 +45,6 @@
         android:visibility="gone"
         android:gravity="center_vertical"
         android:layout_alignParentRight="true"
-        android:textColor="@color/color_white"
+        android:textColor="@color/app_white_color"
         android:textSize="@dimen/app_txt_minor" />
 </RelativeLayout>

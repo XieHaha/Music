@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.yht.yihuantong.R;
 
@@ -15,9 +16,12 @@ import custom.frame.ui.activity.BaseActivity;
 
 /**
  * 启动界面
+ *
+ * @author DUNDUN
  */
 public class SplashActivity extends BaseActivity
 {
+    private TextView tvStart;
     private LinearLayout llSplashPage;
 
     @Override
@@ -31,7 +35,8 @@ public class SplashActivity extends BaseActivity
     {
         super.initView(savedInstanceState);
         hideBottomUIMenu();
-        findViewById(R.id.act_splash_btn).setOnClickListener(this);
+        tvStart = (TextView)findViewById(R.id.act_splash_btn);
+        tvStart.setOnClickListener(this);
         llSplashPage = (LinearLayout)findViewById(R.id.act_splash_layout);
         new Handler().postDelayed(new Runnable()
         {
@@ -57,6 +62,7 @@ public class SplashActivity extends BaseActivity
     private void initPage()
     {
         llSplashPage.setVisibility(View.VISIBLE);
+        tvStart.setVisibility(View.VISIBLE);
     }
 
     @Override

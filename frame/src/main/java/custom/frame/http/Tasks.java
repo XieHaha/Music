@@ -10,6 +10,10 @@ public enum Tasks
      */
     GET_VERIFY_CODE,
     /**
+     * 登录 注册
+     */
+    LOGIN_AND_REGISTER,
+    /**
      * 上传文件
      */
     UPLOAD_FILE,

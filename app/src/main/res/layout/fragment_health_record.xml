@@ -9,7 +9,7 @@
         android:id="@+id/fragment_health_record_add"
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
-        android:background="@color/white"
+        android:background="@color/app_white_color"
         android:paddingLeft="16dp"
         android:gravity="center_vertical"
         android:layout_height="45dp">

@@ -1,7 +1,6 @@
 package custom.frame.utils;
 
 import android.content.Context;
-import android.view.Gravity;
 import android.widget.Toast;
 
 public class ToastUtil
@@ -27,7 +26,7 @@ public class ToastUtil
         {
             toast.setText(msg);
         }
-        toast.setGravity(Gravity.CENTER, 0, 0);
+//        toast.setGravity(Gravity.NO_GRAVITY, 0, 0);
         toast.show();
     }
 
@@ -45,7 +44,7 @@ public class ToastUtil
         {
             toast.setText(resId);
         }
-        toast.setGravity(Gravity.CENTER, 0, 0);
+//        toast.setGravity(Gravity.BOTTOM, 0, 0);
         toast.show();
     }
 }

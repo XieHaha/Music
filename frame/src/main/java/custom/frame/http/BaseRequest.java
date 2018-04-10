@@ -2,6 +2,7 @@ package custom.frame.http;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.android.volley.AuthFailureError;
@@ -11,7 +12,8 @@ import com.android.volley.RequestParams;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.DownloadRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -19,26 +21,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import custom.frame.bean.Global;
 import custom.frame.bean.BaseResponse;
+import custom.frame.bean.Global;
 import custom.frame.http.listener.ResponseListener;
 import custom.frame.log.MLog;
 
 /**
  * baseRequest include requestString and requestBaseResponse and requestList
  */
-public class BaseRequest<T> extends HttpProxy
-{
+public class BaseRequest<T> extends HttpProxy {
     private RequestQueue mQueue = null;
 
-    public BaseRequest(Context context)
-    {
+    public BaseRequest(Context context) {
         super(context);
         mQueue = Volley.newRequestQueue(context);
     }
@@ -47,8 +46,7 @@ public class BaseRequest<T> extends HttpProxy
      * 封装请求
      */
     public final Tasks requestString(final Method metoh, String moduleName, String metohName,
-            final Tasks task, final RequestParams params, final ResponseListener<String> listener)
-    {
+                                     final Tasks task, final RequestParams params, final ResponseListener<String> listener) {
         return requestString(metoh, moduleName, metohName, task, params, null, listener);
     }
 
@@ -62,22 +60,18 @@ public class BaseRequest<T> extends HttpProxy
      * @param headers  请求头
      */
     public final Tasks requestString(final Method metoh, String moduleName, String metohName,
-            final Tasks task, final RequestParams params, final Map<String, String> headers,
-            final ResponseListener<String> listener)
-    {
+                                     final Tasks task, final RequestParams params, final Map<String, String> headers,
+                                     final ResponseListener<String> listener) {
         StringRequest stringRequest;
-        if (listener != null)
-        {
+        if (listener != null) {
             listener.onResponseStart(task);
         }
         StringBuilder url = new StringBuilder(appendUrl(moduleName, metohName));
         int method = Request.Method.POST;
-        switch (metoh)
-        {
+        switch (metoh) {
             case GET:
                 method = Request.Method.GET;
-                if (params != null)
-                {
+                if (params != null) {
                     //参数url
                     url.append(MapToGetUrl(params.getStringsParams()));
                 }
@@ -90,8 +84,7 @@ public class BaseRequest<T> extends HttpProxy
                 break;
             case DELETE:
                 method = Request.Method.DELETE;
-                if (params != null)
-                {
+                if (params != null) {
                     //参数url
                     url.append(MapToGetUrl(params.getStringsParams()));
                 }
@@ -100,40 +93,31 @@ public class BaseRequest<T> extends HttpProxy
                 break;
         }
         //生成请求对象
-        stringRequest = new StringRequest(method, url.toString(), new Response.Listener<String>()
-        {
+        stringRequest = new StringRequest(method, url.toString(), new Response.Listener<String>() {
             @Override
-            public void onResponse(String response)
-            {
+            public void onResponse(String response) {
                 //打印响应日志
                 printfReponseLog(task, response);
-                if (listener != null)
-                {
+                if (listener != null) {
                     listener.onResponseSuccess(task, response);
                     listener.onResponseEnd(task);
                 }
             }
-        }, new Response.ErrorListener()
-        {
+        }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error)
-            {
+            public void onErrorResponse(VolleyError error) {
                 //打印错误日志
                 printfErrorLog(task, error.getMessage());
-                if (listener != null)
-                {
+                if (listener != null) {
                     listener.onResponseError(task, error);
                     listener.onResponseEnd(task);
                 }
             }
-        })
-        {
+        }) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError
-            {
-                Map<String, String> hashMap = new HashMap<>();
-                if (headers != null)
-                {
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> hashMap = new HashMap<>(16);
+                if (headers != null) {
                     hashMap.putAll(headers);
                 }
                 return hashMap;
@@ -141,12 +125,6 @@ public class BaseRequest<T> extends HttpProxy
         };
         /**复写重试方针*/
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
-        if (metoh != Method.GET && metoh != Method.DELETE && params != null)
-        {
-            //设置参数
-            stringRequest.setRequestParams(params);
-        }
-        printfRequestLog(moduleName, metohName, metoh, params);//打印请求日志
         stringRequest.setTag(task);
         mQueue.add(stringRequest);
         return task;
@@ -156,11 +134,10 @@ public class BaseRequest<T> extends HttpProxy
      * 封装请求
      */
     public final Tasks requestBaseResponse(final Method metoh, String moduleName, String metohName,
-            final Tasks task, final Class<T> classOfT, final RequestParams params,
-            final ResponseListener<BaseResponse> listener)
-    {
+                                           final Tasks task, final Class<T> classOfT, final RequestParams params,
+                                           final ResponseListener<BaseResponse> listener) {
         return requestBaseResponse(metoh, moduleName, metohName, task, classOfT, params, null,
-                                   listener);
+                listener);
     }
 
     /**
@@ -174,22 +151,18 @@ public class BaseRequest<T> extends HttpProxy
      * @param headers  请求头
      */
     public final Tasks requestBaseResponse(final Method metoh, String moduleName, String metohName,
-            final Tasks task, final Class<T> classOfT, final RequestParams params,
-            final Map<String, String> headers, final ResponseListener<BaseResponse> listener)
-    {
+                                           final Tasks task, final Class<T> classOfT, final RequestParams params,
+                                           final Map<String, String> headers, final ResponseListener<BaseResponse> listener) {
         StringRequest objectRequest;
-        if (listener != null)
-        {
+        if (listener != null) {
             listener.onResponseStart(task);
         }
         StringBuilder url = new StringBuilder(appendUrl(moduleName, metohName));
         int method = Request.Method.POST;
-        switch (metoh)
-        {
+        switch (metoh) {
             case GET:
                 method = Request.Method.GET;
-                if (params != null)
-                {
+                if (params != null) {
                     //参数url
                     url.append(MapToGetUrl(params.getStringsParams()));
                 }
@@ -202,8 +175,7 @@ public class BaseRequest<T> extends HttpProxy
                 break;
             case DELETE:
                 method = Request.Method.DELETE;
-                if (params != null)
-                {
+                if (params != null) {
                     //参数url
                     url.append(MapToGetUrl(params.getStringsParams()));
                 }
@@ -211,86 +183,154 @@ public class BaseRequest<T> extends HttpProxy
             default:
                 break;
         }
-        objectRequest = new StringRequest(method, url.toString(), new Response.Listener<String>()
-        {
+        objectRequest = new StringRequest(method, url.toString(), new Response.Listener<String>() {
             @Override
-            public void onResponse(String response)
-            {
-                try
-                {
+            public void onResponse(String response) {
+                try {
                     JSONObject jsonObject = new JSONObject(response);
                     BaseResponse baseResponse = praseBaseResponse(jsonObject, classOfT);
-                    printfReponseLog(task, baseResponse);//打印响应日志
+                    //打印响应日志
+                    printfReponseLog(task, baseResponse);
                     /**
                      * 如果请求码成功
                      * */
-                    if (REQUEST_SUCCESS==baseResponse.getCode())
-                    {
-                        if (listener != null)
-                        {
+                    if (REQUEST_SUCCESS == baseResponse.getCode()) {
+                        if (listener != null) {
                             listener.onResponseSuccess(task, baseResponse);
                             listener.onResponseEnd(task);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         /**
                          * 调用请求码异常
                          * */
-                        if (listener != null)
-                        {
+                        if (listener != null) {
                             listener.onResponseCodeError(task, baseResponse);
                             listener.onResponseEnd(task);
                         }
                     }
-                }
-                catch (JSONException je)
-                {
+                } catch (JSONException je) {
                     //打印错误日志
                     printfErrorLog(task, je.getMessage());
-                    if (listener != null)
-                    {
+                    if (listener != null) {
                         listener.onResponseError(task, je);
                         listener.onResponseEnd(task);
                     }
                 }
             }
-        }, new Response.ErrorListener()
-        {
+        }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error)
-            {
+            public void onErrorResponse(VolleyError error) {
                 //打印错误日志
                 printfErrorLog(task, error.getMessage());
-                if (listener != null)
-                {
+                if (listener != null) {
                     listener.onResponseError(task, new Exception("网络繁忙，请稍后再试"));
                     listener.onResponseEnd(task);
                 }
             }
-        })
-        {
+        }) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError
-            {
-                Map<String, String> hashMap = new HashMap<>();
-                if (headers != null)
-                {
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> hashMap = new HashMap<>(16);
+                if (headers != null) {
                     hashMap.putAll(headers);
                 }
+                hashMap.put("Accept", "application/json");
+                hashMap.put("Content-Type", "application/json; charset=UTF-8");
                 return hashMap;
             }
         };
         /**复写重试方针*/
         objectRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
-        if (method != Request.Method.GET && metoh != Method.DELETE && params != null)
-        {
-            objectRequest.setRequestParams(params);
-        }
-        //打印请求日志
-        printfRequestLog(moduleName, metohName, metoh, params);
+
         objectRequest.setTag(task);
         mQueue.add(objectRequest);
+        return task;
+    }
+
+    /**
+     * requestBaseResponse 以baseResponse结构的json解析字符串
+     *
+     * @param task     任务队列id
+     * @param merchant 请求参数
+     * @param classOfT 需转换的类型
+     * @param listener 请求回调
+     */
+    public final Tasks requestBaseResponseByJson(String moduleName, final Tasks task, final Class<T> classOfT, final Map<String, String> merchant,
+                                                 final ResponseListener<BaseResponse> listener) {
+
+        JsonRequest<JSONObject> jsonRequest;
+        if (listener != null) {
+            listener.onResponseStart(task);
+        }
+        int method = Request.Method.POST;
+        final JSONObject jsonObject = new JSONObject(merchant);
+        Log.i("test", "params:" + jsonObject.toString());
+        String url = appendUrl(moduleName);
+        jsonRequest = new JsonObjectRequest(method, url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    BaseResponse baseResponse = praseBaseResponse(response, classOfT);
+                    /**
+                     * 如果请求码成功
+                     * */
+                    if (REQUEST_SUCCESS == baseResponse.getCode()) {
+                        if (listener != null) {
+                            listener.onResponseSuccess(task, baseResponse);
+                            listener.onResponseEnd(task);
+                        }
+                    } else {
+                        /**
+                         * 调用请求码异常
+                         * */
+                        if (listener != null) {
+                            listener.onResponseCodeError(task, baseResponse);
+                            listener.onResponseEnd(task);
+                        }
+                    }
+                } catch (JSONException je) {
+                    if (listener != null) {
+                        listener.onResponseError(task, je);
+                        listener.onResponseEnd(task);
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (listener != null) {
+                    listener.onResponseError(task, new Exception("网络繁忙，请稍后再试"));
+                    listener.onResponseEnd(task);
+                }
+            }
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>(16);
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=UTF-8");
+
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() {
+                try {
+                    return jsonObject.toString().getBytes("UTF-8");
+
+                } catch (Exception e) {
+                }
+                return null;
+            }
+        };
+
+        /**复写重试方针*/
+        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
+        //设置tag
+        jsonRequest.setTag(task);
+        //加入请求队列
+        mQueue.add(jsonRequest);
         return task;
     }
 
@@ -298,11 +338,10 @@ public class BaseRequest<T> extends HttpProxy
      * 封装请求
      */
     public final Tasks requestBaseResponseList(final Method metoh, String moduleName,
-            String metohName, final Tasks task, final Class<T> classOfT, final RequestParams params,
-            final ResponseListener<BaseResponse> listener)
-    {
+                                               String metohName, final Tasks task, final Class<T> classOfT, final RequestParams params,
+                                               final ResponseListener<BaseResponse> listener) {
         return requestBaseResponseList(metoh, moduleName, metohName, task, classOfT, params, null,
-                                       listener);
+                listener);
     }
 
     /**
@@ -316,22 +355,18 @@ public class BaseRequest<T> extends HttpProxy
      * @param headers  请求头
      */
     public final Tasks requestBaseResponseList(final Method metoh, String moduleName,
-            String metohName, final Tasks task, final Class<T> classOfT, final RequestParams params,
-            final Map<String, String> headers, final ResponseListener<BaseResponse> listener)
-    {
+                                               String metohName, final Tasks task, final Class<T> classOfT, final RequestParams params,
+                                               final Map<String, String> headers, final ResponseListener<BaseResponse> listener) {
         StringRequest objectRequest;
-        if (listener != null)
-        {
+        if (listener != null) {
             listener.onResponseStart(task);
         }
         StringBuilder url = new StringBuilder(appendUrl(moduleName, metohName));
         int method = Request.Method.POST;
-        switch (metoh)
-        {
+        switch (metoh) {
             case GET:
                 method = Request.Method.GET;
-                if (params != null)
-                {
+                if (params != null) {
                     //参数url
                     url.append(MapToGetUrl(params.getStringsParams()));
                 }
@@ -344,8 +379,7 @@ public class BaseRequest<T> extends HttpProxy
                 break;
             case DELETE:
                 method = Request.Method.DELETE;
-                if (params != null)
-                {
+                if (params != null) {
                     //参数url
                     url.append(MapToGetUrl(params.getStringsParams()));
                 }
@@ -353,69 +387,52 @@ public class BaseRequest<T> extends HttpProxy
             default:
                 break;
         }
-        objectRequest = new StringRequest(method, url.toString(), new Response.Listener<String>()
-        {
+        objectRequest = new StringRequest(method, url.toString(), new Response.Listener<String>() {
             @Override
-            public void onResponse(String response)
-            {
-                try
-                {
+            public void onResponse(String response) {
+                try {
                     JSONObject jsonObject = new JSONObject(response);
                     BaseResponse baseResponse = praseBaseResponseList(jsonObject, classOfT);
                     printfReponseLog(task, baseResponse);//打印响应日志
                     /**
                      * 如果请求码成功
                      * */
-                    if (REQUEST_SUCCESS==baseResponse.getCode())
-                    {
-                        if (listener != null)
-                        {
+                    if (REQUEST_SUCCESS == baseResponse.getCode()) {
+                        if (listener != null) {
                             listener.onResponseSuccess(task, baseResponse);
                             listener.onResponseEnd(task);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         /**
                          * 调用请求码异常
                          * */
-                        if (listener != null)
-                        {
+                        if (listener != null) {
                             listener.onResponseCodeError(task, baseResponse);
                             listener.onResponseEnd(task);
                         }
                     }
-                }
-                catch (JSONException je)
-                {
+                } catch (JSONException je) {
                     printfErrorLog(task, je.getMessage());//打印错误日志
-                    if (listener != null)
-                    {
+                    if (listener != null) {
                         listener.onResponseError(task, je);
                         listener.onResponseEnd(task);
                     }
                 }
             }
-        }, new Response.ErrorListener()
-        {
+        }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error)
-            {
+            public void onErrorResponse(VolleyError error) {
                 printfErrorLog(task, error.getMessage());//打印错误日志
-                if (listener != null)
-                {
+                if (listener != null) {
                     listener.onResponseError(task, new Exception("网络繁忙，请稍后再试"));
                     listener.onResponseEnd(task);
                 }
             }
-        })
-        {
+        }) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError
-            {
+            public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> hashMap = new HashMap<>();
-                if (headers != null)
-                {
+                if (headers != null) {
                     hashMap.putAll(headers);
                 }
                 return hashMap;
@@ -423,105 +440,89 @@ public class BaseRequest<T> extends HttpProxy
         };
         /**复写重试方针*/
         objectRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
-        if (metoh != Method.GET && metoh != Method.DELETE && params != null)
-        {
-            objectRequest.setRequestParams(params);
+        if (metoh != Method.GET && metoh != Method.DELETE && params != null) {
+//            objectRequest.setRequestParams(params);
         }
-        //打印请求日志
-        printfRequestLog(moduleName, metohName, metoh, params);
         objectRequest.setTag(task);
         mQueue.add(objectRequest);
         return task;
     }
 
-    /**
-     * downloadFile
-     *
-     * @param m            请求方式
-     * @param task         任务队列id
-     * @param autoResume   是否自动恢复下载
-     * @param fileSavePath 文件存储位置
-     * @param url          下载链接
-     * @param listener     请求回调
-     */
-    protected final Tasks downloadFile(final Method m, final Tasks task, final String url,
-            final String fileSavePath, boolean autoResume,
-            final ResponseListener<BaseResponse> listener)
-    {
-        DownloadRequest objectRequest;
-        if (listener != null)
-        {
-            listener.onResponseStart(task);
-        }
-        int method = Request.Method.POST;
-        switch (m)
-        {
-            case GET:
-                method = Request.Method.GET;
-                break;
-            case POST:
-                method = Request.Method.POST;
-                break;
-            case PUT:
-                method = Request.Method.PUT;
-                break;
-            case DELETE:
-                method = Request.Method.DELETE;
-                break;
-            default:
-                method = Request.Method.GET;
-                break;
-        }
-        objectRequest = new DownloadRequest(method, url, fileSavePath, autoResume,
-                                            new Response.Listener<File>()
-                                            {
-                                                @Override
-                                                public void onResponse(File response)
-                                                {
-                                                    if (listener != null)
-                                                    {
-                                                        listener.onResponseFile(task, response);
-                                                        listener.onResponseEnd(task);
-                                                    }
-                                                }
-                                            }, new Response.ErrorListener()
-        {
-            @Override
-            public void onErrorResponse(VolleyError error)
-            {
-                printfErrorLog(task, error.getMessage());//打印错误日志
-                if (listener != null)
-                {
-                    listener.onResponseError(task, error);
-                    listener.onResponseEnd(task);
-                }
-            }
-        });
-        objectRequest.setLoadingListener(new Response.LoadingListener()
-        {
-            @Override
-            public void onLoading(boolean isUpload, long total, long current)
-            {
-                if (listener != null)
-                {
-                    listener.onResponseLoading(task, isUpload, total, current);
-                }
-            }
-        });
-        printfRequestLog(task, url);//打印请求日志
-        objectRequest.setTag(task);
-        mQueue.add(objectRequest);
-        return task;
-    }
+//    /**
+//     * downloadFile
+//     *
+//     * @param m            请求方式
+//     * @param task         任务队列id
+//     * @param autoResume   是否自动恢复下载
+//     * @param fileSavePath 文件存储位置
+//     * @param url          下载链接
+//     * @param listener     请求回调
+//     */
+//    protected final Tasks downloadFile(final Method m, final Tasks task, final String url,
+//                                       final String fileSavePath, boolean autoResume,
+//                                       final ResponseListener<BaseResponse> listener) {
+//        DownloadRequest objectRequest;
+//        if (listener != null) {
+//            listener.onResponseStart(task);
+//        }
+//        int method = Request.Method.POST;
+//        switch (m) {
+//            case GET:
+//                method = Request.Method.GET;
+//                break;
+//            case POST:
+//                method = Request.Method.POST;
+//                break;
+//            case PUT:
+//                method = Request.Method.PUT;
+//                break;
+//            case DELETE:
+//                method = Request.Method.DELETE;
+//                break;
+//            default:
+//                method = Request.Method.GET;
+//                break;
+//        }
+//        objectRequest = new DownloadRequest(method, url, fileSavePath, autoResume,
+//                new Response.Listener<File>() {
+//                    @Override
+//                    public void onResponse(File response) {
+//                        if (listener != null) {
+//                            listener.onResponseFile(task, response);
+//                            listener.onResponseEnd(task);
+//                        }
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                printfErrorLog(task, error.getMessage());//打印错误日志
+//                if (listener != null) {
+//                    listener.onResponseError(task, error);
+//                    listener.onResponseEnd(task);
+//                }
+//            }
+//        });
+//        objectRequest.setLoadingListener(new Response.LoadingListener() {
+//            @Override
+//            public void onLoading(boolean isUpload, long total, long current) {
+//                if (listener != null) {
+//                    listener.onResponseLoading(task, isUpload, total, current);
+//                }
+//            }
+//        });
+//        printfRequestLog(task, url);//打印请求日志
+//        objectRequest.setTag(task);
+//        mQueue.add(objectRequest);
+//        return task;
+//    }
 
     /**
      * 封装请求
      */
-    public final Tasks uploadFile(final Method metoh, String moduleName, String metohName,
-            final Tasks task, final Class<T> classOfT, final RequestParams params,
-            final ResponseListener<BaseResponse> listener)
-    {
-        return uploadFile(metoh, moduleName, metohName, task, classOfT, params, null, listener);
+    public final Tasks uploadFile(final Method metoh, String moduleName,
+                                  final Tasks task, final Class<T> classOfT, final RequestParams params,
+                                  final ResponseListener<BaseResponse> listener) {
+        return uploadFile(metoh, moduleName,  task, classOfT, params, null, listener);
     }
 
     /**
@@ -534,23 +535,19 @@ public class BaseRequest<T> extends HttpProxy
      * @param listener 请求回调
      * @param headers  请求头
      */
-    protected final Tasks uploadFile(final Method metoh, String moduleName, String metohName,
-            final Tasks task, final Class<T> classOfT, final RequestParams params,
-            final Map<String, String> headers, final ResponseListener<BaseResponse> listener)
-    {
+    protected final Tasks uploadFile(final Method metoh, String moduleName,
+                                     final Tasks task, final Class<T> classOfT, final RequestParams params,
+                                     final Map<String, String> headers, final ResponseListener<BaseResponse> listener) {
         StringRequest objectRequest;
-        if (listener != null)
-        {
+        if (listener != null) {
             listener.onResponseStart(task);
         }
-        StringBuilder url = new StringBuilder(appendUrl(moduleName, metohName));
+        StringBuilder url = new StringBuilder(appendUrl(moduleName));
         int method = Request.Method.POST;
-        switch (metoh)
-        {
+        switch (metoh) {
             case GET:
                 method = Request.Method.GET;
-                if (params != null)
-                {
+                if (params != null) {
                     //参数url
                     url.append(MapToGetUrl(params.getStringsParams()));
                 }
@@ -563,8 +560,7 @@ public class BaseRequest<T> extends HttpProxy
                 break;
             case DELETE:
                 method = Request.Method.DELETE;
-                if (params != null)
-                {
+                if (params != null) {
                     //参数url
                     url.append(MapToGetUrl(params.getStringsParams()));
                 }
@@ -572,13 +568,10 @@ public class BaseRequest<T> extends HttpProxy
             default:
                 break;
         }
-        objectRequest = new StringRequest(method, url.toString(), new Response.Listener<String>()
-        {
+        objectRequest = new StringRequest(method, url.toString(), new Response.Listener<String>() {
             @Override
-            public void onResponse(String response)
-            {
-                try
-                {
+            public void onResponse(String response) {
+                try {
                     JSONObject jsonObject = new JSONObject(response);
                     BaseResponse baseResponse = praseBaseResponse(jsonObject, classOfT);
                     //打印响应日志
@@ -586,58 +579,44 @@ public class BaseRequest<T> extends HttpProxy
                     /**
                      * 如果请求码成功
                      * */
-                    if (REQUEST_SUCCESS==baseResponse.getCode())
-                    {
-                        if (listener != null)
-                        {
+                    if (REQUEST_SUCCESS == baseResponse.getCode()) {
+                        if (listener != null) {
                             listener.onResponseSuccess(task, baseResponse);
                             listener.onResponseEnd(task);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         /**
                          * 调用请求码异常
                          * */
-                        if (listener != null)
-                        {
+                        if (listener != null) {
                             listener.onResponseCodeError(task, baseResponse);
                             listener.onResponseEnd(task);
                         }
                     }
-                }
-                catch (JSONException je)
-                {
+                } catch (JSONException je) {
                     //打印错误日志
                     printfErrorLog(task, je.getMessage());
-                    if (listener != null)
-                    {
+                    if (listener != null) {
                         listener.onResponseError(task, je);
                         listener.onResponseEnd(task);
                     }
                 }
             }
-        }, new Response.ErrorListener()
-        {
+        }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error)
-            {
+            public void onErrorResponse(VolleyError error) {
                 //打印错误日志
                 printfErrorLog(task, error.getMessage());
-                if (listener != null)
-                {
+                if (listener != null) {
                     listener.onResponseError(task, new Exception("网络繁忙，请稍后再试"));
                     listener.onResponseEnd(task);
                 }
             }
-        })
-        {
+        }) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError
-            {
-                Map<String, String> hashMap = new HashMap<>();
-                if (headers != null)
-                {
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> hashMap = new HashMap<>(16);
+                if (headers != null) {
                     hashMap.putAll(headers);
                 }
                 return hashMap;
@@ -645,23 +624,14 @@ public class BaseRequest<T> extends HttpProxy
         };
         /**复写重试方针*/
         objectRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
-        objectRequest.setLoadingListener(new Response.LoadingListener()
-        {
-            @Override
-            public void onLoading(boolean isUpload, long total, long current)
-            {
-                if (listener != null)
-                {
-                    listener.onResponseLoading(task, isUpload, total, current);
-                }
-            }
-        });
-        if (metoh != Method.GET && metoh != Method.DELETE && params != null)
-        {
-            objectRequest.setRequestParams(params);
-        }
-        //打印请求日志
-        printfRequestLog(moduleName, metohName, metoh, params);
+//        objectRequest.setLoadingListener(new Response.LoadingListener() {
+//            @Override
+//            public void onLoading(boolean isUpload, long total, long current) {
+//                if (listener != null) {
+//                    listener.onResponseLoading(task, isUpload, total, current);
+//                }
+//            }
+//        });
         objectRequest.setTag(task);
         mQueue.add(objectRequest);
         return task;
@@ -673,14 +643,11 @@ public class BaseRequest<T> extends HttpProxy
      * @param task     任务编号
      * @param listener 响应监听，为处理任务的生命周期
      */
-    public final void cancel(Tasks task, final ResponseListener<BaseResponse> listener)
-    {
-        if (mQueue != null)
-        {
+    public final void cancel(Tasks task, final ResponseListener<BaseResponse> listener) {
+        if (mQueue != null) {
             mQueue.cancelAll(task);
         }
-        if (listener != null)
-        {
+        if (listener != null) {
             listener.onResponseCancel(task);
         }
         printfCancelLog(task);
@@ -698,33 +665,24 @@ public class BaseRequest<T> extends HttpProxy
      * @param classOfT   待转换的实体类,为空则data为空
      */
     public final BaseResponse praseBaseResponse(JSONObject jsonObject, Class<T> classOfT)
-            throws JSONException
-    {
+            throws JSONException {
         Object data = null;
-        if (classOfT != null)
-        {
-            if (classOfT == String.class)
-            {
+        if (classOfT != null) {
+            if (classOfT == String.class) {
                 data = jsonObject.optString(EntityData);
-            }
-            else
-            {
-                if (jsonObject.opt(EntityData) != null)
-                {
-                    try
-                    {
+            } else {
+                if (jsonObject.opt(EntityData) != null) {
+                    try {
                         data = JSON.parseObject(jsonObject.optString(EntityData), classOfT);
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                     }
                 }
             }
         }
         BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(
-                                                                      EntityCode))
-                                                      .setMsg(jsonObject.optString(EntityMsg))
-                                                      .setData(data);
+                EntityCode))
+                .setMsg(jsonObject.optString(EntityMsg))
+                .setData(data);
         return baseResponse;
     }
 
@@ -732,25 +690,18 @@ public class BaseRequest<T> extends HttpProxy
      * 把json转换成基础响应对象列表类
      */
     public final BaseResponse praseBaseResponseList(JSONObject jsonObject, Class<T> classOfT)
-            throws JSONException
-    {
+            throws JSONException {
         BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(
-                                                                      EntityCode))
-                                                      .setMsg(jsonObject.optString(EntityMsg));
+                EntityCode))
+                .setMsg(jsonObject.optString(EntityMsg));
         List<T> list = new ArrayList<>();
-        if (jsonObject.opt(EntityData) != null)
-        {
+        if (jsonObject.opt(EntityData) != null) {
             JSONArray jsonArray = jsonObject.optJSONArray(EntityData);
-            if (jsonArray != null)
-            {
-                for (int i = 0; i < jsonArray.length(); i++)
-                {
-                    try
-                    {
+            if (jsonArray != null) {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    try {
                         list.add(JSON.parseObject(jsonArray.get(i).toString(), classOfT));
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                     }
                 }
             }
@@ -762,45 +713,15 @@ public class BaseRequest<T> extends HttpProxy
     /**
      * 打印request日志
      *
-     * @param metoh  请求方式
-     * @param params 请求携带的参数
-     */
-    private final void printfRequestLog(String moduleName, String metohName, Method metoh,
-            RequestParams params)
-    {
-        if (params != null)
-        {
-            MLog.d(Global.getInstance().getAPP_DEBUG_HEADER() + "#" + HttpTag,
-                   metoh.toString() + " Request url:" + appendUrl(moduleName, metohName) +
-                   " parms = " +
-                   (params.getStringsParams() == null ? "" : params.getStringsParams().toString()) +
-                   (params.getFilesParams() == null
-                    ? ""
-                    : "----  fileParms = " + params.getFilesParams().toString()));
-        }
-        else
-        {
-            MLog.d(Global.getInstance().getAPP_DEBUG_HEADER() + "#" + HttpTag,
-                   " Request url:" + getAPPUrl());
-        }
-    }
-
-    /**
-     * 打印request日志
-     *
      * @param task 任务名
      */
-    private final void printfRequestLog(Tasks task, String url)
-    {
-        if (url != null)
-        {
+    private final void printfRequestLog(Tasks task, String url) {
+        if (url != null) {
             MLog.d(Global.getInstance().getAPP_DEBUG_HEADER() + "#" + HttpTag,
-                   task + " Request url:" + getAPPUrl() + " url = " + url.toString());
-        }
-        else
-        {
+                    task + " Request url:" + getAPPUrl() + " url = " + url.toString());
+        } else {
             MLog.d(Global.getInstance().getAPP_DEBUG_HEADER() + "#" + HttpTag,
-                   " Request url:" + getAPPUrl());
+                    " Request url:" + getAPPUrl());
         }
     }
 
@@ -811,10 +732,9 @@ public class BaseRequest<T> extends HttpProxy
      * @param task 任务名
      * @param o    响应结果
      */
-    private final void printfReponseLog(Tasks task, Object o)
-    {
+    private final void printfReponseLog(Tasks task, Object o) {
         MLog.d(Global.getInstance().getAPP_DEBUG_HEADER() + "#" + HttpTag,
-               task + " Reponse Success = " + (o == null ? NULLTag : o.toString()));
+                task + " Reponse Success = " + (o == null ? NULLTag : o.toString()));
     }
 
     /**
@@ -823,10 +743,9 @@ public class BaseRequest<T> extends HttpProxy
      * @param task 任务名
      * @param o    响应结果
      */
-    private final void printfErrorLog(Tasks task, Object o)
-    {
+    private final void printfErrorLog(Tasks task, Object o) {
         MLog.e(Global.getInstance().getAPP_DEBUG_HEADER() + "#" + HttpTag,
-               task + " Reponse Error = " + (o == null ? NULLTag : o.toString()));
+                task + " Reponse Error = " + (o == null ? NULLTag : o.toString()));
     }
 
     /**
@@ -834,10 +753,9 @@ public class BaseRequest<T> extends HttpProxy
      *
      * @param task 任务名
      */
-    private final void printfCancelLog(Tasks task)
-    {
+    private final void printfCancelLog(Tasks task) {
         MLog.d(Global.getInstance().getAPP_DEBUG_HEADER() + "#" + HttpTag,
-               "Reponse Cancel = " + (task == null ? NULLTag : task));
+                "Reponse Cancel = " + (task == null ? NULLTag : task));
     }
 
     /**
@@ -845,17 +763,13 @@ public class BaseRequest<T> extends HttpProxy
      *
      * @return 转换后的结果String
      */
-    private final static String MapToGetUrl(Map<String, RequestParams.StringContent> map)
-    {
+    private final static String MapToGetUrl(Map<String, RequestParams.StringContent> map) {
         StringBuilder url = new StringBuilder("");
-        if (map != null)
-        {
-            for (int i = 0; i < map.size(); i++)
-            {
+        if (map != null) {
+            for (int i = 0; i < map.size(); i++) {
                 url.append((map.keySet().toArray()[i].toString()) + "=" +
-                           ((RequestParams.StringContent)map.values().toArray()[i]).getValue());
-                if (i != (map.size() - 1))
-                {
+                        ((RequestParams.StringContent) map.values().toArray()[i]).getValue());
+                if (i != (map.size() - 1)) {
                     url.append("&");
                 }
             }
@@ -868,13 +782,10 @@ public class BaseRequest<T> extends HttpProxy
      *
      * @param map
      */
-    private final static Map<String, String> ObjectToStringMap(Map<String, Object> map)
-    {
-        if (map != null)
-        {
+    private final static Map<String, String> ObjectToStringMap(Map<String, Object> map) {
+        if (map != null) {
             Map<String, String> tmp = new HashMap<>();
-            for (int i = 0; i < map.size(); i++)
-            {
+            for (int i = 0; i < map.size(); i++) {
                 tmp.put(map.keySet().toArray()[i].toString(), map.values().toArray()[i].toString());
             }
             return tmp;
@@ -885,11 +796,18 @@ public class BaseRequest<T> extends HttpProxy
     /**
      * 连接方法名
      */
-    private final String appendUrl(String moduleName, String metohName)
-    {
+    private final String appendUrl(String moduleName, String metohName) {
         StringBuilder url = new StringBuilder(getAPPUrl() + (moduleName == null ? "" : moduleName) +
-                                              (TextUtils.isEmpty(moduleName) ? "" : "/") +
-                                              metohName + "?");
+                (TextUtils.isEmpty(moduleName) ? "" : "/") +
+                metohName + "?");
+        return url.toString();
+    }
+
+    /**
+     * 连接方法名
+     */
+    private final String appendUrl(String moduleName) {
+        StringBuilder url = new StringBuilder(getAPPUrl() + (moduleName == null ? "" : moduleName));
         return url.toString();
     }
 }

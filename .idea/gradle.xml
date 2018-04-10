@@ -11,7 +11,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/easeui" />
             <option value="$PROJECT_DIR$/frame" />
-            <option value="$PROJECT_DIR$/volley" />
+            <option value="$PROJECT_DIR$/volleyNew" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

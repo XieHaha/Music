@@ -335,7 +335,7 @@
                 android:id="@+id/act_publish_dynamic_auto_gridView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white" />
+                android:background="@color/app_white_color" />
 
             <TextView
                 android:layout_width="match_parent"

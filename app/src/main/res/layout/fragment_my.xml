@@ -23,7 +23,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:text="个人信息"
-                android:textColor="@color/color_white"
+                android:textColor="@color/app_white_color"
                 android:textSize="@dimen/app_main_title"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
@@ -55,7 +55,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:textSize="24sp"
-            android:textColor="@color/white"
+            android:textColor="@color/app_white_color"
             android:layout_marginTop="37dp"
             android:text="姓名"
             android:layout_below="@id/act_user_info_headimg"
@@ -68,7 +68,7 @@
             android:layout_below="@id/bg_img"
             android:layout_marginTop="10dp"
             android:orientation="vertical"
-            android:background="@color/white"
+            android:background="@color/app_white_color"
             android:layout_height="wrap_content">
 
             <RelativeLayout
@@ -208,7 +208,7 @@
             android:layout_marginTop="10dp"
             android:text="退出登录"
             android:textSize="18sp"
-            android:textColor="@color/white"
+            android:textColor="@color/app_white_color"
             android:gravity="center"
             android:layout_marginBottom="4dp"
             android:background="@drawable/corner_exit_full_bg"

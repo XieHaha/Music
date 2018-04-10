@@ -21,7 +21,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:background="@color/white"
+            android:background="@color/app_white_color"
             android:orientation="horizontal">
 
             <custom.frame.widgets.ripples.RippleLinearLayout
