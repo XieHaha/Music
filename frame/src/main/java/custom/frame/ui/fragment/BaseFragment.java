@@ -4,9 +4,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.alibaba.fastjson.JSON;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,12 +17,14 @@ import java.util.List;
 
 import custom.frame.R;
 import custom.frame.bean.BaseResponse;
+import custom.frame.bean.LoginSuccessBean;
 import custom.frame.http.IRequest;
 import custom.frame.http.Tasks;
 import custom.frame.http.listener.ResponseListener;
 import custom.frame.log.MLog;
 import custom.frame.ui.ConstantsCommon;
 import custom.frame.ui.activity.AppManager;
+import custom.frame.utils.SharePreferenceUtil;
 
 /**
  * Created by luozi on 2016/3/7.
@@ -36,6 +41,11 @@ public abstract class BaseFragment extends Fragment
      * 任务白名单列表
      */
     List<Tasks> whiteRequestList;
+
+    /**
+     * 登录数据
+     */
+    public LoginSuccessBean loginSuccessBean;
     /**
      * 网络请求单例
      */
@@ -82,6 +92,7 @@ public abstract class BaseFragment extends Fragment
         requestList = new ArrayList<>();
         whiteRequestList = new ArrayList<>();
         mIRequest = IRequest.getInstance(getContext());
+        loginSuccessBean = getLoginSuccessBean();
     }
 
     /**
@@ -106,6 +117,19 @@ public abstract class BaseFragment extends Fragment
         initObject(savedInstanceState);
         initData(savedInstanceState);
         initListener();
+    }
+
+    /**
+     * 初始化login数据
+     *
+     * @return
+     */
+    public LoginSuccessBean getLoginSuccessBean() {
+        String userStr = (String) SharePreferenceUtil.get(getContext(), "key_login_success_bean", "");
+        if (!TextUtils.isEmpty(userStr)) {
+            loginSuccessBean = JSON.parseObject(userStr, LoginSuccessBean.class);
+        }
+        return loginSuccessBean;
     }
 
     @Override

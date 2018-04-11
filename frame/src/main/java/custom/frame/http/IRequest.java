@@ -127,4 +127,33 @@ public class IRequest extends BaseRequest {
         return requestBaseResponseByJson("/doctor/info/updatedetail", Tasks.UPDATE_JOB_INFO,
                 String.class, merchant, listener);
     }
+
+    /**
+     * 更改个人信息
+     */
+    public Tasks updateUserInfo(String doctorId, String name,String portraitUrl,String hospital,String department,  String title, String doctorDescription, final ResponseListener<BaseResponse> listener) {
+        Map<String, String> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("name", name);
+        merchant.put("portraitUrl", portraitUrl);
+        merchant.put("department", department);
+        merchant.put("doctorDescription", doctorDescription);
+        merchant.put("hospital", hospital);
+        merchant.put("title", title);
+        return requestBaseResponseByJson("/doctor/info/updateall", Tasks.UPDATE_USER_INFO,
+                String.class, merchant, listener);
+    }
+
+    /**
+     * 获取患者列表
+     */
+    public Tasks getPatientList(String doctorId, int pageNo, int pageSize, final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("pageNo", pageNo);
+        merchant.put("pageSize", pageSize);
+        return requestBaseResponseByJson("/dp/mypatient", Tasks.GET_PATIENTS_LIST,
+                String.class, merchant, listener);
+    }
+
 }

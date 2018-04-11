@@ -25,5 +25,13 @@ public enum Tasks
      * 上传职业信息
      */
     UPDATE_JOB_INFO,
+    /**
+     * 修改个人信息
+     */
+    UPDATE_USER_INFO,
+    /**
+     * 获取患者列表
+     */
+    GET_PATIENTS_LIST,
 }
 

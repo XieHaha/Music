@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.tools.DirHelper;
 import com.yht.yihuantong.ui.dialog.ActionSheetDialog;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
@@ -32,6 +33,8 @@ import com.zhihu.matisse.engine.impl.GlideEngine;
 import java.io.File;
 import java.util.List;
 
+import custom.frame.bean.BaseResponse;
+import custom.frame.http.Tasks;
 import custom.frame.permission.Permission;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.ToastUtil;
@@ -50,7 +53,7 @@ public class EditInfoActivity extends BaseActivity {
     private Uri cutFileUri;
     private File cameraTempFile;
 
-    private String name, hospital, type, title, introduce;
+    private String name, hospital, type, title, introduce, headImgUrl;
 
     /**
      * 请求修改头像 相册
@@ -104,9 +107,10 @@ public class EditInfoActivity extends BaseActivity {
      * 初始化界面数据
      */
     private void initPageData() {
+        headImgUrl = "http://39.107.249.194:8080/DPView/f/download/avatar/20180411/1523433761828870439.jpg";
         if (loginSuccessBean != null) {
             Glide.with(this)
-                    .load("http://39.107.249.194:8080/DPView/f/download/avatar/20180411/1523433761828870439.jpg")
+                    .load(headImgUrl)
                     .into(headImg);
             name = loginSuccessBean.getName();
             hospital = loginSuccessBean.getHospital();
@@ -180,14 +184,35 @@ public class EditInfoActivity extends BaseActivity {
         type = etType.getText().toString();
         introduce = etIntroduce.getText().toString();
 
-        if(TextUtils.isEmpty(name) || TextUtils.isEmpty(hospital)
-                || TextUtils.isEmpty(type) || TextUtils.isEmpty(title) || TextUtils.isEmpty(introduce))
-        {
-            ToastUtil.toast(this,R.string.toast_upload_job_info_hint);
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(hospital)
+                || TextUtils.isEmpty(type) || TextUtils.isEmpty(title) || TextUtils.isEmpty(introduce)) {
+            ToastUtil.toast(this, R.string.toast_upload_job_info_hint);
             return;
         }
 
+        mIRequest.updateUserInfo(loginSuccessBean.getDoctorId(), name, headImgUrl, hospital, type, title, introduce, this);
+
     }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case UPDATE_USER_INFO:
+                ToastUtil.toast(this, "修改成功");
+                loginSuccessBean.setDepartment(type);
+                loginSuccessBean.setHospital(hospital);
+                loginSuccessBean.setDoctorDescription(introduce);
+                loginSuccessBean.setTitle(title);
+                loginSuccessBean.setName(name);
+                loginSuccessBean.setPortraitUrl(headImgUrl);
+                YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
+                break;
+            default:
+                break;
+        }
+    }
+
 
     /**
      * 打开图片库

@@ -31,6 +31,12 @@ public class UserFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        initPageData();
+    }
+
+    @Override
     public void initView(@NonNull View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
 //        //状态栏透明
@@ -46,17 +52,11 @@ public class UserFragment extends BaseFragment {
         tvIntroduce = view.findViewById(R.id.fragmrnt_user_info_introduce);
     }
 
-    @Override
-    public void initData(@NonNull Bundle savedInstanceState) {
-        super.initData(savedInstanceState);
-        loginSuccessBean = YihtApplication.getInstance().getLoginSuccessBean();
-        initPageData();
-    }
-
     /**
      * 初始化界面数据
      */
     private void initPageData() {
+        loginSuccessBean = YihtApplication.getInstance().getLoginSuccessBean();
         if (loginSuccessBean != null) {
             Glide.with(getContext())
                     .load("http://39.107.249.194:8080/DPView/f/download/avatar/20180411/1523433761828870439.jpg")
@@ -81,6 +81,7 @@ public class UserFragment extends BaseFragment {
                 new SimpleDialog(getActivity(), "确定退出?", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        YihtApplication.getInstance().clearLoginSuccessBean();
                         dialog.dismiss();
                         AppManager.getInstance().finishAllActivity();
                         startActivity(new Intent(getActivity(), LoginActivity.class));
