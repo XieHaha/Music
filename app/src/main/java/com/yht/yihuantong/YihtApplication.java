@@ -61,6 +61,14 @@ public class YihtApplication extends Application {
     }
 
     /**
+     * 清楚登录数据
+     */
+    public void clearLoginSuccessBean()
+    {
+        SharePreferenceUtil.remove(this,CommonData.KEY_LOGIN_SUCCESS_BEAN);
+    }
+
+    /**
      * app字体不随系统改变而改变
      *
      * @return
