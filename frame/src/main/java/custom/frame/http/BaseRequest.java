@@ -43,14 +43,6 @@ public class BaseRequest<T> extends HttpProxy {
     }
 
     /**
-     * 封装请求
-     */
-    public final Tasks requestString(final Method metoh, String moduleName, String metohName,
-                                     final Tasks task, final RequestParams params, final ResponseListener<String> listener) {
-        return requestString(metoh, moduleName, metohName, task, params, null, listener);
-    }
-
-    /**
      * request String 返回的是string
      *
      * @param metoh    请求方式
@@ -128,16 +120,6 @@ public class BaseRequest<T> extends HttpProxy {
         stringRequest.setTag(task);
         mQueue.add(stringRequest);
         return task;
-    }
-
-    /**
-     * 封装请求
-     */
-    public final Tasks requestBaseResponse(final Method metoh, String moduleName, String metohName,
-                                           final Tasks task, final Class<T> classOfT, final RequestParams params,
-                                           final ResponseListener<BaseResponse> listener) {
-        return requestBaseResponse(metoh, moduleName, metohName, task, classOfT, params, null,
-                listener);
     }
 
     /**
@@ -255,7 +237,7 @@ public class BaseRequest<T> extends HttpProxy {
      * @param classOfT 需转换的类型
      * @param listener 请求回调
      */
-    public final Tasks requestBaseResponseByJson(String moduleName, final Tasks task, final Class<T> classOfT, final Map<String, String> merchant,
+    public final Tasks requestBaseResponseByJson(String moduleName, final Tasks task, final Class<T> classOfT, final Map<String, Object> merchant,
                                                  final ResponseListener<BaseResponse> listener) {
 
         JsonRequest<JSONObject> jsonRequest;
@@ -324,7 +306,6 @@ public class BaseRequest<T> extends HttpProxy {
                 return null;
             }
         };
-
         /**复写重试方针*/
         jsonRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
         //设置tag
@@ -332,16 +313,6 @@ public class BaseRequest<T> extends HttpProxy {
         //加入请求队列
         mQueue.add(jsonRequest);
         return task;
-    }
-
-    /**
-     * 封装请求
-     */
-    public final Tasks requestBaseResponseList(final Method metoh, String moduleName,
-                                               String metohName, final Tasks task, final Class<T> classOfT, final RequestParams params,
-                                               final ResponseListener<BaseResponse> listener) {
-        return requestBaseResponseList(metoh, moduleName, metohName, task, classOfT, params, null,
-                listener);
     }
 
     /**
@@ -448,134 +419,32 @@ public class BaseRequest<T> extends HttpProxy {
         return task;
     }
 
-//    /**
-//     * downloadFile
-//     *
-//     * @param m            请求方式
-//     * @param task         任务队列id
-//     * @param autoResume   是否自动恢复下载
-//     * @param fileSavePath 文件存储位置
-//     * @param url          下载链接
-//     * @param listener     请求回调
-//     */
-//    protected final Tasks downloadFile(final Method m, final Tasks task, final String url,
-//                                       final String fileSavePath, boolean autoResume,
-//                                       final ResponseListener<BaseResponse> listener) {
-//        DownloadRequest objectRequest;
-//        if (listener != null) {
-//            listener.onResponseStart(task);
-//        }
-//        int method = Request.Method.POST;
-//        switch (m) {
-//            case GET:
-//                method = Request.Method.GET;
-//                break;
-//            case POST:
-//                method = Request.Method.POST;
-//                break;
-//            case PUT:
-//                method = Request.Method.PUT;
-//                break;
-//            case DELETE:
-//                method = Request.Method.DELETE;
-//                break;
-//            default:
-//                method = Request.Method.GET;
-//                break;
-//        }
-//        objectRequest = new DownloadRequest(method, url, fileSavePath, autoResume,
-//                new Response.Listener<File>() {
-//                    @Override
-//                    public void onResponse(File response) {
-//                        if (listener != null) {
-//                            listener.onResponseFile(task, response);
-//                            listener.onResponseEnd(task);
-//                        }
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                printfErrorLog(task, error.getMessage());//打印错误日志
-//                if (listener != null) {
-//                    listener.onResponseError(task, error);
-//                    listener.onResponseEnd(task);
-//                }
-//            }
-//        });
-//        objectRequest.setLoadingListener(new Response.LoadingListener() {
-//            @Override
-//            public void onLoading(boolean isUpload, long total, long current) {
-//                if (listener != null) {
-//                    listener.onResponseLoading(task, isUpload, total, current);
-//                }
-//            }
-//        });
-//        printfRequestLog(task, url);//打印请求日志
-//        objectRequest.setTag(task);
-//        mQueue.add(objectRequest);
-//        return task;
-//    }
-
-    /**
-     * 封装请求
-     */
-    public final Tasks uploadFile(final Method metoh, String moduleName,
-                                  final Tasks task, final Class<T> classOfT, final RequestParams params,
-                                  final ResponseListener<BaseResponse> listener) {
-        return uploadFile(metoh, moduleName,  task, classOfT, params, null, listener);
-    }
 
     /**
      * uploadFile 以baseResponse结构的json解析字符串
      *
-     * @param metoh    请求方式
      * @param task     任务队列id
      * @param params   携带参数
      * @param classOfT 上传返回实体类
      * @param listener 请求回调
      * @param headers  请求头
      */
-    protected final Tasks uploadFile(final Method metoh, String moduleName,
-                                     final Tasks task, final Class<T> classOfT, final RequestParams params,
-                                     final Map<String, String> headers, final ResponseListener<BaseResponse> listener) {
+    protected final Tasks uploadFile(String moduleName, final Tasks task,
+                                     final Class<T> classOfT, final RequestParams params, final Map<String, String> headers,
+                                     final ResponseListener<BaseResponse> listener) {
         StringRequest objectRequest;
         if (listener != null) {
             listener.onResponseStart(task);
         }
-        StringBuilder url = new StringBuilder(appendUrl(moduleName));
+        String url = appendUrl(moduleName);
         int method = Request.Method.POST;
-        switch (metoh) {
-            case GET:
-                method = Request.Method.GET;
-                if (params != null) {
-                    //参数url
-                    url.append(MapToGetUrl(params.getStringsParams()));
-                }
-                break;
-            case POST:
-                method = Request.Method.POST;
-                break;
-            case PUT:
-                method = Request.Method.PUT;
-                break;
-            case DELETE:
-                method = Request.Method.DELETE;
-                if (params != null) {
-                    //参数url
-                    url.append(MapToGetUrl(params.getStringsParams()));
-                }
-                break;
-            default:
-                break;
-        }
-        objectRequest = new StringRequest(method, url.toString(), new Response.Listener<String>() {
+
+        objectRequest = new StringRequest(method, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     BaseResponse baseResponse = praseBaseResponse(jsonObject, classOfT);
-                    //打印响应日志
-                    printfReponseLog(task, baseResponse);
                     /**
                      * 如果请求码成功
                      * */
@@ -594,8 +463,6 @@ public class BaseRequest<T> extends HttpProxy {
                         }
                     }
                 } catch (JSONException je) {
-                    //打印错误日志
-                    printfErrorLog(task, je.getMessage());
                     if (listener != null) {
                         listener.onResponseError(task, je);
                         listener.onResponseEnd(task);
@@ -605,8 +472,6 @@ public class BaseRequest<T> extends HttpProxy {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //打印错误日志
-                printfErrorLog(task, error.getMessage());
                 if (listener != null) {
                     listener.onResponseError(task, new Exception("网络繁忙，请稍后再试"));
                     listener.onResponseEnd(task);
@@ -615,25 +480,22 @@ public class BaseRequest<T> extends HttpProxy {
         }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> hashMap = new HashMap<>(16);
+                Map<String, String> hashMap = new HashMap<>();
                 if (headers != null) {
+
                     hashMap.putAll(headers);
                 }
                 return hashMap;
             }
         };
+
         /**复写重试方针*/
         objectRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
-//        objectRequest.setLoadingListener(new Response.LoadingListener() {
-//            @Override
-//            public void onLoading(boolean isUpload, long total, long current) {
-//                if (listener != null) {
-//                    listener.onResponseLoading(task, isUpload, total, current);
-//                }
-//            }
-//        });
+        objectRequest.setRequestParams(params);
+
         objectRequest.setTag(task);
         mQueue.add(objectRequest);
+
         return task;
     }
 

@@ -14,4 +14,6 @@ public interface CommonData
      * 新增病例(or查看病例详情)
      */
     String KEY_ADD_NEW_HEALTH = "key_add_new_health";
+
+    String KEY_LOGIN_SUCCESS_BEAN = "key_login_success_bean";
 }

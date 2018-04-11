@@ -12,25 +12,30 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 
 import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.tools.DirHelper;
 import com.yht.yihuantong.ui.dialog.ActionSheetDialog;
+import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.utils.AllUtils;
 import com.yht.yihuantong.utils.FileUtils;
+import com.yht.yihuantong.utils.LogUtils;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
-import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import java.io.File;
 import java.util.List;
 
 import custom.frame.bean.BaseResponse;
 import custom.frame.http.Tasks;
+import custom.frame.permission.Permission;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.ToastUtil;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -42,10 +47,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class CompleteInfoActivity extends BaseActivity {
     private CircleImageView ivHeadImg;
+    private EditText etUserName;
     private Uri originUri;
     private Uri cutFileUri;
-    private String headImgUrl;
     private File cameraTempFile;
+    private String headImgUrl = "www.baidu.com", userName;
+
     /**
      * 请求修改头像 相册
      */
@@ -58,6 +65,10 @@ public class CompleteInfoActivity extends BaseActivity {
      * 图片  裁剪
      */
     public static final int RC_CROP_IMG = RC_PICK_CAMERA_IMG + 1;
+    /**
+     * 页面处理
+     */
+    public static final int REQUEST_CODE_SUCCESS = RC_CROP_IMG + 1;
 
     @Override
     public int getLayoutID() {
@@ -71,6 +82,7 @@ public class CompleteInfoActivity extends BaseActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         findViewById(R.id.act_complete_info_next).setOnClickListener(this);
         ivHeadImg = (CircleImageView) findViewById(R.id.act_complete_info_headimg);
+        etUserName = (EditText) findViewById(R.id.act_complete_info_name);
     }
 
     @Override
@@ -84,7 +96,16 @@ public class CompleteInfoActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.act_complete_info_next:
-                startActivity(new Intent(this, CompleteInfo2Activity.class));
+                if (TextUtils.isEmpty(headImgUrl)) {
+                    ToastUtil.toast(this, R.string.toast_upload_img_hint);
+                    return;
+                }
+                userName = etUserName.getText().toString().trim();
+                if (TextUtils.isEmpty(userName)) {
+                    ToastUtil.toast(this, R.string.toast_upload_name_hint);
+                    return;
+                }
+                updateBasicInfo();
                 break;
             case R.id.act_complete_info_headimg:
                 editHeadImg(this);
@@ -101,6 +122,13 @@ public class CompleteInfoActivity extends BaseActivity {
         mIRequest.uploadHeadImg(FileUtils.getFileByUri(cutFileUri, this), "jpg", this);
     }
 
+    /**
+     * 上传基本信息
+     */
+    private void updateBasicInfo() {
+        mIRequest.updateBasicInfo(loginSuccessBean.getDoctorId(), userName, headImgUrl, this);
+    }
+
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
@@ -108,6 +136,14 @@ public class CompleteInfoActivity extends BaseActivity {
             case UPLOAD_FILE:
                 ToastUtil.toast(this, "上传成功!!");
                 headImgUrl = response.getData();
+                break;
+            case UPDATE_BASIC_INFO:
+//                loginSuccessBean.setPortraitUrl(headImgUrl);
+                loginSuccessBean.setPortraitUrl("http://39.107.249.194:8080/DPView/f/download/avatar/20180411/1523433761828870439.jpg");
+                loginSuccessBean.setName(userName);
+                YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
+                Intent intent = new Intent(this, CompleteInfo2Activity.class);
+                startActivityForResult(intent, REQUEST_CODE_SUCCESS);
                 break;
             default:
                 break;
@@ -122,59 +158,19 @@ public class CompleteInfoActivity extends BaseActivity {
                         new ActionSheetDialog.OnSheetItemClickListener() {
                             @Override
                             public void onClick(int which) {
-                                openPhoto();
+
+                                //动态申请权限
+                                permissionHelper.request(
+                                        new String[]{Permission.STORAGE_WRITE});
                             }
                         })
                 .addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue,
                         new ActionSheetDialog.OnSheetItemClickListener() {
                             @Override
                             public void onClick(int which) {
-                                String pathRecv = DirHelper.getPathImage();
-                                cameraTempFile = new File(pathRecv,
-                                        System.currentTimeMillis() +
-                                                ".jpg");
-                                //                                                             Uri imgUri = FileProvider.getUriForFile(activity,
-                                //                                                                                                     activity.getPackageName() + ".FileProvider", tempFile);
-                                //选择拍照
-                                Intent cameraintent = new Intent(
-                                        MediaStore.ACTION_IMAGE_CAPTURE);
-                                //                                                             //在Android N中，为了安全起见，您必须获得“写入或读取Uri文件”的权限。如果您希望系统照片裁剪您的“uri文件”，那么您 必须允许系统照片。
-                                //                                                             List<ResolveInfo> resInfoList = getPackageManager()
-                                //                                                                     .queryIntentActivities(
-                                //                                                                             cameraintent,
-                                //                                                                             PackageManager.MATCH_DEFAULT_ONLY);
-                                //                                                             for (ResolveInfo resolveInfo : resInfoList)
-                                //                                                             {
-                                //                                                                 String packageName = resolveInfo.activityInfo.packageName;
-                                //                                                                 activity.grantUriPermission(
-                                //                                                                         packageName, originUri,
-                                //                                                                         Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
-                                //                                                                         Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                //                                                             }
-                                //                                                             //结束
-                                // 指定调用相机拍照后照片的储存路径
-                                Uri uri = null;
-                                if (Build.VERSION.SDK_INT >=
-                                        Build.VERSION_CODES.N) {
-                                    cameraintent.addFlags(
-                                            Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                    uri = FileProvider.getUriForFile(
-                                            activity,
-                                            activity.getApplication()
-                                                    .getPackageName() +
-                                                    ".fileprovider",
-                                            cameraTempFile);
-                                } else {
-                                    uri = Uri.fromFile(cameraTempFile);
-                                }
-                                // 指定调用相机拍照后照片的储存路径
-                                cameraintent.putExtra(
-                                        MediaStore.EXTRA_OUTPUT, uri);
-                                cameraintent.putExtra(
-                                        MediaStore.Images.Media.ORIENTATION,
-                                        0);
-                                startActivityForResult(cameraintent,
-                                        RC_PICK_CAMERA_IMG);
+                                //动态申请权限
+                                permissionHelper.request(
+                                        new String[]{Permission.CAMERA, Permission.STORAGE_WRITE});
                             }
                         })
                 .show();
@@ -189,9 +185,9 @@ public class CompleteInfoActivity extends BaseActivity {
                 .choose(MimeType.allOf())
                 // 显示选择的数量
                 .countable(true)
-                //相机
-                .capture(true)
-                .captureStrategy(new CaptureStrategy(true, "com.yht.yihuantong.fileprovider"))
+//                //相机
+//                .capture(true)
+//                .captureStrategy(new CaptureStrategy(true, "com.yht.yihuantong.fileprovider"))
                 // 黑色背景
                 .theme(R.style.Matisse_Dracula)
                 // 图片选择的最多数量
@@ -205,6 +201,41 @@ public class CompleteInfoActivity extends BaseActivity {
                 .imageEngine(new GlideEngine())
                 // 设置作为标记的请求码，返回图片时使用
                 .forResult(RC_PICK_IMG);
+    }
+
+    /**
+     * 打开相机
+     */
+    private void openCamera() {
+        String pathRecv = DirHelper.getPathImage();
+        cameraTempFile = new File(pathRecv,
+                System.currentTimeMillis() +
+                        ".jpg");
+        //选择拍照
+        Intent cameraintent = new Intent(
+                MediaStore.ACTION_IMAGE_CAPTURE);
+        // 指定调用相机拍照后照片的储存路径
+        Uri uri = null;
+        if (Build.VERSION.SDK_INT >=
+                Build.VERSION_CODES.N) {
+            cameraintent.addFlags(
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            uri = FileProvider.getUriForFile(
+                    this, getApplication()
+                            .getPackageName() +
+                            ".fileprovider",
+                    cameraTempFile);
+        } else {
+            uri = Uri.fromFile(cameraTempFile);
+        }
+        // 指定调用相机拍照后照片的储存路径
+        cameraintent.putExtra(
+                MediaStore.EXTRA_OUTPUT, uri);
+        cameraintent.putExtra(
+                MediaStore.Images.Media.ORIENTATION,
+                0);
+        startActivityForResult(cameraintent,
+                RC_PICK_CAMERA_IMG);
     }
 
     /**
@@ -255,7 +286,11 @@ public class CompleteInfoActivity extends BaseActivity {
             if (requestCode == RC_PICK_IMG) {
                 List<Uri> paths = Matisse.obtainResult(data);
                 if (null != paths && 0 != paths.size()) {
-                    startCutImg(paths.get(0), paths.get(0));
+                    String cropPath =
+                            DirHelper.getPathImage() + "/" + "crop" + System.currentTimeMillis() +
+                                    ".jpg";
+                    Uri cropUri = Uri.parse("file://" + cropPath);
+                    startCutImg(paths.get(0), cropUri);
                 }
             } else if (requestCode == RC_PICK_CAMERA_IMG) {
                 if (cameraTempFile.exists()) {
@@ -274,10 +309,75 @@ public class CompleteInfoActivity extends BaseActivity {
                     ToastUtil.toast(this, R.string.toast_public_current_no_network);
                 }
                 //上传完成，替换本地图片
-                ivHeadImg.setImageURI(cutFileUri);
-                Glide.with(this).load(cutFileUri).centerCrop().into(ivHeadImg);
+                Glide.with(this).load(cutFileUri).into(ivHeadImg);
+            } else if (requestCode == REQUEST_CODE_SUCCESS) {
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /***************************************权限处理**********************/
+
+    private boolean isSamePermission(String o, String n) {
+        if (TextUtils.isEmpty(o) || TextUtils.isEmpty(n)) {
+            return false;
+        }
+        if (o.equals(n)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (permissions == null) {
+            return;
+        }
+        permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onPermissionGranted(@NonNull String[] permissionName) {
+        if (permissionName == null || permissionName.length == 0) {
+            return;
+        }
+        if (isSamePermission(Permission.CAMERA, permissionName[0])) {
+            openCamera();
+        } else if (isSamePermission(Permission.STORAGE_WRITE, permissionName[0])) {
+            openPhoto();
+        }
+    }
+
+    @Override
+    public void onPermissionDeclined(@NonNull String[] permissionName) {
+        super.onPermissionDeclined(permissionName);
+    }
+
+    @Override
+    public void onPermissionPreGranted(@NonNull String permissionsName) {
+        LogUtils.d("test", "onPermissionPreGranted:" + permissionsName);
+    }
+
+    @Override
+    public void onPermissionNeedExplanation(@NonNull String permissionName) {
+        permissionHelper.requestAfterExplanation(permissionName);
+    }
+
+    @Override
+    public void onPermissionReallyDeclined(@NonNull String permissionName) {
+        new SimpleDialog(this, R.string.dialog_no_camera_permission_tip, false).show();
+    }
+
+    @Override
+    public void onNoPermissionNeeded(@NonNull Object permissionName) {
+        if (permissionName instanceof String[]) {
+            if (isSamePermission(Permission.STORAGE_WRITE, ((String[]) permissionName)[0])) {
+                openPhoto();
+            } else if (isSamePermission(Permission.CAMERA, ((String[]) permissionName)[0])) {
+                openCamera();
+            }
+        }
     }
 }

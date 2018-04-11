@@ -12,8 +12,6 @@ import custom.frame.bean.BaseResponse;
 import custom.frame.bean.LoginSuccessBean;
 import custom.frame.http.listener.ResponseListener;
 
-import static custom.frame.http.data.HttpConstants.Method.POST;
-
 /**
  * Created by luozi on 2015/12/30.
  * baseRequest include requestString and requestObject and requestList
@@ -93,11 +91,40 @@ public class IRequest extends BaseRequest {
     /**
      * 上传头像
      */
-    public Tasks uploadHeadImg(File filePath, String type,
+    public Tasks uploadHeadImg(File file, String type,
                                final ResponseListener<BaseResponse> listener) {
         RequestParams params = new RequestParams();
-        params.addBodyParameter("file", filePath);
+        params.addBodyParameter("file", file);
         params.addBodyParameter("type", type);
-        return uploadFile(POST, "/f/uploadfile", Tasks.UPLOAD_FILE, String.class, params, listener);
+//        Map<String, Object> merchant = new HashMap<>(16);
+//        merchant.put("file", file);
+//        merchant.put("type", type);
+        return uploadFile("/f/uploadfile", Tasks.UPLOAD_FILE, String.class, params, null, listener);
+    }
+
+    /**
+     * 上传基本信息
+     */
+    public Tasks updateBasicInfo(String doctorId, String name, String portraitUrl, final ResponseListener<BaseResponse> listener) {
+        Map<String, String> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("name", name);
+        merchant.put("portraitUrl", portraitUrl);
+        return requestBaseResponseByJson("/doctor/info/updateinfo", Tasks.UPDATE_BASIC_INFO,
+                String.class, merchant, listener);
+    }
+
+    /**
+     * 上传职业信息
+     */
+    public Tasks updateJobInfo(String doctorId, String department, String doctorDescription, String hospital, String title, final ResponseListener<BaseResponse> listener) {
+        Map<String, String> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("department", department);
+        merchant.put("doctorDescription", doctorDescription);
+        merchant.put("hospital", hospital);
+        merchant.put("title", title);
+        return requestBaseResponseByJson("/doctor/info/updatedetail", Tasks.UPDATE_JOB_INFO,
+                String.class, merchant, listener);
     }
 }

@@ -3,19 +3,25 @@ package com.yht.yihuantong;
 import android.app.Application;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.text.TextUtils;
+
+import com.alibaba.fastjson.JSON;
+import com.yht.yihuantong.data.CommonData;
+
+import custom.frame.bean.LoginSuccessBean;
+import custom.frame.utils.SharePreferenceUtil;
 
 /**
  * 2018年4月4日16:40:23
  *
  * @author DUNDUN
  */
-public class YihtApplication extends Application
-{
+public class YihtApplication extends Application {
     private static YihtApplication sApplication;
+    private LoginSuccessBean loginSuccessBean;
 
     @Override
-    public void onCreate()
-    {
+    public void onCreate() {
         super.onCreate();
         init();
         //        //环信初始化
@@ -32,14 +38,26 @@ public class YihtApplication extends Application
         //        EMClient.getInstance().setDebugMode(true);
     }
 
-    private void init()
-    {
+    private void init() {
         sApplication = this;
     }
 
-    public static YihtApplication getApp()
-    {
+    public static YihtApplication getInstance() {
         return sApplication;
+    }
+
+
+    public LoginSuccessBean getLoginSuccessBean() {
+        String userStr = (String) SharePreferenceUtil.get(this, CommonData.KEY_LOGIN_SUCCESS_BEAN, "");
+        if (!TextUtils.isEmpty(userStr)) {
+            loginSuccessBean = JSON.parseObject(userStr, LoginSuccessBean.class);
+        }
+        return loginSuccessBean;
+    }
+
+    public void setLoginSuccessBean(LoginSuccessBean loginSuccessBean) {
+        this.loginSuccessBean = loginSuccessBean;
+        SharePreferenceUtil.put(this, CommonData.KEY_LOGIN_SUCCESS_BEAN, loginSuccessBean);
     }
 
     /**
@@ -48,8 +66,7 @@ public class YihtApplication extends Application
      * @return
      */
     @Override
-    public Resources getResources()
-    {
+    public Resources getResources() {
         Resources resources = super.getResources();
         Configuration configuration = resources.getConfiguration();
         configuration.fontScale = 1;

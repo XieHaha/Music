@@ -20,7 +20,7 @@ public class Global implements Mode {
     /**
      * app 调试标记头
      */
-    private String APP_DEBUG_HEADER = "dianzhuang";
+    private String APP_DEBUG_HEADER = "YHT";
 
 
     /**

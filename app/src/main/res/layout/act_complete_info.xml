@@ -32,6 +32,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="@string/txt_complete_cancel"
+            android:visibility="gone"
             android:textColor="@color/app_white_color"
             android:textSize="15sp" />
 
@@ -81,6 +82,7 @@
             android:textSize="12dp" />
 
         <EditText
+            android:id="@+id/act_complete_info_name"
             android:layout_width="300dp"
             android:layout_height="48dp"
             android:layout_marginLeft="25dp"

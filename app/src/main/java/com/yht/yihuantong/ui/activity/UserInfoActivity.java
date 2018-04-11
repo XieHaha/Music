@@ -310,8 +310,7 @@ public class UserInfoActivity extends BaseActivity
                     ToastUtil.toast(this,R.string.toast_public_current_no_network);
                 }
                 //上传完成，替换本地图片
-                ivHeadImg.setImageURI(cutFileUri);
-                Glide.with(this).load(cutFileUri).centerCrop().into(ivHeadImg);
+                Glide.with(this).load(cutFileUri).into(ivHeadImg);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

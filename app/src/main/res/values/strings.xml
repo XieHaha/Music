@@ -37,6 +37,9 @@
     <string name="txt_image_album_name">所有图片</string>
     <string name="txt_lbl_preview">预览</string>
     <string name="txt_open_file_fail">无法打开文件</string>
+    <string name="toast_upload_img_hint">请上传头像</string>
+    <string name="toast_upload_name_hint">请输入您的姓名</string>
+    <string name="toast_upload_job_info_hint">个人职业信息不能为空</string>
 
 
     <!--Toast-->
@@ -63,6 +66,5 @@
     <string name="dialog_no_audio_tip">无法启用录音</string>
     <string name="dialog_no_permission_tip">，请检查是否打开相关权限</string>
     <string name="dialog_no_record_tip">无法录像，请检查是否打开相机和录音权限</string>
-
     <string name="dialog_discard_before_vedio">确认将丢弃之前已拍摄的视频</string>
 </resources>

@@ -4,9 +4,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+
+import com.alibaba.fastjson.JSON;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,6 +17,7 @@ import java.util.List;
 
 import custom.frame.R;
 import custom.frame.bean.BaseResponse;
+import custom.frame.bean.LoginSuccessBean;
 import custom.frame.http.IRequest;
 import custom.frame.http.Tasks;
 import custom.frame.http.listener.ResponseListener;
@@ -22,6 +26,7 @@ import custom.frame.permission.OnPermissionCallback;
 import custom.frame.permission.Permission;
 import custom.frame.permission.PermissionHelper;
 import custom.frame.ui.ConstantsCommon;
+import custom.frame.utils.SharePreferenceUtil;
 import custom.frame.utils.ToastUtil;
 
 /**
@@ -33,12 +38,18 @@ public abstract class BaseActivity extends AppCompatActivity
         implements ActivityInterface, ResponseListener<BaseResponse>, View.OnClickListener,
         OnPermissionCallback, ConstantsCommon {
     private ProgressBar progressBar;
+
+    /**
+     * 登录数据
+     */
+    public LoginSuccessBean loginSuccessBean;
     /**
      * 权限管理类
      */
     protected PermissionHelper permissionHelper;
     private boolean isRequest = true;
     private boolean isRequestPhone = true;
+    private boolean isRequestCamera = true;
     /**
      * 任务队列列表
      */
@@ -74,18 +85,8 @@ public abstract class BaseActivity extends AppCompatActivity
          */
         permissionHelper = PermissionHelper.getInstance(this);
         permissionHelper.request(
-                new String[]{Permission.READ_PHONE_STATE, Permission.STORAGE_WRITE});
-        init();
+                new String[]{Permission.READ_PHONE_STATE, Permission.STORAGE_WRITE, Permission.CAMERA});
         init(savedInstanceState);
-    }
-
-    /**
-     * 基础初始化
-     */
-    private void init() {
-        requestList = new ArrayList<>();
-        whiteRequestList = new ArrayList<>();
-        mIRequest = IRequest.getInstance(this);
     }
 
     /**
@@ -102,6 +103,11 @@ public abstract class BaseActivity extends AppCompatActivity
         if (isInitBackBtn()) {
             initBackBtn();
         }
+        // 数据初始化
+        requestList = new ArrayList<>();
+        whiteRequestList = new ArrayList<>();
+        mIRequest = IRequest.getInstance(this);
+        loginSuccessBean = getLoginSuccessBean();
         initView(savedInstanceState);
         initObject(savedInstanceState);
         initData(savedInstanceState);
@@ -141,6 +147,19 @@ public abstract class BaseActivity extends AppCompatActivity
      */
     protected boolean isInitBackBtn() {
         return false;
+    }
+
+    /**
+     * 初始化login数据
+     *
+     * @return
+     */
+    public LoginSuccessBean getLoginSuccessBean() {
+        String userStr = (String) SharePreferenceUtil.get(this, "key_login_success_bean", "");
+        if (!TextUtils.isEmpty(userStr)) {
+            loginSuccessBean = JSON.parseObject(userStr, LoginSuccessBean.class);
+        }
+        return loginSuccessBean;
     }
 
     /**
@@ -355,6 +374,10 @@ public abstract class BaseActivity extends AppCompatActivity
                 permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
                 return;
             }
+            if (Permission.CAMERA.equals(per)) {
+                permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                return;
+            }
         }
     }
 
@@ -362,6 +385,7 @@ public abstract class BaseActivity extends AppCompatActivity
     public void onPermissionGranted(@NonNull String[] permissionName) {
         isRequest = true;
         isRequestPhone = true;
+        isRequestCamera = true;
     }
 
     @Override
@@ -378,6 +402,10 @@ public abstract class BaseActivity extends AppCompatActivity
                 ToastUtil.toast(getApplicationContext(), R.string.dialog_no_read_phone_state_tip);
                 break;
             }
+            if (Permission.CAMERA.equals(permission)) {
+                ToastUtil.toast(getApplicationContext(), R.string.dialog_no_camera_permission_tip);
+                break;
+            }
         }
     }
 
@@ -385,6 +413,7 @@ public abstract class BaseActivity extends AppCompatActivity
     public void onPermissionPreGranted(@NonNull String permissionsName) {
         isRequest = true;
         isRequestPhone = true;
+        isRequestCamera = true;
     }
 
     @Override
@@ -397,6 +426,10 @@ public abstract class BaseActivity extends AppCompatActivity
             isRequestPhone = false;
             permissionHelper.requestAfterExplanation(Permission.READ_PHONE_STATE);
         }
+        if (isRequestCamera) {
+            isRequestCamera = false;
+            permissionHelper.requestAfterExplanation(Permission.CAMERA);
+        }
     }
 
     @Override
@@ -407,5 +440,8 @@ public abstract class BaseActivity extends AppCompatActivity
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
         isRequest = true;
         isRequestPhone = true;
+        isRequestCamera = true;
     }
+
+
 }

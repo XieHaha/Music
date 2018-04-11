@@ -1,13 +1,3 @@
-/*
- * 版权信息：嘉赛信息技术有限公司
- * Copyright (C) Justsy Information Technology Co., Ltd. All Rights Reserved
- *
- * FileName: .java
- * Description:
- *   <author> - <version> - <date> - <desc>
- *       jake - v1.1 - 2016.4.27 - 创建类
- *
- */
 package com.yht.yihuantong.ui.dialog;
 
 import android.app.Activity;
@@ -21,11 +11,11 @@ import com.yht.yihuantong.ui.dialog.base.MessageBuilder;
 /**
  * Created by yinhao on 16/4/28.
  */
-public class DialogPermission extends MessageBuilder
+public class SimpleDialog extends MessageBuilder
 {
     private Dialog dialog;
 
-    public DialogPermission(final Activity activity, int resMsg)
+    public SimpleDialog(final Activity activity, int resMsg)
     {
         super(activity);
         setTitle(R.string.dialog_public_title);
@@ -51,7 +41,7 @@ public class DialogPermission extends MessageBuilder
         dialog.setCanceledOnTouchOutside(false);
     }
 
-    public DialogPermission(final Activity activity, int resMsg, final boolean isNeedFinish)
+    public SimpleDialog(final Activity activity, int resMsg, final boolean isNeedFinish)
     {
         super(activity);
         setTitle(R.string.dialog_public_title);
@@ -80,7 +70,7 @@ public class DialogPermission extends MessageBuilder
         dialog.setCanceledOnTouchOutside(false);
     }
 
-    public DialogPermission(final Activity activity, int resMsg, DialogInterface.OnClickListener onClickListener)
+    public SimpleDialog(final Activity activity, int resMsg, DialogInterface.OnClickListener onClickListener)
     {
         super(activity);
         setTitle(R.string.dialog_public_title);
@@ -98,7 +88,7 @@ public class DialogPermission extends MessageBuilder
         dialog.setCanceledOnTouchOutside(false);
     }
 
-    public DialogPermission(final Activity activity, String Msg)
+    public SimpleDialog(final Activity activity, String Msg)
     {
         super(activity);
         setTitle(R.string.dialog_public_title);
@@ -124,7 +114,7 @@ public class DialogPermission extends MessageBuilder
         dialog.setCanceledOnTouchOutside(false);
     }
 
-    public DialogPermission(final Activity activity, String Msg, final boolean isNeedFinish)
+    public SimpleDialog(final Activity activity, String Msg, final boolean isNeedFinish)
     {
         super(activity);
         setTitle(R.string.dialog_public_title);
@@ -153,7 +143,7 @@ public class DialogPermission extends MessageBuilder
         dialog.setCanceledOnTouchOutside(false);
     }
 
-    public DialogPermission(final Activity activity, String msg, DialogInterface.OnClickListener onClickListener)
+    public SimpleDialog(final Activity activity, String msg, DialogInterface.OnClickListener onClickListener)
     {
         super(activity);
         setTitle(R.string.dialog_public_title);
@@ -167,6 +157,24 @@ public class DialogPermission extends MessageBuilder
                 return true;
             }
         });
+        dialog = buildAlertDialog();
+        dialog.setCanceledOnTouchOutside(false);
+    }
+
+    public SimpleDialog(final Activity activity, String Msg, DialogInterface.OnClickListener onClickListener, DialogInterface.OnClickListener onCancelListener)
+    {
+        super(activity);
+        setMessage(Msg);
+        setPositiveButton(R.string.dialog_txt_confirm, onClickListener);
+        setNegativeButton(R.string.txt_cancel,onCancelListener);
+//        setOnKeyListener(new DialogInterface.OnKeyListener()
+//        {
+//            @Override
+//            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
+//            {
+//                return true;
+//            }
+//        });
         dialog = buildAlertDialog();
         dialog.setCanceledOnTouchOutside(false);
     }

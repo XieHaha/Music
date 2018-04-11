@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.utils.AllUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +26,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import custom.frame.bean.BaseResponse;
+import custom.frame.bean.LoginSuccessBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.ToastUtil;
@@ -181,7 +183,15 @@ public class LoginActivity extends BaseActivity {
 
                 break;
             case LOGIN_AND_REGISTER:
-                startActivity(new Intent(this, CompleteInfoActivity.class));
+                //保存登录成功数据
+                LoginSuccessBean loginSuccessBean = response.getData();
+                YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
+                //暂时只判断用户名是否为空  为空进入信息完善流程
+                if (TextUtils.isEmpty(loginSuccessBean.getName())) {
+                    startActivity(new Intent(this, CompleteInfoActivity.class));
+                } else {
+                    startActivity(new Intent(this, MainActivity.class));
+                }
                 finish();
             default:
                 break;

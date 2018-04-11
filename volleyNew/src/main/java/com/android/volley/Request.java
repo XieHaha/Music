@@ -41,6 +41,8 @@ public abstract class Request<T> implements Comparable<Request<T>> {
      */
     private static final String DEFAULT_PARAMS_ENCODING = "UTF-8";
 
+    private RequestParams mRequestParams;
+
     /**
      * Supported request methods.
      */
@@ -209,6 +211,27 @@ public abstract class Request<T> implements Comparable<Request<T>> {
             }
         }
         return 0;
+    }
+
+
+    /**
+     * Returns a Map of parameters to be used for a POST or PUT request.
+     * <p>Note that you can directly override {@link #getBody()} for custom data.</p>
+     */
+    protected RequestParams getRequestParams(){
+        return mRequestParams;
+    }
+
+    public void setRequestParams(RequestParams requestParams) {
+        mRequestParams = requestParams;
+
+        RequestParams params = getRequestParams();
+        if (params != null) {
+            Map<String, RequestParams.FileContent> filesParams = params.getFilesParams();
+            if(filesParams!=null && !filesParams.isEmpty()){
+                setRetryPolicy(new DefaultRetryPolicy(600000,0,1f));
+            }
+        }
     }
 
     /**

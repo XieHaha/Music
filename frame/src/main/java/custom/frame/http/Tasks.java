@@ -17,5 +17,13 @@ public enum Tasks
      * 上传文件
      */
     UPLOAD_FILE,
+    /**
+     * 上传基本信息
+     */
+    UPDATE_BASIC_INFO,
+    /**
+     * 上传职业信息
+     */
+    UPDATE_JOB_INFO,
 }
 
