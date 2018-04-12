@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -24,6 +25,8 @@ public class UserFragment extends BaseFragment {
     private TextView tvName, tvHospital, tvType, tvTitle, tvIntroduce;
 
     private LoginSuccessBean loginSuccessBean;
+
+    private String headImgUrl;
 
     @Override
     public int getLayoutID() {
@@ -58,9 +61,18 @@ public class UserFragment extends BaseFragment {
     private void initPageData() {
         loginSuccessBean = YihtApplication.getInstance().getLoginSuccessBean();
         if (loginSuccessBean != null) {
-            Glide.with(getContext())
-                    .load("http://39.107.249.194:8080/DPView/f/download/avatar/20180411/1523433761828870439.jpg")
-                    .into(headImg);
+
+            if (!TextUtils.isEmpty(loginSuccessBean.getPortraitUrl())) {
+                headImgUrl = loginSuccessBean.getPortraitUrl();
+            } else if (!TextUtils.isEmpty(YihtApplication.getInstance().getHeadImgUrl())) {
+                headImgUrl = YihtApplication.getInstance().getHeadImgUrl();
+            }
+
+            if(!TextUtils.isEmpty(headImgUrl))
+            {
+                Glide.with(this).load(headImgUrl).into(headImg);
+            }
+
             tvName.setText(loginSuccessBean.getName());
             tvHospital.setText(loginSuccessBean.getHospital());
             tvTitle.setText(loginSuccessBean.getTitle());

@@ -1,13 +1,13 @@
 package custom.frame.http.data;
 
-public interface HttpConstants
-{
+public interface HttpConstants {
     /**
      * 基础网络连接地址
      */
     String URL_PREFIX = "http://";
     String BASE_IP = "39.107.249.194";
     String BASE_IP_PORT = "8080";
+    String BASE_BASIC_URL = "http://39.107.249.194:8080";
     /**
      * 分页的页数大小
      */
@@ -44,8 +44,7 @@ public interface HttpConstants
     /**
      * 枚举网络请求类型
      */
-    enum Method
-    {
+    enum Method {
         POST, GET, PUT, DELETE
     }
 

@@ -19,6 +19,10 @@ import custom.frame.utils.SharePreferenceUtil;
 public class YihtApplication extends Application {
     private static YihtApplication sApplication;
     private LoginSuccessBean loginSuccessBean;
+    /**
+     * 临时数据  头像url
+     */
+    private String headImgUrl;
 
     @Override
     public void onCreate() {
@@ -66,6 +70,14 @@ public class YihtApplication extends Application {
     public void clearLoginSuccessBean()
     {
         SharePreferenceUtil.remove(this,CommonData.KEY_LOGIN_SUCCESS_BEAN);
+    }
+
+    public String getHeadImgUrl() {
+        return headImgUrl;
+    }
+
+    public void setHeadImgUrl(String headImgUrl) {
+        this.headImgUrl = headImgUrl;
     }
 
     /**

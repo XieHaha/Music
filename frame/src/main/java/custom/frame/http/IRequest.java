@@ -93,13 +93,7 @@ public class IRequest extends BaseRequest {
      */
     public Tasks uploadHeadImg(File file, String type,
                                final ResponseListener<BaseResponse> listener) {
-        RequestParams params = new RequestParams();
-        params.addBodyParameter("file", file);
-        params.addBodyParameter("type", type);
-//        Map<String, Object> merchant = new HashMap<>(16);
-//        merchant.put("file", file);
-//        merchant.put("type", type);
-        return uploadFile("/f/uploadfile", Tasks.UPLOAD_FILE, String.class, params, null, listener);
+        return uploadFile("/f/uploadfile", Tasks.UPLOAD_FILE, file, type, String.class, listener);
     }
 
     /**
@@ -131,7 +125,7 @@ public class IRequest extends BaseRequest {
     /**
      * 更改个人信息
      */
-    public Tasks updateUserInfo(String doctorId, String name,String portraitUrl,String hospital,String department,  String title, String doctorDescription, final ResponseListener<BaseResponse> listener) {
+    public Tasks updateUserInfo(String doctorId, String name, String portraitUrl, String hospital, String department, String title, String doctorDescription, final ResponseListener<BaseResponse> listener) {
         Map<String, String> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
         merchant.put("name", name);

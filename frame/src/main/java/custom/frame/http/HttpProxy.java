@@ -8,32 +8,27 @@ import custom.frame.http.data.HttpConstants;
 /**
  * Created by luozi on 2016/7/13.
  */
-public class HttpProxy implements HttpConstants, BaseNetCode
-{
+public class HttpProxy implements HttpConstants, BaseNetCode {
     public Context context;
 
-    public HttpProxy(Context context)
-    {
+    public HttpProxy(Context context) {
         this.context = context;
     }
 
     @Override
-    public String getBaseIp()
-    {
+    public String getBaseIp() {
         return BASE_IP;
     }
 
     /**
      * 得到app请求地址
      */
-    public String getAPPUrl()
-    {
-        return URL_PREFIX + getBaseIp() + ":" + getBaseIpPort() + "/DPView";
+    public String getAPPUrl() {
+        return BASE_BASIC_URL + "/DPView";
     }
 
     @Override
-    public String getBaseIpPort()
-    {
+    public String getBaseIpPort() {
         return BASE_IP_PORT;
     }
 }

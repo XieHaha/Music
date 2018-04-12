@@ -28,13 +28,14 @@ import com.yht.yihuantong.utils.FileUtils;
 import com.yht.yihuantong.utils.LogUtils;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.GlideEngine;
+import com.zhihu.matisse.engine.impl.PicassoEngine;
 
 import java.io.File;
 import java.util.List;
 
 import custom.frame.bean.BaseResponse;
 import custom.frame.http.Tasks;
+import custom.frame.http.data.HttpConstants;
 import custom.frame.permission.Permission;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.ToastUtil;
@@ -107,17 +108,22 @@ public class EditInfoActivity extends BaseActivity {
      * 初始化界面数据
      */
     private void initPageData() {
-        headImgUrl = "http://39.107.249.194:8080/DPView/f/download/avatar/20180411/1523433761828870439.jpg";
         if (loginSuccessBean != null) {
-            Glide.with(this)
-                    .load(headImgUrl)
-                    .into(headImg);
             name = loginSuccessBean.getName();
             hospital = loginSuccessBean.getHospital();
             type = loginSuccessBean.getDepartment();
             title = loginSuccessBean.getTitle();
             introduce = loginSuccessBean.getDoctorDescription();
 
+            if (!TextUtils.isEmpty(loginSuccessBean.getPortraitUrl())) {
+                headImgUrl = loginSuccessBean.getPortraitUrl();
+            } else if (!TextUtils.isEmpty(YihtApplication.getInstance().getHeadImgUrl())) {
+                headImgUrl = YihtApplication.getInstance().getHeadImgUrl();
+            }
+
+            if (!TextUtils.isEmpty(headImgUrl)) {
+                Glide.with(this).load(headImgUrl).into(headImg);
+            }
             etName.setText(name);
             etHospital.setText(hospital);
             etTitle.setText(type);
@@ -156,7 +162,6 @@ public class EditInfoActivity extends BaseActivity {
                         new ActionSheetDialog.OnSheetItemClickListener() {
                             @Override
                             public void onClick(int which) {
-
                                 //动态申请权限
                                 permissionHelper.request(
                                         new String[]{Permission.STORAGE_WRITE});
@@ -198,8 +203,11 @@ public class EditInfoActivity extends BaseActivity {
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         switch (task) {
+            case UPLOAD_FILE:
+                headImgUrl = HttpConstants.BASE_BASIC_URL + response.getData();
+                break;
             case UPDATE_USER_INFO:
-                ToastUtil.toast(this, "修改成功");
+                ToastUtil.toast(this, "保存成功");
                 loginSuccessBean.setDepartment(type);
                 loginSuccessBean.setHospital(hospital);
                 loginSuccessBean.setDoctorDescription(introduce);
@@ -207,6 +215,7 @@ public class EditInfoActivity extends BaseActivity {
                 loginSuccessBean.setName(name);
                 loginSuccessBean.setPortraitUrl(headImgUrl);
                 YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
+                finish();
                 break;
             default:
                 break;
@@ -236,7 +245,7 @@ public class EditInfoActivity extends BaseActivity {
                 // 缩略图的比例
                 .thumbnailScale(0.85f)
                 // 使用的图片加载引擎
-                .imageEngine(new GlideEngine())
+                .imageEngine(new PicassoEngine())
                 // 设置作为标记的请求码，返回图片时使用
                 .forResult(RC_PICK_IMG);
     }

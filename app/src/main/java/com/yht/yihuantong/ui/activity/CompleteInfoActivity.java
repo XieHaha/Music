@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -28,13 +29,14 @@ import com.yht.yihuantong.utils.FileUtils;
 import com.yht.yihuantong.utils.LogUtils;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.GlideEngine;
+import com.zhihu.matisse.engine.impl.PicassoEngine;
 
 import java.io.File;
 import java.util.List;
 
 import custom.frame.bean.BaseResponse;
 import custom.frame.http.Tasks;
+import custom.frame.http.data.HttpConstants;
 import custom.frame.permission.Permission;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.ToastUtil;
@@ -51,7 +53,7 @@ public class CompleteInfoActivity extends BaseActivity {
     private Uri originUri;
     private Uri cutFileUri;
     private File cameraTempFile;
-    private String headImgUrl = "www.baidu.com", userName;
+    private String headImgUrl, userName;
 
     /**
      * 请求修改头像 相册
@@ -135,11 +137,12 @@ public class CompleteInfoActivity extends BaseActivity {
         switch (task) {
             case UPLOAD_FILE:
                 ToastUtil.toast(this, "上传成功!!");
-                headImgUrl = response.getData();
+                headImgUrl = HttpConstants.BASE_BASIC_URL + response.getData();
+                YihtApplication.getInstance().setHeadImgUrl(headImgUrl);
                 break;
             case UPDATE_BASIC_INFO:
-//                loginSuccessBean.setPortraitUrl(headImgUrl);
-                loginSuccessBean.setPortraitUrl("http://39.107.249.194:8080/DPView/f/download/avatar/20180411/1523433761828870439.jpg");
+                loginSuccessBean.setPortraitUrl(headImgUrl);
+                Log.i("test", "headImgUrl:" + headImgUrl);
                 loginSuccessBean.setName(userName);
                 YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
                 Intent intent = new Intent(this, CompleteInfo2Activity.class);
@@ -198,7 +201,7 @@ public class CompleteInfoActivity extends BaseActivity {
                 // 缩略图的比例
                 .thumbnailScale(0.85f)
                 // 使用的图片加载引擎
-                .imageEngine(new GlideEngine())
+                .imageEngine(new PicassoEngine())
                 // 设置作为标记的请求码，返回图片时使用
                 .forResult(RC_PICK_IMG);
     }
