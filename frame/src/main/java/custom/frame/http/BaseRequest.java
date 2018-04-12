@@ -131,23 +131,23 @@ public class BaseRequest<T> extends HttpProxy {
      * @param params   请求参数
      * @param classOfT 需转换的类型
      * @param listener 请求回调
-     * @param headers  请求头
      */
-    public final Tasks requestBaseResponse(final Method metoh, String moduleName, String metohName,
+    public final Tasks requestBaseResponse(final Method metoh, String moduleName,
                                            final Tasks task, final Class<T> classOfT, final RequestParams params,
-                                           final Map<String, String> headers, final ResponseListener<BaseResponse> listener) {
+                                           final ResponseListener<BaseResponse> listener) {
         StringRequest objectRequest;
         if (listener != null) {
             listener.onResponseStart(task);
         }
-        StringBuilder url = new StringBuilder(appendUrl(moduleName, metohName));
+        StringBuilder url = new StringBuilder(appendUrl(moduleName));
         int method = Request.Method.POST;
         switch (metoh) {
             case GET:
                 method = Request.Method.GET;
                 if (params != null) {
                     //参数url
-                    url.append(MapToGetUrl(params.getStringsParams()));
+//                    url.append(MapToGetUrl(params.getStringsParams()));
+                    url.append(MapToGetUrlNoKey(params.getStringsParams()));
                 }
                 break;
             case POST:
@@ -214,11 +214,6 @@ public class BaseRequest<T> extends HttpProxy {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> hashMap = new HashMap<>(16);
-                if (headers != null) {
-                    hashMap.putAll(headers);
-                }
-                hashMap.put("Accept", "application/json");
-                hashMap.put("Content-Type", "application/json; charset=UTF-8");
                 return hashMap;
             }
         };
@@ -317,14 +312,13 @@ public class BaseRequest<T> extends HttpProxy {
     }
 
     /**
-     *
      * @param task     任务队列id
      * @param merchant 请求参数
      * @param classOfT 需转换的类型
      * @param listener 请求回调
      */
     public final Tasks requestBaseResponseListByJson(String moduleName, final Tasks task, final Class<T> classOfT, final Map<String, Object> merchant,
-                                                 final ResponseListener<BaseResponse> listener) {
+                                                     final ResponseListener<BaseResponse> listener) {
 
         JsonRequest<JSONObject> jsonRequest;
         if (listener != null) {
@@ -587,6 +581,7 @@ public class BaseRequest<T> extends HttpProxy {
 
     /**
      * post
+     *
      * @param moduleName
      * @param task
      * @param file
@@ -594,8 +589,8 @@ public class BaseRequest<T> extends HttpProxy {
      * @param listener
      * @return
      */
-    public final Tasks uploadFile(String moduleName, final Tasks task, final File file,final String type,
-                                  final Class<T> classOfT,final ResponseListener<BaseResponse> listener) {
+    public final Tasks uploadFile(String moduleName, final Tasks task, final File file, final String type,
+                                  final Class<T> classOfT, final ResponseListener<BaseResponse> listener) {
 
         MultipartRequest multipartRequest;
         if (listener != null) {
@@ -799,6 +794,21 @@ public class BaseRequest<T> extends HttpProxy {
     }
 
     /**
+     * Map列表转换为url地址  不含key值
+     *
+     * @return 转换后的结果String
+     */
+    private final static String MapToGetUrlNoKey(Map<String, RequestParams.StringContent> map) {
+        StringBuilder url = new StringBuilder("");
+        if (map != null) {
+            for (int i = 0; i < map.size(); i++) {
+                url.append(((RequestParams.StringContent) map.values().toArray()[i]).getValue());
+            }
+        }
+        return url.toString();
+    }
+
+    /**
      * Map<String, Object> 泛型转换为 Map<String, String>
      *
      * @param map
@@ -828,7 +838,7 @@ public class BaseRequest<T> extends HttpProxy {
      * 连接方法名
      */
     private final String appendUrl(String moduleName) {
-        StringBuilder url = new StringBuilder(getAPPUrl() + (moduleName == null ? "" : moduleName));
+        StringBuilder url = new StringBuilder(getAPPUrl() + (moduleName == null ? "" : moduleName) + "/");
         return url.toString();
     }
 }

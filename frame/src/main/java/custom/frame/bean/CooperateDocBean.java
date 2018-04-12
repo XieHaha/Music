@@ -9,6 +9,8 @@ public class CooperateDocBean implements Serializable {
     private static final long serialVersionUID = -5825956356939935298L;
 
     private int id;
+    private long gmtCreate;
+    private long gmtModified;
     private String doctorId;
     private String phone;
     private String portraitUrl;
@@ -24,6 +26,22 @@ public class CooperateDocBean implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public long getGmtCreate() {
+        return gmtCreate;
+    }
+
+    public void setGmtCreate(long gmtCreate) {
+        this.gmtCreate = gmtCreate;
+    }
+
+    public long getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(long gmtModified) {
+        this.gmtModified = gmtModified;
     }
 
     public String getDoctorId() {

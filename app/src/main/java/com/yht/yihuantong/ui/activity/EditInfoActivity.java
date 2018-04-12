@@ -36,7 +36,6 @@ import java.util.List;
 
 import custom.frame.bean.BaseResponse;
 import custom.frame.http.Tasks;
-import custom.frame.http.data.HttpConstants;
 import custom.frame.permission.Permission;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.ToastUtil;
@@ -205,7 +204,7 @@ public class EditInfoActivity extends BaseActivity {
         super.onResponseSuccess(task, response);
         switch (task) {
             case UPLOAD_FILE:
-                headImgUrl = HttpConstants.BASE_BASIC_URL + response.getData();
+                headImgUrl = response.getData();
                 break;
             case UPDATE_USER_INFO:
                 ToastUtil.toast(this, "保存成功");

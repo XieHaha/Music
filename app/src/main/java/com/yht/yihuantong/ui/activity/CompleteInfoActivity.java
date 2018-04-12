@@ -36,7 +36,6 @@ import java.util.List;
 
 import custom.frame.bean.BaseResponse;
 import custom.frame.http.Tasks;
-import custom.frame.http.data.HttpConstants;
 import custom.frame.permission.Permission;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.ToastUtil;
@@ -137,7 +136,7 @@ public class CompleteInfoActivity extends BaseActivity {
         switch (task) {
             case UPLOAD_FILE:
                 ToastUtil.toast(this, "上传成功!!");
-                headImgUrl = HttpConstants.BASE_BASIC_URL + response.getData();
+                headImgUrl = response.getData();
                 YihtApplication.getInstance().setHeadImgUrl(headImgUrl);
                 break;
             case UPDATE_BASIC_INFO:

@@ -22,6 +22,7 @@ import custom.frame.bean.PatientBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
+import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
@@ -34,7 +35,7 @@ public class ApplyPatientActivity extends BaseActivity
         implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener, OnEventTriggerListener {
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
-    private View  footerView;
+    private View footerView;
     private TextView tvHintTxt;
 
     private ApplyPatientAdapter applyPatientAdapter;
@@ -48,6 +49,10 @@ public class ApplyPatientActivity extends BaseActivity
      * 一页最大数
      */
     private static final int PAGE_SIZE = 20;
+    /**
+     * 医生端区别字段
+     */
+    private static final int MODE = 9;
 
     @Override
     public int getLayoutID() {
@@ -112,6 +117,20 @@ public class ApplyPatientActivity extends BaseActivity
         mIRequest.getApplyPatientList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
     }
 
+    /**
+     * 拒绝患者申请
+     */
+    private void refusePatientApply(String patientId) {
+        mIRequest.refusePatientApply(loginSuccessBean.getDoctorId(), patientId, MODE, this);
+    }
+
+    /**
+     * 同意患者申请
+     */
+    private void agreePatientApply(String patientId) {
+        mIRequest.agreePatientApply(loginSuccessBean.getDoctorId(), patientId, MODE, this);
+    }
+
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
@@ -133,6 +152,11 @@ public class ApplyPatientActivity extends BaseActivity
                     autoLoadRecyclerView.loadFinish(true);
                 }
                 break;
+            case AGREE_PATIENT_APPLY:
+            case REFUSE_PATIENT_APPLY:
+                ToastUtil.toast(this,"处理成功");
+                getApplyPatientList();
+                break;
             default:
                 break;
         }
@@ -141,21 +165,45 @@ public class ApplyPatientActivity extends BaseActivity
     @Override
     public void onResponseCodeError(Tasks task, BaseResponse response) {
         super.onResponseCodeError(task, response);
-        if (page > 0) {
-            page--;
+        switch (task) {
+            case GET_APPLY_PATIENT_LIST:
+                if (page > 0) {
+                    page--;
+                }
+                tvHintTxt.setText("暂无更多数据");
+                autoLoadRecyclerView.loadFinish();
+                break;
+            case AGREE_PATIENT_APPLY:
+                ToastUtil.toast(this,response.getMsg());
+                break;
+            case REFUSE_PATIENT_APPLY:
+                ToastUtil.toast(this,response.getMsg());
+                break;
+            default:
+                break;
         }
-        tvHintTxt.setText("暂无更多数据");
-        autoLoadRecyclerView.loadFinish();
+
     }
 
     @Override
     public void onResponseError(Tasks task, Exception e) {
         super.onResponseError(task, e);
-        if (page > 0) {
-            page--;
+        switch (task) {
+            case GET_APPLY_PATIENT_LIST:
+                if (page > 0) {
+                    page--;
+                }
+                tvHintTxt.setText("暂无更多数据");
+                autoLoadRecyclerView.loadFinish();
+                break;
+            case AGREE_PATIENT_APPLY:
+                break;
+            case REFUSE_PATIENT_APPLY:
+                break;
+            default:
+                break;
         }
-        tvHintTxt.setText("暂无更多数据");
-        autoLoadRecyclerView.loadFinish();
+
     }
 
     @Override
@@ -179,12 +227,12 @@ public class ApplyPatientActivity extends BaseActivity
     }
 
     @Override
-    public void onPositiveTrigger() {
-
+    public void onPositiveTrigger(String s) {
+        agreePatientApply(s);
     }
 
     @Override
-    public void onNegativeTrigger() {
-
+    public void onNegativeTrigger(String s) {
+        refusePatientApply(s);
     }
 }

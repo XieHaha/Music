@@ -33,6 +33,7 @@
             android:textSize="15sp"
             android:paddingLeft="10dp"
             android:paddingRight="16dp"
+            android:visibility="gone"
             android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
             android:gravity="center"
@@ -51,11 +52,12 @@
         app:civ_border_color="#50ffffff" />
 
     <TextView
+        android:id="@+id/act_user_info_name"
         android:layout_width="wrap_content"
         android:textSize="24sp"
         android:textColor="@color/app_white_color"
         android:layout_marginTop="37dp"
-        android:text="姓名"
+        android:text=""
         android:layout_below="@id/act_user_info_headimg"
         android:layout_centerHorizontal="true"
         android:layout_height="wrap_content" />
@@ -81,13 +83,15 @@
                 android:textSize="15sp"
                 android:layout_height="wrap_content" />
 
-            <EditText
+            <TextView
+                android:id="@+id/act_user_info_title"
                 android:layout_width="match_parent"
-                android:layout_marginLeft="95dp"
+                android:layout_marginLeft="65dp"
                 android:layout_marginRight="16dp"
                 android:background="@null"
                 android:textColor="#333333"
                 android:textSize="15sp"
+                android:gravity="center_vertical"
                 android:text="暂无记录"
                 android:layout_height="match_parent" />
 
@@ -112,13 +116,15 @@
                 android:textSize="15sp"
                 android:layout_height="wrap_content" />
 
-            <EditText
+            <TextView
+                android:id="@+id/act_user_info_hospital"
                 android:layout_width="match_parent"
-                android:layout_marginLeft="95dp"
+                android:layout_marginLeft="65dp"
                 android:layout_marginRight="16dp"
                 android:background="@null"
                 android:textColor="#333333"
                 android:textSize="15sp"
+                android:gravity="center_vertical"
                 android:text="暂无记录"
                 android:layout_height="match_parent" />
 
@@ -143,13 +149,15 @@
                 android:textSize="15sp"
                 android:layout_height="wrap_content" />
 
-            <EditText
+            <TextView
+                android:id="@+id/act_user_info_type"
                 android:layout_width="match_parent"
-                android:layout_marginLeft="95dp"
+                android:layout_marginLeft="65dp"
                 android:layout_marginRight="16dp"
                 android:background="@null"
                 android:textColor="#333333"
                 android:textSize="15sp"
+                android:gravity="center_vertical"
                 android:text="暂无记录"
                 android:layout_height="match_parent" />
 
@@ -174,13 +182,15 @@
                 android:textSize="15sp"
                 android:layout_height="wrap_content" />
 
-            <EditText
+            <TextView
+                android:id="@+id/act_user_info_introduce"
                 android:layout_width="match_parent"
-                android:layout_marginLeft="95dp"
+                android:layout_marginLeft="65dp"
                 android:layout_marginRight="16dp"
                 android:background="@null"
                 android:textColor="#333333"
                 android:textSize="15sp"
+                android:gravity="center_vertical"
                 android:text="暂无记录"
                 android:layout_height="match_parent" />
 

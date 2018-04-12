@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.activity.ApplyCooperateDocActivity;
 import com.yht.yihuantong.ui.activity.UserInfoActivity;
 import com.yht.yihuantong.ui.adapter.CooperateDocListAdapter;
@@ -95,6 +96,7 @@ public class CooperateDocFragment extends BaseFragment
                     @Override
                     public void onItemClick(View v, int position, CooperateDocBean item) {
                         Intent intent = new Intent(getContext(), UserInfoActivity.class);
+                        intent.putExtra(CommonData.KEY_DOCTOR_ID,item.getDoctorId());
                         startActivity(intent);
                     }
                 });

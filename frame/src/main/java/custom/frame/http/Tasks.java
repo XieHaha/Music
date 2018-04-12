@@ -45,5 +45,21 @@ public enum Tasks
      * 获取患者申请列表
      */
     GET_APPLY_PATIENT_LIST,
+    /**
+     * 获取医生个人信息
+     */
+    GET_DOC_INFO,
+    /**
+     * 拒绝患者申请
+     */
+    REFUSE_PATIENT_APPLY,
+    /**
+     * 同意患者申请
+     */
+    AGREE_PATIENT_APPLY,
+    /**
+     * 处理医生申请合作（proCode为字符1（表示同意）或字符3（表示拒绝））
+     */
+    DEAL_DOC_APPLY,
 }
 

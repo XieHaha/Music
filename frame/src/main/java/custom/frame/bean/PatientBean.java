@@ -12,7 +12,7 @@ public class PatientBean implements Serializable {
     private String patientId;
     private String sex;
     private String name;
-    private String age;
+    private int age;
     private String patientImgUrl;
     private String phone;
     private String birth;
@@ -21,6 +21,8 @@ public class PatientBean implements Serializable {
     private String past_disease;
     private String allergy;
     private String im_username;
+    private long date;
+    private int requestSource;
 
     public int getFocusStatus() {
         return focusStatus;
@@ -54,12 +56,28 @@ public class PatientBean implements Serializable {
         this.name = name;
     }
 
-    public String getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(int age) {
         this.age = age;
+    }
+
+    public long getDate() {
+        return date;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
+    }
+
+    public int getRequestSource() {
+        return requestSource;
+    }
+
+    public void setRequestSource(int requestSource) {
+        this.requestSource = requestSource;
     }
 
     public String getPatientImgUrl() {

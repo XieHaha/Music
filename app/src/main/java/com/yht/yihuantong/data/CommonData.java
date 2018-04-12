@@ -14,6 +14,12 @@ public interface CommonData
      * 新增病例(or查看病例详情)
      */
     String KEY_ADD_NEW_HEALTH = "key_add_new_health";
-
+    /**
+     * 登录成功返回数据
+     */
     String KEY_LOGIN_SUCCESS_BEAN = "key_login_success_bean";
+    /**
+     * doctorid
+     */
+    String KEY_DOCTOR_ID = "key_doctor_id";
 }

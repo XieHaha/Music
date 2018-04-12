@@ -14,6 +14,8 @@ import custom.frame.bean.LoginSuccessBean;
 import custom.frame.bean.PatientBean;
 import custom.frame.http.listener.ResponseListener;
 
+import static custom.frame.http.data.HttpConstants.Method.GET;
+
 /**
  * Created by luozi on 2015/12/30.
  * baseRequest include requestString and requestObject and requestList
@@ -151,6 +153,7 @@ public class IRequest extends BaseRequest {
         return requestBaseResponseListByJson("/dp/mypatient", Tasks.GET_PATIENTS_LIST,
                 PatientBean.class, merchant, listener);
     }
+
     /**
      * 获取合作医生列表
      */
@@ -162,6 +165,7 @@ public class IRequest extends BaseRequest {
         return requestBaseResponseListByJson("/colleborate/doctorList", Tasks.GET_COOPERATE_DOC_LIST,
                 CooperateDocBean.class, merchant, listener);
     }
+
     /**
      * 获取申请合作医生列表
      */
@@ -173,6 +177,7 @@ public class IRequest extends BaseRequest {
         return requestBaseResponseListByJson("/colleborate/applyList", Tasks.GET_APPLY_COOPERATE_DOC_LIST,
                 CooperateDocBean.class, merchant, listener);
     }
+
     /**
      * 获取患者申请列表
      */
@@ -183,6 +188,52 @@ public class IRequest extends BaseRequest {
         merchant.put("pageSize", pageSize);
         return requestBaseResponseListByJson("/dp/patientrequest", Tasks.GET_APPLY_PATIENT_LIST,
                 PatientBean.class, merchant, listener);
+    }
+
+    /**
+     * 获取医生个人信息
+     */
+    public Tasks getDocInfo(String doctorId, final ResponseListener<BaseResponse> listener) {
+        RequestParams params = new RequestParams();
+        params.addBodyParameter("doctorId", doctorId);
+        return requestBaseResponse(GET, "/doctor/info", Tasks.GET_DOC_INFO,
+                CooperateDocBean.class, params, listener);
+    }
+
+    /**
+     * 拒绝患者申请
+     */
+    public Tasks refusePatientApply(String doctorId, String patientId, int requestSource, final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("patientId", patientId);
+        merchant.put("requestSource", requestSource);
+        return requestBaseResponseByJson("/dp/against", Tasks.REFUSE_PATIENT_APPLY,
+                String.class, merchant, listener);
+    }
+
+    /**
+     * 拒绝患者申请
+     */
+    public Tasks agreePatientApply(String doctorId, String patientId, int requestSource, final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("patientId", patientId);
+        merchant.put("requestSource", requestSource);
+        return requestBaseResponseByJson("/dp/agree", Tasks.AGREE_PATIENT_APPLY,
+                String.class, merchant, listener);
+    }
+    /**
+     * 处理医生申请合作（proCode为字符1（表示同意）或字符3（表示拒绝））  appliedId被申请人  applyId申请人
+     */
+    public Tasks dealDocApply(String appliedId, String applyId, int proCode,int requestSource, final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("appliedId", appliedId);
+        merchant.put("applyId", applyId);
+        merchant.put("proCode", proCode);
+        merchant.put("requestSource", requestSource);
+        return requestBaseResponseByJson("/colleborate/applyProcess", Tasks.DEAL_DOC_APPLY,
+                String.class, merchant, listener);
     }
 
 }

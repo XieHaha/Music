@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.data.OnEventTriggerListener;
 import com.yht.yihuantong.ui.adapter.ApplyCooperateAdapter;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
  * @author DUNDUN
  */
 public class ApplyCooperateDocActivity extends BaseActivity
-        implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener {
+        implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener, OnEventTriggerListener {
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
     private View  footerView;
@@ -47,6 +48,11 @@ public class ApplyCooperateDocActivity extends BaseActivity
      * 一页最大数
      */
     private static final int PAGE_SIZE = 20;
+
+    /**
+     * 医生端区别字段
+     */
+    private static final int MODE = 9;
 
     @Override
     public int getLayoutID() {
@@ -78,6 +84,7 @@ public class ApplyCooperateDocActivity extends BaseActivity
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         applyCooperateAdapter = new ApplyCooperateAdapter(this, applyCooperateList);
+        applyCooperateAdapter.setOnEventTriggerListener(this);
         applyCooperateAdapter.addFooterView(footerView);
         page = 0;
         getApplyCooperateList();
@@ -108,6 +115,12 @@ public class ApplyCooperateDocActivity extends BaseActivity
      */
     private void getApplyCooperateList() {
         mIRequest.getApplyCooperateList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
+    }
+    /**
+     * 处理医生合作申请
+     */
+    private void dealDocApply(String applyId,int way) {
+        mIRequest.dealDocApply(loginSuccessBean.getDoctorId(), applyId, way, MODE,this);
     }
 
     @Override
@@ -176,4 +189,13 @@ public class ApplyCooperateDocActivity extends BaseActivity
         getApplyCooperateList();
     }
 
+    @Override
+    public void onPositiveTrigger(String s) {
+        dealDocApply(s,1);
+    }
+
+    @Override
+    public void onNegativeTrigger(String s) {
+        dealDocApply(s,3);
+    }
 }

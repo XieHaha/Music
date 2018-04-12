@@ -13,6 +13,8 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.OnEventTriggerListener;
 import com.yht.yihuantong.tools.GlideHelper;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import custom.frame.bean.PatientBean;
@@ -54,7 +56,7 @@ public class ApplyPatientAdapter extends BaseRecyclerAdapter<PatientBean> {
     public class ApplyPatientHolder extends BaseViewHolder<PatientBean> {
         private LinearLayout llLayout;
         private ImageView ivHeadImg;
-        private TextView tvName, tvType, tvHopital, tvRefuse, tvAgree;
+        private TextView tvName, tvType, tvHopital, tvRefuse, tvAgree, tvPhone;
 
         public ApplyPatientHolder(View itemView) {
             super(itemView);
@@ -64,17 +66,25 @@ public class ApplyPatientAdapter extends BaseRecyclerAdapter<PatientBean> {
             tvName = itemView.findViewById(R.id.item_patient_list_name);
             tvRefuse = itemView.findViewById(R.id.item_patient_list_refuse);
             tvAgree = itemView.findViewById(R.id.item_patient_list_agree);
+            tvPhone = itemView.findViewById(R.id.item_patient_list_phone);
         }
 
         @Override
         public void showView(final int position, final PatientBean item) {
-            Glide.with(context).load(item.getPatientImgUrl()).apply(GlideHelper.getOptions()).into(ivHeadImg);
+            String newUrl = "";
+            try {
+                newUrl = URLEncoder.encode(item.getPatientImgUrl(), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            Glide.with(context).load(newUrl).apply(GlideHelper.getOptions()).into(ivHeadImg);
             tvName.setText(item.getName());
+            tvPhone.setText(item.getPhone());
             tvAgree.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (onEventTriggerListener != null) {
-                        onEventTriggerListener.onPositiveTrigger();
+                        onEventTriggerListener.onPositiveTrigger(item.getPatientId());
                     }
                 }
             });
@@ -83,7 +93,7 @@ public class ApplyPatientAdapter extends BaseRecyclerAdapter<PatientBean> {
                 @Override
                 public void onClick(View v) {
                     if (onEventTriggerListener != null) {
-                        onEventTriggerListener.onNegativeTrigger();
+                        onEventTriggerListener.onNegativeTrigger(item.getPatientId());
                     }
                 }
             });
