@@ -33,5 +33,17 @@ public enum Tasks
      * 获取患者列表
      */
     GET_PATIENTS_LIST,
+    /**
+     * 获取合作医生列表
+     */
+    GET_COOPERATE_DOC_LIST,
+    /**
+     * 获取申请合作医生列表
+     */
+    GET_APPLY_COOPERATE_DOC_LIST,
+    /**
+     * 获取患者申请列表
+     */
+    GET_APPLY_PATIENT_LIST,
 }
 

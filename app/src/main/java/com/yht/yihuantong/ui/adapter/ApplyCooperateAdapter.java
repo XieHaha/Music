@@ -8,9 +8,9 @@ import android.widget.LinearLayout;
 
 import com.yht.yihuantong.R;
 
-import java.util.HashMap;
 import java.util.List;
 
+import custom.frame.bean.CooperateDocBean;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.ui.adapter.BaseViewHolder;
 
@@ -19,16 +19,14 @@ import custom.frame.ui.adapter.BaseViewHolder;
  *
  * @author DUNDUN
  */
-public class ApplyCooperateAdapter extends BaseRecyclerAdapter<String>
+public class ApplyCooperateAdapter extends BaseRecyclerAdapter<CooperateDocBean>
 {
     private Context context;
-    private HashMap<String, Boolean> mMemoryCache;
 
-    public ApplyCooperateAdapter(Context context, List<String> list)
+    public ApplyCooperateAdapter(Context context, List<CooperateDocBean> list)
     {
         super(list);
         this.context = context;
-        mMemoryCache = new HashMap<>();
     }
 
     @Override
@@ -36,21 +34,21 @@ public class ApplyCooperateAdapter extends BaseRecyclerAdapter<String>
     {
         View view = LayoutInflater.from(parent.getContext())
                                   .inflate(R.layout.item_cooperate_list, parent, false);
-        return new DynamicHolder(view);
+        return new ApplyCooperateHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position, String item)
+    public void onBindViewHolder(BaseViewHolder holder, int position, CooperateDocBean item)
     {
         super.onBindViewHolder(holder, position, item);
         holder.showView(position, item);
     }
 
-    public class DynamicHolder extends BaseViewHolder<String>
+    public class ApplyCooperateHolder extends BaseViewHolder<CooperateDocBean>
     {
         LinearLayout llLayout;
 
-        public DynamicHolder(View itemView)
+        public ApplyCooperateHolder(View itemView)
         {
             super(itemView);
             llLayout = itemView.findViewById(R.id.item_cooperate_list_layout);
@@ -58,7 +56,7 @@ public class ApplyCooperateAdapter extends BaseRecyclerAdapter<String>
         }
 
         @Override
-        public void showView(final int position, final String item)
+        public void showView(final int position, final CooperateDocBean item)
         {
         }
     }

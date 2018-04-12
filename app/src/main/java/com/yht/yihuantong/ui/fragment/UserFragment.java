@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
+import com.yht.yihuantong.tools.GlideHelper;
 import com.yht.yihuantong.ui.activity.EditInfoActivity;
 import com.yht.yihuantong.ui.activity.LoginActivity;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
@@ -70,7 +71,7 @@ public class UserFragment extends BaseFragment {
 
             if(!TextUtils.isEmpty(headImgUrl))
             {
-                Glide.with(this).load(headImgUrl).into(headImg);
+                Glide.with(this).load(headImgUrl).apply(GlideHelper.getOptions()).into(headImg);
             }
 
             tvName.setText(loginSuccessBean.getName());

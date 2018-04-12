@@ -317,6 +317,91 @@ public class BaseRequest<T> extends HttpProxy {
     }
 
     /**
+     *
+     * @param task     任务队列id
+     * @param merchant 请求参数
+     * @param classOfT 需转换的类型
+     * @param listener 请求回调
+     */
+    public final Tasks requestBaseResponseListByJson(String moduleName, final Tasks task, final Class<T> classOfT, final Map<String, Object> merchant,
+                                                 final ResponseListener<BaseResponse> listener) {
+
+        JsonRequest<JSONObject> jsonRequest;
+        if (listener != null) {
+            listener.onResponseStart(task);
+        }
+        int method = Request.Method.POST;
+        final JSONObject jsonObject = new JSONObject(merchant);
+        Log.i("test", "params:" + jsonObject.toString());
+        String url = appendUrl(moduleName);
+        jsonRequest = new JsonObjectRequest(method, url, jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    BaseResponse baseResponse = praseBaseResponseList(response, classOfT);
+                    /**
+                     * 如果请求码成功
+                     * */
+                    if (REQUEST_SUCCESS == baseResponse.getCode()) {
+                        if (listener != null) {
+                            listener.onResponseSuccess(task, baseResponse);
+                            listener.onResponseEnd(task);
+                        }
+                    } else {
+                        /**
+                         * 调用请求码异常
+                         * */
+                        if (listener != null) {
+                            listener.onResponseCodeError(task, baseResponse);
+                            listener.onResponseEnd(task);
+                        }
+                    }
+                } catch (JSONException je) {
+                    if (listener != null) {
+                        listener.onResponseError(task, je);
+                        listener.onResponseEnd(task);
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (listener != null) {
+                    listener.onResponseError(task, new Exception("网络繁忙，请稍后再试"));
+                    listener.onResponseEnd(task);
+                }
+            }
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() {
+                HashMap<String, String> headers = new HashMap<>(16);
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json; charset=UTF-8");
+
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() {
+                try {
+                    return jsonObject.toString().getBytes("UTF-8");
+
+                } catch (Exception e) {
+                }
+                return null;
+            }
+        };
+        /**复写重试方针*/
+        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
+        //设置tag
+        jsonRequest.setTag(task);
+        //加入请求队列
+        mQueue.add(jsonRequest);
+        return task;
+    }
+
+    /**
      * requestBaseResponseList 以baseResponse结构的json解析字符串
      *
      * @param metoh    请求方式

@@ -9,7 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import custom.frame.bean.BaseResponse;
+import custom.frame.bean.CooperateDocBean;
 import custom.frame.bean.LoginSuccessBean;
+import custom.frame.bean.PatientBean;
 import custom.frame.http.listener.ResponseListener;
 
 /**
@@ -146,8 +148,41 @@ public class IRequest extends BaseRequest {
         merchant.put("doctorId", doctorId);
         merchant.put("pageNo", pageNo);
         merchant.put("pageSize", pageSize);
-        return requestBaseResponseByJson("/dp/mypatient", Tasks.GET_PATIENTS_LIST,
-                String.class, merchant, listener);
+        return requestBaseResponseListByJson("/dp/mypatient", Tasks.GET_PATIENTS_LIST,
+                PatientBean.class, merchant, listener);
+    }
+    /**
+     * 获取合作医生列表
+     */
+    public Tasks getCooperateList(String doctorId, int pageNo, int pageSize, final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("pageNo", pageNo);
+        merchant.put("pageSize", pageSize);
+        return requestBaseResponseListByJson("/colleborate/doctorList", Tasks.GET_COOPERATE_DOC_LIST,
+                CooperateDocBean.class, merchant, listener);
+    }
+    /**
+     * 获取申请合作医生列表
+     */
+    public Tasks getApplyCooperateList(String doctorId, int pageNo, int pageSize, final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("pageNo", pageNo);
+        merchant.put("pageSize", pageSize);
+        return requestBaseResponseListByJson("/colleborate/applyList", Tasks.GET_APPLY_COOPERATE_DOC_LIST,
+                CooperateDocBean.class, merchant, listener);
+    }
+    /**
+     * 获取患者申请列表
+     */
+    public Tasks getApplyPatientList(String doctorId, int pageNo, int pageSize, final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("pageNo", pageNo);
+        merchant.put("pageSize", pageSize);
+        return requestBaseResponseListByJson("/dp/patientrequest", Tasks.GET_APPLY_PATIENT_LIST,
+                PatientBean.class, merchant, listener);
     }
 
 }

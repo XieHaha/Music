@@ -11,13 +11,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.adapter.ApplyCooperateAdapter;
+import com.yht.yihuantong.data.OnEventTriggerListener;
+import com.yht.yihuantong.ui.adapter.ApplyPatientAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import custom.frame.bean.BaseResponse;
-import custom.frame.bean.CooperateDocBean;
+import custom.frame.bean.PatientBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
@@ -25,19 +26,19 @@ import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
- * 申请合作的医生
+ * 患者申请
  *
  * @author DUNDUN
  */
-public class ApplyCooperateDocActivity extends BaseActivity
-        implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener {
+public class ApplyPatientActivity extends BaseActivity
+        implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener, OnEventTriggerListener {
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
     private View  footerView;
     private TextView tvHintTxt;
 
-    private ApplyCooperateAdapter applyCooperateAdapter;
-    private List<CooperateDocBean> applyCooperateList = new ArrayList<>();
+    private ApplyPatientAdapter applyPatientAdapter;
+    private List<PatientBean> applyPatientList = new ArrayList<>();
 
     /**
      * 当前页码
@@ -50,7 +51,7 @@ public class ApplyCooperateDocActivity extends BaseActivity
 
     @Override
     public int getLayoutID() {
-        return R.layout.act_apply_cooperate;
+        return R.layout.act_apply_patient;
     }
 
     @Override
@@ -63,9 +64,9 @@ public class ApplyCooperateDocActivity extends BaseActivity
         super.initView(savedInstanceState);
         ((TextView) findViewById(R.id.public_title_bar_title)).setText("申请人");
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(
-                R.id.act_apply_cooperate_swipe_layout);
+                R.id.act_apply_patient_swipe_layout);
         autoLoadRecyclerView = (AutoLoadRecyclerView) findViewById(
-                R.id.act_apply_cooperate_recycler_view);
+                R.id.act_apply_patient_recycler_view);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light, android.R.color.holo_orange_light, android.R.color.holo_green_light);
 
         footerView = LayoutInflater.from(this)
@@ -77,10 +78,11 @@ public class ApplyCooperateDocActivity extends BaseActivity
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        applyCooperateAdapter = new ApplyCooperateAdapter(this, applyCooperateList);
-        applyCooperateAdapter.addFooterView(footerView);
+        applyPatientAdapter = new ApplyPatientAdapter(this, applyPatientList);
+        applyPatientAdapter.setOnEventTriggerListener(this);
+        applyPatientAdapter.addFooterView(footerView);
         page = 0;
-        getApplyCooperateList();
+        getApplyPatientList();
     }
 
     @Override
@@ -91,12 +93,12 @@ public class ApplyCooperateDocActivity extends BaseActivity
         autoLoadRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        autoLoadRecyclerView.setAdapter(applyCooperateAdapter);
-        applyCooperateAdapter.setOnItemClickListener(
-                new BaseRecyclerAdapter.OnItemClickListener<CooperateDocBean>() {
+        autoLoadRecyclerView.setAdapter(applyPatientAdapter);
+        applyPatientAdapter.setOnItemClickListener(
+                new BaseRecyclerAdapter.OnItemClickListener<PatientBean>() {
                     @Override
-                    public void onItemClick(View v, int position, CooperateDocBean item) {
-                        Intent intent = new Intent(ApplyCooperateDocActivity.this,
+                    public void onItemClick(View v, int position, PatientBean item) {
+                        Intent intent = new Intent(ApplyPatientActivity.this,
                                 UserInfoActivity.class);
                         startActivity(intent);
                     }
@@ -104,26 +106,26 @@ public class ApplyCooperateDocActivity extends BaseActivity
     }
 
     /**
-     * 获取申请合作医生列表数据
+     * 获取患者申请列表
      */
-    private void getApplyCooperateList() {
-        mIRequest.getApplyCooperateList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
+    private void getApplyPatientList() {
+        mIRequest.getApplyPatientList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
     }
 
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         switch (task) {
-            case GET_COOPERATE_DOC_LIST:
-                applyCooperateList = response.getData();
+            case GET_APPLY_PATIENT_LIST:
+                applyPatientList = response.getData();
                 if (page == 0) {
-                    applyCooperateAdapter.setList(applyCooperateList);
+                    applyPatientAdapter.setList(applyPatientList);
                 } else {
-                    applyCooperateAdapter.addList(applyCooperateList);
+                    applyPatientAdapter.addList(applyPatientList);
                 }
-                applyCooperateAdapter.notifyDataSetChanged();
+                applyPatientAdapter.notifyDataSetChanged();
 
-                if (applyCooperateList.size() < PAGE_SIZE) {
+                if (applyPatientList.size() < PAGE_SIZE) {
                     tvHintTxt.setText("暂无更多数据");
                     autoLoadRecyclerView.loadFinish(false);
                 } else {
@@ -166,14 +168,23 @@ public class ApplyCooperateDocActivity extends BaseActivity
     @Override
     public void onRefresh() {
         page = 0;
-        getApplyCooperateList();
+        getApplyPatientList();
     }
 
     @Override
     public void loadMore() {
         swipeRefreshLayout.setRefreshing(true);
         page++;
-        getApplyCooperateList();
+        getApplyPatientList();
     }
 
+    @Override
+    public void onPositiveTrigger() {
+
+    }
+
+    @Override
+    public void onNegativeTrigger() {
+
+    }
 }

@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.tools.DirHelper;
+import com.yht.yihuantong.tools.GlideHelper;
 import com.yht.yihuantong.ui.dialog.ActionSheetDialog;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.utils.AllUtils;
@@ -122,7 +123,7 @@ public class EditInfoActivity extends BaseActivity {
             }
 
             if (!TextUtils.isEmpty(headImgUrl)) {
-                Glide.with(this).load(headImgUrl).into(headImg);
+                Glide.with(this).load(headImgUrl).apply(GlideHelper.getOptions()).into(headImg);
             }
             etName.setText(name);
             etHospital.setText(hospital);

@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.fragment.PatientsFragment;
 
-import java.util.HashMap;
 import java.util.List;
 
+import custom.frame.bean.PatientBean;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.ui.adapter.BaseViewHolder;
 
@@ -19,18 +19,16 @@ import custom.frame.ui.adapter.BaseViewHolder;
  * 患者列表适配器
  * @author DUNDUN
  */
-public class PatientsListAdapter extends BaseRecyclerAdapter<String>
+public class PatientsListAdapter extends BaseRecyclerAdapter<PatientBean>
 {
     private PatientsFragment fragment;
     private Context context;
-    private HashMap<String, Boolean> mMemoryCache;
 
-    public PatientsListAdapter(PatientsFragment fragment, List<String> list)
+    public PatientsListAdapter(PatientsFragment fragment, List<PatientBean> list)
     {
         super(list);
         this.fragment = fragment;
         context = fragment.getContext();
-        mMemoryCache = new HashMap<>();
     }
 
     @Override
@@ -38,25 +36,25 @@ public class PatientsListAdapter extends BaseRecyclerAdapter<String>
     {
         View view = LayoutInflater.from(parent.getContext())
                                   .inflate(R.layout.item_patients_list, parent, false);
-        return new DynamicHolder(view);
+        return new PatientsHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position, String item)
+    public void onBindViewHolder(BaseViewHolder holder, int position, PatientBean item)
     {
         super.onBindViewHolder(holder, position, item);
         holder.showView(position, item);
     }
 
-    public class DynamicHolder extends BaseViewHolder<String>
+    public class PatientsHolder extends BaseViewHolder<PatientBean>
     {
-        public DynamicHolder(View itemView)
+        public PatientsHolder(View itemView)
         {
             super(itemView);
         }
 
         @Override
-        public void showView(final int position, final String item)
+        public void showView(final int position, final PatientBean item)
         {
         }
     }

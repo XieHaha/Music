@@ -6,10 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.ui.activity.ApplyCooperateDocActivity;
+import com.yht.yihuantong.ui.activity.ApplyPatientActivity;
 import com.yht.yihuantong.ui.activity.HealthCardActivity;
 import com.yht.yihuantong.ui.adapter.PatientsListAdapter;
 
@@ -17,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import custom.frame.bean.BaseResponse;
+import custom.frame.bean.PatientBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.ui.fragment.BaseFragment;
@@ -33,7 +37,11 @@ public class PatientsFragment extends BaseFragment
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
     private PatientsListAdapter patientsListAdapter;
-    private List<String> msgList = new ArrayList<>();
+
+    private View headerView, footerView;
+    private TextView tvFooterHintTxt, tvHeanderHintTxt;
+
+    private List<PatientBean> patientBeanList = new ArrayList<>();
 
     /**
      * 当前页码
@@ -55,30 +63,40 @@ public class PatientsFragment extends BaseFragment
         ((TextView) view.findViewById(R.id.public_title_bar_title)).setText("我的患者");
         swipeRefreshLayout = view.findViewById(R.id.fragment_patients_swipe_layout);
         autoLoadRecyclerView = view.findViewById(R.id.fragment_patients_recycler_view);
+
+        headerView = LayoutInflater.from(getContext())
+                .inflate(R.layout.view_cooperate_doc_header, null);
+        footerView = LayoutInflater.from(getContext())
+                .inflate(R.layout.view_list_footerr, null);
+        tvHeanderHintTxt = headerView.findViewById(R.id.view_header_hint_txt);
+        tvFooterHintTxt = footerView.findViewById(R.id.footer_hint_txt);
+        tvHeanderHintTxt.setText("患者申请");
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light, android.R.color.holo_orange_light, android.R.color.holo_green_light);
     }
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        for (int i = 0; i < 10; i++) {
-            msgList.add("消息--" + i);
-        }
-        patientsListAdapter = new PatientsListAdapter(this, msgList);
-        page = 1;
+        patientsListAdapter = new PatientsListAdapter(this, patientBeanList);
+
+        patientsListAdapter.addHeaderView(headerView);
+        patientsListAdapter.addFooterView(footerView);
+        page = 0;
         getPatientsData();
     }
 
     @Override
     public void initListener() {
+        headerView.setOnClickListener(this);
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
         autoLoadRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(patientsListAdapter);
-        patientsListAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener<String>() {
+        patientsListAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener<PatientBean>() {
             @Override
-            public void onItemClick(View v, int position, String item) {
+            public void onItemClick(View v, int position, PatientBean item) {
                 Intent intent = new Intent(getContext(), HealthCardActivity.class);
                 startActivity(intent);
             }
@@ -93,12 +111,29 @@ public class PatientsFragment extends BaseFragment
     }
 
     @Override
+    public void onClick(View v) {
+        super.onClick(v);
+        switch (v.getId()) {
+            case R.id.fragment_cooperate_apply_layout:
+                Intent intent = new Intent(getContext(), ApplyPatientActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
     public void onRefresh() {
-        page = 1;
+        page = 0;
+        getPatientsData();
     }
 
     @Override
     public void loadMore() {
+        swipeRefreshLayout.setRefreshing(true);
+        page++;
+        getPatientsData();
     }
 
     @Override
@@ -106,9 +141,53 @@ public class PatientsFragment extends BaseFragment
         super.onResponseSuccess(task, response);
         switch (task) {
             case GET_PATIENTS_LIST:
+                if (response.getData() != null) {
+                    patientBeanList = response.getData();
+                    if (page == 0) {
+                        patientsListAdapter.setList(patientBeanList);
+                    } else {
+                        patientsListAdapter.addList(patientBeanList);
+                    }
+                    patientsListAdapter.notifyDataSetChanged();
+
+                    if (patientBeanList.size() < PAGE_SIZE) {
+                        tvFooterHintTxt.setText("暂无更多数据");
+                        autoLoadRecyclerView.loadFinish(false);
+                    } else {
+                        tvFooterHintTxt.setText("上拉加载更多");
+                        autoLoadRecyclerView.loadFinish(true);
+                    }
+                }
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onResponseCodeError(Tasks task, BaseResponse response) {
+        super.onResponseCodeError(task, response);
+        if (page > 0) {
+            page--;
+        }
+        tvFooterHintTxt.setText("暂无更多数据");
+        autoLoadRecyclerView.loadFinish();
+    }
+
+    @Override
+    public void onResponseError(Tasks task, Exception e) {
+        super.onResponseError(task, e);
+        if (page > 0) {
+            page--;
+        }
+        tvFooterHintTxt.setText("暂无更多数据");
+        autoLoadRecyclerView.loadFinish();
+    }
+
+
+    @Override
+    public void onResponseEnd(Tasks task) {
+        super.onResponseEnd(task);
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

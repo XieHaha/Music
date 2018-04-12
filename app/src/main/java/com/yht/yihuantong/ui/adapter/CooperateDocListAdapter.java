@@ -4,13 +4,17 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.fragment.CooperateDocFragment;
+import com.yht.yihuantong.tools.GlideHelper;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 
+import custom.frame.bean.CooperateDocBean;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.ui.adapter.BaseViewHolder;
 
@@ -19,45 +23,49 @@ import custom.frame.ui.adapter.BaseViewHolder;
  *
  * @author DUNDUN
  */
-public class CooperateDocListAdapter extends BaseRecyclerAdapter<String>
-{
-    private CooperateDocFragment fragment;
+public class CooperateDocListAdapter extends BaseRecyclerAdapter<CooperateDocBean> {
     private Context context;
-    private HashMap<String, Boolean> mMemoryCache;
 
-    public CooperateDocListAdapter(CooperateDocFragment fragment, List<String> list)
-    {
+    private ArrayList<CooperateDocBean> cooperateDocBeans = new ArrayList<>();
+
+    public CooperateDocListAdapter(Context context, List<CooperateDocBean> list) {
         super(list);
-        this.fragment = fragment;
-        context = fragment.getContext();
-        mMemoryCache = new HashMap<>();
+        this.context = context;
     }
 
     @Override
-    public BaseViewHolder onCreateViewHolder(ViewGroup parent)
-    {
+    public BaseViewHolder onCreateViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext())
-                                  .inflate(R.layout.item_cooperate_list, parent, false);
-        return new DynamicHolder(view);
+                .inflate(R.layout.item_cooperate_list, parent, false);
+        return new CooperateDocHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position, String item)
-    {
+    public void onBindViewHolder(BaseViewHolder holder, int position, CooperateDocBean item) {
         super.onBindViewHolder(holder, position, item);
         holder.showView(position, item);
     }
 
-    public class DynamicHolder extends BaseViewHolder<String>
-    {
-        public DynamicHolder(View itemView)
-        {
+    public class CooperateDocHolder extends BaseViewHolder<CooperateDocBean> {
+        private ImageView ivHeadImg;
+        private TextView tvName, tvType, tvHopital;
+
+
+        public CooperateDocHolder(View itemView) {
             super(itemView);
+            ivHeadImg = itemView.findViewById(R.id.item_cooperate_list_headimg);
+            tvName = itemView.findViewById(R.id.item_cooperate_list_name);
+            tvType = itemView.findViewById(R.id.item_cooperate_list_type);
+            tvHopital = itemView.findViewById(R.id.item_cooperate_list_hospital);
+            tvName = itemView.findViewById(R.id.item_cooperate_list_name);
         }
 
         @Override
-        public void showView(final int position, final String item)
-        {
+        public void showView(final int position, final CooperateDocBean item) {
+            Glide.with(context).load(item.getPortraitUrl()).apply(GlideHelper.getOptions()).into(ivHeadImg);
+            tvName.setText(item.getName());
+            tvHopital.setText(item.getHospital());
+            tvType.setText(item.getDepartment());
         }
     }
 }
