@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import com.alibaba.fastjson.JSON;
 import com.yht.yihuantong.data.CommonData;
 
+import cn.jpush.android.api.JPushInterface;
 import custom.frame.bean.LoginSuccessBean;
 import custom.frame.utils.SharePreferenceUtil;
 
@@ -40,6 +41,10 @@ public class YihtApplication extends Application {
         //        EMClient.getInstance().init(this, options);
         //        //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
         //        EMClient.getInstance().setDebugMode(true);
+
+        //极光推送
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
     }
 
     private void init() {

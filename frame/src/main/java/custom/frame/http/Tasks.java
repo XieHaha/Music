@@ -34,6 +34,10 @@ public enum Tasks
      */
     GET_PATIENTS_LIST,
     /**
+     * 医生扫码添加患者
+     */
+    ADD_PATIENT_BY_SCAN,
+    /**
      * 获取合作医生列表
      */
     GET_COOPERATE_DOC_LIST,
@@ -50,6 +54,26 @@ public enum Tasks
      */
     GET_DOC_INFO,
     /**
+     * 获取患者个人信息
+     */
+    GET_PATIENT_INFO,
+    /**
+     * 删除患者（取消关注）
+     */
+    DELETE_PATIENT,
+    /**
+     * 获取患者手术信息
+     */
+    GET_PATIENT_SURGERY_INFO,
+    /**
+     * 获取患者诊断信息
+     */
+    GET_PATIENT_DIAGNOSIS_INFO,
+    /**
+     * 获取患者过敏信息
+     */
+    GET_PATIENT_ALLERGY_INFO,
+    /**
      * 拒绝患者申请
      */
     REFUSE_PATIENT_APPLY,
@@ -57,6 +81,18 @@ public enum Tasks
      * 同意患者申请
      */
     AGREE_PATIENT_APPLY,
+    /**
+     * 获取患者病例列表
+     */
+    GET_PATIENT_CASE_LIST,
+    /**
+     * 新增患者病例
+     */
+    ADD_PATIENT_CASE,
+    /**
+     * 更新患者病例
+     */
+    UPDATE_PATIENT_CASE,
     /**
      * 处理医生申请合作（proCode为字符1（表示同意）或字符3（表示拒绝））
      */

@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import org.apache.http.protocol.HTTP;
 
 import java.io.File;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -38,7 +38,7 @@ public class RequestParams {
      */
     public void addBodyParameter(String name, String value) {
         if (stringsParams == null) {
-            stringsParams = new HashMap<String, StringContent>();
+            stringsParams = new LinkedHashMap<String, StringContent>();
         }
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(value)) {
             StringContent content = new StringContent(value, null);
@@ -55,7 +55,7 @@ public class RequestParams {
      */
     public void addBodyParameter(String name, String value, String charset) {
         if (stringsParams == null) {
-            stringsParams = new HashMap<String, StringContent>();
+            stringsParams = new LinkedHashMap<String, StringContent>();
         }
         StringContent content = new StringContent(value, charset);
         stringsParams.put(name, content);
@@ -92,7 +92,7 @@ public class RequestParams {
      */
     public void addBodyParameter(String key, File file, String mimeType, String charset) {
         if (filesParams == null) {
-            filesParams = new HashMap<String, FileContent>();
+            filesParams = new LinkedHashMap<String, FileContent>();
         }
         filesParams.put(key, new FileContent(file, null, mimeType, charset));
     }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/app_white_color"
     android:layout_height="72dp">
 
     <FrameLayout
@@ -11,7 +12,7 @@
         android:layout_height="64dp">
 
         <ImageView
-            android:id="@+id/item_msg_list_headimg"
+            android:id="@+id/item_patient_list_headimg"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
@@ -42,7 +43,7 @@
 
 
     <TextView
-        android:id="@+id/item_msg_list_name"
+        android:id="@+id/item_patient_list_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15sp"
@@ -55,31 +56,32 @@
         android:ellipsize="end" />
 
     <LinearLayout
+        android:id="@+id/item_patient_list_layout"
         android:layout_width="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:gravity="center_vertical"
         android:layout_marginRight="16dp"
-        android:layout_height="wrap_content">
+        android:layout_height="30dp">
 
         <ImageView
-            android:id="@+id/item_msg_list_sex"
+            android:id="@+id/item_patient_list_sex"
             android:layout_width="11dp"
-            android:src="@mipmap/icon_default_imgs"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/user_sex_selector"
             android:layout_height="11dp" />
 
         <TextView
-            android:id="@+id/item_msg_list_age"
+            android:id="@+id/item_patient_list_age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:maxLines="1"
-            android:textColor="#ff0A85E1"
+            android:textColor="@color/age_txt_color_selector"
             android:layout_marginLeft="5dp"
-            android:text="99"
+            android:text="0"
             android:ellipsize="end" />
-
     </LinearLayout>
 
 

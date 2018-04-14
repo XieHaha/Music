@@ -31,6 +31,7 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:id="@+id/act_health_detail_hint"
                     android:layout_width="wrap_content"
                     android:text="*为必填项"
                     android:textColor="#ff3333"
@@ -46,22 +47,32 @@
                 android:layout_height="45dp">
 
                 <TextView
+                    android:id="@+id/txt1"
                     android:layout_width="wrap_content"
                     android:text="诊断"
                     android:layout_marginLeft="16dp"
                     android:layout_centerVertical="true"
-                    android:textColor="#333333"
+                    android:textColor="#999999"
                     android:textSize="15sp"
                     android:layout_height="wrap_content" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="*"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/txt1"
+                    android:layout_marginLeft="2dp"
+                    android:textColor="@color/app_main_color"
+                    android:layout_height="wrap_content" />
+
                 <EditText
+                    android:id="@+id/act_health_detail_diagnosis"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
                     android:textColor="#333333"
                     android:textSize="15sp"
-                    android:text="暂无记录"
                     android:layout_height="match_parent" />
 
                 <View
@@ -77,22 +88,33 @@
                 android:layout_height="45dp">
 
                 <TextView
+                    android:id="@+id/txt2"
                     android:layout_width="wrap_content"
                     android:text="就诊时间"
                     android:layout_marginLeft="16dp"
                     android:layout_centerVertical="true"
-                    android:textColor="#333333"
+                    android:textColor="#999999"
                     android:textSize="15sp"
                     android:layout_height="wrap_content" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="*"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/txt2"
+                    android:layout_marginLeft="2dp"
+                    android:textColor="@color/app_main_color"
+                    android:layout_height="wrap_content" />
+
                 <EditText
+                    android:id="@+id/act_health_detail_diagnosis_time"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
                     android:textColor="#333333"
                     android:textSize="15sp"
-                    android:text="暂无记录"
+                    android:text=""
                     android:layout_height="match_parent" />
 
                 <View
@@ -112,18 +134,19 @@
                     android:text="科室"
                     android:layout_marginLeft="16dp"
                     android:layout_centerVertical="true"
-                    android:textColor="#333333"
+                    android:textColor="#999999"
                     android:textSize="15sp"
                     android:layout_height="wrap_content" />
 
                 <EditText
+                    android:id="@+id/act_health_detail_department"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
                     android:textColor="#333333"
                     android:textSize="15sp"
-                    android:text="暂无记录"
+                    android:text=""
                     android:layout_height="match_parent" />
 
                 <View
@@ -143,18 +166,18 @@
                     android:text="医院"
                     android:layout_marginLeft="16dp"
                     android:layout_centerVertical="true"
-                    android:textColor="#333333"
+                    android:textColor="#999999"
                     android:textSize="15sp"
                     android:layout_height="wrap_content" />
-
                 <EditText
+                    android:id="@+id/act_health_detail_hopital"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
                     android:textColor="#333333"
                     android:textSize="15sp"
-                    android:text="暂无记录"
+                    android:text=""
                     android:layout_height="match_parent" />
 
                 <View
@@ -174,18 +197,19 @@
                     android:text="主诉"
                     android:layout_marginLeft="16dp"
                     android:layout_centerVertical="true"
-                    android:textColor="#333333"
+                    android:textColor="#999999"
                     android:textSize="15sp"
                     android:layout_height="wrap_content" />
 
                 <EditText
+                    android:id="@+id/act_health_detail_case_info"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
                     android:textColor="#333333"
                     android:textSize="15sp"
-                    android:text="暂无记录"
+                    android:text=""
                     android:layout_height="match_parent" />
 
                 <View
@@ -205,18 +229,19 @@
                     android:text="现病史"
                     android:layout_marginLeft="16dp"
                     android:layout_centerVertical="true"
-                    android:textColor="#333333"
+                    android:textColor="#999999"
                     android:textSize="15sp"
                     android:layout_height="wrap_content" />
 
                 <EditText
+                    android:id="@+id/act_health_detail_case_now"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
                     android:textColor="#333333"
                     android:textSize="15sp"
-                    android:text="暂无记录"
+                    android:text=""
                     android:layout_height="match_parent" />
 
                 <View
@@ -236,18 +261,19 @@
                     android:text="重要病史"
                     android:layout_marginLeft="16dp"
                     android:layout_centerVertical="true"
-                    android:textColor="#333333"
+                    android:textColor="#999999"
                     android:textSize="15sp"
                     android:layout_height="wrap_content" />
 
                 <EditText
+                    android:id="@+id/act_health_detail_case_importent"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
                     android:textColor="#333333"
                     android:textSize="15sp"
-                    android:text="暂无记录"
+                    android:text=""
                     android:layout_height="match_parent" />
 
                 <View
@@ -267,18 +293,19 @@
                     android:text="体格检查"
                     android:layout_marginLeft="16dp"
                     android:layout_centerVertical="true"
-                    android:textColor="#333333"
+                    android:textColor="#999999"
                     android:textSize="15sp"
                     android:layout_height="wrap_content" />
 
                 <EditText
+                    android:id="@+id/act_health_detail_check"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
                     android:textColor="#333333"
                     android:textSize="15sp"
-                    android:text="暂无记录"
+                    android:text=""
                     android:layout_height="match_parent" />
 
                 <View
@@ -298,18 +325,19 @@
                     android:text="治疗"
                     android:layout_marginLeft="16dp"
                     android:layout_centerVertical="true"
-                    android:textColor="#333333"
+                    android:textColor="#999999"
                     android:textSize="15sp"
                     android:layout_height="wrap_content" />
 
                 <EditText
+                    android:id="@+id/act_health_detail_deal_type"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
                     android:textColor="#333333"
                     android:textSize="15sp"
-                    android:text="暂无记录"
+                    android:text=""
                     android:layout_height="match_parent" />
 
                 <View
@@ -332,14 +360,15 @@
                 android:layout_height="30dp" />
 
             <custom.frame.widgets.gridview.AutoGridView
-                android:id="@+id/act_publish_dynamic_auto_gridView"
+                android:id="@+id/act_health_detail_auto_gridview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/app_white_color" />
 
             <TextView
+                android:id="@+id/act_health_detail_create_time"
                 android:layout_width="match_parent"
-                android:text="2018-04-09 医生创建"
+                android:text=""
                 android:textColor="#999999"
                 android:layout_centerVertical="true"
                 android:textSize="12sp"

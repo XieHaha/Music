@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/app_white_color"
     android:layout_height="70dp">
 
     <LinearLayout
@@ -12,14 +13,15 @@
 
 
         <TextView
+            android:id="@+id/item_case_record_content"
             android:layout_width="wrap_content"
-            android:text="第一次会诊"
+            android:text="暂无信息"
             android:textColor="#333333"
             android:textSize="15sp"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/fragment_base_info_sex"
+            android:id="@+id/item_case_record_time"
             android:layout_width="wrap_content"
             android:text="2001-01-01"
             android:layout_marginTop="5dp"
@@ -30,7 +32,7 @@
 
     <ImageView
         android:layout_width="15dp"
-        android:src="@mipmap/icon_default_imgs"
+        android:src="@mipmap/icon_arrow_right"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="16dp"

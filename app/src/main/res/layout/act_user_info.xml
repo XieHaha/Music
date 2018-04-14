@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/bg_img"
         android:layout_width="match_parent"
-        android:src="@color/app_main_color"
+        android:src="@mipmap/img_user_bg"
         android:scaleType="centerCrop"
         android:layout_height="300dp" />
 

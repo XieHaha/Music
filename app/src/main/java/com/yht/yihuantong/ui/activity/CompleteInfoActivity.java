@@ -21,7 +21,6 @@ import android.widget.EditText;
 import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
-import com.yht.yihuantong.tools.DirHelper;
 import com.yht.yihuantong.ui.dialog.ActionSheetDialog;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.utils.AllUtils;
@@ -38,6 +37,7 @@ import custom.frame.bean.BaseResponse;
 import custom.frame.http.Tasks;
 import custom.frame.permission.Permission;
 import custom.frame.ui.activity.BaseActivity;
+import custom.frame.utils.DirHelper;
 import custom.frame.utils.ToastUtil;
 import de.hdodenhof.circleimageview.CircleImageView;
 

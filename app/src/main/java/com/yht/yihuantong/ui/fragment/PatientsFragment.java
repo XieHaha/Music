@@ -8,10 +8,15 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.activity.ApplyCooperateDocActivity;
+import com.yht.yihuantong.data.CommonData;
+import com.yht.yihuantong.tools.ZxingHelper;
 import com.yht.yihuantong.ui.activity.ApplyPatientActivity;
 import com.yht.yihuantong.ui.activity.HealthCardActivity;
 import com.yht.yihuantong.ui.adapter.PatientsListAdapter;
@@ -24,8 +29,11 @@ import custom.frame.bean.PatientBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.ui.fragment.BaseFragment;
+import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * 患者列表
@@ -38,6 +46,7 @@ public class PatientsFragment extends BaseFragment
     private AutoLoadRecyclerView autoLoadRecyclerView;
     private PatientsListAdapter patientsListAdapter;
 
+    private ImageView ivTitleBarMore;
     private View headerView, footerView;
     private TextView tvFooterHintTxt, tvHeanderHintTxt;
 
@@ -51,6 +60,23 @@ public class PatientsFragment extends BaseFragment
      * 一页最大数
      */
     private static final int PAGE_SIZE = 20;
+    /**
+     * 扫码添加患者
+     */
+    private static final int ADD_PATIENT = 1;
+    /**
+     * 转诊患者
+     */
+    private static final int CHANGE_PATIENT = 2;
+
+    /**
+     * 删除患者
+     */
+    private static final int REQUEST_CODE_DELETE = 100;
+    /**
+     * 扫码结果
+     */
+    public static final int REQUEST_CODE = 0x0000c0de;
 
     @Override
     public int getLayoutID() {
@@ -64,13 +90,16 @@ public class PatientsFragment extends BaseFragment
         swipeRefreshLayout = view.findViewById(R.id.fragment_patients_swipe_layout);
         autoLoadRecyclerView = view.findViewById(R.id.fragment_patients_recycler_view);
 
+        ivTitleBarMore = view.findViewById(R.id.public_title_bar_more_two);
+        ivTitleBarMore.setVisibility(View.VISIBLE);
+
         headerView = LayoutInflater.from(getContext())
                 .inflate(R.layout.view_cooperate_doc_header, null);
         footerView = LayoutInflater.from(getContext())
                 .inflate(R.layout.view_list_footerr, null);
         tvHeanderHintTxt = headerView.findViewById(R.id.view_header_hint_txt);
         tvFooterHintTxt = footerView.findViewById(R.id.footer_hint_txt);
-        tvHeanderHintTxt.setText("患者申请");
+        tvHeanderHintTxt.setText("我的患者申请");
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light, android.R.color.holo_orange_light, android.R.color.holo_green_light);
     }
 
@@ -87,6 +116,7 @@ public class PatientsFragment extends BaseFragment
 
     @Override
     public void initListener() {
+        ivTitleBarMore.setOnClickListener(this);
         headerView.setOnClickListener(this);
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
@@ -98,7 +128,8 @@ public class PatientsFragment extends BaseFragment
             @Override
             public void onItemClick(View v, int position, PatientBean item) {
                 Intent intent = new Intent(getContext(), HealthCardActivity.class);
-                startActivity(intent);
+                intent.putExtra(CommonData.KEY_PATIENT_BEAN, item);
+                startActivityForResult(intent, REQUEST_CODE_DELETE);
             }
         });
     }
@@ -110,6 +141,14 @@ public class PatientsFragment extends BaseFragment
         mIRequest.getPatientList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
     }
 
+    /**
+     * 医生扫码添加患者  转诊患者
+     * mode {@link #ADD_PATIENT}  {@link #CHANGE_PATIENT}
+     */
+    private void addPatientByScan(String patientId, int mode) {
+        mIRequest.addPatientByScan(loginSuccessBean.getDoctorId(), patientId, mode, this);
+    }
+
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -118,7 +157,41 @@ public class PatientsFragment extends BaseFragment
                 Intent intent = new Intent(getContext(), ApplyPatientActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.public_title_bar_more_two:
+                IntentIntegrator.forSupportFragment(this)
+                        .setBarcodeImageEnabled(false)
+                        .setPrompt("将二维码放入框内，即可自动识别")
+                        .initiateScan();
+                break;
             default:
+                break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        switch (requestCode) {
+            case REQUEST_CODE_DELETE:
+                getPatientsData();
+                break;
+            case REQUEST_CODE:
+                IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+                if (result != null) {
+                    if (result.getContents() == null) {
+                        Toast.makeText(getContext(), "Cancelled", Toast.LENGTH_LONG).show();
+                    } else {
+                        addPatientByScan(result.getContents(), ADD_PATIENT);
+                    }
+                } else {
+                    super.onActivityResult(requestCode, resultCode, data);
+                }
+                break;
+            default:
+                getPatientsData();
                 break;
         }
     }
@@ -158,6 +231,9 @@ public class PatientsFragment extends BaseFragment
                         autoLoadRecyclerView.loadFinish(true);
                     }
                 }
+                break;
+            case ADD_PATIENT_BY_SCAN:
+                ToastUtil.toast(getContext(), "处理成功");
                 break;
             default:
                 break;

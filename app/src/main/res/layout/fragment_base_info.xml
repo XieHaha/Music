@@ -59,7 +59,7 @@
             <TextView
                 android:id="@+id/fragment_base_info_age"
                 android:layout_width="wrap_content"
-                android:text="99"
+                android:text=""
                 android:layout_marginLeft="19dp"
                 android:textColor="#333333"
                 android:textSize="15sp"
@@ -88,7 +88,7 @@
         <TextView
             android:id="@+id/fragment_base_info_type"
             android:layout_width="wrap_content"
-            android:text="心脏病、白内障"
+            android:text="暂无信息"
             android:layout_marginTop="10dp"
             android:textColor="#333333"
             android:layout_marginLeft="16dp"
@@ -113,7 +113,7 @@
         <TextView
             android:id="@+id/fragment_base_info_allergy"
             android:layout_width="wrap_content"
-            android:text="青霉素过敏"
+            android:text="暂无信息"
             android:layout_marginTop="10dp"
             android:textColor="#333333"
             android:layout_marginLeft="16dp"
@@ -137,52 +137,27 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:paddingRight="16dp"
             android:layout_marginTop="10dp"
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/fragment_base_info_operation"
+                android:id="@+id/fragment_base_info_surgery_txt"
                 android:layout_width="wrap_content"
-                android:text="心脏支架"
+                android:text="暂无信息"
+                android:layout_marginTop="10dp"
                 android:textColor="#333333"
+                android:visibility="gone"
                 android:layout_marginLeft="16dp"
                 android:textSize="15sp"
                 android:layout_height="wrap_content" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:text="2017年"
-                android:layout_alignParentRight="true"
-                android:textColor="#999999"
-                android:textSize="15sp"
-                android:layout_height="wrap_content" />
+            <ListView
+                android:id="@+id/fragment_base_info_list"
+                android:layout_width="match_parent"
+                android:divider="@null"
+                android:layout_height="wrap_content">
+            </ListView>
         </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:paddingRight="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/fragment_base_info_operation1"
-                android:layout_width="wrap_content"
-                android:text="阑尾切除"
-                android:textColor="#333333"
-                android:layout_marginLeft="16dp"
-                android:textSize="15sp"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:text="2017年"
-                android:layout_alignParentRight="true"
-                android:textColor="#999999"
-                android:textSize="15sp"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
-
 
         <View
             android:layout_width="match_parent"

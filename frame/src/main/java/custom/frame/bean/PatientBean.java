@@ -22,6 +22,8 @@ public class PatientBean implements Serializable {
     private String allergy;
     private String im_username;
     private long date;
+    private long gmtCreate;
+    private long gmtModified;
     private int requestSource;
 
     public int getFocusStatus() {
@@ -142,5 +144,21 @@ public class PatientBean implements Serializable {
 
     public void setIm_username(String im_username) {
         this.im_username = im_username;
+    }
+
+    public long getGmtCreate() {
+        return gmtCreate;
+    }
+
+    public void setGmtCreate(long gmtCreate) {
+        this.gmtCreate = gmtCreate;
+    }
+
+    public long getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(long gmtModified) {
+        this.gmtModified = gmtModified;
     }
 }

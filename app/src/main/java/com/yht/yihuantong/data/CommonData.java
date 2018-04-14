@@ -22,4 +22,16 @@ public interface CommonData
      * doctorid
      */
     String KEY_DOCTOR_ID = "key_doctor_id";
+    /**
+     * patientId
+     */
+    String KEY_PATIENT_ID = "key_patient_id";
+    /**
+     * patient bean
+     */
+    String KEY_PATIENT_BEAN = "key_patient_bean";
+    /**
+     * patient case detail bean
+     */
+    String PATIENT_CASE_DETAIL_BEAN = "Patient_Case_Detail_Bean";
 }

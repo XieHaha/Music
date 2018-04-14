@@ -146,7 +146,6 @@ public class BaseRequest<T> extends HttpProxy {
                 method = Request.Method.GET;
                 if (params != null) {
                     //参数url
-//                    url.append(MapToGetUrl(params.getStringsParams()));
                     url.append(MapToGetUrlNoKey(params.getStringsParams()));
                 }
                 break;
@@ -172,6 +171,108 @@ public class BaseRequest<T> extends HttpProxy {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     BaseResponse baseResponse = praseBaseResponse(jsonObject, classOfT);
+                    //打印响应日志
+                    printfReponseLog(task, baseResponse);
+                    /**
+                     * 如果请求码成功
+                     * */
+                    if (REQUEST_SUCCESS == baseResponse.getCode()) {
+                        if (listener != null) {
+                            listener.onResponseSuccess(task, baseResponse);
+                            listener.onResponseEnd(task);
+                        }
+                    } else {
+                        /**
+                         * 调用请求码异常
+                         * */
+                        if (listener != null) {
+                            listener.onResponseCodeError(task, baseResponse);
+                            listener.onResponseEnd(task);
+                        }
+                    }
+                } catch (JSONException je) {
+                    //打印错误日志
+                    printfErrorLog(task, je.getMessage());
+                    if (listener != null) {
+                        listener.onResponseError(task, je);
+                        listener.onResponseEnd(task);
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //打印错误日志
+                printfErrorLog(task, error.getMessage());
+                if (listener != null) {
+                    listener.onResponseError(task, new Exception("网络繁忙，请稍后再试"));
+                    listener.onResponseEnd(task);
+                }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> hashMap = new HashMap<>(16);
+                return hashMap;
+            }
+        };
+        /**复写重试方针*/
+        objectRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
+
+        objectRequest.setTag(task);
+        mQueue.add(objectRequest);
+        return task;
+    }
+
+    /**
+     * requestBaseResponse 以baseResponse结构的json解析字符串
+     *
+     * @param metoh    请求方式
+     * @param task     任务队列id
+     * @param params   请求参数
+     * @param classOfT 需转换的类型
+     * @param listener 请求回调
+     */
+    public final Tasks requestBaseResponseList(final Method metoh, String moduleName,
+                                           final Tasks task, final Class<T> classOfT, final RequestParams params,
+                                           final ResponseListener<BaseResponse> listener) {
+        StringRequest objectRequest;
+        if (listener != null) {
+            listener.onResponseStart(task);
+        }
+        StringBuilder url = new StringBuilder(appendUrl(moduleName));
+        int method = Request.Method.POST;
+        switch (metoh) {
+            case GET:
+                method = Request.Method.GET;
+                if (params != null) {
+                    //参数url
+//                    url.append(MapToGetUrl(params.getStringsParams()));
+                    url.append(MapToGetUrlNoKey(params.getStringsParams()));
+                }
+                break;
+            case POST:
+                method = Request.Method.POST;
+                break;
+            case PUT:
+                method = Request.Method.PUT;
+                break;
+            case DELETE:
+                method = Request.Method.DELETE;
+                if (params != null) {
+                    //参数url
+                    url.append(MapToGetUrl(params.getStringsParams()));
+                }
+                break;
+            default:
+                break;
+        }
+        objectRequest = new StringRequest(method, url.toString(), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    BaseResponse baseResponse = praseBaseResponseList(jsonObject, classOfT);
                     //打印响应日志
                     printfReponseLog(task, baseResponse);
                     /**
@@ -296,7 +397,6 @@ public class BaseRequest<T> extends HttpProxy {
             public byte[] getBody() {
                 try {
                     return jsonObject.toString().getBytes("UTF-8");
-
                 } catch (Exception e) {
                 }
                 return null;
@@ -396,192 +496,7 @@ public class BaseRequest<T> extends HttpProxy {
     }
 
     /**
-     * requestBaseResponseList 以baseResponse结构的json解析字符串
-     *
-     * @param metoh    请求方式
-     * @param task     任务队列id
-     * @param params   请求参数
-     * @param classOfT 需转换的类型
-     * @param listener 请求回调
-     * @param headers  请求头
-     */
-    public final Tasks requestBaseResponseList(final Method metoh, String moduleName,
-                                               String metohName, final Tasks task, final Class<T> classOfT, final RequestParams params,
-                                               final Map<String, String> headers, final ResponseListener<BaseResponse> listener) {
-        StringRequest objectRequest;
-        if (listener != null) {
-            listener.onResponseStart(task);
-        }
-        StringBuilder url = new StringBuilder(appendUrl(moduleName, metohName));
-        int method = Request.Method.POST;
-        switch (metoh) {
-            case GET:
-                method = Request.Method.GET;
-                if (params != null) {
-                    //参数url
-                    url.append(MapToGetUrl(params.getStringsParams()));
-                }
-                break;
-            case POST:
-                method = Request.Method.POST;
-                break;
-            case PUT:
-                method = Request.Method.PUT;
-                break;
-            case DELETE:
-                method = Request.Method.DELETE;
-                if (params != null) {
-                    //参数url
-                    url.append(MapToGetUrl(params.getStringsParams()));
-                }
-                break;
-            default:
-                break;
-        }
-        objectRequest = new StringRequest(method, url.toString(), new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    BaseResponse baseResponse = praseBaseResponseList(jsonObject, classOfT);
-                    printfReponseLog(task, baseResponse);//打印响应日志
-                    /**
-                     * 如果请求码成功
-                     * */
-                    if (REQUEST_SUCCESS == baseResponse.getCode()) {
-                        if (listener != null) {
-                            listener.onResponseSuccess(task, baseResponse);
-                            listener.onResponseEnd(task);
-                        }
-                    } else {
-                        /**
-                         * 调用请求码异常
-                         * */
-                        if (listener != null) {
-                            listener.onResponseCodeError(task, baseResponse);
-                            listener.onResponseEnd(task);
-                        }
-                    }
-                } catch (JSONException je) {
-                    printfErrorLog(task, je.getMessage());//打印错误日志
-                    if (listener != null) {
-                        listener.onResponseError(task, je);
-                        listener.onResponseEnd(task);
-                    }
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                printfErrorLog(task, error.getMessage());//打印错误日志
-                if (listener != null) {
-                    listener.onResponseError(task, new Exception("网络繁忙，请稍后再试"));
-                    listener.onResponseEnd(task);
-                }
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> hashMap = new HashMap<>();
-                if (headers != null) {
-                    hashMap.putAll(headers);
-                }
-                return hashMap;
-            }
-        };
-        /**复写重试方针*/
-        objectRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
-        if (metoh != Method.GET && metoh != Method.DELETE && params != null) {
-//            objectRequest.setRequestParams(params);
-        }
-        objectRequest.setTag(task);
-        mQueue.add(objectRequest);
-        return task;
-    }
-
-
-    /**
-     * uploadFile 以baseResponse结构的json解析字符串
-     *
-     * @param task     任务队列id
-     * @param params   携带参数
-     * @param classOfT 上传返回实体类
-     * @param listener 请求回调
-     * @param headers  请求头
-     */
-    protected final Tasks uploadFile(String moduleName, final Tasks task,
-                                     final Class<T> classOfT, final RequestParams params, final Map<String, String> headers,
-                                     final ResponseListener<BaseResponse> listener) {
-        StringRequest objectRequest;
-        if (listener != null) {
-            listener.onResponseStart(task);
-        }
-        String url = appendUrl(moduleName);
-        int method = Request.Method.POST;
-
-        objectRequest = new StringRequest(method, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    BaseResponse baseResponse = praseBaseResponse(jsonObject, classOfT);
-                    /**
-                     * 如果请求码成功
-                     * */
-                    if (REQUEST_SUCCESS == baseResponse.getCode()) {
-                        if (listener != null) {
-                            listener.onResponseSuccess(task, baseResponse);
-                            listener.onResponseEnd(task);
-                        }
-                    } else {
-                        /**
-                         * 调用请求码异常
-                         * */
-                        if (listener != null) {
-                            listener.onResponseCodeError(task, baseResponse);
-                            listener.onResponseEnd(task);
-                        }
-                    }
-                } catch (JSONException je) {
-                    if (listener != null) {
-                        listener.onResponseError(task, je);
-                        listener.onResponseEnd(task);
-                    }
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if (listener != null) {
-                    listener.onResponseError(task, new Exception("网络繁忙，请稍后再试"));
-                    listener.onResponseEnd(task);
-                }
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> hashMap = new HashMap<>();
-                if (headers != null) {
-
-                    hashMap.putAll(headers);
-                }
-                return hashMap;
-            }
-        };
-
-        /**复写重试方针*/
-        objectRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
-        objectRequest.setRequestParams(params);
-
-        objectRequest.setTag(task);
-        mQueue.add(objectRequest);
-
-        return task;
-    }
-
-    /**
      * post
-     *
      * @param moduleName
      * @param task
      * @param file
@@ -803,6 +718,10 @@ public class BaseRequest<T> extends HttpProxy {
         if (map != null) {
             for (int i = 0; i < map.size(); i++) {
                 url.append(((RequestParams.StringContent) map.values().toArray()[i]).getValue());
+                if(i != map.size()-1)
+                {
+                    url.append("/");
+                }
             }
         }
         return url.toString();
