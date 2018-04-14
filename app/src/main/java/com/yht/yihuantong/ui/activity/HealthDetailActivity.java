@@ -206,7 +206,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
         if (patientCaseDetailBean != null) {
             tvCreateTime.setText(AllUtils.formatDate(patientCaseDetailBean.getGmtCreate(), AllUtils.DATE_FORMAT));
             etDiagnosis.setText(patientCaseDetailBean.getDiagnosisInfo());
-            etDiagnosisTime.setText(AllUtils.formatDate(patientCaseDetailBean.getVisDate(), AllUtils.DATE_FORMAT));
+            etDiagnosisTime.setText(AllUtils.formatDate(patientCaseDetailBean.getVisDate(), AllUtils.DATE_FORMAT_NO_HOUR));
             etDepartment.setText(patientCaseDetailBean.getDoctorDep());
             etHospital.setText(patientCaseDetailBean.getHospital());
             etCaseInfo.setText(patientCaseDetailBean.getPatientWords());
@@ -215,11 +215,15 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
             etCaseCheck.setText(patientCaseDetailBean.getCheckReport());
             etCaseDealType.setText(patientCaseDetailBean.getTreat());
 
-            NormImage normImage = new NormImage();
-            normImage.setBigImageUrl(patientCaseDetailBean.getReportImgUrl());
-            normImage.setMiddleImageUrl(patientCaseDetailBean.getReportImgUrl());
-            normImage.setSmallImageUrl(patientCaseDetailBean.getReportImgUrl());
-            imageList.add(normImage);
+            String[] str = patientCaseDetailBean.getReportImgUrl().split(",");
+            for (int i = 0; i < str.length; i++) {
+                String url = str[i];
+                NormImage normImage = new NormImage();
+                normImage.setBigImageUrl(url);
+                normImage.setMiddleImageUrl(url);
+                normImage.setSmallImageUrl(url);
+                imageList.add(normImage);
+            }
             autoGridView.updateImg(imageList, false);
         }
     }

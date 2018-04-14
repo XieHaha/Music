@@ -1,5 +1,6 @@
-package com.yht.yihuantong.ui.fragment;
+package com.yht.yihuantong.ui.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,14 +9,12 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
-import com.yht.yihuantong.ui.activity.ApplyCooperateDocActivity;
-import com.yht.yihuantong.ui.activity.UserInfoActivity;
 import com.yht.yihuantong.ui.adapter.CooperateDocListAdapter;
+import com.yht.yihuantong.ui.dialog.SimpleDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,24 +22,23 @@ import java.util.List;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CooperateDocBean;
 import custom.frame.http.Tasks;
+import custom.frame.ui.activity.BaseActivity;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
-import custom.frame.ui.fragment.BaseFragment;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
- * 合作医生  碎片
+ * 合作医生列表
  *
  * @author DUNDUN
  */
-public class CooperateDocFragment extends BaseFragment
-        implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener {
-
+public class CooperateDocActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener {
     private TextView tvHintTxt;
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
-    private View headerView, footerView;
+    private View footerView;
     private CooperateDocListAdapter cooperateDocListAdapter;
+
     private List<CooperateDocBean> cooperateDocBeanList = new ArrayList<>();
 
     /**
@@ -54,18 +52,15 @@ public class CooperateDocFragment extends BaseFragment
 
     @Override
     public int getLayoutID() {
-        return R.layout.fragment_cooperate_doc;
+        return R.layout.act_cooperate_doc;
     }
 
     @Override
-    public void initView(@NonNull View view, @NonNull Bundle savedInstanceState) {
-        super.initView(view, savedInstanceState);
-        ((TextView) view.findViewById(R.id.public_title_bar_title)).setText("合作医生");
-        swipeRefreshLayout = view.findViewById(R.id.fragment_cooperate_swipe_layout);
-        autoLoadRecyclerView = view.findViewById(R.id.fragment_cooperate_recycler_view);
-        headerView = LayoutInflater.from(getContext())
-                .inflate(R.layout.view_cooperate_doc_header, null);
-        footerView = LayoutInflater.from(getContext())
+    public void initView(@NonNull Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.act_cooperate_swipe_layout);
+        autoLoadRecyclerView = (AutoLoadRecyclerView) findViewById(R.id.act_cooperate_recycler_view);
+        footerView = LayoutInflater.from(this)
                 .inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light, android.R.color.holo_orange_light, android.R.color.holo_green_light);
@@ -75,8 +70,7 @@ public class CooperateDocFragment extends BaseFragment
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        cooperateDocListAdapter = new CooperateDocListAdapter(getContext(), cooperateDocBeanList);
-        cooperateDocListAdapter.addHeaderView(headerView);
+        cooperateDocListAdapter = new CooperateDocListAdapter(this, cooperateDocBeanList);
         cooperateDocListAdapter.addFooterView(footerView);
         page = 0;
         getCooperateList();
@@ -84,20 +78,30 @@ public class CooperateDocFragment extends BaseFragment
 
     @Override
     public void initListener() {
-        headerView.setOnClickListener(this);
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
         autoLoadRecyclerView.setLayoutManager(
-                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(cooperateDocListAdapter);
         cooperateDocListAdapter.setOnItemClickListener(
                 new BaseRecyclerAdapter.OnItemClickListener<CooperateDocBean>() {
                     @Override
-                    public void onItemClick(View v, int position, CooperateDocBean item) {
-                        Intent intent = new Intent(getContext(), UserInfoActivity.class);
-                        intent.putExtra(CommonData.KEY_DOCTOR_ID,item.getDoctorId());
-                        startActivity(intent);
+                    public void onItemClick(View v, int position, final CooperateDocBean item) {
+                        new SimpleDialog(CooperateDocActivity.this, "确定转诊给 " + item.getName() + " 医生吗？", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent();
+                                intent.putExtra(CommonData.KEY_DOCTOR_ID, item.getDoctorId());
+                                setResult(RESULT_OK, intent);
+                                finish();
+                            }
+                        }, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
                     }
                 });
     }
@@ -107,19 +111,6 @@ public class CooperateDocFragment extends BaseFragment
      */
     private void getCooperateList() {
         mIRequest.getCooperateList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        super.onClick(v);
-        switch (v.getId()) {
-            case R.id.fragment_cooperate_apply_layout:
-                Intent intent = new Intent(getContext(), ApplyCooperateDocActivity.class);
-                startActivity(intent);
-                break;
-            default:
-                break;
-        }
     }
 
     @Override

@@ -43,6 +43,7 @@ public class AllUtils {
     private static String REGEX_PHONE = "^((13[0-9])|(14[5|7|9])|(15([0-3]|[5-9]))|(16[0-9])|(17([0-3]|[5-8]))|(18[0-9])|(19[0-9]))\\d{8}$";
 
     public static String DATE_FORMAT = "yyyy-MM-dd HH:mm";
+    public static String DATE_FORMAT_NO_HOUR = "yyyy-MM-dd";
 
     /**
      * trim方法，去掉字符串首、尾的空格，制表符，回车符。字符串null将被替换为空字符串

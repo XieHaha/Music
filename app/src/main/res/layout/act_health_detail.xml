@@ -1,44 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
 
     <include layout="@layout/public_title_bar" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:layout_height="30dp"
                 android:background="@color/app_minor_bg"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:layout_height="30dp">
+                android:paddingRight="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:text="基本信息"
                     android:textColor="#999999"
-                    android:layout_centerVertical="true"
-                    android:textSize="12sp"
-                    android:layout_height="wrap_content" />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/act_health_detail_hint"
                     android:layout_width="wrap_content"
-                    android:text="*为必填项"
-                    android:textColor="#ff3333"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:textSize="12sp"
-                    android:layout_height="wrap_content" />
+                    android:text="*为必填项"
+                    android:textColor="#ff3333"
+                    android:textSize="12sp" />
 
             </RelativeLayout>
 
@@ -49,37 +52,37 @@
                 <TextView
                     android:id="@+id/txt1"
                     android:layout_width="wrap_content"
-                    android:text="诊断"
-                    android:layout_marginLeft="16dp"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:text="诊断"
                     android:textColor="#999999"
-                    android:textSize="15sp"
-                    android:layout_height="wrap_content" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="*"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/txt1"
                     android:layout_marginLeft="2dp"
-                    android:textColor="@color/app_main_color"
-                    android:layout_height="wrap_content" />
+                    android:layout_toRightOf="@id/txt1"
+                    android:text="*"
+                    android:textColor="@color/app_main_color" />
 
                 <EditText
                     android:id="@+id/act_health_detail_diagnosis"
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
                     android:textColor="#333333"
-                    android:textSize="15sp"
-                    android:layout_height="match_parent" />
+                    android:textSize="15sp" />
 
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline"
-                    android:layout_height="1px" />
+                    android:background="@color/app_main_divideline" />
 
             </RelativeLayout>
 
@@ -90,38 +93,38 @@
                 <TextView
                     android:id="@+id/txt2"
                     android:layout_width="wrap_content"
-                    android:text="就诊时间"
-                    android:layout_marginLeft="16dp"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:text="就诊时间"
                     android:textColor="#999999"
-                    android:textSize="15sp"
-                    android:layout_height="wrap_content" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="*"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/txt2"
                     android:layout_marginLeft="2dp"
-                    android:textColor="@color/app_main_color"
-                    android:layout_height="wrap_content" />
+                    android:layout_toRightOf="@id/txt2"
+                    android:text="*"
+                    android:textColor="@color/app_main_color" />
 
                 <EditText
                     android:id="@+id/act_health_detail_diagnosis_time"
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
-                    android:textColor="#333333"
-                    android:textSize="15sp"
                     android:text=""
-                    android:layout_height="match_parent" />
+                    android:textColor="#333333"
+                    android:textSize="15sp" />
 
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline"
-                    android:layout_height="1px" />
+                    android:background="@color/app_main_divideline" />
 
             </RelativeLayout>
 
@@ -131,29 +134,29 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="科室"
-                    android:layout_marginLeft="16dp"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:text="科室"
                     android:textColor="#999999"
-                    android:textSize="15sp"
-                    android:layout_height="wrap_content" />
+                    android:textSize="15sp" />
 
                 <EditText
                     android:id="@+id/act_health_detail_department"
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
-                    android:textColor="#333333"
-                    android:textSize="15sp"
                     android:text=""
-                    android:layout_height="match_parent" />
+                    android:textColor="#333333"
+                    android:textSize="15sp" />
 
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline"
-                    android:layout_height="1px" />
+                    android:background="@color/app_main_divideline" />
 
             </RelativeLayout>
 
@@ -163,28 +166,29 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="医院"
-                    android:layout_marginLeft="16dp"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:text="医院"
                     android:textColor="#999999"
-                    android:textSize="15sp"
-                    android:layout_height="wrap_content" />
+                    android:textSize="15sp" />
+
                 <EditText
                     android:id="@+id/act_health_detail_hopital"
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
-                    android:textColor="#333333"
-                    android:textSize="15sp"
                     android:text=""
-                    android:layout_height="match_parent" />
+                    android:textColor="#333333"
+                    android:textSize="15sp" />
 
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline"
-                    android:layout_height="1px" />
+                    android:background="@color/app_main_divideline" />
 
             </RelativeLayout>
 
@@ -194,29 +198,29 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="主诉"
-                    android:layout_marginLeft="16dp"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:text="主诉"
                     android:textColor="#999999"
-                    android:textSize="15sp"
-                    android:layout_height="wrap_content" />
+                    android:textSize="15sp" />
 
                 <EditText
                     android:id="@+id/act_health_detail_case_info"
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
-                    android:textColor="#333333"
-                    android:textSize="15sp"
                     android:text=""
-                    android:layout_height="match_parent" />
+                    android:textColor="#333333"
+                    android:textSize="15sp" />
 
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline"
-                    android:layout_height="1px" />
+                    android:background="@color/app_main_divideline" />
 
             </RelativeLayout>
 
@@ -226,29 +230,29 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="现病史"
-                    android:layout_marginLeft="16dp"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:text="现病史"
                     android:textColor="#999999"
-                    android:textSize="15sp"
-                    android:layout_height="wrap_content" />
+                    android:textSize="15sp" />
 
                 <EditText
                     android:id="@+id/act_health_detail_case_now"
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
-                    android:textColor="#333333"
-                    android:textSize="15sp"
                     android:text=""
-                    android:layout_height="match_parent" />
+                    android:textColor="#333333"
+                    android:textSize="15sp" />
 
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline"
-                    android:layout_height="1px" />
+                    android:background="@color/app_main_divideline" />
 
             </RelativeLayout>
 
@@ -258,29 +262,29 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="重要病史"
-                    android:layout_marginLeft="16dp"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:text="重要病史"
                     android:textColor="#999999"
-                    android:textSize="15sp"
-                    android:layout_height="wrap_content" />
+                    android:textSize="15sp" />
 
                 <EditText
                     android:id="@+id/act_health_detail_case_importent"
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
-                    android:textColor="#333333"
-                    android:textSize="15sp"
                     android:text=""
-                    android:layout_height="match_parent" />
+                    android:textColor="#333333"
+                    android:textSize="15sp" />
 
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline"
-                    android:layout_height="1px" />
+                    android:background="@color/app_main_divideline" />
 
             </RelativeLayout>
 
@@ -290,29 +294,29 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="体格检查"
-                    android:layout_marginLeft="16dp"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:text="体格检查"
                     android:textColor="#999999"
-                    android:textSize="15sp"
-                    android:layout_height="wrap_content" />
+                    android:textSize="15sp" />
 
                 <EditText
                     android:id="@+id/act_health_detail_check"
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
-                    android:textColor="#333333"
-                    android:textSize="15sp"
                     android:text=""
-                    android:layout_height="match_parent" />
+                    android:textColor="#333333"
+                    android:textSize="15sp" />
 
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline"
-                    android:layout_height="1px" />
+                    android:background="@color/app_main_divideline" />
 
             </RelativeLayout>
 
@@ -322,42 +326,42 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="治疗"
-                    android:layout_marginLeft="16dp"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:text="治疗"
                     android:textColor="#999999"
-                    android:textSize="15sp"
-                    android:layout_height="wrap_content" />
+                    android:textSize="15sp" />
 
                 <EditText
                     android:id="@+id/act_health_detail_deal_type"
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
-                    android:textColor="#333333"
-                    android:textSize="15sp"
                     android:text=""
-                    android:layout_height="match_parent" />
+                    android:textColor="#333333"
+                    android:textSize="15sp" />
 
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline"
-                    android:layout_height="1px" />
+                    android:background="@color/app_main_divideline" />
 
             </RelativeLayout>
 
             <TextView
                 android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:background="@color/app_minor_bg"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
                 android:text="辅助检查"
                 android:textColor="#999999"
-                android:gravity="center_vertical"
-                android:layout_centerVertical="true"
-                android:textSize="12sp"
-                android:paddingLeft="16dp"
-                android:background="@color/app_minor_bg"
-                android:layout_height="30dp" />
+                android:textSize="12sp" />
 
             <custom.frame.widgets.gridview.AutoGridView
                 android:id="@+id/act_health_detail_auto_gridview"
@@ -368,14 +372,14 @@
             <TextView
                 android:id="@+id/act_health_detail_create_time"
                 android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_centerVertical="true"
+                android:background="@color/app_minor_bg"
+                android:paddingLeft="16dp"
+                android:paddingTop="12dp"
                 android:text=""
                 android:textColor="#999999"
-                android:layout_centerVertical="true"
-                android:textSize="12sp"
-                android:paddingTop="12dp"
-                android:paddingLeft="16dp"
-                android:background="@color/app_minor_bg"
-                android:layout_height="56dp" />
+                android:textSize="12sp" />
         </LinearLayout>
     </ScrollView>
 

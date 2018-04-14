@@ -5,15 +5,15 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="@color/app_minor_bg"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/app_minor_bg">
 
         <ImageView
             android:id="@+id/bg_img"
             android:layout_width="match_parent"
-            android:src="@mipmap/img_user_bg"
+            android:layout_height="300dp"
             android:scaleType="centerCrop"
-            android:layout_height="300dp" />
+            android:src="@mipmap/img_user_bg" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -21,22 +21,22 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:text="个人信息"
-                android:textColor="@color/app_white_color"
-                android:textSize="@dimen/app_main_title"
+                android:layout_height="@dimen/app_title_bar_height"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:layout_height="@dimen/app_title_bar_height" />
+                android:text="个人信息"
+                android:textColor="@color/app_white_color"
+                android:textSize="@dimen/app_main_title" />
 
             <ImageView
                 android:id="@+id/public_title_bar_back"
                 android:layout_width="@dimen/app_title_bar_height"
-                android:paddingRight="16dp"
                 android:layout_height="@dimen/app_title_bar_height"
-                android:paddingTop="15dp"
                 android:layout_alignParentRight="true"
-                android:paddingBottom="15dp"
                 android:layout_centerVertical="true"
+                android:paddingBottom="15dp"
+                android:paddingRight="16dp"
+                android:paddingTop="15dp"
                 android:src="@mipmap/icon_edit" />
 
         </RelativeLayout>
@@ -45,31 +45,31 @@
             android:id="@+id/fragmrnt_user_info_headimg"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:layout_marginTop="77dp"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="77dp"
             android:src="@mipmap/icon_default_imgs"
-            app:civ_border_width="2dp"
-            app:civ_border_color="#50ffffff" />
+            app:civ_border_color="#50ffffff"
+            app:civ_border_width="2dp" />
 
         <TextView
             android:id="@+id/fragmrnt_user_info_name"
             android:layout_width="wrap_content"
-            android:textSize="24sp"
-            android:textColor="@color/app_white_color"
-            android:layout_marginTop="30dp"
-            android:text="姓名"
+            android:layout_height="wrap_content"
             android:layout_below="@id/fragmrnt_user_info_headimg"
             android:layout_centerHorizontal="true"
-            android:layout_height="wrap_content" />
+            android:layout_marginTop="30dp"
+            android:text="姓名"
+            android:textColor="@color/app_white_color"
+            android:textSize="24sp" />
 
         <LinearLayout
             android:id="@+id/fragment_my_info_layout"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/bg_img"
             android:layout_marginTop="10dp"
-            android:orientation="vertical"
             android:background="@color/app_white_color"
-            android:layout_height="wrap_content">
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -77,30 +77,30 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="职称"
-                    android:layout_marginLeft="16dp"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:text="职称"
                     android:textColor="#999999"
-                    android:textSize="15sp"
-                    android:layout_height="wrap_content" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/fragmrnt_user_info_title"
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="65dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
-                    android:textColor="#333333"
-                    android:textSize="15sp"
-                    android:text="暂无记录"
                     android:gravity="center_vertical"
-                    android:layout_height="match_parent" />
+                    android:text="暂无记录"
+                    android:textColor="#333333"
+                    android:textSize="15sp" />
 
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline"
-                    android:layout_height="1px" />
+                    android:background="@color/app_main_divideline" />
 
             </RelativeLayout>
 
@@ -110,30 +110,30 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="医院"
-                    android:layout_marginLeft="16dp"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:text="医院"
                     android:textColor="#999999"
-                    android:textSize="15sp"
-                    android:layout_height="wrap_content" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/fragmrnt_user_info_hospital"
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="65dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
-                    android:textColor="#333333"
-                    android:textSize="15sp"
                     android:gravity="center_vertical"
                     android:text="暂无记录"
-                    android:layout_height="match_parent" />
+                    android:textColor="#333333"
+                    android:textSize="15sp" />
 
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline"
-                    android:layout_height="1px" />
+                    android:background="@color/app_main_divideline" />
 
             </RelativeLayout>
 
@@ -143,30 +143,30 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="科室"
-                    android:layout_marginLeft="16dp"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:text="科室"
                     android:textColor="#999999"
-                    android:textSize="15sp"
-                    android:layout_height="wrap_content" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/fragmrnt_user_info_type"
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="65dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
-                    android:textColor="#333333"
-                    android:textSize="15sp"
                     android:gravity="center_vertical"
                     android:text="暂无记录"
-                    android:layout_height="match_parent" />
+                    android:textColor="#333333"
+                    android:textSize="15sp" />
 
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline"
-                    android:layout_height="1px" />
+                    android:background="@color/app_main_divideline" />
 
             </RelativeLayout>
 
@@ -176,30 +176,67 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="简介"
-                    android:layout_marginLeft="16dp"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:text="简介"
                     android:textColor="#999999"
-                    android:textSize="15sp"
-                    android:layout_height="wrap_content" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/fragmrnt_user_info_introduce"
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="65dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
-                    android:textColor="#333333"
-                    android:textSize="15sp"
                     android:gravity="center_vertical"
                     android:text="暂无记录"
-                    android:layout_height="match_parent" />
+                    android:textColor="#333333"
+                    android:textSize="15sp" />
 
                 <View
                     android:layout_width="match_parent"
+                    android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline"
-                    android:layout_height="1px" />
+                    android:background="@color/app_main_divideline" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/app_minor_bg" />
+
+            <RelativeLayout
+                android:id="@+id/fragmrnt_user_info_qrcode_layout"
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:text="我的二维码"
+                    android:textColor="#999999"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/fragmrnt_user_info_qrcode"
+                    android:layout_width="45dp"
+                    android:src="@mipmap/icon_qr"
+                    android:paddingRight="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_height="match_parent"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/app_main_divideline" />
 
             </RelativeLayout>
 
@@ -208,15 +245,15 @@
         <TextView
             android:id="@+id/fragmrnt_user_info_exit"
             android:layout_width="195dp"
-            android:layout_centerHorizontal="true"
+            android:layout_height="45dp"
             android:layout_below="@id/fragment_my_info_layout"
-            android:layout_marginTop="10dp"
-            android:text="退出登录"
-            android:textSize="18sp"
-            android:textColor="@color/app_white_color"
-            android:gravity="center"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="4dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/corner_exit_full_bg"
-            android:layout_height="45dp" />
+            android:gravity="center"
+            android:text="退出登录"
+            android:textColor="@color/app_white_color"
+            android:textSize="18sp" />
     </RelativeLayout>
 </ScrollView>

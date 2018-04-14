@@ -9,10 +9,11 @@ import android.view.View;
 
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.fragment.CooperateDocFragment;
-import com.yht.yihuantong.ui.fragment.PatientsFragment;
 import com.yht.yihuantong.ui.fragment.MsgFragment;
+import com.yht.yihuantong.ui.fragment.PatientsFragment;
 import com.yht.yihuantong.ui.fragment.UserFragment;
 
+import cn.jpush.android.api.JPushInterface;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.widgets.ripples.RippleLinearLayout;
 
@@ -37,6 +38,7 @@ public class MainActivity extends BaseActivity
         fragmentManager = getSupportFragmentManager();
         transaction = fragmentManager.beginTransaction();
         tabMsgView();
+        setAlias();
     }
 
     @Override
@@ -205,5 +207,12 @@ public class MainActivity extends BaseActivity
                 tabMy.setSelected(false);
                 break;
         }
+    }
+
+    /**
+     * 设置标签与别名
+     */
+    private void setAlias() {
+        JPushInterface.setAlias(this,100,loginSuccessBean.getDoctorId());
     }
 }

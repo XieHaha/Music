@@ -43,7 +43,7 @@ public class YihtApplication extends Application {
         //        EMClient.getInstance().setDebugMode(true);
 
         //极光推送
-        JPushInterface.setDebugMode(true);
+        JPushInterface.setDebugMode(false);
         JPushInterface.init(this);
     }
 

@@ -36,7 +36,7 @@ public enum Tasks
     /**
      * 医生扫码添加患者
      */
-    ADD_PATIENT_BY_SCAN,
+    ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT,
     /**
      * 获取合作医生列表
      */

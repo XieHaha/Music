@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
+import com.yht.yihuantong.qrcode.BarCodeImageView;
+import com.yht.yihuantong.qrcode.DialogPersonalBarCode;
 import com.yht.yihuantong.tools.GlideHelper;
 import com.yht.yihuantong.ui.activity.EditInfoActivity;
 import com.yht.yihuantong.ui.activity.LoginActivity;
@@ -21,11 +23,16 @@ import custom.frame.ui.activity.AppManager;
 import custom.frame.ui.fragment.BaseFragment;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * 我的页面
+ */
 public class UserFragment extends BaseFragment {
     private CircleImageView headImg;
     private TextView tvName, tvHospital, tvType, tvTitle, tvIntroduce;
 
     private LoginSuccessBean loginSuccessBean;
+
+    private BarCodeImageView barCodeImageView;
 
     private String headImgUrl;
 
@@ -54,6 +61,12 @@ public class UserFragment extends BaseFragment {
         tvType = view.findViewById(R.id.fragmrnt_user_info_type);
         tvTitle = view.findViewById(R.id.fragmrnt_user_info_title);
         tvIntroduce = view.findViewById(R.id.fragmrnt_user_info_introduce);
+        view.findViewById(R.id.fragmrnt_user_info_qrcode_layout).setOnClickListener(this);
+    }
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState) {
+        super.initData(savedInstanceState);
     }
 
     /**
@@ -62,6 +75,7 @@ public class UserFragment extends BaseFragment {
     private void initPageData() {
         loginSuccessBean = YihtApplication.getInstance().getLoginSuccessBean();
         if (loginSuccessBean != null) {
+            barCodeImageView = new BarCodeImageView(getContext(),loginSuccessBean.getDoctorId());
 
             if (!TextUtils.isEmpty(loginSuccessBean.getPortraitUrl())) {
                 headImgUrl = loginSuccessBean.getPortraitUrl();
@@ -69,8 +83,7 @@ public class UserFragment extends BaseFragment {
                 headImgUrl = YihtApplication.getInstance().getHeadImgUrl();
             }
 
-            if(!TextUtils.isEmpty(headImgUrl))
-            {
+            if (!TextUtils.isEmpty(headImgUrl)) {
                 Glide.with(this).load(headImgUrl).apply(GlideHelper.getOptions()).into(headImg);
             }
 
@@ -106,6 +119,11 @@ public class UserFragment extends BaseFragment {
                         dialog.dismiss();
                     }
                 }).show();
+                break;
+            case R.id.fragmrnt_user_info_qrcode_layout:
+                DialogPersonalBarCode dialogPersonalBarCode = new DialogPersonalBarCode(getActivity());
+                dialogPersonalBarCode.setQRImageViewSrc(barCodeImageView);
+                dialogPersonalBarCode.show();
                 break;
             default:
                 break;

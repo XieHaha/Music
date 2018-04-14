@@ -13,7 +13,6 @@ import org.json.JSONObject;
 import java.util.Iterator;
 
 import cn.jpush.android.api.JPushInterface;
-import custom.frame.utils.ToastUtil;
 
 /**
  * 自定义接收器
@@ -100,6 +99,6 @@ public class MyReceiver extends BroadcastReceiver {
 	
 	//send msg to MainActivity
 	private void processCustomMessage(Context context, Bundle bundle) {
-		ToastUtil.toast(context, "通知消息处理");
+//		ToastUtil.toast(context, "通知消息处理");
 	}
 }

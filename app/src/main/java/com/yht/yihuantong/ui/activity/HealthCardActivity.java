@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.activity;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,6 +30,7 @@ import custom.frame.bean.BaseResponse;
 import custom.frame.bean.PatientBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
+import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.view.ViewPrepared;
 
 /**
@@ -61,6 +63,15 @@ public class HealthCardActivity extends BaseActivity {
      */
     private CaseRecordFragment caseRecordFragment;
     private List<Fragment> fragmentList = new ArrayList<>();
+
+    /**
+     * 转诊患者
+     */
+    private static final int CHANGE_PATIENT = 2;
+    /**
+     * 选择转诊医生回调
+     */
+    private static final int CHANGE_PATIENT_REQUEST_CODE = 2;
 
     @Override
     public int getLayoutID() {
@@ -153,6 +164,14 @@ public class HealthCardActivity extends BaseActivity {
         mIRequest.deletePatient(loginSuccessBean.getDoctorId(), patientBean.getPatientId(), this);
     }
 
+    /**
+     * 医生扫码添加患者  转诊患者
+     * {@link #CHANGE_PATIENT}
+     */
+    private void addPatientByScanOrChangePatient(String doctorId) {
+        mIRequest.addPatientByScanOrChangePatient(doctorId, patientBean.getPatientId(), CHANGE_PATIENT, this);
+    }
+
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -176,6 +195,8 @@ public class HealthCardActivity extends BaseActivity {
                 if (mPopupwinow != null) {
                     mPopupwinow.dismiss();
                 }
+                Intent intent = new Intent(this, CooperateDocActivity.class);
+                startActivityForResult(intent, CHANGE_PATIENT_REQUEST_CODE);
                 break;
             default:
                 break;
@@ -190,11 +211,32 @@ public class HealthCardActivity extends BaseActivity {
             case GET_PATIENT_INFO:
                 break;
             case DELETE_PATIENT:
+                ToastUtil.toast(this, "操作成功");
+                setResult(RESULT_OK);
+                finish();
+                break;
+            case ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT:
+                ToastUtil.toast(this, "操作成功");
                 setResult(RESULT_OK);
                 finish();
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+
+        if (requestCode == CHANGE_PATIENT_REQUEST_CODE) {
+            if (data != null) {
+                String doctorId = data.getStringExtra(CommonData.KEY_DOCTOR_ID);
+                addPatientByScanOrChangePatient(doctorId);
+            }
         }
     }
 

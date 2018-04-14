@@ -16,7 +16,6 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
-import com.yht.yihuantong.tools.ZxingHelper;
 import com.yht.yihuantong.ui.activity.ApplyPatientActivity;
 import com.yht.yihuantong.ui.activity.HealthCardActivity;
 import com.yht.yihuantong.ui.adapter.PatientsListAdapter;
@@ -145,8 +144,8 @@ public class PatientsFragment extends BaseFragment
      * 医生扫码添加患者  转诊患者
      * mode {@link #ADD_PATIENT}  {@link #CHANGE_PATIENT}
      */
-    private void addPatientByScan(String patientId, int mode) {
-        mIRequest.addPatientByScan(loginSuccessBean.getDoctorId(), patientId, mode, this);
+    private void addPatientByScanOrChangePatient(String patientId, int mode) {
+        mIRequest.addPatientByScanOrChangePatient(loginSuccessBean.getDoctorId(), patientId, mode, this);
     }
 
     @Override
@@ -182,9 +181,8 @@ public class PatientsFragment extends BaseFragment
                 IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
                 if (result != null) {
                     if (result.getContents() == null) {
-                        Toast.makeText(getContext(), "Cancelled", Toast.LENGTH_LONG).show();
                     } else {
-                        addPatientByScan(result.getContents(), ADD_PATIENT);
+                        addPatientByScanOrChangePatient(result.getContents(), ADD_PATIENT);
                     }
                 } else {
                     super.onActivityResult(requestCode, resultCode, data);
@@ -232,7 +230,7 @@ public class PatientsFragment extends BaseFragment
                     }
                 }
                 break;
-            case ADD_PATIENT_BY_SCAN:
+            case ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT:
                 ToastUtil.toast(getContext(), "处理成功");
                 break;
             default:

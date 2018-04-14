@@ -92,6 +92,10 @@
             android:name=".ui.activity.EditInfoActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.CooperateDocActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:screenOrientation="portrait" />
 
         <!--扫码-->
         <activity
