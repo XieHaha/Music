@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
 
     defaultConfig {
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -19,16 +19,15 @@ android {
 
 dependencies {
     api project(':volleyNew')
-    //    api project(':easeui')
+//    api project(':easeui')
     api 'com.klinkerapps:link_builder:1.3.1@aar'
     api 'cn.bingoogolapple:bga-badgeview:1.0.6@aar'
     api 'com.bigkoo:convenientbanner:2.0.5'
     api 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     api 'com.alibaba:fastjson:1.2.8'
     api 'org.mod4j.org.apache.commons:lang:2.1.0'
-    api 'com.github.bumptech.glide:glide:4.0.0'
     api 'com.squareup.picasso:picasso:2.5.2'
-    //    annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
+    api 'com.github.bumptech.glide:glide:4.0.0'
     api 'com.android.support:appcompat-v7:26.1.0'
     api 'com.android.support:recyclerview-v7:26.1.0'
     api 'com.journeyapps:zxing-android-embedded:3.4.0'
