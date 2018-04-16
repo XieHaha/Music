@@ -189,7 +189,6 @@ public class LoginActivity extends BaseActivity {
                 //保存登录成功数据
                 loginSuccessBean = response.getData();
                 YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
-                if(EMClient.getInstance().isLoggedInBefore())
                 EMClient.getInstance().login(loginSuccessBean.getDoctorId(), "111111", new EMCallBack() {//回调
                     @Override
                     public void onSuccess() {

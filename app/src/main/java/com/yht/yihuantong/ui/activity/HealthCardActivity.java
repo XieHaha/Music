@@ -38,22 +38,21 @@ import custom.frame.widgets.view.ViewPrepared;
  *
  * @author DUNDUN
  */
-public class HealthCardActivity extends BaseActivity {
+public class HealthCardActivity extends BaseActivity
+{
     private Button btnBaseInfo, btnHealthRecord;
+    private TextView tvChat;
     private ImageView ivTitleBarMore;
     private ViewPager viewPager;
     private View viewIndicator;
     private FragmentVpAdapter fragmentVpAdapter;
-
     private View view_pop;
     private PopupWindow mPopupwinow;
     private TextView tvDelete, tvChange;
-
     /**
      * 患者 bean
      */
     private PatientBean patientBean;
-
     /**
      * 患者基础信息
      */
@@ -63,7 +62,6 @@ public class HealthCardActivity extends BaseActivity {
      */
     private CaseRecordFragment caseRecordFragment;
     private List<Fragment> fragmentList = new ArrayList<>();
-
     /**
      * 转诊患者
      */
@@ -74,41 +72,49 @@ public class HealthCardActivity extends BaseActivity {
     private static final int CHANGE_PATIENT_REQUEST_CODE = 2;
 
     @Override
-    public int getLayoutID() {
+    public int getLayoutID()
+    {
         return R.layout.act_health_card;
     }
 
     @Override
-    protected boolean isInitBackBtn() {
+    protected boolean isInitBackBtn()
+    {
         return true;
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState) {
+    public void initView(@NonNull Bundle savedInstanceState)
+    {
         super.initView(savedInstanceState);
-        viewPager = (ViewPager) findViewById(R.id.act_health_card_viewpager);
+        viewPager = (ViewPager)findViewById(R.id.act_health_card_viewpager);
         viewIndicator = findViewById(R.id.act_health_card_indicator);
-        btnBaseInfo = (Button) findViewById(R.id.act_health_card_base_info);
-        btnHealthRecord = (Button) findViewById(R.id.act_health_card_health_record);
-        ivTitleBarMore = (ImageView) findViewById(R.id.public_title_bar_more_two);
+        btnBaseInfo = (Button)findViewById(R.id.act_health_card_base_info);
+        tvChat = (TextView)findViewById(R.id.act_health_card_chat);
+        btnHealthRecord = (Button)findViewById(R.id.act_health_card_health_record);
+        ivTitleBarMore = (ImageView)findViewById(R.id.public_title_bar_more_two);
         ivTitleBarMore.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState) {
+    public void initData(@NonNull Bundle savedInstanceState)
+    {
         super.initData(savedInstanceState);
-
-        if (getIntent() != null) {
-            patientBean = (PatientBean) getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
+        if (getIntent() != null)
+        {
+            patientBean = (PatientBean)getIntent().getSerializableExtra(
+                    CommonData.KEY_PATIENT_BEAN);
         }
-
-        if (patientBean != null) {
-            ((TextView) findViewById(R.id.public_title_bar_title)).setText(patientBean.getName() + "的健康卡");
+        if (patientBean != null)
+        {
+            ((TextView)findViewById(R.id.public_title_bar_title)).setText(
+                    patientBean.getName() + "的健康卡");
         }
-
-        new ViewPrepared().asyncPrepare(btnBaseInfo, new ViewPrepared.OnPreDrawFinishListener() {
+        new ViewPrepared().asyncPrepare(btnBaseInfo, new ViewPrepared.OnPreDrawFinishListener()
+        {
             @Override
-            public void onPreDrawFinish(int w, int h) {
+            public void onPreDrawFinish(int w, int h)
+            {
                 ViewGroup.LayoutParams params = viewIndicator.getLayoutParams();
                 params.width = w;
                 viewIndicator.setLayoutParams(params);
@@ -123,29 +129,34 @@ public class HealthCardActivity extends BaseActivity {
         fragmentVpAdapter = new FragmentVpAdapter(getSupportFragmentManager(), fragmentList);
         viewPager.setAdapter(fragmentVpAdapter);
         viewPager.setCurrentItem(0);
-
         getPatientInfo();
     }
 
     @Override
-    public void initListener() {
+    public void initListener()
+    {
         super.initListener();
         ivTitleBarMore.setOnClickListener(this);
         btnBaseInfo.setOnClickListener(this);
         btnHealthRecord.setOnClickListener(this);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        tvChat.setOnClickListener(this);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
+        {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
+            {
                 int tabWidth = btnBaseInfo.getWidth();
                 viewIndicator.setTranslationX((position * tabWidth) + (positionOffset * tabWidth));
             }
 
             @Override
-            public void onPageSelected(int position) {
+            public void onPageSelected(int position)
+            {
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
+            public void onPageScrollStateChanged(int state)
+            {
             }
         });
     }
@@ -153,14 +164,16 @@ public class HealthCardActivity extends BaseActivity {
     /**
      * 获取患者个人信息
      */
-    private void getPatientInfo() {
+    private void getPatientInfo()
+    {
         mIRequest.getPatientInfo(patientBean.getPatientId(), this);
     }
 
     /**
      * 删除病人(取消关注)
      */
-    private void deletePatient() {
+    private void deletePatient()
+    {
         mIRequest.deletePatient(loginSuccessBean.getDoctorId(), patientBean.getPatientId(), this);
     }
 
@@ -168,14 +181,19 @@ public class HealthCardActivity extends BaseActivity {
      * 医生扫码添加患者  转诊患者
      * {@link #CHANGE_PATIENT}
      */
-    private void addPatientByScanOrChangePatient(String doctorId) {
-        mIRequest.addPatientByScanOrChangePatient(doctorId, patientBean.getPatientId(), CHANGE_PATIENT, this);
+    private void addPatientByScanOrChangePatient(String doctorId)
+    {
+        mIRequest.addPatientByScanOrChangePatient(doctorId, patientBean.getPatientId(),
+                                                  CHANGE_PATIENT, this);
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         super.onClick(v);
-        switch (v.getId()) {
+        Intent intent;
+        switch (v.getId())
+        {
             case R.id.act_health_card_base_info:
                 viewPager.setCurrentItem(0);
                 break;
@@ -186,17 +204,28 @@ public class HealthCardActivity extends BaseActivity {
                 showPop();
                 break;
             case R.id.delete:
-                if (mPopupwinow != null) {
+                if (mPopupwinow != null)
+                {
                     mPopupwinow.dismiss();
                 }
                 deletePatient();
                 break;
             case R.id.change:
-                if (mPopupwinow != null) {
+                if (mPopupwinow != null)
+                {
                     mPopupwinow.dismiss();
                 }
-                Intent intent = new Intent(this, CooperateDocActivity.class);
+                intent = new Intent(this, CooperateDocActivity.class);
                 startActivityForResult(intent, CHANGE_PATIENT_REQUEST_CODE);
+                break;
+            case R.id.act_health_card_chat:
+                if (patientBean != null)
+                {
+                    intent = new Intent(this, ChatActivity.class);
+                    intent.putExtra(CommonData.KEY_CHAT_ID, patientBean.getPatientId());
+                    intent.putExtra(CommonData.KEY_CHAT_NAME,patientBean.getName());
+                    startActivity(intent);
+                }
                 break;
             default:
                 break;
@@ -204,10 +233,11 @@ public class HealthCardActivity extends BaseActivity {
     }
 
     @Override
-    public void onResponseSuccess(Tasks task, BaseResponse response) {
+    public void onResponseSuccess(Tasks task, BaseResponse response)
+    {
         super.onResponseSuccess(task, response);
-
-        switch (task) {
+        switch (task)
+        {
             case GET_PATIENT_INFO:
                 break;
             case DELETE_PATIENT:
@@ -226,14 +256,17 @@ public class HealthCardActivity extends BaseActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK) {
+        if (resultCode != RESULT_OK)
+        {
             return;
         }
-
-        if (requestCode == CHANGE_PATIENT_REQUEST_CODE) {
-            if (data != null) {
+        if (requestCode == CHANGE_PATIENT_REQUEST_CODE)
+        {
+            if (data != null)
+            {
                 String doctorId = data.getStringExtra(CommonData.KEY_DOCTOR_ID);
                 addPatientByScanOrChangePatient(doctorId);
             }
@@ -243,21 +276,23 @@ public class HealthCardActivity extends BaseActivity {
     /**
      * 显示pop
      */
-    private void showPop() {
+    private void showPop()
+    {
         view_pop = LayoutInflater.from(this).inflate(R.layout.main_pop_menu, null);
-        tvDelete = (TextView) view_pop.findViewById(R.id.delete);
-        tvChange = (TextView) view_pop.findViewById(R.id.change);
+        tvDelete = (TextView)view_pop.findViewById(R.id.delete);
+        tvChange = (TextView)view_pop.findViewById(R.id.change);
         tvDelete.setOnClickListener(this);
         tvChange.setOnClickListener(this);
-        if (mPopupwinow == null) {
+        if (mPopupwinow == null)
+        {
             //新建一个popwindow
             mPopupwinow = new PopupWindow(view_pop, LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT, true);
+                                          LinearLayout.LayoutParams.WRAP_CONTENT, true);
         }
         mPopupwinow.setFocusable(true);
         mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mPopupwinow.setOutsideTouchable(true);
         mPopupwinow.showAtLocation(view_pop, Gravity.TOP | Gravity.RIGHT, 0,
-                (int) AllUtils.dipToPx(this, 65));
+                                   (int)AllUtils.dipToPx(this, 65));
     }
 }

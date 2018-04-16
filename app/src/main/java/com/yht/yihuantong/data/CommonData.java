@@ -27,6 +27,10 @@ public interface CommonData
      */
     String KEY_PATIENT_ID = "key_patient_id";
     /**
+     * patient name
+     */
+    String KEY_PATIENT_NAME = "key_patient_name";
+    /**
      * patient bean
      */
     String KEY_PATIENT_BEAN = "key_patient_bean";
@@ -34,4 +38,12 @@ public interface CommonData
      * patient case detail bean
      */
     String PATIENT_CASE_DETAIL_BEAN = "Patient_Case_Detail_Bean";
+    /**
+     * 聊天id
+     */
+    String KEY_CHAT_ID = "key_chat_id";
+    /**
+     * 聊天name
+     */
+    String KEY_CHAT_NAME = "key_chat_name";
 }
