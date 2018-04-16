@@ -9,6 +9,8 @@ import com.alibaba.fastjson.JSON;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.EaseUI;
+import com.hyphenate.easeui.HxHelper;
+import com.hyphenate.easeui.domain.EaseAvatarOptions;
 import com.yht.yihuantong.data.CommonData;
 
 import cn.jpush.android.api.JPushInterface;
@@ -38,13 +40,18 @@ public class YihtApplication extends Application
         EMOptions options = new EMOptions();
         // 默认添加好友时，是不需要验证的，改成需要验证
         options.setAcceptInvitationAlways(false);
-        //        // 是否自动将消息附件上传到环信服务器，默认为True是使用环信服务器上传下载，如果设为 false，需要开发者自己处理附件消息的上传和下载
-        //        options.setAutoTransferMessageAttachments(true);
-        //        // 是否自动下载附件类消息的缩略图等，默认为 true 这里和上边这个参数相关联
-        //        options.setAutoDownloadThumbnail(true);
         EaseUI.getInstance().init(this, options);
+        //设置头像为圆形
+        EaseAvatarOptions avatarOpts = new EaseAvatarOptions();
+        //0：默认，1：圆形，2：矩形
+        avatarOpts.setAvatarShape(1);
+        EaseUI.getInstance().setAvatarOptions(avatarOpts);
         //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
         EMClient.getInstance().setDebugMode(true);
+        //设置有关环信自定义的相关配置
+        HxHelper.Opts opts = new HxHelper.Opts();
+        opts.showChatTitle = false;
+        HxHelper.getInstance().init(this, opts);
         //极光推送
         JPushInterface.setDebugMode(false);
         JPushInterface.init(this);
