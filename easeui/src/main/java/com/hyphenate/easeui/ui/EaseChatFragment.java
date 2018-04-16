@@ -37,7 +37,6 @@ import com.hyphenate.chat.EMMessage.ChatType;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.EaseUI;
-import com.hyphenate.easeui.HxHelper;
 import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.domain.EaseEmojicon;
 import com.hyphenate.easeui.domain.EaseUser;
@@ -255,13 +254,6 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         String forward_msg_id = getArguments().getString("forward_msg_id");
         if (forward_msg_id != null) {
             forwardMessage(forward_msg_id);
-        }
-
-        //自定义代码，设置标题栏的显示与隐藏
-        if (HxHelper.getInstance().mOpts.showChatTitle) {
-            showTitleBar();
-        } else {
-            hideTitleBar();
         }
     }
     
