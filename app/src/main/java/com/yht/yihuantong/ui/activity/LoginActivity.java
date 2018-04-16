@@ -8,11 +8,14 @@ import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.utils.AllUtils;
@@ -26,7 +29,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import custom.frame.bean.BaseResponse;
-import custom.frame.bean.LoginSuccessBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.ToastUtil;
@@ -45,7 +47,7 @@ public class LoginActivity extends BaseActivity {
     /**
      * 是否获取过验证码
      */
-    private boolean IS_SEND_VERIFY_CODE = true;
+    private boolean IS_SEND_VERIFY_CODE = false;
     private static final int MAX_RESEND_TIME = 60;
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
@@ -123,13 +125,13 @@ public class LoginActivity extends BaseActivity {
                 }
                 //获取验证码
                 getVerifyCode();
-                showProgress();
                 break;
             case R.id.act_login_btn:
-                if (!IS_SEND_VERIFY_CODE) {
-                    ToastUtil.toast(this, R.string.toast_txt_get_verifycoder_error);
-                    return;
-                }
+//                if (!IS_SEND_VERIFY_CODE) {
+//                    ToastUtil.toast(this, R.string.toast_txt_get_verifycoder_error);
+//                    return;
+//                }
+                phone = etPhone.getText().toString().trim();
                 verifyCode = etVerifyCode.getText().toString().trim();
                 if (StringUtils.isEmpty(verifyCode)) {
                     ToastUtil.toast(this, R.string.toast_txt_verify_hint);
@@ -153,6 +155,7 @@ public class LoginActivity extends BaseActivity {
      * 登录 注册
      */
     private void loginAndRegister() {
+        showProgressDialog("",false);
         mIRequest.loginAndRegister(phone, verifyCode, "d", this);
     }
 
@@ -184,18 +187,48 @@ public class LoginActivity extends BaseActivity {
                 break;
             case LOGIN_AND_REGISTER:
                 //保存登录成功数据
-                LoginSuccessBean loginSuccessBean = response.getData();
+                loginSuccessBean = response.getData();
                 YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
-                //暂时只判断用户名是否为空  为空进入信息完善流程
-                if (TextUtils.isEmpty(loginSuccessBean.getName())) {
-                    startActivity(new Intent(this, CompleteInfoActivity.class));
-                } else {
-                    startActivity(new Intent(this, MainActivity.class));
-                }
-                finish();
+                if(EMClient.getInstance().isLoggedInBefore())
+                EMClient.getInstance().login(loginSuccessBean.getDoctorId(), "111111", new EMCallBack() {//回调
+                    @Override
+                    public void onSuccess() {
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                EMClient.getInstance().chatManager().loadAllConversations();
+                                EMClient.getInstance().groupManager().loadAllGroups();
+                                Log.d("main", "登录聊天服务器成功！");
+                                jumpTopage();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onProgress(int progress, String status) {
+
+                    }
+
+                    @Override
+                    public void onError(int code, String message) {
+                        Log.d("main", "登录聊天服务器失败！");
+                        closeProgressDialog();
+                    }
+                });
             default:
                 break;
         }
+    }
+
+    private void jumpTopage()
+    {
+        closeProgressDialog();
+        //暂时只判断用户名是否为空  为空进入信息完善流程
+        if (TextUtils.isEmpty(loginSuccessBean.getName())) {
+            startActivity(new Intent(this, CompleteInfoActivity.class));
+        } else {
+            startActivity(new Intent(this, MainActivity.class));
+        }
+        finish();
     }
 
     @Override

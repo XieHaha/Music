@@ -5,6 +5,12 @@ package custom.frame.http;
  */
 public enum Tasks
 {
+
+    /**
+     * 获取环信appkey
+     */
+    GET_EASE_APPKEY,
+
     /**
      * 获取验证码
      */

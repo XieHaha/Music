@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.hyphenate.chat.EMClient;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.qrcode.BarCodeImageView;
@@ -107,7 +108,10 @@ public class UserFragment extends BaseFragment {
                 new SimpleDialog(getActivity(), "确定退出?", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        //清除登录信息
                         YihtApplication.getInstance().clearLoginSuccessBean();
+                        //退出环信
+                        EMClient.getInstance().logout(true);
                         dialog.dismiss();
                         AppManager.getInstance().finishAllActivity();
                         startActivity(new Intent(getActivity(), LoginActivity.class));

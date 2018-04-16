@@ -6,6 +6,8 @@ import android.content.res.Resources;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMOptions;
 import com.yht.yihuantong.data.CommonData;
 
 import cn.jpush.android.api.JPushInterface;
@@ -17,7 +19,8 @@ import custom.frame.utils.SharePreferenceUtil;
  *
  * @author DUNDUN
  */
-public class YihtApplication extends Application {
+public class YihtApplication extends Application
+{
     private static YihtApplication sApplication;
     private LoginSuccessBean loginSuccessBean;
     /**
@@ -26,45 +29,50 @@ public class YihtApplication extends Application {
     private String headImgUrl;
 
     @Override
-    public void onCreate() {
+    public void onCreate()
+    {
         super.onCreate();
         init();
-        //        //环信初始化
-        //        EMOptions options = new EMOptions();
-        //        // 默认添加好友时，是不需要验证的，改成需要验证
-        //        options.setAcceptInvitationAlways(false);
-        //        //        // 是否自动将消息附件上传到环信服务器，默认为True是使用环信服务器上传下载，如果设为 false，需要开发者自己处理附件消息的上传和下载
-        //        //        options.setAutoTransferMessageAttachments(true);
-        //        //        // 是否自动下载附件类消息的缩略图等，默认为 true 这里和上边这个参数相关联
-        //        //        options.setAutoDownloadThumbnail(true);
-        //        //初始化
-        //        EMClient.getInstance().init(this, options);
-        //        //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
-        //        EMClient.getInstance().setDebugMode(true);
-
+        //环信初始化
+        EMOptions options = new EMOptions();
+        // 默认添加好友时，是不需要验证的，改成需要验证
+        options.setAcceptInvitationAlways(false);
+        //        // 是否自动将消息附件上传到环信服务器，默认为True是使用环信服务器上传下载，如果设为 false，需要开发者自己处理附件消息的上传和下载
+        //        options.setAutoTransferMessageAttachments(true);
+        //        // 是否自动下载附件类消息的缩略图等，默认为 true 这里和上边这个参数相关联
+        //        options.setAutoDownloadThumbnail(true);
+        //初始化
+        EMClient.getInstance().init(this, options);
+        //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
+        EMClient.getInstance().setDebugMode(true);
         //极光推送
         JPushInterface.setDebugMode(false);
         JPushInterface.init(this);
     }
 
-    private void init() {
+    private void init()
+    {
         sApplication = this;
     }
 
-    public static YihtApplication getInstance() {
+    public static YihtApplication getInstance()
+    {
         return sApplication;
     }
 
-
-    public LoginSuccessBean getLoginSuccessBean() {
-        String userStr = (String) SharePreferenceUtil.get(this, CommonData.KEY_LOGIN_SUCCESS_BEAN, "");
-        if (!TextUtils.isEmpty(userStr)) {
+    public LoginSuccessBean getLoginSuccessBean()
+    {
+        String userStr = (String)SharePreferenceUtil.get(this, CommonData.KEY_LOGIN_SUCCESS_BEAN,
+                                                         "");
+        if (!TextUtils.isEmpty(userStr))
+        {
             loginSuccessBean = JSON.parseObject(userStr, LoginSuccessBean.class);
         }
         return loginSuccessBean;
     }
 
-    public void setLoginSuccessBean(LoginSuccessBean loginSuccessBean) {
+    public void setLoginSuccessBean(LoginSuccessBean loginSuccessBean)
+    {
         this.loginSuccessBean = loginSuccessBean;
         SharePreferenceUtil.put(this, CommonData.KEY_LOGIN_SUCCESS_BEAN, loginSuccessBean);
     }
@@ -74,14 +82,16 @@ public class YihtApplication extends Application {
      */
     public void clearLoginSuccessBean()
     {
-        SharePreferenceUtil.remove(this,CommonData.KEY_LOGIN_SUCCESS_BEAN);
+        SharePreferenceUtil.remove(this, CommonData.KEY_LOGIN_SUCCESS_BEAN);
     }
 
-    public String getHeadImgUrl() {
+    public String getHeadImgUrl()
+    {
         return headImgUrl;
     }
 
-    public void setHeadImgUrl(String headImgUrl) {
+    public void setHeadImgUrl(String headImgUrl)
+    {
         this.headImgUrl = headImgUrl;
     }
 
@@ -91,7 +101,8 @@ public class YihtApplication extends Application {
      * @return
      */
     @Override
-    public Resources getResources() {
+    public Resources getResources()
+    {
         Resources resources = super.getResources();
         Configuration configuration = resources.getConfiguration();
         configuration.fontScale = 1;

@@ -61,14 +61,11 @@ public class IRequest extends BaseRequest {
     }
 
     /**
-     * 得到基础连接地址
+     * 获取环信appkey
      */
-    private RequestParams getBaseMap(String requestName) {
-        RequestParams params = new RequestParams();
-        params.addBodyParameter("m", "app_server");
-        params.addBodyParameter("c", "api");
-        params.addBodyParameter("a", requestName);
-        return params;
+    public Tasks getEaseAppKey(final ResponseListener<BaseResponse> listener) {
+        return requestBaseResponse(GET, "/huanxin/apiKey", Tasks.GET_EASE_APPKEY,
+                                       String.class, null, listener);
     }
 
     /**

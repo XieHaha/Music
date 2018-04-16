@@ -8,6 +8,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.View;
 
+import com.hyphenate.EMConnectionListener;
+import com.hyphenate.EMError;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.util.NetUtils;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.fragment.CooperateDocFragment;
 import com.yht.yihuantong.ui.fragment.MsgFragment;
@@ -24,6 +28,8 @@ public class MainActivity extends BaseActivity
     private Fragment msgFragment, docFragment, caseFragment, myFragment;
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
+
+    private MyConnectionListener connectionListener;
 
     @Override
     public int getLayoutID()
@@ -61,6 +67,10 @@ public class MainActivity extends BaseActivity
         tabDoc.setOnClickListener(this);
         tabCase.setOnClickListener(this);
         tabMy.setOnClickListener(this);
+
+        //注册一个监听连接状态的listener
+        connectionListener = new MyConnectionListener();
+        EMClient.getInstance().addConnectionListener(connectionListener);
     }
 
     @Override
@@ -210,15 +220,64 @@ public class MainActivity extends BaseActivity
         }
     }
 
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        //移除监听
+        EMClient.getInstance().removeConnectionListener(connectionListener);
+    }
+
+    public class MyConnectionListener implements EMConnectionListener
+    {
+        @Override
+        public void onConnected()
+        {
+        }
+
+        @Override
+        public void onDisconnected(final int error)
+        {
+            runOnUiThread(new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    if (error == EMError.USER_REMOVED)
+                    {
+                        // 显示帐号已经被移除
+                    }
+                    else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE)
+                    {
+                        // 显示帐号在其他设备登录
+                    }
+                    else
+                    {
+                        if (NetUtils.hasNetwork(MainActivity.this))
+                        {
+                            //连接不到聊天服务器
+                        }
+                        else
+                        {
+                            //当前网络不可用，请检查网络设置
+                        }
+                    }
+                }
+            });
+        }
+    }
+
     /**
      * 设置标签与别名
      */
-    private void setAlias() {
-        JPushInterface.setAlias(this,100,loginSuccessBean.getDoctorId());
+    private void setAlias()
+    {
+        JPushInterface.setAlias(this, 100, loginSuccessBean.getDoctorId());
     }
 
     /**
      * 返回键 后台运行
+     *
      * @param keyCode
      * @param event
      * @return

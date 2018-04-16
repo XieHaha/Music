@@ -1,13 +1,12 @@
 package custom.frame.ui.activity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 
 import com.alibaba.fastjson.JSON;
 
@@ -37,7 +36,7 @@ import custom.frame.utils.ToastUtil;
 public abstract class BaseActivity extends AppCompatActivity
         implements ActivityInterface, ResponseListener<BaseResponse>, View.OnClickListener,
         OnPermissionCallback, ConstantsCommon {
-    private ProgressBar progressBar;
+    private ProgressDialog mProgressDialog;
 
     /**
      * 登录数据
@@ -254,18 +253,32 @@ public abstract class BaseActivity extends AppCompatActivity
     public void initListener() {
     }
 
-    private void initProgressDialog() {
-        progressBar = new ProgressBar(this);
-        progressBar.setIndeterminateDrawable(
-                ContextCompat.getDrawable(this, R.drawable.public_progress));
-        progressBar.setIndeterminate(true);
+    private void initProgressDialog()
+    {
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setIndeterminateDrawable(getResources().getDrawable(R.drawable.public_progress));
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setCancelable(true);
     }
 
     /**
      * 显示进度条
+     *
+     * @param msg 提示消息
      */
-    public void showProgress() {
-        showProgress("", true);
+    public void showProgressDialog(final String msg)
+    {
+        showProgressDialog(msg, true);
+    }
+    /**
+     * 显示进度条
+     *
+     * @param resid 提示消息
+     */
+    public void showProgressDialog(final int resid)
+    {
+        String  msg = getResources().getString(resid);
+        showProgressDialog(msg, true);
     }
 
     /**
@@ -274,14 +287,24 @@ public abstract class BaseActivity extends AppCompatActivity
      * @param msg    提示消息
      * @param cancel 是否可取消
      */
-    public void showProgress(final String msg, final boolean cancel) {
-        runOnUiThread(new Runnable() {
+    public void showProgressDialog(final String msg, final boolean cancel)
+    {
+        runOnUiThread(new Runnable()
+        {
             @Override
-            public void run() {
-                if (progressBar == null) {
+            public void run()
+            {
+                if (mProgressDialog == null)
+                {
                     initProgressDialog();
                 }
-                progressBar.setVisibility(View.VISIBLE);
+                mProgressDialog.setCancelable(cancel);
+                mProgressDialog.setCanceledOnTouchOutside(cancel);
+                mProgressDialog.setMessage(msg);
+                if (!mProgressDialog.isShowing())
+                {
+                    mProgressDialog.show();
+                }
             }
         });
     }
@@ -289,17 +312,25 @@ public abstract class BaseActivity extends AppCompatActivity
     /**
      * 关闭进度条
      */
-    public void closeProgress() {
-        runOnUiThread(new Runnable() {
+    public void closeProgressDialog()
+    {
+        runOnUiThread(new Runnable()
+        {
             @Override
-            public void run() {
-                if (progressBar == null) {
+            public void run()
+            {
+                if (mProgressDialog == null) { return; }
+                if (!mProgressDialog.isShowing())
+                {
                     return;
                 }
-                progressBar.setVisibility(View.GONE);
+                mProgressDialog.setCancelable(true);
+                mProgressDialog.setCanceledOnTouchOutside(true);
+                mProgressDialog.dismiss();
             }
         });
     }
+
 
     /**
      * 得到本类名
@@ -311,17 +342,14 @@ public abstract class BaseActivity extends AppCompatActivity
     //============================================网络回调
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
-        closeProgress();
     }
 
     @Override
     public void onResponseCodeError(Tasks task, BaseResponse response) {
-        closeProgress();
     }
 
     @Override
     public void onResponseError(Tasks task, Exception e) {
-        closeProgress();
         ToastUtil.toast(this, e.getMessage());
     }
 
