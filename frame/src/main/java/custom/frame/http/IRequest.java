@@ -166,7 +166,7 @@ public class IRequest extends BaseRequest {
     /**
      * 合作医生申请
      */
-    public Tasks applyCooperateDoc(String doctorId, String colleborateDoctorId, int requestSource, final ResponseListener<BaseResponse> listener) {
+    public Tasks applyCooperateDoc(String colleborateDoctorId,String doctorId,  int requestSource, final ResponseListener<BaseResponse> listener) {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
         merchant.put("colleborateDoctorId", colleborateDoctorId);
@@ -185,6 +185,18 @@ public class IRequest extends BaseRequest {
         merchant.put("pageSize", pageSize);
         return requestBaseResponseListByJson("/colleborate/doctorList", Tasks.GET_COOPERATE_DOC_LIST,
                 CooperateDocBean.class, merchant, listener);
+    }
+
+    /**
+     * 取消合作医生关系
+     * doctorId 为操作人id   doctorId2为被操作人id
+     */
+    public Tasks cancelCooperateDoc(String doctorId, String doctorId2,final ResponseListener<BaseResponse> listener) {
+        RequestParams params = new RequestParams();
+        params.addBodyParameter("id1", doctorId);
+        params.addBodyParameter("id2", doctorId2);
+        return requestBaseResponse(GET, "/colleborate/delete", Tasks.CANCEL_COOPERATE_DOC,
+                                   CooperateDocBean.class, params, listener);
     }
 
     /**

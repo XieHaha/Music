@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,6 +19,7 @@ import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.activity.ApplyCooperateDocActivity;
 import com.yht.yihuantong.ui.activity.UserInfoActivity;
 import com.yht.yihuantong.ui.adapter.CooperateDocListAdapter;
+import com.yht.yihuantong.ui.dialog.SimpleDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,7 @@ import custom.frame.bean.CooperateDocBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.ui.fragment.BaseFragment;
+import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
@@ -67,6 +70,12 @@ public class CooperateDocFragment extends BaseFragment
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        getCooperateList();
+    }
+
+    @Override
     public void initView(@NonNull View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
         ((TextView) view.findViewById(R.id.public_title_bar_title)).setText("合作医生");
@@ -91,7 +100,6 @@ public class CooperateDocFragment extends BaseFragment
         cooperateDocListAdapter.addHeaderView(headerView);
         cooperateDocListAdapter.addFooterView(footerView);
         page = 0;
-        getCooperateList();
     }
 
     @Override
@@ -113,6 +121,24 @@ public class CooperateDocFragment extends BaseFragment
                         startActivity(intent);
                     }
                 });
+        cooperateDocListAdapter.setOnItemLongClickListener(
+                new BaseRecyclerAdapter.OnItemLongClickListener<CooperateDocBean>() {
+                    @Override
+                    public void onItemLongClick(View v, int position, CooperateDocBean item)
+                    {
+                        new SimpleDialog(getActivity(), "确定删除?", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                cancelCooperateDoc(item.getDoctorId());
+                            }
+                        }, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                    }
+                });
     }
 
     /**
@@ -123,10 +149,17 @@ public class CooperateDocFragment extends BaseFragment
     }
 
     /**
-     * 医生扫码添加患者  转诊患者
+     * 合作医生申请
      */
     private void applyCooperateDoc(String doctorId, int requestCode) {
         mIRequest.applyCooperateDoc(loginSuccessBean.getDoctorId(), doctorId, requestCode, this);
+
+    }
+    /**
+     * 合作医生申请
+     */
+    private void cancelCooperateDoc(String doctorId) {
+        mIRequest.cancelCooperateDoc(loginSuccessBean.getDoctorId(), doctorId, this);
 
     }
 
@@ -207,6 +240,13 @@ public class CooperateDocFragment extends BaseFragment
                         autoLoadRecyclerView.loadFinish(true);
                     }
                 }
+                break;
+            case APPLY_COOPERATE_DOC:
+                ToastUtil.toast(getContext(),"处理成功");
+                break;
+            case CANCEL_COOPERATE_DOC:
+                ToastUtil.toast(getContext(),"处理成功");
+                getCooperateList();
                 break;
             default:
                 break;

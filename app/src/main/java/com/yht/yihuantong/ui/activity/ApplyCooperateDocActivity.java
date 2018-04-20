@@ -22,6 +22,7 @@ import custom.frame.bean.CooperateDocBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
+import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
@@ -122,7 +123,7 @@ public class ApplyCooperateDocActivity extends BaseActivity
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
         switch (task) {
-            case GET_COOPERATE_DOC_LIST:
+            case GET_APPLY_COOPERATE_DOC_LIST:
                 applyCooperateList = response.getData();
                 if (page == 0) {
                     applyCooperateAdapter.setList(applyCooperateList);
@@ -138,6 +139,10 @@ public class ApplyCooperateDocActivity extends BaseActivity
                     tvHintTxt.setText("上拉加载更多");
                     autoLoadRecyclerView.loadFinish(true);
                 }
+                break;
+            case DEAL_DOC_APPLY:
+                ToastUtil.toast(this,"处理成功");
+                getApplyCooperateList();
                 break;
             default:
                 break;

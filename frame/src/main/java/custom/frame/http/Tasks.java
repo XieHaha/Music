@@ -64,6 +64,10 @@ public enum Tasks
      */
     GET_DOC_INFO,
     /**
+     * 取消合作医生关系
+     */
+    CANCEL_COOPERATE_DOC,
+    /**
      * 获取患者个人信息
      */
     GET_PATIENT_INFO,
