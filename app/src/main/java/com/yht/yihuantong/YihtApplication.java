@@ -9,8 +9,9 @@ import com.alibaba.fastjson.JSON;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.EaseUI;
-import com.hyphenate.easeui.HxHelper;
+import com.yht.yihuantong.ease.HxHelper;
 import com.hyphenate.easeui.domain.EaseAvatarOptions;
+import com.hyphenate.easeui.domain.EaseUser;
 import com.yht.yihuantong.data.CommonData;
 
 import cn.jpush.android.api.JPushInterface;
@@ -30,12 +31,34 @@ public class YihtApplication extends Application
      * 临时数据  头像url
      */
     private String headImgUrl;
+    /**
+     * ease 临时数据  头像url
+     */
+    private String easeHeadImgUrl;
+    /**
+     * ease 临时数据  name
+     */
+    private String easeName;
 
     @Override
     public void onCreate()
     {
         super.onCreate();
-        init();
+        initContext();
+        initEase();
+        initJPush();
+    }
+
+    private void initContext()
+    {
+        sApplication = this;
+    }
+
+    /**
+     * 环信初始化
+     */
+    private void initEase()
+    {
         //环信初始化
         EMOptions options = new EMOptions();
         // 默认添加好友时，是不需要验证的，改成需要验证
@@ -52,14 +75,30 @@ public class YihtApplication extends Application
         HxHelper.Opts opts = new HxHelper.Opts();
         opts.showChatTitle = false;
         HxHelper.getInstance().init(this, opts);
+
+        EaseUI.getInstance().setUserProfileProvider(username -> {
+            LoginSuccessBean bean = getLoginSuccessBean();
+            //如果是当前用户，就设置自己的昵称和头像
+            if (null != bean && TextUtils.equals(bean.getDoctorId(), username)) {
+                EaseUser eu = new EaseUser(username);
+                eu.setNickname(bean.getName());
+                eu.setAvatar(bean.getPortraitUrl());
+                return eu;
+            }
+            //否则交给HxHelper处理，从消息中获取昵称和头像
+            return HxHelper.getInstance().getUser(username);
+        });
+
+    }
+
+    /**
+     * 极光推送 初始化
+     */
+    private void initJPush()
+    {
         //极光推送
         JPushInterface.setDebugMode(false);
         JPushInterface.init(this);
-    }
-
-    private void init()
-    {
-        sApplication = this;
     }
 
     public static YihtApplication getInstance()
@@ -100,6 +139,26 @@ public class YihtApplication extends Application
     public void setHeadImgUrl(String headImgUrl)
     {
         this.headImgUrl = headImgUrl;
+    }
+
+    public String getEaseHeadImgUrl()
+    {
+        return easeHeadImgUrl;
+    }
+
+    public void setEaseHeadImgUrl(String easeHeadImgUrl)
+    {
+        this.easeHeadImgUrl = easeHeadImgUrl;
+    }
+
+    public String getEaseName()
+    {
+        return easeName;
+    }
+
+    public void setEaseName(String easeName)
+    {
+        this.easeName = easeName;
     }
 
     /**

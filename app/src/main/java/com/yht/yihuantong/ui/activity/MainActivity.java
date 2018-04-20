@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -10,26 +11,41 @@ import android.view.View;
 
 import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;
+import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.easeui.ui.EaseConversationListFragment;
 import com.hyphenate.util.NetUtils;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.data.CommonData;
+import com.yht.yihuantong.ease.ChatActivity;
 import com.yht.yihuantong.ui.fragment.CooperateDocFragment;
 import com.yht.yihuantong.ui.fragment.MsgFragment;
 import com.yht.yihuantong.ui.fragment.PatientsFragment;
 import com.yht.yihuantong.ui.fragment.UserFragment;
+
+import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.widgets.ripples.RippleLinearLayout;
 
 public class MainActivity extends BaseActivity
+        implements EaseConversationListFragment.EaseConversationListItemClickListener
 {
     private RippleLinearLayout tabMsg, tabDoc, tabCase, tabMy;
     private Fragment msgFragment, docFragment, caseFragment, myFragment;
+    private EaseConversationListFragment easeConversationListFragment;
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
 
     private MyConnectionListener connectionListener;
+    /**
+     * 消息监听
+     */
+    private EMMessageListener msgListener;
+
 
     @Override
     public int getLayoutID()
@@ -44,7 +60,8 @@ public class MainActivity extends BaseActivity
     {
         fragmentManager = getSupportFragmentManager();
         transaction = fragmentManager.beginTransaction();
-        tabMsgView();
+//        tabMsgView();
+        tabEaseMsgView();
         setAlias();
     }
 
@@ -71,6 +88,59 @@ public class MainActivity extends BaseActivity
         //注册一个监听连接状态的listener
         connectionListener = new MyConnectionListener();
         EMClient.getInstance().addConnectionListener(connectionListener);
+
+        msgListener = new EMMessageListener()
+        {
+            @Override
+            public void onMessageReceived(List<EMMessage> messages)
+            {
+                //收到消息
+                if (easeConversationListFragment != null)
+                {
+                    easeConversationListFragment.refresh();
+                }
+            }
+
+            @Override
+            public void onCmdMessageReceived(List<EMMessage> messages)
+            {
+                //收到透传消息
+            }
+
+            @Override
+            public void onMessageRead(List<EMMessage> messages)
+            {
+                //收到已读回执
+            }
+
+            @Override
+            public void onMessageDelivered(List<EMMessage> message)
+            {
+                //收到已送达回执
+            }
+
+            @Override
+            public void onMessageRecalled(List<EMMessage> messages)
+            {
+                //消息被撤回
+            }
+
+            @Override
+            public void onMessageChanged(EMMessage message, Object change)
+            {
+                //消息状态变动
+            }
+        };
+        EMClient.getInstance().chatManager().addMessageListener(msgListener);
+    }
+
+    @Override
+    public void onListItemClicked(EMConversation conversation)
+    {
+        Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtra(CommonData.KEY_CHAT_ID, conversation.conversationId());
+        //                intent.putExtra(CommonData.KEY_CHAT_NAME,conversation.());
+        startActivity(intent);
     }
 
     @Override
@@ -80,7 +150,8 @@ public class MainActivity extends BaseActivity
         switch (v.getId())
         {
             case R.id.act_main_tab1:
-                tabMsgView();
+                tabEaseMsgView();
+//                tabMsgView();
                 break;
             case R.id.act_main_tab2:
                 tabDocView();
@@ -92,7 +163,8 @@ public class MainActivity extends BaseActivity
                 tabMyView();
                 break;
             default:
-                tabMsgView();
+//                tabMsgView();
+                tabEaseMsgView();
                 break;
         }
     }
@@ -114,6 +186,29 @@ public class MainActivity extends BaseActivity
         transaction.commitAllowingStateLoss();
         selectTab(0);
     }
+
+    /**
+     * 环信自带会话列表
+     */
+    private void tabEaseMsgView()
+    {
+        transaction = fragmentManager.beginTransaction();
+        hideAll(transaction);
+        if (easeConversationListFragment == null)
+        {
+            easeConversationListFragment = new EaseConversationListFragment();
+            transaction.add(R.id.act_main_tab_frameLayout, easeConversationListFragment);
+        }
+        else
+        {
+            transaction.show(easeConversationListFragment);
+            easeConversationListFragment.onResume();
+        }
+        easeConversationListFragment.setConversationListItemClickListener(this);
+        transaction.commitAllowingStateLoss();
+        selectTab(0);
+    }
+
 
     private void tabDocView()
     {
@@ -226,6 +321,7 @@ public class MainActivity extends BaseActivity
         super.onDestroy();
         //移除监听
         EMClient.getInstance().removeConnectionListener(connectionListener);
+        EMClient.getInstance().chatManager().removeMessageListener(msgListener);
     }
 
     public class MyConnectionListener implements EMConnectionListener

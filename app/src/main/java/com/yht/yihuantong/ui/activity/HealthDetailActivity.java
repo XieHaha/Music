@@ -377,7 +377,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                 if (!TextUtils.isEmpty(allImgUrl.toString())) {
                     allImgUrl.append(",");
                 }
-                allImgUrl.append(response.getData());
+                allImgUrl.append(response.getData().toString());
 
                 Log.i("test", "allImgUrl:" + allImgUrl.toString());
                 break;

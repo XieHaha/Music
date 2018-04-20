@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.Gravity;
@@ -255,6 +256,16 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         if (forward_msg_id != null) {
             forwardMessage(forward_msg_id);
         }
+
+//        //自定义代码，设置标题栏的显示与隐藏
+//        if (HxHelper.getInstance().mOpts.showChatTitle) {
+//            showTitleBar();
+//        } else {
+//            hideTitleBar();
+//        }
+
+        if (titleBar != null)
+        {titleBar.setRightLayoutVisibility(View.GONE);}
     }
     
     /**
@@ -866,9 +877,20 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                 + System.currentTimeMillis() + ".jpg");
         //noinspection ResultOfMethodCallIgnored
         cameraFile.getParentFile().mkdirs();
-        startActivityForResult(
-                new Intent(MediaStore.ACTION_IMAGE_CAPTURE).putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraFile)),
-                REQUEST_CODE_CAMERA);
+        //为了兼容Android 7.0+，使用FileProvider
+        Uri fileUri = null;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            //Android 7.0以下
+            fileUri = Uri.fromFile(cameraFile);
+        } else {
+            //Android 7.0及以上
+            fileUri = FileProvider.getUriForFile(getActivity(), "com.yht.yihuantong.fileprovider", cameraFile);
+        }
+        startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE).putExtra(MediaStore.EXTRA_OUTPUT, fileUri), REQUEST_CODE_CAMERA);
+
+//        startActivityForResult(
+//                new Intent(MediaStore.ACTION_IMAGE_CAPTURE).putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraFile)),
+//                REQUEST_CODE_CAMERA);
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -9,7 +10,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.data.CommonData;
+import com.yht.yihuantong.ease.ChatActivity;
 import com.yht.yihuantong.tools.GlideHelper;
 
 import custom.frame.bean.BaseResponse;
@@ -45,6 +48,7 @@ public class UserInfoActivity extends BaseActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         ivHeadImg = (CircleImageView) findViewById(R.id.act_user_info_headimg);
         findViewById(R.id.public_title_bar_back).setOnClickListener(this);
+        findViewById(R.id.act_user_info_chat).setOnClickListener(this);
 
         tvName = (TextView) findViewById(R.id.act_user_info_name);
         tvHospital = (TextView) findViewById(R.id.act_user_info_hospital);
@@ -92,6 +96,18 @@ public class UserInfoActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.public_title_bar_back:
                 finish();
+                break;
+            case R.id.act_user_info_chat:
+                if(cooperateDocBean!=null)
+                {
+                    Intent intent = new Intent(this, ChatActivity.class);
+                    intent.putExtra(CommonData.KEY_CHAT_ID, cooperateDocBean.getDoctorId());
+                    intent.putExtra(CommonData.KEY_CHAT_NAME,cooperateDocBean.getName());
+                    //存储临时数据
+                    YihtApplication.getInstance().setEaseName(cooperateDocBean.getName());
+                    YihtApplication.getInstance().setEaseHeadImgUrl(cooperateDocBean.getPortraitUrl());
+                    startActivity(intent);
+                }
                 break;
             default:
                 break;

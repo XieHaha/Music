@@ -17,7 +17,9 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.data.CommonData;
+import com.yht.yihuantong.ease.ChatActivity;
 import com.yht.yihuantong.ui.adapter.FragmentVpAdapter;
 import com.yht.yihuantong.ui.fragment.BaseInfoFragment;
 import com.yht.yihuantong.ui.fragment.CaseRecordFragment;
@@ -223,7 +225,9 @@ public class HealthCardActivity extends BaseActivity
                 {
                     intent = new Intent(this, ChatActivity.class);
                     intent.putExtra(CommonData.KEY_CHAT_ID, patientBean.getPatientId());
-                    intent.putExtra(CommonData.KEY_CHAT_NAME,patientBean.getName());
+                    //存储临时数据
+                    YihtApplication.getInstance().setEaseName(patientBean.getName());
+                    YihtApplication.getInstance().setEaseHeadImgUrl(patientBean.getPatientImgUrl());
                     startActivity(intent);
                 }
                 break;

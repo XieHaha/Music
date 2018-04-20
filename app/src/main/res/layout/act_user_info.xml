@@ -204,4 +204,15 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/act_user_info_chat"
+        android:layout_width="match_parent"
+        android:textSize="18sp"
+        android:text="发起会话"
+        android:gravity="center"
+        android:background="@color/app_main_color"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/app_white_color"
+        android:layout_height="46dp" />
+
 </RelativeLayout>

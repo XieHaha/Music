@@ -9,6 +9,16 @@
     <application android:allowBackup="true" >
         <activity android:name="com.hyphenate.easeui.ui.EaseShowBigImageActivity" />
         <activity android:name="com.hyphenate.easeui.ui.EaseShowVideoActivity" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.yht.yihuantong.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths_public" />
+        </provider>
     </application>
 
 </manifest>
