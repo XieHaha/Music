@@ -49,11 +49,6 @@ public class ApplyCooperateDocActivity extends BaseActivity
      */
     private static final int PAGE_SIZE = 20;
 
-    /**
-     * 医生端区别字段
-     */
-    private static final int MODE = 9;
-
     @Override
     public int getLayoutID() {
         return R.layout.act_apply_cooperate;
@@ -119,8 +114,8 @@ public class ApplyCooperateDocActivity extends BaseActivity
     /**
      * 处理医生合作申请
      */
-    private void dealDocApply(String applyId,int way) {
-        mIRequest.dealDocApply(loginSuccessBean.getDoctorId(), applyId, way, MODE,this);
+    private void dealDocApply(String applyId,int way,int requestCode) {
+        mIRequest.dealDocApply(loginSuccessBean.getDoctorId(), applyId, way, requestCode,this);
     }
 
     @Override
@@ -190,12 +185,12 @@ public class ApplyCooperateDocActivity extends BaseActivity
     }
 
     @Override
-    public void onPositiveTrigger(String s) {
-        dealDocApply(s,1);
+    public void onPositiveTrigger(String s,int requestCode) {
+        dealDocApply(s,1,requestCode);
     }
 
     @Override
-    public void onNegativeTrigger(String s) {
-        dealDocApply(s,3);
+    public void onNegativeTrigger(String s,int requestCode) {
+        dealDocApply(s,3,requestCode);
     }
 }

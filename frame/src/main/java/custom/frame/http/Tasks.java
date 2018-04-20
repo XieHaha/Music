@@ -44,6 +44,10 @@ public enum Tasks
      */
     ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT,
     /**
+     * 合作医生申请
+     */
+    APPLY_COOPERATE_DOC,
+    /**
      * 获取合作医生列表
      */
     GET_COOPERATE_DOC_LIST,

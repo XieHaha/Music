@@ -109,7 +109,7 @@
                     android:text="*"
                     android:textColor="@color/app_main_color" />
 
-                <EditText
+                <TextView
                     android:id="@+id/act_health_detail_diagnosis_time"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -117,6 +117,7 @@
                     android:layout_marginRight="16dp"
                     android:background="@null"
                     android:text=""
+                    android:gravity="center_vertical"
                     android:textColor="#333333"
                     android:textSize="15sp" />
 

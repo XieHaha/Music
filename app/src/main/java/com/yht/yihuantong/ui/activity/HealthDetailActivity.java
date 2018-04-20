@@ -19,6 +19,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bigkoo.pickerview.builder.TimePickerBuilder;
+import com.bigkoo.pickerview.listener.OnTimeSelectListener;
+import com.bigkoo.pickerview.view.TimePickerView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.dialog.ActionSheetDialog;
@@ -31,7 +34,10 @@ import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import custom.frame.bean.BaseResponse;
@@ -53,7 +59,8 @@ import custom.frame.widgets.gridview.AutoGridView;
 public class HealthDetailActivity extends BaseActivity implements AdapterView.OnItemClickListener {
     private TextView tvTitleBarMore, tvCreateTime, tvHint;
     private ImageView ivTitlebBarMore;
-    private EditText etDiagnosis, etDiagnosisTime, etDepartment, etHospital, etCaseInfo, etCaseNow, etCaseImportment, etCaseCheck, etCaseDealType;
+    private EditText etDiagnosis, etDepartment, etHospital, etCaseInfo, etCaseNow, etCaseImportment, etCaseCheck, etCaseDealType;
+    private TextView tvDiagnosisTime;
     private AutoGridView autoGridView;
 
     private PatientCaseDetailBean patientCaseDetailBean;
@@ -63,14 +70,20 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
     private File cameraTempFile;
 
     private String patientId;
-
-
+    /**
+     * 时间选择控件
+     */
+    private TimePickerView timePicker;
     private String diagnosis, diagnosisTime, department, hospital, caseInfo, caseNow, caseImportment, caseCheck, caseDealType;
 
     /**
      * 是否新增病例
      */
     private boolean isAddNewHealth = false;
+    /**
+     * 是否选择时间
+     */
+    private boolean isSelectTime = false;
 
     /**
      * 最多图片限制
@@ -132,7 +145,9 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
         tvCreateTime = (TextView) findViewById(R.id.act_health_detail_create_time);
         tvHint = (TextView) findViewById(R.id.act_health_detail_hint);
         etDiagnosis = (EditText) findViewById(R.id.act_health_detail_diagnosis);
-        etDiagnosisTime = (EditText) findViewById(R.id.act_health_detail_diagnosis_time);
+        tvDiagnosisTime = (TextView) findViewById(R.id.act_health_detail_diagnosis_time);
+        tvDiagnosisTime.setText(AllUtils.formatDate(System.currentTimeMillis(), AllUtils.DATE_FORMAT_NO_HOUR));
+
         etDepartment = (EditText) findViewById(R.id.act_health_detail_department);
         etHospital = (EditText) findViewById(R.id.act_health_detail_hopital);
         etCaseInfo = (EditText) findViewById(R.id.act_health_detail_case_info);
@@ -157,10 +172,12 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
             tvTitleBarMore.setVisibility(View.VISIBLE);
             tvTitleBarMore.setText("完成");
             initWidght(true);
+            isSelectTime = true;
         } else {
             ivTitlebBarMore.setVisibility(View.VISIBLE);
             tvHint.setVisibility(View.GONE);
             initWidght(false);
+            isSelectTime = false;
         }
         initPageData();
     }
@@ -168,6 +185,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
     @Override
     public void initListener() {
         super.initListener();
+        tvDiagnosisTime.setOnClickListener(this);
         autoGridView.setOnItemClickListener(this);
         tvTitleBarMore.setOnClickListener(this);
         ivTitlebBarMore.setOnClickListener(this);
@@ -179,10 +197,11 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
      * @param mode
      */
     private void initWidght(boolean mode) {
+        tvDiagnosisTime.setClickable(mode);
         etDiagnosis.setFocusable(mode);
         etDiagnosis.setFocusableInTouchMode(mode);
-        etDiagnosisTime.setFocusable(mode);
-        etDiagnosisTime.setFocusableInTouchMode(mode);
+//        etDiagnosisTime.setFocusable(mode);
+//        etDiagnosisTime.setFocusableInTouchMode(mode);
         etDepartment.setFocusable(mode);
         etDepartment.setFocusableInTouchMode(mode);
         etHospital.setFocusable(mode);
@@ -206,7 +225,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
         if (patientCaseDetailBean != null) {
             tvCreateTime.setText(AllUtils.formatDate(patientCaseDetailBean.getGmtCreate(), AllUtils.DATE_FORMAT));
             etDiagnosis.setText(patientCaseDetailBean.getDiagnosisInfo());
-            etDiagnosisTime.setText(AllUtils.formatDate(patientCaseDetailBean.getVisDate(), AllUtils.DATE_FORMAT_NO_HOUR));
+            tvDiagnosisTime.setText(AllUtils.formatDate(patientCaseDetailBean.getVisDate(), AllUtils.DATE_FORMAT_NO_HOUR));
             etDepartment.setText(patientCaseDetailBean.getDoctorDep());
             etHospital.setText(patientCaseDetailBean.getHospital());
             etCaseInfo.setText(patientCaseDetailBean.getPatientWords());
@@ -261,10 +280,11 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                 tvTitleBarMore.setText("完成");
                 autoGridView.updateImg(imageList, true);
                 initWidght(true);
+                isSelectTime = true;
                 break;
             case R.id.public_title_bar_more_txt:
                 diagnosis = etDiagnosis.getText().toString();
-                diagnosisTime = etDiagnosisTime.getText().toString();
+                diagnosisTime = tvDiagnosisTime.getText().toString();
                 department = etDepartment.getText().toString();
                 hospital = etHospital.getText().toString();
                 caseInfo = etCaseInfo.getText().toString();
@@ -284,11 +304,57 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                     updatePatientCase();
                 }
                 break;
+            case R.id.act_health_detail_diagnosis_time:
+                if(isSelectTime)
+                {
+                    selectDate();
+                }
+                break;
             default:
                 break;
         }
     }
 
+    /**
+     * 时间选择器
+     */
+    private void selectDate()
+    {
+        Calendar selectedDate = Calendar.getInstance();
+        Calendar startDate = Calendar.getInstance();
+        //startDate.set(2013,1,1);
+        Calendar endDate = Calendar.getInstance();
+        //endDate.set(2020,1,1);
+        //正确设置方式 原因：注意事项有说明
+        startDate.set(1900, 1, 1);
+        endDate.set(2020, 12, 31);
+        timePicker = new TimePickerBuilder(this, new OnTimeSelectListener()
+        {
+            @Override
+            public void onTimeSelect(Date date, View v)
+            {//选中事件回调
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                tvDiagnosisTime.setText(simpleDateFormat.format(date));
+            }
+        }).setType(new boolean[] { true, true, true, false, false, false })// 默认全部显示
+          .setCancelText("取消")//取消按钮文字
+          .setSubmitText("确定")//确认按钮文字
+          .setTitleSize(20)//标题文字大小
+          .setTitleText("")//标题文字
+          .setOutSideCancelable(true)//点击屏幕，点在控件外部范围时，是否取消显示
+          .isCyclic(false)//是否循环滚动
+          .setSubmitColor(R.color.app_main_color)//确定按钮文字颜色
+          .setCancelColor(R.color.app_main_color)//取消按钮文字颜色
+          .setTitleBgColor(0xffffffff)//标题背景颜色 Night mode
+          .setBgColor(0xffffffff)//滚轮背景颜色 Night mode
+          .setDate(selectedDate)// 如果不设置的话，默认是系统时间*/
+          .setRangDate(startDate, endDate)//起始终止年月日设定
+          .setLabel("年", "月", "日", "时", "分", "秒")//默认设置为年月日时分秒
+          .isCenterLabel(true) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+          .isDialog(false)//是否显示为对话框样式
+          .build();
+        timePicker.show();
+    }
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position < imageList.size() && imageList.size() <= maxPicNum) {

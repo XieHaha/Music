@@ -84,7 +84,7 @@ public class ApplyPatientAdapter extends BaseRecyclerAdapter<PatientBean> {
                 @Override
                 public void onClick(View v) {
                     if (onEventTriggerListener != null) {
-                        onEventTriggerListener.onPositiveTrigger(item.getPatientId());
+                        onEventTriggerListener.onPositiveTrigger(item.getPatientId(),item.getRequestSource());
                     }
                 }
             });
@@ -93,7 +93,7 @@ public class ApplyPatientAdapter extends BaseRecyclerAdapter<PatientBean> {
                 @Override
                 public void onClick(View v) {
                     if (onEventTriggerListener != null) {
-                        onEventTriggerListener.onNegativeTrigger(item.getPatientId());
+                        onEventTriggerListener.onNegativeTrigger(item.getPatientId(),0);
                     }
                 }
             });

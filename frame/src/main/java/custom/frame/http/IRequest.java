@@ -163,6 +163,17 @@ public class IRequest extends BaseRequest {
         return requestBaseResponseByJson("/dp/focuspatient", Tasks.ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT,
                 PatientBean.class, merchant, listener);
     }
+    /**
+     * 合作医生申请
+     */
+    public Tasks applyCooperateDoc(String doctorId, String colleborateDoctorId, int requestSource, final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("colleborateDoctorId", colleborateDoctorId);
+        merchant.put("requestSource", requestSource);
+        return requestBaseResponseByJson("/colleborate/applyRequest", Tasks.APPLY_COOPERATE_DOC,
+                PatientBean.class, merchant, listener);
+    }
 
     /**
      * 获取合作医生列表

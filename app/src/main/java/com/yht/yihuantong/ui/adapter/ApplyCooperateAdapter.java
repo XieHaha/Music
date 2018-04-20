@@ -86,7 +86,7 @@ public class ApplyCooperateAdapter extends BaseRecyclerAdapter<CooperateDocBean>
                 @Override
                 public void onClick(View v) {
                     if (onEventTriggerListener != null) {
-                        onEventTriggerListener.onPositiveTrigger(item.getDoctorId());
+                        onEventTriggerListener.onPositiveTrigger(item.getDoctorId(),item.getReqeustSource());
                     }
                 }
             });
@@ -95,7 +95,7 @@ public class ApplyCooperateAdapter extends BaseRecyclerAdapter<CooperateDocBean>
                 @Override
                 public void onClick(View v) {
                     if (onEventTriggerListener != null) {
-                        onEventTriggerListener.onNegativeTrigger(item.getDoctorId());
+                        onEventTriggerListener.onNegativeTrigger(item.getDoctorId(),item.getReqeustSource());
                     }
                 }
             });

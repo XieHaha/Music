@@ -127,8 +127,8 @@ public class ApplyPatientActivity extends BaseActivity
     /**
      * 同意患者申请
      */
-    private void agreePatientApply(String patientId) {
-        mIRequest.agreePatientApply(loginSuccessBean.getDoctorId(), patientId, MODE, this);
+    private void agreePatientApply(String patientId,int requestCode) {
+        mIRequest.agreePatientApply(loginSuccessBean.getDoctorId(), patientId, requestCode, this);
     }
 
     @Override
@@ -227,12 +227,12 @@ public class ApplyPatientActivity extends BaseActivity
     }
 
     @Override
-    public void onPositiveTrigger(String s) {
-        agreePatientApply(s);
+    public void onPositiveTrigger(String s,int requestCode) {
+        agreePatientApply(s,requestCode);
     }
 
     @Override
-    public void onNegativeTrigger(String s) {
+    public void onNegativeTrigger(String s,int requestCode) {
         refusePatientApply(s);
     }
 }

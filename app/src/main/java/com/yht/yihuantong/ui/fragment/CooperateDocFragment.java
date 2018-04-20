@@ -8,9 +8,11 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.activity.ApplyCooperateDocActivity;
@@ -28,6 +30,8 @@ import custom.frame.ui.fragment.BaseFragment;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * 合作医生  碎片
  *
@@ -37,6 +41,7 @@ public class CooperateDocFragment extends BaseFragment
         implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener {
 
     private TextView tvHintTxt;
+    private ImageView ivTitleBarMore;
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
     private View headerView, footerView;
@@ -51,6 +56,10 @@ public class CooperateDocFragment extends BaseFragment
      * 一页最大数
      */
     private static final int PAGE_SIZE = 20;
+    /**
+     * 扫码结果
+     */
+    public static final int REQUEST_CODE = 0x0000c0de;
 
     @Override
     public int getLayoutID() {
@@ -61,6 +70,9 @@ public class CooperateDocFragment extends BaseFragment
     public void initView(@NonNull View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
         ((TextView) view.findViewById(R.id.public_title_bar_title)).setText("合作医生");
+        ivTitleBarMore = view.findViewById(R.id.public_title_bar_more_two);
+        ivTitleBarMore.setVisibility(View.VISIBLE);
+
         swipeRefreshLayout = view.findViewById(R.id.fragment_cooperate_swipe_layout);
         autoLoadRecyclerView = view.findViewById(R.id.fragment_cooperate_recycler_view);
         headerView = LayoutInflater.from(getContext())
@@ -84,6 +96,7 @@ public class CooperateDocFragment extends BaseFragment
 
     @Override
     public void initListener() {
+        ivTitleBarMore.setOnClickListener(this);
         headerView.setOnClickListener(this);
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
@@ -109,6 +122,14 @@ public class CooperateDocFragment extends BaseFragment
         mIRequest.getCooperateList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
     }
 
+    /**
+     * 医生扫码添加患者  转诊患者
+     */
+    private void applyCooperateDoc(String doctorId, int requestCode) {
+        mIRequest.applyCooperateDoc(loginSuccessBean.getDoctorId(), doctorId, requestCode, this);
+
+    }
+
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -116,6 +137,35 @@ public class CooperateDocFragment extends BaseFragment
             case R.id.fragment_cooperate_apply_layout:
                 Intent intent = new Intent(getContext(), ApplyCooperateDocActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.public_title_bar_more_two:
+                IntentIntegrator.forSupportFragment(this)
+                                .setBarcodeImageEnabled(false)
+                                .setPrompt("将二维码放入框内，即可自动识别")
+                                .initiateScan();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        switch (requestCode) {
+            case REQUEST_CODE:
+                IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+                if (result != null) {
+                    if (result.getContents() == null) {
+                    } else {
+                        applyCooperateDoc(result.getContents(), 1);
+                    }
+                } else {
+                    super.onActivityResult(requestCode, resultCode, data);
+                }
                 break;
             default:
                 break;

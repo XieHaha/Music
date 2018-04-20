@@ -19,6 +19,7 @@ public class CooperateDocBean implements Serializable {
     private String title;
     private String department;
     private String doctorDescription;
+    private int reqeustSource;
 
     public int getId() {
         return id;
@@ -106,5 +107,15 @@ public class CooperateDocBean implements Serializable {
 
     public void setDoctorDescription(String doctorDescription) {
         this.doctorDescription = doctorDescription;
+    }
+
+    public int getReqeustSource()
+    {
+        return reqeustSource;
+    }
+
+    public void setReqeustSource(int reqeustSource)
+    {
+        this.reqeustSource = reqeustSource;
     }
 }
