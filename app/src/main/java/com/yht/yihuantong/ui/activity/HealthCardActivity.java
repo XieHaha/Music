@@ -260,6 +260,18 @@ public class HealthCardActivity extends BaseActivity
     }
 
     @Override
+    public void onResponseCodeError(Tasks task, BaseResponse response)
+    {
+        super.onResponseCodeError(task, response);
+        switch (task)
+        {
+            case ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT:
+                ToastUtil.toast(this, response.getMsg());
+                break;
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
@@ -267,13 +279,15 @@ public class HealthCardActivity extends BaseActivity
         {
             return;
         }
-        if (requestCode == CHANGE_PATIENT_REQUEST_CODE)
+        switch (requestCode)
         {
-            if (data != null)
-            {
-                String doctorId = data.getStringExtra(CommonData.KEY_DOCTOR_ID);
-                addPatientByScanOrChangePatient(doctorId);
-            }
+            case CHANGE_PATIENT_REQUEST_CODE:
+                if (data != null)
+                {
+                    String doctorId = data.getStringExtra(CommonData.KEY_DOCTOR_ID);
+                    addPatientByScanOrChangePatient(doctorId);
+                }
+                break;
         }
     }
 

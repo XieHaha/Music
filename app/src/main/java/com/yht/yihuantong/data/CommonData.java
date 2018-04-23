@@ -46,4 +46,8 @@ public interface CommonData
      * 聊天name
      */
     String KEY_CHAT_NAME = "key_chat_name";
+    /**
+     * 是否能对合作医生操作
+     */
+    String KEY_IS_DEAL_DOC = "key_is_deal_doc";
 }

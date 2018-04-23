@@ -49,6 +49,7 @@ public abstract class BaseActivity extends AppCompatActivity
     private boolean isRequest = true;
     private boolean isRequestPhone = true;
     private boolean isRequestCamera = true;
+    private boolean isRequestRecord = true;
     /**
      * 任务队列列表
      */
@@ -350,6 +351,7 @@ public abstract class BaseActivity extends AppCompatActivity
 
     @Override
     public void onResponseError(Tasks task, Exception e) {
+        closeProgressDialog();
         ToastUtil.toast(this, e.getMessage());
     }
 
@@ -406,6 +408,10 @@ public abstract class BaseActivity extends AppCompatActivity
                 permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
                 return;
             }
+            if (Permission.RECORD_AUDIO.equals(per)) {
+                permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                return;
+            }
         }
     }
 
@@ -414,6 +420,7 @@ public abstract class BaseActivity extends AppCompatActivity
         isRequest = true;
         isRequestPhone = true;
         isRequestCamera = true;
+        isRequestRecord = true;
     }
 
     @Override
@@ -434,6 +441,10 @@ public abstract class BaseActivity extends AppCompatActivity
                 ToastUtil.toast(getApplicationContext(), R.string.dialog_no_camera_permission_tip);
                 break;
             }
+            if (Permission.RECORD_AUDIO.equals(permission)) {
+                ToastUtil.toast(getApplicationContext(), R.string.dialog_no_audio_permission_tip);
+                break;
+            }
         }
     }
 
@@ -442,6 +453,7 @@ public abstract class BaseActivity extends AppCompatActivity
         isRequest = true;
         isRequestPhone = true;
         isRequestCamera = true;
+        isRequestRecord = true;
     }
 
     @Override
@@ -458,6 +470,10 @@ public abstract class BaseActivity extends AppCompatActivity
             isRequestCamera = false;
             permissionHelper.requestAfterExplanation(Permission.CAMERA);
         }
+        if (isRequestRecord) {
+            isRequestRecord = false;
+            permissionHelper.requestAfterExplanation(Permission.RECORD_AUDIO);
+        }
     }
 
     @Override
@@ -469,6 +485,7 @@ public abstract class BaseActivity extends AppCompatActivity
         isRequest = true;
         isRequestPhone = true;
         isRequestCamera = true;
+        isRequestRecord = true;
     }
 
 

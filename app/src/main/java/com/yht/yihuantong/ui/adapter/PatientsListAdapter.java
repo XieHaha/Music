@@ -64,7 +64,7 @@ public class PatientsListAdapter extends BaseRecyclerAdapter<PatientBean> {
 
         @Override
         public void showView(final int position, final PatientBean item) {
-            Glide.with(context).load(item.getPatientImgUrl()).apply(GlideHelper.getOptions()).into(ivHeadImg);
+            Glide.with(context).load(item.getPatientImgUrl()).apply(GlideHelper.getOptionsRect()).into(ivHeadImg);
 
             tvName.setText(item.getName());
             tvAge.setText(item.getAge() + "");

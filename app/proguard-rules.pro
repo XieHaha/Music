@@ -22,6 +22,7 @@
 #-dontwarn com.squareup.picasso.**
 -dontwarn com.bumptech.glide.**
 
+#极光
 -dontoptimize
 -dontpreverify
 
@@ -31,6 +32,7 @@
 
 -dontwarn cn.jiguang.**
 -keep class cn.jiguang.** { *; }
+#极光
 
 #环信
 -keep class com.easemob.** {*;}
@@ -56,3 +58,4 @@
 -keep class org.slf4j.** {*;}
 -keep class ch.imvs.** {*;}
 #环信
+-keep public class *extends java.lang.annotation.Annotation {*;}

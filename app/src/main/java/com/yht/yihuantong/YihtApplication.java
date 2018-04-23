@@ -1,18 +1,18 @@
 package com.yht.yihuantong;
 
-import android.app.Application;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
-import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.EaseUI;
-import com.yht.yihuantong.ease.HxHelper;
-import com.hyphenate.easeui.domain.EaseAvatarOptions;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.yht.yihuantong.data.CommonData;
+import com.yht.yihuantong.ease.HxHelper;
 
 import cn.jpush.android.api.JPushInterface;
 import custom.frame.bean.LoginSuccessBean;
@@ -23,7 +23,7 @@ import custom.frame.utils.SharePreferenceUtil;
  *
  * @author DUNDUN
  */
-public class YihtApplication extends Application
+public class YihtApplication extends MultiDexApplication
 {
     private static YihtApplication sApplication;
     private LoginSuccessBean loginSuccessBean;
@@ -43,10 +43,18 @@ public class YihtApplication extends Application
     @Override
     public void onCreate()
     {
+        MultiDex.install(this);
         super.onCreate();
         initContext();
         initEase();
         initJPush();
+    }
+
+    @Override
+    protected void attachBaseContext(Context base)
+    {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     private void initContext()
@@ -64,18 +72,19 @@ public class YihtApplication extends Application
         // 默认添加好友时，是不需要验证的，改成需要验证
         options.setAcceptInvitationAlways(false);
         EaseUI.getInstance().init(this, options);
-        //设置头像为圆形
-        EaseAvatarOptions avatarOpts = new EaseAvatarOptions();
-        //0：默认，1：圆形，2：矩形
-        avatarOpts.setAvatarShape(1);
-        EaseUI.getInstance().setAvatarOptions(avatarOpts);
-        //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
-        EMClient.getInstance().setDebugMode(true);
+//        //设置头像为圆形
+//        EaseAvatarOptions avatarOpts = new EaseAvatarOptions();
+//        //0：默认，1：圆形，2：矩形
+//        avatarOpts.setAvatarShape(1);
+//        EaseUI.getInstance().setAvatarOptions(avatarOpts);
+//        //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
+//        EMClient.getInstance().setDebugMode(true);
         //设置有关环信自定义的相关配置
+
+        //titlebar、头像、名字处理
         HxHelper.Opts opts = new HxHelper.Opts();
         opts.showChatTitle = false;
         HxHelper.getInstance().init(this, opts);
-
         EaseUI.getInstance().setUserProfileProvider(username -> {
             LoginSuccessBean bean = getLoginSuccessBean();
             //如果是当前用户，就设置自己的昵称和头像

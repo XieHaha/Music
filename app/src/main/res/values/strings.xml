@@ -19,7 +19,7 @@
     <string name="txt_complete_cancel">跳过</string>
     <string name="txt_login">登录账号</string>
     <string name="txt_get_verify_code_again">重新发送</string>
-    <string name="txt_login_hint">请输入您的手机号码,\n以登录您的离校登记记录</string>
+    <string name="txt_login_hint">请输入您的手机号码</string>
     <string name="toast_txt_phone_error">您输入的手机号码有误，请重新输入</string>
     <string name="toast_txt_verify_hint">请输入验证码</string>
     <string name="toast_txt_verifycode_success">验证码获取成功</string>

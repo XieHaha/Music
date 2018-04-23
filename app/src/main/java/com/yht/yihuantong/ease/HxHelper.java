@@ -2,7 +2,6 @@ package com.yht.yihuantong.ease;
 
 import android.app.Application;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
@@ -84,7 +83,6 @@ public class HxHelper
                         try {
                             user.setNickname(msg.getStringAttribute(MSG_EXT_NICKNAME));
                             user.setAvatar(msg.getStringAttribute(MSG_EXT_AVATAR));
-                            Log.e("test", " name:" + msg.getStringAttribute(MSG_EXT_NICKNAME));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

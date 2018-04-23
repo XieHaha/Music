@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -144,8 +143,8 @@ public class PatientsFragment extends BaseFragment
      * 医生扫码添加患者  转诊患者
      * mode {@link #ADD_PATIENT}  {@link #CHANGE_PATIENT}
      */
-    private void addPatientByScanOrChangePatient(String patientId, int mode) {
-        mIRequest.addPatientByScanOrChangePatient(loginSuccessBean.getDoctorId(), patientId, mode, this);
+    private void addPatientByScan(String patientId, int mode) {
+        mIRequest.addPatientByScan(loginSuccessBean.getDoctorId(), patientId, mode, this);
     }
 
     @Override
@@ -182,7 +181,7 @@ public class PatientsFragment extends BaseFragment
                 if (result != null) {
                     if (result.getContents() == null) {
                     } else {
-                        addPatientByScanOrChangePatient(result.getContents(), ADD_PATIENT);
+                        addPatientByScan(result.getContents(), ADD_PATIENT);
                     }
                 } else {
                     super.onActivityResult(requestCode, resultCode, data);

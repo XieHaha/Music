@@ -78,7 +78,7 @@ public class ApplyCooperateAdapter extends BaseRecyclerAdapter<CooperateDocBean>
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            Glide.with(context).load(newUrl).apply(GlideHelper.getOptions()).into(ivHeadImg);
+            Glide.with(context).load(newUrl).apply(GlideHelper.getOptionsRect()).into(ivHeadImg);
             tvName.setText(item.getName());
             tvType.setText(item.getDepartment());
             tvHopital.setText(item.getHospital());

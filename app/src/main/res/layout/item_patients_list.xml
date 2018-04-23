@@ -16,7 +16,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:src="@mipmap/icon_default_imgs"
+            android:src="@mipmap/icon_default_imgs_rect"
             android:layout_centerInParent="true" />
 
         <RelativeLayout

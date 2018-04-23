@@ -77,7 +77,7 @@ public class ApplyPatientAdapter extends BaseRecyclerAdapter<PatientBean> {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            Glide.with(context).load(newUrl).apply(GlideHelper.getOptions()).into(ivHeadImg);
+            Glide.with(context).load(newUrl).apply(GlideHelper.getOptionsRect()).into(ivHeadImg);
             tvName.setText(item.getName());
             tvPhone.setText(item.getPhone());
             tvAgree.setOnClickListener(new View.OnClickListener() {

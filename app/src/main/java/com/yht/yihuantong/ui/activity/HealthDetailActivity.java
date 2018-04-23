@@ -478,10 +478,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
             cameraintent.addFlags(
                     Intent.FLAG_GRANT_READ_URI_PERMISSION);
             uri = FileProvider.getUriForFile(
-                    this, getApplication()
-                            .getPackageName() +
-                            ".fileprovider",
-                    cameraTempFile);
+                    this, "com.yht.yihuantong.android7.fileprovider", cameraTempFile);
         } else {
             uri = Uri.fromFile(cameraTempFile);
         }

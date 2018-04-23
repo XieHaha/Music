@@ -153,9 +153,20 @@ public class IRequest extends BaseRequest {
                 PatientBean.class, merchant, listener);
     }
     /**
-     * 医生扫码添加患者或者转诊患者
+     * 医生转诊患者
      */
     public Tasks addPatientByScanOrChangePatient(String doctorId, String patientId, int requestSource, final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("patientId", patientId);
+        merchant.put("requestSource", requestSource);
+        return requestBaseResponseByJson("/dp/focusdoctor", Tasks.ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT,
+                PatientBean.class, merchant, listener);
+    }
+    /**
+     * 医生扫码添加患者
+     */
+    public Tasks addPatientByScan(String doctorId, String patientId, int requestSource, final ResponseListener<BaseResponse> listener) {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
         merchant.put("patientId", patientId);

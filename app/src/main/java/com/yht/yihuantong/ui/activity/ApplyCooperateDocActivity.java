@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.data.OnEventTriggerListener;
 import com.yht.yihuantong.ui.adapter.ApplyCooperateAdapter;
 
@@ -101,6 +102,8 @@ public class ApplyCooperateDocActivity extends BaseActivity
                     public void onItemClick(View v, int position, CooperateDocBean item) {
                         Intent intent = new Intent(ApplyCooperateDocActivity.this,
                                 UserInfoActivity.class);
+                        intent .putExtra(CommonData.KEY_DOCTOR_ID,item.getDoctorId());
+                        intent .putExtra(CommonData.KEY_IS_DEAL_DOC,false);
                         startActivity(intent);
                     }
                 });

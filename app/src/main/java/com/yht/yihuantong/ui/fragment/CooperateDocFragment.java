@@ -63,6 +63,10 @@ public class CooperateDocFragment extends BaseFragment
      * 扫码结果
      */
     public static final int REQUEST_CODE = 0x0000c0de;
+    /**
+     * 取消关注回调
+     */
+    public static final int REQUEST_CODE_CANCEL_DOC = 100;
 
     @Override
     public int getLayoutID() {
@@ -118,7 +122,8 @@ public class CooperateDocFragment extends BaseFragment
                     public void onItemClick(View v, int position, CooperateDocBean item) {
                         Intent intent = new Intent(getContext(), UserInfoActivity.class);
                         intent.putExtra(CommonData.KEY_DOCTOR_ID,item.getDoctorId());
-                        startActivity(intent);
+                        intent.putExtra(CommonData.KEY_IS_DEAL_DOC,true);
+                        startActivityForResult(intent,REQUEST_CODE_CANCEL_DOC);
                     }
                 });
         cooperateDocListAdapter.setOnItemLongClickListener(
@@ -126,7 +131,7 @@ public class CooperateDocFragment extends BaseFragment
                     @Override
                     public void onItemLongClick(View v, int position, CooperateDocBean item)
                     {
-                        new SimpleDialog(getActivity(), "确定删除?", new DialogInterface.OnClickListener() {
+                        new SimpleDialog(getActivity(), "确定取消关注?", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 cancelCooperateDoc(item.getDoctorId());
@@ -199,6 +204,9 @@ public class CooperateDocFragment extends BaseFragment
                 } else {
                     super.onActivityResult(requestCode, resultCode, data);
                 }
+                break;
+            case REQUEST_CODE_CANCEL_DOC:
+                onRefresh();
                 break;
             default:
                 break;

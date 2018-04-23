@@ -884,7 +884,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
             fileUri = Uri.fromFile(cameraFile);
         } else {
             //Android 7.0及以上
-            fileUri = FileProvider.getUriForFile(getActivity(), "com.yht.yihuantong.fileprovider", cameraFile);
+            fileUri = FileProvider.getUriForFile(getActivity(), "com.yht.yihuantong.android7.fileprovider", cameraFile);
         }
         startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE).putExtra(MediaStore.EXTRA_OUTPUT, fileUri), REQUEST_CODE_CAMERA);
 

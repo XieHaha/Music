@@ -17,4 +17,19 @@ public final class GlideHelper {
         }
         return options;
     }
+
+    /**
+     * 矩形头像
+     * @return
+     */
+    public static RequestOptions getOptionsRect() {
+        if (options == null) {
+            options = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.mipmap.icon_default_imgs_rect)
+                    .error(R.mipmap.icon_default_imgs_rect)
+                    .priority(Priority.NORMAL);
+        }
+        return options;
+    }
 }

@@ -1,6 +1,5 @@
 package com.yht.yihuantong.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -103,9 +102,10 @@ public class ApplyPatientActivity extends BaseActivity
                 new BaseRecyclerAdapter.OnItemClickListener<PatientBean>() {
                     @Override
                     public void onItemClick(View v, int position, PatientBean item) {
-                        Intent intent = new Intent(ApplyPatientActivity.this,
-                                UserInfoActivity.class);
-                        startActivity(intent);
+//                        Intent intent = new Intent(ApplyPatientActivity.this,
+//                                UserInfoActivity.class);
+//                        intent.putExtra(CommonData.KEY_IS_DEAL_DOC,false);
+//                        startActivity(intent);
                     }
                 });
     }
