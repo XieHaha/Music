@@ -65,7 +65,7 @@ public abstract class BaseActivity extends AppCompatActivity
     /**
      * 返回按钮对象
      */
-    private ImageView backBtn;
+    public ImageView backBtn;
 
     @Override
     protected final void onCreate(Bundle savedInstanceState) {

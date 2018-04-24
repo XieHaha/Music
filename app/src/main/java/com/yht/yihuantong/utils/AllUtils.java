@@ -38,12 +38,13 @@ import static android.content.Context.KEYGUARD_SERVICE;
 /**
  * 工具类
  */
-public class AllUtils {
+public class AllUtils
+{
     private static final String TAG = AllUtils.class.getSimpleName();
     private static String REGEX_PHONE = "^((13[0-9])|(14[5|7|9])|(15([0-3]|[5-9]))|(16[0-9])|(17([0-3]|[5-8]))|(18[0-9])|(19[0-9]))\\d{8}$";
-
     public static String DATE_FORMAT = "yyyy-MM-dd HH:mm";
     public static String DATE_FORMAT_NO_HOUR = "yyyy-MM-dd";
+    public static String DATE_FORMAT_AGE = "yyyy";
 
     /**
      * trim方法，去掉字符串首、尾的空格，制表符，回车符。字符串null将被替换为空字符串
@@ -51,17 +52,20 @@ public class AllUtils {
      * @param s 待处理字符串
      * @return 处理结果
      */
-    public static String trim(String s) {
-        if (TextUtils.isEmpty(s)) {
+    public static String trim(String s)
+    {
+        if (TextUtils.isEmpty(s))
+        {
             return s;
         }
         s = s.replaceAll("^\\s*|\t|\r|\n", "").replaceAll("\\s*|\t|\r|\n$", "");
         return "null".equals(s) ? "" : s;
     }
 
-    public static String ipIntToString(int ip) {
+    public static String ipIntToString(int ip)
+    {
         return String.format("%d.%d.%d.%d", (ip & 0xff), (ip >> 8 & 0xff), (ip >> 16 & 0xff),
-                (ip >> 24 & 0xff));
+                             (ip >> 24 & 0xff));
     }
 
     /**
@@ -70,8 +74,9 @@ public class AllUtils {
      * @param context
      * @return
      */
-    public static boolean isNetworkAvaliable(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(
+    public static boolean isNetworkAvaliable(Context context)
+    {
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(
                 Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         return null != networkInfo && networkInfo.isConnected();
@@ -84,14 +89,19 @@ public class AllUtils {
      * @param defaultValue 失败默认值
      * @return 转后int
      */
-    public static int tryParse(String value, int defaultValue) {
-        if (isEmptyOrNull(value)) {
+    public static int tryParse(String value, int defaultValue)
+    {
+        if (isEmptyOrNull(value))
+        {
             return defaultValue;
         }
         int result;
-        try {
+        try
+        {
             result = Integer.parseInt(value);
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e)
+        {
             result = defaultValue;
         }
         return result;
@@ -104,14 +114,19 @@ public class AllUtils {
      * @param defaultValue 失败默认值
      * @return 转后float
      */
-    public static float tryParse(String value, float defaultValue) {
-        if (TextUtils.isEmpty(value)) {
+    public static float tryParse(String value, float defaultValue)
+    {
+        if (TextUtils.isEmpty(value))
+        {
             return defaultValue;
         }
         float result;
-        try {
+        try
+        {
             result = Float.parseFloat(value);
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e)
+        {
             result = defaultValue;
         }
         return result;
@@ -124,14 +139,19 @@ public class AllUtils {
      * @param defaultValue 失败默认值
      * @return 转后long
      */
-    public static long tryParse(String value, long defaultValue) {
-        if (TextUtils.isEmpty(value)) {
+    public static long tryParse(String value, long defaultValue)
+    {
+        if (TextUtils.isEmpty(value))
+        {
             return defaultValue;
         }
         long result;
-        try {
+        try
+        {
             result = Long.parseLong(value);
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e)
+        {
             result = defaultValue;
         }
         return result;
@@ -144,14 +164,19 @@ public class AllUtils {
      * @param defaultValue 失败默认值
      * @return 转后boolean
      */
-    public static boolean tryParse(String value, boolean defaultValue) {
-        if (TextUtils.isEmpty(value)) {
+    public static boolean tryParse(String value, boolean defaultValue)
+    {
+        if (TextUtils.isEmpty(value))
+        {
             return defaultValue;
         }
         boolean result;
-        try {
+        try
+        {
             result = Boolean.parseBoolean(value);
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e)
+        {
             result = defaultValue;
         }
         return result;
@@ -163,20 +188,27 @@ public class AllUtils {
      * @param str
      * @return
      */
-    public static boolean isEmptyOrNull(String str) {
-        if (TextUtils.isEmpty(str)) {
+    public static boolean isEmptyOrNull(String str)
+    {
+        if (TextUtils.isEmpty(str))
+        {
             return true;
         }
-        if (str.equals("null")) {
+        if (str.equals("null"))
+        {
             return true;
         }
         return false;
     }
 
-    public static String dealString(String str) {
-        if (isEmptyOrNull(str)) {
+    public static String dealString(String str)
+    {
+        if (isEmptyOrNull(str))
+        {
             return "";
-        } else {
+        }
+        else
+        {
             return str;
         }
     }
@@ -188,33 +220,47 @@ public class AllUtils {
      * @param size     dp值
      * @return 像素值
      */
-    public static float dipToPx(Context mContext, float size) {
+    public static float dipToPx(Context mContext, float size)
+    {
         Resources r;
-        if (mContext == null) {
+        if (mContext == null)
+        {
             r = Resources.getSystem();
-        } else {
+        }
+        else
+        {
             r = mContext.getResources();
         }
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, r.getDisplayMetrics());
     }
 
-    public static float dipToPx(Context mContext, String size) {
+    public static float dipToPx(Context mContext, String size)
+    {
         Resources r;
-        if (mContext == null) {
+        if (mContext == null)
+        {
             r = Resources.getSystem();
-        } else {
+        }
+        else
+        {
             r = mContext.getResources();
         }
         float f;
-        try {
-            if (size.endsWith("dp")) {
+        try
+        {
+            if (size.endsWith("dp"))
+            {
                 size = size.substring(0, size.length() - 2);
-            } else if (size.endsWith("dip")) {
+            }
+            else if (size.endsWith("dip"))
+            {
                 size = size.substring(0, size.length() - 3);
             }
             f = Float.valueOf(size);
             return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, f, r.getDisplayMetrics());
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             LogUtils.e(TAG, e.getMessage(), e);
         }
         return 0f;
@@ -227,11 +273,15 @@ public class AllUtils {
      * @param size     sp值
      * @return 像素值
      */
-    public static float spToPx(Context mContext, float size) {
+    public static float spToPx(Context mContext, float size)
+    {
         Resources r;
-        if (mContext == null) {
+        if (mContext == null)
+        {
             r = Resources.getSystem();
-        } else {
+        }
+        else
+        {
             r = mContext.getResources();
         }
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, size, r.getDisplayMetrics());
@@ -243,7 +293,8 @@ public class AllUtils {
      * @param id String id
      * @return int id
      */
-    public static int generateId(String id) {
+    public static int generateId(String id)
+    {
         return Math.abs(id.hashCode());
     }
 
@@ -252,17 +303,23 @@ public class AllUtils {
      *
      * @param dir 待删除目录或文件
      */
-    public static void deleteDir(File dir) {
-        if (!dir.exists()) {
+    public static void deleteDir(File dir)
+    {
+        if (!dir.exists())
+        {
             return;
         }
-        if (dir.isDirectory()) {
+        if (dir.isDirectory())
+        {
             File[] files = dir.listFiles();
-            for (File f : files) {
+            for (File f : files)
+            {
                 deleteDir(f);
             }
             dir.delete();
-        } else {
+        }
+        else
+        {
             dir.delete();
         }
     }
@@ -272,9 +329,11 @@ public class AllUtils {
      *
      * @param strFileName
      */
-    public static void deleteFile(String strFileName) {
+    public static void deleteFile(String strFileName)
+    {
         File myFile = new File(strFileName);
-        if (myFile.exists()) {
+        if (myFile.exists())
+        {
             myFile.delete();
         }
     }
@@ -286,7 +345,8 @@ public class AllUtils {
      * @param regex
      * @return
      */
-    public static boolean regex(String target, String regex) {
+    public static boolean regex(String target, String regex)
+    {
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(target);
         return m.find();
@@ -302,14 +362,20 @@ public class AllUtils {
      * @param time String 字符串<br>
      * @return Date 日期<br>
      */
-    public static Date formatDate(String time) {
+    public static Date formatDate(String time)
+    {
         time = time.trim();
         String formatter = "yyyy-MM-dd HH:mm:ss";
-        if ((time.indexOf("/") > -1) && (time.indexOf(" ") > -1)) {
+        if ((time.indexOf("/") > -1) && (time.indexOf(" ") > -1))
+        {
             formatter = "yyyy/MM/dd HH:mm:ss";
-        } else if ((time.indexOf("/") > -1) && (time.indexOf("am") > -1) || (time.indexOf("pm") > -1)) {
+        }
+        else if ((time.indexOf("/") > -1) && (time.indexOf("am") > -1) || (time.indexOf("pm") > -1))
+        {
             formatter = "yyyy/MM/dd KK:mm:ss a";
-        } else if ((time.indexOf("-") > -1) && (time.indexOf("am") > -1) || (time.indexOf("pm") > -1)) {
+        }
+        else if ((time.indexOf("-") > -1) && (time.indexOf("am") > -1) || (time.indexOf("pm") > -1))
+        {
             formatter = "yyyy-MM-dd KK:mm:ss a";
         }
         return formatDate(time, formatter);
@@ -322,7 +388,8 @@ public class AllUtils {
      * @param format String 字符串<br>
      * @return Date 日期<br>
      */
-    public static Date formatDate(String time, String format) {
+    public static Date formatDate(String time, String format)
+    {
         SimpleDateFormat formatter;
         time = time.trim();
         formatter = new SimpleDateFormat(format, Locale.getDefault());
@@ -337,11 +404,30 @@ public class AllUtils {
      * @param format
      * @return
      */
-    public static String formatDate(long time, String format) {
-        if (format != null) {
+    public static String formatDate(long time, String format)
+    {
+        if (format != null)
+        {
             return new SimpleDateFormat(format).format(new Date(time));
         }
         return "";
+    }
+
+    /**
+     * 时间戳  获取年龄
+     *
+     * @param time
+     * @return
+     */
+    public static String formatDateByAge(long time)
+    {
+        int birth = Integer.parseInt(new SimpleDateFormat(DATE_FORMAT_AGE).format(new Date(time)));
+        int now = Integer.parseInt(new SimpleDateFormat(DATE_FORMAT_AGE).format(new Date()));
+        if (now > birth)
+        {
+            return String.valueOf(now - birth);
+        }
+        return "0";
     }
 
     /**
@@ -350,14 +436,19 @@ public class AllUtils {
      * @param filepath 文件路径
      * @return 后缀名, 不带.
      */
-    public static String getFileExtNoPoint(String filepath) {
-        try {
-            if (filepath != null && filepath.lastIndexOf(".") != -1) {
+    public static String getFileExtNoPoint(String filepath)
+    {
+        try
+        {
+            if (filepath != null && filepath.lastIndexOf(".") != -1)
+            {
                 int start = filepath.lastIndexOf(".");
                 int end = filepath.length();
                 return filepath.substring(start + 1, end);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             LogUtils.e(TAG, e.getMessage(), e);
         }
         return "";
@@ -369,17 +460,25 @@ public class AllUtils {
      * @param filepath 文件路径
      * @return 文件名
      */
-    public static String getFileName(String filepath) {
-        if (filepath == null) {
+    public static String getFileName(String filepath)
+    {
+        if (filepath == null)
+        {
             return null;
-        } else if (filepath.lastIndexOf("/") != -1 && filepath.lastIndexOf(".") != -1) {
+        }
+        else if (filepath.lastIndexOf("/") != -1 && filepath.lastIndexOf(".") != -1)
+        {
             int strat = filepath.lastIndexOf("/") + 1;
             int end = filepath.lastIndexOf(".");
             return strat > end ? "" : filepath.substring(strat, end);
-        } else if (filepath.lastIndexOf("/") == -1 && filepath.lastIndexOf(".") != -1) {
+        }
+        else if (filepath.lastIndexOf("/") == -1 && filepath.lastIndexOf(".") != -1)
+        {
             int end = filepath.lastIndexOf(".");
             return filepath.substring(0, end);
-        } else {
+        }
+        else
+        {
             return null;
         }
     }
@@ -390,12 +489,16 @@ public class AllUtils {
      * @param data 加密前字符串
      * @return
      */
-    public static byte[] encryptMD5(String data) {
+    public static byte[] encryptMD5(String data)
+    {
         byte[] bytes = null;
-        try {
+        try
+        {
             MessageDigest md = MessageDigest.getInstance("MD5");
             bytes = md.digest(data.getBytes("utf-8"));
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             LogUtils.e(TAG, e.getMessage(), e);
         }
         return bytes;
@@ -408,16 +511,22 @@ public class AllUtils {
      * @param isToUpper 是否大写
      * @return
      */
-    public static String byte2hex(byte[] bytes, boolean isToUpper) {
+    public static String byte2hex(byte[] bytes, boolean isToUpper)
+    {
         StringBuilder sign = new StringBuilder();
-        for (int i = 0; i < bytes.length; i++) {
+        for (int i = 0; i < bytes.length; i++)
+        {
             String hex = Integer.toHexString(bytes[i] & 0xFF);
-            if (hex.length() == 1) {
+            if (hex.length() == 1)
+            {
                 sign.append("0");
             }
-            if (isToUpper) {
+            if (isToUpper)
+            {
                 sign.append(hex.toUpperCase());
-            } else {
+            }
+            else
+            {
                 sign.append(hex);
             }
         }
@@ -431,37 +540,49 @@ public class AllUtils {
      * @param newPath 文件新地址
      * @return true为复制成功，false为复制失败
      */
-    public static boolean copyFile(String oldPath, String newPath) {
-        try {
+    public static boolean copyFile(String oldPath, String newPath)
+    {
+        try
+        {
             java.io.File fileIn = new java.io.File(oldPath);
             java.io.File fileOut = new java.io.File(newPath);
             FileInputStream fileInputStream = new FileInputStream(fileIn);
             FileOutputStream fileOutputStream = new FileOutputStream(fileOut);
             byte[] bytes = new byte[1024];
             int c;
-            while ((c = fileInputStream.read(bytes)) != -1) {
+            while ((c = fileInputStream.read(bytes)) != -1)
+            {
                 fileOutputStream.write(bytes, 0, c);
             }
             fileInputStream.close();
             fileOutputStream.close();
             return true;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             return false;
         }
     }
 
-    public static String getLocalIpAddress() {
-        try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
+    public static String getLocalIpAddress()
+    {
+        try
+        {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); )
+            {
                 NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); )
+                {
                     InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
+                    if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address)
+                    {
                         return inetAddress.getHostAddress().toString();
                     }
                 }
             }
-        } catch (SocketException e) {
+        }
+        catch (SocketException e)
+        {
             LogUtils.e(TAG, e.getMessage(), e);
         }
         return "127.0.0.1";
@@ -470,18 +591,21 @@ public class AllUtils {
     /**
      * 判断应用是否是在后台
      */
-    public static boolean isBackground(Context context) {
-        ActivityManager activityManager = (ActivityManager) context.getSystemService(
+    public static boolean isBackground(Context context)
+    {
+        ActivityManager activityManager = (ActivityManager)context.getSystemService(
                 Context.ACTIVITY_SERVICE);
-        KeyguardManager keyguardManager = (KeyguardManager) context.getSystemService(
+        KeyguardManager keyguardManager = (KeyguardManager)context.getSystemService(
                 KEYGUARD_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
-        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
-            if (TextUtils.equals(appProcess.processName, context.getPackageName())) {
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses)
+        {
+            if (TextUtils.equals(appProcess.processName, context.getPackageName()))
+            {
                 boolean isBackground = (appProcess.importance !=
-                        ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND &&
-                        appProcess.importance !=
-                                ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE);
+                                        ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND &&
+                                        appProcess.importance !=
+                                        ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE);
                 boolean isLockedState = keyguardManager.inKeyguardRestrictedInputMode();
                 return isBackground || isLockedState;
             }
@@ -495,9 +619,11 @@ public class AllUtils {
      * @param str
      * @return
      */
-    public static boolean isMobileNumber(String str) {
+    public static boolean isMobileNumber(String str)
+    {
         Matcher phoneMatcher = Pattern.compile(REGEX_PHONE).matcher(str);
-        if (phoneMatcher.matches()) {
+        if (phoneMatcher.matches())
+        {
             return true;
         }
         return false;

@@ -12,6 +12,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 import custom.frame.R;
@@ -20,7 +22,8 @@ import custom.frame.bean.NormImage;
 /**
  * Created by thl on 2016/2/28.
  */
-public class AutoGridView extends RelativeLayout {
+public class AutoGridView extends RelativeLayout
+{
     private GridView gridView;
     private int gvWidth;
     private int gvHeight;
@@ -29,23 +32,29 @@ public class AutoGridView extends RelativeLayout {
     private int numColumns = 5;
     private ArrayList<NormImage> bitmapList;
     private Bitmap bmpAdd;
-
+    private Context context;
     private int maxNum = 4;
     /**
      * 是否可编辑
      */
-    private boolean isAdd = true;
-    public AutoGridView(Context context) {
+    private boolean isAdd = false;
+
+    public AutoGridView(Context context)
+    {
         super(context);
+        this.context = context;
         init();
     }
 
-    public AutoGridView(Context context, AttributeSet attrs) {
+    public AutoGridView(Context context, AttributeSet attrs)
+    {
         super(context, attrs);
+        this.context = context;
         init();
     }
 
-    public void init() {
+    public void init()
+    {
         imgWidth = getResources().getDimensionPixelSize(R.dimen.img_width);
         imgSpace = getResources().getDimensionPixelSize(R.dimen.img_space);
         bmpAdd = BitmapFactory.decodeResource(getResources(), R.mipmap.publish_add_icon);
@@ -56,23 +65,31 @@ public class AutoGridView extends RelativeLayout {
         gridView.setPadding(imgSpace, imgSpace, imgSpace, imgSpace);
         gridView.setVerticalSpacing(imgSpace);
         gridView.setHorizontalSpacing(imgSpace);
-        updateImg(bitmapList,true);
+        updateImg(bitmapList, true);
         addView(gridView);
     }
 
-    public void setOnItemClickListener(AdapterView.OnItemClickListener listener) {
+    public void setOnItemClickListener(AdapterView.OnItemClickListener listener)
+    {
         gridView.setOnItemClickListener(listener);
     }
 
-    public void initGridView() {
-        if (gridView != null) {
+    public void initGridView()
+    {
+        if (gridView != null)
+        {
             int rows;
             int size = bitmapList.size();
-            if (size <= numColumns) {
+            if (size <= numColumns)
+            {
                 rows = 1;
-            } else if (size <= (numColumns + numColumns)) {
+            }
+            else if (size <= (numColumns + numColumns))
+            {
                 rows = 2;
-            } else {
+            }
+            else
+            {
                 rows = 3;
             }
             gvHeight = rows * imgWidth + (rows + 1) * imgSpace;
@@ -81,10 +98,13 @@ public class AutoGridView extends RelativeLayout {
         }
     }
 
-    public void updateImg(ArrayList<NormImage> bitmaps,boolean isAdd) {
+    public void updateImg(ArrayList<NormImage> bitmaps, boolean isAdd)
+    {
+        this.isAdd = isAdd;
         this.bitmapList.clear();
         this.bitmapList.addAll(bitmaps);
-        if (bitmaps.size() < maxNum && isAdd) {
+        if (bitmaps.size() < maxNum && isAdd)
+        {
             this.bitmapList.add(new NormImage().setSmallBitmap(bmpAdd));
         }
         initGridView();
@@ -93,39 +113,55 @@ public class AutoGridView extends RelativeLayout {
         gridView.invalidate();
     }
 
-    private class ImgAdapter extends BaseAdapter {
+    private class ImgAdapter extends BaseAdapter
+    {
         public ArrayList<NormImage> list;
 
-        public ImgAdapter(ArrayList<NormImage> list) {
+        public ImgAdapter(ArrayList<NormImage> list)
+        {
             this.list = list;
         }
 
         @Override
-        public int getCount() {
+        public int getCount()
+        {
             return list.size();
         }
 
         @Override
-        public Object getItem(int position) {
+        public Object getItem(int position)
+        {
             return list.get(position);
         }
 
         @Override
-        public long getItemId(int position) {
+        public long getItemId(int position)
+        {
             return position;
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, ViewGroup parent)
+        {
             ImageView imageView;
-            if (convertView == null) {
+            if (convertView == null)
+            {
                 imageView = new ImageView(getContext());
                 imageView.setLayoutParams(new GridView.LayoutParams(imgWidth, imgWidth));
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            } else {
-                imageView = (ImageView) convertView;
             }
-            imageView.setImageBitmap(list.get(position).getSmallBitmap());
+            else
+            {
+                imageView = (ImageView)convertView;
+            }
+            if (isAdd)
+            {
+                imageView.setImageBitmap(list.get(position).getSmallBitmap());
+            }
+            else
+            {
+                Glide.with(context).load(list.get(position).getSmallImageUrl()).into(imageView);
+            }
             return imageView;
         }
     }

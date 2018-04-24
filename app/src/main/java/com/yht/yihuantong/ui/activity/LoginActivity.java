@@ -232,6 +232,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void onResponseCodeError(Tasks task, BaseResponse response) {
+        closeProgressDialog();
         super.onResponseCodeError(task, response);
         switch (task) {
             case GET_VERIFY_CODE:

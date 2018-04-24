@@ -66,12 +66,12 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/item_cooperate_list_type"
+            android:id="@+id/item_cooperate_list_hospital"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:maxLines="1"
-            android:text="全科"
+            android:text="社区医院"
             android:textColor="#999999"
             android:ellipsize="end" />
 
@@ -82,15 +82,16 @@
             android:layout_height="10dp" />
 
         <TextView
-            android:id="@+id/item_cooperate_list_hospital"
+            android:id="@+id/item_cooperate_list_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:layout_marginLeft="5dp"
             android:maxLines="1"
-            android:text="社区医院"
+            android:text="全科"
             android:textColor="#999999"
             android:ellipsize="end" />
+
 
     </LinearLayout>
 

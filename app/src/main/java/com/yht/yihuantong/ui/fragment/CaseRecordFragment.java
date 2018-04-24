@@ -67,6 +67,13 @@ public class CaseRecordFragment extends BaseFragment implements LoadMoreListener
     }
 
     @Override
+    public void onResume()
+    {
+        super.onResume();
+        getPatientCaseList();
+    }
+
+    @Override
     public void initView(@NonNull View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
         autoLoadRecyclerView = view.findViewById(R.id.fragment_health_record_recycler);
@@ -86,8 +93,6 @@ public class CaseRecordFragment extends BaseFragment implements LoadMoreListener
         if (patientBean != null) {
             patientId = patientBean.getPatientId();
         }
-
-        getPatientCaseList();
     }
 
     @Override

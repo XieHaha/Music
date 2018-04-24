@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.tools.GlideHelper;
 import com.yht.yihuantong.ui.fragment.PatientsFragment;
+import com.yht.yihuantong.utils.AllUtils;
 
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class PatientsListAdapter extends BaseRecyclerAdapter<PatientBean> {
             Glide.with(context).load(item.getPatientImgUrl()).apply(GlideHelper.getOptionsRect()).into(ivHeadImg);
 
             tvName.setText(item.getName());
-            tvAge.setText(item.getAge() + "");
+            tvAge.setText(AllUtils.formatDateByAge(item.getBirthDate()));
             if ("男".equals(item.getSex())) {
                 lllayout.setSelected(true);
             } else {

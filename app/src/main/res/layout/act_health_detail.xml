@@ -9,6 +9,7 @@
     <include layout="@layout/public_title_bar" />
 
     <ScrollView
+        android:id="@+id/act_health_detail_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
@@ -234,7 +235,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="16dp"
-                    android:text="现病史"
+                    android:text="病史"
                     android:textColor="#999999"
                     android:textSize="15sp" />
 
@@ -259,6 +260,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="45dp">
 
                 <TextView
@@ -321,8 +323,30 @@
 
             </RelativeLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:background="@color/app_minor_bg"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:text="辅助检查"
+                android:textColor="#999999"
+                android:textSize="12sp" />
+
+            <custom.frame.widgets.gridview.AutoGridView
+                android:id="@+id/act_health_detail_auto_gridview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/app_white_color" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="@color/app_main_divideline" />
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:background="@color/app_white_color"
                 android:layout_height="45dp">
 
                 <TextView
@@ -352,23 +376,6 @@
                     android:background="@color/app_main_divideline" />
 
             </RelativeLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:background="@color/app_minor_bg"
-                android:gravity="center_vertical"
-                android:paddingLeft="16dp"
-                android:text="辅助检查"
-                android:textColor="#999999"
-                android:textSize="12sp" />
-
-            <custom.frame.widgets.gridview.AutoGridView
-                android:id="@+id/act_health_detail_auto_gridview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/app_white_color" />
 
             <TextView
                 android:id="@+id/act_health_detail_create_time"

@@ -22,6 +22,7 @@ public class PatientBean implements Serializable {
     private String allergy;
     private String im_username;
     private long date;
+    private long birthDate;
     private long gmtCreate;
     private long gmtModified;
     private int requestSource;
@@ -160,5 +161,15 @@ public class PatientBean implements Serializable {
 
     public void setGmtModified(long gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public long getBirthDate()
+    {
+        return birthDate;
+    }
+
+    public void setBirthDate(long birthDate)
+    {
+        this.birthDate = birthDate;
     }
 }

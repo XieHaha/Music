@@ -7,9 +7,11 @@
 
     <ImageView
         android:id="@+id/public_title_bar_back"
-        android:layout_width="24dp"
-        android:layout_height="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_width="48dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:layout_height="match_parent"
         android:visibility="gone"
         android:layout_centerVertical="true"
         android:src="@mipmap/icon_back" />
