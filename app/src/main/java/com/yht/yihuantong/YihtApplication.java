@@ -16,6 +16,7 @@ import com.yht.yihuantong.ease.HxHelper;
 
 import cn.jpush.android.api.JPushInterface;
 import custom.frame.bean.LoginSuccessBean;
+import custom.frame.utils.ImageLoadUtil;
 import custom.frame.utils.SharePreferenceUtil;
 
 /**
@@ -48,7 +49,10 @@ public class YihtApplication extends MultiDexApplication
         initContext();
         initEase();
         initJPush();
+        initImageLoader();
     }
+
+
 
     @Override
     protected void attachBaseContext(Context base)
@@ -72,32 +76,35 @@ public class YihtApplication extends MultiDexApplication
         // 默认添加好友时，是不需要验证的，改成需要验证
         options.setAcceptInvitationAlways(false);
         EaseUI.getInstance().init(this, options);
-//        //设置头像为圆形
-//        EaseAvatarOptions avatarOpts = new EaseAvatarOptions();
-//        //0：默认，1：圆形，2：矩形
-//        avatarOpts.setAvatarShape(1);
-//        EaseUI.getInstance().setAvatarOptions(avatarOpts);
-//        //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
-//        EMClient.getInstance().setDebugMode(true);
+        //        //设置头像为圆形
+        //        EaseAvatarOptions avatarOpts = new EaseAvatarOptions();
+        //        //0：默认，1：圆形，2：矩形
+        //        avatarOpts.setAvatarShape(1);
+        //        EaseUI.getInstance().setAvatarOptions(avatarOpts);
+        //        //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
+        //        EMClient.getInstance().setDebugMode(true);
         //设置有关环信自定义的相关配置
-
         //titlebar、头像、名字处理
         HxHelper.Opts opts = new HxHelper.Opts();
         opts.showChatTitle = false;
         HxHelper.getInstance().init(this, opts);
-        EaseUI.getInstance().setUserProfileProvider(username -> {
-            LoginSuccessBean bean = getLoginSuccessBean();
-            //如果是当前用户，就设置自己的昵称和头像
-            if (null != bean && TextUtils.equals(bean.getDoctorId(), username)) {
-                EaseUser eu = new EaseUser(username);
-                eu.setNickname(bean.getName());
-                eu.setAvatar(bean.getPortraitUrl());
-                return eu;
-            }
-            //否则交给HxHelper处理，从消息中获取昵称和头像
-            return HxHelper.getInstance().getUser(username);
-        });
-
+        EaseUI.getInstance().setUserProfileProvider(username ->
+                                                    {
+                                                        LoginSuccessBean bean = getLoginSuccessBean();
+                                                        //如果是当前用户，就设置自己的昵称和头像
+                                                        if (null != bean &&
+                                                            TextUtils.equals(bean.getDoctorId(),
+                                                                             username))
+                                                        {
+                                                            EaseUser eu = new EaseUser(username);
+                                                            eu.setNickname(bean.getName());
+                                                            eu.setAvatar(bean.getPortraitUrl());
+                                                            return eu;
+                                                        }
+                                                        //否则交给HxHelper处理，从消息中获取昵称和头像
+                                                        return HxHelper.getInstance()
+                                                                       .getUser(username);
+                                                    });
     }
 
     /**
@@ -108,6 +115,14 @@ public class YihtApplication extends MultiDexApplication
         //极光推送
         JPushInterface.setDebugMode(false);
         JPushInterface.init(this);
+    }
+
+    /**
+     * ImageLoader 参数化配置
+     */
+    private void initImageLoader()
+    {
+        ImageLoadUtil.getInstance().initImageLoader(getApplicationContext());
     }
 
     public static YihtApplication getInstance()

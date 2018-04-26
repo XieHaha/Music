@@ -408,7 +408,12 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
     {
         if (position < imageList.size() && imageList.size() <= maxPicNum)
         {
-            //            showDeletePhotoDialog(position);
+            if(isAddNewHealth || isSelectTime)  return;
+            Intent intent = new Intent(this, ImagePreviewActivity.class);
+            intent.putExtra(ImagePreviewActivity.INTENT_POSITION, position);
+            intent.putExtra(ImagePreviewActivity.INTENT_URLS, imageList);
+            startActivity(intent);
+            overridePendingTransition(R.anim.fade_in, R.anim.keep);
         }
         else
         {
