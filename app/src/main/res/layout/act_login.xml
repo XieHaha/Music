@@ -23,13 +23,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="175dp"
+        android:paddingLeft="28dp"
+        android:paddingRight="28dp"
         android:orientation="vertical"
         android:paddingTop="26dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="25dp"
             android:text="@string/txt_login"
             android:textColor="#ff333333"
             android:textSize="24sp" />
@@ -38,7 +39,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:paddingLeft="25dp"
             android:text="@string/txt_login_hint"
             android:textColor="#ff333333"
             android:textSize="15sp" />
@@ -47,16 +47,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
-            android:paddingLeft="26dp"
             android:text="手机号"
             android:textColor="#ff999999"
             android:textSize="12dp" />
 
         <EditText
             android:id="@+id/act_login_phone"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginLeft="25dp"
             android:hint="输入手机号"
             android:inputType="phone"
             android:maxLength="11"
@@ -67,19 +65,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:paddingLeft="26dp"
             android:text="验证码"
             android:textColor="#ff999999"
             android:textSize="12dp" />
 
         <RelativeLayout
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/act_login_verifycode"
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:hint="输入验证码"
                 android:maxEms="10"
@@ -104,12 +100,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:paddingRight="28dp"
+        android:paddingLeft="28dp"
         android:layout_marginBottom="32dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/act_login_btn"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/btn_main_color_selector"

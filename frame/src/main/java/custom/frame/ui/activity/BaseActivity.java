@@ -85,7 +85,7 @@ public abstract class BaseActivity extends AppCompatActivity
          */
         permissionHelper = PermissionHelper.getInstance(this);
         permissionHelper.request(
-                new String[]{Permission.READ_PHONE_STATE, Permission.STORAGE_WRITE, Permission.CAMERA});
+                new String[]{Permission.READ_PHONE_STATE, Permission.STORAGE_WRITE, Permission.CAMERA,Permission.RECORD_AUDIO});
         init(savedInstanceState);
     }
 

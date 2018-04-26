@@ -154,13 +154,21 @@ public class AutoGridView extends RelativeLayout
             {
                 imageView = (ImageView)convertView;
             }
-            if (isAdd)
+//            if (isAdd)
+//            {
+//                imageView.setImageBitmap(list.get(position).getSmallBitmap());
+//            }
+//            else
+//            {
+//                Glide.with(context).load(list.get(position).getSmallImageUrl()).into(imageView);
+//            }
+            if (list.get(position).getSmallBitmap() == null)
             {
-                imageView.setImageBitmap(list.get(position).getSmallBitmap());
+                Glide.with(context).load(list.get(position).getSmallImageUrl()).into(imageView);
             }
             else
             {
-                Glide.with(context).load(list.get(position).getSmallImageUrl()).into(imageView);
+                imageView.setImageBitmap(list.get(position).getSmallBitmap());
             }
             return imageView;
         }

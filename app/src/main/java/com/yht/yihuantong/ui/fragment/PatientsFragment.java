@@ -82,6 +82,14 @@ public class PatientsFragment extends BaseFragment
     }
 
     @Override
+    public void onResume()
+    {
+        super.onResume();
+        page = 0;
+        getPatientsData();
+    }
+
+    @Override
     public void initView(@NonNull View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
         ((TextView) view.findViewById(R.id.public_title_bar_title)).setText("我的患者");
@@ -108,8 +116,6 @@ public class PatientsFragment extends BaseFragment
 
         patientsListAdapter.addHeaderView(headerView);
         patientsListAdapter.addFooterView(footerView);
-        page = 0;
-        getPatientsData();
     }
 
     @Override

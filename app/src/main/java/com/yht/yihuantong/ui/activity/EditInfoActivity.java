@@ -1,6 +1,5 @@
 package com.yht.yihuantong.ui.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -21,7 +20,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
-import com.yht.yihuantong.tools.GetImagePath;
 import com.yht.yihuantong.tools.GlideHelper;
 import com.yht.yihuantong.ui.dialog.ActionSheetDialog;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
@@ -144,9 +142,9 @@ public class EditInfoActivity extends BaseActivity
     /**
      * 上传头像
      */
-    private void uploadHeadImg()
+    private void uploadHeadImg(Uri uri)
     {
-        mIRequest.uploadHeadImg(FileUtils.getFileByUri(cutFileUri, this), "jpg", this);
+        mIRequest.uploadHeadImg(FileUtils.getFileByUri(uri, this), "jpg", this);
     }
 
     @Override
@@ -213,6 +211,10 @@ public class EditInfoActivity extends BaseActivity
             ToastUtil.toast(this, R.string.toast_upload_job_info_hint);
             return;
         }
+        if (headImgUrl == null)
+        {
+            headImgUrl = "";
+        }
         mIRequest.updateUserInfo(loginSuccessBean.getDoctorId(), name, headImgUrl, hospital, type,
                                  title, introduce, this);
     }
@@ -253,8 +255,8 @@ public class EditInfoActivity extends BaseActivity
                // 显示选择的数量
                .countable(true)
                //                //相机
-               //                .capture(true)
-               //                .captureStrategy(new CaptureStrategy(true, "com.yht.yihuantong.fileprovider"))
+               //               .capture(true)
+               //               .captureStrategy(new CaptureStrategy(true, "com.yht.yihuantong.fileprovider"))
                // 黑色背景
                .theme(R.style.Matisse_Dracula)
                // 图片选择的最多数量
@@ -270,34 +272,40 @@ public class EditInfoActivity extends BaseActivity
                .forResult(RC_PICK_IMG);
     }
 
-
     /**
      * 打开相机
      */
     private void openCamera()
     {
-        String pathRecv = DirHelper.getPathImage();
-        Log.e("test", "pathRecv:" + pathRecv);
-        cameraTempFile = new File(pathRecv, System.currentTimeMillis() + ".jpg");
+        cameraTempFile = new File(DirHelper.getPathImage(), System.currentTimeMillis() + ".jpg");
+        Log.e("test", "cameraTempFile:" + cameraTempFile.getAbsolutePath());
         //选择拍照
-        Intent cameraintent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // 指定调用相机拍照后照片的储存路径
         Uri uri = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
         {
-            cameraintent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            cameraintent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            uri = FileProvider.getUriForFile(this, "com.yht.yihuantong.android7.fileprovider",
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            uri = FileProvider.getUriForFile(this, "com.yht.yihuantong.fileprovider",
                                              cameraTempFile);
         }
         else
         {
             uri = Uri.fromFile(cameraTempFile);
         }
+        List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(intent,
+                                                                                  PackageManager.MATCH_DEFAULT_ONLY);
+        for (ResolveInfo resolveInfo : resInfoList)
+        {
+            String packageName = resolveInfo.activityInfo.packageName;
+            grantUriPermission(packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
+                                                 Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
         // 指定调用相机拍照后照片的储存路径
-        cameraintent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        cameraintent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
-        startActivityForResult(cameraintent, RC_PICK_CAMERA_IMG);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
+        startActivityForResult(intent, RC_PICK_CAMERA_IMG);
     }
 
     /**
@@ -309,23 +317,13 @@ public class EditInfoActivity extends BaseActivity
         cutFileUri = cutUri;
         //系统裁剪
         Intent intent = new Intent("com.android.camera.action.CROP");
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-//        {
-//            //添加这一句表示对目标应用临时授权该Uri所代表的文件
-//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//        }
-        ////        在Android N中，为了安全起见，您必须获得“写入或读取Uri文件”的权限。如果您希望系统照片裁剪您的“uri文件”，那么您 必须允许系统照片。
-        List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(intent,
-                                                                                  PackageManager.MATCH_DEFAULT_ONLY);
-        for (ResolveInfo resolveInfo : resInfoList)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
         {
-            String packageName = resolveInfo.activityInfo.packageName;
-            grantUriPermission(packageName, cutFileUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
-                                                        Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            grantUriPermission(packageName, originUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
-                                                        Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            //添加这一句表示对目标应用临时授权该Uri所代表的文件
+            intent.addFlags(
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
-        //结束
+        // 在Android N中，为了安全起见，您必须获得“写入或读取Uri文件”的权限。如果您希望系统照片裁剪您的“uri文件”，那么您 必须允许系统照片。
         intent.setDataAndType(originUri, "image/*");
         intent.putExtra("crop", "true");
         // aspectX aspectY 是宽高的比例
@@ -341,8 +339,8 @@ public class EditInfoActivity extends BaseActivity
             intent.putExtra("aspectX", 1);
             intent.putExtra("aspectY", 1);
         }
-        intent.putExtra("outputX", 120);
-        intent.putExtra("outputY", 120);
+        intent.putExtra("outputX", 300);
+        intent.putExtra("outputY", 300);
         intent.putExtra("scale", true);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, cutFileUri);
         intent.putExtra("return-data", false);
@@ -351,124 +349,68 @@ public class EditInfoActivity extends BaseActivity
         startActivityForResult(intent, RC_CROP_IMG);
     }
 
-    /**
-     * 裁剪图片方法实现
-     *
-     * @param inputUri
-     */
-    public void startPhotoZoom(Uri inputUri) {
-
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        //sdk>=24
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-
-            Uri outPutUri = Uri.fromFile(cameraTempFile);
-            intent.setDataAndType(inputUri, "image/*");
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, outPutUri);
-            intent.putExtra("noFaceDetection", false);//去除默认的人脸识别，否则和剪裁匡重叠
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
-        } else {
-            Uri outPutUri = Uri.fromFile(cameraTempFile);
-            if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-                String url = GetImagePath.getPath(this, inputUri);//这个方法是处理4.4以上图片返回的Uri对象不同的处理方法
-                intent.setDataAndType(Uri.fromFile(new File(url)), "image/*");
-            } else {
-                intent.setDataAndType(inputUri, "image/*");
-            }
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, outPutUri);
-        }
-
-        // 设置裁剪
-        intent.putExtra("crop", "true");
-        // aspectX aspectY 是宽高的比例
-        if (Build.BRAND.toUpperCase().contains("HONOR") ||
-            Build.BRAND.toUpperCase().contains("HUAWEI"))
-        {
-            //华为特殊处理 不然会显示圆
-            intent.putExtra("aspectX", 9998);
-            intent.putExtra("aspectY", 9999);
-        }
-        else
-        {
-            intent.putExtra("aspectX", 1);
-            intent.putExtra("aspectY", 1);
-        }
-        // outputX outputY 是裁剪图片宽高
-        intent.putExtra("outputX", 200);
-        intent.putExtra("outputY", 200);
-        intent.putExtra("return-data", false);
-        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());// 图片格式
-        startActivityForResult(intent, RC_CROP_IMG);//这里就将裁剪后的图片的Uri返回了
-    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if (resultCode == Activity.RESULT_OK)
+        if (resultCode != RESULT_OK)
         {
-            if (requestCode == RC_PICK_IMG)
-            {
+            //            Log.e("test","cutFileUri: " + cutFileUri);
+            //            //裁剪完成，上传图片
+            //            if (AllUtils.isNetworkAvaliable(this))
+            //            {
+            //                uploadHeadImg(Uri.fromFile(cameraTempFile));
+            //            }
+            //            else
+            //            {
+            //                ToastUtil.toast(this, R.string.toast_public_current_no_network);
+            //            }
+            //            //上传完成，替换本地图片
+            //            Glide.with(this).load(cameraTempFile).into(headImg);
+            return;
+        }
+        switch (requestCode)
+        {
+            case RC_PICK_IMG:
                 List<Uri> paths = Matisse.obtainResult(data);
                 if (null != paths && 0 != paths.size())
                 {
-                    String cropPath =
-                            DirHelper.getPathImage() + "/" + "crop" + System.currentTimeMillis() +
-                            ".jpg";
-                    Uri cropUri;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-                    {
-                        cropUri = FileProvider.getUriForFile(this,
-                                                             "com.yht.yihuantong.android7.fileprovider",
-                                                             FileUtils.getFileByUri(paths.get(0),
-                                                                                    this));
-                    }
-                    else
-                    {
-                        cropUri = Uri.parse("file://" + cropPath);
-                    }
-                    startCutImg(paths.get(0), cropUri);
+                    cameraTempFile = FileUtils.getFileByUri(paths.get(0), this);
+                    String fileName = "corp" + System.currentTimeMillis() + ".jpg";
+                    File file = new File(DirHelper.getPathCache(), fileName);
+                    Log.e("test", "path:" + file.getAbsolutePath());
+                    startCutImg(paths.get(0), Uri.fromFile(file));
                 }
-            }
-            else if (requestCode == RC_PICK_CAMERA_IMG)
-            {
+                break;
+            case RC_PICK_CAMERA_IMG:
                 if (cameraTempFile.exists())
                 {
-                    Uri originalUri;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-                    {
-                        originalUri = FileProvider.getUriForFile(this,
-                                                                 "com.yht.yihuantong.android7.fileprovider",
-                                                                 cameraTempFile);
-                    }
-                    else
-                    {
-                        originalUri = Uri.fromFile(cameraTempFile);
-                    }
-                    String cropPath =
-                            DirHelper.getPathImage() + "/" + "crop" + System.currentTimeMillis() +
-                            ".jpg";
+                    String fileName = "corp" + System.currentTimeMillis() + ".jpg";
+                    File file = new File(DirHelper.getPathCache(), fileName);
+                    Uri imageUri;
                     Uri cropUri;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
                     {
-                        cropUri = FileProvider.getUriForFile(this,
-                                                             "com.yht.yihuantong.android7.fileprovider",
-                                                             new File(cropPath));
+                        imageUri = FileProvider.getUriForFile(this,
+                                                              "com.yht.yihuantong.fileprovider",
+                                                              cameraTempFile);
                     }
                     else
                     {
-                        cropUri = Uri.parse("file://" + cropPath);
+                        imageUri = Uri.fromFile(cameraTempFile);
                     }
-                    startCutImg(originalUri, cropUri);
-//                    startPhotoZoom(originalUri,cropUri);
+                    cropUri = Uri.fromFile(file);
+                    Log.e("test", "path:" + file.getAbsolutePath());
+                    Log.e("test", "cameraTempFile:" + cameraTempFile.getAbsolutePath());
+                    Log.e("test", "cropUri:" + cropUri);
+                    Log.e("test", "imageUri:" + imageUri);
+                    startCutImg(imageUri, cropUri);
                 }
-            }
-            else if (requestCode == RC_CROP_IMG)
-            {
+                break;
+            case RC_CROP_IMG:
                 //裁剪完成，上传图片
                 if (AllUtils.isNetworkAvaliable(this))
                 {
-                    uploadHeadImg();
+                    uploadHeadImg(cutFileUri);
                 }
                 else
                 {
@@ -476,7 +418,7 @@ public class EditInfoActivity extends BaseActivity
                 }
                 //上传完成，替换本地图片
                 Glide.with(this).load(cutFileUri).into(headImg);
-            }
+                break;
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

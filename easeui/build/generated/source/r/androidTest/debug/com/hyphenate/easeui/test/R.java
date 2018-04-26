@@ -10452,7 +10452,6 @@ public final class R {
     public static final int ViewStubCompat_android_inflatedId=2;
   }
   public static final class xml {
-    public static final int file_paths_private=0x7f0d0000;
-    public static final int file_paths_public=0x7f0d0001;
+    public static final int file_paths_public=0x7f0d0000;
   }
 }

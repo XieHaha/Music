@@ -3001,5 +3001,4 @@ int styleable WalletFragmentStyle_maskedWalletDetailsHeaderTextAppearance 7
 int styleable WalletFragmentStyle_maskedWalletDetailsLogoImageType 8
 int styleable WalletFragmentStyle_maskedWalletDetailsLogoTextColor 9
 int styleable WalletFragmentStyle_maskedWalletDetailsTextAppearance 10
-int xml file_paths_private 0x7f190001
-int xml file_paths_public 0x7f190002
+int xml file_paths_public 0x7f190001

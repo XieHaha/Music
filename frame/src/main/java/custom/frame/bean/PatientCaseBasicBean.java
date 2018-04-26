@@ -18,6 +18,7 @@ public class PatientCaseBasicBean implements Serializable {
     private String surgeryInfo;
     private long gmtCreate;
     private long gmtModified;
+    private long surgeryDate;
 
     public String getPatientId() {
         return patientId;
@@ -65,5 +66,15 @@ public class PatientCaseBasicBean implements Serializable {
 
     public void setGmtModified(long gmtModified) {
         this.gmtModified = gmtModified;
+    }
+
+    public long getSurgeryDate()
+    {
+        return surgeryDate;
+    }
+
+    public void setSurgeryDate(long surgeryDate)
+    {
+        this.surgeryDate = surgeryDate;
     }
 }

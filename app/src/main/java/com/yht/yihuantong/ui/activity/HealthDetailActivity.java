@@ -1,6 +1,5 @@
 package com.yht.yihuantong.ui.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -372,7 +371,10 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
         //endDate.set(2020,1,1);
         //正确设置方式 原因：注意事项有说明
         startDate.set(1900, 1, 1);
-        endDate.set(2020, 12, 31);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String time = simpleDateFormat.format(new Date());
+        String[] strings = time.split("-");
+        endDate.set(Integer.parseInt(strings[0]), Integer.parseInt(strings[1])-1, Integer.parseInt(strings[2]));
         timePicker = new TimePickerBuilder(this, new OnTimeSelectListener()
         {
             @Override
@@ -543,7 +545,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
         {
             cameraintent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            uri = FileProvider.getUriForFile(this, "com.yht.yihuantong.android7.fileprovider",
+            uri = FileProvider.getUriForFile(this, "com.yht.yihuantong.fileprovider",
                                              cameraTempFile);
         }
         else
@@ -559,25 +561,27 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if (resultCode == Activity.RESULT_OK)
+        if (resultCode != RESULT_OK)
         {
-            if (requestCode == RC_PICK_IMG)
-            {
+            return;
+        }
+        switch (requestCode)
+        {
+            case RC_PICK_IMG:
                 List<Uri> paths = Matisse.obtainResult(data);
                 mSelectPath.clear();
                 mSelectPath.addAll(paths);
-            }
-            else if (requestCode == RC_PICK_CAMERA_IMG)
-            {
+                break;
+            case RC_PICK_CAMERA_IMG:
                 if (cameraTempFile.exists())
                 {
                     Uri originalUri = Uri.fromFile(cameraTempFile);
                     mSelectPath.clear();
                     mSelectPath.add(originalUri);
                 }
-            }
-            new DealImgThread().start();
+                break;
         }
+        new DealImgThread().start();
         super.onActivityResult(requestCode, resultCode, data);
     }
 

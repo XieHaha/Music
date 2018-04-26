@@ -3038,7 +3038,6 @@ public final class R {
         public static int WalletFragmentStyle_maskedWalletDetailsTextAppearance = 10;
     }
     public static final class xml {
-        public static int file_paths_private = 0x7f190001;
-        public static int file_paths_public = 0x7f190002;
+        public static int file_paths_public = 0x7f190001;
     }
 }

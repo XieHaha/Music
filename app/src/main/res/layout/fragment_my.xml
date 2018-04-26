@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:clickable="true"
+    android:background="@color/app_minor_bg"
     android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/app_minor_bg">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/bg_img"

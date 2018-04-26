@@ -26,7 +26,7 @@ ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:10:9-19:20
 	android:grantUriPermissions
 		ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:14:13-47
 	android:authorities
-		ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:12:13-75
+		ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:12:13-66
 	android:exported
 		ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:13:13-37
 	android:name

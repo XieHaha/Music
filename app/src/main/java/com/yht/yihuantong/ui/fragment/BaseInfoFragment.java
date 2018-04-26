@@ -78,7 +78,7 @@ public class BaseInfoFragment extends BaseFragment {
         if (patientBean != null) {
             patientId = patientBean.getPatientId();
             tvSex.setText(patientBean.getSex());
-            tvAge.setText(String.valueOf(patientBean.getAge()));
+            tvAge.setText(AllUtils.formatDateByAge(patientBean.getBirthDate()));
         }
         getPatientAllergy();
         getPatientDiagnosis();
@@ -224,7 +224,15 @@ public class BaseInfoFragment extends BaseFragment {
 
         private void init(PatientCaseBasicBean item) {
             holder.tvName.setText(item.getSurgeryInfo());
-            holder.tvTime.setText(AllUtils.formatDate(item.getGmtCreate(), AllUtils.DATE_FORMAT));
+            if (item.getSurgeryDate() == 0)
+            {
+                holder.tvTime.setVisibility(View.GONE);
+            }
+            else
+            {
+                holder.tvTime.setVisibility(View.VISIBLE);
+            }
+            holder.tvTime.setText(AllUtils.formatDate(item.getGmtCreate(), AllUtils.DATE_FORMAT_AGE));
         }
     }
 
