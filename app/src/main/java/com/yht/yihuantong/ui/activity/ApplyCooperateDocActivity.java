@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.data.OnEventTriggerListener;
 import com.yht.yihuantong.ui.adapter.ApplyCooperateAdapter;
@@ -22,7 +23,6 @@ import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CooperateDocBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
-import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
@@ -96,17 +96,14 @@ public class ApplyCooperateDocActivity extends BaseActivity
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(applyCooperateAdapter);
-        applyCooperateAdapter.setOnItemClickListener(
-                new BaseRecyclerAdapter.OnItemClickListener<CooperateDocBean>() {
-                    @Override
-                    public void onItemClick(View v, int position, CooperateDocBean item) {
-                        Intent intent = new Intent(ApplyCooperateDocActivity.this,
-                                UserInfoActivity.class);
-                        intent .putExtra(CommonData.KEY_DOCTOR_ID,item.getDoctorId());
-                        intent .putExtra(CommonData.KEY_IS_DEAL_DOC,false);
-                        startActivity(intent);
-                    }
-                });
+        applyCooperateAdapter.setOnItemClickListener((v, position, item) ->
+                                                     {
+                                                         Intent intent = new Intent(ApplyCooperateDocActivity.this,
+                                                                 UserInfoActivity.class);
+                                                         intent .putExtra(CommonData.KEY_DOCTOR_ID,item.getDoctorId());
+                                                         intent .putExtra(CommonData.KEY_IS_DEAL_DOC,false);
+                                                         startActivity(intent);
+                                                     });
     }
 
     /**
@@ -146,6 +143,8 @@ public class ApplyCooperateDocActivity extends BaseActivity
             case DEAL_DOC_APPLY:
                 ToastUtil.toast(this,"处理成功");
                 getApplyCooperateList();
+                //通知合作医生列表
+                NotifyChangeListenerServer.getInstance().notifyDoctorMessageChange("");
                 break;
             default:
                 break;

@@ -11,6 +11,7 @@ import com.alibaba.fastjson.JSON;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.domain.EaseUser;
+import com.yht.yihuantong.api.ApiHelper;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ease.HxHelper;
 
@@ -46,13 +47,13 @@ public class YihtApplication extends MultiDexApplication
     {
         MultiDex.install(this);
         super.onCreate();
+        //监听类初始化
+        ApiHelper.init(this);
         initContext();
         initEase();
         initJPush();
         initImageLoader();
     }
-
-
 
     @Override
     protected void attachBaseContext(Context base)

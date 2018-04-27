@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
 import com.yht.yihuantong.data.OnEventTriggerListener;
 import com.yht.yihuantong.ui.adapter.ApplyPatientAdapter;
 
@@ -66,7 +67,7 @@ public class ApplyPatientActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("申请人");
+        ((TextView) findViewById(R.id.public_title_bar_title)).setText("患者申请");
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(
                 R.id.act_apply_patient_swipe_layout);
         autoLoadRecyclerView = (AutoLoadRecyclerView) findViewById(
@@ -156,6 +157,8 @@ public class ApplyPatientActivity extends BaseActivity
             case REFUSE_PATIENT_APPLY:
                 ToastUtil.toast(this,"处理成功");
                 getApplyPatientList();
+                //
+                NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("");
                 break;
             default:
                 break;

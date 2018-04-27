@@ -216,6 +216,8 @@ public class BaseRequest<T> extends HttpProxy {
                 return hashMap;
             }
         };
+
+        System.setProperty("sun.net.http.retryPost","false");
         /**复写重试方针*/
         objectRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
 
@@ -318,6 +320,8 @@ public class BaseRequest<T> extends HttpProxy {
                 return hashMap;
             }
         };
+
+        System.setProperty("sun.net.http.retryPost","false");
         /**复写重试方针*/
         objectRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
 
@@ -404,6 +408,7 @@ public class BaseRequest<T> extends HttpProxy {
         };
         /**复写重试方针*/
         jsonRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
+        System.setProperty("sun.net.http.retryPost","false");
         //设置tag
         jsonRequest.setTag(task);
         //加入请求队列
@@ -486,6 +491,8 @@ public class BaseRequest<T> extends HttpProxy {
                 return null;
             }
         };
+
+        System.setProperty("sun.net.http.retryPost","false");
         /**复写重试方针*/
         jsonRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
         //设置tag

@@ -39,13 +39,11 @@ public class MainActivity extends BaseActivity
     private EaseConversationListFragment easeConversationListFragment;
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
-
     private MyConnectionListener connectionListener;
     /**
      * 消息监听
      */
     private EMMessageListener msgListener;
-
 
     @Override
     public int getLayoutID()
@@ -60,7 +58,7 @@ public class MainActivity extends BaseActivity
     {
         fragmentManager = getSupportFragmentManager();
         transaction = fragmentManager.beginTransaction();
-//        tabMsgView();
+        //        tabMsgView();
         tabEaseMsgView();
         setAlias();
     }
@@ -84,11 +82,9 @@ public class MainActivity extends BaseActivity
         tabDoc.setOnClickListener(this);
         tabCase.setOnClickListener(this);
         tabMy.setOnClickListener(this);
-
         //注册一个监听连接状态的listener
         connectionListener = new MyConnectionListener();
         EMClient.getInstance().addConnectionListener(connectionListener);
-
         msgListener = new EMMessageListener()
         {
             @Override
@@ -150,8 +146,8 @@ public class MainActivity extends BaseActivity
         switch (v.getId())
         {
             case R.id.act_main_tab1:
+                //                tabMsgView();
                 tabEaseMsgView();
-//                tabMsgView();
                 break;
             case R.id.act_main_tab2:
                 tabDocView();
@@ -163,7 +159,7 @@ public class MainActivity extends BaseActivity
                 tabMyView();
                 break;
             default:
-//                tabMsgView();
+                //                tabMsgView();
                 tabEaseMsgView();
                 break;
         }
@@ -208,7 +204,6 @@ public class MainActivity extends BaseActivity
         transaction.commitAllowingStateLoss();
         selectTab(0);
     }
-
 
     private void tabDocView()
     {

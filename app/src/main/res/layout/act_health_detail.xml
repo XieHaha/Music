@@ -139,12 +139,12 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="16dp"
-                    android:text="科室"
+                    android:text="医院"
                     android:textColor="#999999"
                     android:textSize="15sp" />
 
                 <EditText
-                    android:id="@+id/act_health_detail_department"
+                    android:id="@+id/act_health_detail_hopital"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="95dp"
@@ -171,12 +171,12 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="16dp"
-                    android:text="医院"
+                    android:text="科室"
                     android:textColor="#999999"
                     android:textSize="15sp" />
 
                 <EditText
-                    android:id="@+id/act_health_detail_hopital"
+                    android:id="@+id/act_health_detail_department"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="95dp"

@@ -13,8 +13,6 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.OnEventTriggerListener;
 import com.yht.yihuantong.tools.GlideHelper;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.List;
 
 import custom.frame.bean.PatientBean;
@@ -71,32 +69,22 @@ public class ApplyPatientAdapter extends BaseRecyclerAdapter<PatientBean> {
 
         @Override
         public void showView(final int position, final PatientBean item) {
-            String newUrl = "";
-            try {
-                newUrl = URLEncoder.encode(item.getPatientImgUrl(), "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            Glide.with(context).load(newUrl).apply(GlideHelper.getOptionsRect()).into(ivHeadImg);
+            Glide.with(context).load(item.getPatientImgUrl()).apply(GlideHelper.getOptionsRect()).into(ivHeadImg);
             tvName.setText(item.getName());
             tvPhone.setText(item.getPhone());
-            tvAgree.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (onEventTriggerListener != null) {
-                        onEventTriggerListener.onPositiveTrigger(item.getPatientId(),item.getRequestSource());
-                    }
-                }
-            });
+            tvAgree.setOnClickListener(v ->
+                                       {
+                                           if (onEventTriggerListener != null) {
+                                               onEventTriggerListener.onPositiveTrigger(item.getPatientId(),item.getRequestSource());
+                                           }
+                                       });
 
-            tvRefuse.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (onEventTriggerListener != null) {
-                        onEventTriggerListener.onNegativeTrigger(item.getPatientId(),0);
-                    }
-                }
-            });
+            tvRefuse.setOnClickListener(v ->
+                                        {
+                                            if (onEventTriggerListener != null) {
+                                                onEventTriggerListener.onNegativeTrigger(item.getPatientId(),0);
+                                            }
+                                        });
         }
     }
 }

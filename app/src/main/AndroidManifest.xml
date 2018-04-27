@@ -49,7 +49,8 @@
         android:supportsRtl="true"
         android:theme="@style/BaseAppTheme">
         <!--<activity android:name=".ui.activity.MainActivity">-->
-        <activity android:name=".ui.activity.SplashActivity">
+        <activity android:name=".ui.activity.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -233,7 +234,7 @@
 
         <!-- User defined.  For test only  用户自定义的广播接收器-->
         <receiver
-            android:name=".jpush.MyReceiver"
+            android:name=".jpush.JPushReceiver"
             android:exported="false"
             android:enabled="true">
             <intent-filter>

@@ -13,8 +13,6 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.OnEventTriggerListener;
 import com.yht.yihuantong.tools.GlideHelper;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.List;
 
 import custom.frame.bean.CooperateDocBean;
@@ -72,33 +70,24 @@ public class ApplyCooperateAdapter extends BaseRecyclerAdapter<CooperateDocBean>
         @Override
         public void showView(final int position, final CooperateDocBean item) {
 
-            String newUrl = "";
-            try {
-                newUrl = URLEncoder.encode(item.getPortraitUrl(), "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            Glide.with(context).load(newUrl).apply(GlideHelper.getOptionsRect()).into(ivHeadImg);
+
+            Glide.with(context).load(item.getPortraitUrl()).apply(GlideHelper.getOptionsRect()).into(ivHeadImg);
             tvName.setText(item.getName());
             tvType.setText(item.getDepartment());
             tvHopital.setText(item.getHospital());
-            tvAgree.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (onEventTriggerListener != null) {
-                        onEventTriggerListener.onPositiveTrigger(item.getDoctorId(),item.getRequestSource());
-                    }
-                }
-            });
+            tvAgree.setOnClickListener(v ->
+                                       {
+                                           if (onEventTriggerListener != null) {
+                                               onEventTriggerListener.onPositiveTrigger(item.getDoctorId(),item.getRequestSource());
+                                           }
+                                       });
 
-            tvRefuse.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (onEventTriggerListener != null) {
-                        onEventTriggerListener.onNegativeTrigger(item.getDoctorId(),item.getRequestSource());
-                    }
-                }
-            });
+            tvRefuse.setOnClickListener(v ->
+                                        {
+                                            if (onEventTriggerListener != null) {
+                                                onEventTriggerListener.onNegativeTrigger(item.getDoctorId(),item.getRequestSource());
+                                            }
+                                        });
         }
     }
 }
