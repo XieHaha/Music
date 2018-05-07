@@ -4,19 +4,24 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.EaseUI;
+import com.hyphenate.easeui.UserInfoCallback;
 import com.hyphenate.easeui.domain.EaseUser;
+import com.yanzhenjie.nohttp.NoHttp;
 import com.yht.yihuantong.api.ApiHelper;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ease.HxHelper;
 
+import org.litepal.LitePalApplication;
+
 import cn.jpush.android.api.JPushInterface;
 import custom.frame.bean.LoginSuccessBean;
+import custom.frame.http.IRequest;
 import custom.frame.utils.ImageLoadUtil;
 import custom.frame.utils.SharePreferenceUtil;
 
@@ -25,10 +30,14 @@ import custom.frame.utils.SharePreferenceUtil;
  *
  * @author DUNDUN
  */
-public class YihtApplication extends MultiDexApplication
+public class YihtApplication extends LitePalApplication
 {
     private static YihtApplication sApplication;
     private LoginSuccessBean loginSuccessBean;
+    /**
+     * 网络请求单例
+     */
+    public IRequest mIRequest = null;
     /**
      * 临时数据  头像url
      */
@@ -47,8 +56,10 @@ public class YihtApplication extends MultiDexApplication
     {
         MultiDex.install(this);
         super.onCreate();
+        mIRequest = IRequest.getInstance(this);
         //监听类初始化
         ApiHelper.init(this);
+        NoHttp.initialize(this);
         initContext();
         initEase();
         initJPush();
@@ -88,24 +99,49 @@ public class YihtApplication extends MultiDexApplication
         //titlebar、头像、名字处理
         HxHelper.Opts opts = new HxHelper.Opts();
         opts.showChatTitle = false;
-        HxHelper.getInstance().init(this, opts);
-        EaseUI.getInstance().setUserProfileProvider(username ->
-                                                    {
-                                                        LoginSuccessBean bean = getLoginSuccessBean();
-                                                        //如果是当前用户，就设置自己的昵称和头像
-                                                        if (null != bean &&
-                                                            TextUtils.equals(bean.getDoctorId(),
-                                                                             username))
-                                                        {
-                                                            EaseUser eu = new EaseUser(username);
-                                                            eu.setNickname(bean.getName());
-                                                            eu.setAvatar(bean.getPortraitUrl());
-                                                            return eu;
-                                                        }
-                                                        //否则交给HxHelper处理，从消息中获取昵称和头像
-                                                        return HxHelper.getInstance()
-                                                                       .getUser(username);
-                                                    });
+        HxHelper.getInstance().init(this, opts,mIRequest);
+//        EaseUI.getInstance().setUserProfileProvider(username ->
+//                                                    {
+//                                                        LoginSuccessBean bean = getLoginSuccessBean();
+//                                                        Log.e("test","username:" + username);
+//                                                        //如果是当前用户，就设置自己的昵称和头像
+//                                                        if (null != bean &&
+//                                                            TextUtils.equals(bean.getDoctorId(),
+//                                                                             username))
+//                                                        {
+//                                                            EaseUser eu = new EaseUser(username);
+//                                                            eu.setNickname(bean.getName());
+//                                                            eu.setAvatar(bean.getPortraitUrl());
+//                                                            return eu;
+//                                                        }
+//                                                        //否则交给HxHelper处理，从消息中获取昵称和头像
+//                                                        return HxHelper.getInstance()
+//                                                                       .getUser(username);
+//                                                    });
+
+        EaseUI.getInstance().setUserProfileProvider(new EaseUI.EaseUserProfileProvider() {
+            @Override
+            public EaseUser getUser(String username, UserInfoCallback callback)
+            {
+                LoginSuccessBean bean = getLoginSuccessBean();
+                Log.e("test","username:" + username);
+                //如果是当前用户，就设置自己的昵称和头像
+                if (null != bean &&
+                    TextUtils.equals(bean.getDoctorId(),
+                                     username))
+                {
+                    EaseUser eu = new EaseUser(username);
+                    eu.setNickname(bean.getName());
+                    eu.setAvatar(bean.getPortraitUrl());
+                    callback.onSuccess(eu);
+                    return eu;
+                }
+                //否则交给HxHelper处理，从消息中获取昵称和头像
+                return HxHelper.getInstance()
+                               .getUser(username,callback);
+            }
+        });
+
     }
 
     /**

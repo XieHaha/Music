@@ -14,6 +14,7 @@ import custom.frame.bean.LoginSuccessBean;
 import custom.frame.bean.PatientBean;
 import custom.frame.bean.PatientCaseBasicBean;
 import custom.frame.bean.PatientCaseDetailBean;
+import custom.frame.bean.Version;
 import custom.frame.http.listener.ResponseListener;
 
 import static custom.frame.http.data.HttpConstants.Method.GET;
@@ -388,5 +389,21 @@ public class IRequest extends BaseRequest {
         return requestBaseResponseByJson("/case/update", Tasks.UPDATE_PATIENT_CASE,
                 String.class, merchant, listener);
     }
+
+    /**
+     * 版本更新
+     */
+    public Tasks getNewVersion(final ResponseListener<BaseResponse> listener) {
+        return requestBaseResponseList(GET, "/app/version", Tasks.UPDATE_VERSION,
+                                       Version.class, null, listener);
+    }
+
+//    /**
+//     * 下载apk文件
+//     */
+//    public Tasks downloadAPK(String url, String fileSavePath, final ResponseListener<BaseResponse> listener) {
+//        //        url = "http://openbox.mobilem.360.cn/index/d/sid/2490097";//测试
+//        return downloadFile(GET, Tasks.DOWNLOAD_FILE, url, fileSavePath, false, listener);
+//    }
 
 }

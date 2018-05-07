@@ -24,15 +24,20 @@ import com.yht.yihuantong.ui.fragment.CooperateDocFragment;
 import com.yht.yihuantong.ui.fragment.MsgFragment;
 import com.yht.yihuantong.ui.fragment.PatientsFragment;
 import com.yht.yihuantong.ui.fragment.UserFragment;
+import com.yht.yihuantong.version.presenter.VersionPresenter;
+import com.yht.yihuantong.version.view.VersionUpdateDialog;
 
 import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
+import custom.frame.bean.Version;
 import custom.frame.ui.activity.BaseActivity;
+import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.ripples.RippleLinearLayout;
 
 public class MainActivity extends BaseActivity
-        implements EaseConversationListFragment.EaseConversationListItemClickListener
+        implements EaseConversationListFragment.EaseConversationListItemClickListener,
+                   VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener
 {
     private RippleLinearLayout tabMsg, tabDoc, tabCase, tabMy;
     private Fragment msgFragment, docFragment, caseFragment, myFragment;
@@ -44,6 +49,18 @@ public class MainActivity extends BaseActivity
      * 消息监听
      */
     private EMMessageListener msgListener;
+    /**
+     * 版本检测
+     */
+    private VersionPresenter mVersionPresenter;
+    /**
+     * 版本弹窗
+     */
+    private VersionUpdateDialog versionUpdateDialog;
+    /**
+     * 是否通过广播检查版本更新
+     */
+    private boolean versionUpdateChecked = false;
 
     @Override
     public int getLayoutID()
@@ -72,6 +89,16 @@ public class MainActivity extends BaseActivity
         tabCase = (RippleLinearLayout)findViewById(R.id.act_main_tab3);
         tabMy = (RippleLinearLayout)findViewById(R.id.act_main_tab4);
         initTab();
+    }
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState)
+    {
+        super.initData(savedInstanceState);
+        //检查更新
+        mVersionPresenter = new VersionPresenter(this, mIRequest);
+        mVersionPresenter.setVersionViewListener(this);
+        mVersionPresenter.init();
     }
 
     @Override
@@ -308,6 +335,38 @@ public class MainActivity extends BaseActivity
                 tabMy.setSelected(false);
                 break;
         }
+    }
+
+    @Override
+    public void updateVersion(Version version, int mode, boolean isDownLoading) {
+        versionUpdateDialog = new VersionUpdateDialog(this);
+        versionUpdateDialog.setCancelable(false);
+        versionUpdateDialog.setUpdateMode(mode).
+                setIsDownNewAPK(isDownLoading).setContent(version.getUpdateDescription());
+        versionUpdateDialog.setOnEnterClickListener(this);
+        versionUpdateDialog.show();
+    }
+
+    @Override
+    public void updateLoading(long total, long current) {
+        if (versionUpdateDialog != null && versionUpdateDialog.isShowing()) {
+            versionUpdateDialog.setProgressValue(total, current);
+        }
+    }
+
+    /**
+     * 当无可用网络时回调
+     */
+    @Override
+    public void updateNetWorkError() {
+        versionUpdateChecked = true;
+    }
+
+    @Override
+    public void onEnter(boolean isMustUpdate)
+    {
+        mVersionPresenter.getNewAPK(isMustUpdate);
+        ToastUtil.toast(this, "开始下载");
     }
 
     @Override

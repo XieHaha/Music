@@ -21,6 +21,7 @@ import com.hyphenate.chat.EMGroup;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.R;
+import com.hyphenate.easeui.UserInfoCallback;
 import com.hyphenate.easeui.domain.EaseAvatarOptions;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.model.EaseAtMessageHelper;
@@ -257,7 +258,13 @@ public class EaseConversationAdapter extends ArrayAdapter<EMConversation> {
                     if(group != null){
                         username = group.getGroupName();
                     }else{
-                        EaseUser user = EaseUserUtils.getUserInfo(username);
+                        EaseUser user = EaseUserUtils.getUserInfo(username,
+                                                                  new UserInfoCallback() {
+                                                                      @Override
+                                                                      public void onSuccess(EaseUser user)
+                                                                      {
+                                                                      }
+                                                                  });
                         // TODO: not support Nick anymore
 //                        if(user != null && user.getNick() != null)
 //                            username = user.getNick();

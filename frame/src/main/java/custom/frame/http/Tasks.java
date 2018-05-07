@@ -111,5 +111,13 @@ public enum Tasks
      * 处理医生申请合作（proCode为字符1（表示同意）或字符3（表示拒绝））
      */
     DEAL_DOC_APPLY,
+    /**
+     * 版本更新
+     */
+    UPDATE_VERSION,
+    /**
+     * 文件下载
+     */
+    DOWNLOAD_FILE,
 }
 

@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide;
 import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.EaseUI.EaseUserProfileProvider;
 import com.hyphenate.easeui.R;
+import com.hyphenate.easeui.UserInfoCallback;
 import com.hyphenate.easeui.domain.EaseUser;
 
 public class EaseUserUtils {
@@ -23,9 +24,9 @@ public class EaseUserUtils {
      * @param username
      * @return
      */
-    public static EaseUser getUserInfo(String username){
+    public static EaseUser getUserInfo(String username,UserInfoCallback callback){
         if(userProvider != null)
-            return userProvider.getUser(username);
+            return userProvider.getUser(username,callback);
         
         return null;
     }
@@ -34,32 +35,44 @@ public class EaseUserUtils {
      * set user avatar
      * @param username
      */
-    public static void setUserAvatar(Context context, String username, ImageView imageView){
-    	EaseUser user = getUserInfo(username);
-        if(user != null && user.getAvatar() != null){
-            try {
-                int avatarResId = Integer.parseInt(user.getAvatar());
-                Glide.with(context).load(avatarResId).into(imageView);
-            } catch (Exception e) {
-                //use default avatar
-                Glide.with(context).load(user.getAvatar()).into(imageView);
+    public static void setUserAvatar(final Context context, String username, final ImageView imageView){
+    	EaseUser user = getUserInfo(username,new UserInfoCallback(){
+            @Override
+            public void onSuccess(EaseUser user)
+            {
+                if(user != null && user.getAvatar() != null){
+                    try {
+                        int avatarResId = Integer.parseInt(user.getAvatar());
+                        Glide.with(context).load(avatarResId).into(imageView);
+                    } catch (Exception e) {
+                        //use default avatar
+                        Glide.with(context).load(user.getAvatar()).into(imageView);
+                    }
+                }else{
+                    Glide.with(context).load(R.drawable.ease_default_avatar).into(imageView);
+                }
             }
-        }else{
-            Glide.with(context).load(R.drawable.ease_default_avatar).into(imageView);
-        }
+        });
+
     }
     
     /**
      * set user's nickname
      */
-    public static void setUserNick(String username,TextView textView){
+    public static void setUserNick(final String username, final TextView textView){
         if(textView != null){
-        	EaseUser user = getUserInfo(username);
-        	if(user != null && user.getNick() != null){
-        		textView.setText(user.getNick());
-        	}else{
-        		textView.setText(username);
-        	}
+        	EaseUser user = getUserInfo(username, new UserInfoCallback() {
+                @Override
+                public void onSuccess(EaseUser user)
+                {
+                    if(user != null && user.getNick() != null){
+                        textView.setText(user.getNick());
+                    }else{
+                        textView.setText(username);
+                    }
+                }
+            });
+
         }
     }
     

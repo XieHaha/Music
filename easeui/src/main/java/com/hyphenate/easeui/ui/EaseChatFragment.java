@@ -39,6 +39,7 @@ import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.R;
+import com.hyphenate.easeui.UserInfoCallback;
 import com.hyphenate.easeui.domain.EaseEmojicon;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.model.EaseAtMessageHelper;
@@ -201,12 +202,22 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         titleBar.setTitle(toChatUsername);
         if (chatType == EaseConstant.CHATTYPE_SINGLE) {
             // set title
-            if(EaseUserUtils.getUserInfo(toChatUsername) != null){
-                EaseUser user = EaseUserUtils.getUserInfo(toChatUsername);
-                if (user != null) {
-                    titleBar.setTitle(user.getNick());
+//            if(EaseUserUtils.getUserInfo(toChatUsername) != null){
+//                EaseUser user = EaseUserUtils.getUserInfo(toChatUsername);
+//                if (user != null) {
+//                    titleBar.setTitle(user.getNick());
+//                }
+//            }
+            EaseUserUtils.getUserInfo(toChatUsername, new UserInfoCallback() {
+                @Override
+                public void onSuccess(EaseUser user)
+                {
+                    if(user!=null)
+                    {
+                        titleBar.setTitle(user.getNick());
+                    }
                 }
-            }
+            });
             titleBar.setRightImageResource(R.drawable.ease_mm_title_remove);
         } else {
         	titleBar.setRightImageResource(R.drawable.ease_to_group_details_normal);
@@ -676,20 +687,33 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
      * input @
      * @param username
      */
-    protected void inputAtUsername(String username, boolean autoAddAtSymbol){
+    protected void inputAtUsername(final String username, final boolean autoAddAtSymbol){
         if(EMClient.getInstance().getCurrentUser().equals(username) ||
                 chatType != EaseConstant.CHATTYPE_GROUP){
             return;
         }
         EaseAtMessageHelper.get().addAtUser(username);
-        EaseUser user = EaseUserUtils.getUserInfo(username);
-        if (user != null){
-            username = user.getNick();
-        }
-        if(autoAddAtSymbol)
-            inputMenu.insertText("@" + username + " ");
-        else
-            inputMenu.insertText(username + " ");
+        EaseUserUtils.getUserInfo(username, new UserInfoCallback() {
+            @Override
+            public void onSuccess(EaseUser user)
+            {String  name ="";
+                if (user != null){
+                     name = user.getNick();
+                }
+                if(autoAddAtSymbol)
+                    inputMenu.insertText("@" + name + " ");
+                else
+                    inputMenu.insertText(name + " ");
+            }
+        });
+//        EaseUser user = EaseUserUtils.getUserInfo(username);
+//        if (user != null){
+//            username = user.getNick();
+//        }
+//        if(autoAddAtSymbol)
+//            inputMenu.insertText("@" + username + " ");
+//        else
+//            inputMenu.insertText(username + " ");
     }
     
     
