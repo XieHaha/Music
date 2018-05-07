@@ -1,12 +1,16 @@
 package com.yht.yihuantong.ease;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.easeui.UserInfoCallback;
 import com.hyphenate.easeui.domain.EaseUser;
 
+import org.litepal.crud.DataSupport;
+
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 import custom.frame.bean.BaseResponse;
@@ -120,6 +124,15 @@ public class HxHelper
 //                }
         if (username.contains("p"))
         {
+            List<PatientBean> list = DataSupport.where("patientId = ?", username).find(PatientBean.class);
+            if(list!=null&& list.size()>0)
+            {
+                PatientBean bean = list.get(0);
+                user.setNickname(bean.getName());
+                user.setAvatar(bean.getPatientImgUrl());
+                callback.onSuccess(user);
+                return user;
+            }
             iRequest.getPatientInfo(username, new ResponseListener<BaseResponse>()
             {
                 @Override
@@ -170,6 +183,17 @@ public class HxHelper
         }
         else
         {
+
+            List<CooperateDocBean> list = DataSupport.where("doctorId = ?", username).find(CooperateDocBean.class);
+            Log.i("test","cooperate list:" + list);
+            if(list!=null&& list.size()>0)
+            {
+                CooperateDocBean bean = list.get(0);
+                user.setNickname(bean.getName());
+                user.setAvatar(bean.getPortraitUrl());
+                callback.onSuccess(user);
+                return user;
+            }
             iRequest.getDocInfo(username, new ResponseListener<BaseResponse>()
             {
                 @Override

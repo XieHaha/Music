@@ -25,6 +25,8 @@ import com.yht.yihuantong.ui.activity.ApplyPatientActivity;
 import com.yht.yihuantong.ui.activity.HealthCardActivity;
 import com.yht.yihuantong.ui.adapter.PatientsListAdapter;
 
+import org.litepal.crud.DataSupport;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -290,6 +292,10 @@ public class PatientsFragment extends BaseFragment
                         tvFooterHintTxt.setText("上拉加载更多");
                         autoLoadRecyclerView.loadFinish(true);
                     }
+
+                    //数据存储
+                    DataSupport.deleteAll(PatientBean.class);
+                    DataSupport.saveAll(patientBeanList);
                 }
                 break;
             case ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT:

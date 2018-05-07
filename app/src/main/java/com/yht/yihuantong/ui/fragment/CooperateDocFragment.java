@@ -25,11 +25,14 @@ import com.yht.yihuantong.ui.activity.UserInfoActivity;
 import com.yht.yihuantong.ui.adapter.CooperateDocListAdapter;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
 
+import org.litepal.crud.DataSupport;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CooperateDocBean;
+import custom.frame.bean.PatientBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.fragment.BaseFragment;
 import custom.frame.utils.ToastUtil;
@@ -291,6 +294,9 @@ public class CooperateDocFragment extends BaseFragment
                         tvHintTxt.setText("上拉加载更多");
                         autoLoadRecyclerView.loadFinish(true);
                     }
+                    //数据存储
+                    DataSupport.deleteAll(CooperateDocBean.class);
+                    DataSupport.saveAll(cooperateDocBeanList);
                 }
                 break;
             case APPLY_COOPERATE_DOC:

@@ -17,6 +17,7 @@ import com.yht.yihuantong.api.ApiHelper;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ease.HxHelper;
 
+import org.litepal.LitePal;
 import org.litepal.LitePalApplication;
 
 import cn.jpush.android.api.JPushInterface;
@@ -59,7 +60,10 @@ public class YihtApplication extends LitePalApplication
         mIRequest = IRequest.getInstance(this);
         //监听类初始化
         ApiHelper.init(this);
+        //处理文件下载上传
         NoHttp.initialize(this);
+        //数据库
+        LitePal.initialize(this);
         initContext();
         initEase();
         initJPush();

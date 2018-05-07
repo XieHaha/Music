@@ -1,11 +1,13 @@
 package custom.frame.bean;
 
+import org.litepal.crud.DataSupport;
+
 import java.io.Serializable;
 
 /**
  * 合作医生
  */
-public class CooperateDocBean implements Serializable {
+public class CooperateDocBean extends DataSupport implements Serializable {
     private static final long serialVersionUID = -5825956356939935298L;
 
     private int id;

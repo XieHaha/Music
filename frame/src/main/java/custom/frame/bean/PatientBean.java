@@ -1,11 +1,13 @@
 package custom.frame.bean;
 
+import org.litepal.crud.DataSupport;
+
 import java.io.Serializable;
 
 /**
  * 患者
  */
-public class PatientBean implements Serializable {
+public class PatientBean extends DataSupport implements Serializable {
     private static final long serialVersionUID = -8620697034094662215L;
 
     private int focusStatus;
