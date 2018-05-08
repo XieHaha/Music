@@ -106,6 +106,10 @@
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.activity.AuthDocActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ease.ChatActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:launchMode="singleTask"

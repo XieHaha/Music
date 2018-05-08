@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/app_minor_bg"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/public_title_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/app_white_color"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:background="@color/app_minor_bg"
+                android:text="身份认证"
+                android:textSize="15sp"
+                android:textColor="#ff333333"
+                android:gravity="bottom"
+                android:padding="12dp"
+                android:layout_height="55dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/app_main_divideline"
+                android:layout_height="1px" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:layout_height="55dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="姓名"
+                    android:textSize="15sp"
+                    android:textColor="#999999"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="40dp"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:maxLines="1"
+                    android:maxLength="10"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:layout_height="55dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="身份证号"
+                    android:textSize="15sp"
+                    android:textColor="#999999"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:textColor="#333333"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="15sp"
+                    android:maxLines="1"
+                    android:maxLength="18"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingLeft="12dp"
+                android:layout_marginTop="10dp"
+                android:paddingRight="12dp"
+                android:layout_height="120dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="附件"
+                    android:textSize="15sp"
+                    android:textColor="#999999"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="40dp"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent">
+
+                        <RelativeLayout
+                            android:id="@+id/act_auth_doc_idcard_front_layout"
+                            android:layout_width="85dp"
+                            android:background="@drawable/coner_small_gray_bg"
+                            android:layout_centerVertical="true"
+                            android:layout_height="85dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:src="@mipmap/icon_add"
+                                android:layout_centerInParent="true"
+                                android:layout_height="40dp" />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textSize="11sp"
+                            android:layout_marginTop="5dp"
+                            android:textColor="#999999"
+                            android:text="身份证正面"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:gravity="center_horizontal"
+                        android:layout_height="match_parent">
+
+
+                        <RelativeLayout
+                            android:id="@+id/act_auth_doc_idcard_back_layout"
+                            android:layout_width="85dp"
+                            android:background="@drawable/coner_small_gray_bg"
+                            android:layout_centerVertical="true"
+                            android:layout_height="85dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:src="@mipmap/icon_add"
+                                android:layout_centerInParent="true"
+                                android:layout_height="40dp" />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textSize="11sp"
+                            android:layout_marginTop="5dp"
+                            android:textColor="#999999"
+                            android:text="身份证背面"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:background="@color/app_minor_bg"
+                android:text="资质认证"
+                android:textSize="15sp"
+                android:textColor="#ff333333"
+                android:gravity="bottom"
+                android:padding="12dp"
+                android:layout_height="55dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/app_main_divideline"
+                android:layout_height="1px" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:layout_height="55dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="医院"
+                    android:textSize="15sp"
+                    android:textColor="#999999"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="40dp"
+                    android:textColor="#333333"
+                    android:textSize="15sp"
+                    android:maxLines="1"
+                    android:maxLength="10"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:layout_height="55dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="职称"
+                    android:textSize="15sp"
+                    android:textColor="#999999"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:textColor="#333333"
+                    android:layout_marginLeft="40dp"
+                    android:textSize="15sp"
+                    android:maxLines="1"
+                    android:maxLength="18"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:layout_height="55dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="科室"
+                    android:textSize="15sp"
+                    android:textColor="#999999"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:textColor="#333333"
+                    android:layout_marginLeft="40dp"
+                    android:textSize="15sp"
+                    android:maxLines="1"
+                    android:maxLength="18"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingLeft="12dp"
+                android:layout_marginTop="10dp"
+                android:paddingRight="12dp"
+                android:layout_height="120dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="附件"
+                    android:textSize="15sp"
+                    android:textColor="#999999"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="40dp"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent">
+
+                        <RelativeLayout
+                            android:id="@+id/act_auth_doc_doccard_front_layout"
+                            android:layout_width="85dp"
+                            android:background="@drawable/coner_small_gray_bg"
+                            android:layout_centerVertical="true"
+                            android:layout_height="85dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:src="@mipmap/icon_add"
+                                android:layout_centerInParent="true"
+                                android:layout_height="40dp" />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textSize="11sp"
+                            android:layout_marginTop="5dp"
+                            android:textColor="#999999"
+                            android:text="资格证正面"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:gravity="center_horizontal"
+                        android:layout_height="match_parent">
+
+
+                        <RelativeLayout
+                            android:id="@+id/act_auth_doc_doccard_back_layout"
+                            android:layout_width="85dp"
+                            android:background="@drawable/coner_small_gray_bg"
+                            android:layout_centerVertical="true"
+                            android:layout_height="85dp">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:src="@mipmap/icon_add"
+                                android:layout_centerInParent="true"
+                                android:layout_height="40dp" />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textSize="11sp"
+                            android:layout_marginTop="5dp"
+                            android:textColor="#999999"
+                            android:text="资格证背面"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

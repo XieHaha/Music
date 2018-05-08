@@ -132,6 +132,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
             autoGridView.updateImg(imageList, true);
             //图片显示完开始上传图片
             currentUploadImgIndex = 0;
+            showProgressDialog("正在上传第1张图片");
             uploadHeadImg(mSelectPath.get(currentUploadImgIndex));
         }
     };
@@ -374,7 +375,8 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String time = simpleDateFormat.format(new Date());
         String[] strings = time.split("-");
-        endDate.set(Integer.parseInt(strings[0]), Integer.parseInt(strings[1])-1, Integer.parseInt(strings[2]));
+        endDate.set(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]) - 1,
+                    Integer.parseInt(strings[2]));
         timePicker = new TimePickerBuilder(this, new OnTimeSelectListener()
         {
             @Override
@@ -408,7 +410,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
     {
         if (position < imageList.size() && imageList.size() <= maxPicNum)
         {
-            if(isAddNewHealth || isSelectTime)  return;
+            if (isAddNewHealth || isSelectTime) { return; }
             Intent intent = new Intent(this, ImagePreviewActivity.class);
             intent.putExtra(ImagePreviewActivity.INTENT_POSITION, position);
             intent.putExtra(ImagePreviewActivity.INTENT_URLS, imageList);
@@ -432,7 +434,12 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                 if (mSelectPath.size() - 1 > currentUploadImgIndex)
                 {
                     currentUploadImgIndex++;
+                    showProgressDialog("正在上传第" + (currentUploadImgIndex + 1) + "张图片");
                     uploadHeadImg(mSelectPath.get(currentUploadImgIndex));
+                }
+                else
+                {
+                    closeProgressDialog();
                 }
                 if (!TextUtils.isEmpty(allImgUrl.toString()))
                 {
@@ -456,6 +463,19 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                 //                finish();
                 break;
             default:
+                break;
+        }
+    }
+
+    @Override
+    public void onResponseCodeError(Tasks task, BaseResponse response)
+    {
+        super.onResponseCodeError(task, response);
+        switch (task)
+        {
+            case UPLOAD_FILE:
+                closeProgressDialog();
+                ToastUtil.toast(this, response.getMsg());
                 break;
         }
     }

@@ -15,13 +15,18 @@ import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.qrcode.BarCodeImageView;
 import com.yht.yihuantong.qrcode.DialogPersonalBarCode;
 import com.yht.yihuantong.tools.GlideHelper;
+import com.yht.yihuantong.ui.activity.AuthDocActivity;
 import com.yht.yihuantong.ui.activity.EditInfoActivity;
 import com.yht.yihuantong.ui.activity.LoginActivity;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.version.presenter.VersionPresenter;
 import com.yht.yihuantong.version.view.VersionUpdateDialog;
 
+import org.litepal.crud.DataSupport;
+
+import custom.frame.bean.CooperateDocBean;
 import custom.frame.bean.LoginSuccessBean;
+import custom.frame.bean.PatientBean;
 import custom.frame.bean.Version;
 import custom.frame.ui.activity.AppManager;
 import custom.frame.ui.fragment.BaseFragment;
@@ -77,6 +82,7 @@ public class UserFragment extends BaseFragment
         view.findViewById(R.id.public_title_bar_back).setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_info_exit).setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_info_version).setOnClickListener(this);
+        view.findViewById(R.id.fragment_my_auth_layout).setOnClickListener(this);
         headImg = view.findViewById(R.id.fragmrnt_user_info_headimg);
         tvName = view.findViewById(R.id.fragmrnt_user_info_name);
         tvHospital = view.findViewById(R.id.fragmrnt_user_info_hospital);
@@ -142,6 +148,9 @@ public class UserFragment extends BaseFragment
                     {
                         //清除登录信息
                         YihtApplication.getInstance().clearLoginSuccessBean();
+                        //清除数据库数据
+                        DataSupport.deleteAll(PatientBean.class);
+                        DataSupport.deleteAll(CooperateDocBean.class);
                         //退出环信
                         EMClient.getInstance().logout(true);
                         dialog.dismiss();
@@ -159,6 +168,10 @@ public class UserFragment extends BaseFragment
                 break;
             case R.id.fragmrnt_user_info_version://版本更新
                 mVersionPresenter.init();
+                break;
+            case R.id.fragment_my_auth_layout:
+                Intent intent1 = new Intent(getContext(), AuthDocActivity.class);
+                startActivity(intent1);
                 break;
             default:
                 break;
