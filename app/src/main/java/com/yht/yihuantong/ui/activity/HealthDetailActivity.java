@@ -31,6 +31,7 @@ import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.utils.AllUtils;
 import com.yht.yihuantong.utils.FileUtils;
 import com.yht.yihuantong.utils.LogUtils;
+import com.yht.yihuantong.utils.ScalingUtils;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
@@ -286,7 +287,11 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
      */
     private void uploadHeadImg(Uri uri)
     {
-        mIRequest.uploadHeadImg(FileUtils.getFileByUri(uri, this), "jpg", this);
+        File file = FileUtils.getFileByUri(uri,this);
+        Log.i("test","path:"  + file.getAbsolutePath()+"pic size=" + (file.length()/1024));
+        ScalingUtils.resizePic(this,file.getAbsolutePath());
+        Log.i("test","compress size="+(file.length()/1024));
+        mIRequest.uploadHeadImg(file, "jpg", this);
     }
 
     /**

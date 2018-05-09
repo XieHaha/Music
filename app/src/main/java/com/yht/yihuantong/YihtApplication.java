@@ -5,7 +5,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.hyphenate.chat.EMOptions;
@@ -128,7 +127,6 @@ public class YihtApplication extends LitePalApplication
             public EaseUser getUser(String username, UserInfoCallback callback)
             {
                 LoginSuccessBean bean = getLoginSuccessBean();
-                Log.e("test","username:" + username);
                 //如果是当前用户，就设置自己的昵称和头像
                 if (null != bean &&
                     TextUtils.equals(bean.getDoctorId(),

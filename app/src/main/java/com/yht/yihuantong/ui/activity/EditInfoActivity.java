@@ -144,7 +144,9 @@ public class EditInfoActivity extends BaseActivity
      */
     private void uploadHeadImg(Uri uri)
     {
-        mIRequest.uploadHeadImg(FileUtils.getFileByUri(uri, this), "jpg", this);
+        File file = FileUtils.getFileByUri(uri,this);
+        Log.i("test","pic size=" + (file.length()/1024));
+        mIRequest.uploadHeadImg(file, "jpg", this);
     }
 
     @Override

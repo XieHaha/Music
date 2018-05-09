@@ -169,27 +169,19 @@ public class CompleteInfoActivity extends BaseActivity
                                        .setCancelable(false)
                                        .setCanceledOnTouchOutside(false)
                                        .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Blue,
-                                                     new ActionSheetDialog.OnSheetItemClickListener()
+                                                     which ->
                                                      {
-                                                         @Override
-                                                         public void onClick(int which)
-                                                         {
-                                                             //动态申请权限
-                                                             permissionHelper.request(new String[] {
-                                                                     Permission.STORAGE_WRITE });
-                                                         }
+                                                         //动态申请权限
+                                                         permissionHelper.request(new String[] {
+                                                                 Permission.STORAGE_WRITE });
                                                      })
                                        .addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue,
-                                                     new ActionSheetDialog.OnSheetItemClickListener()
+                                                     which ->
                                                      {
-                                                         @Override
-                                                         public void onClick(int which)
-                                                         {
-                                                             //动态申请权限
-                                                             permissionHelper.request(new String[] {
-                                                                     Permission.CAMERA,
-                                                                     Permission.STORAGE_WRITE });
-                                                         }
+                                                         //动态申请权限
+                                                         permissionHelper.request(new String[] {
+                                                                 Permission.CAMERA,
+                                                                 Permission.STORAGE_WRITE });
                                                      })
                                        .show();
     }
