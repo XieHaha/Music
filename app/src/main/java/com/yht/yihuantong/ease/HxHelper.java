@@ -1,7 +1,6 @@
 package com.yht.yihuantong.ease;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.easeui.UserInfoCallback;
@@ -185,7 +184,6 @@ public class HxHelper
         {
 
             List<CooperateDocBean> list = DataSupport.where("doctorId = ?", username).find(CooperateDocBean.class);
-            Log.i("test","cooperate list:" + list);
             if(list!=null&& list.size()>0)
             {
                 CooperateDocBean bean = list.get(0);

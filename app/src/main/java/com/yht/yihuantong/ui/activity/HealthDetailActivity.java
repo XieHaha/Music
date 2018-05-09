@@ -12,7 +12,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -288,9 +287,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
     private void uploadHeadImg(Uri uri)
     {
         File file = FileUtils.getFileByUri(uri,this);
-        Log.i("test","path:"  + file.getAbsolutePath()+"pic size=" + (file.length()/1024));
         ScalingUtils.resizePic(this,file.getAbsolutePath());
-        Log.i("test","compress size="+(file.length()/1024));
         mIRequest.uploadHeadImg(file, "jpg", this);
     }
 
@@ -451,7 +448,6 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                     allImgUrl.append(",");
                 }
                 allImgUrl.append(response.getData().toString());
-                Log.i("test", "allImgUrl:" + allImgUrl.toString());
                 break;
             case UPDATE_PATIENT_CASE:
                 ToastUtil.toast(this, "保存成功");

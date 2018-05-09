@@ -9,7 +9,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -32,7 +34,6 @@ import java.util.List;
 
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CooperateDocBean;
-import custom.frame.bean.PatientBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.fragment.BaseFragment;
 import custom.frame.utils.ToastUtil;
@@ -79,7 +80,6 @@ public class CooperateDocFragment extends BaseFragment
      */
     private IChange<String> doctorStatusChangeListener = data ->
     {
-        Log.i("test", "data:" + data);
         getApplyCooperateList();
     };
 
@@ -100,6 +100,11 @@ public class CooperateDocFragment extends BaseFragment
     public void initView(@NonNull View view, @NonNull Bundle savedInstanceState)
     {
         super.initView(view, savedInstanceState);
+
+        //获取状态栏高度，填充
+        View mStateBarFixer = view.findViewById( R.id.status_bar_fix);
+        mStateBarFixer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));//填充状态栏
+
         ((TextView)view.findViewById(R.id.public_title_bar_title)).setText("合作医生");
         ivTitleBarMore = view.findViewById(R.id.public_title_bar_more_two);
         ivTitleBarMore.setVisibility(View.VISIBLE);

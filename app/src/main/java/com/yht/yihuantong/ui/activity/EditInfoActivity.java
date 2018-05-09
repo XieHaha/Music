@@ -12,7 +12,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -145,7 +144,6 @@ public class EditInfoActivity extends BaseActivity
     private void uploadHeadImg(Uri uri)
     {
         File file = FileUtils.getFileByUri(uri,this);
-        Log.i("test","pic size=" + (file.length()/1024));
         mIRequest.uploadHeadImg(file, "jpg", this);
     }
 
@@ -280,7 +278,6 @@ public class EditInfoActivity extends BaseActivity
     private void openCamera()
     {
         cameraTempFile = new File(DirHelper.getPathImage(), System.currentTimeMillis() + ".jpg");
-        Log.e("test", "cameraTempFile:" + cameraTempFile.getAbsolutePath());
         //选择拍照
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // 指定调用相机拍照后照片的储存路径
@@ -379,7 +376,6 @@ public class EditInfoActivity extends BaseActivity
                     cameraTempFile = FileUtils.getFileByUri(paths.get(0), this);
                     String fileName = "corp" + System.currentTimeMillis() + ".jpg";
                     File file = new File(DirHelper.getPathCache(), fileName);
-                    Log.e("test", "path:" + file.getAbsolutePath());
                     startCutImg(paths.get(0), Uri.fromFile(file));
                 }
                 break;
@@ -401,10 +397,6 @@ public class EditInfoActivity extends BaseActivity
                         imageUri = Uri.fromFile(cameraTempFile);
                     }
                     cropUri = Uri.fromFile(file);
-                    Log.e("test", "path:" + file.getAbsolutePath());
-                    Log.e("test", "cameraTempFile:" + cameraTempFile.getAbsolutePath());
-                    Log.e("test", "cropUri:" + cropUri);
-                    Log.e("test", "imageUri:" + imageUri);
                     startCutImg(imageUri, cropUri);
                 }
                 break;

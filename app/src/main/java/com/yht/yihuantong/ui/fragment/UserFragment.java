@@ -1,11 +1,15 @@
 package com.yht.yihuantong.ui.fragment;
 
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -30,16 +34,21 @@ import custom.frame.bean.PatientBean;
 import custom.frame.bean.Version;
 import custom.frame.ui.activity.AppManager;
 import custom.frame.ui.fragment.BaseFragment;
+import custom.frame.utils.ScreenUtils;
 import custom.frame.utils.ToastUtil;
+import custom.frame.widgets.scrollview.CustomListenScrollView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 我的页面
  */
 public class UserFragment extends BaseFragment
-        implements VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener
+        implements VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener,
+                   CustomListenScrollView.OnScrollChangeListener
 {
     private CircleImageView headImg;
+    private LinearLayout llTitleLayout;
+    private CustomListenScrollView scrollView;
     private TextView tvName, tvHospital, tvType, tvTitle, tvIntroduce;
     private LoginSuccessBean loginSuccessBean;
     /**
@@ -77,12 +86,19 @@ public class UserFragment extends BaseFragment
     public void initView(@NonNull View view, @NonNull Bundle savedInstanceState)
     {
         super.initView(view, savedInstanceState);
+        //获取状态栏高度，填充
+        View mStateBarFixer = view.findViewById(R.id.status_bar_fix);
+        mStateBarFixer.setLayoutParams(
+                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                              getStateBarHeight(getActivity())));//填充状态栏
         //        //状态栏透明
         //        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         view.findViewById(R.id.public_title_bar_back).setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_info_exit).setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_info_version).setOnClickListener(this);
         view.findViewById(R.id.fragment_my_auth_layout).setOnClickListener(this);
+        scrollView = view.findViewById(R.id.fragment_my_scrollview);
+        llTitleLayout = view.findViewById(R.id.fragment_my_title_layout);
         headImg = view.findViewById(R.id.fragmrnt_user_info_headimg);
         tvName = view.findViewById(R.id.fragmrnt_user_info_name);
         tvHospital = view.findViewById(R.id.fragmrnt_user_info_hospital);
@@ -99,6 +115,13 @@ public class UserFragment extends BaseFragment
         //检查更新
         mVersionPresenter = new VersionPresenter(getContext(), mIRequest);
         mVersionPresenter.setVersionViewListener(this);
+    }
+
+    @Override
+    public void initListener()
+    {
+        super.initListener();
+        scrollView.setOnScrollChangeListener(this);
     }
 
     /**
@@ -130,6 +153,36 @@ public class UserFragment extends BaseFragment
         }
     }
 
+    /**
+     * 监听scrollview滑动情况
+     *
+     * @param scrollView
+     * @param l
+     * @param t
+     * @param oldl
+     * @param oldt
+     */
+    @Override
+    public void onScrollChanged(CustomListenScrollView scrollView, int l, int t, int oldl, int oldt)
+    {
+        int scrollHeight =
+                (scrollView.getChildAt(0).getHeight() - scrollView.getMeasuredHeight()) / 2;
+        int alpha;
+        if (t < scrollHeight && t > 0)
+        {
+            alpha = t * 255 / scrollHeight;
+            llTitleLayout.setBackgroundColor(Color.argb(alpha, 231, 50, 120));
+        }
+        if (t >= scrollHeight)
+        {
+            llTitleLayout.setBackgroundColor(Color.argb(255, 231, 50, 120));
+        }
+        if (t <= 0)
+        {
+            llTitleLayout.setBackgroundColor(Color.argb(0, 231, 50, 120));
+        }
+    }
+
     @Override
     public void onClick(View v)
     {
@@ -141,23 +194,19 @@ public class UserFragment extends BaseFragment
                 startActivity(intent);
                 break;
             case R.id.fragmrnt_user_info_exit:
-                new SimpleDialog(getActivity(), "确定退出?", new DialogInterface.OnClickListener()
+                new SimpleDialog(getActivity(), "确定退出?", (dialog, which) ->
                 {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        //清除登录信息
-                        YihtApplication.getInstance().clearLoginSuccessBean();
-                        //清除数据库数据
-                        DataSupport.deleteAll(PatientBean.class);
-                        DataSupport.deleteAll(CooperateDocBean.class);
-                        //退出环信
-                        EMClient.getInstance().logout(true);
-                        dialog.dismiss();
-                        AppManager.getInstance().finishAllActivity();
-                        startActivity(new Intent(getActivity(), LoginActivity.class));
-                        System.exit(0);
-                    }
+                    //清除登录信息
+                    YihtApplication.getInstance().clearLoginSuccessBean();
+                    //清除数据库数据
+                    DataSupport.deleteAll(PatientBean.class);
+                    DataSupport.deleteAll(CooperateDocBean.class);
+                    //退出环信
+                    EMClient.getInstance().logout(true);
+                    dialog.dismiss();
+                    AppManager.getInstance().finishAllActivity();
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    System.exit(0);
                 }, (dialog, which) -> dialog.dismiss()).show();
                 break;
             case R.id.fragmrnt_user_info_qrcode_layout:

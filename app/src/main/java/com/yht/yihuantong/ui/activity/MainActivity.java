@@ -84,6 +84,7 @@ public class MainActivity extends BaseActivity
     public void initView(@NonNull Bundle savedInstanceState)
     {
         super.initView(savedInstanceState);
+        transparencyBar(this);
         tabMsg = (RippleLinearLayout)findViewById(R.id.act_main_tab1);
         tabDoc = (RippleLinearLayout)findViewById(R.id.act_main_tab2);
         tabCase = (RippleLinearLayout)findViewById(R.id.act_main_tab3);

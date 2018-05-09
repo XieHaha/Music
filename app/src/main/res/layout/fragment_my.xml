@@ -1,27 +1,352 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:clickable="true"
-    android:scrollbars="none"
+    android:id="@+id/fragment_my_root_layout"
     android:background="@color/app_minor_bg"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <custom.frame.widgets.scrollview.CustomListenScrollView
+        android:id="@+id/fragment_my_scrollview"
         android:layout_width="match_parent"
+        android:scrollbars="none"
         android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/bg_img"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/img_user_bg" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/app_title_bar_height">
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/bg_img"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/img_user_bg" />
+
+            <RelativeLayout
+                android:id="@+id/fragmrnt_user_info_headimg_layout"
+                android:layout_width="130dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="77dp"
+                android:layout_height="130dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/fragmrnt_user_info_headimg"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/icon_default_imgs"
+                    app:civ_border_color="#50ffffff"
+                    app:civ_border_width="2dp" />
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/fragmrnt_user_info_auth"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="13dp"
+                    android:layout_marginBottom="13dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:src="@mipmap/icon_default_imgs"
+                    app:civ_border_color="#50ffffff"
+                    app:civ_border_width="2dp" />
+            </RelativeLayout>
+
 
             <TextView
+                android:id="@+id/fragmrnt_user_info_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fragmrnt_user_info_headimg_layout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:text="姓名"
+                android:textColor="@color/app_white_color"
+                android:textSize="24sp" />
+
+            <LinearLayout
+                android:id="@+id/fragment_my_info_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/bg_img"
+                android:layout_marginTop="10dp"
+                android:background="@color/app_white_color"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/fragment_my_auth_layout"
+                    android:layout_width="match_parent"
+                    android:layout_below="@id/bg_img"
+                    android:visibility="visible"
+                    android:layout_height="30dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:text="未认证"
+                        android:textColor="#999999"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/fragment_my_auth"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="65dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@null"
+                        android:gravity="center_vertical|right"
+                        android:text="去认证"
+                        android:textColor="#333333"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/app_main_divideline" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:text="职称"
+                        android:textColor="#999999"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/fragmrnt_user_info_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="65dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:text="暂无记录"
+                        android:textColor="#333333"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/app_main_divideline" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:text="医院"
+                        android:textColor="#999999"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/fragmrnt_user_info_hospital"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="65dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:text="暂无记录"
+                        android:textColor="#333333"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/app_main_divideline" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:text="科室"
+                        android:textColor="#999999"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/fragmrnt_user_info_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="65dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:text="暂无记录"
+                        android:textColor="#333333"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/app_main_divideline" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:text="简介"
+                        android:textColor="#999999"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/fragmrnt_user_info_introduce"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="65dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:text="暂无记录"
+                        android:textColor="#333333"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/app_main_divideline" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="@color/app_minor_bg" />
+
+                <RelativeLayout
+                    android:id="@+id/fragmrnt_user_info_qrcode_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:text="我的二维码"
+                        android:textColor="#999999"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:id="@+id/fragmrnt_user_info_qrcode"
+                        android:layout_width="45dp"
+                        android:src="@mipmap/icon_qr"
+                        android:paddingRight="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_height="match_parent" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/app_main_divideline" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/fragmrnt_user_info_version"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="16dp"
+                        android:text="版本更新"
+                        android:textColor="#999999"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:src="@mipmap/icon_arrow_right"
+                        android:paddingRight="16dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_height="match_parent" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/app_main_divideline" />
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/fragmrnt_user_info_exit"
+                android:layout_width="195dp"
+                android:layout_height="45dp"
+                android:layout_below="@id/fragment_my_info_layout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/corner_exit_full_bg"
+                android:gravity="center"
+                android:text="退出登录"
+                android:textColor="@color/app_white_color"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+    </custom.frame.widgets.scrollview.CustomListenScrollView>
+
+    <LinearLayout
+        android:id="@+id/fragment_my_title_layout"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/status_bar_fix"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#00ffffff" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/test"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/app_title_bar_height"
                 android:layout_centerHorizontal="true"
@@ -40,310 +365,7 @@
                 android:paddingRight="16dp"
                 android:paddingTop="15dp"
                 android:src="@mipmap/icon_edit" />
-
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/fragmrnt_user_info_headimg_layout"
-            android:layout_width="130dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="77dp"
-            android:layout_height="130dp">
-            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/fragmrnt_user_info_headimg"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_centerInParent="true"
-                android:src="@mipmap/icon_default_imgs"
-                app:civ_border_color="#50ffffff"
-                app:civ_border_width="2dp" />
-
-            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/fragmrnt_user_info_auth"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginRight="13dp"
-                android:layout_marginBottom="13dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:src="@mipmap/icon_default_imgs"
-                app:civ_border_color="#50ffffff"
-                app:civ_border_width="2dp" />
-        </RelativeLayout>
-
-
-
-        <TextView
-            android:id="@+id/fragmrnt_user_info_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/fragmrnt_user_info_headimg_layout"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:text="姓名"
-            android:textColor="@color/app_white_color"
-            android:textSize="24sp" />
-
-        <LinearLayout
-            android:id="@+id/fragment_my_info_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/bg_img"
-            android:layout_marginTop="10dp"
-            android:background="@color/app_white_color"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:id="@+id/fragment_my_auth_layout"
-                android:layout_width="match_parent"
-                android:layout_below="@id/bg_img"
-                android:visibility="visible"
-                android:layout_height="30dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:text="未认证"
-                    android:textColor="#999999"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/fragment_my_auth"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="65dp"
-                    android:layout_marginRight="16dp"
-                    android:background="@null"
-                    android:gravity="center_vertical|right"
-                    android:text="去认证"
-                    android:textColor="#333333"
-                    android:textSize="15sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="45dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:text="职称"
-                    android:textColor="#999999"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/fragmrnt_user_info_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="65dp"
-                    android:layout_marginRight="16dp"
-                    android:background="@null"
-                    android:gravity="center_vertical"
-                    android:text="暂无记录"
-                    android:textColor="#333333"
-                    android:textSize="15sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="45dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:text="医院"
-                    android:textColor="#999999"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/fragmrnt_user_info_hospital"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="65dp"
-                    android:layout_marginRight="16dp"
-                    android:background="@null"
-                    android:gravity="center_vertical"
-                    android:text="暂无记录"
-                    android:textColor="#333333"
-                    android:textSize="15sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="45dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:text="科室"
-                    android:textColor="#999999"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/fragmrnt_user_info_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="65dp"
-                    android:layout_marginRight="16dp"
-                    android:background="@null"
-                    android:gravity="center_vertical"
-                    android:text="暂无记录"
-                    android:textColor="#333333"
-                    android:textSize="15sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="45dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:text="简介"
-                    android:textColor="#999999"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/fragmrnt_user_info_introduce"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="65dp"
-                    android:layout_marginRight="16dp"
-                    android:background="@null"
-                    android:gravity="center_vertical"
-                    android:text="暂无记录"
-                    android:textColor="#333333"
-                    android:textSize="15sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline" />
-
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@color/app_minor_bg" />
-
-            <RelativeLayout
-                android:id="@+id/fragmrnt_user_info_qrcode_layout"
-                android:layout_width="match_parent"
-                android:layout_height="45dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:text="我的二维码"
-                    android:textColor="#999999"
-                    android:textSize="15sp" />
-
-                <ImageView
-                    android:id="@+id/fragmrnt_user_info_qrcode"
-                    android:layout_width="45dp"
-                    android:src="@mipmap/icon_qr"
-                    android:paddingRight="16dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_height="match_parent"/>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline" />
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/fragmrnt_user_info_version"
-                android:layout_width="match_parent"
-                android:layout_height="45dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:text="版本更新"
-                    android:textColor="#999999"
-                    android:textSize="15sp" />
-
-                <ImageView
-                    android:layout_width="45dp"
-                    android:src="@mipmap/icon_arrow_right"
-                    android:paddingRight="16dp"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="16dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_height="match_parent"/>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline" />
-
-            </RelativeLayout>
-
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/fragmrnt_user_info_exit"
-            android:layout_width="195dp"
-            android:layout_height="45dp"
-            android:layout_below="@id/fragment_my_info_layout"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/corner_exit_full_bg"
-            android:gravity="center"
-            android:text="退出登录"
-            android:textColor="@color/app_white_color"
-            android:textSize="18sp" />
-    </RelativeLayout>
-</ScrollView>
+    </LinearLayout>
+</RelativeLayout>

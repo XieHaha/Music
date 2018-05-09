@@ -14,7 +14,6 @@ import android.os.Build;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.NotificationCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -156,9 +155,6 @@ public class VersionPresenter implements ConstantsVersionMode
                 @Override
                 public void onProgress(int what, int progress, long fileCount, long speed)
                 {
-                    Log.i("test",
-                          "progress:" + progress + "   filecount:" + fileCount + "   fileSize:" +
-                          fileSize);
                     if (isMustUpdate && versionViewListener != null)
                     {
                         versionViewListener.updateLoading(fileSize, fileCount);

@@ -106,7 +106,6 @@ public class YihtApplication extends LitePalApplication
 //        EaseUI.getInstance().setUserProfileProvider(username ->
 //                                                    {
 //                                                        LoginSuccessBean bean = getLoginSuccessBean();
-//                                                        Log.e("test","username:" + username);
 //                                                        //如果是当前用户，就设置自己的昵称和头像
 //                                                        if (null != bean &&
 //                                                            TextUtils.equals(bean.getDoctorId(),

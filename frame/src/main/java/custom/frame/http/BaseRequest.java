@@ -140,7 +140,7 @@ public class BaseRequest<T> extends HttpProxy {
             listener.onResponseStart(task);
         }
         StringBuilder url = new StringBuilder(appendUrl(moduleName));
-//        Log.i("test", "Task:" +task+"  params:" + params.toString());
+//        Log.i("YHT_D", "Task:" +task+"  params:" + params.toString());
         int method = Request.Method.POST;
         switch (metoh) {
             case GET:
@@ -244,7 +244,7 @@ public class BaseRequest<T> extends HttpProxy {
             listener.onResponseStart(task);
         }
         StringBuilder url = new StringBuilder(appendUrl(moduleName));
-//        Log.i("test", "Task:" +task+"  params:" + params.toString());
+//        Log.i("YHT_D", "Task:" +task+"  params:" + params.toString());
         int method = Request.Method.POST;
         switch (metoh) {
             case GET:
@@ -349,7 +349,7 @@ public class BaseRequest<T> extends HttpProxy {
         }
         int method = Request.Method.POST;
         final JSONObject jsonObject = new JSONObject(merchant);
-        Log.i("test", "Task:" +task+"  params:" + jsonObject.toString());
+        Log.i("YHT_D", "Task:" +task+"  params:" + jsonObject.toString());
         String url = appendUrl(moduleName);
         jsonRequest = new JsonObjectRequest(method, url, jsonObject, new Response.Listener<JSONObject>() {
             @Override
@@ -433,7 +433,7 @@ public class BaseRequest<T> extends HttpProxy {
         }
         int method = Request.Method.POST;
         final JSONObject jsonObject = new JSONObject(merchant);
-        Log.i("test", "Task:" +task+"  params:" + jsonObject.toString());
+        Log.i("YHT_D", "Task:" +task+"  params:" + jsonObject.toString());
         String url = appendUrl(moduleName);
         jsonRequest = new JsonObjectRequest(method, url, jsonObject, new Response.Listener<JSONObject>() {
             @Override

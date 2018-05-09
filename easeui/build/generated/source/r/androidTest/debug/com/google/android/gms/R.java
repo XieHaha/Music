@@ -63,10 +63,10 @@ public final class R {
         public static final int progressBar = 0x7f070090;
         public static final int radio = 0x7f070096;
         public static final int standard = 0x7f0700bf;
-        public static final int text = 0x7f0700c6;
-        public static final int text2 = 0x7f0700c7;
-        public static final int wide = 0x7f0700e4;
-        public static final int wrap_content = 0x7f0700e6;
+        public static final int text = 0x7f0700c7;
+        public static final int text2 = 0x7f0700c8;
+        public static final int wide = 0x7f0700e5;
+        public static final int wrap_content = 0x7f0700e7;
     }
     public static final class integer {
         public static final int google_play_services_version = 0x7f080004;

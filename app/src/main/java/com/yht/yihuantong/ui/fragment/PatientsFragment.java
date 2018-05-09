@@ -9,7 +9,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -87,7 +89,6 @@ public class PatientsFragment extends BaseFragment
      */
     private IChange<String> patientStatusChangeListener = data ->
     {
-        Log.i("test", "data:" + data);
         onResume();
     };
 
@@ -110,6 +111,10 @@ public class PatientsFragment extends BaseFragment
     public void initView(@NonNull View view, @NonNull Bundle savedInstanceState)
     {
         super.initView(view, savedInstanceState);
+        //获取状态栏高度，填充
+        View mStateBarFixer = view.findViewById( R.id.status_bar_fix);
+        mStateBarFixer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));//填充状态栏
+
         ((TextView)view.findViewById(R.id.public_title_bar_title)).setText("我的患者");
         swipeRefreshLayout = view.findViewById(R.id.fragment_patients_swipe_layout);
         autoLoadRecyclerView = view.findViewById(R.id.fragment_patients_recycler_view);

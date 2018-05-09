@@ -131,7 +131,7 @@ public class MsgFragment extends BaseFragment
                 ToastUtil.toast(getContext(), "处理成功");
                 break;
             case GET_EASE_APPKEY:
-                Log.e("test", "key:" + response.getData());
+                Log.e("YHT_D", "key:" + response.getData());
                 break;
             default:
                 break;

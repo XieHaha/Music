@@ -1,5 +1,6 @@
 package custom.frame.ui.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -100,6 +101,22 @@ public abstract class BaseFragment extends Fragment
      */
     public void onFragmentResume()
     {
+    }
+
+    /**
+     * 获取状态栏高度,在页面还没有显示出来之前
+     *
+     * @param a
+     * @return
+     */
+    public static int getStateBarHeight(Activity a) {
+        int result = 0;
+        int resourceId = a.getResources().getIdentifier("status_bar_height",
+                                                        "dimen", "android");
+        if (resourceId > 0) {
+            result = a.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.hyphenate.easeui.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +17,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hyphenate.EMConnectionListener;
@@ -71,6 +73,9 @@ public class EaseConversationListFragment extends EaseBaseFragment
 
     @Override
     protected void initView() {
+        //获取状态栏高度，填充
+        View mStateBarFixer = getView().findViewById( R.id.status_bar_fix);
+        mStateBarFixer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));//填充状态栏
         inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         conversationListView = (EaseConversationList) getView().findViewById(R.id.list);
         query = (EditText) getView().findViewById(R.id.query);
@@ -130,6 +135,22 @@ public class EaseConversationListFragment extends EaseBaseFragment
                 return false;
             }
         });
+    }
+
+    /**
+     * 获取状态栏高度,在页面还没有显示出来之前
+     *
+     * @param a
+     * @return
+     */
+    public static int getStateBarHeight(Activity a) {
+        int result = 0;
+        int resourceId = a.getResources().getIdentifier("status_bar_height",
+                                                        "dimen", "android");
+        if (resourceId > 0) {
+            result = a.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
 
