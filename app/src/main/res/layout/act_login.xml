@@ -79,6 +79,9 @@
                 android:layout_height="48dp"
                 android:hint="输入验证码"
                 android:maxEms="10"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
+                android:maxLines="1"
                 android:textColor="#ff000000"
                 android:textSize="15sp" />
 

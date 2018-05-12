@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -107,6 +108,13 @@ public class LoginActivity extends BaseActivity {
                 }
             }
         });
+        etVerifyCode.setOnEditorActionListener((v, actionId, event) ->
+                                               {
+                                                   if (actionId == EditorInfo.IME_ACTION_DONE) {
+                                                       loginAndRegister();
+                                                   }
+                                                   return false;
+                                               });
     }
 
     @Override
@@ -127,16 +135,6 @@ public class LoginActivity extends BaseActivity {
                 getVerifyCode();
                 break;
             case R.id.act_login_btn:
-//                if (!IS_SEND_VERIFY_CODE) {
-//                    ToastUtil.toast(this, R.string.toast_txt_get_verifycoder_error);
-//                    return;
-//                }
-                phone = etPhone.getText().toString().trim();
-                verifyCode = etVerifyCode.getText().toString().trim();
-                if (StringUtils.isEmpty(verifyCode)) {
-                    ToastUtil.toast(this, R.string.toast_txt_verify_hint);
-                    return;
-                }
                 loginAndRegister();
                 break;
             default:
@@ -155,7 +153,17 @@ public class LoginActivity extends BaseActivity {
      * 登录 注册
      */
     private void loginAndRegister() {
-        showProgressDialog("",false);
+        //                if (!IS_SEND_VERIFY_CODE) {
+        //                    ToastUtil.toast(this, R.string.toast_txt_get_verifycoder_error);
+        //                    return;
+        //                }
+        phone = etPhone.getText().toString().trim();
+        verifyCode = etVerifyCode.getText().toString().trim();
+        if (StringUtils.isEmpty(verifyCode)) {
+            ToastUtil.toast(this, R.string.toast_txt_verify_hint);
+            return;
+        }
+        showProgressDialog("登录中",false);
         mIRequest.loginAndRegister(phone, verifyCode, "d", this);
     }
 
@@ -171,18 +179,16 @@ public class LoginActivity extends BaseActivity {
                 //org.apache.commons.lang3.concurrent.BasicThreadFactory
                 final ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1,
                         new BasicThreadFactory.Builder().namingPattern("yht-thread-pool-%d").daemon(true).build());
-                executorService.scheduleAtFixedRate(new Runnable() {
-                    @Override
-                    public void run() {
-                        time--;
-                        if (time < 0) {
-                            time = 0;
-                            executorService.shutdownNow();
-                        } else {
-                            handler.sendEmptyMessage(0);
-                        }
-                    }
-                }, 0, 1, TimeUnit.SECONDS);
+                executorService.scheduleAtFixedRate(() ->
+                                                    {
+                                                        time--;
+                                                        if (time < 0) {
+                                                            time = 0;
+                                                            executorService.shutdownNow();
+                                                        } else {
+                                                            handler.sendEmptyMessage(0);
+                                                        }
+                                                    }, 0, 1, TimeUnit.SECONDS);
 
                 break;
             case LOGIN_AND_REGISTER:

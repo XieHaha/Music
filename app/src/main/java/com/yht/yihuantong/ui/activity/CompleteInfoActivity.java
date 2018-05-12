@@ -15,6 +15,7 @@ import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
 import com.bumptech.glide.Glide;
@@ -92,6 +93,13 @@ public class CompleteInfoActivity extends BaseActivity
     {
         super.initListener();
         ivHeadImg.setOnClickListener(this);
+        etUserName.setOnEditorActionListener((v, actionId, event) ->
+                                               {
+                                                   if (actionId == EditorInfo.IME_ACTION_DONE) {
+                                                       updateBasicInfo();
+                                                   }
+                                                   return false;
+                                               });
     }
 
     @Override
@@ -101,17 +109,6 @@ public class CompleteInfoActivity extends BaseActivity
         switch (v.getId())
         {
             case R.id.act_complete_info_next:
-                if (TextUtils.isEmpty(headImgUrl))
-                {
-                    ToastUtil.toast(this, R.string.toast_upload_img_hint);
-                    return;
-                }
-                userName = etUserName.getText().toString().trim();
-                if (TextUtils.isEmpty(userName))
-                {
-                    ToastUtil.toast(this, R.string.toast_upload_name_hint);
-                    return;
-                }
                 updateBasicInfo();
                 break;
             case R.id.act_complete_info_headimg:
@@ -135,6 +132,17 @@ public class CompleteInfoActivity extends BaseActivity
      */
     private void updateBasicInfo()
     {
+        if (TextUtils.isEmpty(headImgUrl))
+        {
+            ToastUtil.toast(this, R.string.toast_upload_img_hint);
+            return;
+        }
+        userName = etUserName.getText().toString().trim();
+        if (TextUtils.isEmpty(userName))
+        {
+            ToastUtil.toast(this, R.string.toast_upload_name_hint);
+            return;
+        }
         mIRequest.updateBasicInfo(loginSuccessBean.getDoctorId(), userName, headImgUrl, this);
     }
 
@@ -145,7 +153,7 @@ public class CompleteInfoActivity extends BaseActivity
         switch (task)
         {
             case UPLOAD_FILE:
-                ToastUtil.toast(this, "上传成功!!");
+//                ToastUtil.toast(this, "上传成功");
                 headImgUrl = response.getData();
                 YihtApplication.getInstance().setHeadImgUrl(headImgUrl);
                 break;

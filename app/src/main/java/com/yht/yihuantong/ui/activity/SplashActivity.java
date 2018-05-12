@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -18,28 +19,32 @@ import custom.frame.ui.activity.BaseActivity;
  *
  * @author DUNDUN
  */
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends BaseActivity
+{
     private TextView tvStart;
     private LinearLayout llSplashPage;
 
     @Override
-    public int getLayoutID() {
+    public int getLayoutID()
+    {
         return R.layout.act_splash;
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState) {
+    public void initView(@NonNull Bundle savedInstanceState)
+    {
         super.initView(savedInstanceState);
         hideBottomUIMenu();
-        tvStart = (TextView) findViewById(R.id.act_splash_btn);
+        tvStart = (TextView)findViewById(R.id.act_splash_btn);
         tvStart.setOnClickListener(this);
-        llSplashPage = (LinearLayout) findViewById(R.id.act_splash_layout);
+        llSplashPage = (LinearLayout)findViewById(R.id.act_splash_layout);
         new Handler().postDelayed(() -> initPage(), 2000);
     }
 
-    private void startMainPage() {
+    private void startMainPage()
+    {
         Intent intent = new Intent(this, LoginActivity.class);
-//        Intent intent = new Intent(this, CompleteInfoActivity.class);
+        //        Intent intent = new Intent(this, CompleteInfoActivity.class);
         startActivity(intent);
         finish();
         overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
@@ -48,20 +53,34 @@ public class SplashActivity extends BaseActivity {
     /**
      * 页面初始化
      */
-    private void initPage() {
-        if (loginSuccessBean != null) {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-            overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
-        } else {
+    private void initPage()
+    {
+        if (loginSuccessBean != null)
+        {
+            if (TextUtils.isEmpty(loginSuccessBean.getName()) || TextUtils.isEmpty(loginSuccessBean.getHospital()))
+            {
+                startActivity(new Intent(this, CompleteInfoActivity.class));
+                finish();
+            }
+            else
+            {
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+                overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
+            }
+        }
+        else
+        {
             tvStart.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         super.onClick(v);
-        switch (v.getId()) {
+        switch (v.getId())
+        {
             case R.id.act_splash_btn:
                 startMainPage();
                 break;
@@ -73,20 +92,21 @@ public class SplashActivity extends BaseActivity {
     /**
      * 隐藏虚拟按键，并且全屏
      */
-    protected void hideBottomUIMenu() {
+    protected void hideBottomUIMenu()
+    {
         //状态栏透明
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-//        //隐藏虚拟按键，并且全屏
-//        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB &&
-//                Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-//            View v = this.getWindow().getDecorView();
-//            v.setSystemUiVisibility(View.GONE);
-//        } else if (Build.VERSION.SDK_INT > 19) {
-//            View decorView = getWindow().getDecorView();
-//            int uiOptions =
-//                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-//            decorView.setSystemUiVisibility(uiOptions);
-//        }
+        //        //隐藏虚拟按键，并且全屏
+        //        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB &&
+        //                Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+        //            View v = this.getWindow().getDecorView();
+        //            v.setSystemUiVisibility(View.GONE);
+        //        } else if (Build.VERSION.SDK_INT > 19) {
+        //            View decorView = getWindow().getDecorView();
+        //            int uiOptions =
+        //                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        //            decorView.setSystemUiVisibility(uiOptions);
+        //        }
     }
 }

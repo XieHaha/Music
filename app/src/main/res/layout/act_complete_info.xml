@@ -88,6 +88,9 @@
             android:layout_marginLeft="25dp"
             android:hint="请输入您的姓名"
             android:maxLength="11"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:maxLines="1"
             android:textColor="#ff000000"
             android:textSize="15sp" />
 
