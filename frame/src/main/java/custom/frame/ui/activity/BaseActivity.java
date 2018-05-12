@@ -76,8 +76,6 @@ public abstract class BaseActivity extends AppCompatActivity
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //        //状态栏透明
-        //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         AppManager.getInstance().addActivity(this);
         befordCreateView(savedInstanceState);
         int layoutID = getLayoutID();

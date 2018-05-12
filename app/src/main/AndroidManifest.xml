@@ -50,6 +50,7 @@
         android:theme="@style/BaseAppTheme">
         <!--<activity android:name=".ui.activity.MainActivity">-->
         <activity android:name=".ui.activity.SplashActivity"
+            android:theme="@style/AppFullScreenTheme"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

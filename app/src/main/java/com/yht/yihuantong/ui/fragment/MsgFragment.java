@@ -87,13 +87,9 @@ public class MsgFragment extends BaseFragment
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(msgListAdapter);
-        msgListAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener<String>()
-        {
-            @Override
-            public void onItemClick(View v, int position, String item)
-            {
-            }
-        });
+        msgListAdapter.setOnItemClickListener((v, position, item) ->
+                                              {
+                                              });
     }
 
     @Override

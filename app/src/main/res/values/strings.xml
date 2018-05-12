@@ -4,7 +4,7 @@
 
     <!--启动页 引导页-->
     <string name="txt_splash_btn">开始使用</string>
-    <string name="txt_splash">医患通</string>
+    <string name="txt_splash">会珍</string>
     <string name="txt_splash_type">-医生端-</string>
 
     <!--登录界面-->

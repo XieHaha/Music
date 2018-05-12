@@ -34,12 +34,7 @@ public class SplashActivity extends BaseActivity {
         tvStart = (TextView) findViewById(R.id.act_splash_btn);
         tvStart.setOnClickListener(this);
         llSplashPage = (LinearLayout) findViewById(R.id.act_splash_layout);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                initPage();
-            }
-        }, 2000);
+        new Handler().postDelayed(() -> initPage(), 2000);
     }
 
     private void startMainPage() {
@@ -80,7 +75,8 @@ public class SplashActivity extends BaseActivity {
      */
     protected void hideBottomUIMenu() {
         //状态栏透明
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 //        //隐藏虚拟按键，并且全屏
 //        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB &&
 //                Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {

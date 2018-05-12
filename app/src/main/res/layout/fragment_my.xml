@@ -77,7 +77,7 @@
                     android:id="@+id/fragment_my_auth_layout"
                     android:layout_width="match_parent"
                     android:layout_below="@id/bg_img"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:layout_height="30dp">
 
                     <TextView

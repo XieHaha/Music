@@ -40,6 +40,12 @@
         <!--<item name="android:windowIsTranslucent">true</item>-->
     </style>
 
+    <style name="AppFullScreenTheme" parent="BaseAppTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@mipmap/img_splash_bg</item>
+    </style>
+
     <style name="trans_dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <!-- 边框 -->
