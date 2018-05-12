@@ -250,7 +250,7 @@ public class VersionPresenter implements ConstantsVersionMode
                 isDownAPK = false;
             }
         }
-        if (mode != UPDATE_NONE && versionViewListener != null)
+        if (versionViewListener != null)
         {
             versionViewListener.updateVersion(nowVersion, mode, isDownAPK);
         }

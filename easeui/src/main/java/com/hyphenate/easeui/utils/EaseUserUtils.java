@@ -1,6 +1,7 @@
 package com.hyphenate.easeui.utils;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,7 +41,7 @@ public class EaseUserUtils {
             @Override
             public void onSuccess(EaseUser user)
             {
-                if(user != null && user.getAvatar() != null){
+                if(user != null && !TextUtils.isEmpty(user.getAvatar())){
                     try {
                         int avatarResId = Integer.parseInt(user.getAvatar());
                         Glide.with(context).load(avatarResId).into(imageView);

@@ -468,6 +468,10 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void updateVersion(Version version, int mode, boolean isDownLoading) {
+        if(mode==-1)
+        {
+            return;
+        }
         versionUpdateDialog = new VersionUpdateDialog(this);
         versionUpdateDialog.setCancelable(false);
         versionUpdateDialog.setUpdateMode(mode).

@@ -231,6 +231,11 @@ public class UserFragment extends BaseFragment
     @Override
     public void updateVersion(Version version, int mode, boolean isDownLoading)
     {
+        if(mode==-1)
+        {
+            ToastUtil.toast(getContext(),"当前已是最新版本");
+            return;
+        }
         versionUpdateDialog = new VersionUpdateDialog(getContext());
         versionUpdateDialog.setCancelable(false);
         versionUpdateDialog.setUpdateMode(mode).
