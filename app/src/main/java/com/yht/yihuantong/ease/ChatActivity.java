@@ -56,22 +56,18 @@ public class ChatActivity extends BaseActivity
     public void replaceFragment(final int containerResId, final EaseChatFragment fragment,
             final String tag)
     {
-        runOnUiThread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                if (TextUtils.isEmpty(tag))
-                {
-                    fragmentTransaction.replace(containerResId, fragment);
-                }
-                else
-                {
-                    fragmentTransaction.replace(containerResId, fragment, tag);
-                }
-                fragmentTransaction.commitAllowingStateLoss();
-            }
-        });
+        runOnUiThread(() ->
+                      {
+                          FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                          if (TextUtils.isEmpty(tag))
+                          {
+                              fragmentTransaction.replace(containerResId, fragment);
+                          }
+                          else
+                          {
+                              fragmentTransaction.replace(containerResId, fragment, tag);
+                          }
+                          fragmentTransaction.commitAllowingStateLoss();
+                      });
     }
 }

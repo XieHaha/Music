@@ -47,13 +47,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingRight="25dp"
+            android:paddingRight="28dp"
+            android:paddingLeft="28dp"
             android:paddingTop="26dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="25dp"
                 android:text="@string/txt_complete_content_job"
                 android:textColor="#ff333333"
                 android:textSize="24sp" />
@@ -62,7 +62,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
-                android:paddingLeft="26dp"
                 android:text="所在医院"
                 android:textColor="#ff999999"
                 android:textSize="12dp" />
@@ -71,7 +70,6 @@
                 android:id="@+id/act_complete_info2_hospital"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginLeft="25dp"
                 android:hint=""
                 android:imeOptions="actionNext"
                 android:singleLine="true"
@@ -83,7 +81,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                android:paddingLeft="26dp"
                 android:text="所在科室"
                 android:textColor="#ff999999"
                 android:textSize="12dp" />
@@ -92,7 +89,6 @@
                 android:id="@+id/act_complete_info2_type"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginLeft="25dp"
                 android:hint=""
                 android:imeOptions="actionNext"
                 android:singleLine="true"
@@ -104,7 +100,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                android:paddingLeft="26dp"
                 android:text="职称"
                 android:textColor="#ff999999"
                 android:textSize="12dp" />
@@ -113,7 +108,6 @@
                 android:id="@+id/act_complete_info2_job"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginLeft="25dp"
                 android:hint=""
                 android:imeOptions="actionNext"
                 android:singleLine="true"
@@ -125,7 +119,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                android:paddingLeft="26dp"
                 android:text="个人简介"
                 android:textColor="#ff999999"
                 android:textSize="12dp" />
@@ -134,7 +127,6 @@
                 android:id="@+id/act_complete_info2_introduce"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginLeft="25dp"
                 android:hint=""
                 android:imeOptions="actionDone"
                 android:singleLine="true"
@@ -148,7 +140,9 @@
 
     <TextView
         android:id="@+id/act_complete_info2"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
+        android:layout_marginRight="28dp"
+        android:layout_marginLeft="28dp"
         android:layout_height="46dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"

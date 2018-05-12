@@ -1,13 +1,20 @@
 package com.yht.yihuantong.ui.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.hyphenate.EMConnectionListener;
 import com.hyphenate.EMError;
@@ -32,16 +39,46 @@ import java.util.List;
 import cn.jpush.android.api.JPushInterface;
 import custom.frame.bean.Version;
 import custom.frame.ui.activity.BaseActivity;
+import custom.frame.utils.DensityUtil;
+import custom.frame.utils.ScreenUtils;
 import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.ripples.RippleLinearLayout;
 
 public class MainActivity extends BaseActivity
         implements EaseConversationListFragment.EaseConversationListItemClickListener,
-                   VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener
+                   VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener,
+                   EaseConversationListFragment.EaseConversationListItemLongClickListener
 {
     private RippleLinearLayout tabMsg, tabDoc, tabCase, tabMy;
     private Fragment msgFragment, docFragment, caseFragment, myFragment;
     private EaseConversationListFragment easeConversationListFragment;
+
+    /**
+     * message 操作弹框view
+     */
+    public View messagePop;
+    private TextView tvDelete;
+    /**
+     * message 操作弹框
+     */
+    public PopupWindow popupWindow;
+    /**
+     * 弹窗具体坐标
+     */
+    public int[] location = new int[2];
+    /**
+     * 屏幕高度
+     */
+    private int screenHeight;
+    /**
+     * popup
+     */
+    private int popupHeight;
+    /**
+     * 当前选中会话
+     */
+    private EMConversation curConversation;
+
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
     private MyConnectionListener connectionListener;
@@ -89,6 +126,9 @@ public class MainActivity extends BaseActivity
         tabDoc = (RippleLinearLayout)findViewById(R.id.act_main_tab2);
         tabCase = (RippleLinearLayout)findViewById(R.id.act_main_tab3);
         tabMy = (RippleLinearLayout)findViewById(R.id.act_main_tab4);
+
+        messagePop = LayoutInflater.from(this).inflate(R.layout.message_pop_menu,null);
+        tvDelete = messagePop.findViewById(R.id.message_pop_menu_play);
         initTab();
     }
 
@@ -100,6 +140,10 @@ public class MainActivity extends BaseActivity
         mVersionPresenter = new VersionPresenter(this, mIRequest);
         mVersionPresenter.setVersionViewListener(this);
         mVersionPresenter.init();
+
+        //弹窗参数初始化
+        screenHeight = ScreenUtils.getScreenHeight(this);
+        popupHeight = DensityUtil.dip2px(this, 48 * 2);
     }
 
     @Override
@@ -156,6 +200,20 @@ public class MainActivity extends BaseActivity
             }
         };
         EMClient.getInstance().chatManager().addMessageListener(msgListener);
+        tvDelete.setOnClickListener(v ->
+                                    {
+                                        if(curConversation!=null)
+                                        {
+                                            //删除和某个user会话，如果需要保留聊天记录，传false
+                                            popupWindow.dismiss();
+                                            EMClient.getInstance().chatManager().deleteConversation(curConversation.conversationId(), true);
+                                            //收到消息
+                                            if (easeConversationListFragment != null)
+                                            {
+                                                easeConversationListFragment.refresh();
+                                            }
+                                        }
+                                    });
     }
 
     @Override
@@ -165,6 +223,75 @@ public class MainActivity extends BaseActivity
         intent.putExtra(CommonData.KEY_CHAT_ID, conversation.conversationId());
         //                intent.putExtra(CommonData.KEY_CHAT_NAME,conversation.());
         startActivity(intent);
+    }
+
+    @Override
+    public void onListItemLongClick(View view,EMConversation conversation)
+    {
+        curConversation = conversation;
+        initPopwindow(view,popupLocation(view));
+    }
+
+    /**
+     * @param contentTv 弹框依赖view
+     * @param location  弹框坐标
+     */
+    public void initPopwindow(View contentTv, int[] location)
+    {
+        if (popupWindow == null)
+        {
+            popupWindow = new PopupWindow(LinearLayout.LayoutParams.WRAP_CONTENT,
+                                          LinearLayout.LayoutParams.WRAP_CONTENT);
+        }
+        popupWindow.setFocusable(true);
+        popupWindow.setContentView(messagePop);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
+        popupWindow.setOutsideTouchable(true);
+        popOutShadow(popupWindow);
+        popupWindow.showAtLocation(contentTv, Gravity.NO_GRAVITY, location[0],
+                                   location[1] + contentTv.getHeight());
+    }
+
+    /**
+     * popup位置计算
+     *
+     * @param view
+     * @return
+     */
+    private int[] popupLocation(View view)
+    {
+        view.getLocationOnScreen(location);
+        int viewHeight = view.getHeight();
+        int viewWidth = view.getWidth();
+        if (screenHeight - location[1] > (popupHeight + popupHeight / 2))
+        {
+            location[0] = location[0] + viewWidth / 2;
+            location[1] = location[1] - viewHeight / 2;
+        }
+        else
+        {
+            location[0] = location[0] + viewWidth / 2;
+            location[1] = location[1] - popupHeight - viewHeight / 2;
+        }
+        return location;
+    }
+
+    /**
+     * 让popupwindow以外区域阴影显示
+     *
+     * @param popupWindow
+     */
+    private void popOutShadow(PopupWindow popupWindow)
+    {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = 0.8f;//设置阴影透明度
+        getWindow().setAttributes(lp);
+        popupWindow.setOnDismissListener(() ->
+                                         {
+                                             WindowManager.LayoutParams lp1 = getWindow().getAttributes();
+                                             lp1.alpha = 1f;
+                                            getWindow().setAttributes(lp1);
+                                         });
     }
 
     @Override
@@ -229,6 +356,7 @@ public class MainActivity extends BaseActivity
             easeConversationListFragment.onResume();
         }
         easeConversationListFragment.setConversationListItemClickListener(this);
+        easeConversationListFragment.setConversationListItemLongClickListener(this);
         transaction.commitAllowingStateLoss();
         selectTab(0);
     }

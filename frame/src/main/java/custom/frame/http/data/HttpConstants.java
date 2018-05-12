@@ -7,11 +7,14 @@ public interface HttpConstants {
     String URL_PREFIX = "http://";
     String BASE_IP = "39.107.249.194";
     String BASE_IP_PORT = "8080";
+    /**
+     * 测试服务器
+     */
     String BASE_BASIC_URL = "http://39.107.249.194:8080";
     /**
-     * 分页的页数大小
+     * 正式服务器
      */
-    String PageSize = "20";
+    //    String BASE_BASIC_URL = "http://39.105.117.100:8080";
     /**
      * 超时时间
      */

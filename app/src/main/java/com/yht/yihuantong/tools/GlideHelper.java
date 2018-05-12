@@ -6,6 +6,7 @@ import com.yht.yihuantong.R;
 
 public final class GlideHelper {
     public static RequestOptions options;
+    public static RequestOptions optionsRect;
 
     public static RequestOptions getOptions() {
         if (options == null) {
@@ -23,13 +24,13 @@ public final class GlideHelper {
      * @return
      */
     public static RequestOptions getOptionsRect() {
-        if (options == null) {
-            options = new RequestOptions()
+        if (optionsRect == null) {
+            optionsRect = new RequestOptions()
                     .centerCrop()
                     .placeholder(R.mipmap.icon_default_imgs_rect)
                     .error(R.mipmap.icon_default_imgs_rect)
                     .priority(Priority.NORMAL);
         }
-        return options;
+        return optionsRect;
     }
 }

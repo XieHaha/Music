@@ -300,18 +300,6 @@ public class CompleteInfoActivity extends BaseActivity
     {
         if (resultCode != RESULT_OK)
         {
-            //            Log.e("test","cutFileUri: " + cutFileUri);
-            //            //裁剪完成，上传图片
-            //            if (AllUtils.isNetworkAvaliable(this))
-            //            {
-            //                uploadHeadImg(Uri.fromFile(cameraTempFile));
-            //            }
-            //            else
-            //            {
-            //                ToastUtil.toast(this, R.string.toast_public_current_no_network);
-            //            }
-            //            //上传完成，替换本地图片
-            //            Glide.with(this).load(cameraTempFile).into(headImg);
             return;
         }
         switch (requestCode)

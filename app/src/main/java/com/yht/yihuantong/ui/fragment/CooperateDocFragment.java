@@ -106,7 +106,7 @@ public class CooperateDocFragment extends BaseFragment
         mStateBarFixer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));//填充状态栏
 
         ((TextView)view.findViewById(R.id.public_title_bar_title)).setText("合作医生");
-        ivTitleBarMore = view.findViewById(R.id.public_title_bar_more_two);
+        ivTitleBarMore = view.findViewById(R.id.public_title_bar_more_three);
         ivTitleBarMore.setVisibility(View.VISIBLE);
         swipeRefreshLayout = view.findViewById(R.id.fragment_cooperate_swipe_layout);
         autoLoadRecyclerView = view.findViewById(R.id.fragment_cooperate_recycler_view);

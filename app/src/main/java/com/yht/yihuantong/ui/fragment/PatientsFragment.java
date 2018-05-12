@@ -118,7 +118,7 @@ public class PatientsFragment extends BaseFragment
         ((TextView)view.findViewById(R.id.public_title_bar_title)).setText("我的患者");
         swipeRefreshLayout = view.findViewById(R.id.fragment_patients_swipe_layout);
         autoLoadRecyclerView = view.findViewById(R.id.fragment_patients_recycler_view);
-        ivTitleBarMore = view.findViewById(R.id.public_title_bar_more_two);
+        ivTitleBarMore = view.findViewById(R.id.public_title_bar_more_three);
         ivTitleBarMore.setVisibility(View.VISIBLE);
         headerView = LayoutInflater.from(getContext())
                                    .inflate(R.layout.view_cooperate_doc_header, null);

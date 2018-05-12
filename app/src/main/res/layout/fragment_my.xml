@@ -47,7 +47,7 @@
                     android:layout_marginBottom="13dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
-                    android:src="@mipmap/icon_default_imgs"
+                    android:src="@mipmap/icon_uncertified"
                     app:civ_border_color="#50ffffff"
                     app:civ_border_width="2dp" />
             </RelativeLayout>

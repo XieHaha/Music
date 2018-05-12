@@ -21,7 +21,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
-import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
@@ -379,31 +378,33 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
         String[] strings = time.split("-");
         endDate.set(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]) - 1,
                     Integer.parseInt(strings[2]));
-        timePicker = new TimePickerBuilder(this, new OnTimeSelectListener()
-        {
-            @Override
-            public void onTimeSelect(Date date, View v)
-            {//选中事件回调
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                tvDiagnosisTime.setText(simpleDateFormat.format(date));
-            }
+
+        //当前时间设置
+        String curTime = simpleDateFormat.format(patientCaseDetailBean.getVisDate());
+        String[] strings1 = curTime.split("-");
+        selectedDate.set(Integer.parseInt(strings1[0]), Integer.parseInt(strings1[1])-1, Integer.parseInt(strings1[2]));
+
+        timePicker = new TimePickerBuilder(this, (date, v) ->
+        {//选中事件回调
+            SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+            tvDiagnosisTime.setText(simpleDateFormat1.format(date));
         }).setType(new boolean[] { true, true, true, false, false, false })// 默认全部显示
-          .setCancelText("取消")//取消按钮文字
-          .setSubmitText("确定")//确认按钮文字
-          .setTitleSize(20)//标题文字大小
-          .setTitleText("")//标题文字
-          .setOutSideCancelable(true)//点击屏幕，点在控件外部范围时，是否取消显示
-          .isCyclic(false)//是否循环滚动
-          .setSubmitColor(R.color.app_main_color)//确定按钮文字颜色
-          .setCancelColor(R.color.app_main_color)//取消按钮文字颜色
-          .setTitleBgColor(0xffffffff)//标题背景颜色 Night mode
-          .setBgColor(0xffffffff)//滚轮背景颜色 Night mode
-          .setDate(selectedDate)// 如果不设置的话，默认是系统时间*/
-          .setRangDate(startDate, endDate)//起始终止年月日设定
-          .setLabel("年", "月", "日", "时", "分", "秒")//默认设置为年月日时分秒
-          .isCenterLabel(true) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
-          .isDialog(false)//是否显示为对话框样式
-          .build();
+              .setCancelText("取消")//取消按钮文字
+              .setSubmitText("确定")//确认按钮文字
+              .setTitleSize(20)//标题文字大小
+              .setTitleText("")//标题文字
+              .setOutSideCancelable(true)//点击屏幕，点在控件外部范围时，是否取消显示
+              .isCyclic(false)//是否循环滚动
+              .setSubmitColor(R.color.app_main_color)//确定按钮文字颜色
+              .setCancelColor(R.color.app_main_color)//取消按钮文字颜色
+              .setTitleBgColor(0xffffffff)//标题背景颜色 Night mode
+              .setBgColor(0xffffffff)//滚轮背景颜色 Night mode
+              .setDate(selectedDate)// 如果不设置的话，默认是系统时间*/
+              .setRangDate(startDate, endDate)//起始终止年月日设定
+              .setLabel("年", "月", "日", "时", "分", "秒")//默认设置为年月日时分秒
+              .isCenterLabel(true) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+              .isDialog(false)//是否显示为对话框样式
+              .build();
         timePicker.show();
     }
 

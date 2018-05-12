@@ -23,12 +23,11 @@ import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CooperateDocBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
-import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
- * 合作医生列表
+ * 转正医生
  *
  * @author DUNDUN
  */
@@ -53,6 +52,12 @@ public class CooperateDocActivity extends BaseActivity implements SwipeRefreshLa
     @Override
     public int getLayoutID() {
         return R.layout.act_cooperate_doc;
+    }
+
+    @Override
+    protected boolean isInitBackBtn()
+    {
+        return true;
     }
 
     @Override
@@ -86,25 +91,15 @@ public class CooperateDocActivity extends BaseActivity implements SwipeRefreshLa
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(cooperateDocListAdapter);
         cooperateDocListAdapter.setOnItemClickListener(
-                new BaseRecyclerAdapter.OnItemClickListener<CooperateDocBean>() {
+                (v, position, item) -> new SimpleDialog(CooperateDocActivity.this, "确定转诊给 " + item.getName() + " 医生吗？", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onItemClick(View v, int position, final CooperateDocBean item) {
-                        new SimpleDialog(CooperateDocActivity.this, "确定转诊给 " + item.getName() + " 医生吗？", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent();
-                                intent.putExtra(CommonData.KEY_DOCTOR_ID, item.getDoctorId());
-                                setResult(RESULT_OK, intent);
-                                finish();
-                            }
-                        }, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).show();
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent();
+                        intent.putExtra(CommonData.KEY_DOCTOR_ID, item.getDoctorId());
+                        setResult(RESULT_OK, intent);
+                        finish();
                     }
-                });
+                }, (dialog, which) -> dialog.dismiss()).show());
     }
 
     /**
