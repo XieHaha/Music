@@ -60,7 +60,7 @@ public class VersionModel implements ResponseListener<BaseResponse>, VersionMode
         {
             file.delete();
         }
-        url = "http://gdown.baidu.com/data/wisegame/89eb17d6287ae627/weixin_1300.apk";
+//        url = "http://gdown.baidu.com/data/wisegame/89eb17d6287ae627/weixin_1300.apk";
         FileTransferServer.getInstance(context)
                           .downloadFile(url, DirHelper.getPathFile(), "YHT.apk", downloadListener);
     }
