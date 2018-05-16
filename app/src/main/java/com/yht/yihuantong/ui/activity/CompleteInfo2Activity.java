@@ -76,7 +76,7 @@ public class CompleteInfo2Activity extends BaseActivity
             ToastUtil.toast(this, R.string.toast_upload_job_info_hint);
             return;
         }
-        mIRequest.updateJobInfo(loginSuccessBean.getDoctorId(), type, introduce, hospital, job,
+        mIRequest.updateJobInfo(loginSuccessBean.getDoctorId(), loginSuccessBean.getChecked(),type, introduce, hospital, job,
                                 this);
     }
 
@@ -104,7 +104,6 @@ public class CompleteInfo2Activity extends BaseActivity
         switch (task)
         {
             case UPDATE_JOB_INFO:
-                ToastUtil.toast(this, "修改成功");
                 closeProgressDialog();
                 loginSuccessBean.setDepartment(type);
                 loginSuccessBean.setHospital(hospital);

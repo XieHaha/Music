@@ -260,6 +260,7 @@ public class CooperateDocFragment extends BaseFragment
     {
         page = 0;
         getCooperateList();
+        getApplyCooperateList();
     }
 
     @Override

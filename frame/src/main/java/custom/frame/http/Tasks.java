@@ -119,5 +119,9 @@ public enum Tasks
      * 文件下载
      */
     DOWNLOAD_FILE,
+    /**
+     * 医生资质认证
+     */
+    QUALIFIY_DOC,
 }
 

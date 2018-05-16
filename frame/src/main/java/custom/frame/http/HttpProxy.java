@@ -15,20 +15,10 @@ public class HttpProxy implements HttpConstants, BaseNetCode {
         this.context = context;
     }
 
-    @Override
-    public String getBaseIp() {
-        return BASE_IP;
-    }
-
     /**
      * 得到app请求地址
      */
     public String getAPPUrl() {
         return BASE_BASIC_URL + "/DPView";
-    }
-
-    @Override
-    public String getBaseIpPort() {
-        return BASE_IP_PORT;
     }
 }

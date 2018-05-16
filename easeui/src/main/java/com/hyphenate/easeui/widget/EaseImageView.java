@@ -67,7 +67,7 @@ public class EaseImageView extends ImageView {
         borderColor = 0xddffffff;
         pressAlpha = 0x42;
         pressColor = 0x42000000;
-        radius = 16;
+        radius = 0;
         shapeType = 0;
 
         // get attribute of EaseImageView

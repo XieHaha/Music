@@ -560,7 +560,15 @@ public class BaseRequest<T> extends HttpProxy {
                     listener.onResponseEnd(task);
                 }
             }
-        });
+        }){
+
+//            @Override
+//            public Map<String, String> getHeaders() {
+//                HashMap<String, String> headers = new HashMap<>(16);
+//                headers.put("Content-Type", "application/x-www-form-urlencoded");
+//                return headers;
+//            }
+        };
 //        // 添加header
 //        multipartRequest.addHeader("header-name", "value");
         // 通过MultipartEntity来设置参数
@@ -571,6 +579,83 @@ public class BaseRequest<T> extends HttpProxy {
 //        multi.addBinaryPart("logo", bytes);
         //传文件(以图片为例)
         multi.addFilePart("file", file, "image/jpg");
+
+        multipartRequest.setTag(task);
+        mQueue.add(multipartRequest);
+        return task;
+    }
+
+    /**
+     * 医生资质认证
+     * post
+     * @param moduleName
+     * @param task
+     * @param listener
+     * @return
+     */
+    public final Tasks qualityDoc(String moduleName, final Tasks task, final Map<String,File> files, final Map<String,String> params,
+            final Class<T> classOfT, final ResponseListener<BaseResponse> listener) {
+
+        MultipartRequest multipartRequest;
+        if (listener != null) {
+            listener.onResponseStart(task);
+        }
+        String url = appendUrl(moduleName);
+
+        multipartRequest = new MultipartRequest(url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    BaseResponse baseResponse = praseBaseResponse(jsonObject, classOfT);
+                    /**
+                     * 如果请求码成功
+                     * */
+                    if (REQUEST_SUCCESS == baseResponse.getCode()) {
+                        if (listener != null) {
+                            listener.onResponseSuccess(task, baseResponse);
+                            listener.onResponseEnd(task);
+                        }
+                    } else {
+                        /**
+                         * 调用请求码异常
+                         * */
+                        if (listener != null) {
+                            listener.onResponseCodeError(task, baseResponse);
+                            listener.onResponseEnd(task);
+                        }
+                    }
+                } catch (JSONException je) {
+                    if (listener != null) {
+                        listener.onResponseError(task, je);
+                        listener.onResponseEnd(task);
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (listener != null) {
+                    listener.onResponseError(task, new Exception("网络繁忙，请稍后再试"));
+                    listener.onResponseEnd(task);
+                }
+            }
+        });
+        //        // 添加header
+        //        multipartRequest.addHeader("header-name", "value");
+        // 通过MultipartEntity来设置参数
+        MultipartEntity multi = multipartRequest.getMultiPartEntity();
+        //传参数
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            multi.addStringPart(entry.getKey(), entry.getValue());
+        }
+
+        //        //传二进制byte[]
+        //        multi.addBinaryPart("logo", bytes);
+        //传文件(以图片为例)
+        for (Map.Entry<String, File> entry : files.entrySet()) {
+            multi.addFilePart(entry.getKey(), entry.getValue(), "image/png");
+        }
 
         multipartRequest.setTag(task);
         mQueue.add(multipartRequest);

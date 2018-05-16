@@ -47,7 +47,7 @@
                     android:layout_marginBottom="13dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
-                    android:src="@mipmap/icon_uncertified"
+                    android:src="@drawable/doc_auth_selector"
                     app:civ_border_color="#50ffffff"
                     app:civ_border_width="2dp" />
             </RelativeLayout>
@@ -64,50 +64,67 @@
                 android:textColor="@color/app_white_color"
                 android:textSize="24sp" />
 
+
+            <RelativeLayout
+                android:id="@+id/fragment_my_auth_layout"
+                android:layout_width="match_parent"
+                android:layout_below="@id/bg_img"
+                android:visibility="visible"
+                android:background="@color/app_white_color"
+                android:layout_height="45dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:text="认证"
+                    android:textColor="#999999"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/fragment_my_auth_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="65dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:text="未认证"
+                    android:textColor="@color/app_auth_faild"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/fragment_my_auth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="65dp"
+                    android:layout_marginRight="12dp"
+                    android:background="@null"
+                    android:drawableRight="@mipmap/icon_arrow_right"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center_vertical|right"
+                    android:text="去认证"
+                    android:drawablePadding="5dp"
+                    android:textColor="#333333"
+                    android:textSize="15sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/app_main_divideline" />
+
+            </RelativeLayout>
+
             <LinearLayout
                 android:id="@+id/fragment_my_info_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/bg_img"
+                android:layout_below="@id/fragment_my_auth_layout"
                 android:layout_marginTop="10dp"
                 android:background="@color/app_white_color"
                 android:orientation="vertical">
-
-                <RelativeLayout
-                    android:id="@+id/fragment_my_auth_layout"
-                    android:layout_width="match_parent"
-                    android:layout_below="@id/bg_img"
-                    android:visibility="gone"
-                    android:layout_height="30dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="16dp"
-                        android:text="未认证"
-                        android:textColor="#999999"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:id="@+id/fragment_my_auth"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="65dp"
-                        android:layout_marginRight="16dp"
-                        android:background="@null"
-                        android:gravity="center_vertical|right"
-                        android:text="去认证"
-                        android:textColor="#333333"
-                        android:textSize="15sp" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1px"
-                        android:layout_alignParentBottom="true"
-                        android:background="@color/app_main_divideline" />
-
-                </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -117,7 +134,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginLeft="12dp"
                         android:text="职称"
                         android:textColor="#999999"
                         android:textSize="15sp" />
@@ -127,7 +144,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="65dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginRight="12dp"
                         android:background="@null"
                         android:gravity="center_vertical"
                         android:text="暂无记录"
@@ -150,7 +167,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginLeft="12dp"
                         android:text="医院"
                         android:textColor="#999999"
                         android:textSize="15sp" />
@@ -160,7 +177,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="65dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginRight="12dp"
                         android:background="@null"
                         android:gravity="center_vertical"
                         android:text="暂无记录"
@@ -183,7 +200,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginLeft="12dp"
                         android:text="科室"
                         android:textColor="#999999"
                         android:textSize="15sp" />
@@ -193,7 +210,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="65dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginRight="12dp"
                         android:background="@null"
                         android:gravity="center_vertical"
                         android:text="暂无记录"
@@ -216,7 +233,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginLeft="12dp"
                         android:text="简介"
                         android:textColor="#999999"
                         android:textSize="15sp" />
@@ -226,7 +243,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="65dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginRight="12dp"
                         android:background="@null"
                         android:gravity="center_vertical"
                         android:text="暂无记录"
@@ -255,7 +272,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginLeft="12dp"
                         android:text="我的二维码"
                         android:textColor="#999999"
                         android:textSize="15sp" />
@@ -264,7 +281,7 @@
                         android:id="@+id/fragmrnt_user_info_qrcode"
                         android:layout_width="45dp"
                         android:src="@mipmap/icon_qr"
-                        android:paddingRight="16dp"
+                        android:paddingRight="12dp"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:layout_alignParentRight="true"
@@ -287,7 +304,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginLeft="12dp"
                         android:text="版本更新"
                         android:textColor="#999999"
                         android:textSize="15sp" />
@@ -295,7 +312,7 @@
                     <ImageView
                         android:layout_width="45dp"
                         android:src="@mipmap/icon_arrow_right"
-                        android:paddingRight="16dp"
+                        android:paddingRight="12dp"
                         android:paddingTop="16dp"
                         android:paddingBottom="16dp"
                         android:layout_alignParentRight="true"

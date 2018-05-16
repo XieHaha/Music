@@ -10,9 +10,6 @@ import java.io.Serializable;
 public class CooperateDocBean extends DataSupport implements Serializable {
     private static final long serialVersionUID = -5825956356939935298L;
 
-    private int id;
-    private long gmtCreate;
-    private long gmtModified;
     private String doctorId;
     private String phone;
     private String portraitUrl;
@@ -22,30 +19,10 @@ public class CooperateDocBean extends DataSupport implements Serializable {
     private String department;
     private String doctorDescription;
     private int requestSource;
+    private int checked;
+    private String checkUrl;
+    private String identityNumber;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public long getGmtCreate() {
-        return gmtCreate;
-    }
-
-    public void setGmtCreate(long gmtCreate) {
-        this.gmtCreate = gmtCreate;
-    }
-
-    public long getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(long gmtModified) {
-        this.gmtModified = gmtModified;
-    }
 
     public String getDoctorId() {
         return doctorId;
@@ -119,5 +96,35 @@ public class CooperateDocBean extends DataSupport implements Serializable {
     public void setRequestSource(int requestSource)
     {
         this.requestSource = requestSource;
+    }
+
+    public int getChecked()
+    {
+        return checked;
+    }
+
+    public void setChecked(int checked)
+    {
+        this.checked = checked;
+    }
+
+    public String getCheckUrl()
+    {
+        return checkUrl;
+    }
+
+    public void setCheckUrl(String checkUrl)
+    {
+        this.checkUrl = checkUrl;
+    }
+
+    public String getIdentityNumber()
+    {
+        return identityNumber;
+    }
+
+    public void setIdentityNumber(String identityNumber)
+    {
+        this.identityNumber = identityNumber;
     }
 }

@@ -159,6 +159,11 @@ public class LoginActivity extends BaseActivity {
         //                }
         phone = etPhone.getText().toString().trim();
         verifyCode = etVerifyCode.getText().toString().trim();
+        if(!AllUtils.isMobileNumber(phone))
+        {
+            ToastUtil.toast(this,R.string.toast_txt_phone_error);
+            return;
+        }
         if (StringUtils.isEmpty(verifyCode)) {
             ToastUtil.toast(this, R.string.toast_txt_verify_hint);
             return;
@@ -198,14 +203,13 @@ public class LoginActivity extends BaseActivity {
                 EMClient.getInstance().login(loginSuccessBean.getDoctorId(), "111111", new EMCallBack() {//回调
                     @Override
                     public void onSuccess() {
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                EMClient.getInstance().chatManager().loadAllConversations();
-                                EMClient.getInstance().groupManager().loadAllGroups();
-                                Log.d("main", "登录聊天服务器成功！");
-                                jumpTopage();
-                            }
-                        });
+                        runOnUiThread(() ->
+                                      {
+                                          EMClient.getInstance().chatManager().loadAllConversations();
+                                          EMClient.getInstance().groupManager().loadAllGroups();
+                                          Log.d("main", "登录聊天服务器成功！");
+                                          jumpTopage();
+                                      });
                     }
 
                     @Override
@@ -245,6 +249,7 @@ public class LoginActivity extends BaseActivity {
                 ToastUtil.toast(this, "code:" + response.getCode() + "  msg:" + response.getMsg());
                 break;
             case LOGIN_AND_REGISTER:
+                ToastUtil.toast(this, "code:" + response.getCode() + "  msg:" + response.getMsg());
                 break;
             default:
                 break;

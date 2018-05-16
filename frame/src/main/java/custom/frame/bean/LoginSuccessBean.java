@@ -28,6 +28,11 @@ public class LoginSuccessBean implements Serializable {
     private String department;
     private int status;
     private String name;
+    /**
+     * 医生认证
+     * <0-未上传资料（可修改）；1-已上传资料等待审核（不可修改）；2-审核未通过（可修改）；6-审核已通过（不可修改）>
+     */
+    private int checked;
 
     public String getDoctorId() {
         return doctorId;
@@ -173,6 +178,16 @@ public class LoginSuccessBean implements Serializable {
         this.name = name;
     }
 
+    public int getChecked()
+    {
+        return checked;
+    }
+
+    public void setChecked(int checked)
+    {
+        this.checked = checked;
+    }
+
     @Override
     public String toString() {
         return "[LoginSuccessBean]->doctorId:" + doctorId
@@ -192,6 +207,7 @@ public class LoginSuccessBean implements Serializable {
                 + ",hospital:" + hospital
                 + ",department:" + department
                 + ",status:" + status
+                + ",checked:" + checked
                 + ",name:" + name;
     }
 }

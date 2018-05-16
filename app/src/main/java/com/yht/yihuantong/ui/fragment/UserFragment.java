@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -34,7 +34,6 @@ import custom.frame.bean.PatientBean;
 import custom.frame.bean.Version;
 import custom.frame.ui.activity.AppManager;
 import custom.frame.ui.fragment.BaseFragment;
-import custom.frame.utils.ScreenUtils;
 import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.scrollview.CustomListenScrollView;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -46,11 +45,14 @@ public class UserFragment extends BaseFragment
         implements VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener,
                    CustomListenScrollView.OnScrollChangeListener
 {
-    private CircleImageView headImg;
+    private CircleImageView headImg, authImg;
     private LinearLayout llTitleLayout;
+    private RelativeLayout rlAuthLayout;
     private CustomListenScrollView scrollView;
     private TextView tvName, tvHospital, tvType, tvTitle, tvIntroduce;
+    private TextView tvAuth, tvAuthStatus;
     private LoginSuccessBean loginSuccessBean;
+    private boolean isAuth;
     /**
      * 二维码
      */
@@ -96,15 +98,18 @@ public class UserFragment extends BaseFragment
         view.findViewById(R.id.public_title_bar_back).setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_info_exit).setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_info_version).setOnClickListener(this);
-        view.findViewById(R.id.fragment_my_auth_layout).setOnClickListener(this);
+        rlAuthLayout = view.findViewById(R.id.fragment_my_auth_layout);
         scrollView = view.findViewById(R.id.fragment_my_scrollview);
         llTitleLayout = view.findViewById(R.id.fragment_my_title_layout);
         headImg = view.findViewById(R.id.fragmrnt_user_info_headimg);
+        authImg = view.findViewById(R.id.fragmrnt_user_info_auth);
         tvName = view.findViewById(R.id.fragmrnt_user_info_name);
         tvHospital = view.findViewById(R.id.fragmrnt_user_info_hospital);
         tvType = view.findViewById(R.id.fragmrnt_user_info_type);
         tvTitle = view.findViewById(R.id.fragmrnt_user_info_title);
         tvIntroduce = view.findViewById(R.id.fragmrnt_user_info_introduce);
+        tvAuth = view.findViewById(R.id.fragment_my_auth);
+        tvAuthStatus = view.findViewById(R.id.fragment_my_auth_status);
         view.findViewById(R.id.fragmrnt_user_info_qrcode_layout).setOnClickListener(this);
     }
 
@@ -122,6 +127,7 @@ public class UserFragment extends BaseFragment
     {
         super.initListener();
         scrollView.setOnScrollChangeListener(this);
+        rlAuthLayout.setOnClickListener(this);
     }
 
     /**
@@ -145,6 +151,41 @@ public class UserFragment extends BaseFragment
             {
                 Glide.with(this).load(headImgUrl).apply(GlideHelper.getOptions()).into(headImg);
             }
+            int status = loginSuccessBean.getChecked();
+            switch (status)
+            {
+                case 0://未认证
+                    isAuth = false;
+                    authImg.setSelected(false);
+                    tvAuth.setText("去认证");
+                    tvAuthStatus.setTextColor(
+                            ContextCompat.getColor(getContext(), R.color.app_auth_faild));
+                    break;
+                case 1://审核中
+                    authImg.setSelected(false);
+                    tvAuthStatus.setText("审核中");
+                    tvAuth.setText("");
+                    isAuth = true;
+                    tvAuthStatus.setTextColor(
+                            ContextCompat.getColor(getContext(), R.color.app_auth_faild));
+                    break;
+                case 2://审核未通过
+                    isAuth = false;
+                    authImg.setSelected(false);
+                    tvAuthStatus.setText("审核未通过");
+                    tvAuth.setText("查看");
+                    tvAuthStatus.setTextColor(
+                            ContextCompat.getColor(getContext(), R.color.app_auth_faild));
+                    break;
+                case 6://审核已通过
+                    isAuth = false;
+                    authImg.setSelected(true);
+                    tvAuthStatus.setText("已认证");
+                    tvAuth.setText("查看");
+                    tvAuthStatus.setTextColor(
+                            ContextCompat.getColor(getContext(), R.color.app_auth_success));
+                    break;
+            }
             tvName.setText(loginSuccessBean.getName());
             tvHospital.setText(loginSuccessBean.getHospital());
             tvTitle.setText(loginSuccessBean.getTitle());
@@ -165,8 +206,7 @@ public class UserFragment extends BaseFragment
     @Override
     public void onScrollChanged(CustomListenScrollView scrollView, int l, int t, int oldl, int oldt)
     {
-        int scrollHeight =
-                (scrollView.getChildAt(0).getHeight() - scrollView.getMeasuredHeight()) / 2;
+        int scrollHeight = (scrollView.getChildAt(0).getHeight() - scrollView.getMeasuredHeight());
         int alpha;
         if (t < scrollHeight && t > 0)
         {
@@ -219,6 +259,7 @@ public class UserFragment extends BaseFragment
                 mVersionPresenter.init();
                 break;
             case R.id.fragment_my_auth_layout:
+                if (isAuth) { return; }
                 Intent intent1 = new Intent(getContext(), AuthDocActivity.class);
                 startActivity(intent1);
                 break;
@@ -231,9 +272,9 @@ public class UserFragment extends BaseFragment
     @Override
     public void updateVersion(Version version, int mode, boolean isDownLoading)
     {
-        if(mode==-1)
+        if (mode == -1)
         {
-            ToastUtil.toast(getContext(),"当前已是最新版本");
+            ToastUtil.toast(getContext(), "当前已是最新版本");
             return;
         }
         versionUpdateDialog = new VersionUpdateDialog(getContext());

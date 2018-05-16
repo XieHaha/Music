@@ -23,5 +23,7 @@
     <color name="app_minor_bg">#efeff4</color>
 
     <color name="cebebeb">#ebebeb</color>
+    <color name="app_auth_success">#00cc66</color>
+    <color name="app_auth_faild">#f96666</color>
 
 </resources>

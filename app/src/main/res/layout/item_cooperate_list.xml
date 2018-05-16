@@ -7,7 +7,7 @@
     <FrameLayout
         android:id="@+id/headimg_layout"
         android:layout_width="64dp"
-        android:layout_marginLeft="9dp"
+        android:layout_marginLeft="5dp"
         android:layout_centerVertical="true"
         android:layout_height="64dp">
 
@@ -99,7 +99,7 @@
         android:id="@+id/item_cooperate_list_layout"
         android:layout_width="wrap_content"
         android:gravity="center_vertical"
-        android:paddingRight="16dp"
+        android:paddingRight="12dp"
         android:visibility="gone"
         android:layout_alignParentRight="true"
         android:layout_height="match_parent">

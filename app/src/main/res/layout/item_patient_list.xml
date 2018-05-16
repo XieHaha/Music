@@ -9,7 +9,7 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="9dp">
+        android:layout_marginLeft="5dp">
 
         <ImageView
             android:id="@+id/item_patient_list_headimg"
@@ -83,7 +83,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:gravity="center_vertical"
-        android:paddingRight="16dp"
+        android:paddingRight="12dp"
         android:visibility="visible">
 
         <TextView

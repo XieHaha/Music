@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:background="@color/app_minor_bg"
     android:layout_height="match_parent">
 
-    <include layout="@layout/public_title_bar" />
+    <include
+        layout="@layout/public_title_bar"
+        android:id="@+id/title_bar" />
 
     <ScrollView
         android:layout_width="match_parent"
+        android:layout_below="@id/title_bar"
+        android:layout_marginBottom="55dp"
         android:layout_height="match_parent">
 
         <LinearLayout
@@ -21,11 +25,11 @@
                 android:layout_width="match_parent"
                 android:background="@color/app_minor_bg"
                 android:text="身份认证"
-                android:textSize="15sp"
-                android:textColor="#ff333333"
-                android:gravity="bottom"
-                android:padding="12dp"
-                android:layout_height="55dp" />
+                android:textSize="13sp"
+                android:textColor="#ff999999"
+                android:gravity="center_vertical"
+                android:paddingLeft="12dp"
+                android:layout_height="30dp" />
 
             <View
                 android:layout_width="match_parent"
@@ -48,11 +52,14 @@
                     android:layout_height="wrap_content" />
 
                 <EditText
+                    android:id="@+id/act_auth_doc_name"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="40dp"
                     android:textColor="#333333"
                     android:textSize="15sp"
                     android:maxLines="1"
+                    android:singleLine="true"
+                    android:imeOptions="actionNext"
                     android:maxLength="10"
                     android:layout_height="match_parent" />
 
@@ -74,11 +81,14 @@
                     android:layout_height="wrap_content" />
 
                 <EditText
+                    android:id="@+id/act_auth_doc_card_num"
                     android:layout_width="match_parent"
                     android:textColor="#333333"
                     android:layout_marginLeft="10dp"
                     android:textSize="15sp"
                     android:maxLines="1"
+                    android:singleLine="true"
+                    android:imeOptions="actionNext"
                     android:maxLength="18"
                     android:layout_height="match_parent" />
 
@@ -114,16 +124,23 @@
 
                         <RelativeLayout
                             android:id="@+id/act_auth_doc_idcard_front_layout"
-                            android:layout_width="85dp"
+                            android:layout_width="125dp"
                             android:background="@drawable/coner_small_gray_bg"
                             android:layout_centerVertical="true"
                             android:layout_height="85dp">
 
                             <ImageView
-                                android:layout_width="40dp"
+                                android:layout_width="30dp"
                                 android:src="@mipmap/icon_add"
                                 android:layout_centerInParent="true"
-                                android:layout_height="40dp" />
+                                android:layout_height="30dp" />
+
+                            <ImageView
+                                android:id="@+id/act_auth_doc_idcard_front"
+                                android:layout_width="match_parent"
+                                android:layout_centerInParent="true"
+                                android:scaleType="centerCrop"
+                                android:layout_height="match_parent" />
 
                         </RelativeLayout>
 
@@ -146,16 +163,23 @@
 
                         <RelativeLayout
                             android:id="@+id/act_auth_doc_idcard_back_layout"
-                            android:layout_width="85dp"
+                            android:layout_width="125dp"
                             android:background="@drawable/coner_small_gray_bg"
                             android:layout_centerVertical="true"
                             android:layout_height="85dp">
 
                             <ImageView
-                                android:layout_width="40dp"
+                                android:layout_width="30dp"
                                 android:src="@mipmap/icon_add"
                                 android:layout_centerInParent="true"
-                                android:layout_height="40dp" />
+                                android:layout_height="30dp" />
+
+                            <ImageView
+                                android:id="@+id/act_auth_doc_idcard_back"
+                                android:layout_width="match_parent"
+                                android:layout_centerInParent="true"
+                                android:scaleType="centerCrop"
+                                android:layout_height="match_parent" />
 
                         </RelativeLayout>
 
@@ -175,11 +199,11 @@
                 android:layout_width="match_parent"
                 android:background="@color/app_minor_bg"
                 android:text="资质认证"
-                android:textSize="15sp"
-                android:textColor="#ff333333"
-                android:gravity="bottom"
-                android:padding="12dp"
-                android:layout_height="55dp" />
+                android:textSize="13sp"
+                android:textColor="#ff999999"
+                android:gravity="center_vertical"
+                android:paddingLeft="12dp"
+                android:layout_height="30dp" />
 
             <View
                 android:layout_width="match_parent"
@@ -202,11 +226,14 @@
                     android:layout_height="wrap_content" />
 
                 <EditText
+                    android:id="@+id/act_auth_doc_hospital"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="40dp"
                     android:textColor="#333333"
                     android:textSize="15sp"
                     android:maxLines="1"
+                    android:singleLine="true"
+                    android:imeOptions="actionNext"
                     android:maxLength="10"
                     android:layout_height="match_parent" />
 
@@ -228,15 +255,19 @@
                     android:layout_height="wrap_content" />
 
                 <EditText
+                    android:id="@+id/act_auth_doc_title"
                     android:layout_width="match_parent"
                     android:textColor="#333333"
                     android:layout_marginLeft="40dp"
                     android:textSize="15sp"
                     android:maxLines="1"
+                    android:singleLine="true"
+                    android:imeOptions="actionNext"
                     android:maxLength="18"
                     android:layout_height="match_parent" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
@@ -253,11 +284,14 @@
                     android:layout_height="wrap_content" />
 
                 <EditText
+                    android:id="@+id/act_auth_doc_depart"
                     android:layout_width="match_parent"
                     android:textColor="#333333"
                     android:layout_marginLeft="40dp"
                     android:textSize="15sp"
                     android:maxLines="1"
+                    android:singleLine="true"
+                    android:imeOptions="actionDone"
                     android:maxLength="18"
                     android:layout_height="match_parent" />
 
@@ -293,16 +327,23 @@
 
                         <RelativeLayout
                             android:id="@+id/act_auth_doc_doccard_front_layout"
-                            android:layout_width="85dp"
+                            android:layout_width="125dp"
                             android:background="@drawable/coner_small_gray_bg"
                             android:layout_centerVertical="true"
                             android:layout_height="85dp">
 
                             <ImageView
-                                android:layout_width="40dp"
+                                android:layout_width="30dp"
                                 android:src="@mipmap/icon_add"
                                 android:layout_centerInParent="true"
-                                android:layout_height="40dp" />
+                                android:layout_height="30dp" />
+
+                            <ImageView
+                                android:id="@+id/act_auth_doc_doccard_front"
+                                android:layout_width="match_parent"
+                                android:layout_centerInParent="true"
+                                android:scaleType="centerCrop"
+                                android:layout_height="match_parent" />
 
                         </RelativeLayout>
 
@@ -325,17 +366,23 @@
 
                         <RelativeLayout
                             android:id="@+id/act_auth_doc_doccard_back_layout"
-                            android:layout_width="85dp"
+                            android:layout_width="125dp"
                             android:background="@drawable/coner_small_gray_bg"
                             android:layout_centerVertical="true"
                             android:layout_height="85dp">
 
                             <ImageView
-                                android:layout_width="40dp"
+                                android:layout_width="30dp"
                                 android:src="@mipmap/icon_add"
                                 android:layout_centerInParent="true"
-                                android:layout_height="40dp" />
+                                android:layout_height="30dp" />
 
+                            <ImageView
+                                android:id="@+id/act_auth_doc_doccard_back"
+                                android:layout_width="match_parent"
+                                android:layout_centerInParent="true"
+                                android:scaleType="centerCrop"
+                                android:layout_height="match_parent" />
                         </RelativeLayout>
 
                         <TextView
@@ -353,4 +400,32 @@
 
     </ScrollView>
 
-</LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/app_white_color">
+
+        <TextView
+            android:id="@+id/act_auth_doc_apply"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/corner_main_color_full_bg"
+            android:text="保存"
+            android:gravity="center"
+            android:textColor="@color/app_white_color"
+            android:textSize="18sp" />
+    </RelativeLayout>
+    <!--<TextView-->
+        <!--android:id="@+id/act_auth_doc_apply"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:text="提交审核"-->
+        <!--android:textColor="@color/app_white_color"-->
+        <!--android:gravity="center"-->
+        <!--android:textSize="15sp"-->
+        <!--android:background="@color/app_main_color"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_height="48dp" />-->
+
+</RelativeLayout>

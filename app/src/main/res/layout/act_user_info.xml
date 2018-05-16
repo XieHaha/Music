@@ -87,7 +87,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:text="职称"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="12dp"
                 android:layout_centerVertical="true"
                 android:textColor="#999999"
                 android:textSize="15sp"
@@ -120,7 +120,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:text="医院"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="12dp"
                 android:layout_centerVertical="true"
                 android:textColor="#999999"
                 android:textSize="15sp"
@@ -153,7 +153,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:text="科室"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="12dp"
                 android:layout_centerVertical="true"
                 android:textColor="#999999"
                 android:textSize="15sp"
@@ -186,7 +186,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:text="简介"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="12dp"
                 android:layout_centerVertical="true"
                 android:textColor="#999999"
                 android:textSize="15sp"

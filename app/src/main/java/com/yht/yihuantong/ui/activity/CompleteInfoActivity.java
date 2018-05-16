@@ -143,7 +143,7 @@ public class CompleteInfoActivity extends BaseActivity
             ToastUtil.toast(this, R.string.toast_upload_name_hint);
             return;
         }
-        mIRequest.updateBasicInfo(loginSuccessBean.getDoctorId(), userName, headImgUrl, this);
+        mIRequest.updateBasicInfo(loginSuccessBean.getDoctorId(),loginSuccessBean.getChecked(), userName, headImgUrl, this);
     }
 
     @Override

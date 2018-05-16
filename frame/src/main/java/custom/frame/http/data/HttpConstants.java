@@ -2,16 +2,14 @@ package custom.frame.http.data;
 
 public interface HttpConstants
 {
+//    /**
+//     * 测试服务器
+//     */
+//    String BASE_BASIC_URL = "http://39.107.249.194:8080";
     /**
-     * 基础网络连接地址
+     * 测试服务器  版本2
      */
-    String URL_PREFIX = "http://";
-    String BASE_IP = "39.107.249.194";
-    String BASE_IP_PORT = "8080";
-    /**
-     * 测试服务器
-     */
-    String BASE_BASIC_URL = "http://39.107.249.194:8080";
+    String BASE_BASIC_URL = "http://39.107.249.194:9080";
     /**
      * 正式服务器
      */
@@ -28,22 +26,6 @@ public interface HttpConstants
      * 补偿方针
      */
     float backoffMultiplier = 0f;
-    /**
-     * 基础ip更改pre  键值对名称
-     */
-    String PRE_BASE_IP = "PRE_BASE_IP";
-    /**
-     * 基础ip port更改pre  键值对名称
-     */
-    String PRE_BASE_IP_PORT = "PRE_BASE_IP_PORT";
-    /**
-     * 基础回调ip更改pre  键值对名称
-     */
-    String PRE_BASE_CALLBACK_IP = "PRE_BASE_CALLBACK_IP";
-    /**
-     * 基础回调ip port更改pre  键值对名称
-     */
-    String PRE_BASE_CALLBACK_IP_PORT = "PRE_BASE_CALLBACK_IP_PORT";
 
     /**
      * 枚举网络请求类型
@@ -61,18 +43,4 @@ public interface HttpConstants
      * HTTP TAG
      */
     String NULLTag = "  null";
-    /**
-     * 响应错误提示
-     */
-    String ResponseErrorHint = "请求失败";
-
-    /**
-     * 得到基础ip方法实现
-     */
-    String getBaseIp();
-
-    /**
-     * 得到基础ip端口号
-     */
-    String getBaseIpPort();
 }
