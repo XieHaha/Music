@@ -51,15 +51,34 @@
 
     </RelativeLayout>
 
-    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/act_user_info_headimg"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="77dp"
+    <RelativeLayout
+        android:id="@+id/fragmrnt_user_info_headimg_layout"
+        android:layout_width="130dp"
         android:layout_centerHorizontal="true"
-        android:src="@mipmap/icon_default_imgs"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#50ffffff" />
+        android:layout_marginTop="77dp"
+        android:layout_height="130dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/act_user_info_headimg"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/icon_default_imgs"
+            app:civ_border_color="#50ffffff"
+            app:civ_border_width="2dp" />
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/act_user_info_auth"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="13dp"
+            android:layout_marginBottom="13dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/doc_auth_selector"
+            app:civ_border_color="#50ffffff"
+            app:civ_border_width="2dp" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/act_user_info_name"

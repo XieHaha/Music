@@ -36,14 +36,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class UserInfoActivity extends BaseActivity
 {
-    private CircleImageView ivHeadImg;
+    private CircleImageView ivHeadImg, imgAuth;
     private ImageView ivTitleMore;
     private TextView tvName, tvType, tvTitle, tvIntroduce, tvHospital;
-
     private View view_pop;
     private PopupWindow mPopupwinow;
     private TextView tvDelete, tvChange;
-
     private CooperateDocBean cooperateDocBean;
     private String headImgUrl;
     private String doctorId;
@@ -65,6 +63,7 @@ public class UserInfoActivity extends BaseActivity
         //状态栏透明
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         ivHeadImg = (CircleImageView)findViewById(R.id.act_user_info_headimg);
+        imgAuth = (CircleImageView)findViewById(R.id.act_user_info_auth);
         findViewById(R.id.public_title_bar_back).setOnClickListener(this);
         ivTitleMore = (ImageView)findViewById(R.id.act_user_info_more);
         ivTitleMore.setOnClickListener(this);
@@ -83,13 +82,14 @@ public class UserInfoActivity extends BaseActivity
         if (getIntent() != null)
         {
             doctorId = getIntent().getStringExtra(CommonData.KEY_DOCTOR_ID);
-            isDealDoc = getIntent().getBooleanExtra(CommonData.KEY_IS_DEAL_DOC,false);
+            isDealDoc = getIntent().getBooleanExtra(CommonData.KEY_IS_DEAL_DOC, false);
         }
-
-        if(isDealDoc)
+        if (isDealDoc)
         {
             ivTitleMore.setVisibility(View.VISIBLE);
-        }else {
+        }
+        else
+        {
             ivTitleMore.setVisibility(View.GONE);
         }
         getDocInfo();
@@ -107,6 +107,14 @@ public class UserInfoActivity extends BaseActivity
             {
                 Glide.with(this).load(headImgUrl).apply(GlideHelper.getOptions()).into(ivHeadImg);
             }
+            if (6 == cooperateDocBean.getChecked())
+            {
+                imgAuth.setSelected(true);
+            }
+            else
+            {
+                imgAuth.setSelected(false);
+            }
             tvName.setText(cooperateDocBean.getName());
             tvHospital.setText(cooperateDocBean.getHospital());
             tvTitle.setText(cooperateDocBean.getTitle());
@@ -122,15 +130,14 @@ public class UserInfoActivity extends BaseActivity
     {
         mIRequest.getDocInfo(doctorId, this);
     }
+
     /**
      * 取消关注 合作医生
      */
     private void cancelCooperateDoc()
     {
-        mIRequest.cancelCooperateDoc(loginSuccessBean.getDoctorId(),doctorId, this);
+        mIRequest.cancelCooperateDoc(loginSuccessBean.getDoctorId(), doctorId, this);
     }
-
-
 
     @Override
     public void onClick(View v)
@@ -154,9 +161,9 @@ public class UserInfoActivity extends BaseActivity
                     startActivity(intent);
                 }
                 break;
-                case R.id.act_user_info_more:
-                    showPop();
-                    break;
+            case R.id.act_user_info_more:
+                showPop();
+                break;
             case R.id.change:
                 if (mPopupwinow != null)
                 {

@@ -15,8 +15,10 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
@@ -32,6 +34,8 @@ import java.io.File;
 import java.util.List;
 
 import custom.frame.bean.BaseResponse;
+import custom.frame.bean.CheckUrl;
+import custom.frame.bean.CooperateDocBean;
 import custom.frame.http.Tasks;
 import custom.frame.permission.Permission;
 import custom.frame.ui.activity.BaseActivity;
@@ -48,7 +52,9 @@ public class AuthDocActivity extends BaseActivity
     private EditText etName, etCardNumber, etHospital, etTitle, etDepart;
     private File tempFile, idCardFrontTempFile, idCardBackTempFile, docCardFrontTempFile, docCardBackTempFile;
     private ImageView ivIdCardFront, ivIdCardBack, ivDocCardFront, ivDocCardBack;
+    private RelativeLayout rlApplyLayout;
     private String txtName, txtCardNum, txtHospital, txtTitle, txtDepart;
+    private CooperateDocBean cooperateDocBean;
     /**
      * 请求修改头像 相册
      */
@@ -104,16 +110,43 @@ public class AuthDocActivity extends BaseActivity
         etHospital = (EditText)findViewById(R.id.act_auth_doc_hospital);
         etTitle = (EditText)findViewById(R.id.act_auth_doc_title);
         etDepart = (EditText)findViewById(R.id.act_auth_doc_depart);
+        rlApplyLayout = (RelativeLayout)findViewById(R.id.act_auth_doc_apply_layout);
+    }
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState)
+    {
+        super.initData(savedInstanceState);
+        //当前不为未认证状态
+        if (loginSuccessBean.getChecked() != 0 && loginSuccessBean.getChecked()!=2)
+        {
+            etName.setFocusable(false);
+            etName.setFocusableInTouchMode(false);
+            etCardNumber.setFocusable(false);
+            etCardNumber.setFocusableInTouchMode(false);
+            etHospital.setFocusable(false);
+            etHospital.setFocusableInTouchMode(false);
+            etTitle.setFocusable(false);
+            etTitle.setFocusableInTouchMode(false);
+            etDepart.setFocusable(false);
+            etDepart.setFocusableInTouchMode(false);
+            rlApplyLayout.setVisibility(View.GONE);
+        }
+        getDocInfo();
     }
 
     @Override
     public void initListener()
     {
         super.initListener();
-        findViewById(R.id.act_auth_doc_idcard_front_layout).setOnClickListener(this);
-        findViewById(R.id.act_auth_doc_idcard_back_layout).setOnClickListener(this);
-        findViewById(R.id.act_auth_doc_doccard_front_layout).setOnClickListener(this);
-        findViewById(R.id.act_auth_doc_doccard_back_layout).setOnClickListener(this);
+        //0未认证   2 认证失败
+        if (loginSuccessBean.getChecked() == 0 || loginSuccessBean.getChecked()==2)
+        {
+            findViewById(R.id.act_auth_doc_idcard_front_layout).setOnClickListener(this);
+            findViewById(R.id.act_auth_doc_idcard_back_layout).setOnClickListener(this);
+            findViewById(R.id.act_auth_doc_doccard_front_layout).setOnClickListener(this);
+            findViewById(R.id.act_auth_doc_doccard_back_layout).setOnClickListener(this);
+        }
         findViewById(R.id.act_auth_doc_apply).setOnClickListener(this);
         etDepart.setOnEditorActionListener((v, actionId, event) ->
                                            {
@@ -123,6 +156,57 @@ public class AuthDocActivity extends BaseActivity
                                                }
                                                return false;
                                            });
+    }
+
+    /**
+     * 初始化界面数据
+     */
+    private void initPageData()
+    {
+        if (cooperateDocBean != null)
+        {
+            etName.setText(cooperateDocBean.getName());
+            etCardNumber.setText(cooperateDocBean.getIdentityNumber());
+            etHospital.setText(cooperateDocBean.getHospital());
+            etTitle.setText(cooperateDocBean.getTitle());
+            etDepart.setText(cooperateDocBean.getDepartment());
+            CheckUrl checkUrl = JSON.parseObject(cooperateDocBean.getCheckUrl(), CheckUrl.class);
+            if (checkUrl != null)
+            {
+                Glide.with(this).load(checkUrl.getIdFront()).into(ivIdCardFront);
+                Glide.with(this).load(checkUrl.getIdEnd()).into(ivIdCardBack);
+                Glide.with(this).load(checkUrl.getQualifiedFront()).into(ivDocCardFront);
+                Glide.with(this).load(checkUrl.getQualifiedEnd()).into(ivDocCardBack);
+            }
+        }
+    }
+
+    /**
+     * 获取个人信息
+     */
+    private void getDocInfo()
+    {
+        mIRequest.getDocInfo(loginSuccessBean.getDoctorId(), this);
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response)
+    {
+        super.onResponseSuccess(task, response);
+        switch (task)
+        {
+            case GET_DOC_INFO:
+                cooperateDocBean = response.getData();
+                initPageData();
+                break;
+            case QUALIFIY_DOC:
+                ToastUtil.toast(this, "处理成功");
+                //改变认证状态，当前为审核中
+                loginSuccessBean.setChecked(1);
+                YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
+                finish();
+                break;
+        }
     }
 
     @Override
@@ -175,22 +259,6 @@ public class AuthDocActivity extends BaseActivity
         mIRequest.qualifiyDoc(loginSuccessBean.getDoctorId(), txtName, txtCardNum, txtTitle,
                               txtDepart, txtHospital, idCardFrontTempFile, idCardBackTempFile,
                               docCardFrontTempFile, docCardBackTempFile, this);
-    }
-
-    @Override
-    public void onResponseSuccess(Tasks task, BaseResponse response)
-    {
-        super.onResponseSuccess(task, response);
-        switch (task)
-        {
-            case QUALIFIY_DOC:
-                ToastUtil.toast(this,"处理成功");
-                //改变认证状态，当前为审核中
-                loginSuccessBean.setChecked(1);
-                YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
-                finish();
-                break;
-        }
     }
 
     private void uploadImg(int type)

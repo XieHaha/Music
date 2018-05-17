@@ -162,10 +162,10 @@ public class UserFragment extends BaseFragment
                             ContextCompat.getColor(getContext(), R.color.app_auth_faild));
                     break;
                 case 1://审核中
+                    isAuth = false;
                     authImg.setSelected(false);
                     tvAuthStatus.setText("审核中");
-                    tvAuth.setText("");
-                    isAuth = true;
+                    tvAuth.setText("查看");
                     tvAuthStatus.setTextColor(
                             ContextCompat.getColor(getContext(), R.color.app_auth_faild));
                     break;
