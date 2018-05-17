@@ -19,7 +19,7 @@
         <ImageView
             android:id="@+id/public_title_bar_back"
             android:layout_width="@dimen/app_title_bar_height"
-            android:paddingLeft="16dp"
+            android:paddingLeft="12dp"
             android:layout_height="@dimen/app_title_bar_height"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
@@ -32,7 +32,7 @@
             android:textColor="@color/app_white_color"
             android:textSize="15sp"
             android:paddingLeft="10dp"
-            android:paddingRight="16dp"
+            android:paddingRight="12dp"
             android:visibility="gone"
             android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
@@ -55,7 +55,7 @@
         android:id="@+id/fragmrnt_user_info_headimg_layout"
         android:layout_width="130dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="77dp"
+        android:layout_marginTop="79dp"
         android:layout_height="130dp">
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -83,11 +83,11 @@
     <TextView
         android:id="@+id/act_user_info_name"
         android:layout_width="wrap_content"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:textColor="@color/app_white_color"
-        android:layout_marginTop="37dp"
+        android:layout_marginTop="35dp"
         android:text=""
-        android:layout_below="@id/act_user_info_headimg"
+        android:layout_below="@id/fragmrnt_user_info_headimg_layout"
         android:layout_centerHorizontal="true"
         android:layout_height="wrap_content" />
 
