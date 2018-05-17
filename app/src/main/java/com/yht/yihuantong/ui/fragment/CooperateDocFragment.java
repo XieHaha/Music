@@ -210,7 +210,7 @@ public class CooperateDocFragment extends BaseFragment
                 Intent intent = new Intent(getContext(), ApplyCooperateDocActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.public_title_bar_more_two:
+            case R.id.public_title_bar_more_three:
                 IntentIntegrator.forSupportFragment(this)
                                 .setBarcodeImageEnabled(false)
                                 .setPrompt("将二维码放入框内，即可自动识别")
