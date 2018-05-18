@@ -43,7 +43,7 @@ import custom.frame.widgets.view.ViewPrepared;
 public class HealthCardActivity extends BaseActivity
 {
     private Button btnBaseInfo, btnHealthRecord;
-    private TextView tvChat;
+    private TextView tvChat,tvTitle;
     private ImageView ivTitleBarMore;
     private ViewPager viewPager;
     private View viewIndicator;
@@ -93,6 +93,7 @@ public class HealthCardActivity extends BaseActivity
         viewIndicator = findViewById(R.id.act_health_card_indicator);
         btnBaseInfo = (Button)findViewById(R.id.act_health_card_base_info);
         tvChat = (TextView)findViewById(R.id.act_health_card_chat);
+        tvTitle = (TextView)findViewById(R.id.public_title_bar_title);
         btnHealthRecord = (Button)findViewById(R.id.act_health_card_health_record);
         ivTitleBarMore = (ImageView)findViewById(R.id.public_title_bar_more_two);
         ivTitleBarMore.setVisibility(View.VISIBLE);
@@ -107,20 +108,11 @@ public class HealthCardActivity extends BaseActivity
             patientBean = (PatientBean)getIntent().getSerializableExtra(
                     CommonData.KEY_PATIENT_BEAN);
         }
-        if (patientBean != null)
+        new ViewPrepared().asyncPrepare(btnBaseInfo, (w, h) ->
         {
-            ((TextView)findViewById(R.id.public_title_bar_title)).setText(
-                    patientBean.getName() + "的健康卡");
-        }
-        new ViewPrepared().asyncPrepare(btnBaseInfo, new ViewPrepared.OnPreDrawFinishListener()
-        {
-            @Override
-            public void onPreDrawFinish(int w, int h)
-            {
-                ViewGroup.LayoutParams params = viewIndicator.getLayoutParams();
-                params.width = w;
-                viewIndicator.setLayoutParams(params);
-            }
+            ViewGroup.LayoutParams params = viewIndicator.getLayoutParams();
+            params.width = w;
+            viewIndicator.setLayoutParams(params);
         });
         baseInfoFragment = new BaseInfoFragment();
         baseInfoFragment.setPatientBean(patientBean);
@@ -243,6 +235,16 @@ public class HealthCardActivity extends BaseActivity
         switch (task)
         {
             case GET_PATIENT_INFO:
+                patientBean =response.getData();
+                if (patientBean != null)
+                {
+                   tvTitle.setText(patientBean.getName() + "的健康卡");
+                }
+                if(baseInfoFragment!=null)
+                {
+                    baseInfoFragment.setPatientBean(patientBean);
+                    baseInfoFragment.initPageData();
+                }
                 break;
             case DELETE_PATIENT:
                 ToastUtil.toast(this, "操作成功");

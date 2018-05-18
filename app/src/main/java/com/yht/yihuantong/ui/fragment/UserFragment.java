@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -51,6 +52,7 @@ public class UserFragment extends BaseFragment
     private CustomListenScrollView scrollView;
     private TextView tvName, tvHospital, tvType, tvTitle, tvIntroduce;
     private TextView tvAuth, tvAuthStatus;
+    private ImageView ivEditInfo;
     private LoginSuccessBean loginSuccessBean;
     private boolean isAuth;
     /**
@@ -95,7 +97,8 @@ public class UserFragment extends BaseFragment
                                               getStateBarHeight(getActivity())));//填充状态栏
         //        //状态栏透明
         //        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        view.findViewById(R.id.public_title_bar_back).setOnClickListener(this);
+        ivEditInfo = view.findViewById(R.id.public_title_bar_back);
+        ivEditInfo.setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_info_exit).setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_info_version).setOnClickListener(this);
         rlAuthLayout = view.findViewById(R.id.fragment_my_auth_layout);
@@ -156,34 +159,38 @@ public class UserFragment extends BaseFragment
             {
                 case 0://未认证
                     isAuth = false;
-                    authImg.setSelected(false);
                     tvAuth.setText("去认证");
                     tvAuthStatus.setTextColor(
                             ContextCompat.getColor(getContext(), R.color.app_auth_faild));
+                    Glide.with(this).load(R.mipmap.icon_uncertified).into(authImg);
+                    ivEditInfo.setVisibility(View.VISIBLE);
                     break;
                 case 1://审核中
                     isAuth = false;
-                    authImg.setSelected(false);
                     tvAuthStatus.setText("审核中");
                     tvAuth.setText("查看");
                     tvAuthStatus.setTextColor(
                             ContextCompat.getColor(getContext(), R.color.app_auth_faild));
+                    Glide.with(this).load(R.mipmap.icon_uncertified).into(authImg);
+                    ivEditInfo.setVisibility(View.VISIBLE);
                     break;
                 case 2://审核未通过
                     isAuth = false;
-                    authImg.setSelected(false);
                     tvAuthStatus.setText("审核未通过");
                     tvAuth.setText("查看");
                     tvAuthStatus.setTextColor(
                             ContextCompat.getColor(getContext(), R.color.app_auth_faild));
+                    Glide.with(this).load(R.mipmap.icon_uncertified).into(authImg);
+                    ivEditInfo.setVisibility(View.VISIBLE);
                     break;
                 case 6://审核已通过
                     isAuth = false;
-                    authImg.setSelected(true);
                     tvAuthStatus.setText("已认证");
                     tvAuth.setText("查看");
                     tvAuthStatus.setTextColor(
                             ContextCompat.getColor(getContext(), R.color.app_auth_success));
+                    Glide.with(this).load(R.mipmap.icon_certified).into(authImg);
+                    ivEditInfo.setVisibility(View.GONE);
                     break;
             }
             tvName.setText(loginSuccessBean.getName());

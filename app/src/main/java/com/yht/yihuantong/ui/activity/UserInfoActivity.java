@@ -39,6 +39,7 @@ public class UserInfoActivity extends BaseActivity
     private CircleImageView ivHeadImg, imgAuth;
     private ImageView ivTitleMore;
     private TextView tvName, tvType, tvTitle, tvIntroduce, tvHospital;
+    private TextView tvChat;
     private View view_pop;
     private PopupWindow mPopupwinow;
     private TextView tvDelete, tvChange;
@@ -49,6 +50,10 @@ public class UserInfoActivity extends BaseActivity
      * 是否可以取消关注
      */
     private boolean isDealDoc;
+    /**
+     * 是否禁止聊天
+     */
+    private boolean isForbidChat;
 
     @Override
     public int getLayoutID()
@@ -67,7 +72,7 @@ public class UserInfoActivity extends BaseActivity
         findViewById(R.id.public_title_bar_back).setOnClickListener(this);
         ivTitleMore = (ImageView)findViewById(R.id.act_user_info_more);
         ivTitleMore.setOnClickListener(this);
-        findViewById(R.id.act_user_info_chat).setOnClickListener(this);
+        tvChat = (TextView)findViewById(R.id.act_user_info_chat);
         tvName = (TextView)findViewById(R.id.act_user_info_name);
         tvHospital = (TextView)findViewById(R.id.act_user_info_hospital);
         tvTitle = (TextView)findViewById(R.id.act_user_info_title);
@@ -83,6 +88,7 @@ public class UserInfoActivity extends BaseActivity
         {
             doctorId = getIntent().getStringExtra(CommonData.KEY_DOCTOR_ID);
             isDealDoc = getIntent().getBooleanExtra(CommonData.KEY_IS_DEAL_DOC, false);
+            isForbidChat = getIntent().getBooleanExtra(CommonData.KEY_IS_FORBID_CHAT, false);
         }
         if (isDealDoc)
         {
@@ -92,7 +98,22 @@ public class UserInfoActivity extends BaseActivity
         {
             ivTitleMore.setVisibility(View.GONE);
         }
+        if (isForbidChat)
+        {
+            tvChat.setVisibility(View.GONE);
+        }
+        else
+        {
+            tvChat.setVisibility(View.VISIBLE);
+        }
         getDocInfo();
+    }
+
+    @Override
+    public void initListener()
+    {
+        super.initListener();
+        tvChat.setOnClickListener(this);
     }
 
     /**

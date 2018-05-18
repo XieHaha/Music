@@ -6,6 +6,7 @@
 
         <activity android:name=".ui.EaseShowBigImageActivity" />
         <activity android:name=".ui.EaseShowVideoActivity" />
+        <activity android:name=".ui.EaseBaiduMapActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

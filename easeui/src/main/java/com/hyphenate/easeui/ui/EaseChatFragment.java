@@ -11,9 +11,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -44,6 +47,9 @@ import com.hyphenate.easeui.domain.EaseEmojicon;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.model.EaseAtMessageHelper;
 import com.hyphenate.easeui.model.EaseDingMessageHelper;
+import com.hyphenate.easeui.permission.OnPermissionCallback;
+import com.hyphenate.easeui.permission.Permission;
+import com.hyphenate.easeui.permission.PermissionHelper;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.hyphenate.easeui.widget.EaseAlertDialog;
@@ -72,7 +78,8 @@ import java.util.concurrent.Executors;
  * you can see ChatActivity in demo for your reference
  *
  */
-public class EaseChatFragment extends EaseBaseFragment implements EMMessageListener {
+public class EaseChatFragment extends EaseBaseFragment implements EMMessageListener,OnPermissionCallback
+{
     protected static final String TAG = "EaseChatFragment";
     protected static final int REQUEST_CODE_MAP = 1;
     protected static final int REQUEST_CODE_CAMERA = 2;
@@ -196,6 +203,8 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         if (isRoaming) {
             fetchQueue = Executors.newSingleThreadExecutor();
         }
+
+        permissionHelper = PermissionHelper.getInstance(getActivity());
     }
 
     protected void setUpView() {
@@ -248,14 +257,24 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
                 onBackPressed();
             }
         });
+//        titleBar.setRightLayoutClickListener(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                if (chatType == EaseConstant.CHATTYPE_SINGLE) {
+//                    emptyHistory();
+//                } else {
+//                    toGroupDetails();
+//                }
+//            }
+//        });
         titleBar.setRightLayoutClickListener(new OnClickListener() {
-
             @Override
-            public void onClick(View v) {
-                if (chatType == EaseConstant.CHATTYPE_SINGLE) {
-                    emptyHistory();
-                } else {
-                    toGroupDetails();
+            public void onClick(View v)
+            {
+                if(onRightTitleBarClickListener!=null)
+                {
+                    onRightTitleBarClickListener.onRightTitleBarClick();
                 }
             }
         });
@@ -276,7 +295,7 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
 //        }
 
         if (titleBar != null)
-        {titleBar.setRightLayoutVisibility(View.GONE);}
+        {titleBar.setRightLayoutVisibility(View.VISIBLE);}
     }
     
     /**
@@ -667,13 +686,22 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
             }
             switch (itemId) {
             case ITEM_TAKE_PICTURE:
-                selectPicFromCamera();
+//                selectPicFromCamera();
+                //动态申请权限
+                permissionHelper.request(new String[] {
+                        Permission.CAMERA,
+                        Permission.STORAGE_WRITE });
                 break;
             case ITEM_PICTURE:
-                selectPicFromLocal();
+//                selectPicFromLocal();
+                //动态申请权限
+                permissionHelper.request(new String[] {
+                        Permission.STORAGE_WRITE });
                 break;
             case ITEM_LOCATION:
-                startActivityForResult(new Intent(getActivity(), EaseBaiduMapActivity.class), REQUEST_CODE_MAP);
+//                startActivityForResult(new Intent(getActivity(), EaseBaiduMapActivity.class), REQUEST_CODE_MAP);
+                //动态申请权限
+                permissionHelper.request(Permission.LOCATION);
                 break;
 
             default:
@@ -682,7 +710,136 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         }
 
     }
-    
+
+    /***********************************8权限申请*********************/
+    /**
+     * 权限管理类
+     */
+    protected PermissionHelper permissionHelper;
+
+    private boolean isSamePermission(String o, String n)
+    {
+        if (TextUtils.isEmpty(o) || TextUtils.isEmpty(n))
+        {
+            return false;
+        }
+        if (o.equals(n))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults)
+    {
+        if (permissions == null)
+        {
+            return;
+        }
+        permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void onPermissionGranted(@NonNull String[] permissionName)
+    {
+        if (permissionName == null || permissionName.length == 0)
+        {
+            return;
+        }
+        if (isSamePermission(Permission.CAMERA, permissionName[0]))
+        {
+            selectPicFromCamera();
+        }
+        else if (isSamePermission(Permission.STORAGE_WRITE, permissionName[0]))
+        {
+            selectPicFromLocal();
+        }
+        else if(isSamePermission(Permission.FINE_LOCATION,permissionName[0]))
+        {
+            startActivityForResult(new Intent(getActivity(), EaseBaiduMapActivity.class), REQUEST_CODE_MAP);
+        }
+    }
+
+    @Override
+    public void onPermissionDeclined(@NonNull String[] permissionName)
+    {
+        for (String permission : permissionName) {
+            if (Permission.STORAGE_WRITE.equals(permission)) {
+                Toast.makeText(getContext(),R.string.dialog_no_storage_permission_tip,Toast.LENGTH_SHORT).show();
+                break;
+            }
+            if (Permission.CAMERA.equals(permission)) {
+                Toast.makeText(getContext(),R.string.dialog_no_camera_permission_tip,Toast.LENGTH_SHORT).show();
+                break;
+            }
+            if (Permission.RECORD_AUDIO.equals(permission)) {
+                Toast.makeText(getContext(),R.string.dialog_no_audio_permission_tip,Toast.LENGTH_SHORT).show();
+                break;
+            }
+            if (Permission.LOCATION.equals(permission)) {
+                Toast.makeText(getContext(),R.string.dialog_no_location_permission_tip,Toast.LENGTH_SHORT).show();
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onPermissionPreGranted(@NonNull String permissionsName)
+    {
+        Log.d("test", "onPermissionPreGranted:" + permissionsName);
+    }
+
+    @Override
+    public void onPermissionNeedExplanation(@NonNull String permissionName)
+    {
+        permissionHelper.requestAfterExplanation(permissionName);
+    }
+
+    @Override
+    public void onPermissionReallyDeclined(@NonNull String permissionName)
+    {
+        Toast.makeText(getContext(),"权限错误",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNoPermissionNeeded(@NonNull Object permissionName)
+    {
+        if (permissionName instanceof String[])
+        {
+            if (isSamePermission(Permission.STORAGE_WRITE, ((String[])permissionName)[0]))
+            {
+                selectPicFromLocal();
+            }
+            else if (isSamePermission(Permission.CAMERA, ((String[])permissionName)[0]))
+            {
+                selectPicFromCamera();
+            }
+            else if(isSamePermission(Permission.FINE_LOCATION,((String[])permissionName)[0]))
+            {
+                startActivityForResult(new Intent(getActivity(), EaseBaiduMapActivity.class), REQUEST_CODE_MAP);
+            }
+        }
+    }
+    /***********************************8权限申请*********************/
+
+    /******************************************回调**************/
+    public interface OnRightTitleBarClickListener
+    {
+        void onRightTitleBarClick();
+    }
+
+    private OnRightTitleBarClickListener onRightTitleBarClickListener;
+
+    public void setOnRightTitleBarClickListener(
+            OnRightTitleBarClickListener onRightTitleBarClickListener)
+    {
+        this.onRightTitleBarClickListener = onRightTitleBarClickListener;
+    }
+
+    /******************************回调   end**************/
+
     /**
      * input @
      * @param username

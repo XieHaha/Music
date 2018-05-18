@@ -16,7 +16,7 @@
         android:id="@+id/act_splash_layout"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:visibility="gone"
+        android:visibility="visible"
         android:gravity="center_horizontal"
         android:layout_height="match_parent">
 

@@ -104,17 +104,14 @@ public class CaseRecordFragment extends BaseFragment implements LoadMoreListener
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(caseRecordListAdapter);
-        caseRecordListAdapter.setOnItemClickListener(
-                new BaseRecyclerAdapter.OnItemClickListener<PatientCaseDetailBean>() {
-                    @Override
-                    public void onItemClick(View v, int position, PatientCaseDetailBean item) {
-                        Intent intent = new Intent(getContext(), HealthDetailActivity.class);
-                        intent.putExtra(CommonData.KEY_ADD_NEW_HEALTH, false);
-                        intent.putExtra(CommonData.KEY_PATIENT_ID,item.getPatientId());
-                        intent.putExtra(CommonData.PATIENT_CASE_DETAIL_BEAN,item);
-                        startActivity(intent);
-                    }
-                });
+        caseRecordListAdapter.setOnItemClickListener((v, position, item) ->
+                                                     {
+                                                         Intent intent = new Intent(getContext(), HealthDetailActivity.class);
+                                                         intent.putExtra(CommonData.KEY_ADD_NEW_HEALTH, false);
+                                                         intent.putExtra(CommonData.KEY_PATIENT_ID,item.getPatientId());
+                                                         intent.putExtra(CommonData.PATIENT_CASE_DETAIL_BEAN,item);
+                                                         startActivity(intent);
+                                                     });
     }
 
     public void setPatientBean(PatientBean patientBean) {

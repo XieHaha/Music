@@ -77,12 +77,19 @@ public class BaseInfoFragment extends BaseFragment {
         super.initData(savedInstanceState);
         if (patientBean != null) {
             patientId = patientBean.getPatientId();
-            tvSex.setText(patientBean.getSex());
-            tvAge.setText(AllUtils.formatDateByAge(patientBean.getBirthDate()));
         }
         getPatientAllergy();
         getPatientDiagnosis();
         getPatientSurgery();
+    }
+
+    public void initPageData()
+    {
+        if(patientBean!=null)
+        {
+            tvSex.setText(patientBean.getSex());
+            tvAge.setText(AllUtils.formatDateByAge(patientBean.getBirthDate()));
+        }
     }
 
     public void setPatientBean(PatientBean patientBean) {

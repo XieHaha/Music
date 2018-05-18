@@ -65,7 +65,6 @@ public class CompleteInfo2Activity extends BaseActivity
      */
     private void updateJobInfo()
     {
-        showProgressDialog("");
         hospital = etHospital.getText().toString().trim();
         type = etType.getText().toString().trim();
         job = etJob.getText().toString().trim();
@@ -76,6 +75,7 @@ public class CompleteInfo2Activity extends BaseActivity
             ToastUtil.toast(this, R.string.toast_upload_job_info_hint);
             return;
         }
+        showProgressDialog("");
         mIRequest.updateJobInfo(loginSuccessBean.getDoctorId(), loginSuccessBean.getChecked(),type, introduce, hospital, job,
                                 this);
     }

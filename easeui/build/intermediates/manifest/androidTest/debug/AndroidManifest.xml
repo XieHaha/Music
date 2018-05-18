@@ -20,6 +20,7 @@
 
         <activity android:name="com.hyphenate.easeui.ui.EaseShowBigImageActivity" />
         <activity android:name="com.hyphenate.easeui.ui.EaseShowVideoActivity" />
+        <activity android:name="com.hyphenate.easeui.ui.EaseBaiduMapActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

@@ -1,8 +1,8 @@
 -- Merging decision tree log ---
 manifest
-ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:1:1-22:12
-INJECTED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:1:1-22:12
-INJECTED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:1:1-22:12
+ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:1:1-23:12
+INJECTED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:1:1-23:12
+INJECTED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:1:1-23:12
 	package
 		ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:2:5-35
 		INJECTED from F:\YHT_D\easeui\src\main\AndroidManifest.xml
@@ -10,7 +10,7 @@ INJECTED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:1:1-22:12
 	xmlns:android
 		ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:1:11-69
 application
-ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:4:5-20:19
+ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:4:5-21:19
 	android:allowBackup
 		ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:4:18-44
 activity#com.hyphenate.easeui.ui.EaseShowBigImageActivity
@@ -21,22 +21,26 @@ activity#com.hyphenate.easeui.ui.EaseShowVideoActivity
 ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:8:9-62
 	android:name
 		ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:8:19-59
+activity#com.hyphenate.easeui.ui.EaseBaiduMapActivity
+ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:9:9-61
+	android:name
+		ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:9:19-58
 provider#android.support.v4.content.FileProvider
-ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:10:9-19:20
+ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:11:9-20:20
 	android:grantUriPermissions
-		ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:14:13-47
+		ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:15:13-47
 	android:authorities
-		ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:12:13-66
+		ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:13:13-66
 	android:exported
-		ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:13:13-37
+		ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:14:13-37
 	android:name
-		ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:11:13-67
+		ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:12:13-67
 meta-data#android.support.FILE_PROVIDER_PATHS
-ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:15:9-17:67
+ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:16:9-18:67
 	android:resource
-		ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:17:13-54
+		ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:18:13-54
 	android:name
-		ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:16:13-63
+		ADDED from F:\YHT_D\easeui\src\main\AndroidManifest.xml:17:13-63
 uses-sdk
 INJECTED from F:\YHT_D\easeui\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from F:\YHT_D\easeui\src\main\AndroidManifest.xml

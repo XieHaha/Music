@@ -50,4 +50,8 @@ public interface CommonData
      * 是否能对合作医生操作
      */
     String KEY_IS_DEAL_DOC = "key_is_deal_doc";
+    /**
+     * 是否禁止发起聊天
+     */
+    String KEY_IS_FORBID_CHAT = "key_is_forbid_chat";
 }
