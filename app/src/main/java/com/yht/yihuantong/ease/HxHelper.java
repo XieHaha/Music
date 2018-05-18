@@ -75,56 +75,14 @@ public class HxHelper
         return instance;
     }
 
-    public EaseUser getUser(String username,UserInfoCallback callback)
+    public EaseUser getUser(String username, UserInfoCallback callback)
     {
         EaseUser user = new EaseUser(username);
-//                //获取到所有会话
-//                mConvMap = EMClient.getInstance().chatManager().getAllConversations();
-//                if (null != mConvMap && mConvMap.size() > 0)
-//                {
-//                    List<EMMessage> msgList = null;
-//                    for (Map.Entry<String, EMConversation> et : mConvMap.entrySet())
-//                    {
-//                        msgList = et.getValue().getAllMessages();
-//                        //遍历消息列表，从消息扩展中获取昵称和头像
-//                        if (null != msgList && !msgList.isEmpty())
-//                        {
-//                            for (EMMessage msg : msgList)
-//                            {
-//                                Log.e("test", "username:" + username + "  to:" + msg.getTo() + "  from:" +
-//                                              msg.getFrom());
-//                                try
-//                                {
-//                                    Log.e("test", "name:" + msg.getStringAttribute(MSG_EXT_NICKNAME) + "  url:" +msg.getStringAttribute(MSG_EXT_AVATAR));
-//                                }
-//                                catch (HyphenateException e)
-//                                {
-//                                    e.printStackTrace();
-//                                }
-//                                if (!TextUtils.equals(username, msg.getFrom()))
-//                                {
-//                                    //如果该条消息不是该用户的，就遍历下一条
-//                                    continue;
-//                                }
-//                                //设置昵称和用户名
-//
-//                                try
-//                                {
-//                                    user.setNickname(msg.getStringAttribute(MSG_EXT_NICKNAME));
-//                                    user.setAvatar(msg.getStringAttribute(MSG_EXT_AVATAR));
-//                                }
-//                                catch (Exception e)
-//                                {
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
         if (username.contains("p"))
         {
-            List<PatientBean> list = DataSupport.where("patientId = ?", username).find(PatientBean.class);
-            if(list!=null&& list.size()>0)
+            List<PatientBean> list = DataSupport.where("patientId = ?", username)
+                                                .find(PatientBean.class);
+            if (list != null && list.size() > 0)
             {
                 PatientBean bean = list.get(0);
                 user.setNickname(bean.getName());
@@ -138,8 +96,11 @@ public class HxHelper
                 public void onResponseSuccess(Tasks task, BaseResponse response)
                 {
                     PatientBean patientBean = response.getData();
-                    user.setNickname(patientBean.getName());
-                    user.setAvatar(patientBean.getPatientImgUrl());
+                    if (patientBean != null)
+                    {
+                        user.setNickname(patientBean.getName());
+                        user.setAvatar(patientBean.getPatientImgUrl());
+                    }
                     callback.onSuccess(user);
                 }
 
@@ -182,9 +143,9 @@ public class HxHelper
         }
         else
         {
-
-            List<CooperateDocBean> list = DataSupport.where("doctorId = ?", username).find(CooperateDocBean.class);
-            if(list!=null&& list.size()>0)
+            List<CooperateDocBean> list = DataSupport.where("doctorId = ?", username)
+                                                     .find(CooperateDocBean.class);
+            if (list != null && list.size() > 0)
             {
                 CooperateDocBean bean = list.get(0);
                 user.setNickname(bean.getName());
@@ -198,8 +159,11 @@ public class HxHelper
                 public void onResponseSuccess(Tasks task, BaseResponse response)
                 {
                     CooperateDocBean bean = response.getData();
-                    user.setNickname(bean.getName());
-                    user.setAvatar(bean.getPortraitUrl());
+                    if (bean != null)
+                    {
+                        user.setNickname(bean.getName());
+                        user.setAvatar(bean.getPortraitUrl());
+                    }
                     callback.onSuccess(user);
                 }
 

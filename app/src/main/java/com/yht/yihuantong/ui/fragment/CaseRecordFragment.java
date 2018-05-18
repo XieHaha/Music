@@ -14,6 +14,7 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.activity.HealthDetailActivity;
 import com.yht.yihuantong.ui.adapter.CaseRecordListAdapter;
+import com.yht.yihuantong.ui.dialog.SimpleDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +23,8 @@ import custom.frame.bean.BaseResponse;
 import custom.frame.bean.PatientBean;
 import custom.frame.bean.PatientCaseDetailBean;
 import custom.frame.http.Tasks;
-import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.ui.fragment.BaseFragment;
+import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
@@ -112,6 +113,15 @@ public class CaseRecordFragment extends BaseFragment implements LoadMoreListener
                                                          intent.putExtra(CommonData.PATIENT_CASE_DETAIL_BEAN,item);
                                                          startActivity(intent);
                                                      });
+        caseRecordListAdapter.setOnItemLongClickListener((v, position, item) ->
+                                                         {
+                                                             new SimpleDialog(getActivity(), "删除当前病例",
+                                                                              (dialog, which) ->
+                                                                              {
+                                                                                  deletePatientCaseList(caseRecordList.get(position));
+                                                                              },
+                                                                              (dialog, which) -> dialog.dismiss()).show();
+                                                         });
     }
 
     public void setPatientBean(PatientBean patientBean) {
@@ -123,6 +133,15 @@ public class CaseRecordFragment extends BaseFragment implements LoadMoreListener
      */
     private void getPatientCaseList() {
         mIRequest.getPatientCaseList(patientId, page, PAGE_SIZE, this);
+    }
+
+    /**
+     * 删除患者病例列表
+     */
+    private void deletePatientCaseList(PatientCaseDetailBean bean)
+    {
+        mIRequest.deletePatientCase(patientId, bean.getFieldId(), bean.getCaseCreatorId(),
+                                    loginSuccessBean.getDoctorId(), this);
     }
 
 
@@ -163,6 +182,10 @@ public class CaseRecordFragment extends BaseFragment implements LoadMoreListener
                     tvHintTxt.setText("上拉加载更多");
                     autoLoadRecyclerView.loadFinish(true);
                 }
+                break;
+            case DELETE_PATIENT_CASE:
+                ToastUtil.toast(getContext(), "处理成功");
+                getPatientCaseList();
                 break;
             default:
                 break;

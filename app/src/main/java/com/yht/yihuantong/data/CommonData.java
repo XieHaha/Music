@@ -54,4 +54,28 @@ public interface CommonData
      * 是否禁止发起聊天
      */
     String KEY_IS_FORBID_CHAT = "key_is_forbid_chat";
+    /**
+     * 申请添加医生
+     */
+    int APPLY_ADD_DOCTOR = 1;
+    /**
+     * 添加医生成功
+     */
+    int APPLY_ADD_DOCTOR_SUCCESS = 2;
+    /**
+     * 申请添加患者
+     */
+    int APPLY_ADD_PATIENT = 3;
+    /**
+     * 添加患者成功
+     */
+    int APPLY_ADD_PATIENT_SUCCESS = 4;
+    /**
+     * 医生认证成功
+     */
+    int APPLY_AUTH_SUCCESS = 100;
+    /**
+     * 医生认证失败
+     */
+    int APPLY_AUTH_FAILD = 101;
 }

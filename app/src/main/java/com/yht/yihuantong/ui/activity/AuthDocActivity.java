@@ -99,8 +99,8 @@ public class AuthDocActivity extends BaseActivity
         super.initView(savedInstanceState);
         ((TextView)findViewById(R.id.public_title_bar_title)).setText("认证");
         tvTitleMore = (TextView)findViewById(R.id.public_title_bar_more_txt);
-        tvTitleMore.setVisibility(View.GONE);
-        tvTitleMore.setText("信息");
+        tvTitleMore.setVisibility(View.VISIBLE);
+        tvTitleMore.setText("重新认证");
         ivIdCardFront = (ImageView)findViewById(R.id.act_auth_doc_idcard_front);
         ivIdCardBack = (ImageView)findViewById(R.id.act_auth_doc_idcard_back);
         ivDocCardFront = (ImageView)findViewById(R.id.act_auth_doc_doccard_front);
@@ -148,6 +148,7 @@ public class AuthDocActivity extends BaseActivity
             findViewById(R.id.act_auth_doc_doccard_back_layout).setOnClickListener(this);
         }
         findViewById(R.id.act_auth_doc_apply).setOnClickListener(this);
+        tvTitleMore.setOnClickListener(this);
         etDepart.setOnEditorActionListener((v, actionId, event) ->
                                            {
                                                if (actionId == EditorInfo.IME_ACTION_DONE)
@@ -179,6 +180,14 @@ public class AuthDocActivity extends BaseActivity
                 Glide.with(this).load(checkUrl.getQualifiedEnd()).into(ivDocCardBack);
             }
         }
+    }
+
+    /**
+     * 编辑模式
+     */
+    private void updateMode()
+    {
+
     }
 
     /**
@@ -229,6 +238,9 @@ public class AuthDocActivity extends BaseActivity
                 break;
             case R.id.act_auth_doc_apply:
                 qualifiyDoc();
+                break;
+            case R.id.public_title_bar_more_txt:
+
                 break;
         }
     }

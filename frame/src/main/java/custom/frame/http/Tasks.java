@@ -108,6 +108,10 @@ public enum Tasks
      */
     UPDATE_PATIENT_CASE,
     /**
+     * 删除患者病例
+     */
+    DELETE_PATIENT_CASE,
+    /**
      * 处理医生申请合作（proCode为字符1（表示同意）或字符3（表示拒绝））
      */
     DEAL_DOC_APPLY,

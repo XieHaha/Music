@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class PatientCaseDetailBean implements Serializable {
     private static final long serialVersionUID = -4790053578533223621L;
 
-    private int id;
+    private int fieldId;
     private long gmtCreate;
     private long gmtModified;
     private long visDate;
@@ -23,13 +23,38 @@ public class PatientCaseDetailBean implements Serializable {
     private String checkReport;
     private String treat;
     private String reportImgUrl;
+    private String caseCreatorId;
+    private String caseLastUpdateId;
 
-    public int getId() {
-        return id;
+
+    public int getFieldId()
+    {
+        return fieldId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setFieldId(int fieldId)
+    {
+        this.fieldId = fieldId;
+    }
+
+    public String getCaseCreatorId()
+    {
+        return caseCreatorId;
+    }
+
+    public void setCaseCreatorId(String caseCreatorId)
+    {
+        this.caseCreatorId = caseCreatorId;
+    }
+
+    public String getCaseLastUpdateId()
+    {
+        return caseLastUpdateId;
+    }
+
+    public void setCaseLastUpdateId(String caseLastUpdateId)
+    {
+        this.caseLastUpdateId = caseLastUpdateId;
     }
 
     public long getGmtCreate() {

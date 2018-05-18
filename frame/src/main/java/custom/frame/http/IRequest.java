@@ -407,13 +407,15 @@ public class IRequest extends BaseRequest
     /**
      * 新增患者病例
      */
-    public Tasks addPatientCase(String patientId, String checkReport, String patientWords,
+    public Tasks addPatientCase(String patientId,String caseCreatorId, String caseLastUpdateId,String checkReport, String patientWords,
             String currentInfo, String diagnosisInfo, String doctorDep, String hospital,
             String importantHistory, String reportImgUrl, String treat, String visDate,
             final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>();
         merchant.put("patientId", patientId);
+        merchant.put("caseCreatorId", caseCreatorId);
+        merchant.put("caseLastUpdateId", caseLastUpdateId);
         merchant.put("checkReport", checkReport);
         merchant.put("currentInfo", currentInfo);
         merchant.put("diagnosisInfo", diagnosisInfo);
@@ -431,14 +433,17 @@ public class IRequest extends BaseRequest
     /**
      * 更新患者病例
      */
-    public Tasks updatePatientCase(String patientId, int caseId, String checkReport,
+    public Tasks updatePatientCase(String patientId, int fieldId, String caseCreatorId,String caseLastUpdateId,String caseOperatorId,String checkReport,
             String patientWords, String currentInfo, String diagnosisInfo, String doctorDep,
             String hospital, String importantHistory, String reportImgUrl, String treat,
             String visDate, final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>();
         merchant.put("patientId", patientId);
-        merchant.put("caseId", caseId);
+        merchant.put("fieldId", fieldId);
+        merchant.put("caseCreatorId", caseCreatorId);
+        merchant.put("caseLastUpdateId", caseLastUpdateId);
+        merchant.put("caseOperatorId", caseOperatorId);
         merchant.put("checkReport", checkReport);
         merchant.put("currentInfo", currentInfo);
         merchant.put("diagnosisInfo", diagnosisInfo);
@@ -450,6 +455,21 @@ public class IRequest extends BaseRequest
         merchant.put("treat", treat);
         merchant.put("visDate", visDate);
         return requestBaseResponseByJson("/case/update", Tasks.UPDATE_PATIENT_CASE, String.class,
+                                         merchant, listener);
+    }
+
+    /**
+     * 删除患者病例
+     */
+    public Tasks deletePatientCase(String patientId, int fieldId, String caseCreatorId,String caseOperatorId,
+            final ResponseListener<BaseResponse> listener)
+    {
+        Map<String, Object> merchant = new HashMap<>();
+        merchant.put("patientId", patientId);
+        merchant.put("fieldId", fieldId);
+        merchant.put("caseCreatorId", caseCreatorId);
+        merchant.put("caseOperatorId", caseOperatorId);
+        return requestBaseResponseByJson("/case/delete", Tasks.DELETE_PATIENT_CASE, String.class,
                                          merchant, listener);
     }
 

@@ -172,7 +172,7 @@ public class UserFragment extends BaseFragment
                     tvAuthStatus.setTextColor(
                             ContextCompat.getColor(getContext(), R.color.app_auth_faild));
                     Glide.with(this).load(R.mipmap.icon_uncertified).into(authImg);
-                    ivEditInfo.setVisibility(View.VISIBLE);
+                    ivEditInfo.setVisibility(View.GONE);
                     break;
                 case 2://审核未通过
                     isAuth = false;
@@ -248,6 +248,8 @@ public class UserFragment extends BaseFragment
                     //清除数据库数据
                     DataSupport.deleteAll(PatientBean.class);
                     DataSupport.deleteAll(CooperateDocBean.class);
+                    //删除环信会话列表
+                    //TODO
                     //退出环信
                     EMClient.getInstance().logout(true);
                     dialog.dismiss();

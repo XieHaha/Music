@@ -70,6 +70,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
     private Uri cutFileUri;
     private File cameraTempFile;
     private String patientId;
+    private long diagnosisTimeMil;
     /**
      * 时间选择控件
      */
@@ -148,8 +149,9 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
         tvHint = (TextView)findViewById(R.id.act_health_detail_hint);
         etDiagnosis = (EditText)findViewById(R.id.act_health_detail_diagnosis);
         tvDiagnosisTime = (TextView)findViewById(R.id.act_health_detail_diagnosis_time);
+        diagnosisTimeMil = System.currentTimeMillis();
         tvDiagnosisTime.setText(
-                AllUtils.formatDate(System.currentTimeMillis(), AllUtils.DATE_FORMAT_NO_HOUR));
+                AllUtils.formatDate(diagnosisTimeMil, AllUtils.DATE_FORMAT_NO_HOUR));
         etDepartment = (EditText)findViewById(R.id.act_health_detail_department);
         etHospital = (EditText)findViewById(R.id.act_health_detail_hopital);
         etCaseInfo = (EditText)findViewById(R.id.act_health_detail_case_info);
@@ -256,6 +258,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
             tvCreateTime.setText("创建时间 " + AllUtils.formatDate(patientCaseDetailBean.getGmtCreate(),
                                                                AllUtils.DATE_FORMAT));
             etDiagnosis.setText(patientCaseDetailBean.getDiagnosisInfo());
+            diagnosisTimeMil = patientCaseDetailBean.getVisDate();
             tvDiagnosisTime.setText(AllUtils.formatDate(patientCaseDetailBean.getVisDate(),
                                                         AllUtils.DATE_FORMAT_NO_HOUR));
             etDepartment.setText(patientCaseDetailBean.getDoctorDep());
@@ -265,16 +268,21 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
             //            etCaseImportment.setText(patientCaseDetailBean.getImportantHistory());
             etCaseCheck.setText(patientCaseDetailBean.getCheckReport());
             etCaseDealType.setText(patientCaseDetailBean.getTreat());
-            allImgUrl.append(patientCaseDetailBean.getReportImgUrl());
-            String[] str = patientCaseDetailBean.getReportImgUrl().split(",");
-            for (int i = 0; i < str.length; i++)
+
+            String imgUrls = patientCaseDetailBean.getReportImgUrl();
+            if(!TextUtils.isEmpty(imgUrls))
             {
-                String url = str[i];
-                NormImage normImage = new NormImage();
-                normImage.setBigImageUrl(url);
-                normImage.setMiddleImageUrl(url);
-                normImage.setSmallImageUrl(url);
-                imageList.add(normImage);
+                allImgUrl.append(imgUrls);
+                String[] str = patientCaseDetailBean.getReportImgUrl().split(",");
+                for (int i = 0; i < str.length; i++)
+                {
+                    String url = str[i];
+                    NormImage normImage = new NormImage();
+                    normImage.setBigImageUrl(url);
+                    normImage.setMiddleImageUrl(url);
+                    normImage.setSmallImageUrl(url);
+                    imageList.add(normImage);
+                }
             }
             autoGridView.updateImg(imageList, false);
         }
@@ -295,9 +303,9 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
      */
     private void addPatientCase()
     {
-        mIRequest.addPatientCase(patientId, caseCheck, caseInfo, caseNow, diagnosis, department,
-                                 hospital, caseNow, allImgUrl.toString(), caseDealType,
-                                 diagnosisTime, this);
+        mIRequest.addPatientCase(patientId, loginSuccessBean.getDoctorId(), loginSuccessBean.getDoctorId(), caseCheck, caseInfo, caseNow,
+                                 diagnosis, department, hospital, caseNow, allImgUrl.toString(),
+                                 caseDealType, diagnosisTimeMil + "", this);
     }
 
     /**
@@ -305,9 +313,12 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
      */
     private void updatePatientCase()
     {
-        mIRequest.updatePatientCase(patientId, patientCaseDetailBean.getId(), caseCheck, caseInfo,
-                                    caseNow, diagnosis, department, hospital, caseNow,
-                                    allImgUrl.toString(), caseDealType, diagnosisTime, this);
+        mIRequest.updatePatientCase(patientId, patientCaseDetailBean.getFieldId(),
+                                    patientCaseDetailBean.getCaseCreatorId(),
+                                    patientCaseDetailBean.getCaseLastUpdateId(), loginSuccessBean.getDoctorId(),
+                                    caseCheck, caseInfo, caseNow, diagnosis, department, hospital,
+                                    caseNow, allImgUrl.toString(), caseDealType,
+                                    diagnosisTimeMil + "", this);
     }
 
     @Override
@@ -380,14 +391,18 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                     Integer.parseInt(strings[2]));
 
         //当前时间设置
-        String curTime = simpleDateFormat.format(patientCaseDetailBean.getVisDate());
-        String[] strings1 = curTime.split("-");
-        selectedDate.set(Integer.parseInt(strings1[0]), Integer.parseInt(strings1[1])-1, Integer.parseInt(strings1[2]));
+        if(patientCaseDetailBean!=null)
+        {
+            String curTime = simpleDateFormat.format(patientCaseDetailBean.getVisDate());
+            String[] strings1 = curTime.split("-");
+            selectedDate.set(Integer.parseInt(strings1[0]), Integer.parseInt(strings1[1])-1, Integer.parseInt(strings1[2]));
+        }
 
         timePicker = new TimePickerBuilder(this, (date, v) ->
         {//选中事件回调
             SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
             tvDiagnosisTime.setText(simpleDateFormat1.format(date));
+            diagnosisTimeMil = date.getTime();
         }).setType(new boolean[] { true, true, true, false, false, false })// 默认全部显示
               .setCancelText("取消")//取消按钮文字
               .setSubmitText("确定")//确认按钮文字
