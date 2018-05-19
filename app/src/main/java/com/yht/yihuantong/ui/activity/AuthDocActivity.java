@@ -26,6 +26,7 @@ import com.yht.yihuantong.ui.dialog.ActionSheetDialog;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.utils.FileUtils;
 import com.yht.yihuantong.utils.LogUtils;
+import com.yht.yihuantong.utils.ScalingUtils;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
@@ -52,6 +53,7 @@ public class AuthDocActivity extends BaseActivity
     private EditText etName, etCardNumber, etHospital, etTitle, etDepart;
     private File tempFile, idCardFrontTempFile, idCardBackTempFile, docCardFrontTempFile, docCardBackTempFile;
     private ImageView ivIdCardFront, ivIdCardBack, ivDocCardFront, ivDocCardBack;
+    private TextView tvIdCardFrontHint, tvIdCardBackHint, tvDocCardFrontHint, tvDocCardBackHint;
     private RelativeLayout rlApplyLayout;
     private String txtName, txtCardNum, txtHospital, txtTitle, txtDepart;
     private CooperateDocBean cooperateDocBean;
@@ -80,6 +82,10 @@ public class AuthDocActivity extends BaseActivity
      * 资质证明背面
      */
     private final int DOC_CARD_BACK = 4;
+    /**
+     * 医生认证状态
+     */
+    private int authStatus = -1;
 
     @Override
     public int getLayoutID()
@@ -99,12 +105,15 @@ public class AuthDocActivity extends BaseActivity
         super.initView(savedInstanceState);
         ((TextView)findViewById(R.id.public_title_bar_title)).setText("认证");
         tvTitleMore = (TextView)findViewById(R.id.public_title_bar_more_txt);
-        tvTitleMore.setVisibility(View.VISIBLE);
         tvTitleMore.setText("重新认证");
         ivIdCardFront = (ImageView)findViewById(R.id.act_auth_doc_idcard_front);
         ivIdCardBack = (ImageView)findViewById(R.id.act_auth_doc_idcard_back);
         ivDocCardFront = (ImageView)findViewById(R.id.act_auth_doc_doccard_front);
         ivDocCardBack = (ImageView)findViewById(R.id.act_auth_doc_doccard_back);
+        tvIdCardFrontHint = (TextView)findViewById(R.id.act_auth_doc_idcard_front_hint);
+        tvIdCardBackHint = (TextView)findViewById(R.id.act_auth_doc_idcard_back_hint);
+        tvDocCardFrontHint = (TextView)findViewById(R.id.act_auth_doc_doccard_front_hint);
+        tvDocCardBackHint = (TextView)findViewById(R.id.act_auth_doc_doccard_back_hint);
         etName = (EditText)findViewById(R.id.act_auth_doc_name);
         etCardNumber = (EditText)findViewById(R.id.act_auth_doc_card_num);
         etHospital = (EditText)findViewById(R.id.act_auth_doc_hospital);
@@ -117,20 +126,22 @@ public class AuthDocActivity extends BaseActivity
     public void initData(@NonNull Bundle savedInstanceState)
     {
         super.initData(savedInstanceState);
-        //当前不为未认证状态
-        if (loginSuccessBean.getChecked() != 0 && loginSuccessBean.getChecked()!=2)
+        authStatus = loginSuccessBean.getChecked();
+        if (authStatus == 2 || authStatus == 6)
         {
-            etName.setFocusable(false);
-            etName.setFocusableInTouchMode(false);
-            etCardNumber.setFocusable(false);
-            etCardNumber.setFocusableInTouchMode(false);
-            etHospital.setFocusable(false);
-            etHospital.setFocusableInTouchMode(false);
-            etTitle.setFocusable(false);
-            etTitle.setFocusableInTouchMode(false);
-            etDepart.setFocusable(false);
-            etDepart.setFocusableInTouchMode(false);
-            rlApplyLayout.setVisibility(View.GONE);
+            tvTitleMore.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            tvTitleMore.setVisibility(View.GONE);
+        }
+        if (authStatus == 0)
+        {
+            updateMode(true);
+        }
+        else
+        {
+            updateMode(false);
         }
         getDocInfo();
     }
@@ -139,8 +150,12 @@ public class AuthDocActivity extends BaseActivity
     public void initListener()
     {
         super.initListener();
-        //0未认证   2 认证失败
-        if (loginSuccessBean.getChecked() == 0 || loginSuccessBean.getChecked()==2)
+        tvIdCardFrontHint.setOnClickListener(this);
+        tvIdCardBackHint.setOnClickListener(this);
+        tvDocCardFrontHint.setOnClickListener(this);
+        tvDocCardBackHint.setOnClickListener(this);
+        //0未认证
+        if (authStatus == 0)
         {
             findViewById(R.id.act_auth_doc_idcard_front_layout).setOnClickListener(this);
             findViewById(R.id.act_auth_doc_idcard_back_layout).setOnClickListener(this);
@@ -184,10 +199,46 @@ public class AuthDocActivity extends BaseActivity
 
     /**
      * 编辑模式
+     *
+     * @param isEdit
      */
-    private void updateMode()
+    private void updateMode(boolean isEdit)
     {
-
+        etName.setFocusable(isEdit);
+        etName.setFocusableInTouchMode(isEdit);
+        etCardNumber.setFocusable(isEdit);
+        etCardNumber.setFocusableInTouchMode(isEdit);
+        etHospital.setFocusable(isEdit);
+        etHospital.setFocusableInTouchMode(isEdit);
+        etTitle.setFocusable(isEdit);
+        etTitle.setFocusableInTouchMode(isEdit);
+        etDepart.setFocusable(isEdit);
+        etDepart.setFocusableInTouchMode(isEdit);
+        if (!isEdit)
+        {
+            rlApplyLayout.setVisibility(View.GONE);
+        }
+        else
+        {
+            rlApplyLayout.setVisibility(View.VISIBLE);
+        }
+        if (authStatus != 0)
+        {
+            if (!isEdit)
+            {
+                tvIdCardFrontHint.setVisibility(View.GONE);
+                tvIdCardBackHint.setVisibility(View.GONE);
+                tvDocCardFrontHint.setVisibility(View.GONE);
+                tvDocCardBackHint.setVisibility(View.GONE);
+            }
+            else
+            {
+                tvIdCardFrontHint.setVisibility(View.VISIBLE);
+                tvIdCardBackHint.setVisibility(View.VISIBLE);
+                tvDocCardFrontHint.setVisibility(View.VISIBLE);
+                tvDocCardBackHint.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     /**
@@ -209,6 +260,7 @@ public class AuthDocActivity extends BaseActivity
                 initPageData();
                 break;
             case QUALIFIY_DOC:
+                closeProgressDialog();
                 ToastUtil.toast(this, "处理成功");
                 //改变认证状态，当前为审核中
                 loginSuccessBean.setChecked(1);
@@ -219,20 +271,37 @@ public class AuthDocActivity extends BaseActivity
     }
 
     @Override
+    public void onResponseCodeError(Tasks task, BaseResponse response)
+    {
+        super.onResponseCodeError(task, response);
+        switch (task)
+        {
+            case QUALIFIY_DOC:
+                closeProgressDialog();
+                ToastUtil.toast(this, response.getMsg());
+                break;
+        }
+    }
+
+    @Override
     public void onClick(View v)
     {
         super.onClick(v);
         switch (v.getId())
         {
+            case R.id.act_auth_doc_idcard_front_hint:
             case R.id.act_auth_doc_idcard_front_layout:
                 uploadImg(ID_CARD_FRONT);
                 break;
+            case R.id.act_auth_doc_idcard_back_hint:
             case R.id.act_auth_doc_idcard_back_layout:
                 uploadImg(ID_CARD_BACK);
                 break;
+            case R.id.act_auth_doc_doccard_front_hint:
             case R.id.act_auth_doc_doccard_front_layout:
                 uploadImg(DOC_CARD_FRONT);
                 break;
+            case R.id.act_auth_doc_doccard_back_hint:
             case R.id.act_auth_doc_doccard_back_layout:
                 uploadImg(DOC_CARD_BACK);
                 break;
@@ -240,7 +309,8 @@ public class AuthDocActivity extends BaseActivity
                 qualifiyDoc();
                 break;
             case R.id.public_title_bar_more_txt:
-
+                tvTitleMore.setVisibility(View.GONE);
+                updateMode(true);
                 break;
         }
     }
@@ -268,6 +338,7 @@ public class AuthDocActivity extends BaseActivity
             ToastUtil.toast(this, "请完善您的资质信息");
             return;
         }
+        showProgressDialog("信息上传中");
         mIRequest.qualifiyDoc(loginSuccessBean.getDoctorId(), txtName, txtCardNum, txtTitle,
                               txtDepart, txtHospital, idCardFrontTempFile, idCardBackTempFile,
                               docCardFrontTempFile, docCardBackTempFile, this);
@@ -377,18 +448,22 @@ public class AuthDocActivity extends BaseActivity
                     {
                         case ID_CARD_FRONT:
                             idCardFrontTempFile = FileUtils.getFileByUri(imgUri, this);
+                            ScalingUtils.resizePic(this, idCardFrontTempFile.getAbsolutePath());
                             Glide.with(this).load(imgUri).into(ivIdCardFront);
                             break;
                         case ID_CARD_BACK:
                             idCardBackTempFile = FileUtils.getFileByUri(imgUri, this);
+                            ScalingUtils.resizePic(this, idCardBackTempFile.getAbsolutePath());
                             Glide.with(this).load(imgUri).into(ivIdCardBack);
                             break;
                         case DOC_CARD_FRONT:
                             docCardFrontTempFile = FileUtils.getFileByUri(imgUri, this);
+                            ScalingUtils.resizePic(this, docCardFrontTempFile.getAbsolutePath());
                             Glide.with(this).load(imgUri).into(ivDocCardFront);
                             break;
                         case DOC_CARD_BACK:
                             docCardBackTempFile = FileUtils.getFileByUri(imgUri, this);
+                            ScalingUtils.resizePic(this, docCardBackTempFile.getAbsolutePath());
                             Glide.with(this).load(imgUri).into(ivDocCardBack);
                             break;
                     }
@@ -405,6 +480,7 @@ public class AuthDocActivity extends BaseActivity
                 {
                     imageUri = Uri.fromFile(tempFile);
                 }
+                ScalingUtils.resizePic(this, tempFile.getAbsolutePath());
                 switch (type)
                 {
                     case ID_CARD_FRONT:

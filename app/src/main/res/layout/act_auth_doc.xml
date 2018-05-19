@@ -135,12 +135,29 @@
                                 android:layout_centerInParent="true"
                                 android:layout_height="30dp" />
 
-                            <ImageView
-                                android:id="@+id/act_auth_doc_idcard_front"
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_centerInParent="true"
-                                android:scaleType="centerCrop"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/act_auth_doc_idcard_front"
+                                    android:layout_width="match_parent"
+                                    android:layout_centerInParent="true"
+                                    android:scaleType="centerCrop"
+                                    android:layout_height="match_parent" />
+
+                                <TextView
+                                    android:id="@+id/act_auth_doc_idcard_front_hint"
+                                    android:layout_width="match_parent"
+                                    android:text="点击更换照片"
+                                    android:gravity="center"
+                                    android:textSize="13sp"
+                                    android:visibility="gone"
+                                    android:textColor="@color/app_white_color"
+                                    android:background="@color/app_half_more_translucent"
+                                    android:layout_height="match_parent" />
+
+                            </RelativeLayout>
 
                         </RelativeLayout>
 
@@ -174,12 +191,31 @@
                                 android:layout_centerInParent="true"
                                 android:layout_height="30dp" />
 
-                            <ImageView
-                                android:id="@+id/act_auth_doc_idcard_back"
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_centerInParent="true"
-                                android:scaleType="centerCrop"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/act_auth_doc_idcard_back"
+                                    android:layout_width="match_parent"
+                                    android:layout_centerInParent="true"
+                                    android:scaleType="centerCrop"
+                                    android:layout_height="match_parent" />
+
+                                <TextView
+                                    android:id="@+id/act_auth_doc_idcard_back_hint"
+                                    android:layout_width="match_parent"
+                                    android:text="点击更换照片"
+                                    android:gravity="center"
+                                    android:textColor="@color/app_white_color"
+                                    android:textSize="13sp"
+                                    android:visibility="gone"
+                                    android:background="@color/app_half_more_translucent"
+                                    android:layout_height="match_parent" />
+
+                            </RelativeLayout>
+
+
 
                         </RelativeLayout>
 
@@ -338,12 +374,29 @@
                                 android:layout_centerInParent="true"
                                 android:layout_height="30dp" />
 
-                            <ImageView
-                                android:id="@+id/act_auth_doc_doccard_front"
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_centerInParent="true"
-                                android:scaleType="centerCrop"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/act_auth_doc_doccard_front"
+                                    android:layout_width="match_parent"
+                                    android:layout_centerInParent="true"
+                                    android:scaleType="centerCrop"
+                                    android:layout_height="match_parent" />
+
+                                <TextView
+                                    android:id="@+id/act_auth_doc_doccard_front_hint"
+                                    android:layout_width="match_parent"
+                                    android:text="点击更换照片"
+                                    android:gravity="center"
+                                    android:textColor="@color/app_white_color"
+                                    android:textSize="13sp"
+                                    android:visibility="gone"
+                                    android:background="@color/app_half_more_translucent"
+                                    android:layout_height="match_parent" />
+
+                            </RelativeLayout>
 
                         </RelativeLayout>
 
@@ -377,12 +430,30 @@
                                 android:layout_centerInParent="true"
                                 android:layout_height="30dp" />
 
-                            <ImageView
-                                android:id="@+id/act_auth_doc_doccard_back"
+
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_centerInParent="true"
-                                android:scaleType="centerCrop"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent">
+
+                                <ImageView
+                                    android:id="@+id/act_auth_doc_doccard_back"
+                                    android:layout_width="match_parent"
+                                    android:layout_centerInParent="true"
+                                    android:scaleType="centerCrop"
+                                    android:layout_height="match_parent" />
+                                <TextView
+                                    android:id="@+id/act_auth_doc_doccard_back_hint"
+                                    android:layout_width="match_parent"
+                                    android:text="点击更换照片"
+                                    android:gravity="center"
+                                    android:textColor="@color/app_white_color"
+                                    android:textSize="13sp"
+                                    android:visibility="gone"
+                                    android:background="@color/app_half_more_translucent"
+                                    android:layout_height="match_parent" />
+
+                            </RelativeLayout>
+
                         </RelativeLayout>
 
                         <TextView

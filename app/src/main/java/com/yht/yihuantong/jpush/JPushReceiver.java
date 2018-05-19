@@ -52,7 +52,9 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
             {
                 int notifactionId = bundle.getInt(JPushInterface.EXTRA_NOTIFICATION_ID);
                 Log.d(TAG, "[JPushReceiver] 接收到推送下来的通知的ID: " + notifactionId);
-                notifyStatusChange();
+                JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
+                int type = json.optInt("newsid");
+                notifyStatusChange(type);
             }
             else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction()))
             {
@@ -110,11 +112,26 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
 
     /**
      * 状态通知
+     *
+     * @param type
      */
-    private void notifyStatusChange()
+    private void notifyStatusChange(int type)
     {
-        NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("");
-        NotifyChangeListenerServer.getInstance().notifyDoctorMessageChange("");
+        switch (type)
+        {
+            case APPLY_ADD_DOCTOR:
+            case APPLY_ADD_DOCTOR_SUCCESS:
+                NotifyChangeListenerServer.getInstance().notifyDoctorMessageChange("");
+                break;
+            case APPLY_ADD_PATIENT:
+            case APPLY_ADD_PATIENT_SUCCESS:
+                NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("");
+                break;
+            case APPLY_AUTH_FAILD:
+            case APPLY_AUTH_SUCCESS:
+                NotifyChangeListenerServer.getInstance().notifyDoctorAuthStatusListeners(type);
+                break;
+        }
     }
 
     // 打印所有的 intent extra 数据

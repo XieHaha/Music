@@ -268,9 +268,8 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
             //            etCaseImportment.setText(patientCaseDetailBean.getImportantHistory());
             etCaseCheck.setText(patientCaseDetailBean.getCheckReport());
             etCaseDealType.setText(patientCaseDetailBean.getTreat());
-
             String imgUrls = patientCaseDetailBean.getReportImgUrl();
-            if(!TextUtils.isEmpty(imgUrls))
+            if (!TextUtils.isEmpty(imgUrls))
             {
                 allImgUrl.append(imgUrls);
                 String[] str = patientCaseDetailBean.getReportImgUrl().split(",");
@@ -293,8 +292,8 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
      */
     private void uploadHeadImg(Uri uri)
     {
-        File file = FileUtils.getFileByUri(uri,this);
-        ScalingUtils.resizePic(this,file.getAbsolutePath());
+        File file = FileUtils.getFileByUri(uri, this);
+        ScalingUtils.resizePic(this, file.getAbsolutePath());
         mIRequest.uploadHeadImg(file, "jpg", this);
     }
 
@@ -303,7 +302,8 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
      */
     private void addPatientCase()
     {
-        mIRequest.addPatientCase(patientId, loginSuccessBean.getDoctorId(), loginSuccessBean.getDoctorId(), caseCheck, caseInfo, caseNow,
+        mIRequest.addPatientCase(patientId, loginSuccessBean.getDoctorId(),
+                                 loginSuccessBean.getDoctorId(), caseCheck, caseInfo, caseNow,
                                  diagnosis, department, hospital, caseNow, allImgUrl.toString(),
                                  caseDealType, diagnosisTimeMil + "", this);
     }
@@ -315,10 +315,10 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
     {
         mIRequest.updatePatientCase(patientId, patientCaseDetailBean.getFieldId(),
                                     patientCaseDetailBean.getCaseCreatorId(),
-                                    patientCaseDetailBean.getCaseLastUpdateId(), loginSuccessBean.getDoctorId(),
-                                    caseCheck, caseInfo, caseNow, diagnosis, department, hospital,
-                                    caseNow, allImgUrl.toString(), caseDealType,
-                                    diagnosisTimeMil + "", this);
+                                    patientCaseDetailBean.getCaseLastUpdateId(),
+                                    loginSuccessBean.getDoctorId(), caseCheck, caseInfo, caseNow,
+                                    diagnosis, department, hospital, caseNow, allImgUrl.toString(),
+                                    caseDealType, diagnosisTimeMil + "", this);
     }
 
     @Override
@@ -389,37 +389,36 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
         String[] strings = time.split("-");
         endDate.set(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]) - 1,
                     Integer.parseInt(strings[2]));
-
         //当前时间设置
-        if(patientCaseDetailBean!=null)
+        if (patientCaseDetailBean != null)
         {
             String curTime = simpleDateFormat.format(patientCaseDetailBean.getVisDate());
             String[] strings1 = curTime.split("-");
-            selectedDate.set(Integer.parseInt(strings1[0]), Integer.parseInt(strings1[1])-1, Integer.parseInt(strings1[2]));
+            selectedDate.set(Integer.parseInt(strings1[0]), Integer.parseInt(strings1[1]) - 1,
+                             Integer.parseInt(strings1[2]));
         }
-
         timePicker = new TimePickerBuilder(this, (date, v) ->
         {//选中事件回调
             SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
             tvDiagnosisTime.setText(simpleDateFormat1.format(date));
             diagnosisTimeMil = date.getTime();
         }).setType(new boolean[] { true, true, true, false, false, false })// 默认全部显示
-              .setCancelText("取消")//取消按钮文字
-              .setSubmitText("确定")//确认按钮文字
-              .setTitleSize(20)//标题文字大小
-              .setTitleText("")//标题文字
-              .setOutSideCancelable(true)//点击屏幕，点在控件外部范围时，是否取消显示
-              .isCyclic(false)//是否循环滚动
-              .setSubmitColor(R.color.app_main_color)//确定按钮文字颜色
-              .setCancelColor(R.color.app_main_color)//取消按钮文字颜色
-              .setTitleBgColor(0xffffffff)//标题背景颜色 Night mode
-              .setBgColor(0xffffffff)//滚轮背景颜色 Night mode
-              .setDate(selectedDate)// 如果不设置的话，默认是系统时间*/
-              .setRangDate(startDate, endDate)//起始终止年月日设定
-              .setLabel("年", "月", "日", "时", "分", "秒")//默认设置为年月日时分秒
-              .isCenterLabel(true) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
-              .isDialog(false)//是否显示为对话框样式
-              .build();
+          .setCancelText("取消")//取消按钮文字
+          .setSubmitText("确定")//确认按钮文字
+          .setTitleSize(20)//标题文字大小
+          .setTitleText("")//标题文字
+          .setOutSideCancelable(true)//点击屏幕，点在控件外部范围时，是否取消显示
+          .isCyclic(false)//是否循环滚动
+          .setSubmitColor(R.color.app_main_color)//确定按钮文字颜色
+          .setCancelColor(R.color.app_main_color)//取消按钮文字颜色
+          .setTitleBgColor(0xffffffff)//标题背景颜色 Night mode
+          .setBgColor(0xffffffff)//滚轮背景颜色 Night mode
+          .setDate(selectedDate)// 如果不设置的话，默认是系统时间*/
+          .setRangDate(startDate, endDate)//起始终止年月日设定
+          .setLabel("年", "月", "日", "时", "分", "秒")//默认设置为年月日时分秒
+          .isCenterLabel(true) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+          .isDialog(false)//是否显示为对话框样式
+          .build();
         timePicker.show();
     }
 
@@ -494,6 +493,9 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                 closeProgressDialog();
                 ToastUtil.toast(this, response.getMsg());
                 break;
+            case UPDATE_PATIENT_CASE:
+                ToastUtil.toast(this, response.getMsg());
+                break;
         }
     }
 
@@ -520,27 +522,19 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                                    .setCancelable(false)
                                    .setCanceledOnTouchOutside(false)
                                    .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Blue,
-                                                 new ActionSheetDialog.OnSheetItemClickListener()
+                                                 which ->
                                                  {
-                                                     @Override
-                                                     public void onClick(int which)
-                                                     {
-                                                         //动态申请权限
-                                                         permissionHelper.request(new String[] {
-                                                                 Permission.STORAGE_WRITE });
-                                                     }
+                                                     //动态申请权限
+                                                     permissionHelper.request(new String[] {
+                                                             Permission.STORAGE_WRITE });
                                                  })
                                    .addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue,
-                                                 new ActionSheetDialog.OnSheetItemClickListener()
+                                                 which ->
                                                  {
-                                                     @Override
-                                                     public void onClick(int which)
-                                                     {
-                                                         //动态申请权限
-                                                         permissionHelper.request(new String[] {
-                                                                 Permission.CAMERA,
-                                                                 Permission.STORAGE_WRITE });
-                                                     }
+                                                     //动态申请权限
+                                                     permissionHelper.request(new String[] {
+                                                             Permission.CAMERA,
+                                                             Permission.STORAGE_WRITE });
                                                  })
                                    .show();
     }

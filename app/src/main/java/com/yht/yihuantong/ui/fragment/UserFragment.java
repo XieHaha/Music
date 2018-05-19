@@ -3,6 +3,8 @@ package com.yht.yihuantong.ui.fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -17,6 +19,11 @@ import com.bumptech.glide.Glide;
 import com.hyphenate.chat.EMClient;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
+import com.yht.yihuantong.api.ApiManager;
+import com.yht.yihuantong.api.IChange;
+import com.yht.yihuantong.api.RegisterType;
+import com.yht.yihuantong.api.notify.INotifyChangeListenerServer;
+import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.qrcode.BarCodeImageView;
 import com.yht.yihuantong.qrcode.DialogPersonalBarCode;
 import com.yht.yihuantong.tools.GlideHelper;
@@ -44,7 +51,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class UserFragment extends BaseFragment
         implements VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener,
-                   CustomListenScrollView.OnScrollChangeListener
+                   CustomListenScrollView.OnScrollChangeListener, CommonData
 {
     private CircleImageView headImg, authImg;
     private LinearLayout llTitleLayout;
@@ -54,6 +61,7 @@ public class UserFragment extends BaseFragment
     private TextView tvAuth, tvAuthStatus;
     private ImageView ivEditInfo;
     private LoginSuccessBean loginSuccessBean;
+    private INotifyChangeListenerServer iNotifyChangeListenerServer;
     private boolean isAuth;
     /**
      * 二维码
@@ -72,6 +80,32 @@ public class UserFragment extends BaseFragment
      */
     private boolean versionUpdateChecked = false;
     private String headImgUrl;
+    private Handler handler = new Handler()
+    {
+        @Override
+        public void handleMessage(Message msg)
+        {
+            switch (msg.what)
+            {
+                case APPLY_AUTH_FAILD:
+                    //认证失败  更新本地数据
+                    loginSuccessBean.setChecked(2);
+                    YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
+                    initAuthStatus(2);
+                    break;
+                case APPLY_AUTH_SUCCESS:
+                    //认证成功  更新本地数据
+                    loginSuccessBean.setChecked(6);
+                    YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
+                    initAuthStatus(6);
+                    break;
+            }
+        }
+    };
+    private IChange<Integer> doctorAuthStatusChangeListener = data ->
+    {
+        handler.sendEmptyMessage(data);
+    };
 
     @Override
     public int getLayoutID()
@@ -123,6 +157,8 @@ public class UserFragment extends BaseFragment
         //检查更新
         mVersionPresenter = new VersionPresenter(getContext(), mIRequest);
         mVersionPresenter.setVersionViewListener(this);
+        iNotifyChangeListenerServer = ApiManager.getInstance()
+                                                .getServer(INotifyChangeListenerServer.class);
     }
 
     @Override
@@ -131,6 +167,9 @@ public class UserFragment extends BaseFragment
         super.initListener();
         scrollView.setOnScrollChangeListener(this);
         rlAuthLayout.setOnClickListener(this);
+        //注册患者状态监听
+        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(
+                doctorAuthStatusChangeListener, RegisterType.REGISTER);
     }
 
     /**
@@ -154,50 +193,60 @@ public class UserFragment extends BaseFragment
             {
                 Glide.with(this).load(headImgUrl).apply(GlideHelper.getOptions()).into(headImg);
             }
-            int status = loginSuccessBean.getChecked();
-            switch (status)
-            {
-                case 0://未认证
-                    isAuth = false;
-                    tvAuth.setText("去认证");
-                    tvAuthStatus.setTextColor(
-                            ContextCompat.getColor(getContext(), R.color.app_auth_faild));
-                    Glide.with(this).load(R.mipmap.icon_uncertified).into(authImg);
-                    ivEditInfo.setVisibility(View.VISIBLE);
-                    break;
-                case 1://审核中
-                    isAuth = false;
-                    tvAuthStatus.setText("审核中");
-                    tvAuth.setText("查看");
-                    tvAuthStatus.setTextColor(
-                            ContextCompat.getColor(getContext(), R.color.app_auth_faild));
-                    Glide.with(this).load(R.mipmap.icon_uncertified).into(authImg);
-                    ivEditInfo.setVisibility(View.GONE);
-                    break;
-                case 2://审核未通过
-                    isAuth = false;
-                    tvAuthStatus.setText("审核未通过");
-                    tvAuth.setText("查看");
-                    tvAuthStatus.setTextColor(
-                            ContextCompat.getColor(getContext(), R.color.app_auth_faild));
-                    Glide.with(this).load(R.mipmap.icon_uncertified).into(authImg);
-                    ivEditInfo.setVisibility(View.VISIBLE);
-                    break;
-                case 6://审核已通过
-                    isAuth = false;
-                    tvAuthStatus.setText("已认证");
-                    tvAuth.setText("查看");
-                    tvAuthStatus.setTextColor(
-                            ContextCompat.getColor(getContext(), R.color.app_auth_success));
-                    Glide.with(this).load(R.mipmap.icon_certified).into(authImg);
-                    ivEditInfo.setVisibility(View.GONE);
-                    break;
-            }
+            //状态处理
+            initAuthStatus(loginSuccessBean.getChecked());
             tvName.setText(loginSuccessBean.getName());
             tvHospital.setText(loginSuccessBean.getHospital());
             tvTitle.setText(loginSuccessBean.getTitle());
             tvType.setText(loginSuccessBean.getDepartment());
             tvIntroduce.setText(loginSuccessBean.getDoctorDescription());
+        }
+    }
+
+    /**
+     * 医生认证状态处理
+     *
+     * @param status
+     */
+    private void initAuthStatus(int status)
+    {
+        switch (status)
+        {
+            case 0://未认证
+                isAuth = false;
+                tvAuth.setText("去认证");
+                tvAuthStatus.setTextColor(
+                        ContextCompat.getColor(getContext(), R.color.app_auth_faild));
+                Glide.with(this).load(R.mipmap.icon_uncertified).into(authImg);
+                ivEditInfo.setVisibility(View.VISIBLE);
+                break;
+            case 1://审核中
+                isAuth = false;
+                tvAuthStatus.setText("审核中");
+                tvAuth.setText("查看");
+                tvAuthStatus.setTextColor(
+                        ContextCompat.getColor(getContext(), R.color.app_auth_faild));
+                Glide.with(this).load(R.mipmap.icon_uncertified).into(authImg);
+                ivEditInfo.setVisibility(View.GONE);
+                break;
+            case 2://审核未通过
+                isAuth = false;
+                tvAuthStatus.setText("审核未通过");
+                tvAuth.setText("查看");
+                tvAuthStatus.setTextColor(
+                        ContextCompat.getColor(getContext(), R.color.app_auth_faild));
+                Glide.with(this).load(R.mipmap.icon_uncertified).into(authImg);
+                ivEditInfo.setVisibility(View.VISIBLE);
+                break;
+            case 6://审核已通过
+                isAuth = false;
+                tvAuthStatus.setText("已认证");
+                tvAuth.setText("查看");
+                tvAuthStatus.setTextColor(
+                        ContextCompat.getColor(getContext(), R.color.app_auth_success));
+                Glide.with(this).load(R.mipmap.icon_certified).into(authImg);
+                ivEditInfo.setVisibility(View.GONE);
+                break;
         }
     }
 
@@ -317,5 +366,14 @@ public class UserFragment extends BaseFragment
     {
         mVersionPresenter.getNewAPK(isMustUpdate);
         ToastUtil.toast(getContext(), "开始下载");
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        //注册患者状态监听
+        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(
+                doctorAuthStatusChangeListener, RegisterType.UNREGISTER);
     }
 }

@@ -21,6 +21,10 @@ public class NotifyChangeListenerServer implements INotifyChangeListenerServer
      * 接收消息监听
      */
     private List<IChange<String>> mDoctorStatusChangeListeners = new CopyOnWriteArrayList<>();
+    /**
+     * 接收消息监听
+     */
+    private List<IChange<Integer>> mDoctorAuthStatusChangeListeners = new CopyOnWriteArrayList<>();
 
     private NotifyChangeListenerServer()
     {
@@ -70,6 +74,20 @@ public class NotifyChangeListenerServer implements INotifyChangeListenerServer
             mDoctorStatusChangeListeners.remove(listener);
         }
     }
+    @Override
+    public void registerDoctorAuthStatusChangeListener(@NonNull IChange<Integer> listener,
+            @NonNull RegisterType registerType)
+    {
+        if (listener == null) { return; }
+        if (RegisterType.REGISTER == registerType)
+        {
+            mDoctorAuthStatusChangeListeners.add(listener);
+        }
+        else
+        {
+            mDoctorAuthStatusChangeListeners.remove(listener);
+        }
+    }
 
     public void notifyPatientStatusChange(final String data)
     {
@@ -102,6 +120,32 @@ public class NotifyChangeListenerServer implements INotifyChangeListenerServer
                 try
                 {
                     final IChange<String> change = mDoctorStatusChangeListeners.get(i);
+                    if (null != change)
+                    {
+                        change.onChange(data);
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogUtils.w(TAG, "notifyMessageChange error", e);
+                }
+            }
+        }
+    }
+
+    /**
+     * 医生认证状态
+     * @param data
+     */
+    public void notifyDoctorAuthStatusListeners(final Integer data)
+    {
+        synchronized (mDoctorAuthStatusChangeListeners)
+        {
+            for (int i = 0, size = mDoctorAuthStatusChangeListeners.size(); i < size; i++)
+            {
+                try
+                {
+                    final IChange<Integer> change = mDoctorAuthStatusChangeListeners.get(i);
                     if (null != change)
                     {
                         change.onChange(data);

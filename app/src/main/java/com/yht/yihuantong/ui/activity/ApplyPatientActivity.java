@@ -21,7 +21,6 @@ import custom.frame.bean.BaseResponse;
 import custom.frame.bean.PatientBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
-import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
@@ -99,16 +98,13 @@ public class ApplyPatientActivity extends BaseActivity
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(applyPatientAdapter);
-        applyPatientAdapter.setOnItemClickListener(
-                new BaseRecyclerAdapter.OnItemClickListener<PatientBean>() {
-                    @Override
-                    public void onItemClick(View v, int position, PatientBean item) {
-//                        Intent intent = new Intent(ApplyPatientActivity.this,
-//                                UserInfoActivity.class);
-//                        intent.putExtra(CommonData.KEY_IS_DEAL_DOC,false);
-//                        startActivity(intent);
-                    }
-                });
+        applyPatientAdapter.setOnItemClickListener((v, position, item) ->
+                                                   {
+                               //                        Intent intent = new Intent(ApplyPatientActivity.this,
+                               //                                UserInfoActivity.class);
+                               //                        intent.putExtra(CommonData.KEY_IS_DEAL_DOC,false);
+                               //                        startActivity(intent);
+                                                   });
     }
 
     /**

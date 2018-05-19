@@ -8,6 +8,7 @@
     <color name="app_black_bg">#ff000000</color>
     <color name="app_alpha_bg">#00000000</color>
     <color name="app_half_translucent">#50000000</color>
+    <color name="app_half_more_translucent">#90000000</color>
 
     <!-- app主题色 (38,140,250)-->
     <color name="app_main_color">#E73278</color>
