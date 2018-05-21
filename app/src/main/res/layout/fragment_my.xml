@@ -312,6 +312,7 @@
                         android:paddingRight="12dp"
                         android:paddingTop="16dp"
                         android:paddingBottom="16dp"
+                        android:visibility="gone"
                         android:layout_alignParentRight="true"
                         android:layout_height="match_parent" />
 

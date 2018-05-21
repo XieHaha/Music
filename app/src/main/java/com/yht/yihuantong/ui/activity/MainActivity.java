@@ -28,7 +28,6 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ease.ChatActivity;
 import com.yht.yihuantong.ui.fragment.CooperateDocFragment;
-import com.yht.yihuantong.ui.fragment.MsgFragment;
 import com.yht.yihuantong.ui.fragment.PatientsFragment;
 import com.yht.yihuantong.ui.fragment.UserFragment;
 import com.yht.yihuantong.version.presenter.VersionPresenter;
@@ -50,9 +49,8 @@ public class MainActivity extends BaseActivity
                    EaseConversationListFragment.EaseConversationListItemLongClickListener
 {
     private RippleLinearLayout tabMsg, tabDoc, tabCase, tabMy;
-    private Fragment msgFragment, docFragment, caseFragment, myFragment;
+    private Fragment patientFragment, cooperateDocFragment, myFragment;
     private EaseConversationListFragment easeConversationListFragment;
-
     /**
      * message 操作弹框view
      */
@@ -78,7 +76,6 @@ public class MainActivity extends BaseActivity
      * 当前选中会话
      */
     private EMConversation curConversation;
-
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
     private MyConnectionListener connectionListener;
@@ -112,9 +109,34 @@ public class MainActivity extends BaseActivity
     {
         fragmentManager = getSupportFragmentManager();
         transaction = fragmentManager.beginTransaction();
-        //        tabMsgView();
         tabEaseMsgView();
         setAlias();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent)
+    {
+        int type = -1;
+        if (intent != null)
+        {
+            type = intent.getIntExtra(CommonData.KEY_PUBLIC, -1);
+        }
+        if (type == -1)
+        {
+            tabEaseMsgView();
+        }
+        else if (type == 2)
+        {
+            tabCooperateDocView();
+        }
+        else if (type == 1)
+        {
+            tabPatientView();
+        }else if(type == 3)
+        {
+            tabMyView();
+        }
+        super.onNewIntent(intent);
     }
 
     @Override
@@ -126,8 +148,7 @@ public class MainActivity extends BaseActivity
         tabDoc = (RippleLinearLayout)findViewById(R.id.act_main_tab2);
         tabCase = (RippleLinearLayout)findViewById(R.id.act_main_tab3);
         tabMy = (RippleLinearLayout)findViewById(R.id.act_main_tab4);
-
-        messagePop = LayoutInflater.from(this).inflate(R.layout.message_pop_menu,null);
+        messagePop = LayoutInflater.from(this).inflate(R.layout.message_pop_menu, null);
         tvDelete = messagePop.findViewById(R.id.message_pop_menu_play);
         initTab();
     }
@@ -140,7 +161,6 @@ public class MainActivity extends BaseActivity
         mVersionPresenter = new VersionPresenter(this, mIRequest);
         mVersionPresenter.setVersionViewListener(this);
         mVersionPresenter.init();
-
         //弹窗参数初始化
         screenHeight = ScreenUtils.getScreenHeight(this);
         popupHeight = DensityUtil.dip2px(this, 48 * 2);
@@ -202,11 +222,14 @@ public class MainActivity extends BaseActivity
         EMClient.getInstance().chatManager().addMessageListener(msgListener);
         tvDelete.setOnClickListener(v ->
                                     {
-                                        if(curConversation!=null)
+                                        if (curConversation != null)
                                         {
                                             //删除和某个user会话，如果需要保留聊天记录，传false
                                             popupWindow.dismiss();
-                                            EMClient.getInstance().chatManager().deleteConversation(curConversation.conversationId(), true);
+                                            EMClient.getInstance()
+                                                    .chatManager()
+                                                    .deleteConversation(
+                                                            curConversation.conversationId(), true);
                                             //收到消息
                                             if (easeConversationListFragment != null)
                                             {
@@ -226,10 +249,10 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void onListItemLongClick(View view,EMConversation conversation)
+    public void onListItemLongClick(View view, EMConversation conversation)
     {
         curConversation = conversation;
-        initPopwindow(view,popupLocation(view));
+        initPopwindow(view, popupLocation(view));
     }
 
     /**
@@ -290,7 +313,7 @@ public class MainActivity extends BaseActivity
                                          {
                                              WindowManager.LayoutParams lp1 = getWindow().getAttributes();
                                              lp1.alpha = 1f;
-                                            getWindow().setAttributes(lp1);
+                                             getWindow().setAttributes(lp1);
                                          });
     }
 
@@ -305,37 +328,18 @@ public class MainActivity extends BaseActivity
                 tabEaseMsgView();
                 break;
             case R.id.act_main_tab2:
-                tabDocView();
+                tabPatientView();
                 break;
             case R.id.act_main_tab3:
-                tabCaseView();
+                tabCooperateDocView();
                 break;
             case R.id.act_main_tab4:
                 tabMyView();
                 break;
             default:
-                //                tabMsgView();
                 tabEaseMsgView();
                 break;
         }
-    }
-
-    private void tabMsgView()
-    {
-        transaction = fragmentManager.beginTransaction();
-        hideAll(transaction);
-        if (msgFragment == null)
-        {
-            msgFragment = new MsgFragment();
-            transaction.add(R.id.act_main_tab_frameLayout, msgFragment);
-        }
-        else
-        {
-            transaction.show(msgFragment);
-            msgFragment.onResume();
-        }
-        transaction.commitAllowingStateLoss();
-        selectTab(0);
     }
 
     /**
@@ -361,39 +365,39 @@ public class MainActivity extends BaseActivity
         selectTab(0);
     }
 
-    private void tabDocView()
+    private void tabPatientView()
     {
         transaction = fragmentManager.beginTransaction();
         hideAll(transaction);
-        if (docFragment == null)
+        if (patientFragment == null)
         {
-            docFragment = new PatientsFragment();
-            transaction.add(R.id.act_main_tab_frameLayout, docFragment);
+            patientFragment = new PatientsFragment();
+            transaction.add(R.id.act_main_tab_frameLayout, patientFragment);
         }
         else
         {
-            transaction.show(docFragment);
-            docFragment.onResume();
+            transaction.show(patientFragment);
+            patientFragment.onResume();
         }
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
         selectTab(1);
     }
 
-    private void tabCaseView()
+    private void tabCooperateDocView()
     {
         transaction = fragmentManager.beginTransaction();
         hideAll(transaction);
-        if (caseFragment == null)
+        if (cooperateDocFragment == null)
         {
-            caseFragment = new CooperateDocFragment();
-            transaction.add(R.id.act_main_tab_frameLayout, caseFragment);
+            cooperateDocFragment = new CooperateDocFragment();
+            transaction.add(R.id.act_main_tab_frameLayout, cooperateDocFragment);
         }
         else
         {
-            transaction.show(caseFragment);
-            caseFragment.onResume();
+            transaction.show(cooperateDocFragment);
+            cooperateDocFragment.onResume();
         }
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
         selectTab(2);
     }
 
@@ -411,7 +415,7 @@ public class MainActivity extends BaseActivity
             transaction.show(myFragment);
             myFragment.onResume();
         }
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
         selectTab(3);
     }
 
@@ -420,9 +424,9 @@ public class MainActivity extends BaseActivity
      */
     private void hideAll(FragmentTransaction transaction)
     {
-        if (msgFragment != null) { transaction.hide(msgFragment); }
-        if (docFragment != null) { transaction.hide(docFragment); }
-        if (caseFragment != null) { transaction.hide(caseFragment); }
+        if (easeConversationListFragment != null) { transaction.hide(easeConversationListFragment); }
+        if (patientFragment != null) { transaction.hide(patientFragment); }
+        if (cooperateDocFragment != null) { transaction.hide(cooperateDocFragment); }
         if (myFragment != null) { transaction.hide(myFragment); }
     }
 
@@ -467,8 +471,9 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void updateVersion(Version version, int mode, boolean isDownLoading) {
-        if(mode==-1)
+    public void updateVersion(Version version, int mode, boolean isDownLoading)
+    {
+        if (mode == -1)
         {
             return;
         }
@@ -481,8 +486,10 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void updateLoading(long total, long current) {
-        if (versionUpdateDialog != null && versionUpdateDialog.isShowing()) {
+    public void updateLoading(long total, long current)
+    {
+        if (versionUpdateDialog != null && versionUpdateDialog.isShowing())
+        {
             versionUpdateDialog.setProgressValue(total, current);
         }
     }
@@ -491,7 +498,8 @@ public class MainActivity extends BaseActivity
      * 当无可用网络时回调
      */
     @Override
-    public void updateNetWorkError() {
+    public void updateNetWorkError()
+    {
         versionUpdateChecked = true;
     }
 

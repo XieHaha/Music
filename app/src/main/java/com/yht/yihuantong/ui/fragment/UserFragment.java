@@ -87,13 +87,13 @@ public class UserFragment extends BaseFragment
         {
             switch (msg.what)
             {
-                case APPLY_AUTH_FAILD:
+                case JIGUANG_CODE_DOCTOR_INFO_CHECK_FAILED:
                     //认证失败  更新本地数据
                     loginSuccessBean.setChecked(2);
                     YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
                     initAuthStatus(2);
                     break;
-                case APPLY_AUTH_SUCCESS:
+                case JIGUANG_CODE_DOCTOR_INFO_CHECK_SUCCESS:
                     //认证成功  更新本地数据
                     loginSuccessBean.setChecked(6);
                     YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);

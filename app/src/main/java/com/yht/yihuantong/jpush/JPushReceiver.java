@@ -7,8 +7,13 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
+import com.yht.yihuantong.ui.activity.ApplyCooperateDocActivity;
+import com.yht.yihuantong.ui.activity.ApplyPatientActivity;
+import com.yht.yihuantong.ui.activity.AuthDocActivity;
+import com.yht.yihuantong.ui.activity.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,7 +66,7 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
                 Log.d(TAG, "[JPushReceiver] 用户点击打开了通知");
                 JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
                 int type = json.optInt("newsid");
-                jumpPageByType(type);
+                jumpPageByType(context, type);
             }
             else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction()))
             {
@@ -88,24 +93,90 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
 
     /**
      * 通知栏业务处理
+     * 将MainAtivity的launchMode设置成SingleTask, 或者在下面flag中加上Intent.FLAG_CLEAR_TOP,
+     * 如果Task栈中有MainActivity的实例，就会把它移到栈顶，把在它之上的Activity都清理出栈，
+     * 如果Task栈不存在MainActivity实例，则在栈顶创建
+     * 如果存活的话，就直接启动DetailActivity，但要考虑一种情况，就是app的进程虽然仍然在
+     * 但Task栈已经空了，比如用户点击Back键退出应用，但进程还没有被系统回收，如果直接启动
+     * DetailActivity,再按Back键就不会返回MainActivity了。所以在启动
+     * DetailActivity前，要先启动MainActivity。
+     * 如果app进程已经被杀死，先重新启动app，将DetailActivity的启动参数传入Intent中，参数经过
+     * SplashActivity传入MainActivity，此时app的初始化已经完成，在MainActivity中就可以根据传入
+     * 参数跳转到DetailActivity中去了
+     * Log.i("NotificationReceiver", "the app process is dead");
+     * Intent launchIntent = context.getPackageManager().
+     * getLaunchIntentForPackage("com.liangzili.notificationlaunch");
+     * launchIntent.setFlags(
+     * Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+     * context.startActivity(launchIntent);
      *
      * @param type
      */
-    private void jumpPageByType(int type)
+    private void jumpPageByType(Context context, int type)
     {
+        if (YihtApplication.getInstance().getLoginSuccessBean() == null)
+        {
+            return;
+        }
+        Intent mainIntent, baseIntent;
+        Intent intents[];
         switch (type)
         {
-            case APPLY_ADD_DOCTOR:
+            case JIGUANG_CODE_DOCTOR_DP_ADD_REQUEST:
+                mainIntent = new Intent(context, MainActivity.class);
+                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mainIntent.putExtra(CommonData.KEY_PUBLIC, 1);
+                baseIntent = new Intent(context, ApplyPatientActivity.class);
+                intents = new Intent[] { mainIntent, baseIntent };
+                context.startActivities(intents);
                 break;
-            case APPLY_ADD_DOCTOR_SUCCESS:
+            case JIGUANG_CODE_DOCTOR_DP_ADD_SUCCESS:
+                mainIntent = new Intent(context, MainActivity.class);
+                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mainIntent.putExtra(CommonData.KEY_PUBLIC, 1);
+                context.startActivity(mainIntent);
                 break;
-            case APPLY_ADD_PATIENT:
+            case JIGUANG_CODE_PATIENT_DP_ADD_REQUEST:
+                mainIntent = new Intent(context, MainActivity.class);
+                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mainIntent.putExtra(CommonData.KEY_PUBLIC, 2);
+                baseIntent = new Intent(context, ApplyCooperateDocActivity.class);
+                intents = new Intent[] { mainIntent, baseIntent };
+                context.startActivities(intents);
                 break;
-            case APPLY_ADD_PATIENT_SUCCESS:
+            case JIGUANG_CODE_PATIENT_DP_ADD_SUCCESS:
+                mainIntent = new Intent(context, MainActivity.class);
+                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mainIntent.putExtra(CommonData.KEY_PUBLIC, 2);
+                context.startActivity(mainIntent);
                 break;
-            case APPLY_AUTH_FAILD:
+            case JIGUANG_CODE_COLLEBORATE_DOCTOR_REQUEST:
+                mainIntent = new Intent(context, MainActivity.class);
+                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mainIntent.putExtra(CommonData.KEY_PUBLIC, 2);
+                baseIntent = new Intent(context, ApplyCooperateDocActivity.class);
+                intents = new Intent[] { mainIntent, baseIntent };
+                context.startActivities(intents);
                 break;
-            case APPLY_AUTH_SUCCESS:
+            case JIGUANG_CODE_COLLEBORATE_ADD_SUCCESS:
+                mainIntent = new Intent(context, MainActivity.class);
+                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mainIntent.putExtra(CommonData.KEY_PUBLIC, 2);
+                context.startActivity(mainIntent);
+                break;
+            case JIGUANG_CODE_DOCTOR_INFO_CHECK_FAILED:
+                mainIntent = new Intent(context, MainActivity.class);
+                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mainIntent.putExtra(CommonData.KEY_PUBLIC, 3);
+                baseIntent = new Intent(context, AuthDocActivity.class);
+                intents = new Intent[] { mainIntent, baseIntent };
+                context.startActivities(intents);
+                break;
+            case JIGUANG_CODE_DOCTOR_INFO_CHECK_SUCCESS:
+                mainIntent = new Intent(context, MainActivity.class);
+                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mainIntent.putExtra(CommonData.KEY_PUBLIC, 3);
+                context.startActivity(mainIntent);
                 break;
         }
     }
@@ -119,16 +190,20 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
     {
         switch (type)
         {
-            case APPLY_ADD_DOCTOR:
-            case APPLY_ADD_DOCTOR_SUCCESS:
-                NotifyChangeListenerServer.getInstance().notifyDoctorMessageChange("");
+            case JIGUANG_CODE_COLLEBORATE_DOCTOR_REQUEST:
+            case JIGUANG_CODE_COLLEBORATE_ADD_SUCCESS:
+                NotifyChangeListenerServer.getInstance().notifyDoctorStatusChange("");
                 break;
-            case APPLY_ADD_PATIENT:
-            case APPLY_ADD_PATIENT_SUCCESS:
+            case JIGUANG_CODE_DOCTOR_DP_ADD_REQUEST:
+            case JIGUANG_CODE_DOCTOR_DP_ADD_SUCCESS:
+                NotifyChangeListenerServer.getInstance().notifyDoctorStatusChange("");
+                break;
+            case JIGUANG_CODE_PATIENT_DP_ADD_REQUEST:
+            case JIGUANG_CODE_PATIENT_DP_ADD_SUCCESS:
                 NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("");
                 break;
-            case APPLY_AUTH_FAILD:
-            case APPLY_AUTH_SUCCESS:
+            case JIGUANG_CODE_DOCTOR_INFO_CHECK_FAILED:
+            case JIGUANG_CODE_DOCTOR_INFO_CHECK_SUCCESS:
                 NotifyChangeListenerServer.getInstance().notifyDoctorAuthStatusListeners(type);
                 break;
         }

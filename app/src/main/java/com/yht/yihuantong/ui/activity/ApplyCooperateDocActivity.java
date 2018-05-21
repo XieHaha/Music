@@ -144,7 +144,7 @@ public class ApplyCooperateDocActivity extends BaseActivity
                 ToastUtil.toast(this,"处理成功");
                 getApplyCooperateList();
                 //通知合作医生列表
-                NotifyChangeListenerServer.getInstance().notifyDoctorMessageChange("");
+                NotifyChangeListenerServer.getInstance().notifyDoctorStatusChange("");
                 break;
             default:
                 break;

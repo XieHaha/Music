@@ -75,6 +75,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
+                    android:maxLength="50"
                     android:background="@null"
                     android:textColor="#333333"
                     android:textSize="15sp" />
@@ -151,6 +152,7 @@
                     android:layout_marginRight="16dp"
                     android:background="@null"
                     android:text=""
+                    android:maxLength="20"
                     android:textColor="#333333"
                     android:textSize="15sp" />
 
@@ -182,6 +184,7 @@
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
+                    android:maxLength="20"
                     android:text=""
                     android:textColor="#333333"
                     android:textSize="15sp" />
@@ -215,6 +218,7 @@
                     android:layout_marginRight="16dp"
                     android:background="@null"
                     android:text=""
+                    android:maxLength="100"
                     android:textColor="#333333"
                     android:textSize="15sp" />
 
@@ -247,6 +251,7 @@
                     android:layout_marginRight="16dp"
                     android:background="@null"
                     android:text=""
+                    android:maxLength="200"
                     android:textColor="#333333"
                     android:textSize="15sp" />
 
@@ -312,6 +317,7 @@
                     android:layout_marginRight="16dp"
                     android:background="@null"
                     android:text=""
+                    android:maxLength="100"
                     android:textColor="#333333"
                     android:textSize="15sp" />
 
@@ -367,6 +373,7 @@
                     android:layout_marginRight="16dp"
                     android:background="@null"
                     android:text=""
+                    android:maxLength="100"
                     android:textColor="#333333"
                     android:textSize="15sp" />
 

@@ -111,7 +111,7 @@ public class NotifyChangeListenerServer implements INotifyChangeListenerServer
         }
     }
 
-    public void notifyDoctorMessageChange(final String data)
+    public void notifyDoctorStatusChange(final String data)
     {
         synchronized (mDoctorStatusChangeListeners)
         {

@@ -71,6 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:hint=""
+                android:maxLength="20"
                 android:imeOptions="actionNext"
                 android:singleLine="true"
                 android:maxLines="1"
@@ -93,6 +94,7 @@
                 android:imeOptions="actionNext"
                 android:singleLine="true"
                 android:maxLines="1"
+                android:maxLength="20"
                 android:textColor="#ff000000"
                 android:textSize="15sp" />
 
@@ -112,6 +114,7 @@
                 android:imeOptions="actionNext"
                 android:singleLine="true"
                 android:maxLines="1"
+                android:maxLength="20"
                 android:textColor="#ff000000"
                 android:textSize="15sp" />
 
@@ -131,6 +134,7 @@
                 android:imeOptions="actionDone"
                 android:singleLine="true"
                 android:maxLines="1"
+                android:maxLength="100"
                 android:textColor="#ff000000"
                 android:textSize="15sp" />
 

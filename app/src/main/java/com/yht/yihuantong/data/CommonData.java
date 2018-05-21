@@ -2,6 +2,7 @@ package com.yht.yihuantong.data;
 
 public interface CommonData
 {
+    String KEY_PUBLIC = "key_public";
     /**
      * 图片选择  单选  多选
      */
@@ -55,27 +56,39 @@ public interface CommonData
      */
     String KEY_IS_FORBID_CHAT = "key_is_forbid_chat";
     /**
-     * 申请添加医生
+     * 极光-合作医生申请码
      */
-    int APPLY_ADD_DOCTOR = 1;
+    int JIGUANG_CODE_COLLEBORATE_DOCTOR_REQUEST = 101;
     /**
-     * 添加医生成功
+     * 极光-合作医生添加成功
      */
-    int APPLY_ADD_DOCTOR_SUCCESS = 2;
-    /**
-     * 申请添加患者
-     */
-    int APPLY_ADD_PATIENT = 3;
-    /**
-     * 添加患者成功
-     */
-    int APPLY_ADD_PATIENT_SUCCESS = 4;
+    int JIGUANG_CODE_COLLEBORATE_ADD_SUCCESS = 102;
     /**
      * 医生认证成功
      */
-    int APPLY_AUTH_SUCCESS = 100;
+    int JIGUANG_CODE_DOCTOR_INFO_CHECK_SUCCESS = 103;
     /**
      * 医生认证失败
      */
-    int APPLY_AUTH_FAILD = 101;
+    int JIGUANG_CODE_DOCTOR_INFO_CHECK_FAILED = 104;
+    /**
+     * 添加患者成功
+     */
+    int JIGUANG_CODE_PATIENT_DP_ADD_SUCCESS = 105;
+    /**
+     * 添加医生成功(患者添加)
+     */
+    int JIGUANG_CODE_DOCTOR_DP_ADD_SUCCESS = 106;
+    /**
+     * 申请添加患者(医生申请)
+     */
+    int JIGUANG_CODE_PATIENT_DP_ADD_REQUEST = 107;
+    /**
+     * 申请添加医生(患者申请)
+     */
+    int JIGUANG_CODE_DOCTOR_DP_ADD_REQUEST = 108;
+    /**
+     * 新增处方
+     */
+    int JIGUANG_NEW_PRESCRIPTION = 109;
 }

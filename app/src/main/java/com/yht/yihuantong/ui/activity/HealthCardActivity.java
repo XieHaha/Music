@@ -247,12 +247,12 @@ public class HealthCardActivity extends BaseActivity
                 }
                 break;
             case DELETE_PATIENT:
-                ToastUtil.toast(this, "操作成功");
+                ToastUtil.toast(this, "处理成功");
                 setResult(RESULT_OK);
                 finish();
                 break;
             case ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT:
-                ToastUtil.toast(this, "操作成功");
+                ToastUtil.toast(this, "处理成功");
                 setResult(RESULT_OK);
                 finish();
                 break;
