@@ -194,16 +194,16 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
             case JIGUANG_CODE_COLLEBORATE_ADD_SUCCESS:
                 NotifyChangeListenerServer.getInstance().notifyDoctorStatusChange("");
                 break;
-            case JIGUANG_CODE_DOCTOR_DP_ADD_REQUEST:
             case JIGUANG_CODE_DOCTOR_DP_ADD_SUCCESS:
-                NotifyChangeListenerServer.getInstance().notifyDoctorStatusChange("");
-                break;
-            case JIGUANG_CODE_PATIENT_DP_ADD_REQUEST:
-            case JIGUANG_CODE_PATIENT_DP_ADD_SUCCESS:
+            case JIGUANG_CODE_DOCTOR_DP_ADD_REQUEST:
                 NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("");
                 break;
-            case JIGUANG_CODE_DOCTOR_INFO_CHECK_FAILED:
+            case JIGUANG_CODE_PATIENT_DP_ADD_SUCCESS:
+            case JIGUANG_CODE_PATIENT_DP_ADD_REQUEST:
+                NotifyChangeListenerServer.getInstance().notifyDoctorStatusChange("");
+                break;
             case JIGUANG_CODE_DOCTOR_INFO_CHECK_SUCCESS:
+            case JIGUANG_CODE_DOCTOR_INFO_CHECK_FAILED:
                 NotifyChangeListenerServer.getInstance().notifyDoctorAuthStatusListeners(type);
                 break;
         }

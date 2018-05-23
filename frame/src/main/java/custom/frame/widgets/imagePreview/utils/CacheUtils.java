@@ -87,7 +87,7 @@ public class CacheUtils {
      * <p>
      * 使用此加载框架的imageloader加载的图片，设置了缓存后，下次使用，
      * 手工从缓存取出来用，这时特别要注意，不能直接使用：
-     * imageLoader.getMemoryCache().get(uri)来获取，因为在加载过程中，
+     * imageLoader.getMemoryCache().getObject(uri)来获取，因为在加载过程中，
      * key是经过运算的，而不单单是uri
      *
      * @param imageUri

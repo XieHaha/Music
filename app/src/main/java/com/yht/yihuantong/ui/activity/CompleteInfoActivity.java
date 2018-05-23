@@ -172,8 +172,8 @@ public class CompleteInfoActivity extends BaseActivity
     private void editHeadImg(final Activity activity)
     {
         new ActionSheetDialog(activity).builder()
-                                       .setCancelable(false)
-                                       .setCanceledOnTouchOutside(false)
+                                       .setCancelable(true)
+                                       .setCanceledOnTouchOutside(true)
                                        .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Blue,
                                                      which ->
                                                      {

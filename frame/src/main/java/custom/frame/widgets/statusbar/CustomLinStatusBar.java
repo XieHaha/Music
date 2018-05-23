@@ -63,7 +63,7 @@ public class CustomLinStatusBar extends LinearLayout {
 
 
     /**
-     * get status height
+     * getObject status height
      *
      * @param context
      * @return

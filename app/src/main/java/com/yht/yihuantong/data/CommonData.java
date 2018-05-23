@@ -2,15 +2,14 @@ package com.yht.yihuantong.data;
 
 public interface CommonData
 {
+    /**
+     * 公用数据key
+     */
     String KEY_PUBLIC = "key_public";
     /**
-     * 图片选择  单选  多选
+     * 用户登录账户
      */
-    String KEY_SINGLE_CHECK = "key_single_check";
-    /**
-     * 选中图片后, 回传图片路径key
-     */
-    String KEY_CHECKED_PATH = "key_checked_path";
+    String KEY_USER_PHONE = "key_user_phone";
     /**
      * 新增病例(or查看病例详情)
      */

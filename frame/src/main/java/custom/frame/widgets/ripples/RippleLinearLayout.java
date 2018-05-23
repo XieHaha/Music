@@ -334,7 +334,7 @@ public class RippleLinearLayout extends LinearLayout {
             if (hasToZoom)
                 this.startAnimation(scaleAnimation);
             /**
-             * get max radius
+             * getObject max radius
              * */
             radiusMax = Math.max(WIDTH, HEIGHT);
             radiusMin = Math.min(WIDTH, HEIGHT);

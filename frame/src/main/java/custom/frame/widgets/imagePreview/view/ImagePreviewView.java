@@ -1161,7 +1161,7 @@ public class ImagePreviewView extends ImageView
         }
 
         /**
-         * Use interpolator to get t
+         * Use interpolator to getObject t
          *
          * @return
          */
@@ -1173,7 +1173,7 @@ public class ImagePreviewView extends ImageView
         }
 
         /**
-         * Interpolate the current targeted zoom and get the delta
+         * Interpolate the current targeted zoom and getObject the delta
          * from the current zoom.
          *
          * @param t

@@ -25,7 +25,7 @@ public class PatientCaseDetailBean implements Serializable {
     private String reportImgUrl;
     private String caseCreatorId;
     private String caseLastUpdateId;
-
+    private String creatorName;
 
     public int getFieldId()
     {
@@ -159,5 +159,15 @@ public class PatientCaseDetailBean implements Serializable {
 
     public void setReportImgUrl(String reportImgUrl) {
         this.reportImgUrl = reportImgUrl;
+    }
+
+    public String getCreatorName()
+    {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName)
+    {
+        this.creatorName = creatorName;
     }
 }

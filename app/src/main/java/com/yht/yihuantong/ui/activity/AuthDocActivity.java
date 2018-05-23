@@ -20,10 +20,12 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.FutureTarget;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.ui.dialog.ActionSheetDialog;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
+import com.yht.yihuantong.utils.AllUtils;
 import com.yht.yihuantong.utils.FileUtils;
 import com.yht.yihuantong.utils.LogUtils;
 import com.yht.yihuantong.utils.ScalingUtils;
@@ -33,6 +35,7 @@ import com.zhihu.matisse.engine.impl.PicassoEngine;
 
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CheckUrl;
@@ -102,7 +105,6 @@ public class AuthDocActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState)
     {
-        super.initView(savedInstanceState);
         ((TextView)findViewById(R.id.public_title_bar_title)).setText("认证");
         tvTitleMore = (TextView)findViewById(R.id.public_title_bar_more_txt);
         tvTitleMore.setText("重新认证");
@@ -125,9 +127,8 @@ public class AuthDocActivity extends BaseActivity
     @Override
     public void initData(@NonNull Bundle savedInstanceState)
     {
-        super.initData(savedInstanceState);
         authStatus = loginSuccessBean.getChecked();
-        if (authStatus == 2 || authStatus == 6)
+        if (authStatus != 0)
         {
             tvTitleMore.setVisibility(View.VISIBLE);
         }
@@ -149,7 +150,6 @@ public class AuthDocActivity extends BaseActivity
     @Override
     public void initListener()
     {
-        super.initListener();
         tvIdCardFrontHint.setOnClickListener(this);
         tvIdCardBackHint.setOnClickListener(this);
         tvDocCardFrontHint.setOnClickListener(this);
@@ -194,6 +194,43 @@ public class AuthDocActivity extends BaseActivity
                 Glide.with(this).load(checkUrl.getQualifiedFront()).into(ivDocCardFront);
                 Glide.with(this).load(checkUrl.getQualifiedEnd()).into(ivDocCardBack);
             }
+            new Thread(() ->
+                       {
+                           if (checkUrl != null)
+                           {
+                               FutureTarget<File> target = Glide.with(AuthDocActivity.this)
+                                                                .asFile()
+                                                                .load(checkUrl.getIdFront())
+                                                                .submit();
+                               FutureTarget<File> target1 = Glide.with(AuthDocActivity.this)
+                                                                 .asFile()
+                                                                 .load(checkUrl.getIdEnd())
+                                                                 .submit();
+                               FutureTarget<File> target2 = Glide.with(AuthDocActivity.this)
+                                                                 .asFile()
+                                                                 .load(checkUrl.getQualifiedFront())
+                                                                 .submit();
+                               FutureTarget<File> target3 = Glide.with(AuthDocActivity.this)
+                                                                 .asFile()
+                                                                 .load(checkUrl.getQualifiedEnd())
+                                                                 .submit();
+                               try
+                               {
+                                   idCardFrontTempFile = target.get();
+                                   idCardBackTempFile = target1.get();
+                                   docCardFrontTempFile = target2.get();
+                                   docCardBackTempFile = target3.get();
+                               }
+                               catch (InterruptedException e)
+                               {
+                                   e.printStackTrace();
+                               }
+                               catch (ExecutionException e)
+                               {
+                                   e.printStackTrace();
+                               }
+                           }
+                       }).start();
         }
     }
 
@@ -246,6 +283,7 @@ public class AuthDocActivity extends BaseActivity
      */
     private void getDocInfo()
     {
+        showProgressDialog("");
         mIRequest.getDocInfo(loginSuccessBean.getDoctorId(), this);
     }
 
@@ -256,6 +294,7 @@ public class AuthDocActivity extends BaseActivity
         switch (task)
         {
             case GET_DOC_INFO:
+                closeProgressDialog();
                 cooperateDocBean = response.getData();
                 initPageData();
                 break;
@@ -276,6 +315,8 @@ public class AuthDocActivity extends BaseActivity
         super.onResponseCodeError(task, response);
         switch (task)
         {
+            case GET_DOC_INFO:
+                break;
             case QUALIFIY_DOC:
                 closeProgressDialog();
                 ToastUtil.toast(this, response.getMsg());
@@ -325,6 +366,11 @@ public class AuthDocActivity extends BaseActivity
         txtHospital = etHospital.getText().toString().trim();
         txtTitle = etTitle.getText().toString().trim();
         txtDepart = etDepart.getText().toString().trim();
+        if (!AllUtils.isCardNum(txtCardNum))
+        {
+            ToastUtil.toast(this, R.string.toast_upload_card_hint);
+            return;
+        }
         if (TextUtils.isEmpty(txtName) || TextUtils.isEmpty(txtCardNum) ||
             idCardFrontTempFile == null || idCardBackTempFile == null)
         {
@@ -348,8 +394,8 @@ public class AuthDocActivity extends BaseActivity
     {
         this.type = type;
         new ActionSheetDialog(this).builder()
-                                   .setCancelable(false)
-                                   .setCanceledOnTouchOutside(false)
+                                   .setCancelable(true)
+                                   .setCanceledOnTouchOutside(true)
                                    .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Blue,
                                                  which ->
                                                  {
@@ -447,21 +493,25 @@ public class AuthDocActivity extends BaseActivity
                     switch (type)
                     {
                         case ID_CARD_FRONT:
+                            tvIdCardFrontHint.setVisibility(View.GONE);
                             idCardFrontTempFile = FileUtils.getFileByUri(imgUri, this);
                             ScalingUtils.resizePic(this, idCardFrontTempFile.getAbsolutePath());
                             Glide.with(this).load(imgUri).into(ivIdCardFront);
                             break;
                         case ID_CARD_BACK:
+                            tvIdCardBackHint.setVisibility(View.GONE);
                             idCardBackTempFile = FileUtils.getFileByUri(imgUri, this);
                             ScalingUtils.resizePic(this, idCardBackTempFile.getAbsolutePath());
                             Glide.with(this).load(imgUri).into(ivIdCardBack);
                             break;
                         case DOC_CARD_FRONT:
+                            tvDocCardFrontHint.setVisibility(View.GONE);
                             docCardFrontTempFile = FileUtils.getFileByUri(imgUri, this);
                             ScalingUtils.resizePic(this, docCardFrontTempFile.getAbsolutePath());
                             Glide.with(this).load(imgUri).into(ivDocCardFront);
                             break;
                         case DOC_CARD_BACK:
+                            tvDocCardBackHint.setVisibility(View.GONE);
                             docCardBackTempFile = FileUtils.getFileByUri(imgUri, this);
                             ScalingUtils.resizePic(this, docCardBackTempFile.getAbsolutePath());
                             Glide.with(this).load(imgUri).into(ivDocCardBack);
@@ -484,18 +534,22 @@ public class AuthDocActivity extends BaseActivity
                 switch (type)
                 {
                     case ID_CARD_FRONT:
+                        tvIdCardFrontHint.setVisibility(View.GONE);
                         idCardFrontTempFile = tempFile;
                         Glide.with(this).load(imageUri).into(ivIdCardFront);
                         break;
                     case ID_CARD_BACK:
+                        tvIdCardBackHint.setVisibility(View.GONE);
                         idCardBackTempFile = tempFile;
                         Glide.with(this).load(imageUri).into(ivIdCardBack);
                         break;
                     case DOC_CARD_FRONT:
+                        tvDocCardFrontHint.setVisibility(View.GONE);
                         docCardFrontTempFile = tempFile;
                         Glide.with(this).load(imageUri).into(ivDocCardFront);
                         break;
                     case DOC_CARD_BACK:
+                        tvDocCardBackHint.setVisibility(View.GONE);
                         docCardBackTempFile = tempFile;
                         Glide.with(this).load(imageUri).into(ivDocCardBack);
                         break;

@@ -308,7 +308,7 @@ public final class DiskLruCache implements Closeable
         } else if (secondSpace == -1 && firstSpace == DIRTY.length() && line.startsWith(DIRTY)) {
             entry.currentEditor = new Editor(entry);
         } else if (secondSpace == -1 && firstSpace == READ.length() && line.startsWith(READ)) {
-            // This work was already done by calling lruEntries.get().
+            // This work was already done by calling lruEntries.getObject().
         } else {
             throw new IOException("unexpected journal line: " + line);
         }

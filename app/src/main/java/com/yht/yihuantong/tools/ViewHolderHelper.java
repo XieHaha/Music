@@ -47,7 +47,7 @@ public class ViewHolderHelper
      * Will set the text of a TextView.
      *
      * @param viewId The view id.
-     * @param value  The text to put in the text view.
+     * @param value  The text to putObject in the text view.
      * @return The ViewHolderHelper for chaining.
      */
     public ViewHolderHelper setText(int viewId, String value)

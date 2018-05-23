@@ -145,8 +145,8 @@ public class YihtApplication extends LitePalApplication
 
     public LoginSuccessBean getLoginSuccessBean()
     {
-        String userStr = (String)SharePreferenceUtil.get(this, CommonData.KEY_LOGIN_SUCCESS_BEAN,
-                                                         "");
+        String userStr = (String)SharePreferenceUtil.getObject(this, CommonData.KEY_LOGIN_SUCCESS_BEAN,
+                                                               "");
         if (!TextUtils.isEmpty(userStr))
         {
             loginSuccessBean = JSON.parseObject(userStr, LoginSuccessBean.class);
@@ -157,7 +157,7 @@ public class YihtApplication extends LitePalApplication
     public void setLoginSuccessBean(LoginSuccessBean loginSuccessBean)
     {
         this.loginSuccessBean = loginSuccessBean;
-        SharePreferenceUtil.put(this, CommonData.KEY_LOGIN_SUCCESS_BEAN, loginSuccessBean);
+        SharePreferenceUtil.putObject(this, CommonData.KEY_LOGIN_SUCCESS_BEAN, loginSuccessBean);
     }
 
     /**

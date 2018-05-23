@@ -30,7 +30,7 @@ public class LoginSuccessBean implements Serializable {
     private String name;
     /**
      * 医生认证
-     * <0-未上传资料（可修改）；1-已上传资料等待审核（不可修改）；2-审核未通过（可修改）；6-审核已通过（不可修改）>
+     * <0-未上传资料（可修改）；1-已上传资料等待审核（可修改）；2-审核未通过（可修改）；6-审核已通过（可修改）>
      */
     private int checked;
 

@@ -390,18 +390,29 @@ public class IRequest extends BaseRequest
                                        PatientCaseBasicBean.class, params, listener);
     }
 
+//    /**
+//     * 获取患者病例列表
+//     */
+//    public Tasks getPatientCaseList(String patientId, int pageNo, int pageSize,
+//            final ResponseListener<BaseResponse> listener)
+//    {
+//        Map<String, Object> merchant = new HashMap<>(16);
+//        merchant.putObject("patientId", patientId);
+//        merchant.putObject("pageNo", pageNo);
+//        merchant.putObject("pageSize", pageSize);
+//        return requestBaseResponseListByJson("/case/patientCase", Tasks.GET_PATIENT_CASE_LIST,
+//                                             PatientCaseDetailBean.class, merchant, listener);
+//    }
     /**
      * 获取患者病例列表
      */
-    public Tasks getPatientCaseList(String patientId, int pageNo, int pageSize,
+    public Tasks getPatientCaseList(String patientId,
             final ResponseListener<BaseResponse> listener)
     {
-        Map<String, Object> merchant = new HashMap<>(16);
-        merchant.put("patientId", patientId);
-        merchant.put("pageNo", pageNo);
-        merchant.put("pageSize", pageSize);
-        return requestBaseResponseListByJson("/case/patientCase", Tasks.GET_PATIENT_CASE_LIST,
-                                             PatientCaseDetailBean.class, merchant, listener);
+        RequestParams params = new RequestParams();
+        params.addBodyParameter("patientId", patientId);
+        return requestBaseResponseList(GET,"/case/nameCase", Tasks.GET_PATIENT_CASE_LIST,
+                                             PatientCaseDetailBean.class, params, listener);
     }
 
     /**

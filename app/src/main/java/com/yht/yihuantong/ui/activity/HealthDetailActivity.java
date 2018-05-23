@@ -255,8 +255,9 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
     {
         if (patientCaseDetailBean != null)
         {
-            tvCreateTime.setText("创建时间 " + AllUtils.formatDate(patientCaseDetailBean.getGmtCreate(),
-                                                               AllUtils.DATE_FORMAT));
+            tvCreateTime.setText("创建者：" + patientCaseDetailBean.getCreatorName() + "\n创建时间：" +
+                                 AllUtils.formatDate(patientCaseDetailBean.getGmtCreate(),
+                                                     AllUtils.DATE_FORMAT));
             etDiagnosis.setText(patientCaseDetailBean.getDiagnosisInfo());
             diagnosisTimeMil = patientCaseDetailBean.getVisDate();
             tvDiagnosisTime.setText(AllUtils.formatDate(patientCaseDetailBean.getVisDate(),
@@ -519,8 +520,8 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
     private void selectImg()
     {
         new ActionSheetDialog(this).builder()
-                                   .setCancelable(false)
-                                   .setCanceledOnTouchOutside(false)
+                                   .setCancelable(true)
+                                   .setCanceledOnTouchOutside(true)
                                    .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Blue,
                                                  which ->
                                                  {

@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 新添加的方法对SharedPreference的使用做了建议的封装，对外公布出put，get，remove，clear等等方法；
+ * 新添加的方法对SharedPreference的使用做了建议的封装，对外公布出put，getObject，remove，clear等等方法；
  *
  * @author liushubao
  *         Created by admin on 2017/3/6.
@@ -34,15 +34,15 @@ public class SharePreferenceUtil {
     }
 
     //存
-    public void savePreference(String spName, String spKey, String spValue) {
-        spEditor = mContext.getSharedPreferences(spName, 0).edit();
+    public void putString( String spKey, String spValue) {
+        spEditor = mContext.getSharedPreferences(FILE_NAME, 0).edit();
         spEditor.putString(spKey, spValue);
         spEditor.commit();
     }
 
     //取
-    public String getPreference(String spName, String spKey) {
-        sp = mContext.getSharedPreferences(spName, 0);
+    public String getString( String spKey) {
+        sp = mContext.getSharedPreferences(FILE_NAME, 0);
         String value = "";
         if (sp != null) {
             value = sp.getString(spKey, "");
@@ -51,8 +51,8 @@ public class SharePreferenceUtil {
     }
 
     //删
-    public void removePreference(String spName, String spKey) {
-        sp = mContext.getSharedPreferences(spName, 0);
+    public void clear(String spKey) {
+        sp = mContext.getSharedPreferences(FILE_NAME, 0);
         if (sp != null) {
             sp.edit().remove(spKey).commit();
         }
@@ -72,7 +72,7 @@ public class SharePreferenceUtil {
      * @param object
      */
     @SuppressWarnings("unchecked")
-    public static void put(Context context, String key, Object object) {
+    public static void putObject(Context context, String key, Object object) {
 
         if (object != null) {
             SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
@@ -105,7 +105,7 @@ public class SharePreferenceUtil {
      * @param defaultObject
      * @return
      */
-    public static Object get(Context context, String key, Object defaultObject) {
+    public static Object getObject(Context context, String key, Object defaultObject) {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         if (defaultObject instanceof String) {
             return sp.getString(key, (String) defaultObject);

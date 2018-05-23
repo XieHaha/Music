@@ -2,10 +2,10 @@ package custom.frame.http.data;
 
 public interface HttpConstants
 {
-//    /**
-//     * 测试服务器
-//     */
-//    String BASE_BASIC_URL = "http://39.107.249.194:8080";
+    //    /**
+    //     * 测试服务器
+    //     */
+    //    String BASE_BASIC_URL = "http://39.107.249.194:8080";
     /**
      * 测试服务器  版本2
      */

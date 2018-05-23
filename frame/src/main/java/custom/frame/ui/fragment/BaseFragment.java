@@ -142,7 +142,7 @@ public abstract class BaseFragment extends Fragment
      * @return
      */
     public LoginSuccessBean getLoginSuccessBean() {
-        String userStr = (String) SharePreferenceUtil.get(getContext(), "key_login_success_bean", "");
+        String userStr = (String) SharePreferenceUtil.getObject(getContext(), "key_login_success_bean", "");
         if (!TextUtils.isEmpty(userStr)) {
             loginSuccessBean = JSON.parseObject(userStr, LoginSuccessBean.class);
         }

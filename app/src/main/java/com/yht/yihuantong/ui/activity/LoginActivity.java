@@ -19,12 +19,12 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
+import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.utils.AllUtils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
-import java.util.Timer;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -32,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 import custom.frame.bean.BaseResponse;
 import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
+import custom.frame.utils.SharePreferenceUtil;
 import custom.frame.utils.ToastUtil;
 
 /**
@@ -39,10 +40,11 @@ import custom.frame.utils.ToastUtil;
  *
  * @author DUNDUN
  */
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity
+{
     private TextView tvGetVerify;
     private EditText etPhone, etVerifyCode;
-    private Timer timer;
+    private SharePreferenceUtil sharePreferenceUtil;
     private String phone, verifyCode;
     private int time = 0;
     /**
@@ -50,14 +52,19 @@ public class LoginActivity extends BaseActivity {
      */
     private boolean IS_SEND_VERIFY_CODE = false;
     private static final int MAX_RESEND_TIME = 60;
-    private Handler handler = new Handler(new Handler.Callback() {
+    private Handler handler = new Handler(new Handler.Callback()
+    {
         @Override
-        public boolean handleMessage(Message message) {
-            if (time <= 0) {
+        public boolean handleMessage(Message message)
+        {
+            if (time <= 0)
+            {
                 tvGetVerify.setClickable(true);
                 tvGetVerify.setSelected(true);
                 tvGetVerify.setText(R.string.txt_get_verify_code_again);
-            } else {
+            }
+            else
+            {
                 tvGetVerify.setClickable(false);
                 tvGetVerify.setSelected(false);
                 tvGetVerify.setText(time + "秒后重试");
@@ -67,50 +74,75 @@ public class LoginActivity extends BaseActivity {
     });
 
     @Override
-    public int getLayoutID() {
+    public int getLayoutID()
+    {
         return R.layout.act_login;
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState) {
+    public void initView(@NonNull Bundle savedInstanceState)
+    {
         super.initView(savedInstanceState);
         //状态栏透明
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         findViewById(R.id.act_login_btn).setOnClickListener(this);
-        tvGetVerify = (TextView) findViewById(R.id.act_login_verify);
-        etPhone = (EditText) findViewById(R.id.act_login_phone);
-        etVerifyCode = (EditText) findViewById(R.id.act_login_verifycode);
+        tvGetVerify = (TextView)findViewById(R.id.act_login_verify);
+        etPhone = (EditText)findViewById(R.id.act_login_phone);
+        etVerifyCode = (EditText)findViewById(R.id.act_login_verifycode);
     }
 
     @Override
-    public void initListener() {
+    public void initData(@NonNull Bundle savedInstanceState)
+    {
+        super.initData(savedInstanceState);
+        sharePreferenceUtil = new SharePreferenceUtil(this);
+        phone = sharePreferenceUtil.getString(CommonData.KEY_USER_PHONE);
+        if (!TextUtils.isEmpty(phone))
+        {
+            etPhone.setText(phone);
+            etPhone.setSelection(phone.length());
+        }
+    }
+
+    @Override
+    public void initListener()
+    {
         super.initListener();
         tvGetVerify.setOnClickListener(this);
-        etPhone.addTextChangedListener(new TextWatcher() {
+        etPhone.addTextChangedListener(new TextWatcher()
+        {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
+            public void afterTextChanged(Editable s)
+            {
                 String string = s.toString();
-                if (TextUtils.isEmpty(string)) {
+                if (TextUtils.isEmpty(string))
+                {
                     return;
                 }
-                if (string.length() == 11) {
+                if (string.length() == 11)
+                {
                     tvGetVerify.setSelected(true);
-                } else {
+                }
+                else
+                {
                     tvGetVerify.setSelected(false);
                 }
             }
         });
         etVerifyCode.setOnEditorActionListener((v, actionId, event) ->
                                                {
-                                                   if (actionId == EditorInfo.IME_ACTION_DONE) {
+                                                   if (actionId == EditorInfo.IME_ACTION_DONE)
+                                                   {
                                                        loginAndRegister();
                                                    }
                                                    return false;
@@ -118,16 +150,20 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         super.onClick(v);
-        switch (v.getId()) {
+        switch (v.getId())
+        {
             case R.id.act_login_verify:
-                if (!tvGetVerify.isSelected()) {
+                if (!tvGetVerify.isSelected())
+                {
                     return;
                 }
                 //获取验证码
                 phone = etPhone.getText().toString().trim();
-                if (!AllUtils.isMobileNumber(phone)) {
+                if (!AllUtils.isMobileNumber(phone))
+                {
                     ToastUtil.toast(this, R.string.toast_txt_phone_error);
                     return;
                 }
@@ -145,84 +181,104 @@ public class LoginActivity extends BaseActivity {
     /**
      * 获取验证码
      */
-    private void getVerifyCode() {
+    private void getVerifyCode()
+    {
         mIRequest.getVerifyCode(phone, this);
     }
 
     /**
      * 登录 注册
      */
-    private void loginAndRegister() {
+    private void loginAndRegister()
+    {
         //                if (!IS_SEND_VERIFY_CODE) {
         //                    ToastUtil.toast(this, R.string.toast_txt_get_verifycoder_error);
         //                    return;
         //                }
         phone = etPhone.getText().toString().trim();
         verifyCode = etVerifyCode.getText().toString().trim();
-        if(!AllUtils.isMobileNumber(phone))
+        if (!AllUtils.isMobileNumber(phone))
         {
-            ToastUtil.toast(this,R.string.toast_txt_phone_error);
+            ToastUtil.toast(this, R.string.toast_txt_phone_error);
             return;
         }
-        if (StringUtils.isEmpty(verifyCode)) {
+        if (StringUtils.isEmpty(verifyCode))
+        {
             ToastUtil.toast(this, R.string.toast_txt_verify_hint);
             return;
         }
-        showProgressDialog("登录中",false);
+        showProgressDialog("登录中", false);
         mIRequest.loginAndRegister(phone, verifyCode, "d", this);
     }
 
     @Override
-    public void onResponseSuccess(Tasks task, BaseResponse response) {
+    public void onResponseSuccess(Tasks task, BaseResponse response)
+    {
         super.onResponseSuccess(task, response);
-        switch (task) {
+        switch (task)
+        {
             case GET_VERIFY_CODE:
                 IS_SEND_VERIFY_CODE = true;
                 ToastUtil.toast(this, R.string.toast_txt_verifycode_success);
-
                 time = MAX_RESEND_TIME;
                 //org.apache.commons.lang3.concurrent.BasicThreadFactory
                 final ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1,
-                        new BasicThreadFactory.Builder().namingPattern("yht-thread-pool-%d").daemon(true).build());
+                                                                                                 new BasicThreadFactory.Builder()
+                                                                                                         .namingPattern(
+                                                                                                                 "yht-thread-pool-%d")
+                                                                                                         .daemon(true)
+                                                                                                         .build());
                 executorService.scheduleAtFixedRate(() ->
                                                     {
                                                         time--;
-                                                        if (time < 0) {
+                                                        if (time < 0)
+                                                        {
                                                             time = 0;
                                                             executorService.shutdownNow();
-                                                        } else {
+                                                        }
+                                                        else
+                                                        {
                                                             handler.sendEmptyMessage(0);
                                                         }
                                                     }, 0, 1, TimeUnit.SECONDS);
-
                 break;
             case LOGIN_AND_REGISTER:
                 //保存登录成功数据
                 loginSuccessBean = response.getData();
                 YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
-                EMClient.getInstance().login(loginSuccessBean.getDoctorId(), "111111", new EMCallBack() {//回调
-                    @Override
-                    public void onSuccess() {
-                        runOnUiThread(() ->
-                                      {
-                                          EMClient.getInstance().chatManager().loadAllConversations();
-                                          EMClient.getInstance().groupManager().loadAllGroups();
-                                          Log.d("main", "登录聊天服务器成功！");
-                                          jumpTopage();
-                                      });
-                    }
+                //保存登录账号
+                sharePreferenceUtil.putString(CommonData.KEY_USER_PHONE, phone);
+                EMClient.getInstance()
+                        .login(loginSuccessBean.getDoctorId(), "111111", new EMCallBack()
+                        {//回调
+                            @Override
+                            public void onSuccess()
+                            {
+                                runOnUiThread(() ->
+                                              {
+                                                  EMClient.getInstance()
+                                                          .chatManager()
+                                                          .loadAllConversations();
+                                                  EMClient.getInstance()
+                                                          .groupManager()
+                                                          .loadAllGroups();
+                                                  Log.d("main", "登录聊天服务器成功！");
+                                                  jumpTopage();
+                                              });
+                            }
 
-                    @Override
-                    public void onProgress(int progress, String status) {
+                            @Override
+                            public void onProgress(int progress, String status)
+                            {
+                            }
 
-                    }
-
-                    @Override
-                    public void onError(int code, String message) {
-                        Log.d("main", "登录聊天服务器失败！");
-                        closeProgressDialog();
-                    }
-                });
+                            @Override
+                            public void onError(int code, String message)
+                            {
+                                Log.d("main", "登录聊天服务器失败！");
+                                closeProgressDialog();
+                            }
+                        });
             default:
                 break;
         }
@@ -232,19 +288,24 @@ public class LoginActivity extends BaseActivity {
     {
         closeProgressDialog();
         //暂时只判断用户名是否为空  为空进入信息完善流程
-        if (TextUtils.isEmpty(loginSuccessBean.getName())) {
+        if (TextUtils.isEmpty(loginSuccessBean.getName()))
+        {
             startActivity(new Intent(this, CompleteInfoActivity.class));
-        } else {
+        }
+        else
+        {
             startActivity(new Intent(this, MainActivity.class));
         }
         finish();
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response) {
+    public void onResponseCodeError(Tasks task, BaseResponse response)
+    {
         closeProgressDialog();
         super.onResponseCodeError(task, response);
-        switch (task) {
+        switch (task)
+        {
             case GET_VERIFY_CODE:
                 ToastUtil.toast(this, "code:" + response.getCode() + "  msg:" + response.getMsg());
                 break;

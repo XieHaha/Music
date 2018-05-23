@@ -260,7 +260,7 @@
                 <category android:name="com.yht.yihuantong"></category>
             </intent-filter>
         </receiver>
-        <!-- Required  . Enable it you can get statistics data with channel -->
+        <!-- Required  . Enable it you getObject get statistics data with channel -->
         <meta-data
             android:name="JPUSH_CHANNEL"
             android:value="developer-default" />

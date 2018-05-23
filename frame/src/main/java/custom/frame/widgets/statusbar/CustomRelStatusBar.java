@@ -61,7 +61,7 @@ public class CustomRelStatusBar extends RelativeLayout {
 
 
     /**
-     * get status height
+     * getObject status height
      *
      * @param context
      * @return

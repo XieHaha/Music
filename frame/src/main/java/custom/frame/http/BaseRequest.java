@@ -565,7 +565,7 @@ public class BaseRequest<T> extends HttpProxy {
 //            @Override
 //            public Map<String, String> getHeaders() {
 //                HashMap<String, String> headers = new HashMap<>(16);
-//                headers.put("Content-Type", "application/x-www-form-urlencoded");
+//                headers.putObject("Content-Type", "application/x-www-form-urlencoded");
 //                return headers;
 //            }
         };

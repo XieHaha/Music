@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.hyphenate.EMConnectionListener;
+import com.hyphenate.EMContactListener;
 import com.hyphenate.EMError;
 import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
@@ -25,6 +27,7 @@ import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.ui.EaseConversationListFragment;
 import com.hyphenate.util.NetUtils;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ease.ChatActivity;
 import com.yht.yihuantong.ui.fragment.CooperateDocFragment;
@@ -84,6 +87,10 @@ public class MainActivity extends BaseActivity
      */
     private EMMessageListener msgListener;
     /**
+     * 联系人变化监听
+     */
+    private EMContactListener contactListener;
+    /**
      * 版本检测
      */
     private VersionPresenter mVersionPresenter;
@@ -132,7 +139,8 @@ public class MainActivity extends BaseActivity
         else if (type == 1)
         {
             tabPatientView();
-        }else if(type == 3)
+        }
+        else if (type == 3)
         {
             tabMyView();
         }
@@ -220,6 +228,50 @@ public class MainActivity extends BaseActivity
             }
         };
         EMClient.getInstance().chatManager().addMessageListener(msgListener);
+        contactListener = new EMContactListener()
+        {
+            @Override
+            public void onContactInvited(String username, String reason)
+            {
+                //收到好友邀请
+                Log.i("test", "onFriendRequestAccepted:" + username);
+            }
+
+            @Override
+            public void onFriendRequestAccepted(String s)
+            {
+                Log.i("test", "onFriendRequestAccepted:" + s);
+            }
+
+            @Override
+            public void onFriendRequestDeclined(String s)
+            {
+                Log.i("test", "onFriendRequestDeclined:" + s);
+            }
+
+            @Override
+            public void onContactDeleted(String username)
+            {
+                //被删除时回调此方法
+                Log.i("test", "onContactDeleted:" + username);
+                //删除会话
+                EMClient.getInstance().chatManager().deleteConversation(username, true);
+                if (easeConversationListFragment != null)
+                {
+                    easeConversationListFragment.refresh();
+                }
+                //通知患者碎片刷新列表
+                NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("");
+            }
+
+            @Override
+            public void onContactAdded(String username)
+            {
+                //增加了联系人时回调此方法
+                Log.i("test", "onContactAdded:" + username);
+            }
+        };
+        EMClient.getInstance().contactManager().setContactListener(contactListener);
         tvDelete.setOnClickListener(v ->
                                     {
                                         if (curConversation != null)
@@ -424,7 +476,10 @@ public class MainActivity extends BaseActivity
      */
     private void hideAll(FragmentTransaction transaction)
     {
-        if (easeConversationListFragment != null) { transaction.hide(easeConversationListFragment); }
+        if (easeConversationListFragment != null)
+        {
+            transaction.hide(easeConversationListFragment);
+        }
         if (patientFragment != null) { transaction.hide(patientFragment); }
         if (cooperateDocFragment != null) { transaction.hide(cooperateDocFragment); }
         if (myFragment != null) { transaction.hide(myFragment); }
@@ -517,6 +572,7 @@ public class MainActivity extends BaseActivity
         //移除监听
         EMClient.getInstance().removeConnectionListener(connectionListener);
         EMClient.getInstance().chatManager().removeMessageListener(msgListener);
+        EMClient.getInstance().contactManager().removeContactListener(contactListener);
     }
 
     public class MyConnectionListener implements EMConnectionListener
@@ -529,32 +585,28 @@ public class MainActivity extends BaseActivity
         @Override
         public void onDisconnected(final int error)
         {
-            runOnUiThread(new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    if (error == EMError.USER_REMOVED)
-                    {
-                        // 显示帐号已经被移除
-                    }
-                    else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE)
-                    {
-                        // 显示帐号在其他设备登录
-                    }
-                    else
-                    {
-                        if (NetUtils.hasNetwork(MainActivity.this))
-                        {
-                            //连接不到聊天服务器
-                        }
-                        else
-                        {
-                            //当前网络不可用，请检查网络设置
-                        }
-                    }
-                }
-            });
+            runOnUiThread(() ->
+                          {
+                              if (error == EMError.USER_REMOVED)
+                              {
+                                  // 显示帐号已经被移除
+                              }
+                              else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE)
+                              {
+                                  // 显示帐号在其他设备登录
+                              }
+                              else
+                              {
+                                  if (NetUtils.hasNetwork(MainActivity.this))
+                                  {
+                                      //连接不到聊天服务器
+                                  }
+                                  else
+                                  {
+                                      //当前网络不可用，请检查网络设置
+                                  }
+                              }
+                          });
         }
     }
 

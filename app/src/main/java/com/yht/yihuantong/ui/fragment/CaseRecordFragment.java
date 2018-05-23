@@ -33,13 +33,12 @@ import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
  *
  * @author DUNDUN
  */
-public class CaseRecordFragment extends BaseFragment implements LoadMoreListener {
+public class CaseRecordFragment extends BaseFragment implements LoadMoreListener
+{
     private LinearLayout llAddNewHealth;
     private AutoLoadRecyclerView autoLoadRecyclerView;
-
     private View footerView;
     private TextView tvHintTxt;
-
     /**
      * 患者 bean
      */
@@ -48,11 +47,8 @@ public class CaseRecordFragment extends BaseFragment implements LoadMoreListener
      * 患者id
      */
     private String patientId;
-
     private CaseRecordListAdapter caseRecordListAdapter;
-
     private List<PatientCaseDetailBean> caseRecordList = new ArrayList<>();
-
     /**
      * 当前页码
      */
@@ -60,10 +56,11 @@ public class CaseRecordFragment extends BaseFragment implements LoadMoreListener
     /**
      * 一页最大数
      */
-    private static final int PAGE_SIZE = 20;
+    private static final int PAGE_SIZE = 10000;
 
     @Override
-    public int getLayoutID() {
+    public int getLayoutID()
+    {
         return R.layout.fragment_health_record;
     }
 
@@ -75,29 +72,30 @@ public class CaseRecordFragment extends BaseFragment implements LoadMoreListener
     }
 
     @Override
-    public void initView(@NonNull View view, @NonNull Bundle savedInstanceState) {
+    public void initView(@NonNull View view, @NonNull Bundle savedInstanceState)
+    {
         super.initView(view, savedInstanceState);
         autoLoadRecyclerView = view.findViewById(R.id.fragment_health_record_recycler);
         llAddNewHealth = view.findViewById(R.id.fragment_health_record_add);
-
-        footerView = LayoutInflater.from(getContext())
-                .inflate(R.layout.view_list_footerr, null);
+        footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState) {
+    public void initData(@NonNull Bundle savedInstanceState)
+    {
         super.initData(savedInstanceState);
         caseRecordListAdapter = new CaseRecordListAdapter(getContext(), caseRecordList);
         caseRecordListAdapter.addFooterView(footerView);
-
-        if (patientBean != null) {
+        if (patientBean != null)
+        {
             patientId = patientBean.getPatientId();
         }
     }
 
     @Override
-    public void initListener() {
+    public void initListener()
+    {
         super.initListener();
         llAddNewHealth.setOnClickListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
@@ -107,32 +105,44 @@ public class CaseRecordFragment extends BaseFragment implements LoadMoreListener
         autoLoadRecyclerView.setAdapter(caseRecordListAdapter);
         caseRecordListAdapter.setOnItemClickListener((v, position, item) ->
                                                      {
-                                                         Intent intent = new Intent(getContext(), HealthDetailActivity.class);
-                                                         intent.putExtra(CommonData.KEY_ADD_NEW_HEALTH, false);
-                                                         intent.putExtra(CommonData.KEY_PATIENT_ID,item.getPatientId());
-                                                         intent.putExtra(CommonData.PATIENT_CASE_DETAIL_BEAN,item);
+                                                         Intent intent = new Intent(getContext(),
+                                                                                    HealthDetailActivity.class);
+                                                         intent.putExtra(
+                                                                 CommonData.KEY_ADD_NEW_HEALTH,
+                                                                 false);
+                                                         intent.putExtra(CommonData.KEY_PATIENT_ID,
+                                                                         item.getPatientId());
+                                                         intent.putExtra(
+                                                                 CommonData.PATIENT_CASE_DETAIL_BEAN,
+                                                                 item);
                                                          startActivity(intent);
                                                      });
         caseRecordListAdapter.setOnItemLongClickListener((v, position, item) ->
                                                          {
-                                                             new SimpleDialog(getActivity(), "删除当前病例",
+                                                             new SimpleDialog(getActivity(),
+                                                                              "删除当前病例",
                                                                               (dialog, which) ->
                                                                               {
-                                                                                  deletePatientCaseList(caseRecordList.get(position));
+                                                                                  deletePatientCaseList(
+                                                                                          caseRecordList
+                                                                                                  .get(position));
                                                                               },
-                                                                              (dialog, which) -> dialog.dismiss()).show();
+                                                                              (dialog, which) -> dialog
+                                                                                      .dismiss()).show();
                                                          });
     }
 
-    public void setPatientBean(PatientBean patientBean) {
+    public void setPatientBean(PatientBean patientBean)
+    {
         this.patientBean = patientBean;
     }
 
     /**
      * 获取患者病例列表
      */
-    private void getPatientCaseList() {
-        mIRequest.getPatientCaseList(patientId, page, PAGE_SIZE, this);
+    private void getPatientCaseList()
+    {
+        mIRequest.getPatientCaseList(patientId, this);
     }
 
     /**
@@ -144,11 +154,12 @@ public class CaseRecordFragment extends BaseFragment implements LoadMoreListener
                                     loginSuccessBean.getDoctorId(), this);
     }
 
-
     @Override
-    public void onClick(View v) {
+    public void onClick(View v)
+    {
         super.onClick(v);
-        switch (v.getId()) {
+        switch (v.getId())
+        {
             case R.id.fragment_health_record_add:
                 Intent intent = new Intent(getContext(), HealthDetailActivity.class);
                 intent.putExtra(CommonData.KEY_ADD_NEW_HEALTH, true);
@@ -161,24 +172,29 @@ public class CaseRecordFragment extends BaseFragment implements LoadMoreListener
     }
 
     @Override
-    public void onResponseSuccess(Tasks task, BaseResponse response) {
+    public void onResponseSuccess(Tasks task, BaseResponse response)
+    {
         super.onResponseSuccess(task, response);
-        switch (task) {
+        switch (task)
+        {
             case GET_PATIENT_CASE_LIST:
-                if (page == 0) {
+                if (page == 0)
+                {
                     caseRecordList.clear();
                 }
                 ArrayList<PatientCaseDetailBean> list = response.getData();
-                if (list != null && list.size() > 0) {
-
+                if (list != null && list.size() > 0)
+                {
                     caseRecordList.addAll(list);
                 }
                 caseRecordListAdapter.notifyDataSetChanged();
-
-                if (caseRecordList.size() < PAGE_SIZE) {
+                if (caseRecordList.size() < PAGE_SIZE)
+                {
                     tvHintTxt.setText("暂无更多数据");
                     autoLoadRecyclerView.loadFinish(false);
-                } else {
+                }
+                else
+                {
                     tvHintTxt.setText("上拉加载更多");
                     autoLoadRecyclerView.loadFinish(true);
                 }
@@ -193,9 +209,11 @@ public class CaseRecordFragment extends BaseFragment implements LoadMoreListener
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response) {
+    public void onResponseCodeError(Tasks task, BaseResponse response)
+    {
         super.onResponseCodeError(task, response);
-        if (page > 0) {
+        if (page > 0)
+        {
             page--;
         }
         tvHintTxt.setText("暂无更多数据");
@@ -203,9 +221,11 @@ public class CaseRecordFragment extends BaseFragment implements LoadMoreListener
     }
 
     @Override
-    public void onResponseError(Tasks task, Exception e) {
+    public void onResponseError(Tasks task, Exception e)
+    {
         super.onResponseError(task, e);
-        if (page > 0) {
+        if (page > 0)
+        {
             page--;
         }
         tvHintTxt.setText("暂无更多数据");
@@ -213,7 +233,8 @@ public class CaseRecordFragment extends BaseFragment implements LoadMoreListener
     }
 
     @Override
-    public void loadMore() {
+    public void loadMore()
+    {
         page++;
         getPatientCaseList();
     }

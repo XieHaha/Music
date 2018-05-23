@@ -49,8 +49,7 @@ public class EditInfoActivity extends BaseActivity
 {
     private CircleImageView headImg;
     private EditText etName, etHospital, etType, etTitle, etIntroduce;
-    private Uri originUri;
-    private Uri cutFileUri;
+    private Uri originUri,cutFileUri;
     private File cameraTempFile;
     private String name, hospital, type, title, introduce, headImgUrl;
     /**
@@ -167,8 +166,8 @@ public class EditInfoActivity extends BaseActivity
     private void editHeadImg()
     {
         new ActionSheetDialog(this).builder()
-                                   .setCancelable(false)
-                                   .setCanceledOnTouchOutside(false)
+                                   .setCancelable(true)
+                                   .setCanceledOnTouchOutside(true)
                                    .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Blue,
                                                  which ->
                                                  {
