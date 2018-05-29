@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -15,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hyphenate.EMConnectionListener;
@@ -26,6 +26,7 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.ui.EaseConversationListFragment;
 import com.hyphenate.util.NetUtils;
+import com.yht.shortcutbadge.ShortcutBadger;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
@@ -52,6 +53,8 @@ public class MainActivity extends BaseActivity
                    EaseConversationListFragment.EaseConversationListItemLongClickListener
 {
     private RippleLinearLayout tabMsg, tabDoc, tabCase, tabMy;
+    private RelativeLayout rlMsgPointLayout;
+    private TextView tvUnReadMsgCount;
     private Fragment patientFragment, cooperateDocFragment, myFragment;
     private EaseConversationListFragment easeConversationListFragment;
     /**
@@ -102,6 +105,10 @@ public class MainActivity extends BaseActivity
      * 是否通过广播检查版本更新
      */
     private boolean versionUpdateChecked = false;
+    /**
+     * 未读消息总数
+     */
+    private int msgUnReadCount = 0;
 
     @Override
     public int getLayoutID()
@@ -148,6 +155,13 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
+    protected void onResume()
+    {
+        super.onResume();
+        updateUnReadCount();
+    }
+
+    @Override
     public void initView(@NonNull Bundle savedInstanceState)
     {
         super.initView(savedInstanceState);
@@ -156,6 +170,8 @@ public class MainActivity extends BaseActivity
         tabDoc = (RippleLinearLayout)findViewById(R.id.act_main_tab2);
         tabCase = (RippleLinearLayout)findViewById(R.id.act_main_tab3);
         tabMy = (RippleLinearLayout)findViewById(R.id.act_main_tab4);
+        rlMsgPointLayout = (RelativeLayout)findViewById(R.id.message_red_point);
+        tvUnReadMsgCount = (TextView)findViewById(R.id.item_msg_num);
         messagePop = LayoutInflater.from(this).inflate(R.layout.message_pop_menu, null);
         tvDelete = messagePop.findViewById(R.id.message_pop_menu_play);
         initTab();
@@ -195,6 +211,7 @@ public class MainActivity extends BaseActivity
                 {
                     easeConversationListFragment.refresh();
                 }
+                runOnUiThread(() -> updateUnReadCount());
             }
 
             @Override
@@ -234,26 +251,22 @@ public class MainActivity extends BaseActivity
             public void onContactInvited(String username, String reason)
             {
                 //收到好友邀请
-                Log.i("test", "onFriendRequestAccepted:" + username);
             }
 
             @Override
             public void onFriendRequestAccepted(String s)
             {
-                Log.i("test", "onFriendRequestAccepted:" + s);
             }
 
             @Override
             public void onFriendRequestDeclined(String s)
             {
-                Log.i("test", "onFriendRequestDeclined:" + s);
             }
 
             @Override
             public void onContactDeleted(String username)
             {
                 //被删除时回调此方法
-                Log.i("test", "onContactDeleted:" + username);
                 //删除会话
                 EMClient.getInstance().chatManager().deleteConversation(username, true);
                 if (easeConversationListFragment != null)
@@ -268,7 +281,6 @@ public class MainActivity extends BaseActivity
             public void onContactAdded(String username)
             {
                 //增加了联系人时回调此方法
-                Log.i("test", "onContactAdded:" + username);
             }
         };
         EMClient.getInstance().contactManager().setContactListener(contactListener);
@@ -289,6 +301,41 @@ public class MainActivity extends BaseActivity
                                             }
                                         }
                                     });
+    }
+
+    /**
+     * 未读消息
+     */
+    public void updateUnReadCount()
+    {
+        msgUnReadCount = EMClient.getInstance().chatManager().getUnreadMessageCount();
+        if (msgUnReadCount > 0)
+        {
+            rlMsgPointLayout.setVisibility(View.VISIBLE);
+            tvUnReadMsgCount.setText(msgUnReadCount > 99 ? "99+" : msgUnReadCount + "");
+            setShortcutBadge(msgUnReadCount);
+        }
+        else
+        {
+            rlMsgPointLayout.setVisibility(View.GONE);
+            removeShortcutBadge();
+        }
+    }
+
+    /**
+     * 设置角标
+     */
+    private void setShortcutBadge(int badgeCount)
+    {
+        ShortcutBadger.applyCount(this, badgeCount);
+    }
+
+    /**
+     * 移除角标
+     */
+    private void removeShortcutBadge()
+    {
+        ShortcutBadger.removeCount(this);
     }
 
     @Override

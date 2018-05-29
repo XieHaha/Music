@@ -50,6 +50,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':frame')
+    implementation project(':shortcutbadge')
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.zhihu.android:matisse:0.4.3'
