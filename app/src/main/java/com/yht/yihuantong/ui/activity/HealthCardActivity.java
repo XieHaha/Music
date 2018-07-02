@@ -177,7 +177,7 @@ public class HealthCardActivity extends BaseActivity
      */
     private void addPatientByScanOrChangePatient(String doctorId)
     {
-        mIRequest.addPatientByScanOrChangePatient(doctorId, patientBean.getPatientId(),
+        mIRequest.addPatientByScanOrChangePatient(doctorId, doctorId,patientBean.getPatientId(),
                                                   CHANGE_PATIENT, this);
     }
 

@@ -1,17 +1,19 @@
 package com.yht.yihuantong.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,8 +26,10 @@ import com.yht.yihuantong.api.RegisterType;
 import com.yht.yihuantong.api.notify.INotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.activity.ApplyPatientActivity;
+import com.yht.yihuantong.ui.activity.ChangePatientActivity;
 import com.yht.yihuantong.ui.activity.HealthCardActivity;
 import com.yht.yihuantong.ui.adapter.PatientsListAdapter;
+import com.yht.yihuantong.utils.AllUtils;
 
 import org.litepal.crud.DataSupport;
 
@@ -58,6 +62,9 @@ public class PatientsFragment extends BaseFragment
     private ImageView ivTitleBarMore;
     private View headerView, footerView;
     private TextView tvFooterHintTxt, tvHeanderHintTxt;
+    private PopupWindow mPopupwinow;
+    private View view_pop;
+    private TextView tvHistory, tvScan;
     private INotifyChangeListenerServer iNotifyChangeListenerServer;
     private List<PatientBean> patientBeanList = new ArrayList<>();
     /**
@@ -112,13 +119,14 @@ public class PatientsFragment extends BaseFragment
     {
         super.initView(view, savedInstanceState);
         //获取状态栏高度，填充
-        View mStateBarFixer = view.findViewById( R.id.status_bar_fix);
-        mStateBarFixer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));//填充状态栏
-
+        View mStateBarFixer = view.findViewById(R.id.status_bar_fix);
+        mStateBarFixer.setLayoutParams(
+                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                              getStateBarHeight(getActivity())));//填充状态栏
         ((TextView)view.findViewById(R.id.public_title_bar_title)).setText("我的患者");
         swipeRefreshLayout = view.findViewById(R.id.fragment_patients_swipe_layout);
         autoLoadRecyclerView = view.findViewById(R.id.fragment_patients_recycler_view);
-        ivTitleBarMore = view.findViewById(R.id.public_title_bar_more_three);
+        ivTitleBarMore = view.findViewById(R.id.public_title_bar_more_two);
         ivTitleBarMore.setVisibility(View.VISIBLE);
         headerView = LayoutInflater.from(getContext())
                                    .inflate(R.layout.view_cooperate_doc_header, null);
@@ -192,7 +200,32 @@ public class PatientsFragment extends BaseFragment
      */
     private void addPatientByScan(String patientId, int mode)
     {
-        mIRequest.addPatientByScan(loginSuccessBean.getDoctorId(), patientId, mode, this);
+        mIRequest.addPatientByScan(loginSuccessBean.getDoctorId(),loginSuccessBean.getDoctorId(), patientId, mode, this);
+    }
+
+    /**
+     * 显示pop
+     */
+    private void showPop()
+    {
+        view_pop = LayoutInflater.from(getContext()).inflate(R.layout.main_pop_menu, null);
+        tvHistory = (TextView)view_pop.findViewById(R.id.delete);
+        tvHistory.setText("转诊记录");
+        tvScan = (TextView)view_pop.findViewById(R.id.change);
+        tvScan.setText("扫一扫");
+        tvHistory.setOnClickListener(this);
+        tvScan.setOnClickListener(this);
+        if (mPopupwinow == null)
+        {
+            //新建一个popwindow
+            mPopupwinow = new PopupWindow(view_pop, LinearLayout.LayoutParams.WRAP_CONTENT,
+                                          LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        }
+        mPopupwinow.setFocusable(true);
+        mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
+        mPopupwinow.setOutsideTouchable(true);
+        mPopupwinow.showAtLocation(view_pop, Gravity.TOP | Gravity.RIGHT, 0,
+                                   (int)AllUtils.dipToPx(getContext(), 65));
     }
 
     @Override
@@ -205,7 +238,21 @@ public class PatientsFragment extends BaseFragment
                 Intent intent = new Intent(getContext(), ApplyPatientActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.public_title_bar_more_three:
+            case R.id.public_title_bar_more_two:
+                showPop();
+                break;
+            case R.id.delete://转诊记录
+                if (mPopupwinow != null)
+                {
+                    mPopupwinow.dismiss();
+                }
+                startActivity(new Intent(getContext(), ChangePatientActivity.class));
+                break;
+            case R.id.change://扫一扫
+                if (mPopupwinow != null)
+                {
+                    mPopupwinow.dismiss();
+                }
                 IntentIntegrator.forSupportFragment(this)
                                 .setBarcodeImageEnabled(false)
                                 .setPrompt("将二维码放入框内，即可自动识别")
@@ -297,7 +344,6 @@ public class PatientsFragment extends BaseFragment
                         tvFooterHintTxt.setText("上拉加载更多");
                         autoLoadRecyclerView.loadFinish(true);
                     }
-
                     //数据存储
                     DataSupport.deleteAll(PatientBean.class);
                     DataSupport.saveAll(patientBeanList);

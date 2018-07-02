@@ -83,8 +83,10 @@ public class EaseCommonUtils {
         switch (message.getType()) {
         case LOCATION:
             if (message.direct() == EMMessage.Direct.RECEIVE) {
-                digest = getString(context, R.string.location_recv);
-                digest = String.format(digest, message.getFrom());
+                //2018年6月12日10:28:09 修改显示id的情况 TODO
+                digest = "[位置信息]";
+                //                digest = getString(context, R.string.location_recv);
+                //                digest = String.format(digest, message.getFrom());
                 return digest;
             } else {
                 digest = getString(context, R.string.location_prefix);

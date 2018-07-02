@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 应用程序Activity管理类
  *
- * @author jph
+ * @author dundun
  */
 public class AppManager {
 

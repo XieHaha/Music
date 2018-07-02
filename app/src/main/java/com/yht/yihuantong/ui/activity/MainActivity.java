@@ -1,12 +1,18 @@
 package com.yht.yihuantong.ui.activity;
 
+import android.annotation.TargetApi;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -313,7 +319,12 @@ public class MainActivity extends BaseActivity
         {
             rlMsgPointLayout.setVisibility(View.VISIBLE);
             tvUnReadMsgCount.setText(msgUnReadCount > 99 ? "99+" : msgUnReadCount + "");
-            setShortcutBadge(msgUnReadCount);
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            {
+                sendSubscribeMsg(msgUnReadCount);
+            }else {
+                setShortcutBadge(msgUnReadCount);
+            }
         }
         else
         {
@@ -336,6 +347,23 @@ public class MainActivity extends BaseActivity
     private void removeShortcutBadge()
     {
         ShortcutBadger.removeCount(this);
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    private void createNotificationChannel(String channelId, String channelName, int importance) {
+        NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
+        channel.setShowBadge(true);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(
+                NOTIFICATION_SERVICE);
+        notificationManager.createNotificationChannel(channel);
+    }
+
+    public void sendSubscribeMsg(int msgUnReadCount) {
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        Notification notification = new NotificationCompat.Builder(this)
+                .setNumber(msgUnReadCount)
+                .build();
+        manager.notify(msgUnReadCount, notification);
     }
 
     @Override

@@ -118,14 +118,14 @@ public class ApplyPatientActivity extends BaseActivity
      * 拒绝患者申请
      */
     private void refusePatientApply(String patientId) {
-        mIRequest.refusePatientApply(loginSuccessBean.getDoctorId(), patientId, MODE, this);
+        mIRequest.refusePatientApply(loginSuccessBean.getDoctorId(),loginSuccessBean.getDoctorId(), patientId, MODE, this);
     }
 
     /**
      * 同意患者申请
      */
     private void agreePatientApply(String patientId,int requestCode) {
-        mIRequest.agreePatientApply(loginSuccessBean.getDoctorId(), patientId, requestCode, this);
+        mIRequest.agreePatientApply(loginSuccessBean.getDoctorId(),loginSuccessBean.getDoctorId(), patientId, requestCode, this);
     }
 
     @Override

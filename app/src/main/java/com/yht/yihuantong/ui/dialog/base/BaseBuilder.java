@@ -1,14 +1,3 @@
-/*
- * 版权信息：嘉赛信息技术有限公司
- * Copyright (C) Justsy Information Technology Co., Ltd. All Rights Reserved
- *
- * FileName: .java
- * Description:
- *   <author> - <version> - <date> - <desc>
- *       jake - v1.1 - 2016.4.27 - 创建类
- *
- */
-
 package com.yht.yihuantong.ui.dialog.base;
 
 import android.app.Activity;

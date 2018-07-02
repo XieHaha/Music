@@ -5,7 +5,7 @@ public interface HttpConstants
     //    /**
     //     * 测试服务器
     //     */
-    //    String BASE_BASIC_URL = "http://39.107.249.194:8080";
+    String BASE_BASIC_URL = "http://39.107.249.194:8080";
     /**
      * 测试服务器  版本2
      */
@@ -13,7 +13,7 @@ public interface HttpConstants
     /**
      * 正式服务器
      */
-    String BASE_BASIC_URL = "http://39.105.117.100:8080";
+    //    String BASE_BASIC_URL = "http://39.105.117.100:8080";
     /**
      * 超时时间
      */

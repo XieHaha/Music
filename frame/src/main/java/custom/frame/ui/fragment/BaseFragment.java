@@ -28,7 +28,7 @@ import custom.frame.ui.activity.AppManager;
 import custom.frame.utils.SharePreferenceUtil;
 
 /**
- * Created by luozi on 2016/3/7.
+ * @author dundun
  */
 public abstract class BaseFragment extends Fragment
         implements FragmentInterface, ResponseListener<BaseResponse>, View.OnClickListener,
