@@ -30,7 +30,7 @@ import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
  *
  * @author DUNDUN
  */
-public class ApplyPatientActivity extends BaseActivity
+public class PatientApplyActivity extends BaseActivity
         implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener, OnEventTriggerListener {
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
@@ -100,7 +100,7 @@ public class ApplyPatientActivity extends BaseActivity
         autoLoadRecyclerView.setAdapter(applyPatientAdapter);
         applyPatientAdapter.setOnItemClickListener((v, position, item) ->
                                                    {
-                               //                        Intent intent = new Intent(ApplyPatientActivity.this,
+                               //                        Intent intent = new Intent(PatientApplyActivity.this,
                                //                                UserInfoActivity.class);
                                //                        intent.putExtra(CommonData.KEY_IS_DEAL_DOC,false);
                                //                        startActivity(intent);

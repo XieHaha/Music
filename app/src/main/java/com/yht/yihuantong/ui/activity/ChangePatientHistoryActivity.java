@@ -28,7 +28,7 @@ import custom.frame.widgets.view.ViewPrepared;
  *
  * @author DUNDUN
  */
-public class ChangePatientActivity extends BaseActivity
+public class ChangePatientHistoryActivity extends BaseActivity
 {
     private Button btnBaseInfo, btnHealthRecord;
     private TextView tvTitle;

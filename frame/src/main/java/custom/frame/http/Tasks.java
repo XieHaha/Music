@@ -48,6 +48,14 @@ public enum Tasks
      */
     APPLY_COOPERATE_DOC,
     /**
+     * 合作医生备注设置
+     */
+    MODIFY_NICK_NAME,
+    /**
+     * 患者备注设置
+     */
+    MODIFY_NICK_NAME_BY_PATIENT,
+    /**
      * 获取合作医生列表
      */
     GET_COOPERATE_DOC_LIST,

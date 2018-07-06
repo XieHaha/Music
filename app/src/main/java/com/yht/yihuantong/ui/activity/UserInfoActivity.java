@@ -40,12 +40,12 @@ public class UserInfoActivity extends BaseActivity
     private ImageView ivTitleMore;
     private TextView tvName, tvType, tvTitle, tvIntroduce, tvHospital;
     private TextView tvChat;
+    private LinearLayout llNickNameLayout;
     private View view_pop;
     private PopupWindow mPopupwinow;
     private TextView tvDelete, tvChange;
     private CooperateDocBean cooperateDocBean;
     private String headImgUrl;
-    private String doctorId;
     /**
      * 是否可以取消关注
      */
@@ -54,6 +54,10 @@ public class UserInfoActivity extends BaseActivity
      * 是否禁止聊天
      */
     private boolean isForbidChat;
+    /**
+     * 添加备注名
+     */
+    private static final int MODIFY_NICKNAME = 100;
 
     @Override
     public int getLayoutID()
@@ -78,6 +82,7 @@ public class UserInfoActivity extends BaseActivity
         tvTitle = (TextView)findViewById(R.id.act_user_info_title);
         tvType = (TextView)findViewById(R.id.act_user_info_type);
         tvIntroduce = (TextView)findViewById(R.id.act_user_info_introduce);
+        llNickNameLayout = (LinearLayout)findViewById(R.id.act_user_info_nickname_layout);
     }
 
     @Override
@@ -86,7 +91,8 @@ public class UserInfoActivity extends BaseActivity
         super.initData(savedInstanceState);
         if (getIntent() != null)
         {
-            doctorId = getIntent().getStringExtra(CommonData.KEY_DOCTOR_ID);
+            cooperateDocBean = (CooperateDocBean)getIntent().getSerializableExtra(
+                    CommonData.KEY_DOCTOR_BEAN);
             isDealDoc = getIntent().getBooleanExtra(CommonData.KEY_IS_DEAL_DOC, false);
             isForbidChat = getIntent().getBooleanExtra(CommonData.KEY_IS_FORBID_CHAT, false);
         }
@@ -106,7 +112,8 @@ public class UserInfoActivity extends BaseActivity
         {
             tvChat.setVisibility(View.VISIBLE);
         }
-        getDocInfo();
+        initPageData();
+        //        getDocInfo();
     }
 
     @Override
@@ -114,6 +121,7 @@ public class UserInfoActivity extends BaseActivity
     {
         super.initListener();
         tvChat.setOnClickListener(this);
+        llNickNameLayout.setOnClickListener(this);
     }
 
     /**
@@ -136,7 +144,15 @@ public class UserInfoActivity extends BaseActivity
             {
                 imgAuth.setSelected(false);
             }
-            tvName.setText(cooperateDocBean.getName());
+            if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) &&
+                cooperateDocBean.getNickname().length() < 20)
+            {
+                tvName.setText(cooperateDocBean.getNickname());
+            }
+            else
+            {
+                tvName.setText(cooperateDocBean.getName());
+            }
             tvHospital.setText(cooperateDocBean.getHospital());
             tvTitle.setText(cooperateDocBean.getTitle());
             tvType.setText(cooperateDocBean.getDepartment());
@@ -149,7 +165,7 @@ public class UserInfoActivity extends BaseActivity
      */
     private void getDocInfo()
     {
-        mIRequest.getDocInfo(doctorId, this);
+        mIRequest.getDocInfo(cooperateDocBean.getDoctorId(), this);
     }
 
     /**
@@ -157,7 +173,8 @@ public class UserInfoActivity extends BaseActivity
      */
     private void cancelCooperateDoc()
     {
-        mIRequest.cancelCooperateDoc(loginSuccessBean.getDoctorId(), doctorId, this);
+        mIRequest.cancelCooperateDoc(loginSuccessBean.getDoctorId(), cooperateDocBean.getDoctorId(),
+                                     this);
     }
 
     @Override
@@ -192,6 +209,13 @@ public class UserInfoActivity extends BaseActivity
                 }
                 cancelCooperateDoc();
                 break;
+            case R.id.act_user_info_nickname_layout:
+                Intent intent = new Intent(this, EditRemarkActivity.class);
+                intent.putExtra(CommonData.KEY_IS_DEAL_DOC, true);
+                intent.putExtra(CommonData.KEY_PUBLIC, cooperateDocBean.getNickname());
+                intent.putExtra(CommonData.KEY_ID, cooperateDocBean.getDoctorId());
+                startActivityForResult(intent, MODIFY_NICKNAME);
+                break;
             default:
                 break;
         }
@@ -204,7 +228,7 @@ public class UserInfoActivity extends BaseActivity
         switch (task)
         {
             case UPLOAD_FILE:
-                ToastUtil.toast(this, "上传成功!!");
+                ToastUtil.toast(this, "上传成功");
                 headImgUrl = response.getData();
                 break;
             case GET_DOC_INFO:
@@ -212,11 +236,34 @@ public class UserInfoActivity extends BaseActivity
                 initPageData();
                 break;
             case CANCEL_COOPERATE_DOC:
-                ToastUtil.toast(this, "处理成功!");
+                ToastUtil.toast(this, "处理成功");
                 setResult(RESULT_OK);
                 finish();
                 break;
             default:
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK)
+        {
+            return;
+        }
+        switch (requestCode)
+        {
+            case MODIFY_NICKNAME:
+                if (data != null)
+                {
+                    String remark = data.getStringExtra(CommonData.KEY_PUBLIC);
+                    if (!TextUtils.isEmpty(remark))
+                    {
+                        tvName.setText(remark);
+                    }
+                }
                 break;
         }
     }

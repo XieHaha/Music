@@ -1,6 +1,7 @@
 package com.yht.yihuantong.ui.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,35 +24,39 @@ import custom.frame.ui.adapter.BaseViewHolder;
  *
  * @author DUNDUN
  */
-public class CooperateDocListAdapter extends BaseRecyclerAdapter<CooperateDocBean> {
+public class CooperateDocListAdapter extends BaseRecyclerAdapter<CooperateDocBean>
+{
     private Context context;
-
     private ArrayList<CooperateDocBean> cooperateDocBeans = new ArrayList<>();
 
-    public CooperateDocListAdapter(Context context, List<CooperateDocBean> list) {
+    public CooperateDocListAdapter(Context context, List<CooperateDocBean> list)
+    {
         super(list);
         this.context = context;
     }
 
     @Override
-    public BaseViewHolder onCreateViewHolder(ViewGroup parent) {
+    public BaseViewHolder onCreateViewHolder(ViewGroup parent)
+    {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_cooperate_list, parent, false);
+                                  .inflate(R.layout.item_cooperate_list, parent, false);
         return new CooperateDocHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position, CooperateDocBean item) {
+    public void onBindViewHolder(BaseViewHolder holder, int position, CooperateDocBean item)
+    {
         super.onBindViewHolder(holder, position, item);
         holder.showView(position, item);
     }
 
-    public class CooperateDocHolder extends BaseViewHolder<CooperateDocBean> {
+    public class CooperateDocHolder extends BaseViewHolder<CooperateDocBean>
+    {
         private ImageView ivHeadImg;
         private TextView tvName, tvType, tvHopital;
 
-
-        public CooperateDocHolder(View itemView) {
+        public CooperateDocHolder(View itemView)
+        {
             super(itemView);
             ivHeadImg = itemView.findViewById(R.id.item_cooperate_list_headimg);
             tvName = itemView.findViewById(R.id.item_cooperate_list_name);
@@ -61,9 +66,20 @@ public class CooperateDocListAdapter extends BaseRecyclerAdapter<CooperateDocBea
         }
 
         @Override
-        public void showView(final int position, final CooperateDocBean item) {
-            Glide.with(context).load(item.getPortraitUrl()).apply(GlideHelper.getOptionsRect()).into(ivHeadImg);
-            tvName.setText(item.getName());
+        public void showView(final int position, final CooperateDocBean item)
+        {
+            Glide.with(context)
+                 .load(item.getPortraitUrl())
+                 .apply(GlideHelper.getOptionsRect())
+                 .into(ivHeadImg);
+            if (!TextUtils.isEmpty(item.getNickname()) && item.getNickname().length() < 20)
+            {
+                tvName.setText(item.getNickname());
+            }
+            else
+            {
+                tvName.setText(item.getName());
+            }
             tvHopital.setText(item.getHospital());
             tvType.setText(item.getDepartment());
         }

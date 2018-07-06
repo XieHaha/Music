@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.activity.ApplyPatientActivity;
+import com.yht.yihuantong.ui.activity.PatientApplyActivity;
 import com.yht.yihuantong.ui.adapter.PatientsListAdapter;
 
 import java.util.ArrayList;
@@ -91,6 +91,8 @@ public class ChangePatientFromFragment extends BaseFragment
         autoLoadRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        patientsListAdapter = new PatientsListAdapter(getContext(), new ArrayList<>());
+        patientsListAdapter.addFooterView(footerView);
         autoLoadRecyclerView.setAdapter(patientsListAdapter);
     }
 
@@ -101,7 +103,7 @@ public class ChangePatientFromFragment extends BaseFragment
         switch (v.getId())
         {
             case R.id.fragment_cooperate_apply_layout:
-                Intent intent = new Intent(getContext(), ApplyPatientActivity.class);
+                Intent intent = new Intent(getContext(), PatientApplyActivity.class);
                 startActivity(intent);
                 break;
             default:

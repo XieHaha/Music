@@ -100,11 +100,11 @@ public class CooperateDocFragment extends BaseFragment
     public void initView(@NonNull View view, @NonNull Bundle savedInstanceState)
     {
         super.initView(view, savedInstanceState);
-
         //获取状态栏高度，填充
-        View mStateBarFixer = view.findViewById( R.id.status_bar_fix);
-        mStateBarFixer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));//填充状态栏
-
+        View mStateBarFixer = view.findViewById(R.id.status_bar_fix);
+        mStateBarFixer.setLayoutParams(
+                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                              getStateBarHeight(getActivity())));//填充状态栏
         ((TextView)view.findViewById(R.id.public_title_bar_title)).setText("合作医生");
         ivTitleBarMore = view.findViewById(R.id.public_title_bar_more_three);
         ivTitleBarMore.setVisibility(View.VISIBLE);
@@ -150,8 +150,9 @@ public class CooperateDocFragment extends BaseFragment
                                                        {
                                                            Intent intent = new Intent(getContext(),
                                                                                       UserInfoActivity.class);
-                                                           intent.putExtra(CommonData.KEY_DOCTOR_ID,
-                                                                           item.getDoctorId());
+                                                           intent.putExtra(
+                                                                   CommonData.KEY_DOCTOR_BEAN,
+                                                                   item);
                                                            intent.putExtra(
                                                                    CommonData.KEY_IS_DEAL_DOC,
                                                                    true);
@@ -165,7 +166,7 @@ public class CooperateDocFragment extends BaseFragment
                                                         (dialog, which) -> dialog.dismiss()).show());
         //注册患者状态监听
         iNotifyChangeListenerServer.registerDoctorStatusChangeListener(doctorStatusChangeListener,
-                                                                        RegisterType.REGISTER);
+                                                                       RegisterType.REGISTER);
     }
 
     /**
@@ -372,6 +373,6 @@ public class CooperateDocFragment extends BaseFragment
         super.onDestroy();
         //注册患者状态监听
         iNotifyChangeListenerServer.registerDoctorStatusChangeListener(doctorStatusChangeListener,
-                                                                        RegisterType.UNREGISTER);
+                                                                       RegisterType.UNREGISTER);
     }
 }

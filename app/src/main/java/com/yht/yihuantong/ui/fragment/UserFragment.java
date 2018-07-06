@@ -16,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -198,7 +199,7 @@ public class UserFragment extends BaseFragment
         /**
          * 权限管理类
          */
-        permissionHelper = PermissionHelper.getInstance(getActivity(),onPermissionCallback);
+        permissionHelper = PermissionHelper.getInstance(getActivity(), onPermissionCallback);
         //检查更新
         mVersionPresenter = new VersionPresenter(getContext(), mIRequest);
         mVersionPresenter.setVersionViewListener(this);
@@ -397,6 +398,7 @@ public class UserFragment extends BaseFragment
         {
             case UPLOAD_FILE:
                 headImgUrl = response.getData();
+                Log.i("test", "headImgUrl:" + headImgUrl);
                 updateBasicInfo();
                 break;
             case UPDATE_BASIC_INFO:

@@ -19,6 +19,10 @@ public interface CommonData
      */
     String KEY_LOGIN_SUCCESS_BEAN = "key_login_success_bean";
     /**
+     * 用户id 不区分医生患者
+     */
+    String KEY_ID = "key_id";
+    /**
      * doctorid
      */
     String KEY_DOCTOR_ID = "key_doctor_id";
@@ -34,6 +38,10 @@ public interface CommonData
      * patient bean
      */
     String KEY_PATIENT_BEAN = "key_patient_bean";
+    /**
+     * doctor bean
+     */
+    String KEY_DOCTOR_BEAN = "key_doctor_bean";
     /**
      * patient case detail bean
      */

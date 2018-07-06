@@ -113,7 +113,7 @@ public class IRequest extends BaseRequest
     /**
      * 上传基本信息
      */
-    public Tasks updateBasicInfo(String doctorId, int checked,String name, String portraitUrl,
+    public Tasks updateBasicInfo(String doctorId, int checked, String name, String portraitUrl,
             final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);
@@ -128,8 +128,9 @@ public class IRequest extends BaseRequest
     /**
      * 上传职业信息
      */
-    public Tasks updateJobInfo(String doctorId, int checked,String department, String doctorDescription,
-            String hospital, String title, final ResponseListener<BaseResponse> listener)
+    public Tasks updateJobInfo(String doctorId, int checked, String department,
+            String doctorDescription, String hospital, String title,
+            final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
@@ -145,8 +146,8 @@ public class IRequest extends BaseRequest
     /**
      * 更改个人信息
      */
-    public Tasks updateUserInfo(String doctorId,int checked, String name, String portraitUrl, String hospital,
-            String department, String title, String doctorDescription,
+    public Tasks updateUserInfo(String doctorId, int checked, String name, String portraitUrl,
+            String hospital, String department, String title, String doctorDescription,
             final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);
@@ -179,8 +180,8 @@ public class IRequest extends BaseRequest
     /**
      * 医生转诊患者
      */
-    public Tasks addPatientByScanOrChangePatient(String doctorId, String fromDoctorId,String patientId,
-            int requestSource, final ResponseListener<BaseResponse> listener)
+    public Tasks addPatientByScanOrChangePatient(String doctorId, String fromDoctorId,
+            String patientId, int requestSource, final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
@@ -195,8 +196,8 @@ public class IRequest extends BaseRequest
     /**
      * 医生扫码添加患者
      */
-    public Tasks addPatientByScan(String doctorId,String fromDoctorId, String patientId, int requestSource,
-            final ResponseListener<BaseResponse> listener)
+    public Tasks addPatientByScan(String doctorId, String fromDoctorId, String patientId,
+            int requestSource, final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
@@ -220,6 +221,36 @@ public class IRequest extends BaseRequest
         merchant.put("requestSource", requestSource);
         return requestBaseResponseByJson("/colleborate/applyRequest", Tasks.APPLY_COOPERATE_DOC,
                                          PatientBean.class, merchant, listener);
+    }
+
+    /**
+     * 合作医生添加备注
+     */
+    public Tasks modifyNickName(String doctorId, String colleborateDoctorId, String nickname,
+            final ResponseListener<BaseResponse> listener)
+    {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("colleborateDoctorId", colleborateDoctorId);
+        merchant.put("nickname", nickname);
+        return requestBaseResponseByJson("/colleborate/nickname", Tasks.MODIFY_NICK_NAME,
+                                         String.class, merchant, listener);
+    }
+
+    /**
+     * 患者备注设置
+     * 医生发起的修改，from为’d’，修改的是显示病人的昵称；病人发起的修改，from为’p’，修改的是显示医生的昵称
+     */
+    public Tasks modifyNickNameByPatient(String doctorId, String patientId,
+            String nickname, String from, final ResponseListener<BaseResponse> listener)
+    {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("patientId", patientId);
+        merchant.put("nickname", nickname);
+        merchant.put("from", from);
+        return requestBaseResponseByJson("/dp/nickname", Tasks.MODIFY_NICK_NAME_BY_PATIENT,
+                                         String.class, merchant, listener);
     }
 
     /**
@@ -294,8 +325,8 @@ public class IRequest extends BaseRequest
     /**
      * 拒绝患者申请
      */
-    public Tasks refusePatientApply(String doctorId, String fromDoctorId,String patientId, int requestSource,
-            final ResponseListener<BaseResponse> listener)
+    public Tasks refusePatientApply(String doctorId, String fromDoctorId, String patientId,
+            int requestSource, final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
@@ -309,8 +340,8 @@ public class IRequest extends BaseRequest
     /**
      * 同意患者申请
      */
-    public Tasks agreePatientApply(String doctorId, String fromDoctorId,String patientId, int requestSource,
-            final ResponseListener<BaseResponse> listener)
+    public Tasks agreePatientApply(String doctorId, String fromDoctorId, String patientId,
+            int requestSource, final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
@@ -393,39 +424,38 @@ public class IRequest extends BaseRequest
         return requestBaseResponseList(GET, "/patient/allergy", Tasks.GET_PATIENT_ALLERGY_INFO,
                                        PatientCaseBasicBean.class, params, listener);
     }
+    //    /**
+    //     * 获取患者病例列表
+    //     */
+    //    public Tasks getPatientCaseList(String patientId, int pageNo, int pageSize,
+    //            final ResponseListener<BaseResponse> listener)
+    //    {
+    //        Map<String, Object> merchant = new HashMap<>(16);
+    //        merchant.putObject("patientId", patientId);
+    //        merchant.putObject("pageNo", pageNo);
+    //        merchant.putObject("pageSize", pageSize);
+    //        return requestBaseResponseListByJson("/case/patientCase", Tasks.GET_PATIENT_CASE_LIST,
+    //                                             PatientCaseDetailBean.class, merchant, listener);
+    //    }
 
-//    /**
-//     * 获取患者病例列表
-//     */
-//    public Tasks getPatientCaseList(String patientId, int pageNo, int pageSize,
-//            final ResponseListener<BaseResponse> listener)
-//    {
-//        Map<String, Object> merchant = new HashMap<>(16);
-//        merchant.putObject("patientId", patientId);
-//        merchant.putObject("pageNo", pageNo);
-//        merchant.putObject("pageSize", pageSize);
-//        return requestBaseResponseListByJson("/case/patientCase", Tasks.GET_PATIENT_CASE_LIST,
-//                                             PatientCaseDetailBean.class, merchant, listener);
-//    }
     /**
      * 获取患者病例列表
      */
-    public Tasks getPatientCaseList(String patientId,
-            final ResponseListener<BaseResponse> listener)
+    public Tasks getPatientCaseList(String patientId, final ResponseListener<BaseResponse> listener)
     {
         RequestParams params = new RequestParams();
         params.addBodyParameter("patientId", patientId);
-        return requestBaseResponseList(GET,"/case/nameCase", Tasks.GET_PATIENT_CASE_LIST,
-                                             PatientCaseDetailBean.class, params, listener);
+        return requestBaseResponseList(GET, "/case/nameCase", Tasks.GET_PATIENT_CASE_LIST,
+                                       PatientCaseDetailBean.class, params, listener);
     }
 
     /**
      * 新增患者病例
      */
-    public Tasks addPatientCase(String patientId,String caseCreatorId, String caseLastUpdateId,String checkReport, String patientWords,
-            String currentInfo, String diagnosisInfo, String doctorDep, String hospital,
-            String importantHistory, String reportImgUrl, String treat, String visDate,
-            final ResponseListener<BaseResponse> listener)
+    public Tasks addPatientCase(String patientId, String caseCreatorId, String caseLastUpdateId,
+            String checkReport, String patientWords, String currentInfo, String diagnosisInfo,
+            String doctorDep, String hospital, String importantHistory, String reportImgUrl,
+            String treat, String visDate, final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>();
         merchant.put("patientId", patientId);
@@ -448,10 +478,11 @@ public class IRequest extends BaseRequest
     /**
      * 更新患者病例
      */
-    public Tasks updatePatientCase(String patientId, int fieldId, String caseCreatorId,String caseLastUpdateId,String caseOperatorId,String checkReport,
-            String patientWords, String currentInfo, String diagnosisInfo, String doctorDep,
-            String hospital, String importantHistory, String reportImgUrl, String treat,
-            String visDate, final ResponseListener<BaseResponse> listener)
+    public Tasks updatePatientCase(String patientId, int fieldId, String caseCreatorId,
+            String caseLastUpdateId, String caseOperatorId, String checkReport, String patientWords,
+            String currentInfo, String diagnosisInfo, String doctorDep, String hospital,
+            String importantHistory, String reportImgUrl, String treat, String visDate,
+            final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>();
         merchant.put("patientId", patientId);
@@ -476,8 +507,8 @@ public class IRequest extends BaseRequest
     /**
      * 删除患者病例
      */
-    public Tasks deletePatientCase(String patientId, int fieldId, String caseCreatorId,String caseOperatorId,
-            final ResponseListener<BaseResponse> listener)
+    public Tasks deletePatientCase(String patientId, int fieldId, String caseCreatorId,
+            String caseOperatorId, final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>();
         merchant.put("patientId", patientId);

@@ -23,6 +23,7 @@ public class PatientBean extends DataSupport implements Serializable {
     private String past_disease;
     private String allergy;
     private String im_username;
+    private String nickname;
     private long date;
     private long birthDate;
     private long gmtCreate;
@@ -173,5 +174,15 @@ public class PatientBean extends DataSupport implements Serializable {
     public void setBirthDate(long birthDate)
     {
         this.birthDate = birthDate;
+    }
+
+    public String getNickname()
+    {
+        return nickname;
+    }
+
+    public void setNickname(String nickname)
+    {
+        this.nickname = nickname;
     }
 }

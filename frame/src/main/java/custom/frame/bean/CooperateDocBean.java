@@ -7,9 +7,9 @@ import java.io.Serializable;
 /**
  * 合作医生
  */
-public class CooperateDocBean extends DataSupport implements Serializable {
+public class CooperateDocBean extends DataSupport implements Serializable
+{
     private static final long serialVersionUID = -5825956356939935298L;
-
     private String doctorId;
     private String phone;
     private String portraitUrl;
@@ -22,69 +22,85 @@ public class CooperateDocBean extends DataSupport implements Serializable {
     private int checked;
     private String checkUrl;
     private String identityNumber;
+    private String nickname;
 
-
-    public String getDoctorId() {
+    public String getDoctorId()
+    {
         return doctorId;
     }
 
-    public void setDoctorId(String doctorId) {
+    public void setDoctorId(String doctorId)
+    {
         this.doctorId = doctorId;
     }
 
-    public String getPhone() {
+    public String getPhone()
+    {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(String phone)
+    {
         this.phone = phone;
     }
 
-    public String getPortraitUrl() {
+    public String getPortraitUrl()
+    {
         return portraitUrl;
     }
 
-    public void setPortraitUrl(String portraitUrl) {
+    public void setPortraitUrl(String portraitUrl)
+    {
         this.portraitUrl = portraitUrl;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.name = name;
     }
 
-    public String getHospital() {
+    public String getHospital()
+    {
         return hospital;
     }
 
-    public void setHospital(String hospital) {
+    public void setHospital(String hospital)
+    {
         this.hospital = hospital;
     }
 
-    public String getTitle() {
+    public String getTitle()
+    {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(String title)
+    {
         this.title = title;
     }
 
-    public String getDepartment() {
+    public String getDepartment()
+    {
         return department;
     }
 
-    public void setDepartment(String department) {
+    public void setDepartment(String department)
+    {
         this.department = department;
     }
 
-    public String getDoctorDescription() {
+    public String getDoctorDescription()
+    {
         return doctorDescription;
     }
 
-    public void setDoctorDescription(String doctorDescription) {
+    public void setDoctorDescription(String doctorDescription)
+    {
         this.doctorDescription = doctorDescription;
     }
 
@@ -126,5 +142,15 @@ public class CooperateDocBean extends DataSupport implements Serializable {
     public void setIdentityNumber(String identityNumber)
     {
         this.identityNumber = identityNumber;
+    }
+
+    public String getNickname()
+    {
+        return nickname;
+    }
+
+    public void setNickname(String nickname)
+    {
+        this.nickname = nickname;
     }
 }

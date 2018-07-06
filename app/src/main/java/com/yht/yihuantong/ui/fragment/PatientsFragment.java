@@ -25,8 +25,8 @@ import com.yht.yihuantong.api.IChange;
 import com.yht.yihuantong.api.RegisterType;
 import com.yht.yihuantong.api.notify.INotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
-import com.yht.yihuantong.ui.activity.ApplyPatientActivity;
-import com.yht.yihuantong.ui.activity.ChangePatientActivity;
+import com.yht.yihuantong.ui.activity.PatientApplyActivity;
+import com.yht.yihuantong.ui.activity.ChangePatientHistoryActivity;
 import com.yht.yihuantong.ui.activity.HealthCardActivity;
 import com.yht.yihuantong.ui.adapter.PatientsListAdapter;
 import com.yht.yihuantong.utils.AllUtils;
@@ -146,7 +146,7 @@ public class PatientsFragment extends BaseFragment
     public void initData(@NonNull Bundle savedInstanceState)
     {
         super.initData(savedInstanceState);
-        patientsListAdapter = new PatientsListAdapter(this, patientBeanList);
+        patientsListAdapter = new PatientsListAdapter(getContext(), patientBeanList);
         //        patientsListAdapter.addHeaderView(headerView);
         patientsListAdapter.addFooterView(footerView);
         iNotifyChangeListenerServer = ApiManager.getInstance()
@@ -235,7 +235,7 @@ public class PatientsFragment extends BaseFragment
         switch (v.getId())
         {
             case R.id.fragment_cooperate_apply_layout:
-                Intent intent = new Intent(getContext(), ApplyPatientActivity.class);
+                Intent intent = new Intent(getContext(), PatientApplyActivity.class);
                 startActivity(intent);
                 break;
             case R.id.public_title_bar_more_two:
@@ -246,7 +246,7 @@ public class PatientsFragment extends BaseFragment
                 {
                     mPopupwinow.dismiss();
                 }
-                startActivity(new Intent(getContext(), ChangePatientActivity.class));
+                startActivity(new Intent(getContext(), ChangePatientHistoryActivity.class));
                 break;
             case R.id.change://扫一扫
                 if (mPopupwinow != null)
