@@ -1,6 +1,7 @@
 package com.yht.yihuantong.ease;
 
 import android.app.Application;
+import android.text.TextUtils;
 
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.easeui.UserInfoCallback;
@@ -85,7 +86,15 @@ public class HxHelper
             if (list != null && list.size() > 0)
             {
                 PatientBean bean = list.get(0);
-                user.setNickname(bean.getName());
+                if (!TextUtils.isEmpty(bean.getNickname()) &&
+                    bean.getNickname().length() < 20)
+                {
+                    user.setNickname(bean.getNickname());
+                }
+                else
+                {
+                    user.setNickname(bean.getName());
+                }
                 user.setAvatar(bean.getPatientImgUrl());
                 callback.onSuccess(user);
                 return user;
@@ -98,7 +107,15 @@ public class HxHelper
                     PatientBean patientBean = response.getData();
                     if (patientBean != null)
                     {
-                        user.setNickname(patientBean.getName());
+                        if (!TextUtils.isEmpty(patientBean.getNickname()) &&
+                            patientBean.getNickname().length() < 20)
+                        {
+                            user.setNickname(patientBean.getNickname());
+                        }
+                        else
+                        {
+                            user.setNickname(patientBean.getName());
+                        }
                         user.setAvatar(patientBean.getPatientImgUrl());
                     }
                     callback.onSuccess(user);
@@ -148,7 +165,15 @@ public class HxHelper
             if (list != null && list.size() > 0)
             {
                 CooperateDocBean bean = list.get(0);
-                user.setNickname(bean.getName());
+                if (!TextUtils.isEmpty(bean.getNickname()) &&
+                    bean.getNickname().length() < 20)
+                {
+                    user.setNickname(bean.getNickname());
+                }
+                else
+                {
+                    user.setNickname(bean.getName());
+                }
                 user.setAvatar(bean.getPortraitUrl());
                 callback.onSuccess(user);
                 return user;
@@ -161,7 +186,15 @@ public class HxHelper
                     CooperateDocBean bean = response.getData();
                     if (bean != null)
                     {
-                        user.setNickname(bean.getName());
+                        if (!TextUtils.isEmpty(bean.getNickname()) &&
+                            bean.getNickname().length() < 20)
+                        {
+                            user.setNickname(bean.getNickname());
+                        }
+                        else
+                        {
+                            user.setNickname(bean.getName());
+                        }
                         user.setAvatar(bean.getPortraitUrl());
                     }
                     callback.onSuccess(user);

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
@@ -24,6 +26,8 @@ import com.yht.yihuantong.ui.adapter.FragmentVpAdapter;
 import com.yht.yihuantong.ui.fragment.BaseInfoFragment;
 import com.yht.yihuantong.ui.fragment.CaseRecordFragment;
 import com.yht.yihuantong.utils.AllUtils;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,14 +47,15 @@ import custom.frame.widgets.view.ViewPrepared;
 public class HealthCardActivity extends BaseActivity
 {
     private Button btnBaseInfo, btnHealthRecord;
-    private TextView tvChat,tvTitle;
+    private TextView tvChat, tvTitle;
     private ImageView ivTitleBarMore;
     private ViewPager viewPager;
     private View viewIndicator;
     private FragmentVpAdapter fragmentVpAdapter;
-    private View view_pop;
+    private View view_pop, view_line;
     private PopupWindow mPopupwinow;
-    private TextView tvDelete, tvChange;
+    private RelativeLayout rlRemarkLayout;
+    private TextView tvDelete, tvChange, tvRemark;
     /**
      * 患者 bean
      */
@@ -108,6 +113,24 @@ public class HealthCardActivity extends BaseActivity
             patientBean = (PatientBean)getIntent().getSerializableExtra(
                     CommonData.KEY_PATIENT_BEAN);
         }
+        if (patientBean != null)
+        {
+            List<PatientBean> list = DataSupport.where("patientId = ?", patientBean.getPatientId())
+                                                .find(PatientBean.class);
+            if (list != null && list.size() > 0)
+            {
+                patientBean = list.get(0);
+            }
+            if (!TextUtils.isEmpty(patientBean.getNickname()) &&
+                patientBean.getNickname().length() < 20)
+            {
+                tvTitle.setText(patientBean.getNickname() + "的健康卡");
+            }
+            else
+            {
+                tvTitle.setText(patientBean.getName() + "的健康卡");
+            }
+        }
         new ViewPrepared().asyncPrepare(btnBaseInfo, (w, h) ->
         {
             ViewGroup.LayoutParams params = viewIndicator.getLayoutParams();
@@ -123,7 +146,7 @@ public class HealthCardActivity extends BaseActivity
         fragmentVpAdapter = new FragmentVpAdapter(getSupportFragmentManager(), fragmentList);
         viewPager.setAdapter(fragmentVpAdapter);
         viewPager.setCurrentItem(0);
-        getPatientInfo();
+        //        getPatientInfo();
     }
 
     @Override
@@ -177,7 +200,7 @@ public class HealthCardActivity extends BaseActivity
      */
     private void addPatientByScanOrChangePatient(String doctorId)
     {
-        mIRequest.addPatientByScanOrChangePatient(doctorId, doctorId,patientBean.getPatientId(),
+        mIRequest.addPatientByScanOrChangePatient(doctorId, doctorId, patientBean.getPatientId(),
                                                   CHANGE_PATIENT, this);
     }
 
@@ -212,6 +235,17 @@ public class HealthCardActivity extends BaseActivity
                 intent = new Intent(this, CooperateDocActivity.class);
                 startActivityForResult(intent, CHANGE_PATIENT_REQUEST_CODE);
                 break;
+            case R.id.remark:
+                if (mPopupwinow != null)
+                {
+                    mPopupwinow.dismiss();
+                }
+                intent = new Intent(this, EditRemarkActivity.class);
+                intent.putExtra(CommonData.KEY_IS_DEAL_DOC, false);
+                intent.putExtra(CommonData.KEY_PUBLIC, patientBean.getNickname());
+                intent.putExtra(CommonData.KEY_ID, patientBean.getPatientId());
+                startActivity(intent);
+                break;
             case R.id.act_health_card_chat:
                 if (patientBean != null)
                 {
@@ -235,15 +269,22 @@ public class HealthCardActivity extends BaseActivity
         switch (task)
         {
             case GET_PATIENT_INFO:
-                patientBean =response.getData();
+                patientBean = response.getData();
                 if (patientBean != null)
                 {
-                   tvTitle.setText(patientBean.getName() + "的健康卡");
+                    if (!TextUtils.isEmpty(patientBean.getNickname()) &&
+                        patientBean.getNickname().length() < 20)
+                    {
+                        tvTitle.setText(patientBean.getNickname() + "的健康卡");
+                    }
+                    else
+                    {
+                        tvTitle.setText(patientBean.getName() + "的健康卡");
+                    }
                 }
-                if(baseInfoFragment!=null)
+                if (baseInfoFragment != null)
                 {
                     baseInfoFragment.setPatientBean(patientBean);
-                    baseInfoFragment.initPageData();
                 }
                 break;
             case DELETE_PATIENT:
@@ -301,8 +342,14 @@ public class HealthCardActivity extends BaseActivity
         view_pop = LayoutInflater.from(this).inflate(R.layout.main_pop_menu, null);
         tvDelete = (TextView)view_pop.findViewById(R.id.delete);
         tvChange = (TextView)view_pop.findViewById(R.id.change);
+        tvRemark = view_pop.findViewById(R.id.remark);
+        rlRemarkLayout = view_pop.findViewById(R.id.btn_remark_layout);
+        view_line = view_pop.findViewById(R.id.main_pop_menu_line_1);
+        view_line.setVisibility(View.VISIBLE);
+        rlRemarkLayout.setVisibility(View.VISIBLE);
         tvDelete.setOnClickListener(this);
         tvChange.setOnClickListener(this);
+        tvRemark.setOnClickListener(this);
         if (mPopupwinow == null)
         {
             //新建一个popwindow

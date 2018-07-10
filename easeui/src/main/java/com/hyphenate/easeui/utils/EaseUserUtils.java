@@ -6,6 +6,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.request.RequestOptions;
 import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.EaseUI.EaseUserProfileProvider;
 import com.hyphenate.easeui.R;
@@ -15,7 +17,7 @@ import com.hyphenate.easeui.domain.EaseUser;
 public class EaseUserUtils {
     
     static EaseUserProfileProvider userProvider;
-    
+    private static RequestOptions optionsRect;
     static {
         userProvider = EaseUI.getInstance().getUserProfileProvider();
     }
@@ -44,10 +46,10 @@ public class EaseUserUtils {
                 if(user != null && !TextUtils.isEmpty(user.getAvatar())){
                     try {
                         int avatarResId = Integer.parseInt(user.getAvatar());
-                        Glide.with(context).load(avatarResId).into(imageView);
+                        Glide.with(context).load(avatarResId).apply(getOptionsRect()).into(imageView);
                     } catch (Exception e) {
                         //use default avatar
-                        Glide.with(context).load(user.getAvatar()).into(imageView);
+                        Glide.with(context).load(user.getAvatar()).apply(getOptionsRect()).into(imageView);
                     }
                 }else{
                     Glide.with(context).load(R.drawable.ease_default_avatar).into(imageView);
@@ -75,6 +77,17 @@ public class EaseUserUtils {
             });
 
         }
+    }
+
+    public  static RequestOptions getOptionsRect() {
+        if (optionsRect == null) {
+            optionsRect = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.drawable.ease_default_avatar)
+                    .error(R.drawable.ease_default_avatar)
+                    .priority(Priority.NORMAL);
+        }
+        return optionsRect;
     }
     
 }

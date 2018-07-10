@@ -22,6 +22,10 @@ import com.yht.yihuantong.ease.ChatActivity;
 import com.yht.yihuantong.tools.GlideHelper;
 import com.yht.yihuantong.utils.AllUtils;
 
+import org.litepal.crud.DataSupport;
+
+import java.util.List;
+
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CooperateDocBean;
 import custom.frame.http.Tasks;
@@ -45,6 +49,7 @@ public class UserInfoActivity extends BaseActivity
     private PopupWindow mPopupwinow;
     private TextView tvDelete, tvChange;
     private CooperateDocBean cooperateDocBean;
+    private String doctorId;
     private String headImgUrl;
     /**
      * 是否可以取消关注
@@ -93,6 +98,7 @@ public class UserInfoActivity extends BaseActivity
         {
             cooperateDocBean = (CooperateDocBean)getIntent().getSerializableExtra(
                     CommonData.KEY_DOCTOR_BEAN);
+            doctorId = getIntent().getStringExtra(CommonData.KEY_DOCTOR_ID);
             isDealDoc = getIntent().getBooleanExtra(CommonData.KEY_IS_DEAL_DOC, false);
             isForbidChat = getIntent().getBooleanExtra(CommonData.KEY_IS_FORBID_CHAT, false);
         }
@@ -111,6 +117,15 @@ public class UserInfoActivity extends BaseActivity
         else
         {
             tvChat.setVisibility(View.VISIBLE);
+        }
+        if (!TextUtils.isEmpty(doctorId))
+        {
+            List<CooperateDocBean> list = DataSupport.where("doctorId = ?", doctorId)
+                                                     .find(CooperateDocBean.class);
+            if (list != null && list.size() > 0)
+            {
+                cooperateDocBean = list.get(0);
+            }
         }
         initPageData();
         //        getDocInfo();
@@ -147,7 +162,8 @@ public class UserInfoActivity extends BaseActivity
             if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) &&
                 cooperateDocBean.getNickname().length() < 20)
             {
-                tvName.setText(cooperateDocBean.getNickname());
+                tvName.setText(
+                        cooperateDocBean.getNickname() + "(" + cooperateDocBean.getName() + ")");
             }
             else
             {
@@ -191,9 +207,18 @@ public class UserInfoActivity extends BaseActivity
                 {
                     Intent intent = new Intent(this, ChatActivity.class);
                     intent.putExtra(CommonData.KEY_CHAT_ID, cooperateDocBean.getDoctorId());
-                    intent.putExtra(CommonData.KEY_CHAT_NAME, cooperateDocBean.getName());
-                    //存储临时数据
-                    YihtApplication.getInstance().setEaseName(cooperateDocBean.getName());
+                    if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) &&
+                        cooperateDocBean.getNickname().length() < 20)
+                    {
+                        intent.putExtra(CommonData.KEY_CHAT_NAME, cooperateDocBean.getNickname());
+                        YihtApplication.getInstance().setEaseName(cooperateDocBean.getNickname());
+                    }
+                    else
+                    {
+                        intent.putExtra(CommonData.KEY_CHAT_NAME, cooperateDocBean.getName());
+                        //存储临时数据
+                        YihtApplication.getInstance().setEaseName(cooperateDocBean.getName());
+                    }
                     YihtApplication.getInstance()
                                    .setEaseHeadImgUrl(cooperateDocBean.getPortraitUrl());
                     startActivity(intent);
@@ -261,7 +286,7 @@ public class UserInfoActivity extends BaseActivity
                     String remark = data.getStringExtra(CommonData.KEY_PUBLIC);
                     if (!TextUtils.isEmpty(remark))
                     {
-                        tvName.setText(remark);
+                        tvName.setText(remark + "(" + cooperateDocBean.getName() + ")");
                     }
                 }
                 break;

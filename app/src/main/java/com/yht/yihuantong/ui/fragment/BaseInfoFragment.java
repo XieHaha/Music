@@ -25,12 +25,11 @@ import custom.frame.ui.fragment.BaseFragment;
  *
  * @author DUNDUN
  */
-public class BaseInfoFragment extends BaseFragment {
-
+public class BaseInfoFragment extends BaseFragment
+{
     private TextView tvName, tvSex, tvAge, tvType, tvAllergy, tvDiagnosis, tvSurgery;
     private ListView lvSurgeryInfo;
     private SurgeryAdapter surgeryAdapter;
-
     /**
      * 患者 bean
      */
@@ -39,7 +38,6 @@ public class BaseInfoFragment extends BaseFragment {
      * 患者id
      */
     private String patientId;
-
     /**
      * 手术信息
      */
@@ -54,13 +52,16 @@ public class BaseInfoFragment extends BaseFragment {
     private ArrayList<PatientCaseBasicBean> patientAllergyList = new ArrayList<>();
 
     @Override
-    public int getLayoutID() {
+    public int getLayoutID()
+    {
         return R.layout.fragment_base_info;
     }
 
     @Override
-    public void initView(@NonNull View view, @NonNull Bundle savedInstanceState) {
+    public void initView(@NonNull View view, @NonNull Bundle savedInstanceState)
+    {
         super.initView(view, savedInstanceState);
+        tvName = view.findViewById(R.id.fragment_base_info_name);
         tvSex = view.findViewById(R.id.fragment_base_info_sex);
         tvAge = view.findViewById(R.id.fragment_base_info_age);
         tvType = view.findViewById(R.id.fragment_base_info_type);
@@ -73,11 +74,14 @@ public class BaseInfoFragment extends BaseFragment {
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState) {
+    public void initData(@NonNull Bundle savedInstanceState)
+    {
         super.initData(savedInstanceState);
-        if (patientBean != null) {
+        if (patientBean != null)
+        {
             patientId = patientBean.getPatientId();
         }
+        initPageData();
         getPatientAllergy();
         getPatientDiagnosis();
         getPatientSurgery();
@@ -85,33 +89,41 @@ public class BaseInfoFragment extends BaseFragment {
 
     public void initPageData()
     {
-        if(patientBean!=null)
+        if (patientBean != null)
         {
+            tvName.setText(patientBean.getName());
             tvSex.setText(patientBean.getSex());
             tvAge.setText(AllUtils.formatDateByAge(patientBean.getBirthDate()));
         }
     }
 
-    public void setPatientBean(PatientBean patientBean) {
+    public void setPatientBean(PatientBean patientBean)
+    {
         this.patientBean = patientBean;
     }
 
     /**
      * 诊断信息
      */
-    private void initDiagnosisInfo() {
-        if (patientDiagnosisList != null && patientDiagnosisList.size() > 0) {
+    private void initDiagnosisInfo()
+    {
+        if (patientDiagnosisList != null && patientDiagnosisList.size() > 0)
+        {
             int size = patientDiagnosisList.size();
             StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i < size; i++)
+            {
                 PatientCaseBasicBean bean = patientDiagnosisList.get(i);
                 stringBuilder.append(bean.getDiagnosisInfo());
-                if (i != size - 1) {
+                if (i != size - 1)
+                {
                     stringBuilder.append("、");
                 }
             }
             tvDiagnosis.setText(stringBuilder.toString());
-        } else {
+        }
+        else
+        {
             tvDiagnosis.setText("暂无信息");
         }
     }
@@ -119,19 +131,25 @@ public class BaseInfoFragment extends BaseFragment {
     /**
      * 过敏信息
      */
-    private void initAllergyInfo() {
-        if (patientAllergyList != null && patientAllergyList.size() > 0) {
+    private void initAllergyInfo()
+    {
+        if (patientAllergyList != null && patientAllergyList.size() > 0)
+        {
             int size = patientAllergyList.size();
             StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i < size; i++)
+            {
                 PatientCaseBasicBean bean = patientAllergyList.get(i);
                 stringBuilder.append(bean.getAllergyInfo());
-                if (i != size - 1) {
+                if (i != size - 1)
+                {
                     stringBuilder.append("、");
                 }
             }
             tvAllergy.setText(stringBuilder.toString());
-        } else {
+        }
+        else
+        {
             tvAllergy.setText("暂无信息");
         }
     }
@@ -139,36 +157,42 @@ public class BaseInfoFragment extends BaseFragment {
     /**
      * 获取患者手术信息
      */
-    private void getPatientSurgery() {
+    private void getPatientSurgery()
+    {
         mIRequest.getPatientSurgery(patientId, this);
     }
 
     /**
      * 获取患者诊断信息
      */
-    private void getPatientDiagnosis() {
+    private void getPatientDiagnosis()
+    {
         mIRequest.getPatientDiagnosis(patientId, this);
     }
 
     /**
      * 获取患者过敏信息
      */
-    private void getPatientAllergy() {
+    private void getPatientAllergy()
+    {
         mIRequest.getPatientAllergy(patientId, this);
     }
 
     @Override
-    public void onResponseSuccess(Tasks task, BaseResponse response) {
+    public void onResponseSuccess(Tasks task, BaseResponse response)
+    {
         super.onResponseSuccess(task, response);
-
-        switch (task) {
+        switch (task)
+        {
             case GET_PATIENT_SURGERY_INFO:
                 ArrayList<PatientCaseBasicBean> list = response.getData();
-                if (list != null && list.size() > 0) {
+                if (list != null && list.size() > 0)
+                {
                     patientSurgeryList.clear();
                     patientSurgeryList.addAll(list);
                 }
-                if (patientSurgeryList.size() == 0) {
+                if (patientSurgeryList.size() == 0)
+                {
                     tvSurgery.setVisibility(View.VISIBLE);
                     tvSurgery.setText("暂无信息");
                 }
@@ -176,7 +200,8 @@ public class BaseInfoFragment extends BaseFragment {
                 break;
             case GET_PATIENT_DIAGNOSIS_INFO:
                 ArrayList<PatientCaseBasicBean> list1 = response.getData();
-                if (list1 != null && list1.size() > 0) {
+                if (list1 != null && list1.size() > 0)
+                {
                     patientDiagnosisList.clear();
                     patientDiagnosisList.addAll(list1);
                 }
@@ -184,7 +209,8 @@ public class BaseInfoFragment extends BaseFragment {
                 break;
             case GET_PATIENT_ALLERGY_INFO:
                 ArrayList<PatientCaseBasicBean> list2 = response.getData();
-                if (list2 != null && list2.size() > 0) {
+                if (list2 != null && list2.size() > 0)
+                {
                     patientAllergyList.clear();
                     patientAllergyList.addAll(list2);
                 }
@@ -195,41 +221,51 @@ public class BaseInfoFragment extends BaseFragment {
         }
     }
 
-    class SurgeryAdapter extends BaseAdapter {
+    class SurgeryAdapter extends BaseAdapter
+    {
         ViewHolder holder;
 
         @Override
-        public int getCount() {
+        public int getCount()
+        {
             return patientSurgeryList.size();
         }
 
         @Override
-        public Object getItem(int position) {
+        public Object getItem(int position)
+        {
             return patientSurgeryList.get(position);
         }
 
         @Override
-        public long getItemId(int position) {
+        public long getItemId(int position)
+        {
             return position;
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
+        public View getView(int position, View convertView, ViewGroup parent)
+        {
+            if (convertView == null)
+            {
                 holder = new ViewHolder();
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_patient_surgery_info, parent, false);
+                convertView = LayoutInflater.from(getContext())
+                                            .inflate(R.layout.item_patient_surgery_info, parent,
+                                                     false);
                 holder.tvName = convertView.findViewById(R.id.item_patient_surgery_name);
                 holder.tvTime = convertView.findViewById(R.id.item_patient_surgery_time);
                 convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
             }
-
+            else
+            {
+                holder = (ViewHolder)convertView.getTag();
+            }
             init(patientSurgeryList.get(position));
             return convertView;
         }
 
-        private void init(PatientCaseBasicBean item) {
+        private void init(PatientCaseBasicBean item)
+        {
             holder.tvName.setText(item.getSurgeryInfo());
             if (item.getSurgeryDate() == 0)
             {
@@ -239,11 +275,13 @@ public class BaseInfoFragment extends BaseFragment {
             {
                 holder.tvTime.setVisibility(View.VISIBLE);
             }
-            holder.tvTime.setText(AllUtils.formatDate(item.getGmtCreate(), AllUtils.DATE_FORMAT_AGE));
+            holder.tvTime.setText(
+                    AllUtils.formatDate(item.getGmtCreate(), AllUtils.DATE_FORMAT_AGE));
         }
     }
 
-    class ViewHolder {
+    class ViewHolder
+    {
         public TextView tvName, tvTime;
     }
 }

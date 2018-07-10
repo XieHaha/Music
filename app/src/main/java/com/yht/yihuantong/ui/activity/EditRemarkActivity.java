@@ -1,10 +1,12 @@
 package com.yht.yihuantong.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -56,7 +58,7 @@ public class EditRemarkActivity extends BaseActivity
         if (!TextUtils.isEmpty(nickName) && nickName.length() < 20)
         {
             etNickName.setText(nickName);
-            etNickName.setSelection(nickName.length() - 1);
+            etNickName.setSelection(nickName.length());
         }
     }
 
@@ -91,6 +93,7 @@ public class EditRemarkActivity extends BaseActivity
         switch (v.getId())
         {
             case R.id.act_edit_remark_save:
+                hideSoftInputFromWindow();
                 remark = etNickName.getText().toString().trim();
                 if (TextUtils.isEmpty(remark))
                 {
@@ -115,11 +118,22 @@ public class EditRemarkActivity extends BaseActivity
         switch (task)
         {
             case MODIFY_NICK_NAME:
+            case MODIFY_NICK_NAME_BY_PATIENT:
                 Intent intent = new Intent();
                 intent.putExtra(CommonData.KEY_PUBLIC, remark);
                 setResult(RESULT_OK, intent);
                 finish();
                 break;
         }
+    }
+
+    /**
+     * 隐藏软键盘
+     */
+    private void hideSoftInputFromWindow()
+    {
+        InputMethodManager inputmanger = (InputMethodManager)getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        inputmanger.hideSoftInputFromWindow(etNickName.getWindowToken(), 0);
     }
 }
