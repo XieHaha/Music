@@ -48,8 +48,12 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/BaseAppTheme">
+        <meta-data
+            android:name="android.notch_support"
+            android:value="true" />
         <!--<activity android:name=".ui.activity.MainActivity">-->
-        <activity android:name=".ui.activity.SplashActivity"
+        <activity
+            android:name=".ui.activity.SplashActivity"
             android:theme="@style/AppFullScreenTheme"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -78,6 +82,7 @@
         <activity
             android:name=".ui.activity.HealthCardActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.HealthDetailActivity"
@@ -112,10 +117,12 @@
             android:name=".ui.activity.AuthDocActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.ChangePatientHistoryActivity"
+        <activity
+            android:name=".ui.activity.ChangePatientHistoryActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.EditRemarkActivity"
+        <activity
+            android:name=".ui.activity.EditRemarkActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:screenOrientation="portrait" />
         <activity
@@ -123,7 +130,7 @@
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:launchMode="singleTask"
             android:parentActivityName=".ui.activity.MainActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.MainActivity" />

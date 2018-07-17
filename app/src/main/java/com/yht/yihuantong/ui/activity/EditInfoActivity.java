@@ -146,6 +146,30 @@ public class EditInfoActivity extends BaseActivity
         mIRequest.uploadHeadImg(file, "jpg", this);
     }
 
+    /**
+     * 更新个人信息
+     */
+    private void updateUserInfo()
+    {
+        name = etName.getText().toString();
+        hospital = etHospital.getText().toString();
+        title = etTitle.getText().toString();
+        type = etType.getText().toString();
+        introduce = etIntroduce.getText().toString();
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(hospital) || TextUtils.isEmpty(type) ||
+            TextUtils.isEmpty(title) || TextUtils.isEmpty(introduce))
+        {
+            ToastUtil.toast(this, R.string.toast_upload_job_info_hint);
+            return;
+        }
+        if (headImgUrl == null)
+        {
+            headImgUrl = "";
+        }
+        mIRequest.updateUserInfo(loginSuccessBean.getDoctorId(), loginSuccessBean.getChecked(),name, headImgUrl, hospital, type,
+                                 title, introduce, this);
+    }
+
     @Override
     public void onClick(View v)
     {
@@ -184,30 +208,6 @@ public class EditInfoActivity extends BaseActivity
                                                              Permission.STORAGE_WRITE });
                                                  })
                                    .show();
-    }
-
-    /**
-     * 更新个人信息
-     */
-    private void updateUserInfo()
-    {
-        name = etName.getText().toString();
-        hospital = etHospital.getText().toString();
-        title = etTitle.getText().toString();
-        type = etType.getText().toString();
-        introduce = etIntroduce.getText().toString();
-        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(hospital) || TextUtils.isEmpty(type) ||
-            TextUtils.isEmpty(title) || TextUtils.isEmpty(introduce))
-        {
-            ToastUtil.toast(this, R.string.toast_upload_job_info_hint);
-            return;
-        }
-        if (headImgUrl == null)
-        {
-            headImgUrl = "";
-        }
-        mIRequest.updateUserInfo(loginSuccessBean.getDoctorId(), loginSuccessBean.getChecked(),name, headImgUrl, hospital, type,
-                                 title, introduce, this);
     }
 
     @Override

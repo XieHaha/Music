@@ -26,6 +26,7 @@ import custom.frame.log.MLog;
 import custom.frame.ui.ConstantsCommon;
 import custom.frame.ui.activity.AppManager;
 import custom.frame.utils.SharePreferenceUtil;
+import custom.frame.utils.ToastUtil;
 
 /**
  * @author dundun
@@ -42,7 +43,6 @@ public abstract class BaseFragment extends Fragment
      * 任务白名单列表
      */
     List<Tasks> whiteRequestList;
-
     /**
      * 登录数据
      */
@@ -109,11 +109,12 @@ public abstract class BaseFragment extends Fragment
      * @param a
      * @return
      */
-    public static int getStateBarHeight(Activity a) {
+    public static int getStateBarHeight(Activity a)
+    {
         int result = 0;
-        int resourceId = a.getResources().getIdentifier("status_bar_height",
-                                                        "dimen", "android");
-        if (resourceId > 0) {
+        int resourceId = a.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0)
+        {
             result = a.getResources().getDimensionPixelSize(resourceId);
         }
         return result;
@@ -141,9 +142,12 @@ public abstract class BaseFragment extends Fragment
      *
      * @return
      */
-    public LoginSuccessBean getLoginSuccessBean() {
-        String userStr = (String) SharePreferenceUtil.getObject(getContext(), "key_login_success_bean", "");
-        if (!TextUtils.isEmpty(userStr)) {
+    public LoginSuccessBean getLoginSuccessBean()
+    {
+        String userStr = (String)SharePreferenceUtil.getObject(getContext(),
+                                                               "key_login_success_bean", "");
+        if (!TextUtils.isEmpty(userStr))
+        {
             loginSuccessBean = JSON.parseObject(userStr, LoginSuccessBean.class);
         }
         return loginSuccessBean;
@@ -254,7 +258,7 @@ public abstract class BaseFragment extends Fragment
     @Override
     public void onResponseError(Tasks task, Exception e)
     {
-        //        ToastUtil.releaseShow(getContext(), e.getMessage());
+        ToastUtil.toast(getContext(), e.getMessage());
     }
 
     @Override

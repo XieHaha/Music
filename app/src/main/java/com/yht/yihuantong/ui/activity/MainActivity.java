@@ -4,15 +4,16 @@ import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NotificationCompat;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -319,10 +320,12 @@ public class MainActivity extends BaseActivity
         {
             rlMsgPointLayout.setVisibility(View.VISIBLE);
             tvUnReadMsgCount.setText(msgUnReadCount > 99 ? "99+" : msgUnReadCount + "");
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             {
                 sendSubscribeMsg(msgUnReadCount);
-            }else {
+            }
+            else
+            {
                 setShortcutBadge(msgUnReadCount);
             }
         }
@@ -350,20 +353,33 @@ public class MainActivity extends BaseActivity
     }
 
     @TargetApi(Build.VERSION_CODES.O)
-    private void createNotificationChannel(String channelId, String channelName, int importance) {
+    private void createNotificationChannel(String channelId, String channelName, int importance)
+    {
         NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
         channel.setShowBadge(true);
-        NotificationManager notificationManager = (NotificationManager) getSystemService(
+        NotificationManager notificationManager = (NotificationManager)getSystemService(
                 NOTIFICATION_SERVICE);
         notificationManager.createNotificationChannel(channel);
     }
 
-    public void sendSubscribeMsg(int msgUnReadCount) {
-        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        Notification notification = new NotificationCompat.Builder(this)
-                .setNumber(msgUnReadCount)
-                .build();
-        manager.notify(msgUnReadCount, notification);
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void sendSubscribeMsg(int msgUnReadCount)
+    {
+        String channelID = "1";
+        String channelName = "channel_name";
+        NotificationChannel channel = new NotificationChannel(channelID, channelName,
+                                                              NotificationManager.IMPORTANCE_HIGH);
+        channel.setShowBadge(true);
+        NotificationManager manager = (NotificationManager)getSystemService(
+                Context.NOTIFICATION_SERVICE);
+        manager.createNotificationChannel(channel);
+        Notification.Builder builder = new Notification.Builder(this);
+        //创建通知时指定channelID
+        builder.setChannelId(channelID);
+        builder.setNumber(msgUnReadCount);
+        builder.setSmallIcon(R.mipmap.icon_logo);
+        Notification notification = builder.build();
+        manager.notify(0, notification);
     }
 
     @Override
