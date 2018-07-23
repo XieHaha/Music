@@ -13,13 +13,13 @@ import android.widget.TextView;
 
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.activity.PatientApplyActivity;
-import com.yht.yihuantong.ui.adapter.PatientsListAdapter;
+import com.yht.yihuantong.ui.adapter.TransPatientsListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import custom.frame.bean.BaseResponse;
-import custom.frame.bean.PatientBean;
+import custom.frame.bean.TransPatientBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.fragment.BaseFragment;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
@@ -36,11 +36,11 @@ public class ChangePatientToFragment extends BaseFragment
 {
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
-    private PatientsListAdapter patientsListAdapter;
+    private TransPatientsListAdapter patientsListAdapter;
     private ImageView ivTitleBarMore;
     private View footerView;
     private TextView tvFooterHintTxt;
-    private List<PatientBean> patientBeanList = new ArrayList<>();
+    private List<TransPatientBean> patientBeanList = new ArrayList<>();
     /**
      * 当前页码
      */
@@ -61,6 +61,7 @@ public class ChangePatientToFragment extends BaseFragment
     {
         super.onResume();
         page = 0;
+        getPatientToList();
     }
 
     @Override
@@ -91,9 +92,15 @@ public class ChangePatientToFragment extends BaseFragment
         autoLoadRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        patientsListAdapter = new PatientsListAdapter(getContext(), new ArrayList<>());
+        patientsListAdapter = new TransPatientsListAdapter(getContext(), new ArrayList<>());
+        patientsListAdapter.setShow(false);
         patientsListAdapter.addFooterView(footerView);
         autoLoadRecyclerView.setAdapter(patientsListAdapter);
+    }
+
+    private void getPatientToList()
+    {
+        mIRequest.getPatientToList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
     }
 
     @Override
@@ -109,10 +116,12 @@ public class ChangePatientToFragment extends BaseFragment
         }
     }
 
+
     @Override
     public void onRefresh()
     {
         page = 0;
+        getPatientToList();
     }
 
     @Override
@@ -120,6 +129,7 @@ public class ChangePatientToFragment extends BaseFragment
     {
         swipeRefreshLayout.setRefreshing(true);
         page++;
+        getPatientToList();
     }
 
     @Override
@@ -127,6 +137,28 @@ public class ChangePatientToFragment extends BaseFragment
     {
         switch (task)
         {
+            case GET_PATIENTS_TO_LIST:
+                patientBeanList = response.getData();
+                if (page == 0)
+                {
+                    patientsListAdapter.setList(patientBeanList);
+                }
+                else
+                {
+                    patientsListAdapter.addList(patientBeanList);
+                }
+                patientsListAdapter.notifyDataSetChanged();
+                if (patientBeanList.size() < PAGE_SIZE)
+                {
+                    tvFooterHintTxt.setText("暂无更多数据");
+                    autoLoadRecyclerView.loadFinish(false);
+                }
+                else
+                {
+                    tvFooterHintTxt.setText("上拉加载更多");
+                    autoLoadRecyclerView.loadFinish(true);
+                }
+                break;
             default:
                 break;
         }

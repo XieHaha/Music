@@ -60,7 +60,7 @@ public class ChangePatientHistoryActivity extends BaseActivity
         btnBaseInfo = (Button)findViewById(R.id.act_health_card_base_info);
         tvTitle = (TextView)findViewById(R.id.public_title_bar_title);
         btnHealthRecord = (Button)findViewById(R.id.act_health_card_health_record);
-        tvTitle.setText("转诊记录");
+        tvTitle.setText("转诊历史");
     }
 
     @Override
@@ -75,8 +75,8 @@ public class ChangePatientHistoryActivity extends BaseActivity
         });
         changePatientFromFragment = new ChangePatientFromFragment();
         changePatientToFragment = new ChangePatientToFragment();
-        fragmentList.add(changePatientFromFragment);
         fragmentList.add(changePatientToFragment);
+        fragmentList.add(changePatientFromFragment);
         fragmentVpAdapter = new FragmentVpAdapter(getSupportFragmentManager(), fragmentList);
         viewPager.setAdapter(fragmentVpAdapter);
         viewPager.setCurrentItem(0);

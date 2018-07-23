@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
 import com.hyphenate.chat.EMClient;
 import com.yht.yihuantong.R;
@@ -237,8 +238,12 @@ public class UserFragment extends BaseFragment
         {
             return;
         }
-        mIRequest.updateBasicInfo(loginSuccessBean.getDoctorId(), loginSuccessBean.getChecked(),
-                                  loginSuccessBean.getName(), headImgUrl, this);
+        JSONObject merchant = new JSONObject();
+        //        Map<String, Object> merchant = new HashMap<>();
+        merchant.put("checked", loginSuccessBean.getChecked());
+        merchant.put("portraitUrl", headImgUrl);
+        mIRequest.updateUserInfo(loginSuccessBean.getDoctorId(), loginSuccessBean.getFieldId(),
+                                 merchant, this);
     }
 
     /**
@@ -401,7 +406,7 @@ public class UserFragment extends BaseFragment
                 Log.i("test", "headImgUrl:" + headImgUrl);
                 updateBasicInfo();
                 break;
-            case UPDATE_BASIC_INFO:
+            case UPDATE_USER_INFO:
                 ToastUtil.toast(getContext(), "上传成功");
                 Glide.with(this).load(headImgUrl).apply(GlideHelper.getOptions()).into(headImg);
                 loginSuccessBean.setPortraitUrl(headImgUrl);

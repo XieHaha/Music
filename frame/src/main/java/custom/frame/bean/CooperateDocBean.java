@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class CooperateDocBean extends DataSupport implements Serializable
 {
     private static final long serialVersionUID = -5825956356939935298L;
+    private int fieldId;
     private String doctorId;
     private String phone;
     private String portraitUrl;
@@ -23,6 +24,16 @@ public class CooperateDocBean extends DataSupport implements Serializable
     private String checkUrl;
     private String identityNumber;
     private String nickname;
+
+    public int getFieldId()
+    {
+        return fieldId;
+    }
+
+    public void setFieldId(int fieldId)
+    {
+        this.fieldId = fieldId;
+    }
 
     public String getDoctorId()
     {

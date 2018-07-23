@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
@@ -101,6 +102,7 @@ public class LoginActivity extends BaseActivity
         {
             etPhone.setText(phone);
             etPhone.setSelection(phone.length());
+            tvGetVerify.setSelected(true);
         }
     }
 
@@ -307,10 +309,10 @@ public class LoginActivity extends BaseActivity
         switch (task)
         {
             case GET_VERIFY_CODE:
-                ToastUtil.toast(this, "code:" + response.getCode() + "  msg:" + response.getMsg());
+                ToastUtil.toast(this, response.getMsg());
                 break;
             case LOGIN_AND_REGISTER:
-                ToastUtil.toast(this, "code:" + response.getCode() + "  msg:" + response.getMsg());
+                Toast.makeText(this, response.getMsg(), Toast.LENGTH_LONG).show();
                 break;
             default:
                 break;

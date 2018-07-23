@@ -57,7 +57,7 @@ public class SplashActivity extends BaseActivity
     {
         if (loginSuccessBean != null)
         {
-            if (TextUtils.isEmpty(loginSuccessBean.getName()) || TextUtils.isEmpty(loginSuccessBean.getHospital()))
+            if (TextUtils.isEmpty(loginSuccessBean.getName()))
             {
                 startActivity(new Intent(this, CompleteInfoActivity.class));
                 finish();

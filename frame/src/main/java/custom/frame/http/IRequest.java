@@ -14,6 +14,7 @@ import custom.frame.bean.LoginSuccessBean;
 import custom.frame.bean.PatientBean;
 import custom.frame.bean.PatientCaseBasicBean;
 import custom.frame.bean.PatientCaseDetailBean;
+import custom.frame.bean.TransPatientBean;
 import custom.frame.bean.Version;
 import custom.frame.http.listener.ResponseListener;
 
@@ -146,20 +147,14 @@ public class IRequest extends BaseRequest
     /**
      * 更改个人信息
      */
-    public Tasks updateUserInfo(String doctorId, int checked, String name, String portraitUrl,
-            String hospital, String department, String title, String doctorDescription,
+    public Tasks updateUserInfo(String doctorId, int fieldId, com.alibaba.fastjson.JSONObject json,
             final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
-        merchant.put("checked", checked);
-        merchant.put("name", name);
-        merchant.put("portraitUrl", portraitUrl);
-        merchant.put("department", department);
-        merchant.put("doctorDescription", doctorDescription);
-        merchant.put("hospital", hospital);
-        merchant.put("title", title);
-        return requestBaseResponseByJson("/doctor/info/updateall", Tasks.UPDATE_USER_INFO,
+        merchant.put("fieldId", fieldId);
+        merchant.put("json", json);
+        return requestBaseResponseByJson("/doctor/info/update", Tasks.UPDATE_USER_INFO,
                                          String.class, merchant, listener);
     }
 
@@ -173,8 +168,35 @@ public class IRequest extends BaseRequest
         merchant.put("doctorId", doctorId);
         merchant.put("pageNo", pageNo);
         merchant.put("pageSize", pageSize);
-        return requestBaseResponseListByJson("/dp/mypatient", Tasks.GET_PATIENTS_LIST,
+        return requestBaseResponseListByJson("/dp/patient", Tasks.GET_PATIENTS_LIST,
                                              PatientBean.class, merchant, listener);
+    }
+
+    /**
+     * 获取转诊出去患者列表
+     */
+    public Tasks getPatientToList(String doctorId, int pageNo, int pageSize,
+            final ResponseListener<BaseResponse> listener)
+    {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("pageNo", pageNo);
+        merchant.put("pageSize", pageSize);
+        return requestBaseResponseListByJson("/dp/trans/list", Tasks.GET_PATIENTS_TO_LIST,
+                                             TransPatientBean.class, merchant, listener);
+    }
+    /**
+     * 获取转诊出去患者列表
+     */
+    public Tasks getPatientFromList(String doctorId, int pageNo, int pageSize,
+            final ResponseListener<BaseResponse> listener)
+    {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("pageNo", pageNo);
+        merchant.put("pageSize", pageSize);
+        return requestBaseResponseListByJson("/dp/trans/apply/list", Tasks.GET_PATIENTS_FROM_LIST,
+                                             TransPatientBean.class, merchant, listener);
     }
 
     /**
@@ -184,11 +206,11 @@ public class IRequest extends BaseRequest
             String patientId, int requestSource, final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);
-        merchant.put("doctorId", doctorId);
+        merchant.put("toDoctorId", doctorId);
         merchant.put("fromDoctorId", fromDoctorId);
         merchant.put("patientId", patientId);
         merchant.put("requestSource", requestSource);
-        return requestBaseResponseByJson("/dp/focusdoctor",
+        return requestBaseResponseByJson("/dp/trans/focus/doctor",
                                          Tasks.ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT,
                                          PatientBean.class, merchant, listener);
     }
@@ -201,10 +223,9 @@ public class IRequest extends BaseRequest
     {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
-        merchant.put("fromDoctorId", fromDoctorId);
         merchant.put("patientId", patientId);
         merchant.put("requestSource", requestSource);
-        return requestBaseResponseByJson("/dp/focuspatient",
+        return requestBaseResponseByJson("/dp/scan/focus/patient",
                                          Tasks.ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT,
                                          PatientBean.class, merchant, listener);
     }
@@ -241,8 +262,8 @@ public class IRequest extends BaseRequest
      * 患者备注设置
      * 医生发起的修改，from为’d’，修改的是显示病人的昵称；病人发起的修改，from为’p’，修改的是显示医生的昵称
      */
-    public Tasks modifyNickNameByPatient(String doctorId, String patientId,
-            String nickname, String from, final ResponseListener<BaseResponse> listener)
+    public Tasks modifyNickNameByPatient(String doctorId, String patientId, String nickname,
+            String from, final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
@@ -307,7 +328,7 @@ public class IRequest extends BaseRequest
         merchant.put("doctorId", doctorId);
         merchant.put("pageNo", pageNo);
         merchant.put("pageSize", pageSize);
-        return requestBaseResponseListByJson("/dp/patientrequest", Tasks.GET_APPLY_PATIENT_LIST,
+        return requestBaseResponseListByJson("/dp/patient/request", Tasks.GET_APPLY_PATIENT_LIST,
                                              PatientBean.class, merchant, listener);
     }
 
@@ -330,10 +351,9 @@ public class IRequest extends BaseRequest
     {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
-        merchant.put("fromDoctorId", fromDoctorId);
         merchant.put("patientId", patientId);
         merchant.put("requestSource", requestSource);
-        return requestBaseResponseByJson("/dp/against", Tasks.REFUSE_PATIENT_APPLY, String.class,
+        return requestBaseResponseByJson("/dp/scan/against/patient", Tasks.REFUSE_PATIENT_APPLY, String.class,
                                          merchant, listener);
     }
 
@@ -345,10 +365,37 @@ public class IRequest extends BaseRequest
     {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
+        merchant.put("patientId", patientId);
+        merchant.put("requestSource", requestSource);
+        return requestBaseResponseByJson("/dp/scan/agree", Tasks.AGREE_PATIENT_APPLY, String.class,
+                                         merchant, listener);
+    }
+    /**
+     * 同意转诊患者申请
+     */
+    public Tasks agreeTransPatientApply(String doctorId, String fromDoctorId, String patientId,
+            int requestSource, final ResponseListener<BaseResponse> listener)
+    {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("toDoctorId", doctorId);
         merchant.put("fromDoctorId", fromDoctorId);
         merchant.put("patientId", patientId);
         merchant.put("requestSource", requestSource);
-        return requestBaseResponseByJson("/dp/agree", Tasks.AGREE_PATIENT_APPLY, String.class,
+        return requestBaseResponseByJson("/dp/trans/accept/patient", Tasks.AGREE_TARNS_PATIENT_APPLY, String.class,
+                                         merchant, listener);
+    }
+    /**
+     * 拒绝转诊患者申请
+     */
+    public Tasks refuseTransPatientApply(String doctorId, String fromDoctorId, String patientId,
+            int requestSource, final ResponseListener<BaseResponse> listener)
+    {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("toDoctorId", doctorId);
+        merchant.put("fromDoctorId", fromDoctorId);
+        merchant.put("patientId", patientId);
+        merchant.put("requestSource", requestSource);
+        return requestBaseResponseByJson("/dp/trans/refuse/patient", Tasks.REFUSE_TARNS_PATIENT_APPLY, String.class,
                                          merchant, listener);
     }
 
@@ -387,7 +434,7 @@ public class IRequest extends BaseRequest
         RequestParams params = new RequestParams();
         params.addBodyParameter("doctorId ", doctorId);
         params.addBodyParameter("patientId", patientId);
-        return requestBaseResponse(GET, "/dp/cancelfocus", Tasks.DELETE_PATIENT, String.class,
+        return requestBaseResponse(GET, "/dp/cancel/focus", Tasks.DELETE_PATIENT, String.class,
                                    params, listener);
     }
 

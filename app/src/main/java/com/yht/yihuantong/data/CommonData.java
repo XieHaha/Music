@@ -98,4 +98,8 @@ public interface CommonData
      * 新增处方
      */
     int JIGUANG_NEW_PRESCRIPTION = 109;
+    /**
+     * 转诊通知
+     */
+    int JIGUANG_TRANS_PATIENT= 110;
 }

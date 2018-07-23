@@ -12,8 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.data.OnTransPatientListener;
 import com.yht.yihuantong.ui.activity.PatientApplyActivity;
-import com.yht.yihuantong.ui.adapter.PatientsListAdapter;
+import com.yht.yihuantong.ui.adapter.TransPatientsListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ import custom.frame.bean.BaseResponse;
 import custom.frame.bean.PatientBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.fragment.BaseFragment;
+import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
@@ -32,11 +34,11 @@ import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
  * @author DUNDUN
  */
 public class ChangePatientFromFragment extends BaseFragment
-        implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener
+        implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener, OnTransPatientListener
 {
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
-    private PatientsListAdapter patientsListAdapter;
+    private TransPatientsListAdapter patientsListAdapter;
     private ImageView ivTitleBarMore;
     private View footerView;
     private TextView tvFooterHintTxt;
@@ -61,6 +63,7 @@ public class ChangePatientFromFragment extends BaseFragment
     {
         super.onResume();
         page = 0;
+        getPatientFromList();
     }
 
     @Override
@@ -91,9 +94,34 @@ public class ChangePatientFromFragment extends BaseFragment
         autoLoadRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        patientsListAdapter = new PatientsListAdapter(getContext(), new ArrayList<>());
+        patientsListAdapter = new TransPatientsListAdapter(getContext(), new ArrayList<>());
+        patientsListAdapter.setOnTransPatientListener(this);
+        patientsListAdapter.setShow(true);
         patientsListAdapter.addFooterView(footerView);
         autoLoadRecyclerView.setAdapter(patientsListAdapter);
+    }
+
+    private void getPatientFromList()
+    {
+        mIRequest.getPatientFromList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
+    }
+
+    /**
+     * 拒绝转诊申请
+     */
+    private void refuseTransPatientApply(String fromDoctorId, String patientId, int requestSource)
+    {
+        mIRequest.refuseTransPatientApply(loginSuccessBean.getDoctorId(), fromDoctorId, patientId,
+                                          requestSource, this);
+    }
+
+    /**
+     * 同意转诊申请
+     */
+    private void agreeTransPatientApply(String fromDoctorId, String patientId, int requestSource)
+    {
+        mIRequest.agreeTransPatientApply(loginSuccessBean.getDoctorId(), fromDoctorId, patientId,
+                                         requestSource, this);
     }
 
     @Override
@@ -115,6 +143,7 @@ public class ChangePatientFromFragment extends BaseFragment
     public void onRefresh()
     {
         page = 0;
+        getPatientFromList();
     }
 
     @Override
@@ -122,6 +151,7 @@ public class ChangePatientFromFragment extends BaseFragment
     {
         swipeRefreshLayout.setRefreshing(true);
         page++;
+        getPatientFromList();
     }
 
     @Override
@@ -129,6 +159,36 @@ public class ChangePatientFromFragment extends BaseFragment
     {
         switch (task)
         {
+            case GET_PATIENTS_FROM_LIST:
+                patientBeanList = response.getData();
+                if (page == 0)
+                {
+                    patientsListAdapter.setList(patientBeanList);
+                }
+                else
+                {
+                    patientsListAdapter.addList(patientBeanList);
+                }
+                patientsListAdapter.notifyDataSetChanged();
+                if (patientBeanList.size() < PAGE_SIZE)
+                {
+                    tvFooterHintTxt.setText("暂无更多数据");
+                    autoLoadRecyclerView.loadFinish(false);
+                }
+                else
+                {
+                    tvFooterHintTxt.setText("上拉加载更多");
+                    autoLoadRecyclerView.loadFinish(true);
+                }
+                break;
+            case REFUSE_TARNS_PATIENT_APPLY:
+                ToastUtil.toast(getContext(), response.getMsg());
+                getPatientFromList();
+                break;
+            case AGREE_TARNS_PATIENT_APPLY:
+                ToastUtil.toast(getContext(), response.getMsg());
+                getPatientFromList();
+                break;
             default:
                 break;
         }
@@ -163,5 +223,17 @@ public class ChangePatientFromFragment extends BaseFragment
     {
         super.onResponseEnd(task);
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onPositiveTrigger(String fromDoctorId, String patientId, int requestCode)
+    {
+        agreeTransPatientApply(fromDoctorId, patientId, requestCode);
+    }
+
+    @Override
+    public void onNegativeTrigger(String fromDoctorId, String patientId, int requestCode)
+    {
+        refuseTransPatientApply(fromDoctorId, patientId, requestCode);
     }
 }

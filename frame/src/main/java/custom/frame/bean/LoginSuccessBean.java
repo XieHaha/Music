@@ -33,6 +33,7 @@ public class LoginSuccessBean implements Serializable {
      * <0-未上传资料（可修改）；1-已上传资料等待审核（可修改）；2-审核未通过（可修改）；6-审核已通过（可修改）>
      */
     private int checked;
+    private int fieldId;
 
     public String getDoctorId() {
         return doctorId;
@@ -186,6 +187,16 @@ public class LoginSuccessBean implements Serializable {
     public void setChecked(int checked)
     {
         this.checked = checked;
+    }
+
+    public int getFieldId()
+    {
+        return fieldId;
+    }
+
+    public void setFieldId(int fieldId)
+    {
+        this.fieldId = fieldId;
     }
 
     @Override

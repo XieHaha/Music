@@ -22,7 +22,7 @@
             android:layout_weight="1"
             android:background="@color/app_translucent"
             android:gravity="center"
-            android:text="转诊申请"
+            android:text="转诊记录"
             android:textColor="@color/app_main_color"
             android:textSize="15sp" />
 
@@ -33,7 +33,7 @@
             android:layout_weight="1"
             android:background="@color/app_translucent"
             android:gravity="center"
-            android:text="转诊记录"
+            android:text="收到转诊"
             android:textColor="@color/app_main_color"
             android:textSize="15sp" />
     </LinearLayout>

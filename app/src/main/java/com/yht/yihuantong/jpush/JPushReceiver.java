@@ -11,6 +11,7 @@ import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.activity.ApplyCooperateDocActivity;
+import com.yht.yihuantong.ui.activity.ChangePatientHistoryActivity;
 import com.yht.yihuantong.ui.activity.PatientApplyActivity;
 import com.yht.yihuantong.ui.activity.AuthDocActivity;
 import com.yht.yihuantong.ui.activity.MainActivity;
@@ -178,6 +179,14 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
                 mainIntent.putExtra(CommonData.KEY_PUBLIC, 3);
                 context.startActivity(mainIntent);
                 break;
+            case JIGUANG_TRANS_PATIENT:
+                mainIntent = new Intent(context, MainActivity.class);
+                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mainIntent.putExtra(CommonData.KEY_PUBLIC, 2);
+                baseIntent = new Intent(context, ChangePatientHistoryActivity.class);
+                intents = new Intent[] { mainIntent, baseIntent };
+                context.startActivities(intents);
+                break;
         }
     }
 
@@ -205,6 +214,8 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
             case JIGUANG_CODE_DOCTOR_INFO_CHECK_SUCCESS:
             case JIGUANG_CODE_DOCTOR_INFO_CHECK_FAILED:
                 NotifyChangeListenerServer.getInstance().notifyDoctorAuthStatusListeners(type);
+                break;
+            case JIGUANG_TRANS_PATIENT:
                 break;
         }
     }

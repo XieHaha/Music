@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
@@ -49,7 +50,7 @@ public class EditInfoActivity extends BaseActivity
 {
     private CircleImageView headImg;
     private EditText etName, etHospital, etType, etTitle, etIntroduce;
-    private Uri originUri,cutFileUri;
+    private Uri originUri, cutFileUri;
     private File cameraTempFile;
     private String name, hospital, type, title, introduce, headImgUrl;
     /**
@@ -142,7 +143,7 @@ public class EditInfoActivity extends BaseActivity
      */
     private void uploadHeadImg(Uri uri)
     {
-        File file = FileUtils.getFileByUri(uri,this);
+        File file = FileUtils.getFileByUri(uri, this);
         mIRequest.uploadHeadImg(file, "jpg", this);
     }
 
@@ -166,8 +167,17 @@ public class EditInfoActivity extends BaseActivity
         {
             headImgUrl = "";
         }
-        mIRequest.updateUserInfo(loginSuccessBean.getDoctorId(), loginSuccessBean.getChecked(),name, headImgUrl, hospital, type,
-                                 title, introduce, this);
+        JSONObject merchant = new JSONObject();
+        //        Map<String, Object> merchant = new HashMap<>();
+        merchant.put("checked", loginSuccessBean.getChecked());
+        merchant.put("privateName", name);
+        merchant.put("portraitUrl", headImgUrl);
+        merchant.put("privateDepartment", type);
+        merchant.put("privateDoctorDescription", introduce);
+        merchant.put("privateHospital", hospital);
+        merchant.put("privateTitle", title);
+        mIRequest.updateUserInfo(loginSuccessBean.getDoctorId(), loginSuccessBean.getFieldId(),
+                                 merchant, this);
     }
 
     @Override

@@ -153,11 +153,11 @@ public class UserInfoActivity extends BaseActivity
             }
             if (6 == cooperateDocBean.getChecked())
             {
-                imgAuth.setSelected(true);
+                Glide.with(this).load(R.mipmap.icon_certified).into(imgAuth);
             }
             else
             {
-                imgAuth.setSelected(false);
+                Glide.with(this).load(R.mipmap.icon_uncertified).into(imgAuth);
             }
             if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) &&
                 cooperateDocBean.getNickname().length() < 20)

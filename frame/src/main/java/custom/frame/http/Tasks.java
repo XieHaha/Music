@@ -40,6 +40,14 @@ public enum Tasks
      */
     GET_PATIENTS_LIST,
     /**
+     * 获取转诊患者申请列表
+     */
+    GET_PATIENTS_TO_LIST,
+    /**
+     * 获取收到转诊患者列表
+     */
+    GET_PATIENTS_FROM_LIST,
+    /**
      * 医生扫码添加患者
      */
     ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT,
@@ -103,6 +111,14 @@ public enum Tasks
      * 同意患者申请
      */
     AGREE_PATIENT_APPLY,
+    /**
+     * 同意转诊患者申请
+     */
+    AGREE_TARNS_PATIENT_APPLY,
+    /**
+     * 拒绝转诊患者申请
+     */
+    REFUSE_TARNS_PATIENT_APPLY,
     /**
      * 获取患者病例列表
      */

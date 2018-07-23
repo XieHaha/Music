@@ -27,7 +27,7 @@ import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
- * 转正医生
+ * 转诊医生
  *
  * @author DUNDUN
  */

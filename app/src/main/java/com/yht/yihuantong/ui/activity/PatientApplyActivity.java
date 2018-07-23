@@ -31,15 +31,14 @@ import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
  * @author DUNDUN
  */
 public class PatientApplyActivity extends BaseActivity
-        implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener, OnEventTriggerListener {
+        implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener, OnEventTriggerListener
+{
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
     private View footerView;
     private TextView tvHintTxt;
-
     private ApplyPatientAdapter applyPatientAdapter;
     private List<PatientBean> applyPatientList = new ArrayList<>();
-
     /**
      * 当前页码
      */
@@ -51,36 +50,39 @@ public class PatientApplyActivity extends BaseActivity
     /**
      * 医生端区别字段
      */
-    private static final int MODE = 9;
+    private static final int MODE = 1;
 
     @Override
-    public int getLayoutID() {
+    public int getLayoutID()
+    {
         return R.layout.act_apply_patient;
     }
 
     @Override
-    protected boolean isInitBackBtn() {
+    protected boolean isInitBackBtn()
+    {
         return true;
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState) {
+    public void initView(@NonNull Bundle savedInstanceState)
+    {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("患者申请");
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(
-                R.id.act_apply_patient_swipe_layout);
-        autoLoadRecyclerView = (AutoLoadRecyclerView) findViewById(
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("患者申请");
+        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.act_apply_patient_swipe_layout);
+        autoLoadRecyclerView = (AutoLoadRecyclerView)findViewById(
                 R.id.act_apply_patient_recycler_view);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light, android.R.color.holo_orange_light, android.R.color.holo_green_light);
-
-        footerView = LayoutInflater.from(this)
-                .inflate(R.layout.view_list_footerr, null);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
+                                                   android.R.color.holo_red_light,
+                                                   android.R.color.holo_orange_light,
+                                                   android.R.color.holo_green_light);
+        footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
-
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState) {
+    public void initData(@NonNull Bundle savedInstanceState)
+    {
         super.initData(savedInstanceState);
         applyPatientAdapter = new ApplyPatientAdapter(this, applyPatientList);
         applyPatientAdapter.setOnEventTriggerListener(this);
@@ -90,7 +92,8 @@ public class PatientApplyActivity extends BaseActivity
     }
 
     @Override
-    public void initListener() {
+    public void initListener()
+    {
         super.initListener();
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
@@ -100,58 +103,70 @@ public class PatientApplyActivity extends BaseActivity
         autoLoadRecyclerView.setAdapter(applyPatientAdapter);
         applyPatientAdapter.setOnItemClickListener((v, position, item) ->
                                                    {
-                               //                        Intent intent = new Intent(PatientApplyActivity.this,
-                               //                                UserInfoActivity.class);
-                               //                        intent.putExtra(CommonData.KEY_IS_DEAL_DOC,false);
-                               //                        startActivity(intent);
+                                                       //                        Intent intent = new Intent(PatientApplyActivity.this,
+                                                       //                                UserInfoActivity.class);
+                                                       //                        intent.putExtra(CommonData.KEY_IS_DEAL_DOC,false);
+                                                       //                        startActivity(intent);
                                                    });
     }
 
     /**
      * 获取患者申请列表
      */
-    private void getApplyPatientList() {
+    private void getApplyPatientList()
+    {
         mIRequest.getApplyPatientList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
     }
 
     /**
      * 拒绝患者申请
      */
-    private void refusePatientApply(String patientId) {
-        mIRequest.refusePatientApply(loginSuccessBean.getDoctorId(),loginSuccessBean.getDoctorId(), patientId, MODE, this);
+    private void refusePatientApply(String patientId)
+    {
+        mIRequest.refusePatientApply(loginSuccessBean.getDoctorId(), loginSuccessBean.getDoctorId(),
+                                     patientId, MODE, this);
     }
 
     /**
      * 同意患者申请
      */
-    private void agreePatientApply(String patientId,int requestCode) {
-        mIRequest.agreePatientApply(loginSuccessBean.getDoctorId(),loginSuccessBean.getDoctorId(), patientId, requestCode, this);
+    private void agreePatientApply(String patientId, int requestCode)
+    {
+        mIRequest.agreePatientApply(loginSuccessBean.getDoctorId(), loginSuccessBean.getDoctorId(),
+                                    patientId, MODE, this);
     }
 
     @Override
-    public void onResponseSuccess(Tasks task, BaseResponse response) {
+    public void onResponseSuccess(Tasks task, BaseResponse response)
+    {
         super.onResponseSuccess(task, response);
-        switch (task) {
+        switch (task)
+        {
             case GET_APPLY_PATIENT_LIST:
                 applyPatientList = response.getData();
-                if (page == 0) {
+                if (page == 0)
+                {
                     applyPatientAdapter.setList(applyPatientList);
-                } else {
+                }
+                else
+                {
                     applyPatientAdapter.addList(applyPatientList);
                 }
                 applyPatientAdapter.notifyDataSetChanged();
-
-                if (applyPatientList.size() < PAGE_SIZE) {
+                if (applyPatientList.size() < PAGE_SIZE)
+                {
                     tvHintTxt.setText("暂无更多数据");
                     autoLoadRecyclerView.loadFinish(false);
-                } else {
+                }
+                else
+                {
                     tvHintTxt.setText("上拉加载更多");
                     autoLoadRecyclerView.loadFinish(true);
                 }
                 break;
             case AGREE_PATIENT_APPLY:
             case REFUSE_PATIENT_APPLY:
-                ToastUtil.toast(this,"处理成功");
+                ToastUtil.toast(this, "处理成功");
                 getApplyPatientList();
                 //
                 NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("");
@@ -162,34 +177,39 @@ public class PatientApplyActivity extends BaseActivity
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response) {
+    public void onResponseCodeError(Tasks task, BaseResponse response)
+    {
         super.onResponseCodeError(task, response);
-        switch (task) {
+        switch (task)
+        {
             case GET_APPLY_PATIENT_LIST:
-                if (page > 0) {
+                if (page > 0)
+                {
                     page--;
                 }
                 tvHintTxt.setText("暂无更多数据");
                 autoLoadRecyclerView.loadFinish();
                 break;
             case AGREE_PATIENT_APPLY:
-                ToastUtil.toast(this,response.getMsg());
+                ToastUtil.toast(this, response.getMsg());
                 break;
             case REFUSE_PATIENT_APPLY:
-                ToastUtil.toast(this,response.getMsg());
+                ToastUtil.toast(this, response.getMsg());
                 break;
             default:
                 break;
         }
-
     }
 
     @Override
-    public void onResponseError(Tasks task, Exception e) {
+    public void onResponseError(Tasks task, Exception e)
+    {
         super.onResponseError(task, e);
-        switch (task) {
+        switch (task)
+        {
             case GET_APPLY_PATIENT_LIST:
-                if (page > 0) {
+                if (page > 0)
+                {
                     page--;
                 }
                 tvHintTxt.setText("暂无更多数据");
@@ -202,36 +222,39 @@ public class PatientApplyActivity extends BaseActivity
             default:
                 break;
         }
-
     }
 
     @Override
-    public void onResponseEnd(Tasks task) {
+    public void onResponseEnd(Tasks task)
+    {
         super.onResponseEnd(task);
         swipeRefreshLayout.setRefreshing(false);
     }
 
-
     @Override
-    public void onRefresh() {
+    public void onRefresh()
+    {
         page = 0;
         getApplyPatientList();
     }
 
     @Override
-    public void loadMore() {
+    public void loadMore()
+    {
         swipeRefreshLayout.setRefreshing(true);
         page++;
         getApplyPatientList();
     }
 
     @Override
-    public void onPositiveTrigger(String s,int requestCode) {
-        agreePatientApply(s,requestCode);
+    public void onPositiveTrigger(String s, int requestCode)
+    {
+        agreePatientApply(s, requestCode);
     }
 
     @Override
-    public void onNegativeTrigger(String s,int requestCode) {
+    public void onNegativeTrigger(String s, int requestCode)
+    {
         refusePatientApply(s);
     }
 }

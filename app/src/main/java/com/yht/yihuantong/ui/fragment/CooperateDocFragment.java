@@ -80,7 +80,7 @@ public class CooperateDocFragment extends BaseFragment
      */
     private IChange<String> doctorStatusChangeListener = data ->
     {
-        getApplyCooperateList();
+        getCooperateList();
     };
 
     @Override
