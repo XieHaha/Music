@@ -185,6 +185,7 @@ public class IRequest extends BaseRequest
         return requestBaseResponseListByJson("/dp/trans/list", Tasks.GET_PATIENTS_TO_LIST,
                                              TransPatientBean.class, merchant, listener);
     }
+
     /**
      * 获取转诊出去患者列表
      */
@@ -353,8 +354,8 @@ public class IRequest extends BaseRequest
         merchant.put("doctorId", doctorId);
         merchant.put("patientId", patientId);
         merchant.put("requestSource", requestSource);
-        return requestBaseResponseByJson("/dp/scan/against/patient", Tasks.REFUSE_PATIENT_APPLY, String.class,
-                                         merchant, listener);
+        return requestBaseResponseByJson("/dp/scan/against/patient", Tasks.REFUSE_PATIENT_APPLY,
+                                         String.class, merchant, listener);
     }
 
     /**
@@ -370,6 +371,7 @@ public class IRequest extends BaseRequest
         return requestBaseResponseByJson("/dp/scan/agree", Tasks.AGREE_PATIENT_APPLY, String.class,
                                          merchant, listener);
     }
+
     /**
      * 同意转诊患者申请
      */
@@ -381,9 +383,11 @@ public class IRequest extends BaseRequest
         merchant.put("fromDoctorId", fromDoctorId);
         merchant.put("patientId", patientId);
         merchant.put("requestSource", requestSource);
-        return requestBaseResponseByJson("/dp/trans/accept/patient", Tasks.AGREE_TARNS_PATIENT_APPLY, String.class,
-                                         merchant, listener);
+        return requestBaseResponseByJson("/dp/trans/accept/patient",
+                                         Tasks.AGREE_TARNS_PATIENT_APPLY, String.class, merchant,
+                                         listener);
     }
+
     /**
      * 拒绝转诊患者申请
      */
@@ -395,8 +399,9 @@ public class IRequest extends BaseRequest
         merchant.put("fromDoctorId", fromDoctorId);
         merchant.put("patientId", patientId);
         merchant.put("requestSource", requestSource);
-        return requestBaseResponseByJson("/dp/trans/refuse/patient", Tasks.REFUSE_TARNS_PATIENT_APPLY, String.class,
-                                         merchant, listener);
+        return requestBaseResponseByJson("/dp/trans/refuse/patient",
+                                         Tasks.REFUSE_TARNS_PATIENT_APPLY, String.class, merchant,
+                                         listener);
     }
 
     /**
@@ -594,8 +599,11 @@ public class IRequest extends BaseRequest
      */
     public Tasks getNewVersion(final ResponseListener<BaseResponse> listener)
     {
-        return requestBaseResponseList(GET, "/app/version", Tasks.UPDATE_VERSION, Version.class,
-                                       null, listener);
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("device_system", "android");
+        merchant.put("client", "doctor");
+        return requestBaseResponseListByJson("/app/version", Tasks.UPDATE_VERSION, Version.class,
+                                             merchant, listener);
     }
     //    /**
     //     * 下载apk文件
