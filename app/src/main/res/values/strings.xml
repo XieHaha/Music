@@ -43,6 +43,10 @@
     <string name="toast_upload_job_info_hint">个人职业信息不能为空</string>
 
 
+    <!--聊天界面-->
+    <string name="txt_registration_type">开%s</string>
+    <string name="txt_registration_type_hint">选择%s医院</string>
+
     <!--Toast-->
     <string name="toast_save_image_failed">保存图片失败</string>
     <string name="toast_save_image_success">保存图片成功</string>

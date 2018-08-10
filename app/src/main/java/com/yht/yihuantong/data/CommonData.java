@@ -63,6 +63,26 @@ public interface CommonData
      */
     String KEY_IS_FORBID_CHAT = "key_is_forbid_chat";
     /**
+     * 挂号类型
+     */
+    String KEY_REGISTRATION_TYPE = "key_registration_type";
+    /**
+     * 开处方
+     */
+    int TYPE_PRESCRIPTION = 1;
+    /**
+     * 开检查
+     */
+    int TYPE_CHECK = 2;
+    /**
+     * 开体检
+     */
+    int TYPE_HEALTH_CHECK = 3;
+    /**
+     * 开化验
+     */
+    int TYPE_CHEMICAL = 4;
+    /**
      * 极光-合作医生申请码
      */
     int JIGUANG_CODE_COLLEBORATE_DOCTOR_REQUEST = 101;
@@ -101,5 +121,5 @@ public interface CommonData
     /**
      * 转诊通知
      */
-    int JIGUANG_TRANS_PATIENT= 110;
+    int JIGUANG_TRANS_PATIENT = 110;
 }

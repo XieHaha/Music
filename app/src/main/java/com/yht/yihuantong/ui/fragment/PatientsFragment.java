@@ -224,7 +224,7 @@ public class PatientsFragment extends BaseFragment
         mPopupwinow.setFocusable(true);
         mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mPopupwinow.setOutsideTouchable(true);
-        mPopupwinow.showAtLocation(view_pop, Gravity.TOP | Gravity.RIGHT, 0,
+        mPopupwinow.showAtLocation(view_pop, Gravity.TOP | Gravity.RIGHT, (int)AllUtils.dipToPx(getContext(), 3),
                                    (int)AllUtils.dipToPx(getContext(), 65));
     }
 

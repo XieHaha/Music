@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/height_top_bar"
     android:background="#E73278"
-    android:gravity="center_vertical" >
+    android:gravity="center_vertical">
 
     <RelativeLayout
         android:id="@+id/left_layout"
@@ -13,7 +13,7 @@
         android:paddingBottom="10dp"
         android:layout_height="match_parent"
         android:background="@drawable/ease_common_tab_bg"
-        android:clickable="true" >
+        android:clickable="true">
 
         <ImageView
             android:id="@+id/left_image"
@@ -33,25 +33,33 @@
 
     <RelativeLayout
         android:id="@+id/right_layout"
-        android:layout_width="50dp"
+        android:layout_width="48dp"
         android:visibility="gone"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:background="@drawable/ease_common_tab_bg" >
+        android:background="@drawable/ease_common_tab_bg">
 
         <ImageView
             android:id="@+id/right_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:visibility="gone"
+            android:scaleType="centerInside" />
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_more"
+            android:paddingRight="12dp"
             android:layout_centerInParent="true"
             android:scaleType="centerInside" />
-        <TextView
-            android:layout_width="match_parent"
-            android:text="信息"
-            android:textColor="#ffffff"
-            android:gravity="center"
-            android:layout_height="match_parent" />
+        <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:text="信息"-->
+        <!--android:textColor="#ffffff"-->
+        <!--android:gravity="center"-->
+        <!--android:layout_height="match_parent" />-->
     </RelativeLayout>
 
 </RelativeLayout>

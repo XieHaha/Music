@@ -1,10 +1,17 @@
 package com.yht.yihuantong.ease;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.permission.OnPermissionCallback;
@@ -12,7 +19,9 @@ import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.activity.HealthCardActivity;
+import com.yht.yihuantong.ui.activity.RegistrationActivity;
 import com.yht.yihuantong.ui.activity.UserInfoActivity;
+import com.yht.yihuantong.utils.AllUtils;
 
 import custom.frame.bean.PatientBean;
 import custom.frame.ui.activity.BaseActivity;
@@ -25,6 +34,9 @@ public class ChatActivity extends BaseActivity
 {
     private String chatId, chatName;
     EaseChatFragment easeChatFragment;
+    private PopupWindow mPopupwinow;
+    private View view_pop;
+    private TextView tvInfo, tvPrescription, tvCheck, tvHealthCheck, tvChemical;
 
     @Override
     public int getLayoutID()
@@ -80,28 +92,93 @@ public class ChatActivity extends BaseActivity
     }
 
     @Override
+    public void onClick(View v)
+    {
+        Intent intent;
+        switch (v.getId())
+        {
+            case R.id.main_pop_msg_info:
+                if (!TextUtils.isEmpty(chatId))
+                {
+                    if (chatId.contains("d"))
+                    {
+                        intent = new Intent(this, UserInfoActivity.class);
+                        intent.putExtra(CommonData.KEY_DOCTOR_ID, chatId);
+                        intent.putExtra(CommonData.KEY_IS_DEAL_DOC, false);
+                        intent.putExtra(CommonData.KEY_IS_FORBID_CHAT, true);
+                        startActivity(intent);
+                    }
+                    else
+                    {
+                        intent = new Intent(this, HealthCardActivity.class);
+                        PatientBean patientBean = new PatientBean();
+                        patientBean.setPatientId(chatId);
+                        intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientBean);
+                        startActivity(intent);
+                    }
+                }
+                break;
+            case R.id.main_pop_msg_prescription:
+                intent = new Intent(this, RegistrationActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC, CommonData.TYPE_PRESCRIPTION);
+                intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "处方");
+                startActivity(intent);
+                break;
+            case R.id.main_pop_msg_check:
+                intent = new Intent(this, RegistrationActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC, CommonData.TYPE_CHECK);
+                intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "检查");
+                startActivity(intent);
+                break;
+            case R.id.main_pop_msg_health_check:
+                intent = new Intent(this, RegistrationActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC, CommonData.TYPE_HEALTH_CHECK);
+                intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "体检");
+                startActivity(intent);
+                break;
+            case R.id.main_pop_msg_chemical:
+                intent = new Intent(this, RegistrationActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC, CommonData.TYPE_CHEMICAL);
+                intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "化验");
+                startActivity(intent);
+                break;
+        }
+        mPopupwinow.dismiss();
+    }
+
+    @Override
     public void onRightTitleBarClick()
     {
-        if (!TextUtils.isEmpty(chatId))
+        showPop();
+    }
+
+    /**
+     * 显示pop
+     */
+    private void showPop()
+    {
+        view_pop = LayoutInflater.from(this).inflate(R.layout.main_pop_msg, null);
+        tvInfo = (TextView)view_pop.findViewById(R.id.main_pop_msg_info);
+        tvPrescription = (TextView)view_pop.findViewById(R.id.main_pop_msg_prescription);
+        tvCheck = (TextView)view_pop.findViewById(R.id.main_pop_msg_check);
+        tvHealthCheck = (TextView)view_pop.findViewById(R.id.main_pop_msg_health_check);
+        tvChemical = (TextView)view_pop.findViewById(R.id.main_pop_msg_chemical);
+        tvInfo.setOnClickListener(this);
+        tvPrescription.setOnClickListener(this);
+        tvCheck.setOnClickListener(this);
+        tvHealthCheck.setOnClickListener(this);
+        tvChemical.setOnClickListener(this);
+        if (mPopupwinow == null)
         {
-            Intent intent;
-            if (chatId.contains("d"))
-            {
-                intent = new Intent(this, UserInfoActivity.class);
-                intent.putExtra(CommonData.KEY_DOCTOR_ID, chatId);
-                intent.putExtra(CommonData.KEY_IS_DEAL_DOC, false);
-                intent.putExtra(CommonData.KEY_IS_FORBID_CHAT, true);
-                startActivity(intent);
-            }
-            else
-            {
-                intent = new Intent(this, HealthCardActivity.class);
-                PatientBean patientBean = new PatientBean();
-                patientBean.setPatientId(chatId);
-                intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientBean);
-                startActivity(intent);
-            }
+            //新建一个popwindow
+            mPopupwinow = new PopupWindow(view_pop, LinearLayout.LayoutParams.WRAP_CONTENT,
+                                          LinearLayout.LayoutParams.WRAP_CONTENT, true);
         }
+        mPopupwinow.setFocusable(true);
+        mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
+        mPopupwinow.setOutsideTouchable(true);
+        mPopupwinow.showAtLocation(view_pop, Gravity.TOP | Gravity.RIGHT, 0,
+                                   (int)AllUtils.dipToPx(this, 65));
     }
 
     @Override

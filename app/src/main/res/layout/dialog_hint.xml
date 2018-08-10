@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_translucent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/corner_white_full_bg"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/dialog_simple_hint_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="4"
+            android:padding="15dp"
+            android:text="确认合格?"
+            android:textColor="#333333"
+            android:textSize="15sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/app_main_divideline" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/dialog_simple_hint_cancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/btn_trans_select"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="取消"
+                android:textColor="#666666"
+                android:textSize="15sp" />
+
+            <View
+                android:id="@+id/dialog_simple_hint_line"
+                android:layout_width="1px"
+                android:layout_height="15dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/app_main_divideline" />
+
+            <Button
+                android:id="@+id/dialog_simple_hint_enter"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/btn_trans_select"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="确定"
+                android:textColor="@color/app_main_color"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

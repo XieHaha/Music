@@ -48,6 +48,10 @@
         "source": "F:\\YHT_D\\easeui\\build\\intermediates\\packaged_res\\debug\\layout\\ease_widget_chat_input_menu.xml"
     },
     {
+        "merged": "F:\\YHT_D\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4_icon_more.png.flat",
+        "source": "F:\\YHT_D\\easeui\\build\\intermediates\\packaged_res\\debug\\drawable-xhdpi-v4\\icon_more.png"
+    },
+    {
         "merged": "F:\\YHT_D\\easeui\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-mdpi-v4_common_google_signin_btn_icon_dark_normal_background.9.png.flat",
         "source": "C:\\Users\\dundun\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-base-11.4.0.aar\\b5627e02b72d30d44375f140b38109b5\\res\\drawable-mdpi-v4\\common_google_signin_btn_icon_dark_normal_background.9.png"
     },

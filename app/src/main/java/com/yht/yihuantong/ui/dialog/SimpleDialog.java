@@ -3,7 +3,6 @@ package com.yht.yihuantong.ui.dialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.view.KeyEvent;
 
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.ui.dialog.base.MessageBuilder;
@@ -20,23 +19,12 @@ public class SimpleDialog extends MessageBuilder
         super(activity);
         setTitle(R.string.dialog_public_title);
         setMessage(resMsg);
-        setPositiveButton(R.string.dialog_txt_confirm, new DialogInterface.OnClickListener()
+        setPositiveButton(R.string.dialog_txt_confirm, (dialog, which) ->
         {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                dialog.dismiss();
-                activity.finish();
-            }
+            dialog.dismiss();
+            activity.finish();
         });
-        setOnKeyListener(new DialogInterface.OnKeyListener()
-        {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
-            {
-                return true;
-            }
-        });
+        setOnKeyListener((dialog, keyCode, event) -> true);
         dialog = buildAlertDialog();
         dialog.setCanceledOnTouchOutside(false);
     }
@@ -46,26 +34,15 @@ public class SimpleDialog extends MessageBuilder
         super(activity);
         setTitle(R.string.dialog_public_title);
         setMessage(resMsg);
-        setPositiveButton(R.string.dialog_txt_confirm, new DialogInterface.OnClickListener()
+        setPositiveButton(R.string.dialog_txt_confirm, (dialog, which) ->
         {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
+            dialog.dismiss();
+            if (isNeedFinish)
             {
-                dialog.dismiss();
-                if (isNeedFinish)
-                {
-                    activity.finish();
-                }
+                activity.finish();
             }
         });
-        setOnKeyListener(new DialogInterface.OnKeyListener()
-        {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
-            {
-                return true;
-            }
-        });
+        setOnKeyListener((dialog, keyCode, event) -> true);
         dialog = buildAlertDialog();
         dialog.setCanceledOnTouchOutside(false);
     }
@@ -76,14 +53,7 @@ public class SimpleDialog extends MessageBuilder
         setTitle(R.string.dialog_public_title);
         setMessage(resMsg);
         setPositiveButton(R.string.dialog_txt_confirm, onClickListener);
-        setOnKeyListener(new DialogInterface.OnKeyListener()
-        {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
-            {
-                return true;
-            }
-        });
+        setOnKeyListener((dialog, keyCode, event) -> true);
         dialog = buildAlertDialog();
         dialog.setCanceledOnTouchOutside(false);
     }
@@ -93,23 +63,12 @@ public class SimpleDialog extends MessageBuilder
         super(activity);
         setTitle(R.string.dialog_public_title);
         setMessage(Msg);
-        setPositiveButton(R.string.dialog_txt_confirm, new DialogInterface.OnClickListener()
+        setPositiveButton(R.string.dialog_txt_confirm, (dialog, which) ->
         {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                dialog.dismiss();
-                activity.finish();
-            }
+            dialog.dismiss();
+            activity.finish();
         });
-        setOnKeyListener(new DialogInterface.OnKeyListener()
-        {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
-            {
-                return true;
-            }
-        });
+        setOnKeyListener((dialog, keyCode, event) -> true);
         dialog = buildAlertDialog();
         dialog.setCanceledOnTouchOutside(false);
     }
@@ -119,26 +78,15 @@ public class SimpleDialog extends MessageBuilder
         super(activity);
         setTitle(R.string.dialog_public_title);
         setMessage(Msg);
-        setPositiveButton(R.string.dialog_txt_confirm, new DialogInterface.OnClickListener()
+        setPositiveButton(R.string.dialog_txt_confirm, (dialog, which) ->
         {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
+            dialog.dismiss();
+            if (isNeedFinish)
             {
-                dialog.dismiss();
-                if (isNeedFinish)
-                {
-                    activity.finish();
-                }
+                activity.finish();
             }
         });
-        setOnKeyListener(new DialogInterface.OnKeyListener()
-        {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
-            {
-                return true;
-            }
-        });
+        setOnKeyListener((dialog, keyCode, event) -> true);
         dialog = buildAlertDialog();
         dialog.setCanceledOnTouchOutside(false);
     }
@@ -149,14 +97,7 @@ public class SimpleDialog extends MessageBuilder
         setTitle(R.string.dialog_public_title);
         setMessage(msg);
         setPositiveButton(R.string.dialog_txt_confirm, onClickListener);
-        setOnKeyListener(new DialogInterface.OnKeyListener()
-        {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
-            {
-                return true;
-            }
-        });
+        setOnKeyListener((dialog, keyCode, event) -> true);
         dialog = buildAlertDialog();
         dialog.setCanceledOnTouchOutside(false);
     }
