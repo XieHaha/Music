@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.permission.OnPermissionCallback;
@@ -23,8 +23,14 @@ import com.yht.yihuantong.ui.activity.RegistrationActivity;
 import com.yht.yihuantong.ui.activity.UserInfoActivity;
 import com.yht.yihuantong.utils.AllUtils;
 
+import org.litepal.crud.DataSupport;
+
+import java.util.List;
+
 import custom.frame.bean.PatientBean;
+import custom.frame.bean.RegistrationTypeBean;
 import custom.frame.ui.activity.BaseActivity;
+import custom.frame.utils.ToastUtil;
 
 /**
  * Created by dundun on 18/4/16.
@@ -36,7 +42,8 @@ public class ChatActivity extends BaseActivity
     EaseChatFragment easeChatFragment;
     private PopupWindow mPopupwinow;
     private View view_pop;
-    private TextView tvInfo, tvPrescription, tvCheck, tvHealthCheck, tvChemical;
+    private RelativeLayout rlInfoLayout, rlPrescriptionLayout, rlCheckLayout, rlHealthCheckLayout, rlChemicalLayout;
+    private List<RegistrationTypeBean> registrationTypeBeans;
 
     @Override
     public int getLayoutID()
@@ -64,6 +71,12 @@ public class ChatActivity extends BaseActivity
         easeChatFragment.hideTitleBar();
         easeChatFragment.setArguments(args);
         replaceFragment(R.id.act_chat_root, easeChatFragment, ChatActivity.class.getName());
+    }
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState)
+    {
+        registrationTypeBeans = DataSupport.findAll(RegistrationTypeBean.class, false);
     }
 
     /**
@@ -97,7 +110,7 @@ public class ChatActivity extends BaseActivity
         Intent intent;
         switch (v.getId())
         {
-            case R.id.main_pop_msg_info:
+            case R.id.info_layout:
                 if (!TextUtils.isEmpty(chatId))
                 {
                     if (chatId.contains("d"))
@@ -118,29 +131,50 @@ public class ChatActivity extends BaseActivity
                     }
                 }
                 break;
-            case R.id.main_pop_msg_prescription:
+            case R.id.check_layout:
                 intent = new Intent(this, RegistrationActivity.class);
-                intent.putExtra(CommonData.KEY_PUBLIC, CommonData.TYPE_PRESCRIPTION);
-                intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "处方");
-                startActivity(intent);
-                break;
-            case R.id.main_pop_msg_check:
-                intent = new Intent(this, RegistrationActivity.class);
-                intent.putExtra(CommonData.KEY_PUBLIC, CommonData.TYPE_CHECK);
+                if (registrationTypeBeans != null && registrationTypeBeans.size() > 0)
+                {
+                    intent.putExtra(CommonData.KEY_PUBLIC,
+                                    registrationTypeBeans.get(0).getFieldId());
+                }
                 intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "检查");
+                intent.putExtra(CommonData.KEY_PATIENT_ID, chatId);
                 startActivity(intent);
                 break;
-            case R.id.main_pop_msg_health_check:
+            case R.id.chemical_layout:
                 intent = new Intent(this, RegistrationActivity.class);
-                intent.putExtra(CommonData.KEY_PUBLIC, CommonData.TYPE_HEALTH_CHECK);
-                intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "体检");
-                startActivity(intent);
-                break;
-            case R.id.main_pop_msg_chemical:
-                intent = new Intent(this, RegistrationActivity.class);
-                intent.putExtra(CommonData.KEY_PUBLIC, CommonData.TYPE_CHEMICAL);
+                if (registrationTypeBeans != null && registrationTypeBeans.size() > 1)
+                {
+                    intent.putExtra(CommonData.KEY_PUBLIC,
+                                    registrationTypeBeans.get(1).getFieldId());
+                }
                 intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "化验");
+                intent.putExtra(CommonData.KEY_PATIENT_ID, chatId);
                 startActivity(intent);
+                break;
+            case R.id.health_check_layout:
+                intent = new Intent(this, RegistrationActivity.class);
+                if (registrationTypeBeans != null && registrationTypeBeans.size() > 2)
+                {
+                    intent.putExtra(CommonData.KEY_PUBLIC,
+                                    registrationTypeBeans.get(2).getFieldId());
+                }
+                intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "体检");
+                intent.putExtra(CommonData.KEY_PATIENT_ID, chatId);
+                startActivity(intent);
+                break;
+            case R.id.prescription_layout:
+                ToastUtil.toast(this, "敬请期待");
+                //                intent = new Intent(this, RegistrationActivity.class);
+                //                if (registrationTypeBeans != null && registrationTypeBeans.size() > 3)
+                //                {
+                //                    intent.putExtra(CommonData.KEY_PUBLIC,
+                //                                    registrationTypeBeans.get(3).getFieldId());
+                //                }
+                //                intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "处方");
+                //                intent.putExtra(CommonData.KEY_PATIENT_ID, chatId);
+                //                startActivity(intent);
                 break;
         }
         mPopupwinow.dismiss();
@@ -158,16 +192,26 @@ public class ChatActivity extends BaseActivity
     private void showPop()
     {
         view_pop = LayoutInflater.from(this).inflate(R.layout.main_pop_msg, null);
-        tvInfo = (TextView)view_pop.findViewById(R.id.main_pop_msg_info);
-        tvPrescription = (TextView)view_pop.findViewById(R.id.main_pop_msg_prescription);
-        tvCheck = (TextView)view_pop.findViewById(R.id.main_pop_msg_check);
-        tvHealthCheck = (TextView)view_pop.findViewById(R.id.main_pop_msg_health_check);
-        tvChemical = (TextView)view_pop.findViewById(R.id.main_pop_msg_chemical);
-        tvInfo.setOnClickListener(this);
-        tvPrescription.setOnClickListener(this);
-        tvCheck.setOnClickListener(this);
-        tvHealthCheck.setOnClickListener(this);
-        tvChemical.setOnClickListener(this);
+        rlInfoLayout = (RelativeLayout)view_pop.findViewById(R.id.info_layout);
+        rlPrescriptionLayout = (RelativeLayout)view_pop.findViewById(R.id.prescription_layout);
+        rlCheckLayout = (RelativeLayout)view_pop.findViewById(R.id.check_layout);
+        rlHealthCheckLayout = (RelativeLayout)view_pop.findViewById(R.id.health_check_layout);
+        rlChemicalLayout = (RelativeLayout)view_pop.findViewById(R.id.chemical_layout);
+        rlInfoLayout.setOnClickListener(this);
+        if (chatId.contains("d"))
+        {
+            rlPrescriptionLayout.setVisibility(View.GONE);
+            rlCheckLayout.setVisibility(View.GONE);
+            rlHealthCheckLayout.setVisibility(View.GONE);
+            rlChemicalLayout.setVisibility(View.GONE);
+        }
+        else
+        {
+            rlPrescriptionLayout.setOnClickListener(this);
+            rlCheckLayout.setOnClickListener(this);
+            rlHealthCheckLayout.setOnClickListener(this);
+            rlChemicalLayout.setOnClickListener(this);
+        }
         if (mPopupwinow == null)
         {
             //新建一个popwindow

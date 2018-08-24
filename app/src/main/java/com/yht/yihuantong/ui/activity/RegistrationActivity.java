@@ -2,9 +2,9 @@ package com.yht.yihuantong.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,37 +14,39 @@ import android.widget.TextView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.adapter.RegistrationAdapter;
+import com.yht.yihuantong.ui.adapter.RegistrationProductAdapter;
 import com.yht.yihuantong.ui.dialog.HintDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import custom.frame.bean.BaseResponse;
+import custom.frame.bean.HospitalBean;
+import custom.frame.bean.HospitalProductBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
-import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 
 /**
  * 患者申请
  *
  * @author DUNDUN
  */
-public class RegistrationActivity extends BaseActivity
-        implements SwipeRefreshLayout.OnRefreshListener, CommonData
+public class RegistrationActivity extends BaseActivity implements CommonData
 {
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private AutoLoadRecyclerView autoLoadRecyclerView;
+    private RecyclerView autoLoadRecyclerView, hospitalProductRecycler;
     private TextView tvHintTxt, tvTitle;
     private TextView tvGoodsName, tvGoodsPrice, tvGoodsType, tvGoodsInfo;
     private TextView tvNext;
     private LinearLayout llGoodsDetaillayout;
-    private View footerView;
+    private View footerView, productFooterView;
     private RegistrationAdapter registrationAdapter;
-    private List<String> hospitalList = new ArrayList<>();
-    private List<String> goodsList = new ArrayList<>();
-    private String curHospital;
-    private String curGoods;
-    private int type;
+    private RegistrationProductAdapter registrationProductAdapter;
+    private List<HospitalBean> hospitalList = new ArrayList<>();
+    private List<HospitalProductBean> goodsList = new ArrayList<>();
+    private HospitalBean curHospital;
+    private HospitalProductBean curGoods;
+    private int productTypeId;
+    private String patientId;
     private String typeName;
     /**
      * 显示商品列表
@@ -69,17 +71,14 @@ public class RegistrationActivity extends BaseActivity
     {
         super.initView(savedInstanceState);
         tvTitle = (TextView)findViewById(R.id.public_title_bar_title);
-        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.act_apply_patient_swipe_layout);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                                                   android.R.color.holo_red_light,
-                                                   android.R.color.holo_orange_light,
-                                                   android.R.color.holo_green_light);
-        autoLoadRecyclerView = (AutoLoadRecyclerView)findViewById(
-                R.id.act_apply_patient_recycler_view);
-        tvHintTxt = (TextView)findViewById(R.id.act_registration_hint_txt);
+        autoLoadRecyclerView = (RecyclerView)findViewById(R.id.act_registration_hospital_list);
+        hospitalProductRecycler = (RecyclerView)findViewById(
+                R.id.act_registration_hospital_product_list);
         footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
+        productFooterView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
         llGoodsDetaillayout = (LinearLayout)findViewById(R.id.act_registration_goods_detail_layout);
         tvNext = (TextView)findViewById(R.id.act_registration_next);
+        tvHintTxt = (TextView)findViewById(R.id.act_registration_hint_txt);
         tvGoodsName = (TextView)findViewById(R.id.act_registration_goods_name);
         tvGoodsType = (TextView)findViewById(R.id.act_registration_goods_type);
         tvGoodsInfo = (TextView)findViewById(R.id.act_registration_goods_info);
@@ -91,84 +90,99 @@ public class RegistrationActivity extends BaseActivity
     {
         if (getIntent() != null)
         {
-            type = getIntent().getIntExtra(CommonData.KEY_PUBLIC, -1);
+            productTypeId = getIntent().getIntExtra(CommonData.KEY_PUBLIC, -1);
             typeName = getIntent().getStringExtra(CommonData.KEY_REGISTRATION_TYPE);
-        }
-        for (int i = 0; i < 15; i++)
-        {
-            hospitalList.add("华西医院");
-        }
-        for (int i = 0; i < 15; i++)
-        {
-            goodsList.add("一般体检");
+            patientId = getIntent().getStringExtra(CommonData.KEY_PATIENT_ID);
         }
         curPage = 1;
-        ininPageData();
-        ArrayList<String> list = new ArrayList<>();
-        list.addAll(hospitalList);
-        registrationAdapter = new RegistrationAdapter(this, list);
+        registrationAdapter = new RegistrationAdapter(this, hospitalList);
         registrationAdapter.addFooterView(footerView);
         autoLoadRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(registrationAdapter);
+        registrationProductAdapter = new RegistrationProductAdapter(this, goodsList);
+        registrationProductAdapter.addFooterView(productFooterView);
+        hospitalProductRecycler.setLayoutManager(
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        hospitalProductRecycler.setItemAnimator(new DefaultItemAnimator());
+        hospitalProductRecycler.setAdapter(registrationProductAdapter);
+        ininPageData();
+        getHospitalList();
+    }
+
+    @Override
+    public void initListener()
+    {
+        findViewById(R.id.public_title_bar_back).setOnClickListener(this);
+        tvNext.setOnClickListener(this);
+        registrationAdapter.setOnItemClickListener((v, position, item) ->
+                                                   {
+                                                       curPage = 2;
+                                                       curHospital = item;
+                                                       tvHintTxt.setText(
+                                                               curHospital.getHospitalName());
+                                                       autoLoadRecyclerView.setVisibility(
+                                                               View.GONE);
+                                                       hospitalProductRecycler.setVisibility(
+                                                               View.VISIBLE);
+                                                       getHospitalProductList();
+                                                   });
+        registrationProductAdapter.setOnItemClickListener((v, position, item) ->
+                                                          {
+                                                              curPage = 3;
+                                                              curGoods = item;
+                                                              initProductPage();
+                                                          });
     }
 
     private void ininPageData()
     {
         tvTitle.setText(String.format(getString(R.string.txt_registration_type), typeName));
         tvHintTxt.setText(String.format(getString(R.string.txt_registration_type_hint), typeName));
-        switch (type)
-        {
-            case TYPE_PRESCRIPTION:
-                break;
-            case TYPE_CHECK:
-                break;
-            case TYPE_HEALTH_CHECK:
-                break;
-            case TYPE_CHEMICAL:
-                break;
-        }
     }
 
-    @Override
-    public void initListener()
+    /**
+     * 产品详情页面
+     */
+    private void initProductPage()
     {
-        super.initListener();
-        tvNext.setOnClickListener(this);
-        findViewById(R.id.public_title_bar_back).setOnClickListener(this);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        registrationAdapter.setOnItemClickListener((v, position, item) ->
-                                                   {
-                                                       if (curPage == 1)
-                                                       {
-                                                           curHospital = hospitalList.get(position);
-                                                           curPage = 2;
-                                                           tvHintTxt.setText(curHospital);
-                                                           ArrayList<String> list = new ArrayList<>();
-                                                           list.addAll(goodsList);
-                                                           registrationAdapter.setList(list);
-                                                           registrationAdapter.notifyDataSetChanged();
-                                                       }
-                                                       else if (curPage == 2)
-                                                       {
-                                                           curPage = 3;
-                                                           curGoods = goodsList.get(position);
-                                                           tvHintTxt.setText(
-                                                                   curHospital + " 》 " + curGoods);
-                                                           swipeRefreshLayout.setVisibility(
-                                                                   View.GONE);
-                                                           llGoodsDetaillayout.setVisibility(
-                                                                   View.VISIBLE);
-                                                           tvNext.setVisibility(View.VISIBLE);
-                                                       }
-                                                   });
+        tvHintTxt.setText(curHospital.getHospitalName() + " > " + curGoods.getProductName());
+        tvGoodsName.setText(curGoods.getProductName());
+        tvGoodsPrice.setText(curGoods.getProductPrice() + curGoods.getProductPriceUnit());
+        tvGoodsType.setText(curGoods.getProductTypeName());
+        tvGoodsInfo.setText(curGoods.getProductDescription());
+        hospitalProductRecycler.setVisibility(View.GONE);
+        llGoodsDetaillayout.setVisibility(View.VISIBLE);
+        tvNext.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * 获取医院列表
+     */
+    private void getHospitalList()
+    {
+        mIRequest.getHospitalList(loginSuccessBean.getDoctorId(), productTypeId, this);
+    }
+
+    /**
+     * 获取医院商品列表
+     */
+    private void getHospitalProductList()
+    {
+        mIRequest.getHospitalProductList(curHospital.getHospitalId(), productTypeId, this);
+    }
+
+    private void addProductOrder()
+    {
+        mIRequest.addProductOrder(loginSuccessBean.getDoctorId(), patientId,
+                                  curHospital.getHospitalId(), curGoods.getProductId(),
+                                  productTypeId, this);
     }
 
     @Override
     public void onClick(View v)
     {
-        super.onClick(v);
         switch (v.getId())
         {
             case R.id.public_title_bar_back:
@@ -178,13 +192,7 @@ public class RegistrationActivity extends BaseActivity
                 }
                 break;
             case R.id.act_registration_next:
-                HintDialog hintDialog = new HintDialog(this);
-                hintDialog.isShowCancelBtn(false);
-                hintDialog.setContentString("已发送给患者，请等待患者付款");
-                hintDialog.setOnEnterClickListener(() ->
-                                                   {
-                                                   });
-                hintDialog.show();
+                addProductOrder();
                 break;
         }
     }
@@ -194,36 +202,30 @@ public class RegistrationActivity extends BaseActivity
     {
         switch (task)
         {
-        }
-    }
-
-    @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response)
-    {
-        switch (task)
-        {
+            case GET_HOSPITAL_LIST:
+                hospitalList = response.getData();
+                registrationAdapter.setList(hospitalList);
+                break;
+            case GET_HOSPITAL_PRODUCT_LIST:
+                goodsList = response.getData();
+                registrationProductAdapter.setList(goodsList);
+                break;
+            case ADD_PRODUCT_ORDER:
+                HintDialog hintDialog = new HintDialog(this);
+                hintDialog.isShowCancelBtn(false);
+                hintDialog.setContentString("已发送给患者，请等待患者付款");
+                hintDialog.setOnEnterClickListener(() -> finish());
+                hintDialog.show();
+                break;
         }
     }
 
     @Override
     public void onResponseError(Tasks task, Exception e)
     {
-        super.onResponseError(task, e);
         switch (task)
         {
         }
-    }
-
-    @Override
-    public void onResponseEnd(Tasks task)
-    {
-        super.onResponseEnd(task);
-        swipeRefreshLayout.setRefreshing(false);
-    }
-
-    @Override
-    public void onRefresh()
-    {
     }
 
     @Override
@@ -244,13 +246,10 @@ public class RegistrationActivity extends BaseActivity
         if (curPage == 3)
         {
             curPage = 2;
-            tvHintTxt.setText(curHospital);
-            swipeRefreshLayout.setVisibility(View.VISIBLE);
-            llGoodsDetaillayout.setVisibility(View.GONE);
+            tvHintTxt.setText(curHospital.getHospitalName());
             tvNext.setVisibility(View.GONE);
-            ArrayList<String> list = new ArrayList<>();
-            list.addAll(goodsList);
-            registrationAdapter.setList(list);
+            hospitalProductRecycler.setVisibility(View.VISIBLE);
+            llGoodsDetaillayout.setVisibility(View.GONE);
             return false;
         }
         else if (curPage == 2)
@@ -258,10 +257,8 @@ public class RegistrationActivity extends BaseActivity
             curPage = 1;
             tvHintTxt.setText(
                     String.format(getString(R.string.txt_registration_type_hint), typeName));
-            swipeRefreshLayout.setVisibility(View.VISIBLE);
-            ArrayList<String> list = new ArrayList<>();
-            list.addAll(hospitalList);
-            registrationAdapter.setList(list);
+            hospitalProductRecycler.setVisibility(View.GONE);
+            autoLoadRecyclerView.setVisibility(View.VISIBLE);
             return false;
         }
         return true;

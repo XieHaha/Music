@@ -44,10 +44,16 @@ import com.yht.yihuantong.ui.fragment.UserFragment;
 import com.yht.yihuantong.version.presenter.VersionPresenter;
 import com.yht.yihuantong.version.view.VersionUpdateDialog;
 
+import org.litepal.crud.DataSupport;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
+import custom.frame.bean.BaseResponse;
+import custom.frame.bean.RegistrationTypeBean;
 import custom.frame.bean.Version;
+import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.DensityUtil;
 import custom.frame.utils.ScreenUtils;
@@ -108,6 +114,10 @@ public class MainActivity extends BaseActivity
      * 版本弹窗
      */
     private VersionUpdateDialog versionUpdateDialog;
+    /**
+     * 商品集合
+     */
+    private ArrayList<RegistrationTypeBean> registrationTypeBeans;
     /**
      * 是否通过广播检查版本更新
      */
@@ -195,6 +205,7 @@ public class MainActivity extends BaseActivity
         //弹窗参数初始化
         screenHeight = ScreenUtils.getScreenHeight(this);
         popupHeight = DensityUtil.dip2px(this, 48 * 2);
+        getAllProduct();
     }
 
     @Override
@@ -308,6 +319,28 @@ public class MainActivity extends BaseActivity
                                             }
                                         }
                                     });
+    }
+
+    /**
+     * 获取所有商品
+     */
+    private void getAllProduct()
+    {
+        mIRequest.getAllProduct(this);
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response)
+    {
+        switch (task)
+        {
+            case GET_ALL_PRODUCT:
+                registrationTypeBeans = response.getData();
+                //数据存储
+                DataSupport.deleteAll(RegistrationTypeBean.class);
+                DataSupport.saveAll(registrationTypeBeans);
+                break;
+        }
     }
 
     /**

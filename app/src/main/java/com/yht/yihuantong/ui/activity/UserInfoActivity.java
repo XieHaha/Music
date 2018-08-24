@@ -93,7 +93,6 @@ public class UserInfoActivity extends BaseActivity
     @Override
     public void initData(@NonNull Bundle savedInstanceState)
     {
-        super.initData(savedInstanceState);
         if (getIntent() != null)
         {
             cooperateDocBean = (CooperateDocBean)getIntent().getSerializableExtra(
@@ -127,14 +126,19 @@ public class UserInfoActivity extends BaseActivity
                 cooperateDocBean = list.get(0);
             }
         }
-        initPageData();
-        //        getDocInfo();
+        if (cooperateDocBean == null)
+        {
+            getDocInfo();
+        }
+        else
+        {
+            initPageData();
+        }
     }
 
     @Override
     public void initListener()
     {
-        super.initListener();
         tvChat.setOnClickListener(this);
         llNickNameLayout.setOnClickListener(this);
     }

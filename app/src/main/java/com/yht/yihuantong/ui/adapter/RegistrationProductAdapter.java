@@ -10,7 +10,7 @@ import com.yht.yihuantong.R;
 
 import java.util.List;
 
-import custom.frame.bean.HospitalBean;
+import custom.frame.bean.HospitalProductBean;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.ui.adapter.BaseViewHolder;
 
@@ -19,11 +19,11 @@ import custom.frame.ui.adapter.BaseViewHolder;
  *
  * @author DUNDUN
  */
-public class RegistrationAdapter extends BaseRecyclerAdapter<HospitalBean>
+public class RegistrationProductAdapter extends BaseRecyclerAdapter<HospitalProductBean>
 {
     private Context context;
 
-    public RegistrationAdapter(Context context, List<HospitalBean> list)
+    public RegistrationProductAdapter(Context context, List<HospitalProductBean> list)
     {
         super(list);
         this.context = context;
@@ -38,13 +38,13 @@ public class RegistrationAdapter extends BaseRecyclerAdapter<HospitalBean>
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position, HospitalBean item)
+    public void onBindViewHolder(BaseViewHolder holder, int position, HospitalProductBean item)
     {
         super.onBindViewHolder(holder, position, item);
         holder.showView(position, item);
     }
 
-    public class ApplyPatientHolder extends BaseViewHolder<HospitalBean>
+    public class ApplyPatientHolder extends BaseViewHolder<HospitalProductBean>
     {
         private TextView tvHospitalName;
 
@@ -55,9 +55,9 @@ public class RegistrationAdapter extends BaseRecyclerAdapter<HospitalBean>
         }
 
         @Override
-        public void showView(final int position, final HospitalBean item)
+        public void showView(final int position, final HospitalProductBean item)
         {
-            tvHospitalName.setText(item.getHospitalName());
+            tvHospitalName.setText(item.getProductName());
         }
     }
 }

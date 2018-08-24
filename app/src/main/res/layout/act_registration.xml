@@ -20,19 +20,19 @@
         android:textColor="#999999"
         android:layout_height="48dp" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/act_apply_patient_swipe_layout"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/act_registration_hospital_list"
         android:layout_width="match_parent"
-        android:visibility="visible"
         android:layout_below="@id/act_registration_hint_txt"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" />
 
-        <custom.frame.widgets.recyclerview.AutoLoadRecyclerView
-            android:id="@+id/act_apply_patient_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/act_registration_hospital_product_list"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_below="@id/act_registration_hint_txt"
+        android:layout_height="match_parent" />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
 
     <LinearLayout
         android:id="@+id/act_registration_goods_detail_layout"

@@ -151,5 +151,21 @@ public enum Tasks
      * 医生资质认证
      */
     QUALIFIY_DOC,
+    /**
+     * 获取医院列表
+     */
+    GET_HOSPITAL_LIST,
+    /**
+     * 获取医院商品列表
+     */
+    GET_HOSPITAL_PRODUCT_LIST,
+    /**
+     * 新增订单
+     */
+    ADD_PRODUCT_ORDER,
+    /**
+     * 获取所有商品
+     */
+    GET_ALL_PRODUCT,
 }
 

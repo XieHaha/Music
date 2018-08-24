@@ -10,10 +10,13 @@ import java.util.Map;
 
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CooperateDocBean;
+import custom.frame.bean.HospitalBean;
+import custom.frame.bean.HospitalProductBean;
 import custom.frame.bean.LoginSuccessBean;
 import custom.frame.bean.PatientBean;
 import custom.frame.bean.PatientCaseBasicBean;
 import custom.frame.bean.PatientCaseDetailBean;
+import custom.frame.bean.RegistrationTypeBean;
 import custom.frame.bean.TransPatientBean;
 import custom.frame.bean.Version;
 import custom.frame.http.listener.ResponseListener;
@@ -605,11 +608,59 @@ public class IRequest extends BaseRequest
         return requestBaseResponseListByJson("/app/version", Tasks.UPDATE_VERSION, Version.class,
                                              merchant, listener);
     }
-    //    /**
-    //     * 下载apk文件
-    //     */
-    //    public Tasks downloadAPK(String url, String fileSavePath, final ResponseListener<BaseResponse> listener) {
-    //        //        url = "http://openbox.mobilem.360.cn/index/d/sid/2490097";//测试
-    //        return downloadFile(GET, Tasks.DOWNLOAD_FILE, url, fileSavePath, false, listener);
-    //    }
+
+    /**
+     * 获取医院列表
+     */
+    public Tasks getHospitalList(String doctorId, int productTypeId,
+            final ResponseListener<BaseResponse> listener)
+    {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("productTypeId", productTypeId);
+        return requestBaseResponseListByJson("/product/info/doctor/hospital",
+                                             Tasks.GET_HOSPITAL_LIST, HospitalBean.class, merchant,
+                                             listener);
+    }
+
+    /**
+     * 获取医院商品列表
+     */
+    public Tasks getHospitalProductList(String hospitalId, int productTypeId, final ResponseListener<BaseResponse> listener)
+    {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("hospitalId", hospitalId);
+        merchant.put("productTypeId", productTypeId);
+        return requestBaseResponseListByJson("/product/info/doctor/hospital/product",
+                                             Tasks.GET_HOSPITAL_PRODUCT_LIST,
+                                             HospitalProductBean.class, merchant, listener);
+    }
+
+    /**
+     * 新增订单
+     */
+    public Tasks addProductOrder(String doctorId, String patientId, String hospitalId,
+            String productId, int productTypeId,
+            final ResponseListener<BaseResponse> listener)
+    {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("patientId", patientId);
+        merchant.put("hospitalId", hospitalId);
+        merchant.put("productId", productId);
+        merchant.put("productTypeId", productTypeId);
+        return requestBaseResponseListByJson("/product/info/doctor/operator/add",
+                                             Tasks.ADD_PRODUCT_ORDER, HospitalProductBean.class,
+                                             merchant, listener);
+    }
+
+    /**
+     * 获取所有商品
+     */
+    public Tasks getAllProduct(final ResponseListener<BaseResponse> listener)
+    {
+        RequestParams params = new RequestParams();
+        return requestBaseResponseList(GET, "/product/type/all", Tasks.GET_ALL_PRODUCT,
+                                       RegistrationTypeBean.class, params, listener);
+    }
 }
