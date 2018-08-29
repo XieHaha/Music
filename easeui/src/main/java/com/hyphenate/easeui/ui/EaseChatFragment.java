@@ -58,6 +58,7 @@ import com.hyphenate.easeui.widget.EaseChatExtendMenu;
 import com.hyphenate.easeui.widget.EaseChatInputMenu;
 import com.hyphenate.easeui.widget.EaseChatInputMenu.ChatInputMenuListener;
 import com.hyphenate.easeui.widget.EaseChatMessageList;
+import com.hyphenate.easeui.widget.EaseChatPrimaryMenuBase;
 import com.hyphenate.easeui.widget.EaseVoiceRecorderView;
 import com.hyphenate.easeui.widget.EaseVoiceRecorderView.EaseVoiceRecorderCallback;
 import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
@@ -122,6 +123,7 @@ public class EaseChatFragment extends EaseBaseFragment
     protected MyItemClickListener extendMenuItemClickListener;
     protected boolean isRoaming = false;
     private ExecutorService fetchQueue;
+    private EaseChatPrimaryMenuBase.OnStartRecordCallBack onStartRecordCallBack;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -164,6 +166,17 @@ public class EaseChatFragment extends EaseBaseFragment
         extendMenuItemClickListener = new MyItemClickListener();
         inputMenu = (EaseChatInputMenu)getView().findViewById(R.id.input_menu);
         registerExtendMenuItem();
+        inputMenu.setOnStartRecordListener(new EaseChatPrimaryMenuBase.OnStartRecordListener()
+        {
+            @Override
+            public void onStartRecord(EaseChatPrimaryMenuBase.OnStartRecordCallBack callBack)
+            {
+                onStartRecordCallBack = callBack;
+                //动态申请权限
+                permissionHelper.request(new String[] {
+                        Permission.RECORD_AUDIO, Permission.STORAGE_WRITE });
+            }
+        });
         // init input menu
         inputMenu.init(null);
         inputMenu.setChatInputMenuListener(new ChatInputMenuListener()
@@ -893,6 +906,13 @@ public class EaseChatFragment extends EaseBaseFragment
             startActivityForResult(new Intent(getActivity(), EaseBaiduMapActivity.class),
                                    REQUEST_CODE_MAP);
         }
+        else if (isSamePermission(Permission.RECORD_AUDIO, permissionName[0]))
+        {
+            if(onStartRecordCallBack!=null)
+            {
+                onStartRecordCallBack.callBack(true);
+            }
+        }
     }
 
     @Override
@@ -916,6 +936,10 @@ public class EaseChatFragment extends EaseBaseFragment
             {
                 Toast.makeText(getContext(), R.string.dialog_no_audio_permission_tip,
                                Toast.LENGTH_SHORT).show();
+                if(onStartRecordCallBack!=null)
+                {
+                    onStartRecordCallBack.callBack(false);
+                }
                 break;
             }
             if (Permission.LOCATION.equals(permission))
@@ -962,6 +986,13 @@ public class EaseChatFragment extends EaseBaseFragment
             {
                 startActivityForResult(new Intent(getActivity(), EaseBaiduMapActivity.class),
                                        REQUEST_CODE_MAP);
+            }
+            else if (isSamePermission(Permission.RECORD_AUDIO, ((String[])permissionName)[0]))
+            {
+                if(onStartRecordCallBack!=null)
+                {
+                    onStartRecordCallBack.callBack(true);
+                }
             }
         }
     }

@@ -1,9 +1,5 @@
 package com.hyphenate.easeui.widget;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
@@ -25,6 +21,10 @@ import com.hyphenate.easeui.widget.emojicon.EaseEmojiconMenu;
 import com.hyphenate.easeui.widget.emojicon.EaseEmojiconMenuBase;
 import com.hyphenate.easeui.widget.emojicon.EaseEmojiconMenuBase.EaseEmojiconMenuListener;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * input menu
  * 
@@ -43,6 +43,7 @@ public class EaseChatInputMenu extends LinearLayout {
 
     private Handler handler = new Handler();
     private ChatInputMenuListener listener;
+    private EaseChatPrimaryMenuBase.OnStartRecordListener onStartRecordListener;
     private Context context;
     private boolean inited;
 
@@ -89,6 +90,7 @@ public class EaseChatInputMenu extends LinearLayout {
         if(chatPrimaryMenu == null){
             chatPrimaryMenu = (EaseChatPrimaryMenu) layoutInflater.inflate(R.layout.ease_layout_chat_primary_menu, null);
         }
+        chatPrimaryMenu.setOnStartRecordListener(onStartRecordListener);
         primaryMenuContainer.addView(chatPrimaryMenu);
 
         // emojicon menu, use default if no customized one
@@ -118,6 +120,12 @@ public class EaseChatInputMenu extends LinearLayout {
      */
     public void setCustomEmojiconMenu(EaseEmojiconMenuBase customEmojiconMenu){
         this.emojiconMenu = customEmojiconMenu;
+    }
+
+    public void setOnStartRecordListener(
+            EaseChatPrimaryMenuBase.OnStartRecordListener onStartRecordListener)
+    {
+        this.onStartRecordListener = onStartRecordListener;
     }
     
     /**
@@ -161,7 +169,7 @@ public class EaseChatInputMenu extends LinearLayout {
     /**
      * register menu item
      * 
-     * @param name
+     * @param nameRes
      *            resource id of item name
      * @param drawableRes
      *            background of item

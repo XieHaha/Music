@@ -213,7 +213,7 @@ public class RegistrationActivity extends BaseActivity implements CommonData
             case ADD_PRODUCT_ORDER:
                 HintDialog hintDialog = new HintDialog(this);
                 hintDialog.isShowCancelBtn(false);
-                hintDialog.setContentString("已发送给患者，请等待患者付款");
+                hintDialog.setContentString("已发送给患者，请等待患者答复");
                 hintDialog.setOnEnterClickListener(() -> finish());
                 hintDialog.show();
                 break;

@@ -114,4 +114,21 @@ public abstract class EaseChatPrimaryMenuBase extends RelativeLayout{
         
     }
 
+    public OnStartRecordListener onStartRecordListener;
+
+    public void setOnStartRecordListener(OnStartRecordListener onStartRecordListener)
+    {
+        this.onStartRecordListener = onStartRecordListener;
+    }
+
+    public interface OnStartRecordListener
+    {
+        void onStartRecord(OnStartRecordCallBack callBack);
+    }
+
+    public interface OnStartRecordCallBack
+    {
+        void callBack(boolean isShow);
+    }
+
 }
