@@ -27,7 +27,7 @@ import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
 
 /**
- * 患者申请
+ * 开服务包
  *
  * @author DUNDUN
  */
@@ -36,6 +36,7 @@ public class RegistrationActivity extends BaseActivity implements CommonData
     private RecyclerView autoLoadRecyclerView, hospitalProductRecycler;
     private TextView tvHintTxt, tvTitle;
     private TextView tvGoodsName, tvGoodsPrice, tvGoodsType, tvGoodsInfo;
+    private TextView tvTitle1, tvTitle2, tvTitle3, tvTitle4;
     private TextView tvNext;
     private LinearLayout llGoodsDetaillayout;
     private View footerView, productFooterView;
@@ -83,6 +84,10 @@ public class RegistrationActivity extends BaseActivity implements CommonData
         tvGoodsType = (TextView)findViewById(R.id.act_registration_goods_type);
         tvGoodsInfo = (TextView)findViewById(R.id.act_registration_goods_info);
         tvGoodsPrice = (TextView)findViewById(R.id.act_registration_goods_price);
+        tvTitle1 = (TextView)findViewById(R.id.act_registration_goods_name_txt);
+        tvTitle2 = (TextView)findViewById(R.id.act_registration_goods_price_txt);
+        tvTitle4 = (TextView)findViewById(R.id.act_registration_goods_info_txt);
+        //        tvTitle3 = (TextView)findViewById(R.id.act_registration_goods_type_txt);
     }
 
     @Override
@@ -138,8 +143,13 @@ public class RegistrationActivity extends BaseActivity implements CommonData
 
     private void ininPageData()
     {
-        tvTitle.setText(String.format(getString(R.string.txt_registration_type), typeName));
+        tvTitle.setText(typeName);
         tvHintTxt.setText(String.format(getString(R.string.txt_registration_type_hint), typeName));
+        tvTitle1.setText(
+                String.format(getString(R.string.txt_registration_project_hint), typeName));
+        tvTitle2.setText(String.format(getString(R.string.txt_registration_price_hint), typeName));
+        tvTitle4.setText(
+                String.format(getString(R.string.txt_registration_content_hint), typeName));
     }
 
     /**

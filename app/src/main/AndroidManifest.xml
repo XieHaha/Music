@@ -130,6 +130,15 @@
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.activity.ServicePackageActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.activity.SettingActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ease.ChatActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:launchMode="singleTask"
@@ -153,9 +162,12 @@
             android:value="1110180330253249#dpappproject" />
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="SU2qor7P14g8RhgfiuNWctt2Xa7MBNx4" >
-        </meta-data>
-        <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"> </service>
+            android:value="SU2qor7P14g8RhgfiuNWctt2Xa7MBNx4"></meta-data>
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote"></service>
         <!-- 声明SDK所需的service SDK核心功能-->
         <service
             android:name="com.hyphenate.chat.EMChatService"

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/app_minor_bg"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/top_bar"
+        layout="@layout/public_title_bar" />
+
+    <RelativeLayout
+        android:id="@+id/act_setting_vesion_layout"
+        android:layout_width="match_parent"
+        android:background="@color/app_white_color"
+        android:layout_marginTop="10dp"
+        android:layout_height="45dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:layout_marginLeft="12dp"
+            android:gravity="center_vertical"
+            android:text="版本信息"
+            android:textColor="#999999"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/act_setting_version"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:layout_marginLeft="12dp"
+            android:gravity="center_vertical"
+            android:text="V1.0"
+            android:layout_marginRight="30dp"
+            android:layout_alignParentRight="true"
+            android:textColor="#666666"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:src="@mipmap/icon_arrow_right"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/app_main_divideline" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/act_setting_exit_layout"
+        android:layout_width="match_parent"
+        android:background="@color/app_white_color"
+        android:layout_marginTop="10dp"
+        android:layout_height="45dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:layout_marginLeft="12dp"
+            android:gravity="center_vertical"
+            android:text="退出"
+            android:textColor="#999999"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

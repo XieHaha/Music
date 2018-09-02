@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_below="@id/title_bar"
         android:background="@color/app_minor_bg"
-        android:text="选择处方医院"
+        android:text="选择医院"
         android:textSize="12sp"
         android:gravity="center_vertical"
         android:paddingLeft="12dp"
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="12dp"
-                android:text="商品名称："
+                android:text="检查项目："
                 android:textColor="#999999"
                 android:textSize="15sp" />
 
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="12dp"
-                android:text="商品价格："
+                android:text="检查价格："
                 android:textColor="#999999"
                 android:textSize="15sp" />
 
@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="12dp"
-                android:text="商品类型："
+                android:text="病人信息："
                 android:textColor="#999999"
                 android:textSize="15sp" />
 
@@ -162,7 +162,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
-                android:text="商品介绍："
+                android:text="检查内容："
                 android:layout_marginTop="12dp"
                 android:textColor="#999999"
                 android:textSize="15sp" />

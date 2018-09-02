@@ -77,6 +77,10 @@ public class HealthCardActivity extends BaseActivity
      * 选择转诊医生回调
      */
     private static final int CHANGE_PATIENT_REQUEST_CODE = 2;
+    /**
+     * 服务包回调
+     */
+    public static final int SERVICE_REQUEST_CODE = 100;
 
     @Override
     public int getLayoutID()
@@ -200,8 +204,8 @@ public class HealthCardActivity extends BaseActivity
      */
     private void addPatientByScanOrChangePatient(String doctorId)
     {
-        mIRequest.addPatientByScanOrChangePatient(doctorId, loginSuccessBean.getDoctorId(), patientBean.getPatientId(),
-                                                  CHANGE_PATIENT, this);
+        mIRequest.addPatientByScanOrChangePatient(doctorId, loginSuccessBean.getDoctorId(),
+                                                  patientBean.getPatientId(), CHANGE_PATIENT, this);
     }
 
     @Override
@@ -232,8 +236,15 @@ public class HealthCardActivity extends BaseActivity
                 {
                     mPopupwinow.dismiss();
                 }
-                intent = new Intent(this, CooperateDocActivity.class);
-                startActivityForResult(intent, CHANGE_PATIENT_REQUEST_CODE);
+                intent = new Intent(this, ServicePackageActivity.class);
+                intent.putExtra(CommonData.KEY_PATIENT_ID, patientBean.getPatientId());
+                startActivityForResult(intent, SERVICE_REQUEST_CODE);
+                //                if (mPopupwinow != null)
+                //                {
+                //                    mPopupwinow.dismiss();
+                //                }
+                //                intent = new Intent(this, CooperateDocActivity.class);
+                //                startActivityForResult(intent, CHANGE_PATIENT_REQUEST_CODE);
                 break;
             case R.id.remark:
                 if (mPopupwinow != null)
@@ -331,6 +342,9 @@ public class HealthCardActivity extends BaseActivity
                     addPatientByScanOrChangePatient(doctorId);
                 }
                 break;
+            case SERVICE_REQUEST_CODE:
+                finish();
+                break;
         }
     }
 
@@ -339,15 +353,15 @@ public class HealthCardActivity extends BaseActivity
      */
     private void showPop()
     {
-        view_pop = LayoutInflater.from(this).inflate(R.layout.main_pop_menu, null);
-        tvDelete = (TextView)view_pop.findViewById(R.id.delete);
+        view_pop = LayoutInflater.from(this).inflate(R.layout.health_pop_menu, null);
+        //        tvDelete = (TextView)view_pop.findViewById(R.id.delete);
         tvChange = (TextView)view_pop.findViewById(R.id.change);
         tvRemark = view_pop.findViewById(R.id.remark);
         rlRemarkLayout = view_pop.findViewById(R.id.btn_remark_layout);
         view_line = view_pop.findViewById(R.id.main_pop_menu_line_1);
         view_line.setVisibility(View.VISIBLE);
         rlRemarkLayout.setVisibility(View.VISIBLE);
-        tvDelete.setOnClickListener(this);
+        //        tvDelete.setOnClickListener(this);
         tvChange.setOnClickListener(this);
         tvRemark.setOnClickListener(this);
         if (mPopupwinow == null)

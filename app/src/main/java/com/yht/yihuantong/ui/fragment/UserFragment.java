@@ -26,7 +26,6 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
-import com.hyphenate.chat.EMClient;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.api.ApiManager;
@@ -39,7 +38,7 @@ import com.yht.yihuantong.qrcode.DialogPersonalBarCode;
 import com.yht.yihuantong.tools.GlideHelper;
 import com.yht.yihuantong.ui.activity.AuthDocActivity;
 import com.yht.yihuantong.ui.activity.EditInfoActivity;
-import com.yht.yihuantong.ui.activity.LoginActivity;
+import com.yht.yihuantong.ui.activity.SettingActivity;
 import com.yht.yihuantong.ui.dialog.ActionSheetDialog;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.utils.AllUtils;
@@ -65,7 +64,6 @@ import custom.frame.http.Tasks;
 import custom.frame.permission.OnPermissionCallback;
 import custom.frame.permission.Permission;
 import custom.frame.permission.PermissionHelper;
-import custom.frame.ui.activity.AppManager;
 import custom.frame.ui.fragment.BaseFragment;
 import custom.frame.utils.DirHelper;
 import custom.frame.utils.ToastUtil;
@@ -85,6 +83,7 @@ public class UserFragment extends BaseFragment
     private CustomListenScrollView scrollView;
     private TextView tvName, tvHospital, tvType, tvTitle, tvIntroduce;
     private TextView tvAuth, tvAuthStatus;
+    private TextView tvDocNum, tvPatientNum;
     private ImageView ivEditInfo;
     private LoginSuccessBean loginSuccessBean;
     private INotifyChangeListenerServer iNotifyChangeListenerServer;
@@ -110,6 +109,8 @@ public class UserFragment extends BaseFragment
      * 是否通过广播检查版本更新
      */
     private boolean versionUpdateChecked = false;
+    private List<PatientBean> patientBeanList;
+    private List<CooperateDocBean> cooperateDocBeanList;
     /**
      * 请求修改头像 相册
      */
@@ -176,8 +177,11 @@ public class UserFragment extends BaseFragment
         //        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         ivEditInfo = view.findViewById(R.id.public_title_bar_back);
         ivEditInfo.setOnClickListener(this);
-        view.findViewById(R.id.fragmrnt_user_info_exit).setOnClickListener(this);
-        view.findViewById(R.id.fragmrnt_user_info_version).setOnClickListener(this);
+        //        view.findViewById(R.id.fragmrnt_user_info_exit).setOnClickListener(this);
+        //        view.findViewById(R.id.fragmrnt_user_info_version).setOnClickListener(this);
+        view.findViewById(R.id.fragmrnt_user_info_setting_layout).setOnClickListener(this);
+        view.findViewById(R.id.fragmrnt_user_info_train_layout).setOnClickListener(this);
+        view.findViewById(R.id.fragmrnt_user_info_service_layout).setOnClickListener(this);
         rlAuthLayout = view.findViewById(R.id.fragment_my_auth_layout);
         scrollView = view.findViewById(R.id.fragment_my_scrollview);
         llTitleLayout = view.findViewById(R.id.fragment_my_title_layout);
@@ -190,6 +194,8 @@ public class UserFragment extends BaseFragment
         tvIntroduce = view.findViewById(R.id.fragmrnt_user_info_introduce);
         tvAuth = view.findViewById(R.id.fragment_my_auth);
         tvAuthStatus = view.findViewById(R.id.fragment_my_auth_status);
+        tvDocNum = view.findViewById(R.id.fragmrnt_user_doctors_num);
+        tvPatientNum = view.findViewById(R.id.fragmrnt_user_patients_num);
         view.findViewById(R.id.fragmrnt_user_info_qrcode_layout).setOnClickListener(this);
     }
 
@@ -251,6 +257,18 @@ public class UserFragment extends BaseFragment
      */
     private void initPageData()
     {
+        patientBeanList = DataSupport.findAll(PatientBean.class);
+        cooperateDocBeanList = DataSupport.findAll(CooperateDocBean.class);
+        if (patientBeanList != null)
+        {
+            tvPatientNum.setText(
+                    String.format(getString(R.string.txt_user_info_num), patientBeanList.size()));
+        }
+        if (cooperateDocBeanList != null)
+        {
+            tvDocNum.setText(String.format(getString(R.string.txt_user_info_num),
+                                           cooperateDocBeanList.size()));
+        }
         loginSuccessBean = YihtApplication.getInstance().getLoginSuccessBean();
         if (loginSuccessBean != null)
         {
@@ -330,39 +348,46 @@ public class UserFragment extends BaseFragment
                 Intent intent = new Intent(getContext(), EditInfoActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.fragmrnt_user_info_exit:
-                new SimpleDialog(getActivity(), "确定退出?", (dialog, which) ->
-                {
-                    //清除登录信息
-                    YihtApplication.getInstance().clearLoginSuccessBean();
-                    //清除数据库数据
-                    DataSupport.deleteAll(PatientBean.class);
-                    DataSupport.deleteAll(CooperateDocBean.class);
-                    //删除环信会话列表
-                    //TODO
-                    //退出环信
-                    EMClient.getInstance().logout(true);
-                    dialog.dismiss();
-                    AppManager.getInstance().finishAllActivity();
-                    startActivity(new Intent(getActivity(), LoginActivity.class));
-                    System.exit(0);
-                }, (dialog, which) -> dialog.dismiss()).show();
-                break;
+            //            case R.id.fragmrnt_user_info_exit:
+            //                new SimpleDialog(getActivity(), "确定退出?", (dialog, which) ->
+            //                {
+            //                    //清除登录信息
+            //                    YihtApplication.getInstance().clearLoginSuccessBean();
+            //                    //清除数据库数据
+            //                    DataSupport.deleteAll(PatientBean.class);
+            //                    DataSupport.deleteAll(CooperateDocBean.class);
+            //                    //删除环信会话列表
+            //                    //TODO
+            //                    //退出环信
+            //                    EMClient.getInstance().logout(true);
+            //                    dialog.dismiss();
+            //                    AppManager.getInstance().finishAllActivity();
+            //                    startActivity(new Intent(getActivity(), LoginActivity.class));
+            //                    System.exit(0);
+            //                }, (dialog, which) -> dialog.dismiss()).show();
+            //                break;
             case R.id.fragmrnt_user_info_qrcode_layout:
                 DialogPersonalBarCode dialogPersonalBarCode = new DialogPersonalBarCode(
                         getActivity());
                 dialogPersonalBarCode.setQRImageViewSrc(barCodeImageView);
                 dialogPersonalBarCode.show();
                 break;
-            case R.id.fragmrnt_user_info_version://版本更新
-                mVersionPresenter.init();
-                break;
+            //            case R.id.fragmrnt_user_info_version://版本更新
+            //                mVersionPresenter.init();
+            //                break;
             case R.id.fragment_my_auth_layout:
                 Intent intent1 = new Intent(getContext(), AuthDocActivity.class);
                 startActivity(intent1);
                 break;
             case R.id.fragmrnt_user_info_headimg:
                 editHeadImg();
+                break;
+            case R.id.fragmrnt_user_info_setting_layout:
+                startActivity(new Intent(getContext(), SettingActivity.class));
+                break;
+            case R.id.fragmrnt_user_info_train_layout:
+            case R.id.fragmrnt_user_info_service_layout:
+                ToastUtil.toast(getContext(), "敬请期待");
                 break;
         }
     }

@@ -48,7 +48,7 @@ public enum Tasks
      */
     GET_PATIENTS_FROM_LIST,
     /**
-     * 医生扫码添加患者
+     * 医生转诊患者
      */
     ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT,
     /**

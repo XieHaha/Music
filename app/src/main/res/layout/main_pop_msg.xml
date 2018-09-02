@@ -45,7 +45,7 @@
             android:layout_centerInParent="true"
             android:layout_width="match_parent"
             android:gravity="center"
-            android:text="开处方"
+            android:text="处方"
             android:textSize="15sp"
             android:textColor="#333333"></TextView>
     </RelativeLayout>
@@ -68,7 +68,7 @@
             android:layout_centerInParent="true"
             android:layout_width="match_parent"
             android:gravity="center"
-            android:text="开检查"
+            android:text="检查"
             android:textSize="15sp"
             android:textColor="#333333"></TextView>
 
@@ -93,7 +93,7 @@
             android:layout_centerInParent="true"
             android:layout_width="match_parent"
             android:gravity="center"
-            android:text="开体检"
+            android:text="体检"
             android:textSize="15sp"
             android:textColor="#333333"></TextView>
 
@@ -118,7 +118,7 @@
             android:layout_centerInParent="true"
             android:layout_width="match_parent"
             android:gravity="center"
-            android:text="开化验"
+            android:text="化验"
             android:textSize="15sp"
             android:textColor="#333333"></TextView>
     </RelativeLayout>
