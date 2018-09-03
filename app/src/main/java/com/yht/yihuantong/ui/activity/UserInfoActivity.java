@@ -20,6 +20,7 @@ import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ease.ChatActivity;
 import com.yht.yihuantong.tools.GlideHelper;
+import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.utils.AllUtils;
 
 import org.litepal.crud.DataSupport;
@@ -236,7 +237,8 @@ public class UserInfoActivity extends BaseActivity
                 {
                     mPopupwinow.dismiss();
                 }
-                cancelCooperateDoc();
+                new SimpleDialog(this, "确定删除?", (dialog, which) -> cancelCooperateDoc(),
+                                 (dialog, which) -> dialog.dismiss()).show();
                 break;
             case R.id.act_user_info_nickname_layout:
                 Intent intent = new Intent(this, EditRemarkActivity.class);
@@ -305,7 +307,6 @@ public class UserInfoActivity extends BaseActivity
         view_pop = LayoutInflater.from(this).inflate(R.layout.main_pop_menu, null);
         tvDelete = (TextView)view_pop.findViewById(R.id.delete);
         tvChange = (TextView)view_pop.findViewById(R.id.change);
-        tvChange.setText("取消关注");
         tvDelete.setVisibility(View.GONE);
         tvChange.setOnClickListener(this);
         if (mPopupwinow == null)
