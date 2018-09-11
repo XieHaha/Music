@@ -48,7 +48,7 @@ public class UserInfoActivity extends BaseActivity
     private LinearLayout llNickNameLayout;
     private View view_pop;
     private PopupWindow mPopupwinow;
-    private TextView tvDelete, tvChange;
+    private TextView tvDelete,tvChange;
     private CooperateDocBean cooperateDocBean;
     private String doctorId;
     private String headImgUrl;
@@ -232,7 +232,7 @@ public class UserInfoActivity extends BaseActivity
             case R.id.act_user_info_more:
                 showPop();
                 break;
-            case R.id.change:
+            case R.id.delete:
                 if (mPopupwinow != null)
                 {
                     mPopupwinow.dismiss();
@@ -259,7 +259,7 @@ public class UserInfoActivity extends BaseActivity
         switch (task)
         {
             case UPLOAD_FILE:
-                ToastUtil.toast(this, "上传成功");
+                ToastUtil.toast(this, response.getMsg());
                 headImgUrl = response.getData();
                 break;
             case GET_DOC_INFO:
@@ -267,7 +267,7 @@ public class UserInfoActivity extends BaseActivity
                 initPageData();
                 break;
             case CANCEL_COOPERATE_DOC:
-                ToastUtil.toast(this, "处理成功");
+                ToastUtil.toast(this, response.getMsg());
                 setResult(RESULT_OK);
                 finish();
                 break;
@@ -307,8 +307,8 @@ public class UserInfoActivity extends BaseActivity
         view_pop = LayoutInflater.from(this).inflate(R.layout.main_pop_menu, null);
         tvDelete = (TextView)view_pop.findViewById(R.id.delete);
         tvChange = (TextView)view_pop.findViewById(R.id.change);
-        tvDelete.setVisibility(View.GONE);
-        tvChange.setOnClickListener(this);
+        tvChange.setVisibility(View.GONE);
+        tvDelete.setOnClickListener(this);
         if (mPopupwinow == null)
         {
             //新建一个popwindow
