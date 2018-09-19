@@ -94,6 +94,7 @@ public class YihtApplication extends LitePalApplication
         //设置头像为圆形
         EaseAvatarOptions avatarOpts = new EaseAvatarOptions();
         //0：默认，1：圆形，2：矩形
+        avatarOpts.setAvatarRadius(10);
         avatarOpts.setAvatarShape(2);
         EaseUI.getInstance().setAvatarOptions(avatarOpts);
         //        //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
@@ -107,7 +108,9 @@ public class YihtApplication extends LitePalApplication
                                                     {
                                                         LoginSuccessBean bean = getLoginSuccessBean();
                                                         //如果是当前用户，就设置自己的昵称和头像
-                                                        if (null != bean && TextUtils.equals(bean.getDoctorId(), username))
+                                                        if (null != bean &&
+                                                            TextUtils.equals(bean.getDoctorId(),
+                                                                             username))
                                                         {
                                                             EaseUser eu = new EaseUser(username);
                                                             eu.setNickname(bean.getName());
@@ -116,7 +119,8 @@ public class YihtApplication extends LitePalApplication
                                                             return eu;
                                                         }
                                                         //否则交给HxHelper处理，从消息中获取昵称和头像
-                                                        return HxHelper.getInstance().getUser(username, callback);
+                                                        return HxHelper.getInstance()
+                                                                       .getUser(username, callback);
                                                     });
     }
 
@@ -145,7 +149,8 @@ public class YihtApplication extends LitePalApplication
 
     public LoginSuccessBean getLoginSuccessBean()
     {
-        String userStr = (String)SharePreferenceUtil.getObject(this, CommonData.KEY_LOGIN_SUCCESS_BEAN,
+        String userStr = (String)SharePreferenceUtil.getObject(this,
+                                                               CommonData.KEY_LOGIN_SUCCESS_BEAN,
                                                                "");
         if (!TextUtils.isEmpty(userStr))
         {

@@ -41,8 +41,8 @@ import static android.content.Context.KEYGUARD_SERVICE;
 public class AllUtils
 {
     private static final String TAG = AllUtils.class.getSimpleName();
-    private static String REGEX_PHONE = "^((13[0-9])|(14[5|7|9])|(15([0-3]|[5-9]))|(16[0-9])|(17([0-3]|[5-8]))|(18[0-9])|(19[0-9]))\\d{8}$";
-    private static String REGEX_CARD_NUM= "(^[1-8][0-7]{2}\\d{3}([12]\\d{3})(0[1-9]|1[012])(0[1-9]|[12]\\d|3[01])\\d{3}([0-9Xx])$)";
+    private static String REGEX_PHONE = "^((13[0-9])|(14[0-9])|(15[0-9])|(16[0-9])|(17[0-9])|(18[0-9])|(19[0-9]))\\d{8}$";
+    private static String REGEX_CARD_NUM = "(^[1-8][0-7]{2}\\d{3}([12]\\d{3})(0[1-9]|1[012])(0[1-9]|[12]\\d|3[01])\\d{3}([0-9Xx])$)";
     public static String DATE_FORMAT = "yyyy-MM-dd HH:mm";
     public static String DATE_FORMAT_NO_HOUR = "yyyy-MM-dd";
     public static String DATE_FORMAT_AGE = "yyyy";
@@ -636,9 +636,11 @@ public class AllUtils
      * @param str
      * @return
      */
-    public static boolean isCardNum(String str) {
+    public static boolean isCardNum(String str)
+    {
         Matcher phoneMatcher = Pattern.compile(REGEX_CARD_NUM).matcher(str);
-        if (phoneMatcher.matches()) {
+        if (phoneMatcher.matches())
+        {
             return true;
         }
         return false;

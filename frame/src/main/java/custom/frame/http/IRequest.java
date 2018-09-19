@@ -190,7 +190,7 @@ public class IRequest extends BaseRequest
     }
 
     /**
-     * 获取转诊出去患者列表
+     * 获取收到转诊患者列表
      */
     public Tasks getPatientFromList(String doctorId, int pageNo, int pageSize,
             final ResponseListener<BaseResponse> listener)

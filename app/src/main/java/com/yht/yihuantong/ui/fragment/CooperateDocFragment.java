@@ -126,7 +126,7 @@ public class CooperateDocFragment extends BaseFragment
     {
         super.initData(savedInstanceState);
         cooperateDocListAdapter = new CooperateDocListAdapter(getContext(), cooperateDocBeanList);
-        //        cooperateDocListAdapter.addHeaderView(headerView);
+        cooperateDocListAdapter.addHeaderView(headerView);
         cooperateDocListAdapter.addFooterView(footerView);
         page = 0;
         iNotifyChangeListenerServer = ApiManager.getInstance()
@@ -315,23 +315,23 @@ public class CooperateDocFragment extends BaseFragment
                 break;
             case GET_APPLY_COOPERATE_DOC_LIST:
                 ArrayList<CooperateDocBean> list = response.getData();
-                if (list != null && list.size() > 0)
-                {
-                    if (cooperateDocListAdapter.getHeadersCount() == 0)
-                    {
-                        tvNum.setText(String.valueOf(list.size()));
-                        cooperateDocListAdapter.addHeaderView(headerView);
-                        cooperateDocListAdapter.notifyDataSetChanged();
-                    }
-                }
-                else
-                {
-                    if (cooperateDocListAdapter.getHeadersCount() > 0)
-                    {
-                        cooperateDocListAdapter.removeHeaderView(headerView);
-                        cooperateDocListAdapter.notifyDataSetChanged();
-                    }
-                }
+                tvNum.setText(String.valueOf(list.size()));
+                //                if (list != null && list.size() > 0)
+                //                {
+                //                    if (cooperateDocListAdapter.getHeadersCount() == 0)
+                //                    {
+                //                        cooperateDocListAdapter.addHeaderView(headerView);
+                //                        cooperateDocListAdapter.notifyDataSetChanged();
+                //                    }
+                //                }
+                //                else
+                //                {
+                //                    if (cooperateDocListAdapter.getHeadersCount() > 0)
+                //                    {
+                //                        cooperateDocListAdapter.removeHeaderView(headerView);
+                //                        cooperateDocListAdapter.notifyDataSetChanged();
+                //                    }
+                //                }
                 break;
         }
     }

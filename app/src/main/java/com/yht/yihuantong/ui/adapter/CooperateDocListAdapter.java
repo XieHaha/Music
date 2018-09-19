@@ -5,10 +5,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.hyphenate.easeui.widget.EaseImageView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.tools.GlideHelper;
 
@@ -52,7 +52,7 @@ public class CooperateDocListAdapter extends BaseRecyclerAdapter<CooperateDocBea
 
     public class CooperateDocHolder extends BaseViewHolder<CooperateDocBean>
     {
-        private ImageView ivHeadImg;
+        private EaseImageView ivHeadImg;
         private TextView tvName, tvType, tvHopital;
 
         public CooperateDocHolder(View itemView)
@@ -63,6 +63,8 @@ public class CooperateDocListAdapter extends BaseRecyclerAdapter<CooperateDocBea
             tvType = itemView.findViewById(R.id.item_cooperate_list_type);
             tvHopital = itemView.findViewById(R.id.item_cooperate_list_hospital);
             tvName = itemView.findViewById(R.id.item_cooperate_list_name);
+            ivHeadImg.setShapeType(2);
+            ivHeadImg.setRadius(10);
         }
 
         @Override

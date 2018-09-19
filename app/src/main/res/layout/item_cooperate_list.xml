@@ -11,13 +11,21 @@
         android:layout_centerVertical="true"
         android:layout_height="64dp">
 
-        <ImageView
+        <!--<ImageView-->
+            <!--android:id="@+id/item_cooperate_list_headimg"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:src="@mipmap/icon_default_imgs_rect"-->
+            <!--android:layout_centerInParent="true" />-->
+
+        <com.hyphenate.easeui.widget.EaseImageView
             android:id="@+id/item_cooperate_list_headimg"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:src="@mipmap/icon_default_imgs_rect"
-            android:layout_centerInParent="true" />
+            android:scaleType="fitXY"
+            android:src="@mipmap/icon_default_imgs_rect" />
 
         <RelativeLayout
             android:id="@+id/message_red_point"

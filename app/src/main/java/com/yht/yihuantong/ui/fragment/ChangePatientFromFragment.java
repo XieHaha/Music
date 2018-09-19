@@ -101,6 +101,9 @@ public class ChangePatientFromFragment extends BaseFragment
         autoLoadRecyclerView.setAdapter(patientsListAdapter);
     }
 
+    /**
+     * 收到转诊申请
+     */
     private void getPatientFromList()
     {
         mIRequest.getPatientFromList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);

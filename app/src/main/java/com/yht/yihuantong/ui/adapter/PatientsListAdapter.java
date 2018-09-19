@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.hyphenate.easeui.widget.EaseImageView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.tools.GlideHelper;
 import com.yht.yihuantong.utils.AllUtils;
@@ -54,7 +55,8 @@ public class PatientsListAdapter extends BaseRecyclerAdapter<PatientBean>
     public class PatientsHolder extends BaseViewHolder<PatientBean>
     {
         private TextView tvAge, tvSex, tvName;
-        private ImageView ivHeadImg, ivSex;
+        private EaseImageView ivHeadImg;
+        private ImageView ivSex;
         private LinearLayout lllayout;
 
         public PatientsHolder(View itemView)
@@ -65,6 +67,8 @@ public class PatientsListAdapter extends BaseRecyclerAdapter<PatientBean>
             ivSex = itemView.findViewById(R.id.item_patient_list_sex);
             tvName = itemView.findViewById(R.id.item_patient_list_name);
             tvAge = itemView.findViewById(R.id.item_patient_list_age);
+            ivHeadImg.setShapeType(2);
+            ivHeadImg.setRadius(10);
         }
 
         @Override
