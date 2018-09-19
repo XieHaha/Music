@@ -41,7 +41,7 @@
     <string name="toast_upload_img_hint">请上传头像</string>
     <string name="toast_upload_name_hint">请输入您的姓名</string>
     <string name="toast_upload_job_info_hint">个人职业信息不能为空</string>
-    <string name="txt_user_info_num">%d个</string>
+    <string name="txt_user_info_num">%s个</string>
 
 
     <!--聊天界面-->

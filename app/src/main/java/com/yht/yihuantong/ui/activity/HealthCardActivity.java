@@ -299,12 +299,12 @@ public class HealthCardActivity extends BaseActivity
                 }
                 break;
             case DELETE_PATIENT:
-                ToastUtil.toast(this, "处理成功");
+                ToastUtil.toast(this, response.getMsg());
                 setResult(RESULT_OK);
                 finish();
                 break;
             case ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT:
-                ToastUtil.toast(this, "处理成功");
+                ToastUtil.toast(this, response.getMsg());
                 setResult(RESULT_OK);
                 finish();
                 break;
@@ -343,6 +343,7 @@ public class HealthCardActivity extends BaseActivity
                 }
                 break;
             case SERVICE_REQUEST_CODE:
+                setResult(RESULT_OK);
                 finish();
                 break;
         }

@@ -14,6 +14,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ import com.hyphenate.easeui.ui.EaseConversationListFragment;
 import com.hyphenate.util.NetUtils;
 import com.yht.shortcutbadge.ShortcutBadger;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ease.ChatActivity;
@@ -63,12 +65,15 @@ import custom.frame.widgets.ripples.RippleLinearLayout;
 public class MainActivity extends BaseActivity
         implements EaseConversationListFragment.EaseConversationListItemClickListener,
                    VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener,
-                   EaseConversationListFragment.EaseConversationListItemLongClickListener
+                   EaseConversationListFragment.EaseConversationListItemLongClickListener,
+                   PatientsFragment.OnApplyCallbackListener
 {
     private RippleLinearLayout tabMsg, tabDoc, tabCase, tabMy;
-    private RelativeLayout rlMsgPointLayout;
-    private TextView tvUnReadMsgCount;
-    private Fragment patientFragment, cooperateDocFragment, myFragment;
+    private RelativeLayout rlMsgPointLayout, rlMsgPoint2Layout;
+    private TextView tvUnReadMsgCount, tvUnReadMsgCount2;
+    private Fragment cooperateDocFragment;
+    private PatientsFragment patientFragment;
+    private UserFragment userFragment;
     private EaseConversationListFragment easeConversationListFragment;
     /**
      * message 操作弹框view
@@ -188,7 +193,9 @@ public class MainActivity extends BaseActivity
         tabCase = (RippleLinearLayout)findViewById(R.id.act_main_tab3);
         tabMy = (RippleLinearLayout)findViewById(R.id.act_main_tab4);
         rlMsgPointLayout = (RelativeLayout)findViewById(R.id.message_red_point);
+        rlMsgPoint2Layout = (RelativeLayout)findViewById(R.id.message_red_point2);
         tvUnReadMsgCount = (TextView)findViewById(R.id.item_msg_num);
+        tvUnReadMsgCount2 = (TextView)findViewById(R.id.item_msg_num2);
         messagePop = LayoutInflater.from(this).inflate(R.layout.message_pop_menu, null);
         tvDelete = messagePop.findViewById(R.id.message_pop_menu_play);
         initTab();
@@ -548,6 +555,7 @@ public class MainActivity extends BaseActivity
         if (patientFragment == null)
         {
             patientFragment = new PatientsFragment();
+            patientFragment.setOnApplyCallbackListener(this);
             transaction.add(R.id.act_main_tab_frameLayout, patientFragment);
         }
         else
@@ -581,15 +589,15 @@ public class MainActivity extends BaseActivity
     {
         transaction = fragmentManager.beginTransaction();
         hideAll(transaction);
-        if (myFragment == null)
+        if (userFragment == null)
         {
-            myFragment = new UserFragment();
-            transaction.add(R.id.act_main_tab_frameLayout, myFragment);
+            userFragment = new UserFragment();
+            transaction.add(R.id.act_main_tab_frameLayout, userFragment);
         }
         else
         {
-            transaction.show(myFragment);
-            myFragment.onResume();
+            transaction.show(userFragment);
+            userFragment.onResume();
         }
         transaction.commitAllowingStateLoss();
         selectTab(3);
@@ -606,7 +614,7 @@ public class MainActivity extends BaseActivity
         }
         if (patientFragment != null) { transaction.hide(patientFragment); }
         if (cooperateDocFragment != null) { transaction.hide(cooperateDocFragment); }
-        if (myFragment != null) { transaction.hide(myFragment); }
+        if (userFragment != null) { transaction.hide(userFragment); }
     }
 
     /**
@@ -654,8 +662,10 @@ public class MainActivity extends BaseActivity
     {
         if (mode == -1)
         {
+            YihtApplication.getInstance().setVersionRemind(false);
             return;
         }
+        YihtApplication.getInstance().setVersionRemind(true);
         versionUpdateDialog = new VersionUpdateDialog(this);
         versionUpdateDialog.setCancelable(false);
         versionUpdateDialog.setUpdateMode(mode).
@@ -687,6 +697,37 @@ public class MainActivity extends BaseActivity
     {
         mVersionPresenter.getNewAPK(isMustUpdate);
         ToastUtil.toast(this, "开始下载");
+    }
+
+    /**
+     * 医生、患者、申请回调
+     */
+    @Override
+    public void onApplyCallback()
+    {
+        try
+        {
+            String pNum = sharePreferenceUtil.getString(CommonData.KEY_PATIENT_APPLY_NUM);
+            String eNum = sharePreferenceUtil.getString(CommonData.KEY_CHANGE_PATIENT_NUM);
+            if (TextUtils.isEmpty(pNum) || TextUtils.isEmpty(eNum))
+            {
+                return;
+            }
+            int num = Integer.valueOf(pNum) + Integer.valueOf(eNum);
+            if (num > 0)
+            {
+                rlMsgPoint2Layout.setVisibility(View.VISIBLE);
+                tvUnReadMsgCount2.setText(num > 99 ? "99+" : num + "");
+            }
+            else
+            {
+                rlMsgPoint2Layout.setVisibility(View.GONE);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override

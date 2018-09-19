@@ -48,6 +48,7 @@ public abstract class BaseActivity extends AppCompatActivity
      * 登录数据
      */
     public LoginSuccessBean loginSuccessBean;
+    public SharePreferenceUtil sharePreferenceUtil;
     /**
      * 权限管理类
      */
@@ -112,6 +113,7 @@ public abstract class BaseActivity extends AppCompatActivity
         whiteRequestList = new ArrayList<>();
         mIRequest = IRequest.getInstance(this);
         loginSuccessBean = getLoginSuccessBean();
+        sharePreferenceUtil = new SharePreferenceUtil(this);
         initView(savedInstanceState);
         initObject(savedInstanceState);
         initData(savedInstanceState);

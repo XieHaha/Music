@@ -158,7 +158,7 @@ public class ApplyCooperateDocActivity extends BaseActivity
                 }
                 break;
             case DEAL_DOC_APPLY:
-                ToastUtil.toast(this, "处理成功");
+                ToastUtil.toast(this, response.getMsg());
                 getApplyCooperateList();
                 //通知合作医生列表
                 NotifyChangeListenerServer.getInstance().notifyDoctorStatusChange("");

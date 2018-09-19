@@ -30,7 +30,7 @@ import custom.frame.utils.ToastUtil;
 public class SettingActivity extends BaseActivity
         implements VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener
 {
-    private TextView tvVersion;
+    private TextView tvVersion, tvVersionRemind;
     /**
      * 版本检测
      */
@@ -62,6 +62,7 @@ public class SettingActivity extends BaseActivity
         super.initView(savedInstanceState);
         ((TextView)findViewById(R.id.public_title_bar_title)).setText("设置");
         tvVersion = (TextView)findViewById(R.id.act_setting_version);
+        tvVersionRemind = (TextView)findViewById(R.id.act_setting_version_remind);
     }
 
     @Override
@@ -71,6 +72,14 @@ public class SettingActivity extends BaseActivity
         //检查更新
         mVersionPresenter = new VersionPresenter(this, mIRequest);
         mVersionPresenter.setVersionViewListener(this);
+        if (YihtApplication.getInstance().isVersionRemind())
+        {
+            tvVersionRemind.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            tvVersionRemind.setVisibility(View.GONE);
+        }
         getAppVersionCode();
     }
 

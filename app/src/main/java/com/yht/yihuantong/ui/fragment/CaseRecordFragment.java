@@ -200,7 +200,7 @@ public class CaseRecordFragment extends BaseFragment implements LoadMoreListener
                 }
                 break;
             case DELETE_PATIENT_CASE:
-                ToastUtil.toast(getContext(), "处理成功");
+                ToastUtil.toast(getContext(), response.getMsg());
                 getPatientCaseList();
                 break;
             default:

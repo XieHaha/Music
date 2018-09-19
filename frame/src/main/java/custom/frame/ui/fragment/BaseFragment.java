@@ -48,6 +48,10 @@ public abstract class BaseFragment extends Fragment
      */
     public LoginSuccessBean loginSuccessBean;
     /**
+     * 数据存储
+     */
+    public SharePreferenceUtil sharePreferenceUtil;
+    /**
      * 网络请求单例
      */
     public IRequest mIRequest = null;
@@ -94,6 +98,8 @@ public abstract class BaseFragment extends Fragment
         whiteRequestList = new ArrayList<>();
         mIRequest = IRequest.getInstance(getContext());
         loginSuccessBean = getLoginSuccessBean();
+
+        sharePreferenceUtil = new SharePreferenceUtil(getContext());
     }
 
     /**

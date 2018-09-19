@@ -445,6 +445,7 @@
                         android:textSize="15sp" />
 
                     <ImageView
+                        android:id="@+id/img"
                         android:layout_width="45dp"
                         android:src="@mipmap/icon_arrow_right"
                         android:paddingTop="16dp"
@@ -452,6 +453,15 @@
                         android:visibility="visible"
                         android:layout_alignParentRight="true"
                         android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/fragment_user_remind"
+                        android:layout_width="8dp"
+                        android:background="@drawable/bg_red_point"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/img"
+                        android:visibility="gone"
+                        android:layout_height="8dp" />
 
                     <View
                         android:layout_width="match_parent"

@@ -139,7 +139,6 @@ public class PatientApplyActivity extends BaseActivity
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response)
     {
-        super.onResponseSuccess(task, response);
         switch (task)
         {
             case GET_APPLY_PATIENT_LIST:
@@ -165,13 +164,14 @@ public class PatientApplyActivity extends BaseActivity
                 }
                 break;
             case AGREE_PATIENT_APPLY:
-            case REFUSE_PATIENT_APPLY:
-                ToastUtil.toast(this, "处理成功");
+                ToastUtil.toast(this, response.getMsg());
                 getApplyPatientList();
-                //
-                NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("");
+                NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("add");
                 break;
-            default:
+            case REFUSE_PATIENT_APPLY:
+                ToastUtil.toast(this, response.getMsg());
+                getApplyPatientList();
+                NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("");
                 break;
         }
     }
@@ -179,7 +179,6 @@ public class PatientApplyActivity extends BaseActivity
     @Override
     public void onResponseCodeError(Tasks task, BaseResponse response)
     {
-        super.onResponseCodeError(task, response);
         switch (task)
         {
             case GET_APPLY_PATIENT_LIST:
@@ -218,8 +217,6 @@ public class PatientApplyActivity extends BaseActivity
             case AGREE_PATIENT_APPLY:
                 break;
             case REFUSE_PATIENT_APPLY:
-                break;
-            default:
                 break;
         }
     }

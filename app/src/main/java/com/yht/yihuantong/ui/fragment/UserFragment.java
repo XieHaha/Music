@@ -84,6 +84,7 @@ public class UserFragment extends BaseFragment
     private TextView tvName, tvHospital, tvType, tvTitle, tvIntroduce;
     private TextView tvAuth, tvAuthStatus;
     private TextView tvDocNum, tvPatientNum;
+    private TextView tvRemind;
     private ImageView ivEditInfo;
     private LoginSuccessBean loginSuccessBean;
     private INotifyChangeListenerServer iNotifyChangeListenerServer;
@@ -109,8 +110,10 @@ public class UserFragment extends BaseFragment
      * 是否通过广播检查版本更新
      */
     private boolean versionUpdateChecked = false;
-    private List<PatientBean> patientBeanList;
-    private List<CooperateDocBean> cooperateDocBeanList;
+    /**
+     * 版本更新提示
+     */
+    private boolean versionPoint = false;
     /**
      * 请求修改头像 相册
      */
@@ -196,6 +199,7 @@ public class UserFragment extends BaseFragment
         tvAuthStatus = view.findViewById(R.id.fragment_my_auth_status);
         tvDocNum = view.findViewById(R.id.fragmrnt_user_doctors_num);
         tvPatientNum = view.findViewById(R.id.fragmrnt_user_patients_num);
+        tvRemind = view.findViewById(R.id.fragment_user_remind);
         view.findViewById(R.id.fragmrnt_user_info_qrcode_layout).setOnClickListener(this);
     }
 
@@ -224,6 +228,11 @@ public class UserFragment extends BaseFragment
         //注册患者状态监听
         iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(
                 doctorAuthStatusChangeListener, RegisterType.REGISTER);
+    }
+
+    public void setVersionPoint(boolean versionPoint)
+    {
+        this.versionPoint = versionPoint;
     }
 
     /**
@@ -257,18 +266,11 @@ public class UserFragment extends BaseFragment
      */
     private void initPageData()
     {
-        patientBeanList = DataSupport.findAll(PatientBean.class);
-        cooperateDocBeanList = DataSupport.findAll(CooperateDocBean.class);
-        if (patientBeanList != null)
-        {
-            tvPatientNum.setText(
-                    String.format(getString(R.string.txt_user_info_num), patientBeanList.size()));
-        }
-        if (cooperateDocBeanList != null)
-        {
-            tvDocNum.setText(String.format(getString(R.string.txt_user_info_num),
-                                           cooperateDocBeanList.size()));
-        }
+        tvPatientNum.setText(String.format(getString(R.string.txt_user_info_num),
+                                           sharePreferenceUtil.getString(
+                                                   CommonData.KEY_PATIENT_NUM)));
+        tvDocNum.setText(String.format(getString(R.string.txt_user_info_num),
+                                       sharePreferenceUtil.getString(CommonData.KEY_DOCTOR_NUM)));
         loginSuccessBean = YihtApplication.getInstance().getLoginSuccessBean();
         if (loginSuccessBean != null)
         {
@@ -292,6 +294,14 @@ public class UserFragment extends BaseFragment
             tvTitle.setText(loginSuccessBean.getTitle());
             tvType.setText(loginSuccessBean.getDepartment());
             tvIntroduce.setText(loginSuccessBean.getDoctorDescription());
+        }
+        if (YihtApplication.getInstance().isVersionRemind())
+        {
+            tvRemind.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            tvRemind.setVisibility(View.GONE);
         }
     }
 

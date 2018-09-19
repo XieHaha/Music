@@ -50,6 +50,10 @@ public class YihtApplication extends LitePalApplication
      * ease 临时数据  name
      */
     private String easeName;
+    /**
+     * 版本更新标识
+     */
+    private boolean versionRemind = false;
 
     @Override
     public void onCreate()
@@ -201,6 +205,16 @@ public class YihtApplication extends LitePalApplication
     public void setEaseName(String easeName)
     {
         this.easeName = easeName;
+    }
+
+    public boolean isVersionRemind()
+    {
+        return versionRemind;
+    }
+
+    public void setVersionRemind(boolean versionRemind)
+    {
+        this.versionRemind = versionRemind;
     }
 
     /**

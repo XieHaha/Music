@@ -124,7 +124,7 @@ public class MsgFragment extends BaseFragment
                 }
                 break;
             case ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT:
-                ToastUtil.toast(getContext(), "处理成功");
+                ToastUtil.toast(getContext(), response.getMsg());
                 break;
             case GET_EASE_APPKEY:
                 Log.e("YHT_D", "key:" + response.getData());

@@ -67,6 +67,22 @@ public interface CommonData
      */
     String KEY_REGISTRATION_TYPE = "key_registration_type";
     /**
+     * 我的患者数量
+     */
+    String KEY_PATIENT_NUM = "key_patient_num";
+    /**
+     * 我的合作医生数量
+     */
+    String KEY_DOCTOR_NUM = "key_doctor_num";
+    /**
+     * 我的患者申请数量
+     */
+    String KEY_PATIENT_APPLY_NUM = "key_patient_apply_num";
+    /**
+     * 我的转诊申请数量
+     */
+    String KEY_CHANGE_PATIENT_NUM = "key_change_patient_num";
+    /**
      * 开处方
      */
     int TYPE_PRESCRIPTION = 1;

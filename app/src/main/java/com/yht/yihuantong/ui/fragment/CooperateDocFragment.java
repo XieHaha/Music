@@ -6,12 +6,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -53,6 +53,7 @@ public class CooperateDocFragment extends BaseFragment
     private TextView tvHintTxt;
     private ImageView ivTitleBarMore;
     private TextView tvNum;
+    private RelativeLayout rlMsgHint;
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
     private View headerView, footerView;
@@ -66,7 +67,7 @@ public class CooperateDocFragment extends BaseFragment
     /**
      * 一页最大数
      */
-    private static final int PAGE_SIZE = 20;
+    private static final int PAGE_SIZE = 500;
     /**
      * 扫码结果
      */
@@ -90,13 +91,6 @@ public class CooperateDocFragment extends BaseFragment
     }
 
     @Override
-    public void onResume()
-    {
-        super.onResume();
-        getCooperateList();
-    }
-
-    @Override
     public void initView(@NonNull View view, @NonNull Bundle savedInstanceState)
     {
         super.initView(view, savedInstanceState);
@@ -112,6 +106,7 @@ public class CooperateDocFragment extends BaseFragment
         autoLoadRecyclerView = view.findViewById(R.id.fragment_cooperate_recycler_view);
         headerView = LayoutInflater.from(getContext())
                                    .inflate(R.layout.view_cooperate_doc_header, null);
+        rlMsgHint = headerView.findViewById(R.id.message_red_point);
         tvNum = headerView.findViewById(R.id.item_msg_num);
         footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
@@ -133,6 +128,7 @@ public class CooperateDocFragment extends BaseFragment
                                                 .getServer(INotifyChangeListenerServer.class);
         //获取合作医生申请
         getApplyCooperateList();
+        getCooperateList();
     }
 
     @Override
@@ -305,33 +301,27 @@ public class CooperateDocFragment extends BaseFragment
                     DataSupport.deleteAll(CooperateDocBean.class);
                     DataSupport.saveAll(cooperateDocBeanList);
                 }
+                sharePreferenceUtil.putString(CommonData.KEY_DOCTOR_NUM,
+                                              String.valueOf(cooperateDocBeanList.size()));
                 break;
             case APPLY_COOPERATE_DOC:
-                ToastUtil.toast(getContext(), "处理成功");
+                ToastUtil.toast(getContext(), response.getMsg());
                 break;
             case CANCEL_COOPERATE_DOC:
-                ToastUtil.toast(getContext(), "处理成功");
+                ToastUtil.toast(getContext(), response.getMsg());
                 getCooperateList();
                 break;
             case GET_APPLY_COOPERATE_DOC_LIST:
                 ArrayList<CooperateDocBean> list = response.getData();
-                tvNum.setText(String.valueOf(list.size()));
-                //                if (list != null && list.size() > 0)
-                //                {
-                //                    if (cooperateDocListAdapter.getHeadersCount() == 0)
-                //                    {
-                //                        cooperateDocListAdapter.addHeaderView(headerView);
-                //                        cooperateDocListAdapter.notifyDataSetChanged();
-                //                    }
-                //                }
-                //                else
-                //                {
-                //                    if (cooperateDocListAdapter.getHeadersCount() > 0)
-                //                    {
-                //                        cooperateDocListAdapter.removeHeaderView(headerView);
-                //                        cooperateDocListAdapter.notifyDataSetChanged();
-                //                    }
-                //                }
+                if (list.size() > 0)
+                {
+                    rlMsgHint.setVisibility(View.VISIBLE);
+                    tvNum.setText(String.valueOf(list.size()));
+                }
+                else
+                {
+                    rlMsgHint.setVisibility(View.GONE);
+                }
                 break;
         }
     }

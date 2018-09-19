@@ -58,7 +58,7 @@ public class PatientsFragment extends BaseFragment
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
     private PatientsListAdapter patientsListAdapter;
-    private RelativeLayout rlMsgHint;
+    private RelativeLayout rlMsgHint, rlMsgHint2;
     private TextView tvNum, tvExNum;
     private ImageView ivTitleBarMore;
     private View headerView, exHeaderView, footerView;
@@ -75,7 +75,7 @@ public class PatientsFragment extends BaseFragment
     /**
      * 一页最大数
      */
-    private static final int PAGE_SIZE = 20;
+    private static final int PAGE_SIZE = 500;
     /**
      * 扫码添加患者
      */
@@ -89,6 +89,14 @@ public class PatientsFragment extends BaseFragment
      */
     private static final int REQUEST_CODE_DELETE = 100;
     /**
+     * 患者申请处理结果
+     */
+    private static final int REQUEST_CODE_PATIENT_APPLY = 101;
+    /**
+     * 患者转诊处理结果
+     */
+    private static final int REQUEST_CODE_PATIENT_EXCHANGE = 102;
+    /**
      * 扫码结果
      */
     public static final int REQUEST_CODE = 0x0000c0de;
@@ -97,6 +105,10 @@ public class PatientsFragment extends BaseFragment
      */
     private IChange<String> patientStatusChangeListener = data ->
     {
+        if ("add".equals(data))
+        {
+            getPatientsData();
+        }
         getApplyPatientList();
         getPatientFromList();
     };
@@ -130,6 +142,7 @@ public class PatientsFragment extends BaseFragment
         rlMsgHint = headerView.findViewById(R.id.message_red_point);
         tvNum = headerView.findViewById(R.id.item_msg_num);
         tvExNum = exHeaderView.findViewById(R.id.item_msg_num);
+        rlMsgHint2 = exHeaderView.findViewById(R.id.message_red_point2);
         tvFooterHintTxt = footerView.findViewById(R.id.footer_hint_txt);
         tvHeanderHintTxt.setText("我的患者申请");
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
@@ -141,7 +154,6 @@ public class PatientsFragment extends BaseFragment
     @Override
     public void initData(@NonNull Bundle savedInstanceState)
     {
-        super.initData(savedInstanceState);
         patientsListAdapter = new PatientsListAdapter(getContext(), patientBeanList);
         patientsListAdapter.addFooterView(footerView);
         patientsListAdapter.addHeaderView(headerView);
@@ -150,6 +162,7 @@ public class PatientsFragment extends BaseFragment
                                                 .getServer(INotifyChangeListenerServer.class);
         getPatientsData();
         getApplyPatientList();
+        getPatientFromList();
     }
 
     @Override
@@ -246,11 +259,11 @@ public class PatientsFragment extends BaseFragment
         {
             case R.id.fragment_cooperate_apply_layout:
                 intent = new Intent(getContext(), PatientApplyActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_PATIENT_APPLY);
                 break;
             case R.id.fragment_exchange_patient_layout:
                 intent = new Intent(getContext(), ChangePatientHistoryActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_PATIENT_EXCHANGE);
                 break;
             case R.id.public_title_bar_more_two:
                 showPop();
@@ -287,8 +300,14 @@ public class PatientsFragment extends BaseFragment
         }
         switch (requestCode)
         {
-            case REQUEST_CODE_DELETE:
+            case REQUEST_CODE_DELETE://删除患者
                 getPatientsData();
+                break;
+            case REQUEST_CODE_PATIENT_APPLY://患者申请操作
+                getApplyPatientList();
+                break;
+            case REQUEST_CODE_PATIENT_EXCHANGE://转诊申请操作
+                getPatientFromList();
                 break;
             case REQUEST_CODE:
                 IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode,
@@ -359,33 +378,47 @@ public class PatientsFragment extends BaseFragment
                     DataSupport.deleteAll(PatientBean.class);
                     DataSupport.saveAll(patientBeanList);
                 }
+                sharePreferenceUtil.putString(CommonData.KEY_PATIENT_NUM,
+                                              String.valueOf(patientBeanList.size()));
                 break;
             case ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT:
-                ToastUtil.toast(getContext(), "处理成功");
+                ToastUtil.toast(getContext(), response.getMsg());
                 break;
-            case GET_APPLY_PATIENT_LIST:
+            case GET_APPLY_PATIENT_LIST://患者申请
                 ArrayList<PatientBean> list = response.getData();
-                tvNum.setText(String.valueOf(list.size()));
-                //                if (list != null && list.size() > 0)
-                //                {
-                //                    if (patientsListAdapter.getHeadersCount() == 0)
-                //                    {
-                //                        patientsListAdapter.addHeaderView(headerView);
-                //                        patientsListAdapter.notifyDataSetChanged();
-                //                    }
-                //                }
-                //                else
-                //                {
-                //                    if (patientsListAdapter.getHeadersCount() > 0)
-                //                    {
-                //                        patientsListAdapter.removeHeaderView(headerView);
-                //                        patientsListAdapter.notifyDataSetChanged();
-                //                    }
-                //                }
+                if (list.size() > 0)
+                {
+                    rlMsgHint.setVisibility(View.VISIBLE);
+                    tvNum.setText(String.valueOf(list.size()));
+                }
+                else
+                {
+                    rlMsgHint.setVisibility(View.GONE);
+                }
+                sharePreferenceUtil.putString(CommonData.KEY_PATIENT_APPLY_NUM,
+                                              String.valueOf(list.size()));
+                if (onApplyCallbackListener != null)
+                {
+                    onApplyCallbackListener.onApplyCallback();
+                }
                 break;
-            case GET_PATIENTS_FROM_LIST:
+            case GET_PATIENTS_FROM_LIST://转诊申请
                 ArrayList<TransPatientBean> transPatientBeans = response.getData();
-                tvExNum.setText(String.valueOf(transPatientBeans.size()));
+                if (transPatientBeans.size() > 0)
+                {
+                    rlMsgHint2.setVisibility(View.VISIBLE);
+                    tvExNum.setText(String.valueOf(transPatientBeans.size()));
+                }
+                else
+                {
+                    rlMsgHint2.setVisibility(View.GONE);
+                }
+                sharePreferenceUtil.putString(CommonData.KEY_CHANGE_PATIENT_NUM,
+                                              String.valueOf(transPatientBeans.size()));
+                if (onApplyCallbackListener != null)
+                {
+                    onApplyCallbackListener.onApplyCallback();
+                }
                 break;
         }
     }
@@ -419,6 +452,18 @@ public class PatientsFragment extends BaseFragment
     {
         super.onResponseEnd(task);
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    private OnApplyCallbackListener onApplyCallbackListener;
+
+    public void setOnApplyCallbackListener(OnApplyCallbackListener onApplyCallbackListener)
+    {
+        this.onApplyCallbackListener = onApplyCallbackListener;
+    }
+
+    public interface OnApplyCallbackListener
+    {
+        void onApplyCallback();
     }
 
     @Override

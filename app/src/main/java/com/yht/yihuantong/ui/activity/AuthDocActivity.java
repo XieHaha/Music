@@ -300,7 +300,7 @@ public class AuthDocActivity extends BaseActivity
                 break;
             case QUALIFIY_DOC:
                 closeProgressDialog();
-                ToastUtil.toast(this, "处理成功");
+                ToastUtil.toast(this, response.getMsg());
                 //改变认证状态，当前为审核中
                 loginSuccessBean.setChecked(1);
                 YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
