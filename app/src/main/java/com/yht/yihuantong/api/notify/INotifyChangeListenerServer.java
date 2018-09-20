@@ -26,6 +26,13 @@ public interface INotifyChangeListenerServer
      */
     void registerDoctorStatusChangeListener(@NonNull IChange<String> listener, @NonNull RegisterType registerType);
     /**
+     * 医生转诊申请监听
+     *
+     * @param listener     接收消息监听器
+     * @param registerType 注册类型
+     */
+    void registerDoctorChangePatientListener(@NonNull IChange<String> listener, @NonNull RegisterType registerType);
+    /**
      * 医生认证状态监听
      *
      * @param listener     接收消息监听器

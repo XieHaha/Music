@@ -101,7 +101,7 @@ public class PatientsFragment extends BaseFragment
      */
     public static final int REQUEST_CODE = 0x0000c0de;
     /**
-     * 推送回调监听
+     * 推送回调监听  患者申请
      */
     private IChange<String> patientStatusChangeListener = data ->
     {
@@ -110,6 +110,12 @@ public class PatientsFragment extends BaseFragment
             getPatientsData();
         }
         getApplyPatientList();
+    };
+    /**
+     * 推送回调监听  转诊申请
+     */
+    private IChange<String> doctorChangepatientListener = data ->
+    {
         getPatientFromList();
     };
 
@@ -188,6 +194,9 @@ public class PatientsFragment extends BaseFragment
                                                    });
         //注册患者状态监听
         iNotifyChangeListenerServer.registerPatientStatusChangeListener(patientStatusChangeListener,
+                                                                        RegisterType.REGISTER);
+        //注册转诊申请监听
+        iNotifyChangeListenerServer.registerDoctorChangePatientListener(doctorChangepatientListener,
                                                                         RegisterType.REGISTER);
     }
 
@@ -470,8 +479,11 @@ public class PatientsFragment extends BaseFragment
     public void onDestroy()
     {
         super.onDestroy();
-        //注册患者状态监听
+        //注销患者状态监听
         iNotifyChangeListenerServer.registerPatientStatusChangeListener(patientStatusChangeListener,
+                                                                        RegisterType.UNREGISTER);
+        //注销转诊申请监听
+        iNotifyChangeListenerServer.registerDoctorChangePatientListener(doctorChangepatientListener,
                                                                         RegisterType.UNREGISTER);
     }
 }

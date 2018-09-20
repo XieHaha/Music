@@ -14,17 +14,21 @@ public class NotifyChangeListenerServer implements INotifyChangeListenerServer
     private final String TAG = NotifyChangeListenerServer.class.getName();
     private static NotifyChangeListenerServer mInstance;
     /**
-     * 消息状态修改监听
+     * 患者添加状态
      */
     private List<IChange<String>> mPatientStatusChangeListeners = new CopyOnWriteArrayList<>();
     /**
-     * 接收消息监听
+     * 医生添加状态
      */
     private List<IChange<String>> mDoctorStatusChangeListeners = new CopyOnWriteArrayList<>();
     /**
-     * 接收消息监听
+     * 医生认证
      */
     private List<IChange<Integer>> mDoctorAuthStatusChangeListeners = new CopyOnWriteArrayList<>();
+    /**
+     * 转诊申请
+     */
+    private List<IChange<String>> mDoctorChangePatientListeners = new CopyOnWriteArrayList<>();
 
     private NotifyChangeListenerServer()
     {
@@ -74,6 +78,22 @@ public class NotifyChangeListenerServer implements INotifyChangeListenerServer
             mDoctorStatusChangeListeners.remove(listener);
         }
     }
+
+    @Override
+    public void registerDoctorChangePatientListener(@NonNull IChange<String> listener,
+            @NonNull RegisterType registerType)
+    {
+        if (listener == null) { return; }
+        if (RegisterType.REGISTER == registerType)
+        {
+            mDoctorChangePatientListeners.add(listener);
+        }
+        else
+        {
+            mDoctorChangePatientListeners.remove(listener);
+        }
+    }
+
     @Override
     public void registerDoctorAuthStatusChangeListener(@NonNull IChange<Integer> listener,
             @NonNull RegisterType registerType)
@@ -89,6 +109,11 @@ public class NotifyChangeListenerServer implements INotifyChangeListenerServer
         }
     }
 
+    /**
+     * 患者添加
+     *
+     * @param data
+     */
     public void notifyPatientStatusChange(final String data)
     {
         synchronized (mPatientStatusChangeListeners)
@@ -111,6 +136,11 @@ public class NotifyChangeListenerServer implements INotifyChangeListenerServer
         }
     }
 
+    /**
+     * 医生添加
+     *
+     * @param data
+     */
     public void notifyDoctorStatusChange(final String data)
     {
         synchronized (mDoctorStatusChangeListeners)
@@ -134,10 +164,38 @@ public class NotifyChangeListenerServer implements INotifyChangeListenerServer
     }
 
     /**
-     * 医生认证状态
+     * 转诊申请
+     *
      * @param data
      */
-    public void notifyDoctorAuthStatusListeners(final Integer data)
+    public void notifyDoctorChangePatient(final String data)
+    {
+        synchronized (mDoctorChangePatientListeners)
+        {
+            for (int i = 0, size = mDoctorChangePatientListeners.size(); i < size; i++)
+            {
+                try
+                {
+                    final IChange<String> change = mDoctorChangePatientListeners.get(i);
+                    if (null != change)
+                    {
+                        change.onChange(data);
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogUtils.w(TAG, "notifyMessageChange error", e);
+                }
+            }
+        }
+    }
+
+    /**
+     * 医生认证状态
+     *
+     * @param data
+     */
+    public void notifyDoctorAuthStatus(final Integer data)
     {
         synchronized (mDoctorAuthStatusChangeListeners)
         {

@@ -134,7 +134,7 @@ public class YihtApplication extends LitePalApplication
     private void initJPush()
     {
         //极光推送
-        JPushInterface.setDebugMode(false);
+        JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
     }
 

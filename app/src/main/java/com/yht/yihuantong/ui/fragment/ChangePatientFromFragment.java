@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -185,12 +186,10 @@ public class ChangePatientFromFragment extends BaseFragment
                 }
                 break;
             case REFUSE_TARNS_PATIENT_APPLY:
-                ToastUtil.toast(getContext(), response.getMsg());
-                getPatientFromList();
-                break;
             case AGREE_TARNS_PATIENT_APPLY:
                 ToastUtil.toast(getContext(), response.getMsg());
                 getPatientFromList();
+                getActivity().setResult(Activity.RESULT_OK);
                 break;
             default:
                 break;

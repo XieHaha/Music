@@ -85,7 +85,6 @@ public class ChangePatientHistoryActivity extends BaseActivity
     @Override
     public void initListener()
     {
-        super.initListener();
         btnBaseInfo.setOnClickListener(this);
         btnHealthRecord.setOnClickListener(this);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
@@ -115,10 +114,10 @@ public class ChangePatientHistoryActivity extends BaseActivity
         Intent intent;
         switch (v.getId())
         {
-            case R.id.act_health_card_base_info:
+            case R.id.act_health_card_health_record:
                 viewPager.setCurrentItem(0);
                 break;
-            case R.id.act_health_card_health_record:
+            case R.id.act_health_card_base_info:
                 viewPager.setCurrentItem(1);
                 break;
             default:
@@ -135,5 +134,11 @@ public class ChangePatientHistoryActivity extends BaseActivity
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
     }
 }
