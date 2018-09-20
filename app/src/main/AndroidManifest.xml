@@ -143,7 +143,7 @@
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ease.ChatActivity"
+            android:name=".chat.ChatActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:launchMode="singleTask"
             android:parentActivityName=".ui.activity.MainActivity"

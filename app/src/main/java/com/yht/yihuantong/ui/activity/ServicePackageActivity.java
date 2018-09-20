@@ -76,6 +76,7 @@ public class ServicePackageActivity extends BaseActivity
         findViewById(R.id.act_service_package_chemical_layout).setOnClickListener(this);
         findViewById(R.id.act_service_package_health_check_layout).setOnClickListener(this);
         findViewById(R.id.act_service_package_delete_layout).setOnClickListener(this);
+        findViewById(R.id.act_service_package_service_layout).setOnClickListener(this);
     }
 
     /**
@@ -145,6 +146,12 @@ public class ServicePackageActivity extends BaseActivity
             case R.id.act_service_package_delete_layout:
                 new SimpleDialog(this, "确定删除当前患者?", (dialog, which) -> deletePatient(),
                                  (dialog, which) -> dialog.dismiss()).show();
+                break;
+            case R.id.act_service_package_service_layout:
+                intent = new Intent(this, ServicePackActivity.class);
+                intent.putExtra(CommonData.KEY_PATIENT_ID, patientId);
+                intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "服务");
+                startActivity(intent);
                 break;
         }
     }

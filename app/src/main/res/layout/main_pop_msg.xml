@@ -34,94 +34,111 @@
 
 
     <RelativeLayout
-        android:id="@+id/prescription_layout"
+        android:id="@+id/service_layout"
         android:layout_width="match_parent"
         android:elevation="2dp"
         android:layout_height="48dp">
 
         <TextView
-            android:id="@+id/main_pop_msg_prescription"
+            android:id="@+id/main_pop_msg_service"
             android:layout_height="48dp"
             android:layout_centerInParent="true"
             android:layout_width="match_parent"
             android:gravity="center"
-            android:text="处方"
+            android:text="服务包"
             android:textSize="15sp"
             android:textColor="#333333"></TextView>
     </RelativeLayout>
 
-    <View
-        android:id="@+id/main_pop_menu_line_1"
-        android:background="@color/app_main_divideline"
-        android:layout_height="1px"
-        android:layout_width="120dp" />
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/prescription_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:elevation="2dp"-->
+    <!--android:layout_height="48dp">-->
 
-    <RelativeLayout
-        android:id="@+id/check_layout"
-        android:layout_width="match_parent"
-        android:elevation="2dp"
-        android:layout_height="48dp">
+    <!--<TextView-->
+    <!--android:id="@+id/main_pop_msg_prescription"-->
+    <!--android:layout_height="48dp"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:gravity="center"-->
+    <!--android:text="处方"-->
+    <!--android:textSize="15sp"-->
+    <!--android:textColor="#333333"></TextView>-->
+    <!--</RelativeLayout>-->
 
-        <TextView
-            android:id="@+id/main_pop_msg_check"
-            android:layout_height="48dp"
-            android:layout_centerInParent="true"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:text="检查"
-            android:textSize="15sp"
-            android:textColor="#333333"></TextView>
+    <!--<View-->
+    <!--android:id="@+id/main_pop_menu_line_1"-->
+    <!--android:background="@color/app_main_divideline"-->
+    <!--android:layout_height="1px"-->
+    <!--android:layout_width="120dp" />-->
 
-        <View
-            android:id="@+id/main_pop_menu_line_2"
-            android:background="@color/app_main_divideline"
-            android:layout_height="1px"
-            android:layout_alignParentBottom="true"
-            android:layout_width="120dp" />
-    </RelativeLayout>
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/check_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:elevation="2dp"-->
+    <!--android:layout_height="48dp">-->
 
+    <!--<TextView-->
+    <!--android:id="@+id/main_pop_msg_check"-->
+    <!--android:layout_height="48dp"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:gravity="center"-->
+    <!--android:text="检查"-->
+    <!--android:textSize="15sp"-->
+    <!--android:textColor="#333333"></TextView>-->
 
-    <RelativeLayout
-        android:id="@+id/health_check_layout"
-        android:layout_width="match_parent"
-        android:elevation="2dp"
-        android:layout_height="48dp">
-
-        <TextView
-            android:id="@+id/main_pop_msg_health_check"
-            android:layout_height="48dp"
-            android:layout_centerInParent="true"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:text="体检"
-            android:textSize="15sp"
-            android:textColor="#333333"></TextView>
-
-        <View
-            android:id="@+id/main_pop_menu_line_3"
-            android:background="@color/app_main_divideline"
-            android:layout_height="1px"
-            android:layout_alignParentBottom="true"
-            android:layout_width="120dp" />
-    </RelativeLayout>
+    <!--<View-->
+    <!--android:id="@+id/main_pop_menu_line_2"-->
+    <!--android:background="@color/app_main_divideline"-->
+    <!--android:layout_height="1px"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_width="120dp" />-->
+    <!--</RelativeLayout>-->
 
 
-    <RelativeLayout
-        android:id="@+id/chemical_layout"
-        android:layout_width="match_parent"
-        android:elevation="2dp"
-        android:layout_height="48dp">
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/health_check_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:elevation="2dp"-->
+    <!--android:layout_height="48dp">-->
 
-        <TextView
-            android:id="@+id/main_pop_msg_chemical"
-            android:layout_height="48dp"
-            android:layout_centerInParent="true"
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:text="化验"
-            android:textSize="15sp"
-            android:textColor="#333333"></TextView>
-    </RelativeLayout>
+    <!--<TextView-->
+    <!--android:id="@+id/main_pop_msg_health_check"-->
+    <!--android:layout_height="48dp"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:gravity="center"-->
+    <!--android:text="体检"-->
+    <!--android:textSize="15sp"-->
+    <!--android:textColor="#333333"></TextView>-->
+
+    <!--<View-->
+    <!--android:id="@+id/main_pop_menu_line_3"-->
+    <!--android:background="@color/app_main_divideline"-->
+    <!--android:layout_height="1px"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_width="120dp" />-->
+    <!--</RelativeLayout>-->
+
+
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/chemical_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:elevation="2dp"-->
+    <!--android:layout_height="48dp">-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/main_pop_msg_chemical"-->
+    <!--android:layout_height="48dp"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:gravity="center"-->
+    <!--android:text="化验"-->
+    <!--android:textSize="15sp"-->
+    <!--android:textColor="#333333"></TextView>-->
+    <!--</RelativeLayout>-->
 
 
 </LinearLayout>

@@ -21,7 +21,7 @@ import android.widget.TextView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.data.CommonData;
-import com.yht.yihuantong.ease.ChatActivity;
+import com.yht.yihuantong.chat.ChatActivity;
 import com.yht.yihuantong.ui.adapter.FragmentVpAdapter;
 import com.yht.yihuantong.ui.fragment.BaseInfoFragment;
 import com.yht.yihuantong.ui.fragment.CaseRecordFragment;
@@ -237,7 +237,9 @@ public class HealthCardActivity extends BaseActivity
                     mPopupwinow.dismiss();
                 }
                 intent = new Intent(this, ServicePackageActivity.class);
+                //                intent = new Intent(this, ServicePackActivity.class);
                 intent.putExtra(CommonData.KEY_PATIENT_ID, patientBean.getPatientId());
+                intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "服务");
                 startActivityForResult(intent, SERVICE_REQUEST_CODE);
                 //                if (mPopupwinow != null)
                 //                {

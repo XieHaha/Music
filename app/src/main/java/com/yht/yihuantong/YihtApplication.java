@@ -14,7 +14,7 @@ import com.hyphenate.easeui.domain.EaseUser;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yht.yihuantong.api.ApiHelper;
 import com.yht.yihuantong.data.CommonData;
-import com.yht.yihuantong.ease.HxHelper;
+import com.yht.yihuantong.chat.HxHelper;
 
 import org.litepal.LitePal;
 import org.litepal.LitePalApplication;

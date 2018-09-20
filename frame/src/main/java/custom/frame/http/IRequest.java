@@ -12,6 +12,7 @@ import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CooperateDocBean;
 import custom.frame.bean.HospitalBean;
 import custom.frame.bean.HospitalProductBean;
+import custom.frame.bean.HospitalProductTypeBean;
 import custom.frame.bean.LoginSuccessBean;
 import custom.frame.bean.PatientBean;
 import custom.frame.bean.PatientCaseBasicBean;
@@ -626,7 +627,8 @@ public class IRequest extends BaseRequest
     /**
      * 获取医院商品列表
      */
-    public Tasks getHospitalProductList(String hospitalId, int productTypeId, final ResponseListener<BaseResponse> listener)
+    public Tasks getHospitalProductList(String hospitalId, int productTypeId,
+            final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("hospitalId", hospitalId);
@@ -637,11 +639,36 @@ public class IRequest extends BaseRequest
     }
 
     /**
+     * 根据医生id获取医院列表
+     */
+    public Tasks getHospitalListByDoctorId(String doctorId,
+            final ResponseListener<BaseResponse> listener)
+    {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        return requestBaseResponseListByJson("/doctor/info/hospitals",
+                                             Tasks.GET_HOSPITAL_LIST_BY_DOCTORID,
+                                             HospitalBean.class, merchant, listener);
+    }
+
+    /**
+     * 根据医院id获取商品类型和类型下的商品详情
+     */
+    public Tasks getHospitalProductListByHospitalId(String hospitalId,
+            final ResponseListener<BaseResponse> listener)
+    {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("hospitalId", hospitalId);
+        return requestBaseResponseListByJson("/product/info/doctor/hospital/type/product",
+                                             Tasks.GET_HOSPITAL_PRODUCT_LIST_BY_HOSPITALID,
+                                             HospitalProductTypeBean.class, merchant, listener);
+    }
+
+    /**
      * 新增订单
      */
     public Tasks addProductOrder(String doctorId, String patientId, String hospitalId,
-            String productId, int productTypeId,
-            final ResponseListener<BaseResponse> listener)
+            String productId, int productTypeId, final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);

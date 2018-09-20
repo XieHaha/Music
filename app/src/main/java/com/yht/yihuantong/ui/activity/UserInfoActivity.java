@@ -18,7 +18,7 @@ import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.data.CommonData;
-import com.yht.yihuantong.ease.ChatActivity;
+import com.yht.yihuantong.chat.ChatActivity;
 import com.yht.yihuantong.tools.GlideHelper;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.utils.AllUtils;

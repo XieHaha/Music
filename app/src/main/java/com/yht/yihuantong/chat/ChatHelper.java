@@ -1,4 +1,4 @@
-package com.yht.yihuantong.ease;
+package com.yht.yihuantong.chat;
 
 import android.view.View;
 

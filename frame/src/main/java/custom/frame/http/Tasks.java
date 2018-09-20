@@ -160,6 +160,14 @@ public enum Tasks
      */
     GET_HOSPITAL_PRODUCT_LIST,
     /**
+     * 根据医生id获取获取医院列表
+     */
+    GET_HOSPITAL_LIST_BY_DOCTORID,
+    /**
+     * 根据医院id获取商品类型和类型下的商品详情
+     */
+    GET_HOSPITAL_PRODUCT_LIST_BY_HOSPITALID,
+    /**
      * 新增订单
      */
     ADD_PRODUCT_ORDER,

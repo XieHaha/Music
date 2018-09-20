@@ -39,7 +39,7 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
-import com.yht.yihuantong.ease.ChatActivity;
+import com.yht.yihuantong.chat.ChatActivity;
 import com.yht.yihuantong.ui.fragment.CooperateDocFragment;
 import com.yht.yihuantong.ui.fragment.PatientsFragment;
 import com.yht.yihuantong.ui.fragment.UserFragment;
