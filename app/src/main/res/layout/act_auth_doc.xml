@@ -270,7 +270,7 @@
                     android:maxLines="1"
                     android:singleLine="true"
                     android:imeOptions="actionNext"
-                    android:maxLength="10"
+                    android:maxLength="30"
                     android:layout_height="match_parent" />
 
             </LinearLayout>
@@ -299,7 +299,7 @@
                     android:maxLines="1"
                     android:singleLine="true"
                     android:imeOptions="actionNext"
-                    android:maxLength="18"
+                    android:maxLength="30"
                     android:layout_height="match_parent" />
 
             </LinearLayout>
@@ -328,7 +328,7 @@
                     android:maxLines="1"
                     android:singleLine="true"
                     android:imeOptions="actionDone"
-                    android:maxLength="18"
+                    android:maxLength="30"
                     android:layout_height="match_parent" />
 
             </LinearLayout>

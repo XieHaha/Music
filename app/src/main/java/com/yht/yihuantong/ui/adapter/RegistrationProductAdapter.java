@@ -46,18 +46,23 @@ public class RegistrationProductAdapter extends BaseRecyclerAdapter<HospitalProd
 
     public class ApplyPatientHolder extends BaseViewHolder<HospitalProductBean>
     {
-        private TextView tvHospitalName;
+        private TextView tvProductName, tvProductPrice, tvProductDes;
 
         public ApplyPatientHolder(View itemView)
         {
             super(itemView);
-            tvHospitalName = itemView.findViewById(R.id.item_registration_name);
+            //            tvProductName = itemView.findViewById(R.id.item_product_name);
+            //            tvProductPrice = itemView.findViewById(R.id.item_product_price);
+            //            tvProductDes = itemView.findViewById(R.id.item_product_des);
+            tvProductName = itemView.findViewById(R.id.item_registration_name);
         }
 
         @Override
         public void showView(final int position, final HospitalProductBean item)
         {
-            tvHospitalName.setText(item.getProductName());
+            tvProductName.setText(item.getProductName());
+            //            tvProductPrice.setText(item.getProductPrice());
+            //            tvProductDes.setText(item.getProductDescription());
         }
     }
 }
