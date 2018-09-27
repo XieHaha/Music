@@ -70,7 +70,7 @@
                 android:textColor="#333333"
                 android:textSize="15sp" />
 
-            <EditText
+            <custom.frame.widgets.FilterEmojiEditText
                 android:id="@+id/act_edit_info_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -104,7 +104,7 @@
                 android:textColor="#333333"
                 android:textSize="15sp" />
 
-            <EditText
+            <custom.frame.widgets.FilterEmojiEditText
                 android:id="@+id/act_edit_info_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -138,7 +138,7 @@
                 android:textColor="#333333"
                 android:textSize="15sp" />
 
-            <EditText
+            <custom.frame.widgets.FilterEmojiEditText
                 android:id="@+id/act_edit_info_type"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -172,7 +172,7 @@
                 android:textColor="#333333"
                 android:textSize="15sp" />
 
-            <EditText
+            <custom.frame.widgets.FilterEmojiEditText
                 android:id="@+id/act_edit_info_hospital"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -206,7 +206,7 @@
                 android:textColor="#333333"
                 android:textSize="15sp" />
 
-            <EditText
+            <custom.frame.widgets.FilterEmojiEditText
                 android:id="@+id/act_edit_info_introduce"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

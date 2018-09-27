@@ -255,6 +255,13 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
     {
         if (patientCaseDetailBean != null)
         {
+            if (!patientCaseDetailBean.getPatientId()
+                                      .equals(patientCaseDetailBean.getCaseCreatorId()) &&
+                !loginSuccessBean.getDoctorId().equals(patientCaseDetailBean.getCaseCreatorId()))
+            {
+                tvTitleBarMore.setVisibility(View.GONE);
+                ivTitlebBarMore.setVisibility(View.GONE);
+            }
             tvCreateTime.setText("创建者：" + patientCaseDetailBean.getCreatorName() + "\n创建时间：" +
                                  AllUtils.formatDate(patientCaseDetailBean.getGmtCreate(),
                                                      AllUtils.DATE_FORMAT));

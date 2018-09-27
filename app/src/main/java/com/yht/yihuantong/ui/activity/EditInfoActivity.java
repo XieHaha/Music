@@ -11,9 +11,12 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+import android.text.Editable;
+import android.text.Selection;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
@@ -39,6 +42,7 @@ import custom.frame.permission.Permission;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.DirHelper;
 import custom.frame.utils.ToastUtil;
+import custom.frame.widgets.FilterEmojiEditText;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -49,10 +53,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class EditInfoActivity extends BaseActivity
 {
     private CircleImageView headImg;
-    private EditText etName, etHospital, etType, etTitle, etIntroduce;
+    private FilterEmojiEditText etName, etHospital, etType, etTitle, etIntroduce;
     private Uri originUri, cutFileUri;
     private File cameraTempFile;
     private String name, hospital, type, title, introduce, headImgUrl;
+    /**
+     * 名字最长字符
+     */
+    private int maxCount;
     /**
      * 请求修改头像 相册
      */
@@ -85,11 +93,12 @@ public class EditInfoActivity extends BaseActivity
         ((TextView)findViewById(R.id.public_title_bar_title)).setText("编辑信息");
         findViewById(R.id.act_edit_info_save).setOnClickListener(this);
         headImg = (CircleImageView)findViewById(R.id.act_edit_info_headimg);
-        etName = (EditText)findViewById(R.id.act_edit_info_name);
-        etHospital = (EditText)findViewById(R.id.act_edit_info_hospital);
-        etType = (EditText)findViewById(R.id.act_edit_info_type);
-        etTitle = (EditText)findViewById(R.id.act_edit_info_title);
-        etIntroduce = (EditText)findViewById(R.id.act_edit_info_introduce);
+        etName = (FilterEmojiEditText)findViewById(R.id.act_edit_info_name);
+        etHospital = (FilterEmojiEditText)findViewById(R.id.act_edit_info_hospital);
+        etType = (FilterEmojiEditText)findViewById(R.id.act_edit_info_type);
+        etTitle = (FilterEmojiEditText)findViewById(R.id.act_edit_info_title);
+        etIntroduce = (FilterEmojiEditText)findViewById(R.id.act_edit_info_introduce);
+        maxCount = 10;
     }
 
     @Override
@@ -104,6 +113,88 @@ public class EditInfoActivity extends BaseActivity
     {
         super.initListener();
         headImg.setOnClickListener(this);
+        etName.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                Editable editable = etName.getText();
+                int len = editable.length();
+                if (len > maxCount)
+                {
+                    int selEndIndex = Selection.getSelectionEnd(editable);
+                    String str = editable.toString();
+                    //截取新字符串
+                    String newStr = str.substring(0, maxCount);
+                    etName.setText(newStr);
+                    editable = etName.getText();
+                    //新字符串的长度
+                    int newLen = editable.length();
+                    //旧光标位置超过字符串长度
+                    if (selEndIndex > newLen)
+                    {
+                        selEndIndex = editable.length();
+                    }
+                    //设置新光标所在的位置
+                    Selection.setSelection(editable, selEndIndex);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+            }
+        });
+        etName.setOnEditorActionListener((v, actionId, event) ->
+                                         {
+                                             //屏蔽换行符
+                                             if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
+                                             {
+                                                 return true;
+                                             }
+                                             return false;
+                                         });
+        etHospital.setOnEditorActionListener((v, actionId, event) ->
+                                             {
+                                                 //屏蔽换行符
+                                                 if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
+                                                 {
+                                                     return true;
+                                                 }
+                                                 return false;
+                                             });
+        etType.setOnEditorActionListener((v, actionId, event) ->
+                                         {
+                                             //屏蔽换行符
+                                             if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
+                                             {
+                                                 return true;
+                                             }
+                                             return false;
+                                         });
+        etTitle.setOnEditorActionListener((v, actionId, event) ->
+                                          {
+                                              //屏蔽换行符
+                                              if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
+                                              {
+                                                  return true;
+                                              }
+                                              return false;
+                                          });
+        etIntroduce.setOnEditorActionListener((v, actionId, event) ->
+                                              {
+                                                  //屏蔽换行符
+                                                  if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
+                                                  {
+                                                      return true;
+                                                  }
+                                                  return false;
+                                              });
     }
 
     /**

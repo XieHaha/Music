@@ -24,6 +24,15 @@
 		>
 	</FrameLayout>
 
+	<TextView
+		android:id="@+id/fragment_conversation_hint"
+		android:layout_width="match_parent"
+		android:text="暂无消息"
+		android:visibility="gone"
+		android:textColor="#999999"
+		android:gravity="center"
+		android:layout_height="match_parent" />
+
 
 	<com.hyphenate.easeui.widget.EaseConversationList
 		android:id="@+id/list"

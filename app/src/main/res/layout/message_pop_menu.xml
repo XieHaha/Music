@@ -12,12 +12,12 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:minHeight="48dp"
-        android:layout_width="80dp"
+        android:layout_width="wrap_content"
         android:textSize="15sp"
         android:padding="12dp"
         android:minWidth="80dp"
         android:visibility="visible"
-        android:text="删除"
+        android:text="删除该聊天"
         android:textColor="@color/app_main_color"></TextView>
 
     <!--<TextView-->

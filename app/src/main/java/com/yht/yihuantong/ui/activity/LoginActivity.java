@@ -199,6 +199,16 @@ public class LoginActivity extends BaseActivity
         //                }
         phone = etPhone.getText().toString().trim();
         verifyCode = etVerifyCode.getText().toString().trim();
+        if (TextUtils.isEmpty(phone))
+        {
+            ToastUtil.toast(this, R.string.txt_login_hint);
+            return;
+        }
+        if (TextUtils.isEmpty(verifyCode))
+        {
+            ToastUtil.toast(this, R.string.toast_txt_verify_hint);
+            return;
+        }
         if (!AllUtils.isMobileNumber(phone))
         {
             ToastUtil.toast(this, R.string.toast_txt_phone_error);

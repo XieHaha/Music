@@ -41,6 +41,7 @@ public class EaseConversationListFragment extends EaseBaseFragment
 {
     private final static int MSG_REFRESH = 2;
     protected EditText query;
+    protected TextView tvHintTxt;
     protected ImageButton clearSearch;
     protected boolean hidden;
     protected List<EMConversation> conversationList = new ArrayList<EMConversation>();
@@ -83,6 +84,7 @@ public class EaseConversationListFragment extends EaseBaseFragment
                 Context.INPUT_METHOD_SERVICE);
         conversationListView = (EaseConversationList)getView().findViewById(R.id.list);
         query = (EditText)getView().findViewById(R.id.query);
+        tvHintTxt = getView().findViewById(R.id.fragment_conversation_hint);
         ((TextView)(getView().findViewById(R.id.public_title_bar_title))).setText("消息列表");
         // button to clear content in search bar
         clearSearch = (ImageButton)getView().findViewById(R.id.search_clear);
@@ -116,7 +118,7 @@ public class EaseConversationListFragment extends EaseBaseFragment
                             {
                                 EMConversation conversation = conversationListView.getItem(
                                         position);
-                                listItemLongClickListener.onListItemLongClick(view,conversation);
+                                listItemLongClickListener.onListItemLongClick(view, conversation);
                                 return true;
                             }
                         });
@@ -264,6 +266,14 @@ public class EaseConversationListFragment extends EaseBaseFragment
                                                             .chatManager()
                                                             .getAllConversations();
         List<Pair<Long, EMConversation>> sortList = new ArrayList<Pair<Long, EMConversation>>();
+        if (conversations != null && conversations.size() > 0)
+        {
+            tvHintTxt.setVisibility(View.GONE);
+        }
+        else
+        {
+            tvHintTxt.setVisibility(View.VISIBLE);
+        }
         /**
          * lastMsgTime will change if there is new message during sorting
          * so use synchronized to make sure timestamp of last message won't change.
@@ -389,7 +399,7 @@ public class EaseConversationListFragment extends EaseBaseFragment
 
     public interface EaseConversationListItemLongClickListener
     {
-        void onListItemLongClick(View view,EMConversation conversation);
+        void onListItemLongClick(View view, EMConversation conversation);
     }
 
     /**

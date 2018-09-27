@@ -81,6 +81,10 @@ public class HealthCardActivity extends BaseActivity
      * 服务包回调
      */
     public static final int SERVICE_REQUEST_CODE = 100;
+    /**
+     * 修改备注回调
+     */
+    public static final int REEMARK_REQUEST_CODE = 101;
 
     @Override
     public int getLayoutID()
@@ -257,7 +261,7 @@ public class HealthCardActivity extends BaseActivity
                 intent.putExtra(CommonData.KEY_IS_DEAL_DOC, false);
                 intent.putExtra(CommonData.KEY_PUBLIC, patientBean.getNickname());
                 intent.putExtra(CommonData.KEY_ID, patientBean.getPatientId());
-                startActivity(intent);
+                startActivityForResult(intent, REEMARK_REQUEST_CODE);
                 break;
             case R.id.act_health_card_chat:
                 if (patientBean != null)
@@ -347,6 +351,9 @@ public class HealthCardActivity extends BaseActivity
             case SERVICE_REQUEST_CODE:
                 setResult(RESULT_OK);
                 finish();
+                break;
+            case REEMARK_REQUEST_CODE:
+                setResult(RESULT_OK);
                 break;
         }
     }

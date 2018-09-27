@@ -293,6 +293,7 @@ public class UserInfoActivity extends BaseActivity
                     if (!TextUtils.isEmpty(remark))
                     {
                         tvName.setText(remark + "(" + cooperateDocBean.getName() + ")");
+                        cooperateDocBean.setNickname(remark);
                     }
                 }
                 break;

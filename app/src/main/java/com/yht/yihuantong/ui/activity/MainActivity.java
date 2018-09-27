@@ -38,8 +38,9 @@ import com.yht.shortcutbadge.ShortcutBadger;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
-import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.chat.ChatActivity;
+import com.yht.yihuantong.data.CommonData;
+import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.ui.fragment.CooperateDocFragment;
 import com.yht.yihuantong.ui.fragment.PatientsFragment;
 import com.yht.yihuantong.ui.fragment.UserFragment;
@@ -311,20 +312,23 @@ public class MainActivity extends BaseActivity
         EMClient.getInstance().contactManager().setContactListener(contactListener);
         tvDelete.setOnClickListener(v ->
                                     {
-                                        if (curConversation != null)
+                                        popupWindow.dismiss();
+                                        new SimpleDialog(this, "删除后，将清空该聊天的消息记录?", (dialog, which) ->
                                         {
-                                            //删除和某个user会话，如果需要保留聊天记录，传false
-                                            popupWindow.dismiss();
-                                            EMClient.getInstance()
-                                                    .chatManager()
-                                                    .deleteConversation(
-                                                            curConversation.conversationId(), true);
-                                            //收到消息
-                                            if (easeConversationListFragment != null)
+                                            if (curConversation != null)
                                             {
-                                                easeConversationListFragment.refresh();
+                                                //删除和某个user会话，如果需要保留聊天记录，传false
+                                                EMClient.getInstance()
+                                                        .chatManager()
+                                                        .deleteConversation(
+                                                                curConversation.conversationId(), true);
+                                                //收到消息
+                                                if (easeConversationListFragment != null)
+                                                {
+                                                    easeConversationListFragment.refresh();
+                                                }
                                             }
-                                        }
+                                        }, (dialog, which) -> dialog.dismiss()).show();
                                     });
     }
 

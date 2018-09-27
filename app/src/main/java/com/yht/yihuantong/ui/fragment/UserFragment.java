@@ -327,7 +327,7 @@ public class UserFragment extends BaseFragment
                 tvAuthStatus.setTextColor(
                         ContextCompat.getColor(getContext(), R.color.app_auth_faild));
                 Glide.with(this).load(R.mipmap.icon_uncertified).into(authImg);
-                ivEditInfo.setVisibility(View.GONE);
+//                ivEditInfo.setVisibility(View.GONE);
                 break;
             case 2://审核未通过
                 tvAuthStatus.setText("审核未通过");

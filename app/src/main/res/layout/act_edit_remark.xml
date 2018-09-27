@@ -9,20 +9,22 @@
         android:id="@+id/top_bar"
         layout="@layout/public_title_bar" />
 
-    <EditText
+    <custom.frame.widgets.FilterEmojiEditText
         android:id="@+id/act_edit_remark_nickname"
         android:layout_width="match_parent"
-        android:layout_below="@id/top_bar"
+        android:layout_height="wrap_content"
+        android:imeOptions="actionDone"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="20dp"
+        android:textColor="@color/app_minor_color"
         android:hint="设置备注和昵称"
         android:textSize="15sp"
         android:maxLength="10"
-        android:text=""
-        android:imeOptions="actionDone"
-        android:textColor="@color/app_minor_color"
-        android:layout_height="wrap_content" />
+        android:layout_below="@id/top_bar"
+        android:gravity="center_vertical|left"
+        android:inputType="textMultiLine" />
+
 
     <TextView
         android:id="@+id/act_edit_remark_save"
