@@ -48,7 +48,11 @@ public class UserInfoActivity extends BaseActivity
     private LinearLayout llNickNameLayout;
     private View view_pop;
     private PopupWindow mPopupwinow;
-    private TextView tvDelete,tvChange;
+    private TextView tvDelete, tvChange;
+    /**
+     * 2018年10月9日10:59:42
+     */
+    private LinearLayout llCoopHopitalLayout, llHospitalLayout;
     private CooperateDocBean cooperateDocBean;
     private String doctorId;
     private String headImgUrl;
@@ -89,6 +93,8 @@ public class UserInfoActivity extends BaseActivity
         tvType = (TextView)findViewById(R.id.act_user_info_type);
         tvIntroduce = (TextView)findViewById(R.id.act_user_info_introduce);
         llNickNameLayout = (LinearLayout)findViewById(R.id.act_user_info_nickname_layout);
+        llCoopHopitalLayout = (LinearLayout)findViewById(R.id.act_user_info_coop_hospital_layout);
+        llHospitalLayout = (LinearLayout)findViewById(R.id.act_user_info_hospital_layout);
     }
 
     @Override
@@ -142,6 +148,7 @@ public class UserInfoActivity extends BaseActivity
     {
         tvChat.setOnClickListener(this);
         llNickNameLayout.setOnClickListener(this);
+        llHospitalLayout.setOnClickListener(this);
     }
 
     /**
@@ -246,6 +253,9 @@ public class UserInfoActivity extends BaseActivity
                 intent.putExtra(CommonData.KEY_PUBLIC, cooperateDocBean.getNickname());
                 intent.putExtra(CommonData.KEY_ID, cooperateDocBean.getDoctorId());
                 startActivityForResult(intent, MODIFY_NICKNAME);
+                break;
+            case R.id.act_user_info_hospital_layout:
+                startActivity(new Intent(this, HospitalInfoActivity.class));
                 break;
             default:
                 break;

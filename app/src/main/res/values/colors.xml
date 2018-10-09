@@ -16,6 +16,7 @@
     <!--app按钮按下-->
     <color name="app_main_color_press">#FF4099</color>
     <!-- 次要按钮文本色，入tab按钮颜色等 (102,102,102)-->
+    <color name="app_main_txt_color">#333333</color>
     <color name="app_minor_color">#666666</color>
     <color name="app_hint_color">#999999</color>
 
