@@ -25,9 +25,9 @@ import com.yht.yihuantong.api.IChange;
 import com.yht.yihuantong.api.RegisterType;
 import com.yht.yihuantong.api.notify.INotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
-import com.yht.yihuantong.ui.activity.ChangePatientHistoryActivity;
 import com.yht.yihuantong.ui.activity.HealthCardActivity;
 import com.yht.yihuantong.ui.activity.PatientApplyActivity;
+import com.yht.yihuantong.ui.activity.TransferPatientFromActivity;
 import com.yht.yihuantong.ui.adapter.PatientsListAdapter;
 import com.yht.yihuantong.utils.AllUtils;
 
@@ -45,7 +45,6 @@ import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
-import static android.app.Activity.RESULT_OK;
 
 /**
  * 患者列表
@@ -221,7 +220,7 @@ public class PatientsFragment extends BaseFragment
      */
     private void getPatientFromList()
     {
-        mIRequest.getPatientFromList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
+        mIRequest.getTransferPatientFromList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
     }
 
     /**
@@ -242,6 +241,7 @@ public class PatientsFragment extends BaseFragment
         view_pop = LayoutInflater.from(getContext()).inflate(R.layout.main_pop_menu, null);
         tvHistory = (TextView)view_pop.findViewById(R.id.delete);
         tvHistory.setText("转诊记录");
+        tvHistory.setVisibility(View.GONE);
         tvScan = (TextView)view_pop.findViewById(R.id.change);
         tvScan.setText("扫一扫");
         tvHistory.setOnClickListener(this);
@@ -271,18 +271,18 @@ public class PatientsFragment extends BaseFragment
                 startActivityForResult(intent, REQUEST_CODE_PATIENT_APPLY);
                 break;
             case R.id.fragment_exchange_patient_layout:
-                intent = new Intent(getContext(), ChangePatientHistoryActivity.class);
+                intent = new Intent(getContext(), TransferPatientFromActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_PATIENT_EXCHANGE);
                 break;
             case R.id.public_title_bar_more_two:
                 showPop();
                 break;
             case R.id.delete://转诊记录
-                if (mPopupwinow != null)
-                {
-                    mPopupwinow.dismiss();
-                }
-                startActivity(new Intent(getContext(), ChangePatientHistoryActivity.class));
+                //                if (mPopupwinow != null)
+                //                {
+                //                    mPopupwinow.dismiss();
+                //                }
+                //                startActivity(new Intent(getContext(), ChangePatientHistoryActivity.class));
                 break;
             case R.id.change://扫一扫
                 if (mPopupwinow != null)
@@ -303,7 +303,7 @@ public class PatientsFragment extends BaseFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK)
+        if (resultCode != getActivity().RESULT_OK)
         {
             return;
         }

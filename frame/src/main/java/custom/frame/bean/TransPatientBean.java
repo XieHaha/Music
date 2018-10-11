@@ -8,93 +8,57 @@ import java.io.Serializable;
 public class TransPatientBean implements Serializable
 {
     private static final long serialVersionUID = -4230007039183752036L;
-    private String patientId;
-    private String patientSex;
-    private String patientPhone;
-    private String patientName;
-    private String patientImgUrl;
-    private String patientIdentityNum;
-    private long patientBirthDate;
+    private int transferId;
+    private int acceptState;
+    private long transferDate;
     private String fromDoctorId;
-    private String fromDoctorPhone;
-    private String fromDoctorImgUrl;
     private String fromDoctorName;
+    private String fromDoctorHospitalName;
     private String fromDoctorTitle;
-    private String fromDoctorDescription;
-    private int  fromDoctorChecked;
-    private String fromDoctorCheckUrl;
-    private String fromDoctorIdentityNumber;
     private String fromDoctorDepartment;
-    private String fromDoctorHospital;
+    private String fromDoctorImage;
+    private String toDoctorId;
+    private String toDoctorName;
+    private String toDoctorHospitalName;
+    private String toDoctorTitle;
+    private String toDoctorDepartment;
+    private String toDoctorImage;
+    private String patientId;
+    private String patientName;
+    private String patientSex;
+    private long patientBirthDate;
+    private String patientImage;
+    private String patientIdentityNumber;
+    private String fromDoctorDiagnosisInfo;
 
-    public String getPatientId()
+    public int getTransferId()
     {
-        return patientId;
+        return transferId;
     }
 
-    public void setPatientId(String patientId)
+    public void setTransferId(int transferId)
     {
-        this.patientId = patientId;
+        this.transferId = transferId;
     }
 
-    public String getPatientSex()
+    public int getAcceptState()
     {
-        return patientSex;
+        return acceptState;
     }
 
-    public void setPatientSex(String patientSex)
+    public void setAcceptState(int acceptState)
     {
-        this.patientSex = patientSex;
+        this.acceptState = acceptState;
     }
 
-    public String getPatientPhone()
+    public long getTransferDate()
     {
-        return patientPhone;
+        return transferDate;
     }
 
-    public void setPatientPhone(String patientPhone)
+    public void setTransferDate(long transferDate)
     {
-        this.patientPhone = patientPhone;
-    }
-
-    public String getPatientName()
-    {
-        return patientName;
-    }
-
-    public void setPatientName(String patientName)
-    {
-        this.patientName = patientName;
-    }
-
-    public String getPatientImgUrl()
-    {
-        return patientImgUrl;
-    }
-
-    public void setPatientImgUrl(String patientImgUrl)
-    {
-        this.patientImgUrl = patientImgUrl;
-    }
-
-    public String getPatientIdentityNum()
-    {
-        return patientIdentityNum;
-    }
-
-    public void setPatientIdentityNum(String patientIdentityNum)
-    {
-        this.patientIdentityNum = patientIdentityNum;
-    }
-
-    public long getPatientBirthDate()
-    {
-        return patientBirthDate;
-    }
-
-    public void setPatientBirthDate(long patientBirthDate)
-    {
-        this.patientBirthDate = patientBirthDate;
+        this.transferDate = transferDate;
     }
 
     public String getFromDoctorId()
@@ -107,26 +71,6 @@ public class TransPatientBean implements Serializable
         this.fromDoctorId = fromDoctorId;
     }
 
-    public String getFromDoctorPhone()
-    {
-        return fromDoctorPhone;
-    }
-
-    public void setFromDoctorPhone(String fromDoctorPhone)
-    {
-        this.fromDoctorPhone = fromDoctorPhone;
-    }
-
-    public String getFromDoctorImgUrl()
-    {
-        return fromDoctorImgUrl;
-    }
-
-    public void setFromDoctorImgUrl(String fromDoctorImgUrl)
-    {
-        this.fromDoctorImgUrl = fromDoctorImgUrl;
-    }
-
     public String getFromDoctorName()
     {
         return fromDoctorName;
@@ -135,6 +79,16 @@ public class TransPatientBean implements Serializable
     public void setFromDoctorName(String fromDoctorName)
     {
         this.fromDoctorName = fromDoctorName;
+    }
+
+    public String getFromDoctorHospitalName()
+    {
+        return fromDoctorHospitalName;
+    }
+
+    public void setFromDoctorHospitalName(String fromDoctorHospitalName)
+    {
+        this.fromDoctorHospitalName = fromDoctorHospitalName;
     }
 
     public String getFromDoctorTitle()
@@ -147,46 +101,6 @@ public class TransPatientBean implements Serializable
         this.fromDoctorTitle = fromDoctorTitle;
     }
 
-    public String getFromDoctorDescription()
-    {
-        return fromDoctorDescription;
-    }
-
-    public void setFromDoctorDescription(String fromDoctorDescription)
-    {
-        this.fromDoctorDescription = fromDoctorDescription;
-    }
-
-    public int getFromDoctorChecked()
-    {
-        return fromDoctorChecked;
-    }
-
-    public void setFromDoctorChecked(int fromDoctorChecked)
-    {
-        this.fromDoctorChecked = fromDoctorChecked;
-    }
-
-    public String getFromDoctorCheckUrl()
-    {
-        return fromDoctorCheckUrl;
-    }
-
-    public void setFromDoctorCheckUrl(String fromDoctorCheckUrl)
-    {
-        this.fromDoctorCheckUrl = fromDoctorCheckUrl;
-    }
-
-    public String getFromDoctorIdentityNumber()
-    {
-        return fromDoctorIdentityNumber;
-    }
-
-    public void setFromDoctorIdentityNumber(String fromDoctorIdentityNumber)
-    {
-        this.fromDoctorIdentityNumber = fromDoctorIdentityNumber;
-    }
-
     public String getFromDoctorDepartment()
     {
         return fromDoctorDepartment;
@@ -197,13 +111,143 @@ public class TransPatientBean implements Serializable
         this.fromDoctorDepartment = fromDoctorDepartment;
     }
 
-    public String getFromDoctorHospital()
+    public String getFromDoctorImage()
     {
-        return fromDoctorHospital;
+        return fromDoctorImage;
     }
 
-    public void setFromDoctorHospital(String fromDoctorHospital)
+    public void setFromDoctorImage(String fromDoctorImage)
     {
-        this.fromDoctorHospital = fromDoctorHospital;
+        this.fromDoctorImage = fromDoctorImage;
+    }
+
+    public String getToDoctorId()
+    {
+        return toDoctorId;
+    }
+
+    public void setToDoctorId(String toDoctorId)
+    {
+        this.toDoctorId = toDoctorId;
+    }
+
+    public String getToDoctorName()
+    {
+        return toDoctorName;
+    }
+
+    public void setToDoctorName(String toDoctorName)
+    {
+        this.toDoctorName = toDoctorName;
+    }
+
+    public String getToDoctorHospitalName()
+    {
+        return toDoctorHospitalName;
+    }
+
+    public void setToDoctorHospitalName(String toDoctorHospitalName)
+    {
+        this.toDoctorHospitalName = toDoctorHospitalName;
+    }
+
+    public String getToDoctorTitle()
+    {
+        return toDoctorTitle;
+    }
+
+    public void setToDoctorTitle(String toDoctorTitle)
+    {
+        this.toDoctorTitle = toDoctorTitle;
+    }
+
+    public String getToDoctorDepartment()
+    {
+        return toDoctorDepartment;
+    }
+
+    public void setToDoctorDepartment(String toDoctorDepartment)
+    {
+        this.toDoctorDepartment = toDoctorDepartment;
+    }
+
+    public String getToDoctorImage()
+    {
+        return toDoctorImage;
+    }
+
+    public void setToDoctorImage(String toDoctorImage)
+    {
+        this.toDoctorImage = toDoctorImage;
+    }
+
+    public String getPatientId()
+    {
+        return patientId;
+    }
+
+    public void setPatientId(String patientId)
+    {
+        this.patientId = patientId;
+    }
+
+    public String getPatientName()
+    {
+        return patientName;
+    }
+
+    public void setPatientName(String patientName)
+    {
+        this.patientName = patientName;
+    }
+
+    public String getPatientSex()
+    {
+        return patientSex;
+    }
+
+    public void setPatientSex(String patientSex)
+    {
+        this.patientSex = patientSex;
+    }
+
+    public long getPatientBirthDate()
+    {
+        return patientBirthDate;
+    }
+
+    public void setPatientBirthDate(long patientBirthDate)
+    {
+        this.patientBirthDate = patientBirthDate;
+    }
+
+    public String getPatientImage()
+    {
+        return patientImage;
+    }
+
+    public void setPatientImage(String patientImage)
+    {
+        this.patientImage = patientImage;
+    }
+
+    public String getPatientIdentityNumber()
+    {
+        return patientIdentityNumber;
+    }
+
+    public void setPatientIdentityNumber(String patientIdentityNumber)
+    {
+        this.patientIdentityNumber = patientIdentityNumber;
+    }
+
+    public String getFromDoctorDiagnosisInfo()
+    {
+        return fromDoctorDiagnosisInfo;
+    }
+
+    public void setFromDoctorDiagnosisInfo(String fromDoctorDiagnosisInfo)
+    {
+        this.fromDoctorDiagnosisInfo = fromDoctorDiagnosisInfo;
     }
 }

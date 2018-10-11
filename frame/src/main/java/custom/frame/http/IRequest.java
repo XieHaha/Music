@@ -179,28 +179,28 @@ public class IRequest extends BaseRequest
     /**
      * 获取转诊出去患者列表
      */
-    public Tasks getPatientToList(String doctorId, int pageNo, int pageSize,
+    public Tasks getTransferPatientToList(String doctorId, int pageNo, int pageSize,
             final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
         merchant.put("pageNo", pageNo);
         merchant.put("pageSize", pageSize);
-        return requestBaseResponseListByJson("/dp/trans/list", Tasks.GET_PATIENTS_TO_LIST,
+        return requestBaseResponseListByJson("/trans/out/doctor/notes", Tasks.GET_PATIENTS_TO_LIST,
                                              TransPatientBean.class, merchant, listener);
     }
 
     /**
      * 获取收到转诊患者列表
      */
-    public Tasks getPatientFromList(String doctorId, int pageNo, int pageSize,
+    public Tasks getTransferPatientFromList(String doctorId, int pageNo, int pageSize,
             final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
         merchant.put("pageNo", pageNo);
         merchant.put("pageSize", pageSize);
-        return requestBaseResponseListByJson("/dp/trans/apply/list", Tasks.GET_PATIENTS_FROM_LIST,
+        return requestBaseResponseListByJson("/trans/in/doctor/notes", Tasks.GET_PATIENTS_FROM_LIST,
                                              TransPatientBean.class, merchant, listener);
     }
 
@@ -374,38 +374,6 @@ public class IRequest extends BaseRequest
         merchant.put("requestSource", requestSource);
         return requestBaseResponseByJson("/dp/scan/agree", Tasks.AGREE_PATIENT_APPLY, String.class,
                                          merchant, listener);
-    }
-
-    /**
-     * 同意转诊患者申请
-     */
-    public Tasks agreeTransPatientApply(String doctorId, String fromDoctorId, String patientId,
-            int requestSource, final ResponseListener<BaseResponse> listener)
-    {
-        Map<String, Object> merchant = new HashMap<>(16);
-        merchant.put("toDoctorId", doctorId);
-        merchant.put("fromDoctorId", fromDoctorId);
-        merchant.put("patientId", patientId);
-        merchant.put("requestSource", requestSource);
-        return requestBaseResponseByJson("/dp/trans/accept/patient",
-                                         Tasks.AGREE_TARNS_PATIENT_APPLY, String.class, merchant,
-                                         listener);
-    }
-
-    /**
-     * 拒绝转诊患者申请
-     */
-    public Tasks refuseTransPatientApply(String doctorId, String fromDoctorId, String patientId,
-            int requestSource, final ResponseListener<BaseResponse> listener)
-    {
-        Map<String, Object> merchant = new HashMap<>(16);
-        merchant.put("toDoctorId", doctorId);
-        merchant.put("fromDoctorId", fromDoctorId);
-        merchant.put("patientId", patientId);
-        merchant.put("requestSource", requestSource);
-        return requestBaseResponseByJson("/dp/trans/refuse/patient",
-                                         Tasks.REFUSE_TARNS_PATIENT_APPLY, String.class, merchant,
-                                         listener);
     }
 
     /**

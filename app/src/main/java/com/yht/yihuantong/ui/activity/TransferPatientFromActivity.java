@@ -1,6 +1,5 @@
-package com.yht.yihuantong.ui.fragment;
+package com.yht.yihuantong.ui.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,8 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.data.OnTransPatientListener;
-import com.yht.yihuantong.ui.activity.PatientApplyActivity;
+import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.adapter.TransPatientsListAdapter;
 
 import java.util.ArrayList;
@@ -22,20 +20,20 @@ import java.util.List;
 
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.PatientBean;
+import custom.frame.bean.TransPatientBean;
 import custom.frame.http.Tasks;
-import custom.frame.ui.fragment.BaseFragment;
-import custom.frame.utils.ToastUtil;
+import custom.frame.ui.activity.BaseActivity;
+import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
- * 病人转诊
- * 其他医生转给我
- *
- * @author DUNDUN
+ * Created by dundun on 18/10/11.
+ * 合作医生转给我的
  */
-public class ChangePatientFromFragment extends BaseFragment
-        implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener, OnTransPatientListener
+public class TransferPatientFromActivity extends BaseActivity
+        implements LoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
+                   BaseRecyclerAdapter.OnItemClickListener<TransPatientBean>
 {
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
@@ -54,9 +52,15 @@ public class ChangePatientFromFragment extends BaseFragment
     private static final int PAGE_SIZE = 20;
 
     @Override
+    protected boolean isInitBackBtn()
+    {
+        return true;
+    }
+
+    @Override
     public int getLayoutID()
     {
-        return R.layout.fragment_change;
+        return R.layout.act_transfer_patient_list;
     }
 
     @Override
@@ -68,12 +72,13 @@ public class ChangePatientFromFragment extends BaseFragment
     }
 
     @Override
-    public void initView(@NonNull View view, @NonNull Bundle savedInstanceState)
+    public void initView(@NonNull Bundle savedInstanceState)
     {
-        super.initView(view, savedInstanceState);
-        swipeRefreshLayout = view.findViewById(R.id.fragment_patients_swipe_layout);
-        autoLoadRecyclerView = view.findViewById(R.id.fragment_patients_recycler_view);
-        footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_list_footerr, null);
+        super.initView(savedInstanceState);
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("转给我的患者");
+        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.act_patients_swipe_layout);
+        autoLoadRecyclerView = (AutoLoadRecyclerView)findViewById(R.id.act_patients_recycler_view);
+        footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
         tvFooterHintTxt = footerView.findViewById(R.id.footer_hint_txt);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
                                                    android.R.color.holo_red_light,
@@ -93,13 +98,13 @@ public class ChangePatientFromFragment extends BaseFragment
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
         autoLoadRecyclerView.setLayoutManager(
-                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        patientsListAdapter = new TransPatientsListAdapter(getContext(), new ArrayList<>());
-        patientsListAdapter.setOnTransPatientListener(this);
-        patientsListAdapter.setShow(true);
+        patientsListAdapter = new TransPatientsListAdapter(this, new ArrayList<>());
+        patientsListAdapter.setFrom(true);
         patientsListAdapter.addFooterView(footerView);
         autoLoadRecyclerView.setAdapter(patientsListAdapter);
+        patientsListAdapter.setOnItemClickListener(this);
     }
 
     /**
@@ -107,25 +112,7 @@ public class ChangePatientFromFragment extends BaseFragment
      */
     private void getPatientFromList()
     {
-        mIRequest.getPatientFromList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
-    }
-
-    /**
-     * 拒绝转诊申请
-     */
-    private void refuseTransPatientApply(String fromDoctorId, String patientId, int requestSource)
-    {
-        mIRequest.refuseTransPatientApply(loginSuccessBean.getDoctorId(), fromDoctorId, patientId,
-                                          requestSource, this);
-    }
-
-    /**
-     * 同意转诊申请
-     */
-    private void agreeTransPatientApply(String fromDoctorId, String patientId, int requestSource)
-    {
-        mIRequest.agreeTransPatientApply(loginSuccessBean.getDoctorId(), fromDoctorId, patientId,
-                                         requestSource, this);
+        mIRequest.getTransferPatientFromList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
     }
 
     @Override
@@ -135,12 +122,22 @@ public class ChangePatientFromFragment extends BaseFragment
         switch (v.getId())
         {
             case R.id.fragment_cooperate_apply_layout:
-                Intent intent = new Intent(getContext(), PatientApplyActivity.class);
+                Intent intent = new Intent(this, PatientApplyActivity.class);
                 startActivity(intent);
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onItemClick(View v, int position, TransPatientBean item)
+    {
+        Intent intent = new Intent(this, TransferPatientActivity.class);
+        intent.putExtra(CommonData.KEY_PUBLIC, false);
+        intent.putExtra("isFrom", true);
+        intent.putExtra(CommonData.KEY_TRANSFER_BEAN, item);
+        startActivity(intent);
     }
 
     @Override
@@ -185,14 +182,6 @@ public class ChangePatientFromFragment extends BaseFragment
                     autoLoadRecyclerView.loadFinish(true);
                 }
                 break;
-            case REFUSE_TARNS_PATIENT_APPLY:
-            case AGREE_TARNS_PATIENT_APPLY:
-                ToastUtil.toast(getContext(), response.getMsg());
-                getPatientFromList();
-                getActivity().setResult(Activity.RESULT_OK);
-                break;
-            default:
-                break;
         }
     }
 
@@ -225,17 +214,5 @@ public class ChangePatientFromFragment extends BaseFragment
     {
         super.onResponseEnd(task);
         swipeRefreshLayout.setRefreshing(false);
-    }
-
-    @Override
-    public void onPositiveTrigger(String fromDoctorId, String patientId, int requestCode)
-    {
-        agreeTransPatientApply(fromDoctorId, patientId, requestCode);
-    }
-
-    @Override
-    public void onNegativeTrigger(String fromDoctorId, String patientId, int requestCode)
-    {
-        refuseTransPatientApply(fromDoctorId, patientId, requestCode);
     }
 }

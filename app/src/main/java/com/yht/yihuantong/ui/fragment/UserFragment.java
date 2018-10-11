@@ -39,6 +39,8 @@ import com.yht.yihuantong.tools.GlideHelper;
 import com.yht.yihuantong.ui.activity.AuthDocActivity;
 import com.yht.yihuantong.ui.activity.EditInfoActivity;
 import com.yht.yihuantong.ui.activity.SettingActivity;
+import com.yht.yihuantong.ui.activity.TransferPatientFromActivity;
+import com.yht.yihuantong.ui.activity.TransferPatientToActivity;
 import com.yht.yihuantong.ui.dialog.ActionSheetDialog;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.utils.AllUtils;
@@ -74,8 +76,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * 我的页面
  */
 public class UserFragment extends BaseFragment
-        implements VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener,
-                   CustomListenScrollView.OnScrollChangeListener, CommonData
+        implements CustomListenScrollView.OnScrollChangeListener, CommonData
 {
     private CircleImageView headImg, authImg;
     private LinearLayout llTitleLayout;
@@ -98,22 +99,6 @@ public class UserFragment extends BaseFragment
      * 二维码
      */
     private BarCodeImageView barCodeImageView;
-    /**
-     * 版本检测
-     */
-    private VersionPresenter mVersionPresenter;
-    /**
-     * 版本弹窗
-     */
-    private VersionUpdateDialog versionUpdateDialog;
-    /**
-     * 是否通过广播检查版本更新
-     */
-    private boolean versionUpdateChecked = false;
-    /**
-     * 版本更新提示
-     */
-    private boolean versionPoint = false;
     /**
      * 请求修改头像 相册
      */
@@ -176,15 +161,13 @@ public class UserFragment extends BaseFragment
         mStateBarFixer.setLayoutParams(
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                                               getStateBarHeight(getActivity())));//填充状态栏
-        //        //状态栏透明
-        //        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         ivEditInfo = view.findViewById(R.id.public_title_bar_back);
         ivEditInfo.setOnClickListener(this);
-        //        view.findViewById(R.id.fragmrnt_user_info_exit).setOnClickListener(this);
-        //        view.findViewById(R.id.fragmrnt_user_info_version).setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_info_setting_layout).setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_info_train_layout).setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_info_service_layout).setOnClickListener(this);
+        view.findViewById(R.id.fragmrnt_user_transfer_to_layout).setOnClickListener(this);
+        view.findViewById(R.id.fragmrnt_user_transfer_from_layout).setOnClickListener(this);
         rlAuthLayout = view.findViewById(R.id.fragment_my_auth_layout);
         scrollView = view.findViewById(R.id.fragment_my_scrollview);
         llTitleLayout = view.findViewById(R.id.fragment_my_title_layout);
@@ -211,9 +194,6 @@ public class UserFragment extends BaseFragment
          * 权限管理类
          */
         permissionHelper = PermissionHelper.getInstance(getActivity(), onPermissionCallback);
-        //检查更新
-        mVersionPresenter = new VersionPresenter(getContext(), mIRequest);
-        mVersionPresenter.setVersionViewListener(this);
         iNotifyChangeListenerServer = ApiManager.getInstance()
                                                 .getServer(INotifyChangeListenerServer.class);
     }
@@ -228,11 +208,6 @@ public class UserFragment extends BaseFragment
         //注册患者状态监听
         iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(
                 doctorAuthStatusChangeListener, RegisterType.REGISTER);
-    }
-
-    public void setVersionPoint(boolean versionPoint)
-    {
-        this.versionPoint = versionPoint;
     }
 
     /**
@@ -327,7 +302,7 @@ public class UserFragment extends BaseFragment
                 tvAuthStatus.setTextColor(
                         ContextCompat.getColor(getContext(), R.color.app_auth_faild));
                 Glide.with(this).load(R.mipmap.icon_uncertified).into(authImg);
-//                ivEditInfo.setVisibility(View.GONE);
+                //                ivEditInfo.setVisibility(View.GONE);
                 break;
             case 2://审核未通过
                 tvAuthStatus.setText("审核未通过");
@@ -351,49 +326,36 @@ public class UserFragment extends BaseFragment
     @Override
     public void onClick(View v)
     {
-        super.onClick(v);
+        Intent intent;
         switch (v.getId())
         {
             case R.id.public_title_bar_back:
-                Intent intent = new Intent(getContext(), EditInfoActivity.class);
+                intent = new Intent(getContext(), EditInfoActivity.class);
                 startActivity(intent);
                 break;
-            //            case R.id.fragmrnt_user_info_exit:
-            //                new SimpleDialog(getActivity(), "确定退出?", (dialog, which) ->
-            //                {
-            //                    //清除登录信息
-            //                    YihtApplication.getInstance().clearLoginSuccessBean();
-            //                    //清除数据库数据
-            //                    DataSupport.deleteAll(PatientBean.class);
-            //                    DataSupport.deleteAll(CooperateDocBean.class);
-            //                    //删除环信会话列表
-            //                    //TODO
-            //                    //退出环信
-            //                    EMClient.getInstance().logout(true);
-            //                    dialog.dismiss();
-            //                    AppManager.getInstance().finishAllActivity();
-            //                    startActivity(new Intent(getActivity(), LoginActivity.class));
-            //                    System.exit(0);
-            //                }, (dialog, which) -> dialog.dismiss()).show();
-            //                break;
             case R.id.fragmrnt_user_info_qrcode_layout:
                 DialogPersonalBarCode dialogPersonalBarCode = new DialogPersonalBarCode(
                         getActivity());
                 dialogPersonalBarCode.setQRImageViewSrc(barCodeImageView);
                 dialogPersonalBarCode.show();
                 break;
-            //            case R.id.fragmrnt_user_info_version://版本更新
-            //                mVersionPresenter.init();
-            //                break;
             case R.id.fragment_my_auth_layout:
-                Intent intent1 = new Intent(getContext(), AuthDocActivity.class);
-                startActivity(intent1);
+                intent = new Intent(getContext(), AuthDocActivity.class);
+                startActivity(intent);
                 break;
             case R.id.fragmrnt_user_info_headimg:
                 editHeadImg();
                 break;
             case R.id.fragmrnt_user_info_setting_layout:
                 startActivity(new Intent(getContext(), SettingActivity.class));
+                break;
+            case R.id.fragmrnt_user_transfer_to_layout:
+                intent = new Intent(getContext(), TransferPatientToActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.fragmrnt_user_transfer_from_layout:
+                intent = new Intent(getContext(), TransferPatientFromActivity.class);
+                startActivity(intent);
                 break;
             case R.id.fragmrnt_user_info_train_layout:
             case R.id.fragmrnt_user_info_service_layout:
@@ -744,48 +706,6 @@ public class UserFragment extends BaseFragment
             }
         }
     };
-
-    /*********************版本更新回调*************************/
-    @Override
-    public void updateVersion(Version version, int mode, boolean isDownLoading)
-    {
-        if (mode == -1)
-        {
-            ToastUtil.toast(getContext(), "当前已是最新版本");
-            return;
-        }
-        versionUpdateDialog = new VersionUpdateDialog(getContext());
-        versionUpdateDialog.setCancelable(false);
-        versionUpdateDialog.setUpdateMode(mode).
-                setIsDownNewAPK(isDownLoading).setContent(version.getUpdateDescription());
-        versionUpdateDialog.setOnEnterClickListener(this);
-        versionUpdateDialog.show();
-    }
-
-    @Override
-    public void updateLoading(long total, long current)
-    {
-        if (versionUpdateDialog != null && versionUpdateDialog.isShowing())
-        {
-            versionUpdateDialog.setProgressValue(total, current);
-        }
-    }
-
-    /**
-     * 当无可用网络时回调
-     */
-    @Override
-    public void updateNetWorkError()
-    {
-        versionUpdateChecked = true;
-    }
-
-    @Override
-    public void onEnter(boolean isMustUpdate)
-    {
-        mVersionPresenter.getNewAPK(isMustUpdate);
-        ToastUtil.toast(getContext(), "开始下载");
-    }
 
     @Override
     public void onDestroy()

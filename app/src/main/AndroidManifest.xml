@@ -118,10 +118,6 @@
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.ChangePatientHistoryActivity"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.activity.EditRemarkActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:screenOrientation="portrait" />
@@ -144,6 +140,18 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.HospitalInfoActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.TransferPatientActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.TransferPatientFromActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.TransferPatientToActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:screenOrientation="portrait" />
         <activity

@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/app_minor_bg">
+
+    <include
+        android:id="@+id/top_bar"
+        layout="@layout/public_title_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:scrollbars="none"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/app_minor_bg"
+                android:layout_height="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:padding="12dp"
+                android:orientation="vertical"
+                android:background="@color/app_white_color"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/act_hospital_info_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="患者信息"
+                    android:textColor="@color/app_main_txt_color"
+                    android:textSize="18sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/app_main_divideline" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center_vertical"
+                    android:layout_height="wrap_content">
+
+                    <com.hyphenate.easeui.widget.EaseImageView
+                        android:id="@+id/act_transfer_patient_img"
+                        android:layout_width="63dp"
+                        android:layout_height="63dp"
+                        android:layout_gravity="center"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/icon_default_imgs_rect" />
+
+                    <TextView
+                        android:id="@+id/act_transfer_patient_name"
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/app_main_txt_color"
+                        android:text="姓名"
+                        android:layout_marginLeft="20dp"
+                        android:textSize="15sp"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/app_main_divideline" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/app_minor_color"
+                        android:text="性别："
+                        android:textSize="15sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/act_transfer_patient_sex"
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/app_main_txt_color"
+                        android:text=""
+                        android:textSize="15sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/app_main_divideline" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/app_minor_color"
+                        android:text="年龄："
+                        android:textSize="15sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/act_transfer_patient_age"
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/app_main_txt_color"
+                        android:text=""
+                        android:textSize="15sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/app_main_divideline" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/app_minor_color"
+                        android:text="诊断："
+                        android:textSize="15sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="wrap_content" />
+
+                    <custom.frame.widgets.FilterEmojiEditText
+                        android:id="@+id/act_transfer_patient_intro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginTop="10dp"
+                        android:paddingBottom="12dp"
+                        android:background="@null"
+                        android:minHeight="45dp"
+                        android:maxLength="100"
+                        android:hint="请输入诊断内容"
+                        android:textColorHint="@color/app_hint_color"
+                        android:textColor="@color/app_main_txt_color"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/app_minor_bg"
+                android:layout_height="10dp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
+                android:orientation="vertical"
+                android:background="@color/app_white_color"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/act_transfer_patient_transfer_txt"
+                    android:layout_width="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="@color/_000000"
+                    android:text="转诊给"
+                    android:gravity="center_vertical"
+                    android:layout_height="44dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/app_main_divideline" />
+
+                <LinearLayout
+                    android:id="@+id/act_transfer_patient_doc_layout"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_height="44dp">
+
+                    <TextView
+                        android:id="@+id/act_transfer_patient_doc"
+                        android:layout_width="wrap_content"
+                        android:textSize="15sp"
+                        android:textColor="@color/app_minor_color"
+                        android:text="选择我的合作医生"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:layout_height="match_parent" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:src="@mipmap/icon_arrow_right"
+                        android:layout_alignParentRight="true"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/act_transfer_patient_doc_layout1"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:visibility="gone"
+                    android:layout_height="67dp">
+
+                    <com.hyphenate.easeui.widget.EaseImageView
+                        android:id="@+id/act_transfer_patient_doc_img"
+                        android:layout_width="53dp"
+                        android:layout_height="53dp"
+                        android:layout_gravity="center"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/icon_default_imgs_rect" />
+
+                    <TextView
+                        android:id="@+id/act_transfer_patient_doc_name"
+                        android:layout_width="wrap_content"
+                        android:textSize="14sp"
+                        android:layout_marginLeft="15dp"
+                        android:textColor="@color/app_minor_color"
+                        android:text="姓名"
+                        android:gravity="center_vertical"
+                        android:layout_height="match_parent" />
+
+                    <TextView
+                        android:id="@+id/act_transfer_patient_doc_hospital"
+                        android:layout_width="wrap_content"
+                        android:textSize="14sp"
+                        android:layout_marginLeft="15dp"
+                        android:textColor="@color/app_minor_color"
+                        android:text="医院"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:layout_height="match_parent" />
+
+                    <ImageView
+                        android:id="@+id/arrow"
+                        android:layout_width="wrap_content"
+                        android:src="@mipmap/icon_arrow_right"
+                        android:layout_alignParentRight="true"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/app_main_divideline" />
+
+                <LinearLayout
+                    android:id="@+id/act_transfer_patient_status_layout"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:visibility="gone"
+                    android:layout_height="33dp">
+
+                    <ImageView
+                        android:layout_width="13dp"
+                        android:src="@mipmap/icon_logo"
+                        android:layout_height="13dp" />
+
+                    <TextView
+                        android:id="@+id/act_transfer_patient_status"
+                        android:layout_width="wrap_content"
+                        android:textSize="11sp"
+                        android:textColor="@color/_000000"
+                        android:text="状态"
+                        android:layout_marginLeft="7dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:layout_height="match_parent" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/act_transfer_patient_next"
+                android:layout_width="100dp"
+                android:background="@drawable/corner_main_color_full_bg"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="35dp"
+                android:text="确定"
+                android:gravity="center"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/app_white_color"
+                android:textSize="16sp"
+                android:layout_height="33dp" />
+
+            <TextView
+                android:id="@+id/act_transfer_patient_transfer_next"
+                android:layout_width="100dp"
+                android:background="@drawable/corner_main_color_full_bg"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="35dp"
+                android:text="确定"
+                android:gravity="center"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/app_white_color"
+                android:textSize="16sp"
+                android:layout_height="33dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

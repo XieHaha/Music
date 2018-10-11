@@ -15,6 +15,7 @@ import org.litepal.crud.DataSupport;
 import java.util.List;
 
 import custom.frame.bean.BaseResponse;
+import custom.frame.bean.PatientBean;
 import custom.frame.bean.RegistrationTypeBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
@@ -26,6 +27,7 @@ import custom.frame.utils.ToastUtil;
 public class ServicePackageActivity extends BaseActivity
 {
     private List<RegistrationTypeBean> registrationTypeBeans;
+    private PatientBean patientBean;
     private String patientId;
     /**
      * 转诊患者
@@ -62,7 +64,9 @@ public class ServicePackageActivity extends BaseActivity
         registrationTypeBeans = DataSupport.findAll(RegistrationTypeBean.class, false);
         if (getIntent() != null)
         {
-            patientId = getIntent().getStringExtra(CommonData.KEY_PATIENT_ID);
+            patientBean = (PatientBean)getIntent().getSerializableExtra(
+                    CommonData.KEY_PATIENT_BEAN);
+            patientId = patientBean.getPatientId();
         }
     }
 
@@ -104,7 +108,10 @@ public class ServicePackageActivity extends BaseActivity
         switch (v.getId())
         {
             case R.id.act_service_package_change_layout:
-                intent = new Intent(this, CooperateDocActivity.class);
+                //                intent = new Intent(this, CooperateDocActivity.class);
+                intent = new Intent(this, TransferPatientActivity.class);
+                intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientBean);
+                intent.putExtra(CommonData.KEY_PUBLIC, true);
                 startActivityForResult(intent, CHANGE_PATIENT_REQUEST_CODE);
                 break;
             case R.id.act_service_package_prescription_layout:

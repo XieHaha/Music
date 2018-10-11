@@ -1,16 +1,15 @@
 package com.yht.yihuantong.ui.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.hyphenate.easeui.widget.EaseImageView;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.data.OnTransPatientListener;
 import com.yht.yihuantong.tools.GlideHelper;
 
 import java.util.List;
@@ -28,8 +27,7 @@ import custom.frame.ui.adapter.BaseViewHolder;
 public class TransPatientsListAdapter extends BaseRecyclerAdapter<TransPatientBean>
 {
     private Context context;
-    private OnTransPatientListener onTransPatientListener;
-    private boolean isShow;
+    private boolean isFrom;
 
     public TransPatientsListAdapter(Context context, List<TransPatientBean> list)
     {
@@ -45,14 +43,9 @@ public class TransPatientsListAdapter extends BaseRecyclerAdapter<TransPatientBe
         return new PatientsHolder(view);
     }
 
-    public void setOnTransPatientListener(OnTransPatientListener onTransPatientListener)
+    public void setFrom(boolean from)
     {
-        this.onTransPatientListener = onTransPatientListener;
-    }
-
-    public void setShow(boolean show)
-    {
-        isShow = show;
+        isFrom = from;
     }
 
     @Override
@@ -64,64 +57,52 @@ public class TransPatientsListAdapter extends BaseRecyclerAdapter<TransPatientBe
 
     public class PatientsHolder extends BaseViewHolder<TransPatientBean>
     {
-        private LinearLayout llLayout;
-        private ImageView ivDocHeadImg, ivPatHeadImg;
-        private TextView tvDocName, tvDocHospital, tvPatName, tvRefuse, tvAgree;
+        private EaseImageView ivPatHeadImg;
+        private TextView tvDocName, tvDocHospital, tvPatName, tvStatus;
 
         public PatientsHolder(View itemView)
         {
             super(itemView);
-            llLayout = itemView.findViewById(R.id.item_patient_list_layout);
-            llLayout.setVisibility(View.VISIBLE);
-            ivDocHeadImg = itemView.findViewById(R.id.item_trans_patient_list_doctor_img);
             ivPatHeadImg = itemView.findViewById(R.id.item_trans_patient_list_patient_img);
-            tvDocName = itemView.findViewById(R.id.item_trans_patient_list_doctor_name);
-            tvDocHospital = itemView.findViewById(R.id.item_trans_patient_list_doctor_hospital);
+            tvStatus = itemView.findViewById(R.id.item_trans_patient_list_status);
             tvPatName = itemView.findViewById(R.id.item_trans_patient_list_patient_name);
-            tvRefuse = itemView.findViewById(R.id.item_patient_list_refuse);
-            tvAgree = itemView.findViewById(R.id.item_patient_list_agree);
+            tvDocName = itemView.findViewById(R.id.item_trans_patient_list_doctor_name);
+            tvDocHospital = itemView.findViewById(R.id.item_trans_patient_list_doctor_name);
+            ivPatHeadImg.setShapeType(2);
+            ivPatHeadImg.setRadius(10);
         }
 
         @Override
         public void showView(final int position, final TransPatientBean item)
         {
-            if (isShow)
-            {
-                llLayout.setVisibility(View.VISIBLE);
-            }
-            else
-            {
-                llLayout.setVisibility(View.GONE);
-            }
             Glide.with(context)
-                 .load(item.getPatientImgUrl())
+                 .load(item.getPatientImage())
                  .apply(GlideHelper.getOptionsRect())
                  .into(ivPatHeadImg);
             tvPatName.setText(item.getPatientName());
-            Glide.with(context)
-                 .load(item.getFromDoctorImgUrl())
-                 .apply(GlideHelper.getOptionsRect())
-                 .into(ivDocHeadImg);
-            tvDocName.setText(item.getFromDoctorName());
-            tvDocHospital.setText(item.getFromDoctorHospital());
-            tvAgree.setOnClickListener(v ->
-                                       {
-                                           if (onTransPatientListener != null)
-                                           {
-                                               onTransPatientListener.onPositiveTrigger(
-                                                       item.getFromDoctorId(), item.getPatientId(),
-                                                       2);
-                                           }
-                                       });
-            tvRefuse.setOnClickListener(v ->
-                                        {
-                                            if (onTransPatientListener != null)
-                                            {
-                                                onTransPatientListener.onNegativeTrigger(
-                                                        item.getFromDoctorId(), item.getPatientId(),
-                                                        2);
-                                            }
-                                        });
+            if (isFrom)
+            {
+                tvDocName.setText("来自：" + item.getFromDoctorName());
+            }
+            else
+            {
+                tvDocName.setText("转给：" + item.getToDoctorName());
+            }
+            switch (item.getAcceptState())
+            {
+                case 0:
+                    tvStatus.setText("(待确认)");
+                    tvStatus.setTextColor(ContextCompat.getColor(context, R.color._F16798));
+                    break;
+                case 1:
+                    tvStatus.setText("(未就诊)");
+                    tvStatus.setTextColor(ContextCompat.getColor(context, R.color._1F6BAC));
+                    break;
+                case 2:
+                    tvStatus.setText("(已就诊)");
+                    tvStatus.setTextColor(ContextCompat.getColor(context, R.color._000000));
+                    break;
+            }
         }
     }
 }

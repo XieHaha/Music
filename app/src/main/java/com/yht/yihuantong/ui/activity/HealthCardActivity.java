@@ -242,7 +242,7 @@ public class HealthCardActivity extends BaseActivity
                 }
                 intent = new Intent(this, ServicePackageActivity.class);
                 //                intent = new Intent(this, ServicePackActivity.class);
-                intent.putExtra(CommonData.KEY_PATIENT_ID, patientBean.getPatientId());
+                intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientBean);
                 intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "服务");
                 startActivityForResult(intent, SERVICE_REQUEST_CODE);
                 //                if (mPopupwinow != null)

@@ -112,14 +112,6 @@ public enum Tasks
      */
     AGREE_PATIENT_APPLY,
     /**
-     * 同意转诊患者申请
-     */
-    AGREE_TARNS_PATIENT_APPLY,
-    /**
-     * 拒绝转诊患者申请
-     */
-    REFUSE_TARNS_PATIENT_APPLY,
-    /**
      * 获取患者病例列表
      */
     GET_PATIENT_CASE_LIST,

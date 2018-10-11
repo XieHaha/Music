@@ -1,6 +1,5 @@
 package com.yht.yihuantong.ui.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.adapter.CooperateDocListAdapter;
-import com.yht.yihuantong.ui.dialog.SimpleDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,15 +29,15 @@ import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
  *
  * @author DUNDUN
  */
-public class CooperateDocActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener {
+public class CooperateDocActivity extends BaseActivity
+        implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener
+{
     private TextView tvHintTxt;
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
     private View footerView;
     private CooperateDocListAdapter cooperateDocListAdapter;
-
     private List<CooperateDocBean> cooperateDocBeanList = new ArrayList<>();
-
     /**
      * 当前页码
      */
@@ -50,7 +48,8 @@ public class CooperateDocActivity extends BaseActivity implements SwipeRefreshLa
     private static final int PAGE_SIZE = 20;
 
     @Override
-    public int getLayoutID() {
+    public int getLayoutID()
+    {
         return R.layout.act_cooperate_doc;
     }
 
@@ -61,20 +60,23 @@ public class CooperateDocActivity extends BaseActivity implements SwipeRefreshLa
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState) {
+    public void initView(@NonNull Bundle savedInstanceState)
+    {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("转诊医生");
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.act_cooperate_swipe_layout);
-        autoLoadRecyclerView = (AutoLoadRecyclerView) findViewById(R.id.act_cooperate_recycler_view);
-        footerView = LayoutInflater.from(this)
-                .inflate(R.layout.view_list_footerr, null);
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("转诊医生");
+        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.act_cooperate_swipe_layout);
+        autoLoadRecyclerView = (AutoLoadRecyclerView)findViewById(R.id.act_cooperate_recycler_view);
+        footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light, android.R.color.holo_orange_light, android.R.color.holo_green_light);
-
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
+                                                   android.R.color.holo_red_light,
+                                                   android.R.color.holo_orange_light,
+                                                   android.R.color.holo_green_light);
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState) {
+    public void initData(@NonNull Bundle savedInstanceState)
+    {
         super.initData(savedInstanceState);
         cooperateDocListAdapter = new CooperateDocListAdapter(this, cooperateDocBeanList);
         cooperateDocListAdapter.addFooterView(footerView);
@@ -83,63 +85,74 @@ public class CooperateDocActivity extends BaseActivity implements SwipeRefreshLa
     }
 
     @Override
-    public void initListener() {
+    public void initListener()
+    {
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
         autoLoadRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(cooperateDocListAdapter);
-        cooperateDocListAdapter.setOnItemClickListener(
-                (v, position, item) -> new SimpleDialog(CooperateDocActivity.this, "确定转诊给 " + item.getName() + " 医生吗？", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent();
-                        intent.putExtra(CommonData.KEY_DOCTOR_ID, item.getDoctorId());
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
-                }, (dialog, which) -> dialog.dismiss()).show());
+        cooperateDocListAdapter.setOnItemClickListener((v, position, item) ->
+                                                       {
+                                                           Intent intent = new Intent();
+                                                           intent.putExtra(
+                                                                   CommonData.KEY_DOCTOR_BEAN,
+                                                                   item);
+                                                           setResult(RESULT_OK, intent);
+                                                           finish();
+                                                       });
     }
 
     /**
      * 获取合作医生列表数据
      */
-    private void getCooperateList() {
+    private void getCooperateList()
+    {
         mIRequest.getCooperateList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
     }
 
     @Override
-    public void onRefresh() {
+    public void onRefresh()
+    {
         page = 0;
         getCooperateList();
     }
 
     @Override
-    public void loadMore() {
+    public void loadMore()
+    {
         swipeRefreshLayout.setRefreshing(true);
         page++;
         getCooperateList();
     }
 
     @Override
-    public void onResponseSuccess(Tasks task, BaseResponse response) {
+    public void onResponseSuccess(Tasks task, BaseResponse response)
+    {
         super.onResponseSuccess(task, response);
-        switch (task) {
+        switch (task)
+        {
             case GET_COOPERATE_DOC_LIST:
-                if (response.getData() != null) {
+                if (response.getData() != null)
+                {
                     cooperateDocBeanList = response.getData();
-                    if (page == 0) {
+                    if (page == 0)
+                    {
                         cooperateDocListAdapter.setList(cooperateDocBeanList);
-                    } else {
+                    }
+                    else
+                    {
                         cooperateDocListAdapter.addList(cooperateDocBeanList);
                     }
                     cooperateDocListAdapter.notifyDataSetChanged();
-
-                    if (cooperateDocBeanList.size() < PAGE_SIZE) {
+                    if (cooperateDocBeanList.size() < PAGE_SIZE)
+                    {
                         tvHintTxt.setText("暂无更多数据");
                         autoLoadRecyclerView.loadFinish(false);
-                    } else {
+                    }
+                    else
+                    {
                         tvHintTxt.setText("上拉加载更多");
                         autoLoadRecyclerView.loadFinish(true);
                     }
@@ -151,9 +164,11 @@ public class CooperateDocActivity extends BaseActivity implements SwipeRefreshLa
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response) {
+    public void onResponseCodeError(Tasks task, BaseResponse response)
+    {
         super.onResponseCodeError(task, response);
-        if (page > 0) {
+        if (page > 0)
+        {
             page--;
         }
         tvHintTxt.setText("暂无更多数据");
@@ -161,9 +176,11 @@ public class CooperateDocActivity extends BaseActivity implements SwipeRefreshLa
     }
 
     @Override
-    public void onResponseError(Tasks task, Exception e) {
+    public void onResponseError(Tasks task, Exception e)
+    {
         super.onResponseError(task, e);
-        if (page > 0) {
+        if (page > 0)
+        {
             page--;
         }
         tvHintTxt.setText("暂无更多数据");
@@ -171,7 +188,8 @@ public class CooperateDocActivity extends BaseActivity implements SwipeRefreshLa
     }
 
     @Override
-    public void onResponseEnd(Tasks task) {
+    public void onResponseEnd(Tasks task)
+    {
         super.onResponseEnd(task);
         swipeRefreshLayout.setRefreshing(false);
     }

@@ -43,6 +43,10 @@ public interface CommonData
      */
     String KEY_DOCTOR_BEAN = "key_doctor_bean";
     /**
+     * transfer bean
+     */
+    String KEY_TRANSFER_BEAN = "key_transfer_bean";
+    /**
      * patient case detail bean
      */
     String PATIENT_CASE_DETAIL_BEAN = "Patient_Case_Detail_Bean";
@@ -82,22 +86,6 @@ public interface CommonData
      * 我的转诊申请数量
      */
     String KEY_CHANGE_PATIENT_NUM = "key_change_patient_num";
-    /**
-     * 开处方
-     */
-    int TYPE_PRESCRIPTION = 1;
-    /**
-     * 开检查
-     */
-    int TYPE_CHECK = 2;
-    /**
-     * 开体检
-     */
-    int TYPE_HEALTH_CHECK = 3;
-    /**
-     * 开化验
-     */
-    int TYPE_CHEMICAL = 4;
     /**
      * 极光-合作医生申请码
      */

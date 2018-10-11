@@ -326,6 +326,67 @@
                     android:layout_height="10dp"
                     android:background="@color/app_minor_bg" />
 
+                <RelativeLayout
+                    android:id="@+id/fragmrnt_user_transfer_to_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:text="我转出的患者"
+                        android:textColor="#999999"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:src="@mipmap/icon_arrow_right"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:visibility="visible"
+                        android:layout_alignParentRight="true"
+                        android:layout_height="match_parent" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/app_main_divideline" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/fragmrnt_user_transfer_from_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:text="转给我的患者"
+                        android:textColor="#999999"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:src="@mipmap/icon_arrow_right"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:visibility="visible"
+                        android:layout_alignParentRight="true"
+                        android:layout_height="match_parent" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/app_main_divideline" />
+
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/fragmrnt_user_doctors_layout"

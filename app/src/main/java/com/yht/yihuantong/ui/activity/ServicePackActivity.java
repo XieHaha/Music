@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
@@ -449,45 +448,4 @@ public class ServicePackActivity<T> extends BaseActivity
         }
         return true;
     }
-
-    /**
-     * 把json转换成基础响应对象类
-     *
-     * @param jsonObject jsonobject对象
-     * @param classOfT   待转换的实体类,为空则data为空
-     */
-    public final BaseResponse praseBaseResponse(JSONObject jsonObject, Class<String> classOfT)
-            throws JSONException
-    {
-        Object data = null;
-        if (classOfT != null)
-        {
-            if (classOfT == String.class)
-            {
-                data = jsonObject.optString(EntityData);
-            }
-            else
-            {
-                if (jsonObject.opt(EntityData) != null)
-                {
-                    try
-                    {
-                        data = JSON.parseObject(jsonObject.optString(EntityData), classOfT);
-                    }
-                    catch (Exception e)
-                    {
-                    }
-                }
-            }
-        }
-        BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(EntityCode))
-                                                      .setMsg(jsonObject.optString(EntityMsg))
-                                                      .setData(data);
-        return baseResponse;
-    }
-
-    //=============================================请求辅助方法==============================
-    public String EntityData = "data";
-    public String EntityCode = "code";
-    public String EntityMsg = "msg";
 }

@@ -1,4 +1,4 @@
-package com.yht.yihuantong.ui.fragment;
+package com.yht.yihuantong.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.ui.activity.PatientApplyActivity;
+import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.adapter.TransPatientsListAdapter;
 
 import java.util.ArrayList;
@@ -21,22 +21,22 @@ import java.util.List;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.TransPatientBean;
 import custom.frame.http.Tasks;
-import custom.frame.ui.fragment.BaseFragment;
+import custom.frame.ui.activity.BaseActivity;
+import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
- * 病人转诊
- * 我转出去
- *
- * @author DUNDUN
+ * Created by dundun on 18/10/11.
+ * 我转给合作医生的
  */
-public class ChangePatientToFragment extends BaseFragment
-        implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener
+public class TransferPatientToActivity extends BaseActivity
+        implements LoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
+                   BaseRecyclerAdapter.OnItemClickListener<TransPatientBean>
 {
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
-    private TransPatientsListAdapter patientsListAdapter;
+    private TransPatientsListAdapter transPatientsListAdapter;
     private ImageView ivTitleBarMore;
     private View footerView;
     private TextView tvFooterHintTxt;
@@ -51,9 +51,15 @@ public class ChangePatientToFragment extends BaseFragment
     private static final int PAGE_SIZE = 20;
 
     @Override
+    protected boolean isInitBackBtn()
+    {
+        return true;
+    }
+
+    @Override
     public int getLayoutID()
     {
-        return R.layout.fragment_change;
+        return R.layout.act_transfer_patient_list;
     }
 
     @Override
@@ -65,12 +71,13 @@ public class ChangePatientToFragment extends BaseFragment
     }
 
     @Override
-    public void initView(@NonNull View view, @NonNull Bundle savedInstanceState)
+    public void initView(@NonNull Bundle savedInstanceState)
     {
-        super.initView(view, savedInstanceState);
-        swipeRefreshLayout = view.findViewById(R.id.fragment_patients_swipe_layout);
-        autoLoadRecyclerView = view.findViewById(R.id.fragment_patients_recycler_view);
-        footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_list_footerr, null);
+        super.initView(savedInstanceState);
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("我转出的患者");
+        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.act_patients_swipe_layout);
+        autoLoadRecyclerView = (AutoLoadRecyclerView)findViewById(R.id.act_patients_recycler_view);
+        footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
         tvFooterHintTxt = footerView.findViewById(R.id.footer_hint_txt);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
                                                    android.R.color.holo_red_light,
@@ -79,28 +86,23 @@ public class ChangePatientToFragment extends BaseFragment
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState)
-    {
-        super.initData(savedInstanceState);
-    }
-
-    @Override
     public void initListener()
     {
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
         autoLoadRecyclerView.setLayoutManager(
-                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        patientsListAdapter = new TransPatientsListAdapter(getContext(), new ArrayList<>());
-        patientsListAdapter.setShow(false);
-        patientsListAdapter.addFooterView(footerView);
-        autoLoadRecyclerView.setAdapter(patientsListAdapter);
+        transPatientsListAdapter = new TransPatientsListAdapter(this, new ArrayList<>());
+        transPatientsListAdapter.setFrom(false);
+        transPatientsListAdapter.addFooterView(footerView);
+        autoLoadRecyclerView.setAdapter(transPatientsListAdapter);
+        transPatientsListAdapter.setOnItemClickListener(this);
     }
 
     private void getPatientToList()
     {
-        mIRequest.getPatientToList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
+        mIRequest.getTransferPatientToList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
     }
 
     @Override
@@ -110,12 +112,21 @@ public class ChangePatientToFragment extends BaseFragment
         switch (v.getId())
         {
             case R.id.fragment_cooperate_apply_layout:
-                Intent intent = new Intent(getContext(), PatientApplyActivity.class);
+                Intent intent = new Intent(this, PatientApplyActivity.class);
                 startActivity(intent);
                 break;
         }
     }
 
+    @Override
+    public void onItemClick(View v, int position, TransPatientBean item)
+    {
+        Intent intent = new Intent(this, TransferPatientActivity.class);
+        intent.putExtra(CommonData.KEY_PUBLIC, false);
+        intent.putExtra("isFrom", false);
+        intent.putExtra(CommonData.KEY_TRANSFER_BEAN, item);
+        startActivity(intent);
+    }
 
     @Override
     public void onRefresh()
@@ -141,13 +152,13 @@ public class ChangePatientToFragment extends BaseFragment
                 patientBeanList = response.getData();
                 if (page == 0)
                 {
-                    patientsListAdapter.setList(patientBeanList);
+                    transPatientsListAdapter.setList(patientBeanList);
                 }
                 else
                 {
-                    patientsListAdapter.addList(patientBeanList);
+                    transPatientsListAdapter.addList(patientBeanList);
                 }
-                patientsListAdapter.notifyDataSetChanged();
+                transPatientsListAdapter.notifyDataSetChanged();
                 if (patientBeanList.size() < PAGE_SIZE)
                 {
                     tvFooterHintTxt.setText("暂无更多数据");
