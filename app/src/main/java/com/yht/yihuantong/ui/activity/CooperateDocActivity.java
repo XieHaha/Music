@@ -63,7 +63,7 @@ public class CooperateDocActivity extends BaseActivity
     public void initView(@NonNull Bundle savedInstanceState)
     {
         super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("转诊医生");
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("合作医生");
         swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.act_cooperate_swipe_layout);
         autoLoadRecyclerView = (AutoLoadRecyclerView)findViewById(R.id.act_cooperate_recycler_view);
         footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);

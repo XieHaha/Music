@@ -388,7 +388,7 @@ public class DiskBasedCache implements Cache {
         private CacheHeader(String key, String etag, long serverDate, long lastModified, long ttl,
                            long softTtl, List<Header> allResponseHeaders) {
             this.key = key;
-            this.etag = ("".equals(etag)) ? null : etag;
+            this.etag = "".equals(etag) ? null : etag;
             this.serverDate = serverDate;
             this.lastModified = lastModified;
             this.ttl = ttl;

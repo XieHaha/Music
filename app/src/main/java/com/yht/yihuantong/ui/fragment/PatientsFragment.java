@@ -45,7 +45,6 @@ import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
-
 /**
  * 患者列表
  *
@@ -412,22 +411,23 @@ public class PatientsFragment extends BaseFragment
                 }
                 break;
             case GET_PATIENTS_FROM_LIST://转诊申请
-                ArrayList<TransPatientBean> transPatientBeans = response.getData();
-                if (transPatientBeans.size() > 0)
-                {
-                    rlMsgHint2.setVisibility(View.VISIBLE);
-                    tvExNum.setText(String.valueOf(transPatientBeans.size()));
-                }
-                else
-                {
-                    rlMsgHint2.setVisibility(View.GONE);
-                }
-                sharePreferenceUtil.putString(CommonData.KEY_CHANGE_PATIENT_NUM,
-                                              String.valueOf(transPatientBeans.size()));
-                if (onApplyCallbackListener != null)
-                {
-                    onApplyCallbackListener.onApplyCallback();
-                }
+                //2018年10月15日11:20:45 暂时不显示转诊提醒
+                //                ArrayList<TransPatientBean> transPatientBeans = response.getData();
+                //                if (transPatientBeans.size() > 0)
+                //                {
+                //                    rlMsgHint2.setVisibility(View.VISIBLE);
+                //                    tvExNum.setText(String.valueOf(transPatientBeans.size()));
+                //                }
+                //                else
+                //                {
+                //                    rlMsgHint2.setVisibility(View.GONE);
+                //                }
+                //                sharePreferenceUtil.putString(CommonData.KEY_CHANGE_PATIENT_NUM,
+                //                                              String.valueOf(transPatientBeans.size()));
+                //                if (onApplyCallbackListener != null)
+                //                {
+                //                    onApplyCallbackListener.onApplyCallback();
+                //                }
                 break;
         }
     }

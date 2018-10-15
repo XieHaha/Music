@@ -167,6 +167,7 @@ public class TransferPatientActivity extends BaseActivity
             tvName.setText(patientBean.getName());
             tvSex.setText(patientBean.getSex());
             tvAge.setText(AllUtils.formatDateByAge(patientBean.getBirthDate()));
+            tvTransferNext.setVisibility(View.GONE);
         }
         else//已有转诊单
         {
@@ -370,6 +371,7 @@ public class TransferPatientActivity extends BaseActivity
                         {
                             tvTransferNext.setText("确认就诊");
                             tvTransferStatus.setText("已接受-待就诊");
+                            orderState = 2;
                         }
                         else
                         {
