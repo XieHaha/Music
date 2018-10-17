@@ -51,6 +51,19 @@
     <string name="txt_registration_price_hint">%s价格：</string>
     <string name="txt_registration_content_hint">%s内容：</string>
 
+    <!--转诊业务-->
+    <string name="txt_transfer_patient_to_doc">已发送给&#160;%s&#160;医生，请等待回复</string>
+    <string name="txt_transfer_patient_to_issure_doc">确定转诊给&#160;%s&#160;医生吗</string>
+    <string name="txt_transfer_patient_to_isrecv_doc">确定接受&#160;%s&#160;医生的转诊吗</string>
+    <string name="txt_transfer_patient_to_isvisit">确定&#160;%s&#160;已就诊</string>
+    <string name="txt_transfer_patient_to_input_diagnosisinfo">请输入诊断内容</string>
+    <string name="txt_transfer_patient_to_comfirm">待确认</string>
+    <string name="txt_transfer_patient_to_recved">接收转诊</string>
+    <string name="txt_transfer_patient_to_visit">确认就诊</string>
+    <string name="txt_transfer_patient_to_wait_visit">已接受-待就诊</string>
+    <string name="txt_transfer_patient_to_complete_visit">已接受-已就诊</string>
+    <string name="txt_transfer_patient_to_select_doc">请选择合作医生</string>
+
     <!--Toast-->
     <string name="toast_save_image_failed">保存图片失败</string>
     <string name="toast_save_image_success">保存图片成功</string>

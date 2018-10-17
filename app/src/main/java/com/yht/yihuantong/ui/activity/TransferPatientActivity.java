@@ -51,6 +51,7 @@ public class TransferPatientActivity extends BaseActivity
     private TextView tvName, tvSex, tvAge, tvTransferDoc;
     private TextView tvDocName, tvDocHospital, tvNext, tvTransferNext;
     private TextView tvTransferStatus, tvTransferTxt;
+    private ImageView ivTransferStatu;
     private LinearLayout llTransferDocLayout, llTransferDocLayout1, llTransferStatusLayout;
     private PatientBean patientBean;
     private CooperateDocBean cooperateDocBean;
@@ -102,6 +103,7 @@ public class TransferPatientActivity extends BaseActivity
         tvTransferTxt = (TextView)findViewById(R.id.act_transfer_patient_transfer_txt);
         tvNext = (TextView)findViewById(R.id.act_transfer_patient_next);
         tvTransferNext = (TextView)findViewById(R.id.act_transfer_patient_transfer_next);
+        ivTransferStatu = (ImageView)findViewById(R.id.act_transfer_patient_status_icon);
         filterEmojiEditText = (FilterEmojiEditText)findViewById(R.id.act_transfer_patient_intro);
         llTransferDocLayout = (LinearLayout)findViewById(R.id.act_transfer_patient_doc_layout);
         llTransferDocLayout1 = (LinearLayout)findViewById(R.id.act_transfer_patient_doc_layout1);
@@ -202,20 +204,23 @@ public class TransferPatientActivity extends BaseActivity
                     switch (transPatientBean.getAcceptState())
                     {
                         case 0:
-                            tvTransferStatus.setText("未接受");
+                            tvTransferStatus.setText(getString(R.string.txt_transfer_patient_to_comfirm));
                             tvTransferNext.setVisibility(View.VISIBLE);
-                            tvTransferNext.setText("接受转诊");
+                            tvTransferNext.setText(getString(R.string.txt_transfer_patient_to_recved));
+                            ivTransferStatu.setSelected(false);
                             orderState = 1;
                             break;
                         case 1:
-                            tvTransferStatus.setText("已接受-未就诊");
+                            tvTransferStatus.setText(getString(R.string.txt_transfer_patient_to_wait_visit));
                             tvTransferNext.setVisibility(View.VISIBLE);
-                            tvTransferNext.setText("确认就诊");
+                            tvTransferNext.setText(getString(R.string.txt_transfer_patient_to_visit));
+                            ivTransferStatu.setSelected(false);
                             orderState = 2;
                             break;
                         case 2:
-                            tvTransferStatus.setText("已接受-已就诊");
+                            tvTransferStatus.setText( getString(R.string.txt_transfer_patient_to_complete_visit));
                             tvTransferNext.setVisibility(View.GONE);
+                            ivTransferStatu.setSelected(true);
                             break;
                     }
                 }
@@ -234,13 +239,19 @@ public class TransferPatientActivity extends BaseActivity
                     switch (transPatientBean.getAcceptState())
                     {
                         case 0:
-                            tvTransferStatus.setText("待确认");
+                            tvTransferStatus.setText(
+                                    getString(R.string.txt_transfer_patient_to_comfirm));
+                            ivTransferStatu.setSelected(false);
                             break;
                         case 1:
-                            tvTransferStatus.setText("已确认-未就诊");
+                            tvTransferStatus.setText(
+                                    getString(R.string.txt_transfer_patient_to_wait_visit));
+                            ivTransferStatu.setSelected(false);
                             break;
                         case 2:
-                            tvTransferStatus.setText("已接受-已就诊");
+                            tvTransferStatus.setText(
+                                    getString(R.string.txt_transfer_patient_to_complete_visit));
+                            ivTransferStatu.setSelected(true);
                             break;
                     }
                 }
@@ -251,14 +262,8 @@ public class TransferPatientActivity extends BaseActivity
     /**
      * 医生转诊患者  新接口2018年10月11日10:45:48
      */
-    private void addTransferPatient()
+    private void addTransferPatient(String diagnosisInfo)
     {
-        String diagnosisInfo = filterEmojiEditText.getText().toString().trim();
-        if (TextUtils.isEmpty(diagnosisInfo))
-        {
-            ToastUtil.toast(this, "请输入诊断内容");
-            return;
-        }
         RequestQueue queue = NoHttp.getRequestQueueInstance();
         final Request<String> request = NoHttp.createStringRequest(
                 HttpConstants.BASE_BASIC_URL + "/trans/doctor/add/notes", RequestMethod.POST);
@@ -303,7 +308,9 @@ public class TransferPatientActivity extends BaseActivity
                     {
                         HintDialog hintDialog = new HintDialog(TransferPatientActivity.this);
                         hintDialog.isShowCancelBtn(false);
-                        hintDialog.setContentString("已发送给患者，请等待患者答复");
+                        hintDialog.setContentString(
+                                String.format(getString(R.string.txt_transfer_patient_to_doc),
+                                              cooperateDocBean.getName()));
                         hintDialog.setOnEnterClickListener(() -> finish());
                         hintDialog.show();
                     }
@@ -369,14 +376,18 @@ public class TransferPatientActivity extends BaseActivity
                         ToastUtil.toast(TransferPatientActivity.this, baseResponse.getMsg());
                         if (orderState == 1)
                         {
-                            tvTransferNext.setText("确认就诊");
-                            tvTransferStatus.setText("已接受-待就诊");
+                            tvTransferNext.setText(
+                                    getString(R.string.txt_transfer_patient_to_visit));
+                            tvTransferStatus.setText(
+                                    getString(R.string.txt_transfer_patient_to_wait_visit));
                             orderState = 2;
                         }
                         else
                         {
                             tvTransferNext.setVisibility(View.GONE);
-                            tvTransferStatus.setText("已接受-已就诊");
+                            tvTransferStatus.setText(
+                                    getString(R.string.txt_transfer_patient_to_complete_visit));
+                            ivTransferStatu.setSelected(true);
                         }
                     }
                     else
@@ -418,26 +429,35 @@ public class TransferPatientActivity extends BaseActivity
             case R.id.act_transfer_patient_next:
                 if (cooperateDocBean == null)
                 {
-                    ToastUtil.toast(this, "请选择合作医生");
+                    ToastUtil.toast(this, R.string.txt_transfer_patient_to_select_doc);
                     return;
                 }
-                new SimpleDialog(TransferPatientActivity.this,
-                                 "确定转诊给 " + cooperateDocBean.getName() + " 医生吗？",
-                                 (dialog, which) -> addTransferPatient(),
+                String diagnosisInfo = filterEmojiEditText.getText().toString().trim();
+                if (TextUtils.isEmpty(diagnosisInfo))
+                {
+                    ToastUtil.toast(this, R.string.txt_transfer_patient_to_input_diagnosisinfo);
+                    return;
+                }
+                new SimpleDialog(TransferPatientActivity.this, String.format(
+                        getString(R.string.txt_transfer_patient_to_issure_doc),
+                        cooperateDocBean.getName()),
+                                 (dialog, which) -> addTransferPatient(diagnosisInfo),
                                  (dialog, which) -> dialog.dismiss()).show();
                 break;
             case R.id.act_transfer_patient_transfer_next:
                 switch (orderState)
                 {
                     case 1://接受转诊
-                        new SimpleDialog(TransferPatientActivity.this,
-                                         "确定接受 " + transPatientBean.getFromDoctorName() +
-                                         " 医生的转诊吗？", (dialog, which) -> updateTransferPatient(),
+                        new SimpleDialog(TransferPatientActivity.this, String.format(
+                                getString(R.string.txt_transfer_patient_to_isrecv_doc),
+                                transPatientBean.getFromDoctorName()),
+                                         (dialog, which) -> updateTransferPatient(),
                                          (dialog, which) -> dialog.dismiss()).show();
                         break;
                     case 2://确认患者就诊
-                        new SimpleDialog(TransferPatientActivity.this,
-                                         "确定患者 " + transPatientBean.getPatientName() + " 已就诊？",
+                        new SimpleDialog(TransferPatientActivity.this, String.format(
+                                getString(R.string.txt_transfer_patient_to_isvisit),
+                                transPatientBean.getPatientName()),
                                          (dialog, which) -> updateTransferPatient(),
                                          (dialog, which) -> dialog.dismiss()).show();
                         break;

@@ -2,64 +2,77 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="67dp"
-    android:paddingLeft="13dp"
-    android:paddingRight="13dp"
+
     android:background="@color/app_white_color">
 
-    <com.hyphenate.easeui.widget.EaseImageView
-        android:id="@+id/item_trans_patient_list_patient_img"
-        android:layout_width="53dp"
-        android:layout_height="53dp"
-        android:layout_centerVertical="true"
-        android:src="@mipmap/icon_default_imgs_rect" />
-
-    <TextView
-        android:id="@+id/item_trans_patient_list_patient_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="82dp"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@id/headimg_layout"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:text="姓名"
-        android:textColor="#ff000000"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/item_trans_patient_list_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="13dp"
-        android:layout_toRightOf="@id/item_trans_patient_list_patient_name"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:text=""
-        android:textColor="#ff000000"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/item_trans_patient_list_doctor_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:text="sssss"
-        android:layout_marginLeft="82dp"
-        android:layout_toRightOf="@id/headimg_layout"
-        android:layout_below="@id/item_trans_patient_list_patient_name"
-        android:layout_marginTop="10dp"
-        android:textColor="#ff000000"
-        android:textSize="13sp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:paddingLeft="13dp"
+        android:paddingRight="13dp"
+        android:layout_height="match_parent">
 
 
-    <ImageView
-        android:layout_width="8dp"
-        android:src="@mipmap/icon_arrow_right"
-        android:layout_centerVertical="true"
-        android:visibility="visible"
-        android:layout_alignParentRight="true"
-        android:layout_height="15dp" />
+        <com.hyphenate.easeui.widget.EaseImageView
+            android:id="@+id/item_trans_patient_list_patient_img"
+            android:layout_width="53dp"
+            android:layout_height="53dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_default_imgs_rect" />
+
+        <TextView
+            android:id="@+id/item_trans_patient_list_patient_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="82dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/headimg_layout"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="姓名"
+            android:textColor="#ff000000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/item_trans_patient_list_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="13dp"
+            android:layout_toRightOf="@id/item_trans_patient_list_patient_name"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text=""
+            android:textColor="#ff000000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/item_trans_patient_list_doctor_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="sssss"
+            android:layout_marginLeft="82dp"
+            android:layout_toRightOf="@id/headimg_layout"
+            android:layout_below="@id/item_trans_patient_list_patient_name"
+            android:layout_marginTop="10dp"
+            android:textColor="#ff000000"
+            android:textSize="13sp" />
+
+
+        <ImageView
+            android:layout_width="8dp"
+            android:src="@mipmap/icon_arrow_right"
+            android:layout_centerVertical="true"
+            android:visibility="visible"
+            android:layout_alignParentRight="true"
+            android:layout_height="15dp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/app_main_divideline"
+        android:layout_alignParentBottom="true"
+        android:layout_height="1px" />
 
 </RelativeLayout>

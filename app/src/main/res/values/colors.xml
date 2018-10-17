@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#E73278</color>
-    <color name="colorPrimaryDark">#E73278</color>
-    <color name="colorAccent">#E73278</color>
+    <color name="colorPrimary">#F95790</color>
+    <color name="colorPrimaryDark">#F95790</color>
+    <color name="colorAccent">#F95790</color>
     <!-- app 标准色值-->
     <color name="app_translucent">#ffffffff</color>
     <color name="app_much_transparent">#10000000</color>
@@ -12,7 +12,7 @@
     <color name="app_half_more_translucent">#90000000</color>
 
     <!-- app主题色 (38,140,250)-->
-    <color name="app_main_color">#E73278</color>
+    <color name="app_main_color">#F95790</color>
     <!--app按钮按下-->
     <color name="app_main_color_press">#FF4099</color>
     <!-- 次要按钮文本色，入tab按钮颜色等 (102,102,102)-->

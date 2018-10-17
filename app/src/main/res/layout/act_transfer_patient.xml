@@ -277,8 +277,9 @@
                     android:layout_height="33dp">
 
                     <ImageView
+                        android:id="@+id/act_transfer_patient_status_icon"
                         android:layout_width="13dp"
-                        android:src="@mipmap/icon_logo"
+                        android:src="@drawable/transfer_patient_statu_selector"
                         android:layout_height="13dp" />
 
                     <TextView
