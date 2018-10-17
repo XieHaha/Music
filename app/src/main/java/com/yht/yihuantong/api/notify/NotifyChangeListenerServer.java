@@ -28,7 +28,7 @@ public class NotifyChangeListenerServer implements INotifyChangeListenerServer
     /**
      * 转诊申请
      */
-    private List<IChange<String>> mDoctorChangePatientListeners = new CopyOnWriteArrayList<>();
+    private List<IChange<String>> mDoctorTransferPatientListeners = new CopyOnWriteArrayList<>();
 
     private NotifyChangeListenerServer()
     {
@@ -80,17 +80,17 @@ public class NotifyChangeListenerServer implements INotifyChangeListenerServer
     }
 
     @Override
-    public void registerDoctorChangePatientListener(@NonNull IChange<String> listener,
+    public void registerDoctorTransferPatientListener(@NonNull IChange<String> listener,
             @NonNull RegisterType registerType)
     {
         if (listener == null) { return; }
         if (RegisterType.REGISTER == registerType)
         {
-            mDoctorChangePatientListeners.add(listener);
+            mDoctorTransferPatientListeners.add(listener);
         }
         else
         {
-            mDoctorChangePatientListeners.remove(listener);
+            mDoctorTransferPatientListeners.remove(listener);
         }
     }
 
@@ -168,15 +168,15 @@ public class NotifyChangeListenerServer implements INotifyChangeListenerServer
      *
      * @param data
      */
-    public void notifyDoctorChangePatient(final String data)
+    public void notifyDoctorTransferPatient(final String data)
     {
-        synchronized (mDoctorChangePatientListeners)
+        synchronized (mDoctorTransferPatientListeners)
         {
-            for (int i = 0, size = mDoctorChangePatientListeners.size(); i < size; i++)
+            for (int i = 0, size = mDoctorTransferPatientListeners.size(); i < size; i++)
             {
                 try
                 {
-                    final IChange<String> change = mDoctorChangePatientListeners.get(i);
+                    final IChange<String> change = mDoctorTransferPatientListeners.get(i);
                     if (null != change)
                     {
                         change.onChange(data);

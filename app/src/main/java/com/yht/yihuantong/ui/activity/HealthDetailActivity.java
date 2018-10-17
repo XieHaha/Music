@@ -459,7 +459,8 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                 if (mSelectPath.size() - 1 > currentUploadImgIndex)
                 {
                     currentUploadImgIndex++;
-                    showProgressDialog("正在上传第" + (currentUploadImgIndex + 1) + "张图片");
+                    showProgressDialog(String.format(getString(R.string.txt_upload_img_num),
+                                                     (currentUploadImgIndex + 1)));
                     uploadHeadImg(mSelectPath.get(currentUploadImgIndex));
                 }
                 else
@@ -473,18 +474,18 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                 allImgUrl.append(response.getData().toString());
                 break;
             case UPDATE_PATIENT_CASE:
-                ToastUtil.toast(this, "保存成功");
+                ToastUtil.toast(this, response.getMsg());
                 ivTitlebBarMore.setVisibility(View.VISIBLE);
                 tvTitleBarMore.setVisibility(View.GONE);
                 initWidght(false);
-                //                finish();
+                finish();
                 break;
             case ADD_PATIENT_CASE:
-                ToastUtil.toast(this, "保存成功");
+                ToastUtil.toast(this, response.getMsg());
                 ivTitlebBarMore.setVisibility(View.VISIBLE);
                 tvTitleBarMore.setVisibility(View.GONE);
                 initWidght(false);
-                //                finish();
+                finish();
                 break;
             default:
                 break;

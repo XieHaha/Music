@@ -42,7 +42,10 @@
     <string name="toast_upload_name_hint">请输入您的姓名</string>
     <string name="toast_upload_job_info_hint">个人职业信息不能为空</string>
     <string name="txt_user_info_num">%s个</string>
+    <string name="txt_upload_img_num">正在上传第%d张图片</string>
 
+    <!--相机-->
+    <string name="txt_camera_hint">将二维码放入框内，即可自动识别</string>
 
     <!--聊天界面-->
     <string name="txt_registration_type">开%s</string>

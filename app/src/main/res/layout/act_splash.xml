@@ -10,13 +10,13 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:fitsSystemWindows="true"
-        android:src="@mipmap/img_splash_bg"></ImageView>
+        android:src="@mipmap/img_splash"></ImageView>
 
     <LinearLayout
         android:id="@+id/act_splash_layout"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         android:gravity="center_horizontal"
         android:layout_height="match_parent">
 

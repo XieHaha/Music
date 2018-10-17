@@ -15,6 +15,7 @@ import com.yht.yihuantong.ui.activity.AuthDocActivity;
 import com.yht.yihuantong.ui.activity.MainActivity;
 import com.yht.yihuantong.ui.activity.PatientApplyActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientFromActivity;
+import com.yht.yihuantong.ui.activity.TransferPatientToActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -89,6 +90,42 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
         }
         catch (Exception e)
         {
+        }
+    }
+
+    /**
+     * 状态通知
+     *
+     * @param type
+     */
+    private void notifyStatusChange(int type)
+    {
+        switch (type)
+        {
+            case JIGUANG_CODE_COLLEBORATE_DOCTOR_REQUEST:
+            case JIGUANG_CODE_COLLEBORATE_ADD_SUCCESS:
+                NotifyChangeListenerServer.getInstance().notifyDoctorStatusChange("");
+                break;
+            case JIGUANG_CODE_DOCTOR_DP_ADD_SUCCESS:
+                NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("add");
+                break;
+            case JIGUANG_CODE_DOCTOR_DP_ADD_REQUEST:
+                NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("");
+                break;
+            case JIGUANG_CODE_PATIENT_DP_ADD_SUCCESS:
+            case JIGUANG_CODE_PATIENT_DP_ADD_REQUEST:
+                NotifyChangeListenerServer.getInstance().notifyDoctorStatusChange("");
+                break;
+            case JIGUANG_CODE_DOCTOR_INFO_CHECK_SUCCESS:
+            case JIGUANG_CODE_DOCTOR_INFO_CHECK_FAILED:
+                NotifyChangeListenerServer.getInstance().notifyDoctorAuthStatus(type);
+                break;
+            case JIGUANG_CODE_TRANS_PATIENT_SUCCESS://我的转诊成功
+                NotifyChangeListenerServer.getInstance().notifyDoctorTransferPatient("to");
+                break;
+            case JIGUANG_CODE_TRANS_PATIENT_APPLY://合作医生的转诊申请
+                NotifyChangeListenerServer.getInstance().notifyDoctorTransferPatient("from");
+                break;
         }
     }
 
@@ -179,44 +216,22 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
                 mainIntent.putExtra(CommonData.KEY_PUBLIC, 3);
                 context.startActivity(mainIntent);
                 break;
-            case JIGUANG_TRANS_PATIENT:
+            case JIGUANG_CODE_TRANS_PATIENT_SUCCESS://合作医生接受转诊
+            case JIGUANG_CODE_TRANS_PATIENT_VISIT_SUCCESS://合作医生接收转诊的患者已就诊
                 mainIntent = new Intent(context, MainActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mainIntent.putExtra(CommonData.KEY_PUBLIC, 2);
-                baseIntent = new Intent(context, TransferPatientFromActivity.class);
+                mainIntent.putExtra(CommonData.KEY_PUBLIC, 3);
+                baseIntent = new Intent(context, TransferPatientToActivity.class);
                 intents = new Intent[] { mainIntent, baseIntent };
                 context.startActivities(intents);
                 break;
-        }
-    }
-
-    /**
-     * 状态通知
-     *
-     * @param type
-     */
-    private void notifyStatusChange(int type)
-    {
-        switch (type)
-        {
-            case JIGUANG_CODE_COLLEBORATE_DOCTOR_REQUEST:
-            case JIGUANG_CODE_COLLEBORATE_ADD_SUCCESS:
-                NotifyChangeListenerServer.getInstance().notifyDoctorStatusChange("");
-                break;
-            case JIGUANG_CODE_DOCTOR_DP_ADD_SUCCESS:
-            case JIGUANG_CODE_DOCTOR_DP_ADD_REQUEST:
-                NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("");
-                break;
-            case JIGUANG_CODE_PATIENT_DP_ADD_SUCCESS:
-            case JIGUANG_CODE_PATIENT_DP_ADD_REQUEST:
-                NotifyChangeListenerServer.getInstance().notifyDoctorStatusChange("");
-                break;
-            case JIGUANG_CODE_DOCTOR_INFO_CHECK_SUCCESS:
-            case JIGUANG_CODE_DOCTOR_INFO_CHECK_FAILED:
-                NotifyChangeListenerServer.getInstance().notifyDoctorAuthStatus(type);
-                break;
-            case JIGUANG_TRANS_PATIENT://转诊申请
-                NotifyChangeListenerServer.getInstance().notifyDoctorChangePatient("");
+            case JIGUANG_CODE_TRANS_PATIENT_APPLY:
+                mainIntent = new Intent(context, MainActivity.class);
+                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mainIntent.putExtra(CommonData.KEY_PUBLIC, 3);
+                baseIntent = new Intent(context, TransferPatientFromActivity.class);
+                intents = new Intent[] { mainIntent, baseIntent };
+                context.startActivities(intents);
                 break;
         }
     }

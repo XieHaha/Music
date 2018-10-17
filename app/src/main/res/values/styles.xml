@@ -42,8 +42,8 @@
 
     <style name="AppFullScreenTheme" parent="BaseAppTheme">
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowBackground">@mipmap/img_splash_bg</item>
+        <!--<item name="android:windowFullscreen">true</item>-->
+        <item name="android:windowBackground">@mipmap/img_splash</item>
     </style>
 
     <style name="trans_dialog" parent="@android:style/Theme.Dialog">
@@ -92,6 +92,7 @@
         <item name="android:layout_height">@dimen/app_hei_line</item>
         <item name="android:background">@color/app_parting_minor_bg</item>
     </style>
+
     <style name="RippleBtnMaxCircleStyle">
         <item name="rv_centered">true</item>
         <item name="rv_holdBgInPressing">true</item>
@@ -137,8 +138,8 @@
 
     <!-- progress bar-->
     <declare-styleable name="CircularProgress">
-        <attr name="borderWidth" format="dimension"/>
-        <attr name="borderColor" format="color"/>
+        <attr name="borderWidth" format="dimension" />
+        <attr name="borderColor" format="color" />
     </declare-styleable>
 
 </resources>

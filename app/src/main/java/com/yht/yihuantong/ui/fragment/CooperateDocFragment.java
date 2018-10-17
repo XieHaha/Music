@@ -82,6 +82,7 @@ public class CooperateDocFragment extends BaseFragment
     private IChange<String> doctorStatusChangeListener = data ->
     {
         getCooperateList();
+        getApplyCooperateList();
     };
 
     @Override
@@ -210,7 +211,7 @@ public class CooperateDocFragment extends BaseFragment
             case R.id.public_title_bar_more_three:
                 IntentIntegrator.forSupportFragment(this)
                                 .setBarcodeImageEnabled(false)
-                                .setPrompt("将二维码放入框内，即可自动识别")
+                                .setPrompt(getString(R.string.txt_camera_hint))
                                 .initiateScan();
                 break;
         }

@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import custom.frame.ui.activity.BaseActivity;
 public class SplashActivity extends BaseActivity
 {
     private TextView tvStart;
+    private ImageView ivBg;
     private LinearLayout llSplashPage;
 
     @Override
@@ -35,16 +37,19 @@ public class SplashActivity extends BaseActivity
     {
         super.initView(savedInstanceState);
         hideBottomUIMenu();
+        ivBg = (ImageView)findViewById(R.id.iv_start);
         tvStart = (TextView)findViewById(R.id.act_splash_btn);
         tvStart.setOnClickListener(this);
         llSplashPage = (LinearLayout)findViewById(R.id.act_splash_layout);
         new Handler().postDelayed(() -> initPage(), 2000);
     }
 
+    /**
+     * 跳转登录界面
+     */
     private void startMainPage()
     {
         Intent intent = new Intent(this, LoginActivity.class);
-        //        Intent intent = new Intent(this, CompleteInfoActivity.class);
         startActivity(intent);
         finish();
         overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
@@ -71,7 +76,9 @@ public class SplashActivity extends BaseActivity
         }
         else
         {
+            ivBg.setImageResource(R.mipmap.img_splash_bg);
             tvStart.setVisibility(View.VISIBLE);
+            llSplashPage.setVisibility(View.VISIBLE);
         }
     }
 

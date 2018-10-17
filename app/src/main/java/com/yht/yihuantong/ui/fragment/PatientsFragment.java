@@ -38,7 +38,6 @@ import java.util.List;
 
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.PatientBean;
-import custom.frame.bean.TransPatientBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.fragment.BaseFragment;
 import custom.frame.utils.ToastUtil;
@@ -112,7 +111,7 @@ public class PatientsFragment extends BaseFragment
     /**
      * 推送回调监听  转诊申请
      */
-    private IChange<String> doctorChangepatientListener = data ->
+    private IChange<String> doctorTransferPatientListener = data ->
     {
         getPatientFromList();
     };
@@ -161,7 +160,8 @@ public class PatientsFragment extends BaseFragment
         patientsListAdapter = new PatientsListAdapter(getContext(), patientBeanList);
         patientsListAdapter.addFooterView(footerView);
         patientsListAdapter.addHeaderView(headerView);
-        patientsListAdapter.addHeaderView(exHeaderView);
+        //只显示在个人页面
+        //        patientsListAdapter.addHeaderView(exHeaderView);
         iNotifyChangeListenerServer = ApiManager.getInstance()
                                                 .getServer(INotifyChangeListenerServer.class);
         getPatientsData();
@@ -193,9 +193,10 @@ public class PatientsFragment extends BaseFragment
         //注册患者状态监听
         iNotifyChangeListenerServer.registerPatientStatusChangeListener(patientStatusChangeListener,
                                                                         RegisterType.REGISTER);
-        //注册转诊申请监听
-        iNotifyChangeListenerServer.registerDoctorChangePatientListener(doctorChangepatientListener,
-                                                                        RegisterType.REGISTER);
+        //        //注册转诊申请监听
+        //        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(
+        //                doctorTransferPatientListener,
+        //                RegisterType.REGISTER);
     }
 
     /**
@@ -216,10 +217,11 @@ public class PatientsFragment extends BaseFragment
 
     /**
      * 收到转诊申请
+     * 2018年10月17日11:55:41 不显示转诊申请
      */
     private void getPatientFromList()
     {
-        mIRequest.getTransferPatientFromList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
+        //        mIRequest.getTransferPatientFromList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
     }
 
     /**
@@ -482,8 +484,9 @@ public class PatientsFragment extends BaseFragment
         //注销患者状态监听
         iNotifyChangeListenerServer.registerPatientStatusChangeListener(patientStatusChangeListener,
                                                                         RegisterType.UNREGISTER);
-        //注销转诊申请监听
-        iNotifyChangeListenerServer.registerDoctorChangePatientListener(doctorChangepatientListener,
-                                                                        RegisterType.UNREGISTER);
+        //        //注销转诊申请监听
+        //        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(
+        //                doctorTransferPatientListener,
+        //                RegisterType.UNREGISTER);
     }
 }

@@ -46,22 +46,17 @@ import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.utils.AllUtils;
 import com.yht.yihuantong.utils.FileUtils;
 import com.yht.yihuantong.utils.LogUtils;
-import com.yht.yihuantong.version.presenter.VersionPresenter;
-import com.yht.yihuantong.version.view.VersionUpdateDialog;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
 
-import org.litepal.crud.DataSupport;
-
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import custom.frame.bean.BaseResponse;
-import custom.frame.bean.CooperateDocBean;
 import custom.frame.bean.LoginSuccessBean;
-import custom.frame.bean.PatientBean;
-import custom.frame.bean.Version;
+import custom.frame.bean.TransPatientBean;
 import custom.frame.http.Tasks;
 import custom.frame.permission.OnPermissionCallback;
 import custom.frame.permission.Permission;
@@ -91,6 +86,14 @@ public class UserFragment extends BaseFragment
     private INotifyChangeListenerServer iNotifyChangeListenerServer;
     private Uri originUri, cutFileUri;
     private File cameraTempFile;
+    /**
+     * 当前页码
+     */
+    private int page = 0;
+    /**
+     * 一页最大数
+     */
+    private static final int PAGE_SIZE = 500;
     /**
      * 权限管理类
      */
@@ -134,6 +137,19 @@ public class UserFragment extends BaseFragment
             }
         }
     };
+    /**
+     * 推送回调监听  转诊申请
+     */
+    private IChange<String> doctorTransferPatientListener = data ->
+    {
+        if ("from".equals(data))
+        {
+            //TODO 统计未查看转诊申请数量
+        }
+    };
+    /**
+     * 医生认证状态
+     */
     private IChange<Integer> doctorAuthStatusChangeListener = data ->
     {
         handler.sendEmptyMessage(data);
@@ -208,6 +224,9 @@ public class UserFragment extends BaseFragment
         //注册患者状态监听
         iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(
                 doctorAuthStatusChangeListener, RegisterType.REGISTER);
+        //注册转诊申请监听
+        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(
+                doctorTransferPatientListener, RegisterType.REGISTER);
     }
 
     /**
@@ -714,5 +733,20 @@ public class UserFragment extends BaseFragment
         //注册患者状态监听
         iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(
                 doctorAuthStatusChangeListener, RegisterType.UNREGISTER);
+        //注销转诊申请监听
+        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(
+                doctorTransferPatientListener, RegisterType.UNREGISTER);
+    }
+
+    private OnApplyCallbackListener onApplyCallbackListener;
+
+    public void setOnApplyCallbackListener(OnApplyCallbackListener onApplyCallbackListener)
+    {
+        this.onApplyCallbackListener = onApplyCallbackListener;
+    }
+
+    public interface OnApplyCallbackListener
+    {
+        void onApplyCallback();
     }
 }

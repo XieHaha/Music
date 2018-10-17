@@ -123,7 +123,15 @@ public interface CommonData
      */
     int JIGUANG_NEW_PRESCRIPTION = 109;
     /**
-     * 转诊通知
+     * 收到转诊通知 合作医生接受了我的转诊
      */
-    int JIGUANG_TRANS_PATIENT = 110;
+    int JIGUANG_CODE_TRANS_PATIENT_SUCCESS = 113;
+    /**
+     * 收到转诊通知 合作医生接受我转诊的患者已经就诊
+     */
+    int JIGUANG_CODE_TRANS_PATIENT_VISIT_SUCCESS = 123;
+    /**
+     * 收到转诊通知 合作医生转给我的
+     */
+    int JIGUANG_CODE_TRANS_PATIENT_APPLY = 133;
 }
