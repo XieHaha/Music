@@ -91,18 +91,18 @@ public enum Tasks
      * 删除患者（取消关注）
      */
     DELETE_PATIENT,
-    /**
-     * 获取患者手术信息
-     */
-    GET_PATIENT_SURGERY_INFO,
-    /**
-     * 获取患者诊断信息
-     */
-    GET_PATIENT_DIAGNOSIS_INFO,
-    /**
-     * 获取患者过敏信息
-     */
-    GET_PATIENT_ALLERGY_INFO,
+//    /**
+//     * 获取患者手术信息
+//     */
+//    GET_PATIENT_SURGERY_INFO,
+//    /**
+//     * 获取患者诊断信息
+//     */
+//    GET_PATIENT_DIAGNOSIS_INFO,
+//    /**
+//     * 获取患者过敏信息
+//     */
+//    GET_PATIENT_ALLERGY_INFO,
     /**
      * 拒绝患者申请
      */
@@ -167,5 +167,9 @@ public enum Tasks
      * 获取所有商品
      */
     GET_ALL_PRODUCT,
+    /**
+     * 获取患者综合病史
+     */
+    GET_PATIENT_COMBINE,
 }
 

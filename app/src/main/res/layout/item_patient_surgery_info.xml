@@ -25,4 +25,10 @@
         android:textColor="#999999"
         android:textSize="15sp" />
 
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/app_main_divideline"
+        android:layout_alignParentBottom="true"
+        android:layout_height="1px"/>
+
 </RelativeLayout>

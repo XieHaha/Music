@@ -147,11 +147,11 @@ public class EditRemarkActivity extends BaseActivity
             case R.id.act_edit_remark_save:
                 hideSoftInputFromWindow();
                 remark = etNickName.getText().toString().trim();
-                if (TextUtils.isEmpty(remark))
-                {
-                    ToastUtil.toast(this, "备注不能为空");
-                    return;
-                }
+                //                if (TextUtils.isEmpty(remark))
+                //                {
+                //                    ToastUtil.toast(this, "备注不能为空");
+                //                    return;
+                //                }
                 if (isDealDoctor)
                 {
                     modifyNickName();

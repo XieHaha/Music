@@ -22,6 +22,12 @@ import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.view.TimePickerView;
+import com.yanzhenjie.nohttp.NoHttp;
+import com.yanzhenjie.nohttp.RequestMethod;
+import com.yanzhenjie.nohttp.rest.OnResponseListener;
+import com.yanzhenjie.nohttp.rest.Request;
+import com.yanzhenjie.nohttp.rest.RequestQueue;
+import com.yanzhenjie.nohttp.rest.Response;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.dialog.ActionSheetDialog;
@@ -34,17 +40,24 @@ import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import custom.frame.bean.BaseResponse;
+import custom.frame.bean.CooperateDocBean;
 import custom.frame.bean.NormImage;
 import custom.frame.bean.PatientCaseDetailBean;
 import custom.frame.http.Tasks;
+import custom.frame.http.data.HttpConstants;
 import custom.frame.permission.Permission;
 import custom.frame.qiniu.QiniuUtils;
 import custom.frame.ui.activity.BaseActivity;
@@ -310,10 +323,76 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
      */
     private void addPatientCase()
     {
-        mIRequest.addPatientCase(patientId, loginSuccessBean.getDoctorId(),
-                                 loginSuccessBean.getDoctorId(), caseCheck, caseInfo, caseNow,
-                                 diagnosis, department, hospital, caseNow, allImgUrl.toString(),
-                                 caseDealType, diagnosisTimeMil + "", this);
+        //        mIRequest.addPatientCase(patientId, loginSuccessBean.getDoctorId(),
+        //                                 loginSuccessBean.getDoctorId(), caseCheck, caseInfo, caseNow,
+        //                                 diagnosis, department, hospital, caseNow, allImgUrl.toString(),
+        //                                 caseDealType, diagnosisTimeMil + "", this);
+        RequestQueue queue = NoHttp.getRequestQueueInstance();
+        final Request<String> request = NoHttp.createStringRequest(
+                HttpConstants.BASE_BASIC_URL + "/case/save", RequestMethod.POST);
+        Map<String, Object> params = new HashMap<>();
+        params.put("patientId", patientId);
+        params.put("caseCreatorId", patientId);
+        params.put("caseCreatorName", loginSuccessBean.getName());
+        params.put("caseLastUpdateId", patientId);
+        params.put("checkReport", caseCheck);
+        params.put("currentInfo", caseNow);
+        params.put("diagnosisInfo", diagnosis);
+        params.put("doctorDep", department);
+        params.put("hospital", hospital);
+        params.put("importantHistory", caseNow);
+        params.put("patientWords", caseInfo);
+        params.put("reportImgUrl", allImgUrl.toString());
+        params.put("treat", caseDealType);
+        params.put("visDate", diagnosisTimeMil + "");
+        JSONObject jsonObject = new JSONObject(params);
+        request.setDefineRequestBodyForJson(jsonObject.toString());
+        queue.add(1, request, new OnResponseListener<String>()
+        {
+            @Override
+            public void onStart(int what)
+            {
+            }
+
+            @Override
+            public void onSucceed(int what, Response<String> response)
+            {
+                String s = response.get();
+                try
+                {
+                    JSONObject object = new JSONObject(s);
+                    BaseResponse baseResponse = praseBaseResponse(object, CooperateDocBean.class);
+                    if (baseResponse != null && baseResponse.getCode() == 200)
+                    {
+                        ToastUtil.toast(HealthDetailActivity.this, baseResponse.getMsg());
+                        ivTitlebBarMore.setVisibility(View.VISIBLE);
+                        tvTitleBarMore.setVisibility(View.GONE);
+                        //                        initWidght(false);
+                        setResult(RESULT_OK);
+                        finish();
+                    }
+                    else
+                    {
+                        ToastUtil.toast(HealthDetailActivity.this, baseResponse.getMsg());
+                    }
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response)
+            {
+                ToastUtil.toast(HealthDetailActivity.this, response.getException().getMessage());
+            }
+
+            @Override
+            public void onFinish(int what)
+            {
+            }
+        });
     }
 
     /**
@@ -321,12 +400,81 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
      */
     private void updatePatientCase()
     {
-        mIRequest.updatePatientCase(patientId, patientCaseDetailBean.getFieldId(),
-                                    patientCaseDetailBean.getCaseCreatorId(),
-                                    patientCaseDetailBean.getCaseLastUpdateId(),
-                                    loginSuccessBean.getDoctorId(), caseCheck, caseInfo, caseNow,
-                                    diagnosis, department, hospital, caseNow, allImgUrl.toString(),
-                                    caseDealType, diagnosisTimeMil + "", this);
+        //        mIRequest.updatePatientCase(patientId, patientCaseDetailBean.getFieldId(),
+        //                                    patientCaseDetailBean.getCaseCreatorId(),
+        //                                    patientCaseDetailBean.getCaseLastUpdateId(),
+        //                                    loginSuccessBean.getDoctorId(), caseCheck, caseInfo, caseNow,
+        //                                    diagnosis, department, hospital, caseNow, allImgUrl.toString(),
+        //                                    caseDealType, diagnosisTimeMil + "", this);
+        RequestQueue queue = NoHttp.getRequestQueueInstance();
+        final Request<String> request = NoHttp.createStringRequest(
+                HttpConstants.BASE_BASIC_URL + "/case/update", RequestMethod.POST);
+        Map<String, Object> params = new HashMap<>();
+        params.put("caseCreatorId", patientCaseDetailBean.getCaseCreatorId());
+        params.put("caseCreatorName", patientCaseDetailBean.getCreatorName());
+        params.put("caseLastUpdateId", patientCaseDetailBean.getCaseLastUpdateId());
+        params.put("caseOperatorId", patientId);
+        params.put("checkReport", caseCheck);
+        params.put("currentInfo", caseNow);
+        params.put("diagnosisInfo", diagnosis);
+        params.put("doctorDep", department);
+        params.put("fieldId", patientCaseDetailBean.getFieldId());
+        params.put("hospital", hospital);
+        params.put("importantHistory", caseNow);
+        params.put("patientId", patientId);
+        params.put("patientWords", caseInfo);
+        params.put("reportImgUrl", allImgUrl.toString());
+        params.put("treat", caseDealType);
+        params.put("visDate", diagnosisTimeMil + "");
+        JSONObject jsonObject = new JSONObject(params);
+        request.setDefineRequestBodyForJson(jsonObject.toString());
+        queue.add(1, request, new OnResponseListener<String>()
+        {
+            @Override
+            public void onStart(int what)
+            {
+            }
+
+            @Override
+            public void onSucceed(int what, Response<String> response)
+            {
+                String s = response.get();
+                try
+                {
+                    JSONObject object = new JSONObject(s);
+                    BaseResponse baseResponse = praseBaseResponse(object, CooperateDocBean.class);
+                    if (baseResponse != null && baseResponse.getCode() == 200)
+                    {
+                        ToastUtil.toast(HealthDetailActivity.this, baseResponse.getMsg());
+                        ivTitlebBarMore.setVisibility(View.VISIBLE);
+                        tvTitleBarMore.setVisibility(View.GONE);
+                        //                        initWidght(false);
+                        setResult(RESULT_OK);
+                        finish();
+                    }
+                    else
+                    {
+                        ToastUtil.toast(HealthDetailActivity.this, baseResponse.getMsg());
+                    }
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                    ToastUtil.toast(HealthDetailActivity.this, e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response)
+            {
+                ToastUtil.toast(HealthDetailActivity.this, response.getException().getMessage());
+            }
+
+            @Override
+            public void onFinish(int what)
+            {
+            }
+        });
     }
 
     @Override
@@ -345,6 +493,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                 isSelectTime = true;
                 break;
             case R.id.public_title_bar_more_txt:
+                hideSoftInputFromWindow();
                 diagnosis = etDiagnosis.getText().toString();
                 diagnosisTime = tvDiagnosisTime.getText().toString();
                 department = etDepartment.getText().toString();

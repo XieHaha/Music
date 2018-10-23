@@ -9,13 +9,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import custom.frame.bean.BaseResponse;
+import custom.frame.bean.CombineBean;
 import custom.frame.bean.CooperateDocBean;
 import custom.frame.bean.HospitalBean;
 import custom.frame.bean.HospitalProductBean;
 import custom.frame.bean.HospitalProductTypeBean;
 import custom.frame.bean.LoginSuccessBean;
 import custom.frame.bean.PatientBean;
-import custom.frame.bean.PatientCaseBasicBean;
 import custom.frame.bean.PatientCaseDetailBean;
 import custom.frame.bean.RegistrationTypeBean;
 import custom.frame.bean.TransPatientBean;
@@ -414,40 +414,39 @@ public class IRequest extends BaseRequest
         return requestBaseResponse(GET, "/dp/cancel/focus", Tasks.DELETE_PATIENT, String.class,
                                    params, listener);
     }
-
-    /**
-     * 获取患者手术信息
-     */
-    public Tasks getPatientSurgery(String patientId, final ResponseListener<BaseResponse> listener)
-    {
-        RequestParams params = new RequestParams();
-        params.addBodyParameter("patientId", patientId);
-        return requestBaseResponseList(GET, "/patient/surgery", Tasks.GET_PATIENT_SURGERY_INFO,
-                                       PatientCaseBasicBean.class, params, listener);
-    }
-
-    /**
-     * 获取患者诊断信息
-     */
-    public Tasks getPatientDiagnosis(String patientId,
-            final ResponseListener<BaseResponse> listener)
-    {
-        RequestParams params = new RequestParams();
-        params.addBodyParameter("patientId", patientId);
-        return requestBaseResponseList(GET, "/patient/diagnosis", Tasks.GET_PATIENT_DIAGNOSIS_INFO,
-                                       PatientCaseBasicBean.class, params, listener);
-    }
-
-    /**
-     * 获取患者过敏史信息
-     */
-    public Tasks getPatientAllergy(String patientId, final ResponseListener<BaseResponse> listener)
-    {
-        RequestParams params = new RequestParams();
-        params.addBodyParameter("patientId", patientId);
-        return requestBaseResponseList(GET, "/patient/allergy", Tasks.GET_PATIENT_ALLERGY_INFO,
-                                       PatientCaseBasicBean.class, params, listener);
-    }
+    //    /**
+    //     * 获取患者手术信息
+    //     */
+    //    public Tasks getPatientSurgery(String patientId, final ResponseListener<BaseResponse> listener)
+    //    {
+    //        RequestParams params = new RequestParams();
+    //        params.addBodyParameter("patientId", patientId);
+    //        return requestBaseResponseList(GET, "/patient/surgery", Tasks.GET_PATIENT_SURGERY_INFO,
+    //                                       PatientCaseBasicBean.class, params, listener);
+    //    }
+    //
+    //    /**
+    //     * 获取患者诊断信息
+    //     */
+    //    public Tasks getPatientDiagnosis(String patientId,
+    //            final ResponseListener<BaseResponse> listener)
+    //    {
+    //        RequestParams params = new RequestParams();
+    //        params.addBodyParameter("patientId", patientId);
+    //        return requestBaseResponseList(GET, "/patient/diagnosis", Tasks.GET_PATIENT_DIAGNOSIS_INFO,
+    //                                       PatientCaseBasicBean.class, params, listener);
+    //    }
+    //
+    //    /**
+    //     * 获取患者过敏史信息
+    //     */
+    //    public Tasks getPatientAllergy(String patientId, final ResponseListener<BaseResponse> listener)
+    //    {
+    //        RequestParams params = new RequestParams();
+    //        params.addBodyParameter("patientId", patientId);
+    //        return requestBaseResponseList(GET, "/patient/allergy", Tasks.GET_PATIENT_ALLERGY_INFO,
+    //                                       PatientCaseBasicBean.class, params, listener);
+    //    }
     //    /**
     //     * 获取患者病例列表
     //     */
@@ -657,5 +656,16 @@ public class IRequest extends BaseRequest
         RequestParams params = new RequestParams();
         return requestBaseResponseList(GET, "/product/type/all", Tasks.GET_ALL_PRODUCT,
                                        RegistrationTypeBean.class, params, listener);
+    }
+
+    /**
+     * 获取患者综合病史接口
+     */
+    public Tasks getPatientCombine(String patientId, final ResponseListener<BaseResponse> listener)
+    {
+        RequestParams params = new RequestParams();
+        params.addBodyParameter("patientId", patientId);
+        return requestBaseResponse(GET, "/patient/combine", Tasks.GET_PATIENT_COMBINE,
+                                   CombineBean.class, params, listener);
     }
 }

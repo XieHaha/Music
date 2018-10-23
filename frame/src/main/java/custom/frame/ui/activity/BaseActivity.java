@@ -42,7 +42,7 @@ import custom.frame.utils.ToastUtil;
  *
  * @author DUNDUN
  */
-public abstract class BaseActivity extends AppCompatActivity
+public abstract class BaseActivity<T> extends AppCompatActivity
         implements ActivityInterface, ResponseListener<BaseResponse>, View.OnClickListener,
         OnPermissionCallback, ConstantsCommon {
     private ProgressDialog mProgressDialog;
@@ -423,7 +423,7 @@ public abstract class BaseActivity extends AppCompatActivity
      * @param jsonObject jsonobject对象
      * @param classOfT   待转换的实体类,为空则data为空
      */
-    public final BaseResponse praseBaseResponse(JSONObject jsonObject, Class<String> classOfT)
+    public final BaseResponse praseBaseResponse(JSONObject jsonObject, Class<T> classOfT)
             throws JSONException
     {
         Object data = null;
