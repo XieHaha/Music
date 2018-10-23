@@ -98,8 +98,7 @@ public class YihtApplication extends LitePalApplication
         //设置头像为圆形
         EaseAvatarOptions avatarOpts = new EaseAvatarOptions();
         //0：默认，1：圆形，2：矩形
-        avatarOpts.setAvatarRadius(10);
-        avatarOpts.setAvatarShape(2);
+        avatarOpts.setAvatarShape(1);
         EaseUI.getInstance().setAvatarOptions(avatarOpts);
         //        //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
         //        EMClient.getInstance().setDebugMode(true);

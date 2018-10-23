@@ -71,7 +71,7 @@ public class ApplyCooperateAdapter extends BaseRecyclerAdapter<CooperateDocBean>
         public void showView(final int position, final CooperateDocBean item) {
 
 
-            Glide.with(context).load(item.getPortraitUrl()).apply(GlideHelper.getOptionsRect()).into(ivHeadImg);
+            Glide.with(context).load(item.getPortraitUrl()).apply(GlideHelper.getOptions()).into(ivHeadImg);
             tvName.setText(item.getName());
             tvType.setText(item.getDepartment());
             tvHopital.setText(item.getHospital());

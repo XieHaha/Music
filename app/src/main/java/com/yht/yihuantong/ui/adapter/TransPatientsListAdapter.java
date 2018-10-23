@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.hyphenate.easeui.widget.EaseImageView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.tools.GlideHelper;
 
@@ -17,6 +16,7 @@ import java.util.List;
 import custom.frame.bean.TransPatientBean;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.ui.adapter.BaseViewHolder;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by dundun on 2018-4-8.
@@ -57,7 +57,7 @@ public class TransPatientsListAdapter extends BaseRecyclerAdapter<TransPatientBe
 
     public class PatientsHolder extends BaseViewHolder<TransPatientBean>
     {
-        private EaseImageView ivPatHeadImg;
+        private CircleImageView ivPatHeadImg;
         private TextView tvDocName, tvDocHospital, tvPatName, tvStatus;
 
         public PatientsHolder(View itemView)
@@ -68,8 +68,6 @@ public class TransPatientsListAdapter extends BaseRecyclerAdapter<TransPatientBe
             tvPatName = itemView.findViewById(R.id.item_trans_patient_list_patient_name);
             tvDocName = itemView.findViewById(R.id.item_trans_patient_list_doctor_name);
             tvDocHospital = itemView.findViewById(R.id.item_trans_patient_list_doctor_name);
-            ivPatHeadImg.setShapeType(2);
-            ivPatHeadImg.setRadius(10);
         }
 
         @Override
@@ -77,7 +75,7 @@ public class TransPatientsListAdapter extends BaseRecyclerAdapter<TransPatientBe
         {
             Glide.with(context)
                  .load(item.getPatientImage())
-                 .apply(GlideHelper.getOptionsRect())
+                 .apply(GlideHelper.getOptions())
                  .into(ivPatHeadImg);
             tvPatName.setText(item.getPatientName());
             if (isFrom)

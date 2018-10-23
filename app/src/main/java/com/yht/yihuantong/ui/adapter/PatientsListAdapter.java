@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.hyphenate.easeui.widget.EaseImageView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.tools.GlideHelper;
 import com.yht.yihuantong.utils.AllUtils;
@@ -20,6 +19,7 @@ import java.util.List;
 import custom.frame.bean.PatientBean;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.ui.adapter.BaseViewHolder;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by dundun on 2018-4-8.
@@ -55,7 +55,7 @@ public class PatientsListAdapter extends BaseRecyclerAdapter<PatientBean>
     public class PatientsHolder extends BaseViewHolder<PatientBean>
     {
         private TextView tvAge, tvSex, tvName;
-        private EaseImageView ivHeadImg;
+        private CircleImageView ivHeadImg;
         private ImageView ivSex;
         private LinearLayout lllayout;
 
@@ -67,8 +67,6 @@ public class PatientsListAdapter extends BaseRecyclerAdapter<PatientBean>
             ivSex = itemView.findViewById(R.id.item_patient_list_sex);
             tvName = itemView.findViewById(R.id.item_patient_list_name);
             tvAge = itemView.findViewById(R.id.item_patient_list_age);
-            ivHeadImg.setShapeType(2);
-            ivHeadImg.setRadius(10);
         }
 
         @Override
@@ -76,7 +74,7 @@ public class PatientsListAdapter extends BaseRecyclerAdapter<PatientBean>
         {
             Glide.with(context)
                  .load(item.getPatientImgUrl())
-                 .apply(GlideHelper.getOptionsRect())
+                 .apply(GlideHelper.getOptions())
                  .into(ivHeadImg);
             if (!TextUtils.isEmpty(item.getNickname()) && item.getNickname().length() < 20)
             {

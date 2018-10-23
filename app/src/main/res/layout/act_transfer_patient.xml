@@ -53,13 +53,13 @@
                     android:gravity="center_vertical"
                     android:layout_height="wrap_content">
 
-                    <com.hyphenate.easeui.widget.EaseImageView
+                    <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/act_transfer_patient_img"
                         android:layout_width="63dp"
                         android:layout_height="63dp"
                         android:layout_gravity="center"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/icon_default_imgs_rect" />
+                        android:src="@mipmap/icon_patient_default_imgs" />
 
                     <TextView
                         android:id="@+id/act_transfer_patient_name"
@@ -226,13 +226,13 @@
                     android:visibility="gone"
                     android:layout_height="67dp">
 
-                    <com.hyphenate.easeui.widget.EaseImageView
+                    <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/act_transfer_patient_doc_img"
                         android:layout_width="53dp"
                         android:layout_height="53dp"
                         android:layout_gravity="center"
                         android:scaleType="fitXY"
-                        android:src="@mipmap/icon_default_imgs_rect" />
+                        android:src="@mipmap/icon_patient_default_imgs" />
 
                     <TextView
                         android:id="@+id/act_transfer_patient_doc_name"

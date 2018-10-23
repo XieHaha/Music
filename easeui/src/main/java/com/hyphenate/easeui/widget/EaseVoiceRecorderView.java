@@ -132,7 +132,13 @@ public class EaseVoiceRecorderView extends RelativeLayout {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(context, R.string.send_failure_please, Toast.LENGTH_SHORT).show();
+                    if("stop failed.".equals(e.getLocalizedMessage()))
+                    {
+                        Toast.makeText(context, R.string.The_recording_time_is_too_short, Toast.LENGTH_SHORT).show();
+                    }else {
+
+                        Toast.makeText(context, R.string.send_failure_please, Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
             return true;

@@ -74,6 +74,11 @@ public class AutoGridView extends RelativeLayout
         gridView.setOnItemClickListener(listener);
     }
 
+    public void setOnItemLongClickListener(AdapterView.OnItemLongClickListener listener)
+    {
+        gridView.setOnItemLongClickListener(listener);
+    }
+
     public void initGridView()
     {
         if (gridView != null)
@@ -154,14 +159,14 @@ public class AutoGridView extends RelativeLayout
             {
                 imageView = (ImageView)convertView;
             }
-//            if (isAdd)
-//            {
-//                imageView.setImageBitmap(list.getObject(position).getSmallBitmap());
-//            }
-//            else
-//            {
-//                Glide.with(context).load(list.getObject(position).getSmallImageUrl()).into(imageView);
-//            }
+            //            if (isAdd)
+            //            {
+            //                imageView.setImageBitmap(list.getObject(position).getSmallBitmap());
+            //            }
+            //            else
+            //            {
+            //                Glide.with(context).load(list.getObject(position).getSmallImageUrl()).into(imageView);
+            //            }
             if (list.get(position).getSmallBitmap() == null)
             {
                 Glide.with(context).load(list.get(position).getSmallImageUrl()).into(imageView);

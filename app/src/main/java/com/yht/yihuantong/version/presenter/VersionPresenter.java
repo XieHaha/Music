@@ -227,8 +227,8 @@ public class VersionPresenter implements ConstantsVersionMode
     private void checkVersion()
     {
         String currentVersionName = getVersionName();//当前正在使用的版本
-        String newestVersionName = nowVersion.getNewVersion();//获取最新版本
-        String lowestVersionName = nowVersion.getMinVersion();//获取最低支持版本
+        String newestVersionName = String.valueOf(Float.valueOf(nowVersion.getNewVersion()));//获取最新版本
+        String lowestVersionName = String.valueOf(Float.valueOf(nowVersion.getMinVersion()));//获取最低支持版本
         int mode = UPDATE_NONE;
         boolean isDownAPK = true;
         //小于0  表示获取的新版本号大于当前使用的版本,需要更新

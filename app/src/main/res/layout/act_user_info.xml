@@ -284,7 +284,7 @@
 
                         <ImageView
                             android:layout_width="45dp"
-                            android:src="@mipmap/icon_logo"
+                            android:src="@mipmap/icon_default_hospital_img"
                             android:layout_height="45dp" />
 
                         <TextView

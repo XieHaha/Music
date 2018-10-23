@@ -152,8 +152,8 @@ public class ImagePreviewView extends ImageView
                     //URL相同，都为空，请求大图，显示默认背景
                     if (!isBigLoaded) {
                         setScaleType(ScaleType.MATRIX);
-                        Drawable smallDrawable = ContextCompat.getDrawable(getContext(), R.mipmap.icon_default_imgs);
-                        setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.icon_default_imgs));
+                        Drawable smallDrawable = ContextCompat.getDrawable(getContext(), R.mipmap.icon_loading_img);
+                        setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.icon_loading_img));
                         loadImgAsync(bigUrl, smallDrawable);
                     }
                     break;
@@ -169,7 +169,6 @@ public class ImagePreviewView extends ImageView
                     break;
                 default://有大图缓存
                     setScaleType(ScaleType.FIT_CENTER);
-
                     Drawable drawable = new BitmapDrawable(getResources(), CacheUtils.getInstance(getContext()).getBitmapFromCache(bigUrl));
                     loadImgAsync(bigUrl, drawable);
             }
@@ -180,11 +179,12 @@ public class ImagePreviewView extends ImageView
      * 异步加载图片
      */
     private void loadImgAsync(final String bigUrl, Drawable drawable) {
+        Drawable faildImg = ContextCompat.getDrawable(getContext(), R.mipmap.icon_load_faild_img);
         options = new DisplayImageOptions.Builder()
                 .cacheOnDisk(true)
                 .cacheInMemory(true)
                 .showImageForEmptyUri(drawable)
-                .showImageOnFail(drawable)
+                .showImageOnFail(faildImg)
                 .showImageOnLoading(drawable)
                 .imageScaleType(ImageScaleType.EXACTLY)
                 .bitmapConfig(Bitmap.Config.RGB_565)

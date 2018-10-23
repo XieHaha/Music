@@ -285,9 +285,5 @@ public class BaseInfoFragment extends BaseFragment
         params.height =
                 totalHeight + (listView.getDividerHeight() * (surgeryAdapter.getCount() - 1));
         listView.setLayoutParams(params);
-        if (scrollView != null)
-        {
-            scrollView.scrollTo(0, 0);
-        }
     }
 }

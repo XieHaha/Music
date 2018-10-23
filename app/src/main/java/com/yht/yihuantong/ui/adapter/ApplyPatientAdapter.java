@@ -69,7 +69,7 @@ public class ApplyPatientAdapter extends BaseRecyclerAdapter<PatientBean> {
 
         @Override
         public void showView(final int position, final PatientBean item) {
-            Glide.with(context).load(item.getPatientImgUrl()).apply(GlideHelper.getOptionsRect()).into(ivHeadImg);
+            Glide.with(context).load(item.getPatientImgUrl()).apply(GlideHelper.getOptions()).into(ivHeadImg);
             tvName.setText(item.getName());
             tvPhone.setText(item.getPhone());
             tvAgree.setOnClickListener(v ->

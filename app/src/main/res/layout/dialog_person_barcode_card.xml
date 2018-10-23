@@ -35,13 +35,13 @@
             android:layout_height="48dp"
             android:layout_gravity="center_horizontal">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgHead"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="14dp"
-                android:src="@mipmap/icon_default_imgs_rect" />
+                android:src="@mipmap/icon_default_imgs" />
 
             <TextView
                 android:id="@+id/name"

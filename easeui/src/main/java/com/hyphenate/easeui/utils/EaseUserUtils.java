@@ -46,10 +46,10 @@ public class EaseUserUtils {
                 if(user != null && !TextUtils.isEmpty(user.getAvatar())){
                     try {
                         int avatarResId = Integer.parseInt(user.getAvatar());
-                        Glide.with(context).load(avatarResId).apply(getOptionsRect()).into(imageView);
+                        Glide.with(context).load(avatarResId).apply(getOptions()).into(imageView);
                     } catch (Exception e) {
                         //use default avatar
-                        Glide.with(context).load(user.getAvatar()).apply(getOptionsRect()).into(imageView);
+                        Glide.with(context).load(user.getAvatar()).apply(getOptions()).into(imageView);
                     }
                 }else{
                     Glide.with(context).load(R.drawable.ease_default_avatar).into(imageView);
@@ -79,7 +79,7 @@ public class EaseUserUtils {
         }
     }
 
-    public  static RequestOptions getOptionsRect() {
+    public  static RequestOptions getOptions() {
         if (optionsRect == null) {
             optionsRect = new RequestOptions()
                     .centerCrop()

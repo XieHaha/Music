@@ -11,21 +11,12 @@
         android:layout_centerVertical="true"
         android:layout_height="64dp">
 
-        <!--<ImageView-->
-            <!--android:id="@+id/item_patient_list_headimg"-->
-            <!--android:layout_width="50dp"-->
-            <!--android:layout_height="50dp"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:src="@mipmap/icon_default_imgs_rect"-->
-            <!--android:layout_centerInParent="true" />-->
-
-        <com.hyphenate.easeui.widget.EaseImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/item_patient_list_headimg"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:scaleType="fitXY"
-            android:src="@mipmap/icon_default_imgs_rect" />
+            android:src="@mipmap/icon_patient_default_imgs" />
 
         <RelativeLayout
             android:id="@+id/message_red_point"

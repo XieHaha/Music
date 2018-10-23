@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.hyphenate.easeui.widget.EaseImageView;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
@@ -39,13 +38,14 @@ import custom.frame.http.data.HttpConstants;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.FilterEmojiEditText;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by dundun on 18/10/9.
  */
 public class TransferPatientActivity extends BaseActivity
 {
-    private EaseImageView ivHeadImg, ivDocHeadImg;
+    private CircleImageView ivHeadImg, ivDocHeadImg;
     private ImageView ivArrow;
     private FilterEmojiEditText filterEmojiEditText;
     private TextView tvName, tvSex, tvAge, tvTransferDoc;
@@ -91,12 +91,12 @@ public class TransferPatientActivity extends BaseActivity
         super.initView(savedInstanceState);
         ((TextView)findViewById(R.id.public_title_bar_title)).setText("转诊信息");
         ivArrow = (ImageView)findViewById(R.id.arrow);
-        ivHeadImg = (EaseImageView)findViewById(R.id.act_transfer_patient_img);
+        ivHeadImg = (CircleImageView)findViewById(R.id.act_transfer_patient_img);
         tvName = (TextView)findViewById(R.id.act_transfer_patient_name);
         tvSex = (TextView)findViewById(R.id.act_transfer_patient_sex);
         tvAge = (TextView)findViewById(R.id.act_transfer_patient_age);
         tvTransferDoc = (TextView)findViewById(R.id.act_transfer_patient_doc);
-        ivDocHeadImg = (EaseImageView)findViewById(R.id.act_transfer_patient_doc_img);
+        ivDocHeadImg = (CircleImageView)findViewById(R.id.act_transfer_patient_doc_img);
         tvDocName = (TextView)findViewById(R.id.act_transfer_patient_doc_name);
         tvDocHospital = (TextView)findViewById(R.id.act_transfer_patient_doc_hospital);
         tvTransferStatus = (TextView)findViewById(R.id.act_transfer_patient_status);
@@ -109,11 +109,6 @@ public class TransferPatientActivity extends BaseActivity
         llTransferDocLayout1 = (LinearLayout)findViewById(R.id.act_transfer_patient_doc_layout1);
         llTransferStatusLayout = (LinearLayout)findViewById(
                 R.id.act_transfer_patient_status_layout);
-        //圆角设置
-        ivHeadImg.setShapeType(2);
-        ivHeadImg.setRadius(10);
-        ivDocHeadImg.setShapeType(2);
-        ivDocHeadImg.setRadius(10);
     }
 
     @Override
@@ -164,7 +159,7 @@ public class TransferPatientActivity extends BaseActivity
             llTransferDocLayout1.setOnClickListener(this);
             Glide.with(this)
                  .load(patientBean.getPatientImgUrl())
-                 .apply(GlideHelper.getOptionsRect())
+                 .apply(GlideHelper.getOptions())
                  .into(ivHeadImg);
             tvName.setText(patientBean.getName());
             tvSex.setText(patientBean.getSex());
@@ -185,7 +180,7 @@ public class TransferPatientActivity extends BaseActivity
                 //患者信息
                 Glide.with(this)
                      .load(transPatientBean.getPatientImage())
-                     .apply(GlideHelper.getOptionsRect())
+                     .apply(GlideHelper.getOptions())
                      .into(ivHeadImg);
                 tvName.setText(transPatientBean.getPatientName());
                 tvSex.setText(transPatientBean.getPatientSex());
@@ -197,7 +192,7 @@ public class TransferPatientActivity extends BaseActivity
                     //转诊医生信息
                     Glide.with(this)
                          .load(transPatientBean.getFromDoctorImage())
-                         .apply(GlideHelper.getOptionsRect())
+                         .apply(GlideHelper.getOptions())
                          .into(ivDocHeadImg);
                     tvDocName.setText(transPatientBean.getFromDoctorName());
                     tvDocHospital.setText(transPatientBean.getFromDoctorHospitalName());
@@ -231,7 +226,7 @@ public class TransferPatientActivity extends BaseActivity
                     //转诊医生信息
                     Glide.with(this)
                          .load(transPatientBean.getToDoctorImage())
-                         .apply(GlideHelper.getOptionsRect())
+                         .apply(GlideHelper.getOptions())
                          .into(ivDocHeadImg);
                     tvDocName.setText(transPatientBean.getToDoctorName());
                     tvDocHospital.setText(transPatientBean.getToDoctorHospitalName() + "-" +
@@ -484,7 +479,7 @@ public class TransferPatientActivity extends BaseActivity
                     llTransferDocLayout.setVisibility(View.GONE);
                     Glide.with(this)
                          .load(cooperateDocBean.getPortraitUrl())
-                         .apply(GlideHelper.getOptionsRect())
+                         .apply(GlideHelper.getOptions())
                          .into(ivDocHeadImg);
                     tvDocName.setText(cooperateDocBean.getName());
                     tvDocHospital.setText(

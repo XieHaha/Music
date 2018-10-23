@@ -12,12 +12,12 @@
         android:layout_height="match_parent">
 
 
-        <com.hyphenate.easeui.widget.EaseImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/item_trans_patient_list_patient_img"
             android:layout_width="53dp"
             android:layout_height="53dp"
             android:layout_centerVertical="true"
-            android:src="@mipmap/icon_default_imgs_rect" />
+            android:src="@mipmap/icon_patient_default_imgs" />
 
         <TextView
             android:id="@+id/item_trans_patient_list_patient_name"

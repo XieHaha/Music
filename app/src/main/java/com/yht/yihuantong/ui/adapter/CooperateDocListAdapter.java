@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.hyphenate.easeui.widget.EaseImageView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.tools.GlideHelper;
 
@@ -18,6 +17,7 @@ import java.util.List;
 import custom.frame.bean.CooperateDocBean;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.ui.adapter.BaseViewHolder;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 合作医生列表适配器
@@ -52,7 +52,7 @@ public class CooperateDocListAdapter extends BaseRecyclerAdapter<CooperateDocBea
 
     public class CooperateDocHolder extends BaseViewHolder<CooperateDocBean>
     {
-        private EaseImageView ivHeadImg;
+        private CircleImageView ivHeadImg;
         private TextView tvName, tvType, tvHopital;
 
         public CooperateDocHolder(View itemView)
@@ -63,8 +63,6 @@ public class CooperateDocListAdapter extends BaseRecyclerAdapter<CooperateDocBea
             tvType = itemView.findViewById(R.id.item_cooperate_list_type);
             tvHopital = itemView.findViewById(R.id.item_cooperate_list_hospital);
             tvName = itemView.findViewById(R.id.item_cooperate_list_name);
-            ivHeadImg.setShapeType(2);
-            ivHeadImg.setRadius(10);
         }
 
         @Override
@@ -72,7 +70,7 @@ public class CooperateDocListAdapter extends BaseRecyclerAdapter<CooperateDocBea
         {
             Glide.with(context)
                  .load(item.getPortraitUrl())
-                 .apply(GlideHelper.getOptionsRect())
+                 .apply(GlideHelper.getOptions())
                  .into(ivHeadImg);
             if (!TextUtils.isEmpty(item.getNickname()) && item.getNickname().length() < 20)
             {
