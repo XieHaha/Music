@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.tools.GlideHelper;
 import com.yht.yihuantong.utils.AllUtils;
 
 import java.util.List;
@@ -19,6 +18,7 @@ import java.util.List;
 import custom.frame.bean.PatientBean;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.ui.adapter.BaseViewHolder;
+import custom.frame.utils.GlideHelper;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -74,7 +74,7 @@ public class PatientsListAdapter extends BaseRecyclerAdapter<PatientBean>
         {
             Glide.with(context)
                  .load(item.getPatientImgUrl())
-                 .apply(GlideHelper.getOptions())
+                 .apply(GlideHelper.getOptionsP())
                  .into(ivHeadImg);
             if (!TextUtils.isEmpty(item.getNickname()) && item.getNickname().length() < 20)
             {

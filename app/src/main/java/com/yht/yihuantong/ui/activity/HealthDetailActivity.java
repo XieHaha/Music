@@ -114,6 +114,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
      */
     private int currentMaxPicNum = 0;
     private ArrayList<NormImage> imageList = new ArrayList<>();
+    private ArrayList<String> imageUrl = new ArrayList<>();
     private ArrayList<Uri> mSelectPath = new ArrayList<>();
     /**
      * 相册
@@ -292,7 +293,6 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
             String imgUrls = patientCaseDetailBean.getReportImgUrl();
             if (!TextUtils.isEmpty(imgUrls))
             {
-                allImgUrl.append(imgUrls);
                 String[] str = patientCaseDetailBean.getReportImgUrl().split(",");
                 for (int i = 0; i < str.length; i++)
                 {
@@ -302,6 +302,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                     normImage.setMiddleImageUrl(url);
                     normImage.setSmallImageUrl(url);
                     imageList.add(normImage);
+                    imageUrl.add(url);
                 }
             }
             autoGridView.updateImg(imageList, false);
@@ -309,7 +310,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
     }
 
     /**
-     * 上传头像
+     * 上传图片
      */
     private void uploadHeadImg(Uri uri)
     {
@@ -323,10 +324,6 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
      */
     private void addPatientCase()
     {
-        //        mIRequest.addPatientCase(patientId, loginSuccessBean.getDoctorId(),
-        //                                 loginSuccessBean.getDoctorId(), caseCheck, caseInfo, caseNow,
-        //                                 diagnosis, department, hospital, caseNow, allImgUrl.toString(),
-        //                                 caseDealType, diagnosisTimeMil + "", this);
         RequestQueue queue = NoHttp.getRequestQueueInstance();
         final Request<String> request = NoHttp.createStringRequest(
                 HttpConstants.BASE_BASIC_URL + "/case/save", RequestMethod.POST);
@@ -400,12 +397,6 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
      */
     private void updatePatientCase()
     {
-        //        mIRequest.updatePatientCase(patientId, patientCaseDetailBean.getFieldId(),
-        //                                    patientCaseDetailBean.getCaseCreatorId(),
-        //                                    patientCaseDetailBean.getCaseLastUpdateId(),
-        //                                    loginSuccessBean.getDoctorId(), caseCheck, caseInfo, caseNow,
-        //                                    diagnosis, department, hospital, caseNow, allImgUrl.toString(),
-        //                                    caseDealType, diagnosisTimeMil + "", this);
         RequestQueue queue = NoHttp.getRequestQueueInstance();
         final Request<String> request = NoHttp.createStringRequest(
                 HttpConstants.BASE_BASIC_URL + "/case/update", RequestMethod.POST);
@@ -508,6 +499,14 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                     ToastUtil.toast(this, "带星号为必填项");
                     return;
                 }
+                for (int i = 0; i < imageUrl.size(); i++)
+                {
+                    allImgUrl.append(imageUrl.get(i));
+                    if (imageUrl.size() - 1 != i)
+                    {
+                        allImgUrl.append(",");
+                    }
+                }
                 if (isAddNewHealth)
                 {
                     addPatientCase();
@@ -596,7 +595,6 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                 startActivity(intent);
                 overridePendingTransition(R.anim.fade_in, R.anim.keep);
             }
-            //            if (isAddNewHealth || isSelectTime) { return; }
         }
         else
         {
@@ -614,6 +612,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
     {
         new SimpleDialog(this, "确定删除吗?", (dialog, which) ->
         {
+            imageUrl.remove(position);
             imageList.remove(position);
             autoGridView.updateImg(imageList, true);
         }, (dialog, which) -> dialog.dismiss()).show();
@@ -637,11 +636,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                 {
                     closeProgressDialog();
                 }
-                if (!TextUtils.isEmpty(allImgUrl.toString()))
-                {
-                    allImgUrl.append(",");
-                }
-                allImgUrl.append(response.getData().toString());
+                imageUrl.add(response.getData().toString());
                 break;
             case UPDATE_PATIENT_CASE:
                 ToastUtil.toast(this, response.getMsg());

@@ -35,7 +35,7 @@ import com.yht.yihuantong.api.notify.INotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.qrcode.BarCodeImageView;
 import com.yht.yihuantong.qrcode.DialogPersonalBarCode;
-import com.yht.yihuantong.tools.GlideHelper;
+import custom.frame.utils.GlideHelper;
 import com.yht.yihuantong.ui.activity.AuthDocActivity;
 import com.yht.yihuantong.ui.activity.EditInfoActivity;
 import com.yht.yihuantong.ui.activity.SettingActivity;
@@ -51,12 +51,10 @@ import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.LoginSuccessBean;
-import custom.frame.bean.TransPatientBean;
 import custom.frame.http.Tasks;
 import custom.frame.permission.OnPermissionCallback;
 import custom.frame.permission.Permission;

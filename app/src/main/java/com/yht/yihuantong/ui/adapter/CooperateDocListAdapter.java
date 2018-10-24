@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.tools.GlideHelper;
+import custom.frame.utils.GlideHelper;
 
 import java.util.ArrayList;
 import java.util.List;

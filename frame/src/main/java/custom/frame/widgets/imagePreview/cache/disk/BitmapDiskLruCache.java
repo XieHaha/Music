@@ -104,7 +104,7 @@ public class BitmapDiskLruCache {
      * 缓存写入外存图片文件
      */
     public boolean saveImageFileToDisk(String imageUri, Bitmap bitmap) {
-        String fileName = imageUri.substring(imageUri.lastIndexOf("/") + 1) + ".png";
+        String fileName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
         String path = PreviewOptions.ImageDownloadOptions.Image_SAVE_ABS_DIR;
         File dirFile = new File(path);
         if (!dirFile.exists()) {

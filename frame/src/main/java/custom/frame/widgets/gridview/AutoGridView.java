@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import custom.frame.R;
 import custom.frame.bean.NormImage;
+import custom.frame.utils.GlideHelper;
 
 /**
  * Created by thl on 2016/2/28.
@@ -159,17 +160,12 @@ public class AutoGridView extends RelativeLayout
             {
                 imageView = (ImageView)convertView;
             }
-            //            if (isAdd)
-            //            {
-            //                imageView.setImageBitmap(list.getObject(position).getSmallBitmap());
-            //            }
-            //            else
-            //            {
-            //                Glide.with(context).load(list.getObject(position).getSmallImageUrl()).into(imageView);
-            //            }
             if (list.get(position).getSmallBitmap() == null)
             {
-                Glide.with(context).load(list.get(position).getSmallImageUrl()).into(imageView);
+                Glide.with(context)
+                     .load(list.get(position).getSmallImageUrl())
+                     .apply(GlideHelper.getOptionsPic())
+                     .into(imageView);
             }
             else
             {

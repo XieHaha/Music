@@ -19,7 +19,7 @@ import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
-import com.yht.yihuantong.tools.GlideHelper;
+import custom.frame.utils.GlideHelper;
 import com.yht.yihuantong.ui.dialog.HintDialog;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.utils.AllUtils;

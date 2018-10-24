@@ -26,8 +26,8 @@ public class PreviewOptions {
 
     public static final class ImageDownloadOptions {
         private static final String APP_FILE_DIR = EXTERNAL_STORAGE;
-        public static final String Image_SAVE_ABS_DIR = APP_FILE_DIR + "/com.dz.tt/image/";
-        public static final String IMAGE_SAVE_REL_DIR = "com.dz.tt/image";
+        public static final String Image_SAVE_ABS_DIR = APP_FILE_DIR + "/THT/image/";
+        public static final String IMAGE_SAVE_REL_DIR = "THT/image";
     }
 
     public static final class DiskCacheOptions {

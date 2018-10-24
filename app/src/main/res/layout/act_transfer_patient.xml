@@ -58,7 +58,6 @@
                         android:layout_width="63dp"
                         android:layout_height="63dp"
                         android:layout_gravity="center"
-                        android:scaleType="fitXY"
                         android:src="@mipmap/icon_patient_default_imgs" />
 
                     <TextView
@@ -231,7 +230,6 @@
                         android:layout_width="53dp"
                         android:layout_height="53dp"
                         android:layout_gravity="center"
-                        android:scaleType="fitXY"
                         android:src="@mipmap/icon_patient_default_imgs" />
 
                     <TextView
