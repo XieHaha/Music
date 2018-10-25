@@ -54,7 +54,7 @@ public class CaseRecordListAdapter extends BaseRecyclerAdapter<PatientCaseDetail
         @Override
         public void showView(final int position, final PatientCaseDetailBean item) {
             tvContent.setText(item.getDiagnosisInfo());
-            tvTime.setText(AllUtils.formatDate(item.getGmtCreate(), AllUtils.DATE_FORMAT));
+            tvTime.setText(AllUtils.formatDate(item.getGmtCreate(), AllUtils.YYYY_MM_DD_HH_MM));
         }
     }
 }

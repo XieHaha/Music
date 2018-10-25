@@ -43,9 +43,9 @@ public class AllUtils
     private static final String TAG = AllUtils.class.getSimpleName();
     private static String REGEX_PHONE = "^((13[0-9])|(14[0-9])|(15[0-9])|(16[0-9])|(17[0-9])|(18[0-9])|(19[0-9]))\\d{8}$";
     private static String REGEX_CARD_NUM = "(^[1-8][0-7]{2}\\d{3}([12]\\d{3})(0[1-9]|1[012])(0[1-9]|[12]\\d|3[01])\\d{3}([0-9Xx])$)";
-    public static String DATE_FORMAT = "yyyy-MM-dd HH:mm";
-    public static String DATE_FORMAT_NO_HOUR = "yyyy-MM-dd";
-    public static String DATE_FORMAT_AGE = "yyyy";
+    public static String YYYY_MM_DD_HH_MM = "yyyy-MM-dd HH:mm";
+    public static String YYYY_MM_DD = "yyyy-MM-dd";
+    public static String YYYY = "yyyy";
 
     /**
      * trim方法，去掉字符串首、尾的空格，制表符，回车符。字符串null将被替换为空字符串
@@ -422,8 +422,8 @@ public class AllUtils
      */
     public static String formatDateByAge(long time)
     {
-        int birth = Integer.parseInt(new SimpleDateFormat(DATE_FORMAT_AGE).format(new Date(time)));
-        int now = Integer.parseInt(new SimpleDateFormat(DATE_FORMAT_AGE).format(new Date()));
+        int birth = Integer.parseInt(new SimpleDateFormat(YYYY).format(new Date(time)));
+        int now = Integer.parseInt(new SimpleDateFormat(YYYY).format(new Date()));
         if (now > birth)
         {
             return String.valueOf(now - birth);

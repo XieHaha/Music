@@ -165,7 +165,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
         tvDiagnosisTime = (TextView)findViewById(R.id.act_health_detail_diagnosis_time);
         diagnosisTimeMil = System.currentTimeMillis();
         tvDiagnosisTime.setText(
-                AllUtils.formatDate(diagnosisTimeMil, AllUtils.DATE_FORMAT_NO_HOUR));
+                AllUtils.formatDate(diagnosisTimeMil, AllUtils.YYYY_MM_DD));
         etDepartment = (EditText)findViewById(R.id.act_health_detail_department);
         etHospital = (EditText)findViewById(R.id.act_health_detail_hopital);
         etCaseInfo = (EditText)findViewById(R.id.act_health_detail_case_info);
@@ -278,11 +278,11 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
             }
             tvCreateTime.setText("创建者：" + patientCaseDetailBean.getCreatorName() + "\n创建时间：" +
                                  AllUtils.formatDate(patientCaseDetailBean.getGmtCreate(),
-                                                     AllUtils.DATE_FORMAT));
+                                                     AllUtils.YYYY_MM_DD_HH_MM));
             etDiagnosis.setText(patientCaseDetailBean.getDiagnosisInfo());
             diagnosisTimeMil = patientCaseDetailBean.getVisDate();
             tvDiagnosisTime.setText(AllUtils.formatDate(patientCaseDetailBean.getVisDate(),
-                                                        AllUtils.DATE_FORMAT_NO_HOUR));
+                                                        AllUtils.YYYY_MM_DD));
             etDepartment.setText(patientCaseDetailBean.getDoctorDep());
             etHospital.setText(patientCaseDetailBean.getHospital());
             etCaseInfo.setText(patientCaseDetailBean.getPatientWords());

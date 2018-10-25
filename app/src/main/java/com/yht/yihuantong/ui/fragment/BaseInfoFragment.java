@@ -2,6 +2,7 @@ package com.yht.yihuantong.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,7 +98,15 @@ public class BaseInfoFragment extends BaseFragment
     {
         if (patientBean != null)
         {
-            tvName.setText(patientBean.getName());
+            if (!TextUtils.isEmpty(patientBean.getNickname()) &&
+                patientBean.getNickname().length() < 20)
+            {
+                tvName.setText(patientBean.getNickname() + "(" + patientBean.getName() + ")");
+            }
+            else
+            {
+                tvName.setText(patientBean.getName());
+            }
             tvSex.setText(patientBean.getSex());
             tvAge.setText(AllUtils.formatDateByAge(patientBean.getBirthDate()));
         }
@@ -250,7 +259,7 @@ public class BaseInfoFragment extends BaseFragment
                 holder.tvTime.setVisibility(View.VISIBLE);
             }
             holder.tvTime.setText(
-                    AllUtils.formatDate(item.getGmtCreate(), AllUtils.DATE_FORMAT_AGE));
+                    AllUtils.formatDate(item.getSurgeryDate(), AllUtils.YYYY));
         }
     }
 

@@ -105,7 +105,7 @@ public class EditRemarkActivity extends BaseActivity
                         mTextMaxlenght += 2;
                     }
                     // 当最大字符大于10时,进行字段的截取,并进行提示字段的大小
-                    if (mTextMaxlenght > 10)
+                    if (mTextMaxlenght > 20)
                     {
                         // 截取最大的字段
                         String newStr = str.substring(0, i);
