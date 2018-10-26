@@ -370,11 +370,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="95dp"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginRight="12dp"
                     android:background="@null"
-                    android:text=""
+                    android:minHeight="45dp"
                     android:maxLength="100"
-                    android:textColor="#333333"
+                    android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp" />
 
                 <View

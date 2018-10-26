@@ -23,6 +23,7 @@ import custom.frame.bean.BaseResponse;
 import custom.frame.bean.PatientBean;
 import custom.frame.bean.PatientCaseDetailBean;
 import custom.frame.http.Tasks;
+import custom.frame.http.data.BaseNetCode;
 import custom.frame.ui.fragment.BaseFragment;
 import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
@@ -212,12 +213,24 @@ public class CaseRecordFragment extends BaseFragment implements LoadMoreListener
     public void onResponseCodeError(Tasks task, BaseResponse response)
     {
         super.onResponseCodeError(task, response);
-        if (page > 0)
+        switch (task)
         {
-            page--;
+            case GET_PATIENT_CASE_LIST:
+                if (page > 0)
+                {
+                    page--;
+                }
+                tvHintTxt.setText("暂无更多数据");
+                autoLoadRecyclerView.loadFinish();
+                break;
+            case DELETE_PATIENT_CASE:
+                if(BaseNetCode.CODE_MODIFY_CASE_RECORD == response.getCode())
+                {
+
+                }
+                break;
         }
-        tvHintTxt.setText("暂无更多数据");
-        autoLoadRecyclerView.loadFinish();
+
     }
 
     @Override

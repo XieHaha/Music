@@ -5,24 +5,21 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="175dp"
+        android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@mipmap/img_login_bg" />
+        android:src="@mipmap/icon_login_bg" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/app_title_bar_height"
+    <ImageView
+        android:layout_width="75dp"
+        android:src="@mipmap/icon_logo"
+        android:layout_marginTop="78dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"
-        android:gravity="center"
-        android:text="@string/txt_title"
-        android:textColor="@color/app_white_color"
-        android:textSize="@dimen/app_main_title" />
+        android:layout_height="75dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="175dp"
+        android:layout_marginTop="160dp"
         android:paddingLeft="28dp"
         android:paddingRight="28dp"
         android:orientation="vertical"
@@ -31,25 +28,27 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/txt_login"
-            android:textColor="#ff333333"
-            android:textSize="24sp" />
+            android:text="会珍"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/app_main_txt_color"
+            android:textSize="21sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="@string/txt_login_hint"
-            android:textColor="#ff333333"
+            android:text="医生端"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/app_minor_color"
             android:textSize="15sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
+            android:layout_marginTop="60dp"
             android:text="手机号"
-            android:textColor="#ff999999"
-            android:textSize="12dp" />
+            android:textColor="@color/app_main_txt_color"
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/act_login_phone"
