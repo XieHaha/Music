@@ -2,7 +2,9 @@ package com.hyphenate.easeui.ui;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -53,8 +55,15 @@ public class EaseShowVideoActivity extends EaseBaseActivity{
 
 		if (localFilePath != null && new File(localFilePath).exists()) {
 			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setDataAndType(Uri.fromFile(new File(localFilePath)),
-					"video/mp4");
+			Uri uri;
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				//data是file类型,忘了复制过来
+				uri = FileProvider.getUriForFile(this, "com.yht.yihuantong.fileprovider", new File(localFilePath));
+			} else {
+				uri=Uri.fromFile(new File(localFilePath));
+			}
+			intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+			intent.setDataAndType(uri, "video/mp4");
 			startActivity(intent);
 			finish();
 		} else {
@@ -69,8 +78,15 @@ public class EaseShowVideoActivity extends EaseBaseActivity{
 	 */
 	private void showLocalVideo(String localPath){
 		Intent intent = new Intent(Intent.ACTION_VIEW);
-		intent.setDataAndType(Uri.fromFile(new File(localPath)),
-				"video/mp4");
+		Uri uri;
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			//data是file类型,忘了复制过来
+			uri = FileProvider.getUriForFile(this, "com.yht.yihuantong.fileprovider", new File(localPath));
+		} else {
+			uri=Uri.fromFile(new File(localPath));
+		}
+		intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+		intent.setDataAndType(uri, "video/mp4");
 		startActivity(intent);
 		finish();
 	}

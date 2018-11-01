@@ -5,6 +5,7 @@
     android:layout_marginLeft="2dp"
     android:layout_marginRight="2dp"
     android:elevation="2dp"
+    android:background="@drawable/corner_main_color_full_bg"
     android:orientation="vertical">
 
 

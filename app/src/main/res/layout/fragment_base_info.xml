@@ -20,7 +20,7 @@
             android:layout_marginTop="10dp"
             android:background="@color/app_white_color"
             android:orientation="vertical"
-            android:layout_height="137dp">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -32,7 +32,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:text="姓名"
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:textSize="15sp"
                     android:layout_height="wrap_content" />
 
@@ -41,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:text="暂无信息"
                     android:layout_marginLeft="19dp"
-                    android:textColor="#333333"
+                    android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp"
                     android:layout_height="wrap_content" />
 
@@ -62,7 +62,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:text="性别"
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:textSize="15sp"
                     android:layout_height="wrap_content" />
 
@@ -71,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:text="暂无信息"
                     android:layout_marginLeft="19dp"
-                    android:textColor="#333333"
+                    android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp"
                     android:layout_height="wrap_content" />
 
@@ -92,7 +92,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:text="年龄"
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:textSize="15sp"
                     android:layout_height="wrap_content" />
 
@@ -101,7 +101,69 @@
                     android:layout_width="wrap_content"
                     android:text="暂无信息"
                     android:layout_marginLeft="19dp"
-                    android:textColor="#333333"
+                    android:textColor="@color/app_main_txt_color"
+                    android:textSize="15sp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/app_main_divideline"
+                android:layout_height="1px" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingLeft="12dp"
+                android:minHeight="45dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="地址"
+                    android:textColor="@color/app_hint_color"
+                    android:textSize="15sp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/fragment_base_info_address"
+                    android:layout_width="wrap_content"
+                    android:text="暂无信息"
+                    android:layout_marginLeft="19dp"
+                    android:textColor="@color/app_main_txt_color"
+                    android:textSize="15sp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/app_main_divideline"
+                android:layout_height="1px" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingLeft="12dp"
+                android:minHeight="45dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="单位"
+                    android:textColor="@color/app_hint_color"
+                    android:textSize="15sp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/fragment_base_info_company"
+                    android:layout_width="wrap_content"
+                    android:text="暂无信息"
+                    android:layout_marginLeft="19dp"
+                    android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp"
                     android:layout_height="wrap_content" />
 
@@ -120,7 +182,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:text="主要诊断"
-                android:textColor="#999999"
+                android:textColor="@color/app_hint_color"
                 android:textSize="15sp"
                 android:layout_marginLeft="12dp"
                 android:layout_height="wrap_content" />
@@ -130,7 +192,7 @@
                 android:layout_width="wrap_content"
                 android:text="暂无信息"
                 android:layout_marginTop="10dp"
-                android:textColor="#333333"
+                android:textColor="@color/app_main_txt_color"
                 android:layout_marginLeft="12dp"
                 android:textSize="15sp"
                 android:layout_height="wrap_content" />
@@ -144,7 +206,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:text="过敏史"
-                android:textColor="#999999"
+                android:textColor="@color/app_hint_color"
                 android:textSize="15sp"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="12dp"
@@ -155,7 +217,7 @@
                 android:layout_width="wrap_content"
                 android:text="暂无信息"
                 android:layout_marginTop="10dp"
-                android:textColor="#333333"
+                android:textColor="@color/app_main_txt_color"
                 android:layout_marginLeft="12dp"
                 android:textSize="15sp"
                 android:layout_height="wrap_content" />
@@ -169,7 +231,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:text="手术史"
-                android:textColor="#999999"
+                android:textColor="@color/app_hint_color"
                 android:layout_marginTop="10dp"
                 android:textSize="15sp"
                 android:layout_marginLeft="12dp"
@@ -185,7 +247,7 @@
                     android:layout_width="wrap_content"
                     android:text="暂无信息"
                     android:layout_marginTop="10dp"
-                    android:textColor="#333333"
+                    android:textColor="@color/app_main_txt_color"
                     android:visibility="gone"
                     android:layout_marginLeft="12dp"
                     android:textSize="15sp"

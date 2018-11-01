@@ -31,7 +31,7 @@ import custom.frame.ui.fragment.BaseFragment;
 public class BaseInfoFragment extends BaseFragment
 {
     private ScrollView scrollView;
-    private TextView tvName, tvSex, tvAge, tvType, tvAllergy, tvDiagnosis, tvSurgery;
+    private TextView tvName, tvSex, tvAge, tvAddress, tvCompany, tvType, tvAllergy, tvDiagnosis, tvSurgery;
     private ListView lvSurgeryInfo;
     private SurgeryAdapter surgeryAdapter;
     /**
@@ -73,6 +73,8 @@ public class BaseInfoFragment extends BaseFragment
         tvName = view.findViewById(R.id.fragment_base_info_name);
         tvSex = view.findViewById(R.id.fragment_base_info_sex);
         tvAge = view.findViewById(R.id.fragment_base_info_age);
+        tvAddress = view.findViewById(R.id.fragment_base_info_address);
+        tvCompany = view.findViewById(R.id.fragment_base_info_company);
         tvType = view.findViewById(R.id.fragment_base_info_type);
         tvAllergy = view.findViewById(R.id.fragment_base_info_allergy);
         tvDiagnosis = view.findViewById(R.id.fragment_base_info_type);
@@ -109,6 +111,14 @@ public class BaseInfoFragment extends BaseFragment
             }
             tvSex.setText(patientBean.getSex());
             tvAge.setText(AllUtils.formatDateByAge(patientBean.getBirthDate()));
+            if (!TextUtils.isEmpty(patientBean.getAddress()))
+            {
+                tvAddress.setText(patientBean.getAddress());
+            }
+            if (!TextUtils.isEmpty(patientBean.getUnitName()))
+            {
+                tvCompany.setText(patientBean.getUnitName());
+            }
         }
     }
 
@@ -258,8 +268,7 @@ public class BaseInfoFragment extends BaseFragment
             {
                 holder.tvTime.setVisibility(View.VISIBLE);
             }
-            holder.tvTime.setText(
-                    AllUtils.formatDate(item.getSurgeryDate(), AllUtils.YYYY));
+            holder.tvTime.setText(AllUtils.formatDate(item.getSurgeryDate(), AllUtils.YYYY));
         }
     }
 

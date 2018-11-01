@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -17,9 +16,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
-import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.chat.ChatActivity;
-import custom.frame.utils.GlideHelper;
+import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.utils.AllUtils;
 
@@ -31,6 +29,7 @@ import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CooperateDocBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
+import custom.frame.utils.GlideHelper;
 import custom.frame.utils.ToastUtil;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -45,7 +44,6 @@ public class UserInfoActivity extends BaseActivity
     private ImageView ivTitleMore;
     private TextView tvName, tvType, tvTitle, tvIntroduce, tvHospital;
     private TextView tvChat;
-    private LinearLayout llNickNameLayout;
     private View view_pop;
     private PopupWindow mPopupwinow;
     private TextView tvDelete, tvChange;
@@ -79,8 +77,6 @@ public class UserInfoActivity extends BaseActivity
     public void initView(@NonNull Bundle savedInstanceState)
     {
         super.initView(savedInstanceState);
-        //状态栏透明
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         ivHeadImg = (CircleImageView)findViewById(R.id.act_user_info_headimg);
         imgAuth = (CircleImageView)findViewById(R.id.act_user_info_auth);
         findViewById(R.id.public_title_bar_back).setOnClickListener(this);
@@ -92,7 +88,6 @@ public class UserInfoActivity extends BaseActivity
         tvTitle = (TextView)findViewById(R.id.act_user_info_title);
         tvType = (TextView)findViewById(R.id.act_user_info_type);
         tvIntroduce = (TextView)findViewById(R.id.act_user_info_introduce);
-        llNickNameLayout = (LinearLayout)findViewById(R.id.act_user_info_nickname_layout);
         llCoopHopitalLayout = (LinearLayout)findViewById(R.id.act_user_info_coop_hospital_layout);
         llHospitalLayout = (LinearLayout)findViewById(R.id.act_user_info_hospital_layout);
     }
@@ -147,7 +142,6 @@ public class UserInfoActivity extends BaseActivity
     public void initListener()
     {
         tvChat.setOnClickListener(this);
-        llNickNameLayout.setOnClickListener(this);
         llHospitalLayout.setOnClickListener(this);
     }
 
@@ -244,15 +238,19 @@ public class UserInfoActivity extends BaseActivity
                 {
                     mPopupwinow.dismiss();
                 }
-                new SimpleDialog(this, "确定删除?", (dialog, which) -> cancelCooperateDoc(),
-                                 (dialog, which) -> dialog.dismiss()).show();
-                break;
-            case R.id.act_user_info_nickname_layout:
                 Intent intent = new Intent(this, EditRemarkActivity.class);
                 intent.putExtra(CommonData.KEY_IS_DEAL_DOC, true);
                 intent.putExtra(CommonData.KEY_PUBLIC, cooperateDocBean.getNickname());
                 intent.putExtra(CommonData.KEY_ID, cooperateDocBean.getDoctorId());
                 startActivityForResult(intent, MODIFY_NICKNAME);
+                break;
+            case R.id.change:
+                if (mPopupwinow != null)
+                {
+                    mPopupwinow.dismiss();
+                }
+                new SimpleDialog(this, "确定删除?", (dialog, which) -> cancelCooperateDoc(),
+                                 (dialog, which) -> dialog.dismiss()).show();
                 break;
             case R.id.act_user_info_hospital_layout:
                 startActivity(new Intent(this, HospitalInfoActivity.class));
@@ -323,8 +321,10 @@ public class UserInfoActivity extends BaseActivity
         view_pop = LayoutInflater.from(this).inflate(R.layout.main_pop_menu, null);
         tvDelete = (TextView)view_pop.findViewById(R.id.delete);
         tvChange = (TextView)view_pop.findViewById(R.id.change);
-        tvChange.setVisibility(View.GONE);
+        tvChange.setText("删除");
+        tvDelete.setText("设置备注");
         tvDelete.setOnClickListener(this);
+        tvChange.setOnClickListener(this);
         if (mPopupwinow == null)
         {
             //新建一个popwindow

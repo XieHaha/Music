@@ -166,7 +166,6 @@ public class PatientsFragment extends BaseFragment
                                                 .getServer(INotifyChangeListenerServer.class);
         getPatientsData();
         getApplyPatientList();
-        getPatientFromList();
     }
 
     @Override

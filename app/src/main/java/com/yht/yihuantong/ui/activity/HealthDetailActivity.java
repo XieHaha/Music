@@ -11,7 +11,10 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -53,7 +56,6 @@ import java.util.List;
 import java.util.Map;
 
 import custom.frame.bean.BaseResponse;
-import custom.frame.bean.CooperateDocBean;
 import custom.frame.bean.NormImage;
 import custom.frame.bean.PatientCaseDetailBean;
 import custom.frame.http.Tasks;
@@ -97,6 +99,10 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
      * 是否选择时间
      */
     private boolean isSelectTime = false;
+    /**
+     * 是否有修改病例
+     */
+    private boolean isModifyData = false;
     /**
      * 最多图片限制
      */
@@ -164,8 +170,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
         etDiagnosis = (EditText)findViewById(R.id.act_health_detail_diagnosis);
         tvDiagnosisTime = (TextView)findViewById(R.id.act_health_detail_diagnosis_time);
         diagnosisTimeMil = System.currentTimeMillis();
-        tvDiagnosisTime.setText(
-                AllUtils.formatDate(diagnosisTimeMil, AllUtils.YYYY_MM_DD));
+        tvDiagnosisTime.setText(AllUtils.formatDate(diagnosisTimeMil, AllUtils.YYYY_MM_DD));
         etDepartment = (EditText)findViewById(R.id.act_health_detail_department);
         etHospital = (EditText)findViewById(R.id.act_health_detail_hopital);
         etCaseInfo = (EditText)findViewById(R.id.act_health_detail_case_info);
@@ -208,20 +213,10 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
     @Override
     public void initListener()
     {
-        super.initListener();
         tvDiagnosisTime.setOnClickListener(this);
         autoGridView.setOnItemClickListener(this);
         tvTitleBarMore.setOnClickListener(this);
         ivTitlebBarMore.setOnClickListener(this);
-        //        scrollView.setOnTouchListener(new View.OnTouchListener()
-        //        {
-        //            @Override
-        //            public boolean onTouch(View v, MotionEvent event)
-        //            {
-        //                hideSoftInputFromWindow();
-        //                return false;
-        //            }
-        //        });
         scrollView.setOnTouchListener((v, event) ->
                                       {
                                           hideSoftInputFromWindow();
@@ -232,6 +227,37 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                                        hideSoftInputFromWindow();
                                        finish();
                                    });
+        TextChange textChange = new TextChange();
+        etDiagnosis.addTextChangedListener(textChange);
+        etDepartment.addTextChangedListener(textChange);
+        etHospital.addTextChangedListener(textChange);
+        etCaseInfo.addTextChangedListener(textChange);
+        etCaseNow.addTextChangedListener(textChange);
+        etCaseCheck.addTextChangedListener(textChange);
+        etCaseDealType.addTextChangedListener(textChange);
+        backBtn.setOnClickListener(v -> finishPage());
+    }
+
+    /**
+     * 监听所有输入框变化
+     */
+    private class TextChange implements TextWatcher
+    {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after)
+        {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count)
+        {
+            isModifyData = true;
+        }
+
+        @Override
+        public void afterTextChanged(Editable s)
+        {
+        }
     }
 
     /**
@@ -244,8 +270,6 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
         tvDiagnosisTime.setClickable(mode);
         etDiagnosis.setFocusable(mode);
         etDiagnosis.setFocusableInTouchMode(mode);
-        //        etDiagnosisTime.setFocusable(mode);
-        //        etDiagnosisTime.setFocusableInTouchMode(mode);
         etDepartment.setFocusable(mode);
         etDepartment.setFocusableInTouchMode(mode);
         etHospital.setFocusable(mode);
@@ -254,8 +278,6 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
         etCaseInfo.setFocusableInTouchMode(mode);
         etCaseNow.setFocusable(mode);
         etCaseNow.setFocusableInTouchMode(mode);
-        //        etCaseImportment.setFocusable(mode);
-        //        etCaseImportment.setFocusableInTouchMode(mode);
         etCaseCheck.setFocusable(mode);
         etCaseCheck.setFocusableInTouchMode(mode);
         etCaseDealType.setFocusable(mode);
@@ -281,12 +303,12 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                                                      AllUtils.YYYY_MM_DD_HH_MM));
             etDiagnosis.setText(patientCaseDetailBean.getDiagnosisInfo());
             diagnosisTimeMil = patientCaseDetailBean.getVisDate();
-            tvDiagnosisTime.setText(AllUtils.formatDate(patientCaseDetailBean.getVisDate(),
-                                                        AllUtils.YYYY_MM_DD));
+            tvDiagnosisTime.setText(
+                    AllUtils.formatDate(patientCaseDetailBean.getVisDate(), AllUtils.YYYY_MM_DD));
             etDepartment.setText(patientCaseDetailBean.getDoctorDep());
             etHospital.setText(patientCaseDetailBean.getHospital());
             etCaseInfo.setText(patientCaseDetailBean.getPatientWords());
-            etCaseNow.setText(patientCaseDetailBean.getCurrentInfo());
+            etCaseNow.setText(patientCaseDetailBean.getImportantHistory());
             //            etCaseImportment.setText(patientCaseDetailBean.getImportantHistory());
             etCaseCheck.setText(patientCaseDetailBean.getCheckReport());
             etCaseDealType.setText(patientCaseDetailBean.getTreat());
@@ -358,7 +380,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                 try
                 {
                     JSONObject object = new JSONObject(s);
-                    BaseResponse baseResponse = praseBaseResponse(object, CooperateDocBean.class);
+                    BaseResponse baseResponse = praseBaseResponse(object, String.class);
                     if (baseResponse != null && baseResponse.getCode() == 200)
                     {
                         ToastUtil.toast(HealthDetailActivity.this, baseResponse.getMsg());
@@ -433,7 +455,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                 try
                 {
                     JSONObject object = new JSONObject(s);
-                    BaseResponse baseResponse = praseBaseResponse(object, CooperateDocBean.class);
+                    BaseResponse baseResponse = praseBaseResponse(object, String.class);
                     if (baseResponse != null && baseResponse.getCode() == 200)
                     {
                         ToastUtil.toast(HealthDetailActivity.this, baseResponse.getMsg());
@@ -554,7 +576,9 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                              Integer.parseInt(strings1[2]));
         }
         timePicker = new TimePickerBuilder(this, (date, v) ->
-        {//选中事件回调
+        {
+            isModifyData = true;
+            //选中事件回调
             SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
             tvDiagnosisTime.setText(simpleDateFormat1.format(date));
             diagnosisTimeMil = date.getTime();
@@ -625,6 +649,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
         switch (task)
         {
             case UPLOAD_FILE:
+                isModifyData = true;
                 if (mSelectPath.size() - 1 > currentUploadImgIndex)
                 {
                     currentUploadImgIndex++;
@@ -793,6 +818,33 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
         }
         new DealImgThread().start();
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    /**
+     * 判断是否提示用户保存
+     */
+    private void finishPage()
+    {
+        if (isModifyData)
+        {
+            new SimpleDialog(this, "编辑内容还未保存，确定退出?", (dialog, which) -> finish(),
+                             (dialog, which) -> dialog.dismiss()).show();
+        }
+        else
+        {
+            finish();
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN)
+        {
+            finishPage();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     /**

@@ -1,10 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:clickable="true"
+    android:orientation="vertical"
     android:id="@+id/fragment_my_root_layout"
     android:background="@color/app_minor_bg"
     android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/bg_img"
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:scaleType="centerCrop"
+            android:src="@color/app_main_color" />
+
+        <RelativeLayout
+            android:id="@+id/fragmrnt_user_info_headimg_layout"
+            android:layout_width="130dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="77dp"
+            android:layout_height="130dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/fragmrnt_user_info_headimg"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/icon_default_imgs"
+                app:civ_border_color="#50ffffff"
+                app:civ_border_width="2dp" />
+
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/fragmrnt_user_info_auth"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginRight="13dp"
+                android:layout_marginBottom="13dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:src="@drawable/doc_auth_selector"
+                app:civ_border_color="#50ffffff"
+                app:civ_border_width="1px" />
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/fragmrnt_user_info_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fragmrnt_user_info_headimg_layout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="姓名"
+            android:textColor="@color/app_white_color"
+            android:textSize="17sp" />
+
+        <LinearLayout
+            android:id="@+id/fragment_my_title_layout"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/status_bar_fix"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="#00ffffff" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/test"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/app_title_bar_height"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:text="个人信息"
+                    android:textColor="@color/app_white_color"
+                    android:textSize="@dimen/app_main_title" />
+
+                <ImageView
+                    android:id="@+id/public_title_bar_back"
+                    android:layout_width="@dimen/app_title_bar_height"
+                    android:layout_height="@dimen/app_title_bar_height"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingBottom="15dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="15dp"
+                    android:src="@mipmap/icon_edit" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
     <custom.frame.widgets.scrollview.CustomListenScrollView
         android:id="@+id/fragment_my_scrollview"
@@ -16,59 +112,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/bg_img"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/img_user_bg" />
-
-            <RelativeLayout
-                android:id="@+id/fragmrnt_user_info_headimg_layout"
-                android:layout_width="130dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="77dp"
-                android:layout_height="130dp">
-
-                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/fragmrnt_user_info_headimg"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:layout_centerInParent="true"
-                    android:src="@mipmap/icon_default_imgs"
-                    app:civ_border_color="#50ffffff"
-                    app:civ_border_width="2dp" />
-
-                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/fragmrnt_user_info_auth"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginRight="13dp"
-                    android:layout_marginBottom="13dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:src="@drawable/doc_auth_selector"
-                    app:civ_border_color="#50ffffff"
-                    app:civ_border_width="1px" />
-            </RelativeLayout>
-
-
-            <TextView
-                android:id="@+id/fragmrnt_user_info_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/fragmrnt_user_info_headimg_layout"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp"
-                android:text="姓名"
-                android:textColor="@color/app_white_color"
-                android:textSize="22sp" />
-
-
             <RelativeLayout
                 android:id="@+id/fragment_my_auth_layout"
                 android:layout_width="match_parent"
-                android:layout_below="@id/bg_img"
                 android:visibility="visible"
                 android:background="@color/app_white_color"
                 android:layout_height="45dp">
@@ -524,12 +570,6 @@
                         android:visibility="gone"
                         android:layout_height="8dp" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1px"
-                        android:layout_alignParentBottom="true"
-                        android:background="@color/app_main_divideline" />
-
                 </RelativeLayout>
 
                 <View
@@ -537,62 +577,6 @@
                     android:layout_height="20dp"
                     android:background="@color/app_minor_bg" />
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/fragmrnt_user_info_exit"
-                android:layout_width="195dp"
-                android:layout_height="45dp"
-                android:layout_below="@id/fragment_my_info_layout"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="4dp"
-                android:layout_marginTop="10dp"
-                android:visibility="gone"
-                android:background="@drawable/corner_exit_full_bg"
-                android:gravity="center"
-                android:text="退出登录"
-                android:textColor="@color/app_white_color"
-                android:textSize="18sp" />
         </RelativeLayout>
-
     </custom.frame.widgets.scrollview.CustomListenScrollView>
-
-    <LinearLayout
-        android:id="@+id/fragment_my_title_layout"
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
-
-        <View
-            android:id="@+id/status_bar_fix"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="#00ffffff" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/test"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/app_title_bar_height"
-                android:layout_centerHorizontal="true"
-                android:gravity="center"
-                android:text="个人信息"
-                android:textColor="@color/app_white_color"
-                android:textSize="@dimen/app_main_title" />
-
-            <ImageView
-                android:id="@+id/public_title_bar_back"
-                android:layout_width="@dimen/app_title_bar_height"
-                android:layout_height="@dimen/app_title_bar_height"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:paddingBottom="15dp"
-                android:paddingRight="16dp"
-                android:paddingTop="15dp"
-                android:src="@mipmap/icon_edit" />
-        </RelativeLayout>
-
-    </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

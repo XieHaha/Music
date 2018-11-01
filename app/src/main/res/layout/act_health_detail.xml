@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="基本信息"
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:textSize="12sp" />
 
                 <TextView
@@ -48,7 +48,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp">
+                android:minHeight="45dp"
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/txt1"
@@ -57,7 +58,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="12dp"
                     android:text="诊断"
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:textSize="15sp" />
 
                 <TextView
@@ -76,8 +77,11 @@
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
                     android:maxLength="50"
+                    android:minHeight="45dp"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp"
                     android:background="@null"
-                    android:textColor="#333333"
+                    android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp" />
 
                 <View
@@ -90,7 +94,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp">
+                android:minHeight="45dp"
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/txt2"
@@ -99,7 +104,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="12dp"
                     android:text="就诊时间"
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:textSize="15sp" />
 
                 <TextView
@@ -119,8 +124,9 @@
                     android:layout_marginRight="16dp"
                     android:background="@null"
                     android:text=""
+                    android:minHeight="45dp"
                     android:gravity="center_vertical"
-                    android:textColor="#333333"
+                    android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp" />
 
                 <View
@@ -133,7 +139,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp">
+                android:minHeight="45dp"
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -141,7 +148,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="12dp"
                     android:text="医院"
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:textSize="15sp" />
 
                 <EditText
@@ -152,8 +159,11 @@
                     android:layout_marginRight="16dp"
                     android:background="@null"
                     android:text=""
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp"
+                    android:minHeight="45dp"
                     android:maxLength="20"
-                    android:textColor="#333333"
+                    android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp" />
 
                 <View
@@ -166,7 +176,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp">
+                android:minHeight="45dp"
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -174,7 +185,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="12dp"
                     android:text="科室"
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:textSize="15sp" />
 
                 <EditText
@@ -186,7 +197,10 @@
                     android:background="@null"
                     android:maxLength="20"
                     android:text=""
-                    android:textColor="#333333"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp"
+                    android:minHeight="45dp"
+                    android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp" />
 
                 <View
@@ -199,7 +213,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp">
+                android:minHeight="45dp"
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -207,7 +222,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="12dp"
                     android:text="主诉"
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:textSize="15sp" />
 
                 <EditText
@@ -218,8 +233,11 @@
                     android:layout_marginRight="16dp"
                     android:background="@null"
                     android:text=""
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp"
+                    android:minHeight="45dp"
                     android:maxLength="100"
-                    android:textColor="#333333"
+                    android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp" />
 
                 <View
@@ -232,7 +250,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp">
+                android:minHeight="45dp"
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -240,7 +259,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="12dp"
                     android:text="病史"
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:textSize="15sp" />
 
                 <EditText
@@ -251,8 +270,11 @@
                     android:layout_marginRight="16dp"
                     android:background="@null"
                     android:text=""
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp"
+                    android:minHeight="45dp"
                     android:maxLength="200"
-                    android:textColor="#333333"
+                    android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp" />
 
                 <View
@@ -266,7 +288,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:visibility="gone"
-                android:layout_height="45dp">
+                android:minHeight="45dp"
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -274,7 +297,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="16dp"
                     android:text="重要病史"
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:textSize="15sp" />
 
                 <EditText
@@ -285,7 +308,9 @@
                     android:layout_marginRight="16dp"
                     android:background="@null"
                     android:text=""
-                    android:textColor="#333333"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp"
+                    android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp" />
 
                 <View
@@ -298,7 +323,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp">
+                android:minHeight="45dp"
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -306,7 +332,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="12dp"
                     android:text="体格检查"
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:textSize="15sp" />
 
                 <EditText
@@ -316,9 +342,12 @@
                     android:layout_marginLeft="95dp"
                     android:layout_marginRight="16dp"
                     android:background="@null"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp"
                     android:text=""
+                    android:minHeight="45dp"
                     android:maxLength="100"
-                    android:textColor="#333333"
+                    android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp" />
 
                 <View
@@ -337,7 +366,7 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="12dp"
                 android:text="辅助检查"
-                android:textColor="#999999"
+                android:textColor="@color/app_hint_color"
                 android:textSize="12sp" />
 
             <custom.frame.widgets.gridview.AutoGridView
@@ -345,16 +374,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/app_white_color" />
+
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1px"
+                android:layout_height="10dp"
                 android:layout_alignParentBottom="true"
-                android:background="@color/app_main_divideline" />
+                android:background="@color/app_minor_bg" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
                 android:background="@color/app_white_color"
-                android:layout_height="45dp">
+                android:minHeight="45dp"
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -362,7 +393,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="12dp"
                     android:text="治疗"
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:textSize="15sp" />
 
                 <EditText
@@ -374,6 +405,8 @@
                     android:background="@null"
                     android:minHeight="45dp"
                     android:maxLength="100"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp"
                     android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp" />
 
@@ -394,7 +427,7 @@
                 android:paddingLeft="12dp"
                 android:paddingTop="12dp"
                 android:text=""
-                android:textColor="#999999"
+                android:textColor="@color/app_hint_color"
                 android:textSize="12sp" />
         </LinearLayout>
     </ScrollView>

@@ -5,7 +5,6 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,7 +34,6 @@ import com.yht.yihuantong.api.notify.INotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.qrcode.BarCodeImageView;
 import com.yht.yihuantong.qrcode.DialogPersonalBarCode;
-import custom.frame.utils.GlideHelper;
 import com.yht.yihuantong.ui.activity.AuthDocActivity;
 import com.yht.yihuantong.ui.activity.EditInfoActivity;
 import com.yht.yihuantong.ui.activity.SettingActivity;
@@ -61,6 +59,7 @@ import custom.frame.permission.Permission;
 import custom.frame.permission.PermissionHelper;
 import custom.frame.ui.fragment.BaseFragment;
 import custom.frame.utils.DirHelper;
+import custom.frame.utils.GlideHelper;
 import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.scrollview.CustomListenScrollView;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -441,21 +440,21 @@ public class UserFragment extends BaseFragment
     @Override
     public void onScrollChanged(CustomListenScrollView scrollView, int l, int t, int oldl, int oldt)
     {
-        int scrollHeight = (scrollView.getChildAt(0).getHeight() - scrollView.getMeasuredHeight());
-        int alpha;
-        if (t < scrollHeight && t > 0)
-        {
-            alpha = t * 255 / scrollHeight;
-            llTitleLayout.setBackgroundColor(Color.argb(alpha, 231, 50, 120));
-        }
-        if (t >= scrollHeight)
-        {
-            llTitleLayout.setBackgroundColor(Color.argb(255, 231, 50, 120));
-        }
-        if (t <= 0)
-        {
-            llTitleLayout.setBackgroundColor(Color.argb(0, 231, 50, 120));
-        }
+        //        int scrollHeight = (scrollView.getChildAt(0).getHeight() - scrollView.getMeasuredHeight());
+        //        int alpha;
+        //        if (t < scrollHeight && t > 0)
+        //        {
+        //            alpha = t * 255 / scrollHeight;
+        //            llTitleLayout.setBackgroundColor(Color.argb(alpha, 231, 50, 120));
+        //        }
+        //        if (t >= scrollHeight)
+        //        {
+        //            llTitleLayout.setBackgroundColor(Color.argb(255, 231, 50, 120));
+        //        }
+        //        if (t <= 0)
+        //        {
+        //            llTitleLayout.setBackgroundColor(Color.argb(0, 231, 50, 120));
+        //        }
     }
 
     /**

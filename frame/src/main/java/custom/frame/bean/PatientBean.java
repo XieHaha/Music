@@ -23,7 +23,9 @@ public class PatientBean extends DataSupport implements Serializable {
     private String past_disease;
     private String allergy;
     private String im_username;
+    private String address;
     private String nickname;
+    private String unitName;
     private long date;
     private long birthDate;
     private long gmtCreate;
@@ -148,6 +150,26 @@ public class PatientBean extends DataSupport implements Serializable {
 
     public void setIm_username(String im_username) {
         this.im_username = im_username;
+    }
+
+    public String getAddress()
+    {
+        return address;
+    }
+
+    public void setAddress(String address)
+    {
+        this.address = address;
+    }
+
+    public String getUnitName()
+    {
+        return unitName;
+    }
+
+    public void setUnitName(String unitName)
+    {
+        this.unitName = unitName;
     }
 
     public long getGmtCreate() {
