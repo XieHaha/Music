@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/app_minor_bg"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/top_bar"
+        layout="@layout/public_title_bar" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:src="@mipmap/icon_logo"
+        android:layout_marginTop="90dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="100dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:textColor="@color/app_main_txt_color"
+        android:text="会珍医生版"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:textSize="17sp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:textColor="@color/app_minor_color"
+        android:text="成都繁简科技有限公司 版权所有"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:textSize="13sp"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

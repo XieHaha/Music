@@ -46,7 +46,7 @@ public class UserInfoActivity extends BaseActivity
     private TextView tvChat;
     private View view_pop;
     private PopupWindow mPopupwinow;
-    private TextView tvDelete, tvChange;
+    private TextView tvOne, tvTwo;
     /**
      * 2018年10月9日10:59:42
      */
@@ -233,7 +233,7 @@ public class UserInfoActivity extends BaseActivity
             case R.id.act_user_info_more:
                 showPop();
                 break;
-            case R.id.delete:
+            case R.id.txt_one:
                 if (mPopupwinow != null)
                 {
                     mPopupwinow.dismiss();
@@ -244,7 +244,7 @@ public class UserInfoActivity extends BaseActivity
                 intent.putExtra(CommonData.KEY_ID, cooperateDocBean.getDoctorId());
                 startActivityForResult(intent, MODIFY_NICKNAME);
                 break;
-            case R.id.change:
+            case R.id.txt_two:
                 if (mPopupwinow != null)
                 {
                     mPopupwinow.dismiss();
@@ -319,12 +319,12 @@ public class UserInfoActivity extends BaseActivity
     private void showPop()
     {
         view_pop = LayoutInflater.from(this).inflate(R.layout.main_pop_menu, null);
-        tvDelete = (TextView)view_pop.findViewById(R.id.delete);
-        tvChange = (TextView)view_pop.findViewById(R.id.change);
-        tvChange.setText("删除");
-        tvDelete.setText("设置备注");
-        tvDelete.setOnClickListener(this);
-        tvChange.setOnClickListener(this);
+        tvOne = (TextView)view_pop.findViewById(R.id.txt_one);
+        tvTwo = (TextView)view_pop.findViewById(R.id.txt_two);
+        tvOne.setText("设置备注");
+        tvTwo.setText("删除");
+        tvOne.setOnClickListener(this);
+        tvTwo.setOnClickListener(this);
         if (mPopupwinow == null)
         {
             //新建一个popwindow
@@ -335,6 +335,6 @@ public class UserInfoActivity extends BaseActivity
         mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mPopupwinow.setOutsideTouchable(true);
         mPopupwinow.showAtLocation(view_pop, Gravity.TOP | Gravity.RIGHT, 0,
-                                   (int)AllUtils.dipToPx(this, 65));
+                                   (int)AllUtils.dipToPx(this, 55));
     }
 }

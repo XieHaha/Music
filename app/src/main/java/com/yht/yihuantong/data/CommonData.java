@@ -7,6 +7,10 @@ public interface CommonData
      */
     String KEY_PUBLIC = "key_public";
     /**
+     * 公用数据key
+     */
+    String KEY_PUBLIC_STRING = "key_public_string";
+    /**
      * 用户登录账户
      */
     String KEY_USER_PHONE = "key_user_phone";
@@ -134,4 +138,32 @@ public interface CommonData
      * 收到转诊通知 合作医生转给我的
      */
     int JIGUANG_CODE_TRANS_PATIENT_APPLY = 133;
+    /**
+     * 患者病例 诊断
+     */
+    int CODE_CASE_DIA = 200;
+    /**
+     * 患者病例 医院
+     */
+    int CODE_CASE_HOSPITAL = 201;
+    /**
+     * 患者病例 科室
+     */
+    int CODE_CASE_TYPE = 202;
+    /**
+     * 患者病例 主诉
+     */
+    int CODE_CASE_INFO = 203;
+    /**
+     * 患者病例 病史
+     */
+    int CODE_CASE_NOW = 204;
+    /**
+     * 患者病例 体格检查
+     */
+    int CODE_CASE_CHECK = 205;
+    /**
+     * 患者病例 治疗
+     */
+    int CODE_CASE_DEAL_WAY = 206;
 }

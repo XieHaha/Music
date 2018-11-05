@@ -88,6 +88,7 @@ public class SettingActivity extends BaseActivity
     {
         super.initListener();
         findViewById(R.id.act_setting_vesion_layout).setOnClickListener(this);
+        findViewById(R.id.act_setting_about_layout).setOnClickListener(this);
         findViewById(R.id.act_setting_exit_layout).setOnClickListener(this);
     }
 
@@ -129,6 +130,9 @@ public class SettingActivity extends BaseActivity
                     startActivity(new Intent(this, LoginActivity.class));
                     System.exit(0);
                 }, (dialog, which) -> dialog.dismiss()).show();
+                break;
+            case R.id.act_setting_about_layout:
+                startActivity(new Intent(this, AboutOurActivity.class));
                 break;
         }
     }

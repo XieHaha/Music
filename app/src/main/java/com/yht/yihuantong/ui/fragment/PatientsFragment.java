@@ -62,7 +62,7 @@ public class PatientsFragment extends BaseFragment
     private TextView tvFooterHintTxt, tvHeanderHintTxt;
     private PopupWindow mPopupwinow;
     private View view_pop;
-    private TextView tvHistory, tvScan;
+    private TextView tvOne, tvTwo;
     private INotifyChangeListenerServer iNotifyChangeListenerServer;
     private List<PatientBean> patientBeanList = new ArrayList<>();
     /**
@@ -134,7 +134,7 @@ public class PatientsFragment extends BaseFragment
         ((TextView)view.findViewById(R.id.public_title_bar_title)).setText("我的患者");
         swipeRefreshLayout = view.findViewById(R.id.fragment_patients_swipe_layout);
         autoLoadRecyclerView = view.findViewById(R.id.fragment_patients_recycler_view);
-        ivTitleBarMore = view.findViewById(R.id.public_title_bar_more_two);
+        ivTitleBarMore = view.findViewById(R.id.public_title_bar_more_three);
         ivTitleBarMore.setVisibility(View.VISIBLE);
         headerView = LayoutInflater.from(getContext())
                                    .inflate(R.layout.view_cooperate_doc_header, null);
@@ -239,13 +239,14 @@ public class PatientsFragment extends BaseFragment
     private void showPop()
     {
         view_pop = LayoutInflater.from(getContext()).inflate(R.layout.main_pop_menu, null);
-        tvHistory = (TextView)view_pop.findViewById(R.id.delete);
-        tvHistory.setText("转诊记录");
-        tvHistory.setVisibility(View.GONE);
-        tvScan = (TextView)view_pop.findViewById(R.id.change);
-        tvScan.setText("扫一扫");
-        tvHistory.setOnClickListener(this);
-        tvScan.setOnClickListener(this);
+        tvOne = (TextView)view_pop.findViewById(R.id.txt_one);
+        tvOne.setText("转诊记录");
+        tvOne.setVisibility(View.GONE);
+        View line = view_pop.findViewById(R.id.line1);
+        line.setVisibility(View.GONE);
+        tvTwo = (TextView)view_pop.findViewById(R.id.txt_two);
+        tvTwo.setText("扫一扫");
+        tvTwo.setOnClickListener(this);
         if (mPopupwinow == null)
         {
             //新建一个popwindow
@@ -257,7 +258,7 @@ public class PatientsFragment extends BaseFragment
         mPopupwinow.setOutsideTouchable(true);
         mPopupwinow.showAtLocation(view_pop, Gravity.TOP | Gravity.RIGHT,
                                    (int)AllUtils.dipToPx(getContext(), 3),
-                                   (int)AllUtils.dipToPx(getContext(), 65));
+                                   (int)AllUtils.dipToPx(getContext(), 60));
     }
 
     @Override
@@ -274,21 +275,7 @@ public class PatientsFragment extends BaseFragment
                 intent = new Intent(getContext(), TransferPatientFromActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_PATIENT_EXCHANGE);
                 break;
-            case R.id.public_title_bar_more_two:
-                showPop();
-                break;
-            case R.id.delete://转诊记录
-                //                if (mPopupwinow != null)
-                //                {
-                //                    mPopupwinow.dismiss();
-                //                }
-                //                startActivity(new Intent(getContext(), ChangePatientHistoryActivity.class));
-                break;
-            case R.id.change://扫一扫
-                if (mPopupwinow != null)
-                {
-                    mPopupwinow.dismiss();
-                }
+            case R.id.public_title_bar_more_three:
                 IntentIntegrator.forSupportFragment(this)
                                 .setBarcodeImageEnabled(false)
                                 .setPrompt("将二维码放入框内，即可自动识别")

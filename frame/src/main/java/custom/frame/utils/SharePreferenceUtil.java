@@ -17,51 +17,78 @@ import java.util.Set;
  * @author liushubao
  *         Created by admin on 2017/3/6.
  */
-public class SharePreferenceUtil {
+public class SharePreferenceUtil
+{
     public Context mContext;
     public String spKey, spValue;
     public SharedPreferences sp;
     public Editor spEditor;
-
     /**
      * 保存在手机里面的默认文件名
      */
     public static final String FILE_NAME = "YHT";
 
-    public SharePreferenceUtil(Context mContext) {
+    public SharePreferenceUtil(Context mContext)
+    {
         super();
         this.mContext = mContext;
     }
 
     //存
-    public void putString( String spKey, String spValue) {
+    public void putString(String spKey, String spValue)
+    {
         spEditor = mContext.getSharedPreferences(FILE_NAME, 0).edit();
         spEditor.putString(spKey, spValue);
         spEditor.commit();
     }
 
     //取
-    public String getString( String spKey) {
+    public String getString(String spKey)
+    {
         sp = mContext.getSharedPreferences(FILE_NAME, 0);
         String value = "";
-        if (sp != null) {
+        if (sp != null)
+        {
             value = sp.getString(spKey, "");
         }
         return value;
     }
 
-    //删
-    public void clear(String spKey) {
+    //存
+    public void putBoolean(String spKey, boolean spValue)
+    {
+        spEditor = mContext.getSharedPreferences(FILE_NAME, 0).edit();
+        spEditor.putBoolean(spKey, spValue);
+        spEditor.commit();
+    }
+
+    //取
+    public boolean getBoolean(String spKey)
+    {
         sp = mContext.getSharedPreferences(FILE_NAME, 0);
-        if (sp != null) {
+        boolean value = false;
+        if (sp != null)
+        {
+            value = sp.getBoolean(spKey, false);
+        }
+        return value;
+    }
+
+    //删
+    public void clear(String spKey)
+    {
+        sp = mContext.getSharedPreferences(FILE_NAME, 0);
+        if (sp != null)
+        {
             sp.edit().remove(spKey).commit();
         }
     }
 
     @Override
-    public String toString() {
-        return "SharePreferenceUtil [mContext=" + mContext + ", spKey=" + spKey
-                + ", spValue=" + spValue + "]";
+    public String toString()
+    {
+        return "SharePreferenceUtil [mContext=" + mContext + ", spKey=" + spKey + ", spValue=" +
+               spValue + "]";
     }
 
     /**
@@ -72,25 +99,38 @@ public class SharePreferenceUtil {
      * @param object
      */
     @SuppressWarnings("unchecked")
-    public static void putObject(Context context, String key, Object object) {
-
-        if (object != null) {
+    public static void putObject(Context context, String key, Object object)
+    {
+        if (object != null)
+        {
             SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
             Editor editor = sp.edit();
-
-            if (object instanceof String) {
-                editor.putString(key, (String) object);
-            } else if (object instanceof Integer) {
-                editor.putInt(key, (Integer) object);
-            } else if (object instanceof Boolean) {
-                editor.putBoolean(key, (Boolean) object);
-            } else if (object instanceof Float) {
-                editor.putFloat(key, (Float) object);
-            } else if (object instanceof Long) {
-                editor.putLong(key, (Long) object);
-            } else if (object instanceof Set<?>) {
-                editor.putStringSet(key, (Set<String>) object);
-            } else {
+            if (object instanceof String)
+            {
+                editor.putString(key, (String)object);
+            }
+            else if (object instanceof Integer)
+            {
+                editor.putInt(key, (Integer)object);
+            }
+            else if (object instanceof Boolean)
+            {
+                editor.putBoolean(key, (Boolean)object);
+            }
+            else if (object instanceof Float)
+            {
+                editor.putFloat(key, (Float)object);
+            }
+            else if (object instanceof Long)
+            {
+                editor.putLong(key, (Long)object);
+            }
+            else if (object instanceof Set<?>)
+            {
+                editor.putStringSet(key, (Set<String>)object);
+            }
+            else
+            {
                 editor.putString(key, JSON.toJSONString(object));
             }
             SharedPreferencesCompat.apply(editor);
@@ -105,43 +145,58 @@ public class SharePreferenceUtil {
      * @param defaultObject
      * @return
      */
-    public static Object getObject(Context context, String key, Object defaultObject) {
+    public static Object getObject(Context context, String key, Object defaultObject)
+    {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
-        if (defaultObject instanceof String) {
-            return sp.getString(key, (String) defaultObject);
-        } else if (defaultObject instanceof Integer) {
-            return sp.getInt(key, (Integer) defaultObject);
-        } else if (defaultObject instanceof Boolean) {
-            return sp.getBoolean(key, (Boolean) defaultObject);
-        } else if (defaultObject instanceof Float) {
-            return sp.getFloat(key, (Float) defaultObject);
-        } else if (defaultObject instanceof Long) {
-            return sp.getLong(key, (Long) defaultObject);
+        if (defaultObject instanceof String)
+        {
+            return sp.getString(key, (String)defaultObject);
+        }
+        else if (defaultObject instanceof Integer)
+        {
+            return sp.getInt(key, (Integer)defaultObject);
+        }
+        else if (defaultObject instanceof Boolean)
+        {
+            return sp.getBoolean(key, (Boolean)defaultObject);
+        }
+        else if (defaultObject instanceof Float)
+        {
+            return sp.getFloat(key, (Float)defaultObject);
+        }
+        else if (defaultObject instanceof Long)
+        {
+            return sp.getLong(key, (Long)defaultObject);
         }
         return null;
     }
 
-    public static Boolean getBoolean(Context context, String key, Boolean defaultValue) {
+    public static Boolean getBoolean(Context context, String key, Boolean defaultValue)
+    {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         return sp.getBoolean(key, defaultValue);
     }
 
-    public static String getString(Context context, String key, String defaultValue) {
+    public static String getString(Context context, String key, String defaultValue)
+    {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         return sp.getString(key, defaultValue);
     }
 
-    public static Integer getInt(Context context, String key, int defaultValue) {
+    public static Integer getInt(Context context, String key, int defaultValue)
+    {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         return sp.getInt(key, defaultValue);
     }
 
-    public static Float getFloat(Context context, String key, float defaultValue) {
+    public static Float getFloat(Context context, String key, float defaultValue)
+    {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         return sp.getFloat(key, defaultValue);
     }
 
-    public static Long getLong(Context context, String key, long defaultValue) {
+    public static Long getLong(Context context, String key, long defaultValue)
+    {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         return sp.getLong(key, defaultValue);
     }
@@ -152,7 +207,8 @@ public class SharePreferenceUtil {
      * @param context
      * @param key
      */
-    public static void remove(Context context, String key) {
+    public static void remove(Context context, String key)
+    {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         Editor editor = sp.edit();
         editor.putString(key, "");
@@ -165,7 +221,8 @@ public class SharePreferenceUtil {
      *
      * @param context
      */
-    public static void clear(Context context) {
+    public static void clear(Context context)
+    {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         Editor editor = sp.edit();
         editor.clear();
@@ -179,7 +236,8 @@ public class SharePreferenceUtil {
      * @param key
      * @return
      */
-    public static boolean contains(Context context, String key) {
+    public static boolean contains(Context context, String key)
+    {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         return sp.contains(key);
     }
@@ -190,7 +248,8 @@ public class SharePreferenceUtil {
      * @param context
      * @return
      */
-    public static Map<String, ?> getAll(Context context) {
+    public static Map<String, ?> getAll(Context context)
+    {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         return sp.getAll();
     }
@@ -198,7 +257,8 @@ public class SharePreferenceUtil {
     /**
      * 创建一个解决SharedPreferencesCompat.apply方法的一个兼容类
      */
-    private static class SharedPreferencesCompat {
+    private static class SharedPreferencesCompat
+    {
         private static final Method sApplyMethod = findApplyMethod();
 
         /**
@@ -206,14 +266,17 @@ public class SharePreferenceUtil {
          *
          * @return
          */
-        @SuppressWarnings({"unchecked", "rawtypes"})
-        private static Method findApplyMethod() {
-            try {
+        @SuppressWarnings({ "unchecked", "rawtypes" })
+        private static Method findApplyMethod()
+        {
+            try
+            {
                 Class clz = Editor.class;
                 return clz.getMethod("apply");
-            } catch (NoSuchMethodException e) {
             }
-
+            catch (NoSuchMethodException e)
+            {
+            }
             return null;
         }
 
@@ -222,15 +285,24 @@ public class SharePreferenceUtil {
          *
          * @param editor
          */
-        public static void apply(Editor editor) {
-            try {
-                if (sApplyMethod != null) {
+        public static void apply(Editor editor)
+        {
+            try
+            {
+                if (sApplyMethod != null)
+                {
                     sApplyMethod.invoke(editor);
                     return;
                 }
-            } catch (IllegalArgumentException e) {
-            } catch (IllegalAccessException e) {
-            } catch (InvocationTargetException e) {
+            }
+            catch (IllegalArgumentException e)
+            {
+            }
+            catch (IllegalAccessException e)
+            {
+            }
+            catch (InvocationTargetException e)
+            {
             }
             editor.commit();
         }

@@ -72,7 +72,7 @@ public class UserFragment extends BaseFragment
 {
     private CircleImageView headImg, authImg;
     private LinearLayout llTitleLayout;
-    private RelativeLayout rlAuthLayout;
+    private RelativeLayout rlAuthLayout, rlTransferMsg;
     private CustomListenScrollView scrollView;
     private TextView tvName, tvHospital, tvType, tvTitle, tvIntroduce;
     private TextView tvAuth, tvAuthStatus;
@@ -131,6 +131,15 @@ public class UserFragment extends BaseFragment
                     YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
                     initAuthStatus(6);
                     break;
+                case 10:
+                    //TODO 统计未查看转诊申请数量
+                    sharePreferenceUtil.putBoolean(CommonData.KEY_CHANGE_PATIENT_NUM, true);
+                    if (onTransferCallbackListener != null)
+                    {
+                        onTransferCallbackListener.onTransferCallback();
+                    }
+                    rlTransferMsg.setVisibility(View.VISIBLE);
+                    break;
             }
         }
     };
@@ -141,7 +150,7 @@ public class UserFragment extends BaseFragment
     {
         if ("from".equals(data))
         {
-            //TODO 统计未查看转诊申请数量
+            handler.sendEmptyMessage(10);
         }
     };
     /**
@@ -182,6 +191,7 @@ public class UserFragment extends BaseFragment
         view.findViewById(R.id.fragmrnt_user_transfer_to_layout).setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_transfer_from_layout).setOnClickListener(this);
         rlAuthLayout = view.findViewById(R.id.fragment_my_auth_layout);
+        rlTransferMsg = view.findViewById(R.id.message_red_point);
         scrollView = view.findViewById(R.id.fragment_my_scrollview);
         llTitleLayout = view.findViewById(R.id.fragment_my_title_layout);
         headImg = view.findViewById(R.id.fragmrnt_user_info_headimg);
@@ -370,6 +380,12 @@ public class UserFragment extends BaseFragment
                 startActivity(intent);
                 break;
             case R.id.fragmrnt_user_transfer_from_layout:
+                rlTransferMsg.setVisibility(View.GONE);
+                sharePreferenceUtil.putBoolean(CommonData.KEY_CHANGE_PATIENT_NUM, false);
+                if (onTransferCallbackListener != null)
+                {
+                    onTransferCallbackListener.onTransferCallback();
+                }
                 intent = new Intent(getContext(), TransferPatientFromActivity.class);
                 startActivity(intent);
                 break;
@@ -735,15 +751,15 @@ public class UserFragment extends BaseFragment
                 doctorTransferPatientListener, RegisterType.UNREGISTER);
     }
 
-    private OnApplyCallbackListener onApplyCallbackListener;
+    public OnTransferCallbackListener onTransferCallbackListener;
 
-    public void setOnApplyCallbackListener(OnApplyCallbackListener onApplyCallbackListener)
+    public void setOnTransferCallbackListener(OnTransferCallbackListener onTransferCallbackListener)
     {
-        this.onApplyCallbackListener = onApplyCallbackListener;
+        this.onTransferCallbackListener = onTransferCallbackListener;
     }
 
-    public interface OnApplyCallbackListener
+    public interface OnTransferCallbackListener
     {
-        void onApplyCallback();
+        void onTransferCallback();
     }
 }

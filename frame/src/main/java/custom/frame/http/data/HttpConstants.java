@@ -39,4 +39,8 @@ public interface HttpConstants
      * HTTP TAG
      */
     String NULLTag = "  null";
+    /**
+     * 登录协议
+     */
+    String BASE_BASIC_PROTOCOL_URL = "http://www.zychealth.com/privacy/privacy-policy.html";
 }

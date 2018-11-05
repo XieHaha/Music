@@ -216,7 +216,6 @@
                             </RelativeLayout>
 
 
-
                         </RelativeLayout>
 
                         <TextView
@@ -441,6 +440,7 @@
                                     android:layout_centerInParent="true"
                                     android:scaleType="centerCrop"
                                     android:layout_height="match_parent" />
+
                                 <TextView
                                     android:id="@+id/act_auth_doc_doccard_back_hint"
                                     android:layout_width="match_parent"
@@ -490,14 +490,14 @@
             android:textSize="18sp" />
     </RelativeLayout>
     <!--<TextView-->
-        <!--android:id="@+id/act_auth_doc_apply"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:text="提交审核"-->
-        <!--android:textColor="@color/app_white_color"-->
-        <!--android:gravity="center"-->
-        <!--android:textSize="15sp"-->
-        <!--android:background="@color/app_main_color"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_height="48dp" />-->
+    <!--android:id="@+id/act_auth_doc_apply"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:text="提交审核"-->
+    <!--android:textColor="@color/app_white_color"-->
+    <!--android:gravity="center"-->
+    <!--android:textSize="15sp"-->
+    <!--android:background="@color/app_main_color"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_height="48dp" />-->
 
 </RelativeLayout>

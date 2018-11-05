@@ -1,6 +1,5 @@
 package com.yht.yihuantong.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
@@ -11,16 +10,11 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
@@ -66,20 +60,23 @@ import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.DirHelper;
 import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.gridview.AutoGridView;
+import custom.frame.widgets.textview.ExspandTextView;
 
 /**
  * 病例详情（编辑）
  *
  * @author DUNDUN
  */
-public class HealthDetailActivity extends BaseActivity implements AdapterView.OnItemClickListener
+public class HealthDetailActivity extends BaseActivity
+        implements AdapterView.OnItemClickListener, ExspandTextView.OnContentClickLinsener,
+                   CommonData
 {
     private TextView tvTitleBarMore, tvCreateTime, tvHint;
     private ImageView ivTitlebBarMore;
-    private EditText etDiagnosis, etDepartment, etHospital, etCaseInfo, etCaseNow, etCaseImportment, etCaseCheck, etCaseDealType;
+    private TextView tvDiagnosis, tvDepartment, tvHospital, tvCaseDealType;
     private TextView tvDiagnosisTime;
+    private ExspandTextView tvCaseInfo, tvCaseNow, tvCaseCheck;
     private AutoGridView autoGridView;
-    private ScrollView scrollView;
     private PatientCaseDetailBean patientCaseDetailBean;
     private Uri originUri;
     private Uri cutFileUri;
@@ -90,7 +87,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
      * 时间选择控件
      */
     private TimePickerView timePicker;
-    private String diagnosis, diagnosisTime, department, hospital, caseInfo, caseNow, caseImportment, caseCheck, caseDealType;
+    private String diagnosis, department, hospital, caseInfo, caseNow, caseCheck, caseDealType;
     /**
      * 是否新增病例
      */
@@ -162,22 +159,20 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
     {
         super.initView(savedInstanceState);
         ((TextView)findViewById(R.id.public_title_bar_title)).setText("健康详情");
-        scrollView = (ScrollView)findViewById(R.id.act_health_detail_scroll);
         tvTitleBarMore = (TextView)findViewById(R.id.public_title_bar_more_txt);
         ivTitlebBarMore = (ImageView)findViewById(R.id.public_title_bar_more);
         tvCreateTime = (TextView)findViewById(R.id.act_health_detail_create_time);
         tvHint = (TextView)findViewById(R.id.act_health_detail_hint);
-        etDiagnosis = (EditText)findViewById(R.id.act_health_detail_diagnosis);
+        tvDiagnosis = (TextView)findViewById(R.id.act_health_detail_diagnosis);
         tvDiagnosisTime = (TextView)findViewById(R.id.act_health_detail_diagnosis_time);
         diagnosisTimeMil = System.currentTimeMillis();
         tvDiagnosisTime.setText(AllUtils.formatDate(diagnosisTimeMil, AllUtils.YYYY_MM_DD));
-        etDepartment = (EditText)findViewById(R.id.act_health_detail_department);
-        etHospital = (EditText)findViewById(R.id.act_health_detail_hopital);
-        etCaseInfo = (EditText)findViewById(R.id.act_health_detail_case_info);
-        etCaseNow = (EditText)findViewById(R.id.act_health_detail_case_now);
-        //        etCaseImportment = (EditText)findViewById(R.id.act_health_detail_case_importent);
-        etCaseCheck = (EditText)findViewById(R.id.act_health_detail_check);
-        etCaseDealType = (EditText)findViewById(R.id.act_health_detail_deal_type);
+        tvDepartment = (TextView)findViewById(R.id.act_health_detail_department);
+        tvHospital = (TextView)findViewById(R.id.act_health_detail_hopital);
+        tvCaseInfo = (ExspandTextView)findViewById(R.id.act_health_detail_case_info);
+        tvCaseNow = (ExspandTextView)findViewById(R.id.act_health_detail_case_now);
+        tvCaseCheck = (ExspandTextView)findViewById(R.id.act_health_detail_check);
+        tvCaseDealType = (TextView)findViewById(R.id.act_health_detail_deal_type);
         autoGridView = (AutoGridView)findViewById(R.id.act_health_detail_auto_gridview);
     }
 
@@ -217,47 +212,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
         autoGridView.setOnItemClickListener(this);
         tvTitleBarMore.setOnClickListener(this);
         ivTitlebBarMore.setOnClickListener(this);
-        scrollView.setOnTouchListener((v, event) ->
-                                      {
-                                          hideSoftInputFromWindow();
-                                          return false;
-                                      });
-        backBtn.setOnClickListener(view ->
-                                   {
-                                       hideSoftInputFromWindow();
-                                       finish();
-                                   });
-        TextChange textChange = new TextChange();
-        etDiagnosis.addTextChangedListener(textChange);
-        etDepartment.addTextChangedListener(textChange);
-        etHospital.addTextChangedListener(textChange);
-        etCaseInfo.addTextChangedListener(textChange);
-        etCaseNow.addTextChangedListener(textChange);
-        etCaseCheck.addTextChangedListener(textChange);
-        etCaseDealType.addTextChangedListener(textChange);
         backBtn.setOnClickListener(v -> finishPage());
-    }
-
-    /**
-     * 监听所有输入框变化
-     */
-    private class TextChange implements TextWatcher
-    {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after)
-        {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count)
-        {
-            isModifyData = true;
-        }
-
-        @Override
-        public void afterTextChanged(Editable s)
-        {
-        }
     }
 
     /**
@@ -268,20 +223,26 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
     private void initWidght(boolean mode)
     {
         tvDiagnosisTime.setClickable(mode);
-        etDiagnosis.setFocusable(mode);
-        etDiagnosis.setFocusableInTouchMode(mode);
-        etDepartment.setFocusable(mode);
-        etDepartment.setFocusableInTouchMode(mode);
-        etHospital.setFocusable(mode);
-        etHospital.setFocusableInTouchMode(mode);
-        etCaseInfo.setFocusable(mode);
-        etCaseInfo.setFocusableInTouchMode(mode);
-        etCaseNow.setFocusable(mode);
-        etCaseNow.setFocusableInTouchMode(mode);
-        etCaseCheck.setFocusable(mode);
-        etCaseCheck.setFocusableInTouchMode(mode);
-        etCaseDealType.setFocusable(mode);
-        etCaseDealType.setFocusableInTouchMode(mode);
+        if (mode)
+        {
+            tvDiagnosis.setOnClickListener(this);
+            tvDepartment.setOnClickListener(this);
+            tvHospital.setOnClickListener(this);
+            tvCaseDealType.setOnClickListener(this);
+            tvCaseInfo.setOnContentClickLinsener(this);
+            tvCaseNow.setOnContentClickLinsener(this);
+            tvCaseCheck.setOnContentClickLinsener(this);
+        }
+        else
+        {
+            tvDiagnosis.setOnClickListener(null);
+            tvDepartment.setOnClickListener(null);
+            tvHospital.setOnClickListener(null);
+            tvCaseDealType.setOnClickListener(null);
+            tvCaseInfo.setOnContentClickLinsener(null);
+            tvCaseNow.setOnContentClickLinsener(null);
+            tvCaseCheck.setOnContentClickLinsener(null);
+        }
     }
 
     /**
@@ -301,17 +262,22 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
             tvCreateTime.setText("创建者：" + patientCaseDetailBean.getCreatorName() + "\n创建时间：" +
                                  AllUtils.formatDate(patientCaseDetailBean.getGmtCreate(),
                                                      AllUtils.YYYY_MM_DD_HH_MM));
-            etDiagnosis.setText(patientCaseDetailBean.getDiagnosisInfo());
+            diagnosis = patientCaseDetailBean.getDiagnosisInfo();
+            tvDiagnosis.setText(diagnosis);
             diagnosisTimeMil = patientCaseDetailBean.getVisDate();
-            tvDiagnosisTime.setText(
-                    AllUtils.formatDate(patientCaseDetailBean.getVisDate(), AllUtils.YYYY_MM_DD));
-            etDepartment.setText(patientCaseDetailBean.getDoctorDep());
-            etHospital.setText(patientCaseDetailBean.getHospital());
-            etCaseInfo.setText(patientCaseDetailBean.getPatientWords());
-            etCaseNow.setText(patientCaseDetailBean.getImportantHistory());
-            //            etCaseImportment.setText(patientCaseDetailBean.getImportantHistory());
-            etCaseCheck.setText(patientCaseDetailBean.getCheckReport());
-            etCaseDealType.setText(patientCaseDetailBean.getTreat());
+            tvDiagnosisTime.setText(AllUtils.formatDate(diagnosisTimeMil, AllUtils.YYYY_MM_DD));
+            department = patientCaseDetailBean.getDoctorDep();
+            tvDepartment.setText(department);
+            hospital = patientCaseDetailBean.getHospital();
+            tvHospital.setText(hospital);
+            caseInfo = patientCaseDetailBean.getPatientWords();
+            tvCaseInfo.setText(caseInfo);
+            caseNow = patientCaseDetailBean.getImportantHistory();
+            tvCaseNow.setText(caseNow);
+            caseCheck = patientCaseDetailBean.getCheckReport();
+            tvCaseCheck.setText(caseCheck);
+            caseDealType = patientCaseDetailBean.getTreat();
+            tvCaseDealType.setText(caseDealType);
             String imgUrls = patientCaseDetailBean.getReportImgUrl();
             if (!TextUtils.isEmpty(imgUrls))
             {
@@ -493,7 +459,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
     @Override
     public void onClick(View v)
     {
-        super.onClick(v);
+        Intent intent = new Intent(this, AddCaseInfoActivity.class);
         switch (v.getId())
         {
             case R.id.public_title_bar_more:
@@ -506,17 +472,7 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                 isSelectTime = true;
                 break;
             case R.id.public_title_bar_more_txt:
-                hideSoftInputFromWindow();
-                diagnosis = etDiagnosis.getText().toString();
-                diagnosisTime = tvDiagnosisTime.getText().toString();
-                department = etDepartment.getText().toString();
-                hospital = etHospital.getText().toString();
-                caseInfo = etCaseInfo.getText().toString();
-                caseNow = etCaseNow.getText().toString();
-                //                caseImportment = etCaseImportment.getText().toString();
-                caseCheck = etCaseCheck.getText().toString();
-                caseDealType = etCaseDealType.getText().toString();
-                if (TextUtils.isEmpty(diagnosis) || TextUtils.isEmpty(diagnosisTime))
+                if (TextUtils.isEmpty(diagnosis))
                 {
                     ToastUtil.toast(this, "带星号为必填项");
                     return;
@@ -541,11 +497,52 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
             case R.id.act_health_detail_diagnosis_time:
                 if (isSelectTime)
                 {
-                    hideSoftInputFromWindow();
                     selectDate();
                 }
                 break;
-            default:
+            case R.id.act_health_detail_diagnosis:
+                intent.putExtra(CommonData.KEY_PUBLIC, CODE_CASE_DIA);
+                intent.putExtra(KEY_PUBLIC_STRING, diagnosis);
+                startActivityForResult(intent, CODE_CASE_DIA);
+                break;
+            case R.id.act_health_detail_hopital:
+                intent.putExtra(CommonData.KEY_PUBLIC, CODE_CASE_HOSPITAL);
+                intent.putExtra(KEY_PUBLIC_STRING, hospital);
+                startActivityForResult(intent, CODE_CASE_HOSPITAL);
+                break;
+            case R.id.act_health_detail_department:
+                intent.putExtra(CommonData.KEY_PUBLIC, CODE_CASE_TYPE);
+                intent.putExtra(KEY_PUBLIC_STRING, department);
+                startActivityForResult(intent, CODE_CASE_TYPE);
+                break;
+            case R.id.act_health_detail_deal_type:
+                intent.putExtra(CommonData.KEY_PUBLIC, CODE_CASE_DEAL_WAY);
+                intent.putExtra(KEY_PUBLIC_STRING, caseDealType);
+                startActivityForResult(intent, CODE_CASE_DEAL_WAY);
+                break;
+        }
+    }
+
+    @Override
+    public void onContentClick(View v)
+    {
+        Intent intent = new Intent(this, AddCaseInfoActivity.class);
+        switch (v.getId())
+        {
+            case R.id.act_health_detail_case_info:
+                intent.putExtra(CommonData.KEY_PUBLIC, CODE_CASE_INFO);
+                intent.putExtra(KEY_PUBLIC_STRING, caseInfo);
+                startActivityForResult(intent, CODE_CASE_INFO);
+                break;
+            case R.id.act_health_detail_case_now:
+                intent.putExtra(CommonData.KEY_PUBLIC, CODE_CASE_NOW);
+                intent.putExtra(KEY_PUBLIC_STRING, caseNow);
+                startActivityForResult(intent, CODE_CASE_NOW);
+                break;
+            case R.id.act_health_detail_check:
+                intent.putExtra(CommonData.KEY_PUBLIC, CODE_CASE_CHECK);
+                intent.putExtra(KEY_PUBLIC_STRING, caseCheck);
+                startActivityForResult(intent, CODE_CASE_CHECK);
                 break;
         }
     }
@@ -649,7 +646,6 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
         switch (task)
         {
             case UPLOAD_FILE:
-                isModifyData = true;
                 if (mSelectPath.size() - 1 > currentUploadImgIndex)
                 {
                     currentUploadImgIndex++;
@@ -800,12 +796,14 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
         {
             return;
         }
+        isModifyData = true;
         switch (requestCode)
         {
             case RC_PICK_IMG:
                 List<Uri> paths = Matisse.obtainResult(data);
                 mSelectPath.clear();
                 mSelectPath.addAll(paths);
+                new DealImgThread().start();
                 break;
             case RC_PICK_CAMERA_IMG:
                 if (cameraTempFile.exists())
@@ -814,9 +812,37 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
                     mSelectPath.clear();
                     mSelectPath.add(originalUri);
                 }
+                new DealImgThread().start();
+                break;
+            case CODE_CASE_DIA:
+                diagnosis = data.getStringExtra(KEY_PUBLIC);
+                tvDiagnosis.setText(diagnosis);
+                break;
+            case CODE_CASE_HOSPITAL:
+                hospital = data.getStringExtra(KEY_PUBLIC);
+                tvHospital.setText(hospital);
+                break;
+            case CODE_CASE_TYPE:
+                department = data.getStringExtra(KEY_PUBLIC);
+                tvDepartment.setText(department);
+                break;
+            case CODE_CASE_INFO:
+                caseInfo = data.getStringExtra(KEY_PUBLIC);
+                tvCaseInfo.setText(caseInfo);
+                break;
+            case CODE_CASE_NOW:
+                caseNow = data.getStringExtra(KEY_PUBLIC);
+                tvCaseNow.setText(caseNow);
+                break;
+            case CODE_CASE_CHECK:
+                caseCheck = data.getStringExtra(KEY_PUBLIC);
+                tvCaseCheck.setText(caseCheck);
+                break;
+            case CODE_CASE_DEAL_WAY:
+                caseDealType = data.getStringExtra(KEY_PUBLIC);
+                tvCaseDealType.setText(caseDealType);
                 break;
         }
-        new DealImgThread().start();
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -845,16 +871,6 @@ public class HealthDetailActivity extends BaseActivity implements AdapterView.On
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    /**
-     * 隐藏软键盘
-     */
-    private void hideSoftInputFromWindow()
-    {
-        InputMethodManager inputmanger = (InputMethodManager)getSystemService(
-                Context.INPUT_METHOD_SERVICE);
-        inputmanger.hideSoftInputFromWindow(etDiagnosis.getWindowToken(), 0);
     }
 
     /***************************************权限处理**********************/

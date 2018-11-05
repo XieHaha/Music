@@ -71,6 +71,32 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/act_setting_about_layout"
+        android:layout_width="match_parent"
+        android:background="@color/app_white_color"
+        android:layout_height="45dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:layout_marginLeft="12dp"
+            android:gravity="center_vertical"
+            android:text="关于我们"
+            android:textColor="@color/app_hint_color"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:src="@mipmap/icon_arrow_right"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/act_setting_exit_layout"
         android:layout_width="match_parent"
         android:background="@color/app_white_color"

@@ -32,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 import custom.frame.bean.BaseResponse;
 import custom.frame.http.Tasks;
+import custom.frame.http.data.HttpConstants;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.SharePreferenceUtil;
 import custom.frame.utils.ToastUtil;
@@ -110,6 +111,7 @@ public class LoginActivity extends BaseActivity
     public void initListener()
     {
         super.initListener();
+        findViewById(R.id.act_login_protocol).setOnClickListener(this);
         tvGetVerify.setOnClickListener(this);
         etPhone.addTextChangedListener(new TextWatcher()
         {
@@ -174,6 +176,11 @@ public class LoginActivity extends BaseActivity
                 break;
             case R.id.act_login_btn:
                 loginAndRegister();
+                break;
+            case R.id.act_login_protocol:
+                Intent intent = new Intent(this, WebViewActivity.class);
+                intent.putExtra("url", HttpConstants.BASE_BASIC_PROTOCOL_URL);
+                startActivity(intent);
                 break;
             default:
                 break;

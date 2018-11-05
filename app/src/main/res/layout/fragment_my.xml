@@ -418,6 +418,7 @@
                         android:textSize="15sp" />
 
                     <ImageView
+                        android:id="@+id/arrow"
                         android:layout_width="45dp"
                         android:src="@mipmap/icon_arrow_right"
                         android:paddingTop="16dp"
@@ -431,6 +432,25 @@
                         android:layout_height="1px"
                         android:layout_alignParentBottom="true"
                         android:background="@color/app_main_divideline" />
+                    <RelativeLayout
+                        android:id="@+id/message_red_point"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:visibility="gone"
+                        android:layout_toLeftOf="@+id/arrow"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/bg_red_point"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/item_msg_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:textColor="@color/app_white_color"
+                            android:text="1"
+                            android:textSize="10sp" />
+                    </RelativeLayout>
 
                 </RelativeLayout>
 

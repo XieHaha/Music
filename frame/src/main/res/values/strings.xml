@@ -15,4 +15,9 @@
     <string name="dialog_no_audio_tip">无法启用录音</string>
     <string name="dialog_no_permission_tip">，请检查是否打开相关权限</string>
     <string name="dialog_no_record_tip">无法录像，请检查是否打开相机和录音权限</string>
+
+    <string name="title_activity_main">ExspandTextView</string>
+    <string name="title_activity_listview">ExspandTextView in ListView</string>
+    <string name="to_expand_hint">展开&#62;&#62;</string>
+    <string name="to_shrink_hint">&#60;&#60;收起</string>
 </resources>

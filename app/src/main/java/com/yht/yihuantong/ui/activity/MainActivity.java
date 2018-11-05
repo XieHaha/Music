@@ -67,11 +67,11 @@ public class MainActivity extends BaseActivity
         implements EaseConversationListFragment.EaseConversationListItemClickListener,
                    VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener,
                    EaseConversationListFragment.EaseConversationListItemLongClickListener,
-                   PatientsFragment.OnApplyCallbackListener
+                   PatientsFragment.OnApplyCallbackListener, UserFragment.OnTransferCallbackListener
 {
     private RippleLinearLayout tabMsg, tabDoc, tabCase, tabMy;
-    private RelativeLayout rlMsgPointLayout, rlMsgPoint2Layout;
-    private TextView tvUnReadMsgCount, tvUnReadMsgCount2;
+    private RelativeLayout rlMsgPointLayout, rlMsgPointLayout2, rlMsgPointLayout3;
+    private TextView tvUnReadMsgCount, tvUnReadMsgCount2, tvUnReadMsgCount3;
     private Fragment cooperateDocFragment;
     private PatientsFragment patientFragment;
     private UserFragment userFragment;
@@ -194,9 +194,11 @@ public class MainActivity extends BaseActivity
         tabCase = (RippleLinearLayout)findViewById(R.id.act_main_tab3);
         tabMy = (RippleLinearLayout)findViewById(R.id.act_main_tab4);
         rlMsgPointLayout = (RelativeLayout)findViewById(R.id.message_red_point);
-        rlMsgPoint2Layout = (RelativeLayout)findViewById(R.id.message_red_point2);
+        rlMsgPointLayout2 = (RelativeLayout)findViewById(R.id.message_red_point2);
+        rlMsgPointLayout3 = (RelativeLayout)findViewById(R.id.message_red_point3);
         tvUnReadMsgCount = (TextView)findViewById(R.id.item_msg_num);
         tvUnReadMsgCount2 = (TextView)findViewById(R.id.item_msg_num2);
+        tvUnReadMsgCount3 = (TextView)findViewById(R.id.item_msg_num3);
         messagePop = LayoutInflater.from(this).inflate(R.layout.message_pop_menu, null);
         tvDelete = messagePop.findViewById(R.id.message_pop_menu_play);
         initTab();
@@ -313,22 +315,26 @@ public class MainActivity extends BaseActivity
         tvDelete.setOnClickListener(v ->
                                     {
                                         popupWindow.dismiss();
-                                        new SimpleDialog(this, "删除后，将清空该聊天的消息记录?", (dialog, which) ->
-                                        {
-                                            if (curConversation != null)
-                                            {
-                                                //删除和某个user会话，如果需要保留聊天记录，传false
-                                                EMClient.getInstance()
-                                                        .chatManager()
-                                                        .deleteConversation(
-                                                                curConversation.conversationId(), true);
-                                                //收到消息
-                                                if (easeConversationListFragment != null)
-                                                {
-                                                    easeConversationListFragment.refresh();
-                                                }
-                                            }
-                                        }, (dialog, which) -> dialog.dismiss()).show();
+                                        new SimpleDialog(this, "删除后，将清空该聊天的消息记录?",
+                                                         (dialog, which) ->
+                                                         {
+                                                             if (curConversation != null)
+                                                             {
+                                                                 //删除和某个user会话，如果需要保留聊天记录，传false
+                                                                 EMClient.getInstance()
+                                                                         .chatManager()
+                                                                         .deleteConversation(
+                                                                                 curConversation.conversationId(),
+                                                                                 true);
+                                                                 //收到消息
+                                                                 if (easeConversationListFragment !=
+                                                                     null)
+                                                                 {
+                                                                     easeConversationListFragment.refresh();
+                                                                 }
+                                                             }
+                                                         },
+                                                         (dialog, which) -> dialog.dismiss()).show();
                                     });
     }
 
@@ -596,6 +602,7 @@ public class MainActivity extends BaseActivity
         if (userFragment == null)
         {
             userFragment = new UserFragment();
+            userFragment.setOnTransferCallbackListener(this);
             transaction.add(R.id.act_main_tab_frameLayout, userFragment);
         }
         else
@@ -712,20 +719,44 @@ public class MainActivity extends BaseActivity
         try
         {
             String pNum = sharePreferenceUtil.getString(CommonData.KEY_PATIENT_APPLY_NUM);
-            String eNum = sharePreferenceUtil.getString(CommonData.KEY_CHANGE_PATIENT_NUM);
-            if (TextUtils.isEmpty(pNum) || TextUtils.isEmpty(eNum))
+            if (TextUtils.isEmpty(pNum))
             {
                 return;
             }
-            int num = Integer.valueOf(pNum) + Integer.valueOf(eNum);
+            int num = Integer.valueOf(pNum);
             if (num > 0)
             {
-                rlMsgPoint2Layout.setVisibility(View.VISIBLE);
+                rlMsgPointLayout2.setVisibility(View.VISIBLE);
                 tvUnReadMsgCount2.setText(num > 99 ? "99+" : num + "");
             }
             else
             {
-                rlMsgPoint2Layout.setVisibility(View.GONE);
+                rlMsgPointLayout2.setVisibility(View.GONE);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 转诊申请
+     */
+    @Override
+    public void onTransferCallback()
+    {
+        try
+        {
+            boolean transfer = sharePreferenceUtil.getBoolean(CommonData.KEY_CHANGE_PATIENT_NUM);
+            if (transfer)
+            {
+                rlMsgPointLayout3.setVisibility(View.VISIBLE);
+                tvUnReadMsgCount3.setText("1");
+            }
+            else
+            {
+                rlMsgPointLayout3.setVisibility(View.GONE);
             }
         }
         catch (Exception e)
