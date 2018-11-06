@@ -5,11 +5,11 @@ public interface HttpConstants
     /**
      * 测试服务器
      */
-    String BASE_BASIC_URL = "http://39.107.249.194:7080/DPView";
+    //    String BASE_BASIC_URL = "http://39.107.249.194:7080/DPView";
     /**
      * 正式服务器
      */
-    //    String BASE_BASIC_URL = "http://www.zychealth.com";
+    String BASE_BASIC_URL = "http://www.zychealth.com";
     /**
      * 超时时间
      */
