@@ -210,7 +210,6 @@ public class HealthDetailActivity extends BaseActivity
     {
         tvDiagnosisTime.setOnClickListener(this);
         autoGridView.setOnItemClickListener(this);
-        tvTitleBarMore.setOnClickListener(this);
         ivTitlebBarMore.setOnClickListener(this);
         backBtn.setOnClickListener(v -> finishPage());
     }
@@ -317,7 +316,7 @@ public class HealthDetailActivity extends BaseActivity
                 HttpConstants.BASE_BASIC_URL + "/case/save", RequestMethod.POST);
         Map<String, Object> params = new HashMap<>();
         params.put("patientId", patientId);
-        params.put("caseCreatorId", patientId);
+        params.put("caseCreatorId", loginSuccessBean.getDoctorId());
         params.put("caseCreatorName", loginSuccessBean.getName());
         params.put("caseLastUpdateId", patientId);
         params.put("checkReport", caseCheck);
@@ -350,9 +349,6 @@ public class HealthDetailActivity extends BaseActivity
                     if (baseResponse != null && baseResponse.getCode() == 200)
                     {
                         ToastUtil.toast(HealthDetailActivity.this, baseResponse.getMsg());
-                        ivTitlebBarMore.setVisibility(View.VISIBLE);
-                        tvTitleBarMore.setVisibility(View.GONE);
-                        //                        initWidght(false);
                         setResult(RESULT_OK);
                         finish();
                     }
@@ -364,6 +360,7 @@ public class HealthDetailActivity extends BaseActivity
                 catch (JSONException e)
                 {
                     e.printStackTrace();
+                    ToastUtil.toast(HealthDetailActivity.this, e.getMessage());
                 }
             }
 
@@ -456,6 +453,34 @@ public class HealthDetailActivity extends BaseActivity
         });
     }
 
+    /**
+     * @param view
+     */
+    public void onTitleMoreClick(View view)
+    {
+        if (TextUtils.isEmpty(diagnosis))
+        {
+            ToastUtil.toast(this, "带星号为必填项");
+            return;
+        }
+        for (int i = 0; i < imageUrl.size(); i++)
+        {
+            allImgUrl.append(imageUrl.get(i));
+            if (imageUrl.size() - 1 != i)
+            {
+                allImgUrl.append(",");
+            }
+        }
+        if (isAddNewHealth)
+        {
+            addPatientCase();
+        }
+        else
+        {
+            updatePatientCase();
+        }
+    }
+
     @Override
     public void onClick(View v)
     {
@@ -470,29 +495,6 @@ public class HealthDetailActivity extends BaseActivity
                 autoGridView.updateImg(imageList, true);
                 initWidght(true);
                 isSelectTime = true;
-                break;
-            case R.id.public_title_bar_more_txt:
-                if (TextUtils.isEmpty(diagnosis))
-                {
-                    ToastUtil.toast(this, "带星号为必填项");
-                    return;
-                }
-                for (int i = 0; i < imageUrl.size(); i++)
-                {
-                    allImgUrl.append(imageUrl.get(i));
-                    if (imageUrl.size() - 1 != i)
-                    {
-                        allImgUrl.append(",");
-                    }
-                }
-                if (isAddNewHealth)
-                {
-                    addPatientCase();
-                }
-                else
-                {
-                    updatePatientCase();
-                }
                 break;
             case R.id.act_health_detail_diagnosis_time:
                 if (isSelectTime)
@@ -659,22 +661,6 @@ public class HealthDetailActivity extends BaseActivity
                 }
                 imageUrl.add(response.getData().toString());
                 break;
-            case UPDATE_PATIENT_CASE:
-                ToastUtil.toast(this, response.getMsg());
-                ivTitlebBarMore.setVisibility(View.VISIBLE);
-                tvTitleBarMore.setVisibility(View.GONE);
-                initWidght(false);
-                finish();
-                break;
-            case ADD_PATIENT_CASE:
-                ToastUtil.toast(this, response.getMsg());
-                ivTitlebBarMore.setVisibility(View.VISIBLE);
-                tvTitleBarMore.setVisibility(View.GONE);
-                initWidght(false);
-                finish();
-                break;
-            default:
-                break;
         }
     }
 
@@ -686,9 +672,6 @@ public class HealthDetailActivity extends BaseActivity
         {
             case UPLOAD_FILE:
                 closeProgressDialog();
-                ToastUtil.toast(this, response.getMsg());
-                break;
-            case UPDATE_PATIENT_CASE:
                 ToastUtil.toast(this, response.getMsg());
                 break;
         }

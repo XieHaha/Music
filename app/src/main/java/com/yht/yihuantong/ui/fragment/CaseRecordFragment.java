@@ -224,13 +224,12 @@ public class CaseRecordFragment extends BaseFragment implements LoadMoreListener
                 autoLoadRecyclerView.loadFinish();
                 break;
             case DELETE_PATIENT_CASE:
-                if(BaseNetCode.CODE_MODIFY_CASE_RECORD == response.getCode())
+                if (BaseNetCode.CODE_MODIFY_CASE_RECORD == response.getCode())
                 {
-
+                    ToastUtil.toast(getContext(), response.getMsg());
                 }
                 break;
         }
-
     }
 
     @Override

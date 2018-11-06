@@ -248,6 +248,7 @@
                     android:id="@+id/act_user_info_coop_hospital_layout"
                     android:layout_width="match_parent"
                     android:orientation="vertical"
+                    android:visibility="gone"
                     android:layout_height="wrap_content">
 
                     <TextView

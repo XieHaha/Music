@@ -163,7 +163,6 @@ public class AuthDocActivity extends BaseActivity
             findViewById(R.id.act_auth_doc_doccard_back_layout).setOnClickListener(this);
         }
         findViewById(R.id.act_auth_doc_apply).setOnClickListener(this);
-        tvTitleMore.setOnClickListener(this);
         etDepart.setOnEditorActionListener((v, actionId, event) ->
                                            {
                                                if (actionId == EditorInfo.IME_ACTION_DONE)
@@ -349,13 +348,17 @@ public class AuthDocActivity extends BaseActivity
             case R.id.act_auth_doc_apply:
                 qualifiyDoc();
                 break;
-            case R.id.public_title_bar_more_txt:
-                tvTitleMore.setVisibility(View.GONE);
-                updateMode(true);
-                break;
         }
     }
 
+    /**
+     * @param view
+     */
+    public void onTitleMoreClick(View view)
+    {
+        tvTitleMore.setVisibility(View.GONE);
+        updateMode(true);
+    }
     /**
      * 提交审核 医生资质认证
      */
