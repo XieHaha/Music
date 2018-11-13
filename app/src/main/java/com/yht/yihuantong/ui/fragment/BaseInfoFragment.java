@@ -100,15 +100,7 @@ public class BaseInfoFragment extends BaseFragment
     {
         if (patientBean != null)
         {
-            if (!TextUtils.isEmpty(patientBean.getNickname()) &&
-                patientBean.getNickname().length() < 20)
-            {
-                tvName.setText(patientBean.getNickname() + "(" + patientBean.getName() + ")");
-            }
-            else
-            {
-                tvName.setText(patientBean.getName());
-            }
+            tvName.setText(patientBean.getName());
             tvSex.setText(patientBean.getSex());
             tvAge.setText(AllUtils.formatDateByAge(patientBean.getBirthDate()));
             if (!TextUtils.isEmpty(patientBean.getAddress()))

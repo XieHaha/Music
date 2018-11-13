@@ -223,7 +223,7 @@ public class IRequest extends BaseRequest
     /**
      * 医生扫码添加患者
      */
-    public Tasks addPatientByScan(String doctorId, String fromDoctorId, String patientId,
+    public Tasks addPatientByScan(String doctorId, String patientId,
             int requestSource, final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);
@@ -351,7 +351,7 @@ public class IRequest extends BaseRequest
     /**
      * 拒绝患者申请
      */
-    public Tasks refusePatientApply(String doctorId, String fromDoctorId, String patientId,
+    public Tasks refusePatientApply(String doctorId, String patientId,
             int requestSource, final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);
@@ -365,7 +365,7 @@ public class IRequest extends BaseRequest
     /**
      * 同意患者申请
      */
-    public Tasks agreePatientApply(String doctorId, String fromDoctorId, String patientId,
+    public Tasks agreePatientApply(String doctorId, String patientId,
             int requestSource, final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);

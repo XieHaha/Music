@@ -25,8 +25,9 @@ import com.yht.yihuantong.api.IChange;
 import com.yht.yihuantong.api.RegisterType;
 import com.yht.yihuantong.api.notify.INotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
+import com.yht.yihuantong.ui.activity.AddFriendsPatientActivity;
 import com.yht.yihuantong.ui.activity.HealthCardActivity;
-import com.yht.yihuantong.ui.activity.PatientApplyActivity;
+import com.yht.yihuantong.ui.activity.ApplyPatientActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientFromActivity;
 import com.yht.yihuantong.ui.adapter.PatientsListAdapter;
 import com.yht.yihuantong.utils.AllUtils;
@@ -229,8 +230,7 @@ public class PatientsFragment extends BaseFragment
      */
     private void addPatientByScan(String patientId, int mode)
     {
-        mIRequest.addPatientByScan(loginSuccessBean.getDoctorId(), loginSuccessBean.getDoctorId(),
-                                   patientId, mode, this);
+        mIRequest.addPatientByScan(loginSuccessBean.getDoctorId(), patientId, mode, this);
     }
 
     /**
@@ -268,7 +268,7 @@ public class PatientsFragment extends BaseFragment
         switch (v.getId())
         {
             case R.id.fragment_cooperate_apply_layout:
-                intent = new Intent(getContext(), PatientApplyActivity.class);
+                intent = new Intent(getContext(), ApplyPatientActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_PATIENT_APPLY);
                 break;
             case R.id.fragment_exchange_patient_layout:
@@ -315,7 +315,11 @@ public class PatientsFragment extends BaseFragment
                     }
                     else
                     {
-                        addPatientByScan(result.getContents(), ADD_PATIENT);
+                        //                        addPatientByScan(result.getContents(), ADD_PATIENT);
+                        Intent intent = new Intent(getContext(), AddFriendsPatientActivity.class);
+                        intent.putExtra(CommonData.KEY_PATIENT_ID, result.getContents());
+                        intent.putExtra(CommonData.KEY_PUBLIC, true);
+                        startActivity(intent);
                     }
                 }
                 else

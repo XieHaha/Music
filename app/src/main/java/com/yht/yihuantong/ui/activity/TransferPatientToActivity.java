@@ -112,7 +112,7 @@ public class TransferPatientToActivity extends BaseActivity
         switch (v.getId())
         {
             case R.id.fragment_cooperate_apply_layout:
-                Intent intent = new Intent(this, PatientApplyActivity.class);
+                Intent intent = new Intent(this, ApplyPatientActivity.class);
                 startActivity(intent);
                 break;
         }

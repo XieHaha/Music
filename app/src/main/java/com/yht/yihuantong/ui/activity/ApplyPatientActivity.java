@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,8 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
-import com.yht.yihuantong.data.OnEventTriggerListener;
+import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.adapter.ApplyPatientAdapter;
 
 import java.util.ArrayList;
@@ -21,7 +21,6 @@ import custom.frame.bean.BaseResponse;
 import custom.frame.bean.PatientBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
-import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
@@ -30,8 +29,8 @@ import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
  *
  * @author DUNDUN
  */
-public class PatientApplyActivity extends BaseActivity
-        implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener, OnEventTriggerListener
+public class ApplyPatientActivity extends BaseActivity
+        implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener
 {
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
@@ -48,9 +47,9 @@ public class PatientApplyActivity extends BaseActivity
      */
     private static final int PAGE_SIZE = 20;
     /**
-     * 医生端区别字段
+     * 一页最大数
      */
-    private static final int MODE = 1;
+    private static final int REQUEST_CODE_APPLY = 100;
 
     @Override
     public int getLayoutID()
@@ -85,7 +84,6 @@ public class PatientApplyActivity extends BaseActivity
     {
         super.initData(savedInstanceState);
         applyPatientAdapter = new ApplyPatientAdapter(this, applyPatientList);
-        applyPatientAdapter.setOnEventTriggerListener(this);
         applyPatientAdapter.addFooterView(footerView);
         page = 0;
         getApplyPatientList();
@@ -103,10 +101,15 @@ public class PatientApplyActivity extends BaseActivity
         autoLoadRecyclerView.setAdapter(applyPatientAdapter);
         applyPatientAdapter.setOnItemClickListener((v, position, item) ->
                                                    {
-                                                       //                        Intent intent = new Intent(PatientApplyActivity.this,
-                                                       //                                UserInfoActivity.class);
-                                                       //                        intent.putExtra(CommonData.KEY_IS_DEAL_DOC,false);
-                                                       //                        startActivity(intent);
+                                                       Intent intent = new Intent(
+                                                               ApplyPatientActivity.this,
+                                                               AddFriendsPatientActivity.class);
+                                                       intent.putExtra(CommonData.KEY_PATIENT_ID,
+                                                                       item.getPatientId());
+                                                       intent.putExtra(CommonData.KEY_PUBLIC,
+                                                                       false);
+                                                       startActivityForResult(intent,
+                                                                              REQUEST_CODE_APPLY);
                                                    });
     }
 
@@ -116,24 +119,6 @@ public class PatientApplyActivity extends BaseActivity
     private void getApplyPatientList()
     {
         mIRequest.getApplyPatientList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
-    }
-
-    /**
-     * 拒绝患者申请
-     */
-    private void refusePatientApply(String patientId)
-    {
-        mIRequest.refusePatientApply(loginSuccessBean.getDoctorId(), loginSuccessBean.getDoctorId(),
-                                     patientId, MODE, this);
-    }
-
-    /**
-     * 同意患者申请
-     */
-    private void agreePatientApply(String patientId, int requestCode)
-    {
-        mIRequest.agreePatientApply(loginSuccessBean.getDoctorId(), loginSuccessBean.getDoctorId(),
-                                    patientId, MODE, this);
     }
 
     @Override
@@ -163,16 +148,6 @@ public class PatientApplyActivity extends BaseActivity
                     autoLoadRecyclerView.loadFinish(true);
                 }
                 break;
-            case AGREE_PATIENT_APPLY:
-                ToastUtil.toast(this, response.getMsg());
-                getApplyPatientList();
-                NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("add");
-                break;
-            case REFUSE_PATIENT_APPLY:
-                ToastUtil.toast(this, response.getMsg());
-                getApplyPatientList();
-                NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("");
-                break;
         }
     }
 
@@ -188,14 +163,6 @@ public class PatientApplyActivity extends BaseActivity
                 }
                 tvHintTxt.setText("暂无更多数据");
                 autoLoadRecyclerView.loadFinish();
-                break;
-            case AGREE_PATIENT_APPLY:
-                ToastUtil.toast(this, response.getMsg());
-                break;
-            case REFUSE_PATIENT_APPLY:
-                ToastUtil.toast(this, response.getMsg());
-                break;
-            default:
                 break;
         }
     }
@@ -214,10 +181,6 @@ public class PatientApplyActivity extends BaseActivity
                 tvHintTxt.setText("暂无更多数据");
                 autoLoadRecyclerView.loadFinish();
                 break;
-            case AGREE_PATIENT_APPLY:
-                break;
-            case REFUSE_PATIENT_APPLY:
-                break;
         }
     }
 
@@ -226,6 +189,22 @@ public class PatientApplyActivity extends BaseActivity
     {
         super.onResponseEnd(task);
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (resultCode != RESULT_OK)
+        {
+            return;
+        }
+        switch (requestCode)
+        {
+            case REQUEST_CODE_APPLY:
+                getApplyPatientList();
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -241,17 +220,5 @@ public class PatientApplyActivity extends BaseActivity
         swipeRefreshLayout.setRefreshing(true);
         page++;
         getApplyPatientList();
-    }
-
-    @Override
-    public void onPositiveTrigger(String s, int requestCode)
-    {
-        agreePatientApply(s, requestCode);
-    }
-
-    @Override
-    public void onNegativeTrigger(String s, int requestCode)
-    {
-        refusePatientApply(s);
     }
 }

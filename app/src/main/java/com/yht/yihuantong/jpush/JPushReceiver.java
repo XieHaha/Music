@@ -11,9 +11,9 @@ import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.activity.ApplyCooperateDocActivity;
+import com.yht.yihuantong.ui.activity.ApplyPatientActivity;
 import com.yht.yihuantong.ui.activity.AuthDocActivity;
 import com.yht.yihuantong.ui.activity.MainActivity;
-import com.yht.yihuantong.ui.activity.PatientApplyActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientFromActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientToActivity;
 
@@ -164,7 +164,7 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
                 mainIntent = new Intent(context, MainActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mainIntent.putExtra(CommonData.KEY_PUBLIC, 1);
-                baseIntent = new Intent(context, PatientApplyActivity.class);
+                baseIntent = new Intent(context, ApplyPatientActivity.class);
                 intents = new Intent[] { mainIntent, baseIntent };
                 context.startActivities(intents);
                 break;

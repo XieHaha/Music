@@ -22,6 +22,7 @@ import com.yht.yihuantong.api.IChange;
 import com.yht.yihuantong.api.RegisterType;
 import com.yht.yihuantong.api.notify.INotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
+import com.yht.yihuantong.ui.activity.AddFriendsDocActivity;
 import com.yht.yihuantong.ui.activity.ApplyCooperateDocActivity;
 import com.yht.yihuantong.ui.activity.UserInfoActivity;
 import com.yht.yihuantong.ui.adapter.CooperateDocListAdapter;
@@ -183,7 +184,7 @@ public class CooperateDocFragment extends BaseFragment
     }
 
     /**
-     * 合作医生申请
+     * 合作医生申请 取消
      */
     private void cancelCooperateDoc(String doctorId)
     {
@@ -237,7 +238,11 @@ public class CooperateDocFragment extends BaseFragment
                     }
                     else
                     {
-                        applyCooperateDoc(result.getContents(), 1);
+                        //                        applyCooperateDoc(result.getContents(), 1);
+                        Intent intent = new Intent(getContext(), AddFriendsDocActivity.class);
+                        intent.putExtra(CommonData.KEY_DOCTOR_ID, result.getContents());
+                        intent.putExtra(CommonData.KEY_PUBLIC, true);
+                        startActivity(intent);
                     }
                 }
                 else

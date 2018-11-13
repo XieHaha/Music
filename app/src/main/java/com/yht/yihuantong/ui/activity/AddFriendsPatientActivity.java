@@ -1,0 +1,317 @@
+package com.yht.yihuantong.ui.activity;
+
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.yht.yihuantong.R;
+import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
+import com.yht.yihuantong.data.CommonData;
+import com.yht.yihuantong.ui.LabelsView;
+import com.yht.yihuantong.utils.AllUtils;
+
+import java.util.ArrayList;
+
+import custom.frame.bean.BaseResponse;
+import custom.frame.bean.CombineBean;
+import custom.frame.bean.CombineChildBean;
+import custom.frame.bean.PatientBean;
+import custom.frame.http.Tasks;
+import custom.frame.ui.activity.BaseActivity;
+import custom.frame.utils.GlideHelper;
+import custom.frame.utils.ToastUtil;
+import de.hdodenhof.circleimageview.CircleImageView;
+
+/**
+ * Created by dundun on 18/11/12.
+ * 好友验证界面
+ */
+public class AddFriendsPatientActivity extends BaseActivity
+{
+    private TextView tvTitle;
+    private CircleImageView ivHeadImg;
+    private TextView tvName, tvSex, tvAge, tvCompany, tvAddress, tvHint;
+    private TextView tvAgree, tvRefuse;
+    private LabelsView labelsView;
+    /**
+     * 综合病史信息
+     */
+    private CombineBean combineBean;
+    /**
+     * 手术信息
+     */
+    private ArrayList<CombineChildBean> patientSurgeryList = new ArrayList<>();
+    /**
+     * 诊断信息
+     */
+    private ArrayList<CombineChildBean> patientDiagnosisList = new ArrayList<>();
+    /**
+     * 过敏信息
+     */
+    private ArrayList<CombineChildBean> patientAllergyList = new ArrayList<>();
+    private String patientId;
+    /**
+     * 是否是主动申请
+     */
+    private boolean isAdd;
+    /**
+     * 扫码添加患者
+     */
+    private static final int ADD_PATIENT = 1;
+    /**
+     * 医生端区别字段
+     */
+    private static final int MODE = 1;
+
+    @Override
+    protected boolean isInitBackBtn()
+    {
+        return true;
+    }
+
+    @Override
+    public int getLayoutID()
+    {
+        return R.layout.act_add_friend_patient;
+    }
+
+    @Override
+    public void initView(@NonNull Bundle savedInstanceState)
+    {
+        super.initView(savedInstanceState);
+        tvTitle = (TextView)findViewById(R.id.public_title_bar_title);
+        ivHeadImg = (CircleImageView)findViewById(R.id.act_add_friend_img);
+        tvName = (TextView)findViewById(R.id.act_add_friend_name);
+        tvAge = (TextView)findViewById(R.id.act_add_friend_age);
+        tvSex = (TextView)findViewById(R.id.act_add_friend_sex);
+        tvAddress = (TextView)findViewById(R.id.act_add_friend_address);
+        tvCompany = (TextView)findViewById(R.id.act_add_friend_company);
+        tvAgree = (TextView)findViewById(R.id.act_add_friend_next);
+        tvRefuse = (TextView)findViewById(R.id.act_add_friend_refuse);
+        tvHint = (TextView)findViewById(R.id.act_add_friend_hint);
+        labelsView = (LabelsView)findViewById(R.id.act_add_friend_labels);
+    }
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState)
+    {
+        super.initData(savedInstanceState);
+        if (getIntent() != null)
+        {
+            isAdd = getIntent().getBooleanExtra(CommonData.KEY_PUBLIC, false);
+            patientId = getIntent().getStringExtra(CommonData.KEY_PATIENT_ID);
+        }
+        if (isAdd)
+        {
+            tvTitle.setText("添加好友");
+            tvRefuse.setVisibility(View.GONE);
+        }
+        else
+        {
+            tvTitle.setText("好友申请");
+            tvAgree.setText("通过验证");
+            tvRefuse.setVisibility(View.VISIBLE);
+        }
+        getPatientInfo();
+        getPatientCombine();
+    }
+
+    @Override
+    public void initListener()
+    {
+        super.initListener();
+        tvAgree.setOnClickListener(this);
+        tvRefuse.setOnClickListener(this);
+    }
+
+    private void iniPageData(PatientBean patientBean)
+    {
+        if (patientBean != null)
+        {
+            Glide.with(this)
+                 .load(patientBean.getPatientImgUrl())
+                 .apply(GlideHelper.getOptionsP())
+                 .into(ivHeadImg);
+            if (!TextUtils.isEmpty(patientBean.getNickname()) &&
+                patientBean.getNickname().length() < 20)
+            {
+                tvName.setText(patientBean.getNickname() + "(" + patientBean.getName() + ")");
+            }
+            else
+            {
+                tvName.setText(patientBean.getName());
+            }
+            tvSex.setText(patientBean.getSex());
+            tvAge.setText(AllUtils.formatDateByAge(patientBean.getBirthDate()));
+            if (!TextUtils.isEmpty(patientBean.getAddress()))
+            {
+                tvAddress.setText(patientBean.getAddress());
+            }
+            if (!TextUtils.isEmpty(patientBean.getUnitName()))
+            {
+                tvCompany.setText(patientBean.getUnitName());
+            }
+        }
+    }
+
+    /**
+     * 健康标签
+     */
+    private void initHealthData()
+    {
+        ArrayList<String> values = new ArrayList<>();
+        if (patientDiagnosisList != null && patientDiagnosisList.size() > 0)
+        {
+            for (int i = 0; i < patientDiagnosisList.size(); i++)
+            {
+                values.add(patientDiagnosisList.get(i).getDiagnosisInfo());
+            }
+        }
+        if (patientAllergyList != null && patientAllergyList.size() > 0)
+        {
+            for (int i = 0; i < patientAllergyList.size(); i++)
+            {
+                values.add(patientAllergyList.get(i).getAllergyInfo());
+            }
+        }
+        if (patientSurgeryList != null && patientSurgeryList.size() > 0)
+        {
+            for (int i = 0; i < patientSurgeryList.size(); i++)
+            {
+                values.add(patientSurgeryList.get(i).getSurgeryName());
+            }
+        }
+        if (values.size() == 0)//缺省值
+        {
+            labelsView.setVisibility(View.GONE);
+            tvHint.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            labelsView.setVisibility(View.VISIBLE);
+            tvHint.setVisibility(View.GONE);
+            labelsView.setLabels(values);
+        }
+    }
+
+    /**
+     * 获取患者个人信息
+     */
+    private void getPatientInfo()
+    {
+        mIRequest.getPatientInfo(patientId, this);
+    }
+
+    /**
+     * 获取患者基础信息
+     */
+    private void getPatientCombine()
+    {
+        mIRequest.getPatientCombine(patientId, this);
+    }
+
+    /**
+     * 医生扫码添加患者  转诊患者
+     * mode {@link #ADD_PATIENT}
+     */
+    private void addPatientByScan()
+    {
+        mIRequest.addPatientByScan(loginSuccessBean.getDoctorId(), patientId, ADD_PATIENT, this);
+    }
+
+    /**
+     * 拒绝患者申请
+     */
+    private void refusePatientApply()
+    {
+        mIRequest.refusePatientApply(loginSuccessBean.getDoctorId(), patientId, MODE, this);
+    }
+
+    /**
+     * 同意患者申请
+     */
+    private void agreePatientApply()
+    {
+        mIRequest.agreePatientApply(loginSuccessBean.getDoctorId(), patientId, MODE, this);
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+        super.onClick(v);
+        switch (v.getId())
+        {
+            case R.id.act_add_friend_next:
+                if (isAdd)
+                {
+                    addPatientByScan();
+                }
+                else
+                {
+                    agreePatientApply();
+                }
+                break;
+            case R.id.act_add_friend_refuse:
+                refusePatientApply();
+                break;
+        }
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response)
+    {
+        super.onResponseSuccess(task, response);
+        switch (task)
+        {
+            case ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT:
+                ToastUtil.toast(this, response.getMsg());
+                finish();
+                break;
+            case GET_PATIENT_INFO:
+                PatientBean bean = response.getData();
+                iniPageData(bean);
+                break;
+            case GET_PATIENT_COMBINE:
+                combineBean = response.getData();
+                if (combineBean != null)
+                {
+                    patientDiagnosisList = combineBean.getDiagnosisInfo();
+                    patientAllergyList = combineBean.getAllergyInfo();
+                    patientSurgeryList = combineBean.getSurgeryInfo();
+                    initHealthData();
+                }
+                break;
+            case REFUSE_PATIENT_APPLY:
+                ToastUtil.toast(this, response.getMsg());
+                NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("");
+                setResult(RESULT_OK);
+                finish();
+                break;
+            case AGREE_PATIENT_APPLY:
+                ToastUtil.toast(this, response.getMsg());
+                NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("add");
+                setResult(RESULT_OK);
+                finish();
+                break;
+        }
+    }
+
+    @Override
+    public void onResponseCodeError(Tasks task, BaseResponse response)
+    {
+        switch (task)
+        {
+            case AGREE_PATIENT_APPLY:
+                ToastUtil.toast(this, response.getMsg());
+                break;
+            case REFUSE_PATIENT_APPLY:
+                ToastUtil.toast(this, response.getMsg());
+                break;
+            default:
+                break;
+        }
+    }
+}

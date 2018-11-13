@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/app_minor_bg"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/top_bar"
+        layout="@layout/public_title_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:scrollbars="none"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:minHeight="85dp"
+                android:paddingLeft="12dp"
+                android:background="@color/app_white_color"
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/act_add_friend_img"
+                    android:layout_width="55dp"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/icon_patient_default_imgs"
+                    android:layout_height="55dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_toRightOf="@id/act_add_friend_img"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/act_add_friend_name"
+                        android:layout_width="wrap_content"
+                        android:text="姓名"
+                        android:textColor="@color/app_main_txt_color"
+                        android:textSize="16sp"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="4dp"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/act_add_friend_sex"
+                            android:layout_width="wrap_content"
+                            android:textColor="@color/app_minor_color"
+                            android:textSize="15sp"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/act_add_friend_age"
+                            android:layout_width="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:textColor="@color/app_minor_color"
+                            android:textSize="15sp"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/app_main_divideline"
+                android:layout_height="1px" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:paddingLeft="12dp"
+                android:paddingTop="17dp"
+                android:paddingBottom="16dp"
+                android:paddingRight="12dp"
+                android:background="@color/app_white_color"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="健康标签"
+                    android:textColor="@color/app_main_txt_color"
+                    android:textSize="16sp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/act_add_friend_hint"
+                    android:layout_width="wrap_content"
+                    android:text="暂无健康标签内容..."
+                    android:textColor="@color/app_hint_color"
+                    android:layout_marginTop="10dp"
+                    android:textSize="14sp"
+                    android:layout_height="wrap_content" />
+
+                <com.yht.yihuantong.ui.LabelsView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/act_add_friend_labels"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    app:labelTextSize="14sp"
+                    app:labelTextPaddingBottom="5dp"
+                    app:labelTextPaddingLeft="10dp"
+                    app:labelTextPaddingRight="10dp"
+                    app:labelTextPaddingTop="5dp"
+                    app:lineMargin="10dp"
+                    app:wordMargin="10dp"
+                    app:selectType="SINGLE"
+                    app:maxSelect="5" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/app_main_divideline"
+                android:layout_height="1px" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:minHeight="50dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:gravity="center_vertical"
+                android:background="@color/app_white_color"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="单位"
+                    android:textColor="@color/app_main_txt_color"
+                    android:textSize="16sp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/act_add_friend_company"
+                    android:layout_width="wrap_content"
+                    android:text=""
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/app_minor_color"
+                    android:textSize="15sp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/app_main_divideline"
+                android:layout_height="1px" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:minHeight="50dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:gravity="center_vertical"
+                android:background="@color/app_white_color"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="住址"
+                    android:textColor="@color/app_main_txt_color"
+                    android:textSize="16sp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/act_add_friend_address"
+                    android:layout_width="wrap_content"
+                    android:text=""
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/app_minor_color"
+                    android:textSize="15sp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/act_add_friend_next"
+                android:layout_width="165dp"
+                android:text="加为好友"
+                android:textSize="16sp"
+                android:textColor="@color/app_white_color"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/corner_main_color_full_bg"
+                android:layout_height="40dp" />
+
+            <TextView
+                android:id="@+id/act_add_friend_refuse"
+                android:layout_width="165dp"
+                android:text="拒绝请求"
+                android:textSize="16sp"
+                android:textColor="@color/app_hint_color"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_height="40dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

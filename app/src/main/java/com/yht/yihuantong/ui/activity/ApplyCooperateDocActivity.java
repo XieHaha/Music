@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
-import com.yht.yihuantong.data.OnEventTriggerListener;
 import com.yht.yihuantong.ui.adapter.ApplyCooperateAdapter;
 
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
  * @author DUNDUN
  */
 public class ApplyCooperateDocActivity extends BaseActivity
-        implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener, OnEventTriggerListener
+        implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener
 {
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
@@ -49,6 +48,10 @@ public class ApplyCooperateDocActivity extends BaseActivity
      * 一页最大数
      */
     private static final int PAGE_SIZE = 20;
+    /**
+     * 操作返回码
+     */
+    private static final int REQUEST_CODE_APPLY = 100;
 
     @Override
     public int getLayoutID()
@@ -84,7 +87,6 @@ public class ApplyCooperateDocActivity extends BaseActivity
     {
         super.initData(savedInstanceState);
         applyCooperateAdapter = new ApplyCooperateAdapter(this, applyCooperateList);
-        applyCooperateAdapter.setOnEventTriggerListener(this);
         applyCooperateAdapter.addFooterView(footerView);
         page = 0;
         getApplyCooperateList();
@@ -104,12 +106,15 @@ public class ApplyCooperateDocActivity extends BaseActivity
                                                      {
                                                          Intent intent = new Intent(
                                                                  ApplyCooperateDocActivity.this,
-                                                                 UserInfoActivity.class);
+                                                                 AddFriendsDocActivity.class);
                                                          intent.putExtra(CommonData.KEY_DOCTOR_ID,
                                                                          item.getDoctorId());
-                                                         intent.putExtra(CommonData.KEY_IS_DEAL_DOC,
+                                                         intent.putExtra(CommonData.KEY_PUBLIC,
                                                                          false);
-                                                         startActivity(intent);
+                                                         intent.putExtra("requestSource",
+                                                                         item.getRequestSource());
+                                                         startActivityForResult(intent,
+                                                                                REQUEST_CODE_APPLY);
                                                      });
     }
 
@@ -119,14 +124,6 @@ public class ApplyCooperateDocActivity extends BaseActivity
     private void getApplyCooperateList()
     {
         mIRequest.getApplyCooperateList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
-    }
-
-    /**
-     * 处理医生合作申请
-     */
-    private void dealDocApply(String applyId, int way, int requestCode)
-    {
-        mIRequest.dealDocApply(loginSuccessBean.getDoctorId(), applyId, way, requestCode, this);
     }
 
     @Override
@@ -200,6 +197,22 @@ public class ApplyCooperateDocActivity extends BaseActivity
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (resultCode != RESULT_OK)
+        {
+            return;
+        }
+        switch (requestCode)
+        {
+            case REQUEST_CODE_APPLY:
+                getApplyCooperateList();
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
     public void onRefresh()
     {
         page = 0;
@@ -214,15 +227,4 @@ public class ApplyCooperateDocActivity extends BaseActivity
         getApplyCooperateList();
     }
 
-    @Override
-    public void onPositiveTrigger(String s, int requestCode)
-    {
-        dealDocApply(s, 1, requestCode);
-    }
-
-    @Override
-    public void onNegativeTrigger(String s, int requestCode)
-    {
-        dealDocApply(s, 3, requestCode);
-    }
 }

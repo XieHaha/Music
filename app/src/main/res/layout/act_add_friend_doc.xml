@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/app_minor_bg"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/top_bar"
+        layout="@layout/public_title_bar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:minHeight="85dp"
+        android:paddingLeft="12dp"
+        android:background="@color/app_white_color"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/act_add_friend_img"
+            android:layout_width="55dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_default_imgs"
+            android:layout_height="55dp" />
+
+        <LinearLayout
+            android:id="@+id/layout"
+            android:layout_width="wrap_content"
+            android:layout_toRightOf="@id/act_add_friend_img"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/act_add_friend_name"
+                android:layout_width="wrap_content"
+                android:text="姓名"
+                android:textColor="@color/app_main_txt_color"
+                android:textSize="16sp"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/act_add_friend_type"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/app_minor_color"
+                    android:textSize="15sp"
+                    android:text="测试"
+                    android:layout_height="wrap_content" />
+
+                <View
+                    android:layout_width="2dp"
+                    android:background="@color/app_minor_color"
+                    android:layout_marginLeft="10dp"
+                    android:layout_height="15dp" />
+
+                <TextView
+                    android:id="@+id/act_add_friend_depart"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/app_minor_color"
+                    android:textSize="15sp"
+                    android:text="测试"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/act_add_friend_hospital"
+            android:layout_width="wrap_content"
+            android:layout_toRightOf="@id/act_add_friend_img"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/app_minor_color"
+            android:textSize="15sp"
+            android:layout_marginTop="10dp"
+            android:text="医院"
+            android:layout_below="@id/act_add_friend_img"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/app_main_divideline"
+        android:layout_height="1px" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="12dp"
+        android:paddingTop="17dp"
+        android:paddingBottom="16dp"
+        android:paddingRight="12dp"
+        android:background="@color/app_white_color"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="个人简介"
+            android:textColor="@color/app_main_txt_color"
+            android:textSize="16sp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/act_add_friend_des"
+            android:layout_width="match_parent"
+            android:textColor="@color/app_main_txt_color"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/act_add_friend_next"
+        android:layout_width="165dp"
+        android:text="加为好友"
+        android:textSize="16sp"
+        android:textColor="@color/app_white_color"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/corner_main_color_full_bg"
+        android:layout_height="40dp" />
+
+    <TextView
+        android:id="@+id/act_add_friend_refuse"
+        android:layout_width="165dp"
+        android:text="拒绝请求"
+        android:textSize="16sp"
+        android:textColor="@color/app_hint_color"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_height="40dp" />
+
+
+</LinearLayout>
