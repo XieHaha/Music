@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
@@ -67,12 +66,14 @@ public class MainActivity extends BaseActivity
         implements EaseConversationListFragment.EaseConversationListItemClickListener,
                    VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener,
                    EaseConversationListFragment.EaseConversationListItemLongClickListener,
-                   PatientsFragment.OnApplyCallbackListener, UserFragment.OnTransferCallbackListener
+                   PatientsFragment.OnApplyCallbackListener,
+                   UserFragment.OnTransferCallbackListener,
+                   CooperateDocFragment.OnDocApplyCallbackListener
 {
     private RippleLinearLayout tabMsg, tabDoc, tabCase, tabMy;
-    private RelativeLayout rlMsgPointLayout, rlMsgPointLayout2, rlMsgPointLayout3;
-    private TextView tvUnReadMsgCount, tvUnReadMsgCount2, tvUnReadMsgCount3;
-    private Fragment cooperateDocFragment;
+    private RelativeLayout rlMsgPointLayout, rlMsgPointLayout2, rlMsgPointLayout3, rlMsgPointLayout4;
+    private TextView tvUnReadMsgCount, tvUnReadMsgCount2, tvUnReadMsgCount3, tvUnReadMsgCount4;
+    private CooperateDocFragment cooperateDocFragment;
     private PatientsFragment patientFragment;
     private UserFragment userFragment;
     private EaseConversationListFragment easeConversationListFragment;
@@ -196,9 +197,11 @@ public class MainActivity extends BaseActivity
         rlMsgPointLayout = (RelativeLayout)findViewById(R.id.message_red_point);
         rlMsgPointLayout2 = (RelativeLayout)findViewById(R.id.message_red_point2);
         rlMsgPointLayout3 = (RelativeLayout)findViewById(R.id.message_red_point3);
+        rlMsgPointLayout4 = (RelativeLayout)findViewById(R.id.message_red_point4);
         tvUnReadMsgCount = (TextView)findViewById(R.id.item_msg_num);
         tvUnReadMsgCount2 = (TextView)findViewById(R.id.item_msg_num2);
         tvUnReadMsgCount3 = (TextView)findViewById(R.id.item_msg_num3);
+        tvUnReadMsgCount4 = (TextView)findViewById(R.id.item_msg_num4);
         messagePop = LayoutInflater.from(this).inflate(R.layout.message_pop_menu, null);
         tvDelete = messagePop.findViewById(R.id.message_pop_menu_play);
         initTab();
@@ -584,6 +587,7 @@ public class MainActivity extends BaseActivity
         if (cooperateDocFragment == null)
         {
             cooperateDocFragment = new CooperateDocFragment();
+            cooperateDocFragment.setOnDocApplyCallbackListener(this);
             transaction.add(R.id.act_main_tab_frameLayout, cooperateDocFragment);
         }
         else
@@ -711,7 +715,7 @@ public class MainActivity extends BaseActivity
     }
 
     /**
-     * 医生、患者、申请回调
+     * 患者、申请回调
      */
     @Override
     public void onApplyCallback()
@@ -741,6 +745,36 @@ public class MainActivity extends BaseActivity
     }
 
     /**
+     * 合作医生申请
+     */
+    @Override
+    public void onDocApplyCallback()
+    {
+        try
+        {
+            String pNum = sharePreferenceUtil.getString(CommonData.KEY_DOCTOR_APPLY_NUM);
+            if (TextUtils.isEmpty(pNum))
+            {
+                return;
+            }
+            int num = Integer.valueOf(pNum);
+            if (num > 0)
+            {
+                rlMsgPointLayout3.setVisibility(View.VISIBLE);
+                tvUnReadMsgCount3.setText(num > 99 ? "99+" : num + "");
+            }
+            else
+            {
+                rlMsgPointLayout3.setVisibility(View.GONE);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 转诊申请
      */
     @Override
@@ -751,12 +785,12 @@ public class MainActivity extends BaseActivity
             boolean transfer = sharePreferenceUtil.getBoolean(CommonData.KEY_CHANGE_PATIENT_NUM);
             if (transfer)
             {
-                rlMsgPointLayout3.setVisibility(View.VISIBLE);
-                tvUnReadMsgCount3.setText("1");
+                rlMsgPointLayout4.setVisibility(View.VISIBLE);
+                tvUnReadMsgCount4.setText("1");
             }
             else
             {
-                rlMsgPointLayout3.setVisibility(View.GONE);
+                rlMsgPointLayout4.setVisibility(View.GONE);
             }
         }
         catch (Exception e)

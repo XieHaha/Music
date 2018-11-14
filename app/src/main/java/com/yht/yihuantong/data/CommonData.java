@@ -83,6 +83,10 @@ public interface CommonData
      */
     String KEY_DOCTOR_NUM = "key_doctor_num";
     /**
+     * 我的合作医生申请数量
+     */
+    String KEY_DOCTOR_APPLY_NUM = "key_doctor_apply_num";
+    /**
      * 我的患者申请数量
      */
     String KEY_PATIENT_APPLY_NUM = "key_patient_apply_num";

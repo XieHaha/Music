@@ -151,18 +151,53 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="21dp"
-                    android:src="@drawable/main_tab_unit_selector" />
+                <RelativeLayout
+                    android:layout_width="42dp"
+                    android:layout_height="match_parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:text="@string/main_tab_cooperate"
-                    android:textColor="@color/tab_txt_color_selector"
-                    android:textSize="9sp" />
+                    <LinearLayout
+                        android:id="@+id/act_main_tab3_icon"
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_centerInParent="true"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="21dp"
+                            android:src="@drawable/main_tab_unit_selector" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:text="@string/main_tab_cooperate"
+                            android:textColor="@color/tab_txt_color_selector"
+                            android:textSize="9sp" />
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/message_red_point3"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentRight="true"
+                        android:visibility="gone"
+                        android:layout_marginTop="3dp"
+                        android:background="@drawable/bg_red_point"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/item_msg_num3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:textColor="@color/app_white_color"
+                            android:text="0"
+                            android:textSize="10sp" />
+                    </RelativeLayout>
+
+                </RelativeLayout>
             </custom.frame.widgets.ripples.RippleLinearLayout>
 
             <custom.frame.widgets.ripples.RippleLinearLayout
@@ -179,7 +214,7 @@
                     android:layout_height="match_parent">
 
                     <LinearLayout
-                        android:id="@+id/act_main_tab3_icon"
+                        android:id="@+id/act_main_tab4_icon"
                         android:layout_width="wrap_content"
                         android:orientation="vertical"
                         android:layout_centerInParent="true"
@@ -201,7 +236,7 @@
                     </LinearLayout>
 
                     <RelativeLayout
-                        android:id="@+id/message_red_point3"
+                        android:id="@+id/message_red_point4"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:layout_alignParentRight="true"
@@ -211,7 +246,7 @@
                         android:gravity="center_vertical">
 
                         <TextView
-                            android:id="@+id/item_msg_num3"
+                            android:id="@+id/item_msg_num4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"

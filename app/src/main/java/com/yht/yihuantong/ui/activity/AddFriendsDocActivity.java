@@ -121,7 +121,14 @@ public class AddFriendsDocActivity extends BaseActivity
             tvDepart.setText(cooperateDocBean.getDepartment());
             tvHospital.setText(cooperateDocBean.getHospital());
             tvType.setText(cooperateDocBean.getTitle());
-            tvIntroduce.setText(cooperateDocBean.getDoctorDescription());
+            if (!TextUtils.isEmpty(cooperateDocBean.getDoctorDescription()))
+            {
+                tvIntroduce.setText(cooperateDocBean.getDoctorDescription());
+            }
+            else
+            {
+                tvIntroduce.setText("暂无个人简介");
+            }
         }
     }
 

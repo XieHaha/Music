@@ -12,9 +12,9 @@
         android:id="@+id/act_service_pack_hint_txt"
         android:layout_width="match_parent"
         android:layout_below="@id/title_bar"
-        android:background="@color/app_minor_bg"
+        android:background="@color/app_white_color"
         android:text="选择医院"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:gravity="center_vertical"
         android:paddingLeft="12dp"
         android:textColor="#999999"
@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="12dp"
-                    android:text="检查项目："
+                    android:text="项目："
                     android:textColor="#999999"
                     android:textSize="15sp" />
 
@@ -104,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="12dp"
-                    android:text="检查价格："
+                    android:text="价格："
                     android:textColor="#999999"
                     android:textSize="15sp" />
 
@@ -140,7 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="12dp"
-                    android:text="病人信息："
+                    android:text="类别："
                     android:textColor="#999999"
                     android:textSize="15sp" />
 
@@ -176,7 +176,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="12dp"
-                    android:text="检查内容："
+                    android:text="内容："
                     android:layout_marginTop="12dp"
                     android:textColor="#999999"
                     android:textSize="15sp" />
@@ -197,14 +197,24 @@
 
             </RelativeLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/app_minor_bg"
+                android:layout_height="10dp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:text="患者信息"
                 android:textSize="10sp"
-                android:textColor="@color/app_hint_color"
                 android:paddingLeft="12dp"
+                android:background="@color/app_white_color"
                 android:gravity="center_vertical"
                 android:layout_height="34dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/app_main_divideline"
+                android:layout_height="1px" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -263,14 +273,25 @@
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/app_minor_bg"
+                android:layout_height="10dp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:text="诊断信息"
                 android:textSize="10sp"
                 android:textColor="@color/app_hint_color"
                 android:paddingLeft="12dp"
+                android:background="@color/app_white_color"
                 android:gravity="center_vertical"
                 android:layout_height="34dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/app_main_divideline"
+                android:layout_height="1px" />
 
 
             <EditText

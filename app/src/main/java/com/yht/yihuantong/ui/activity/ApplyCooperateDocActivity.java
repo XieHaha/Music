@@ -69,7 +69,7 @@ public class ApplyCooperateDocActivity extends BaseActivity
     public void initView(@NonNull Bundle savedInstanceState)
     {
         super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("申请人");
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("医生申请");
         swipeRefreshLayout = (SwipeRefreshLayout)findViewById(
                 R.id.act_apply_cooperate_swipe_layout);
         autoLoadRecyclerView = (AutoLoadRecyclerView)findViewById(
@@ -226,5 +226,4 @@ public class ApplyCooperateDocActivity extends BaseActivity
         page++;
         getApplyCooperateList();
     }
-
 }

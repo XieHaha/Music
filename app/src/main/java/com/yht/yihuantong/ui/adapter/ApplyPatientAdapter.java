@@ -57,7 +57,6 @@ public class ApplyPatientAdapter extends BaseRecyclerAdapter<PatientBean>
             super(itemView);
             ivHeadImg = itemView.findViewById(R.id.item_patient_list_headimg);
             tvName = itemView.findViewById(R.id.item_patient_list_name);
-            tvPhone = itemView.findViewById(R.id.item_patient_list_phone);
         }
 
         @Override
@@ -68,7 +67,6 @@ public class ApplyPatientAdapter extends BaseRecyclerAdapter<PatientBean>
                  .apply(GlideHelper.getOptions())
                  .into(ivHeadImg);
             tvName.setText(item.getName());
-            tvPhone.setText(item.getPhone());
         }
     }
 }

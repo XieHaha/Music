@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,9 +26,10 @@ import com.yht.yihuantong.api.IChange;
 import com.yht.yihuantong.api.RegisterType;
 import com.yht.yihuantong.api.notify.INotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
+import com.yht.yihuantong.ui.activity.AddFriendsDocActivity;
 import com.yht.yihuantong.ui.activity.AddFriendsPatientActivity;
-import com.yht.yihuantong.ui.activity.HealthCardActivity;
 import com.yht.yihuantong.ui.activity.ApplyPatientActivity;
+import com.yht.yihuantong.ui.activity.HealthCardActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientFromActivity;
 import com.yht.yihuantong.ui.adapter.PatientsListAdapter;
 import com.yht.yihuantong.utils.AllUtils;
@@ -61,9 +63,6 @@ public class PatientsFragment extends BaseFragment
     private ImageView ivTitleBarMore;
     private View headerView, exHeaderView, footerView;
     private TextView tvFooterHintTxt, tvHeanderHintTxt;
-    private PopupWindow mPopupwinow;
-    private View view_pop;
-    private TextView tvOne, tvTwo;
     private INotifyChangeListenerServer iNotifyChangeListenerServer;
     private List<PatientBean> patientBeanList = new ArrayList<>();
     /**
@@ -108,13 +107,6 @@ public class PatientsFragment extends BaseFragment
             getPatientsData();
         }
         getApplyPatientList();
-    };
-    /**
-     * 推送回调监听  转诊申请
-     */
-    private IChange<String> doctorTransferPatientListener = data ->
-    {
-        getPatientFromList();
     };
 
     @Override
@@ -193,10 +185,6 @@ public class PatientsFragment extends BaseFragment
         //注册患者状态监听
         iNotifyChangeListenerServer.registerPatientStatusChangeListener(patientStatusChangeListener,
                                                                         RegisterType.REGISTER);
-        //        //注册转诊申请监听
-        //        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(
-        //                doctorTransferPatientListener,
-        //                RegisterType.REGISTER);
     }
 
     /**
@@ -215,52 +203,6 @@ public class PatientsFragment extends BaseFragment
         mIRequest.getApplyPatientList(loginSuccessBean.getDoctorId(), 0, PAGE_SIZE, this);
     }
 
-    /**
-     * 收到转诊申请
-     * 2018年10月17日11:55:41 不显示转诊申请
-     */
-    private void getPatientFromList()
-    {
-        //        mIRequest.getTransferPatientFromList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
-    }
-
-    /**
-     * 医生扫码添加患者  转诊患者
-     * mode {@link #ADD_PATIENT}  {@link #CHANGE_PATIENT}
-     */
-    private void addPatientByScan(String patientId, int mode)
-    {
-        mIRequest.addPatientByScan(loginSuccessBean.getDoctorId(), patientId, mode, this);
-    }
-
-    /**
-     * 显示pop
-     */
-    private void showPop()
-    {
-        view_pop = LayoutInflater.from(getContext()).inflate(R.layout.main_pop_menu, null);
-        tvOne = (TextView)view_pop.findViewById(R.id.txt_one);
-        tvOne.setText("转诊记录");
-        tvOne.setVisibility(View.GONE);
-        View line = view_pop.findViewById(R.id.line1);
-        line.setVisibility(View.GONE);
-        tvTwo = (TextView)view_pop.findViewById(R.id.txt_two);
-        tvTwo.setText("扫一扫");
-        tvTwo.setOnClickListener(this);
-        if (mPopupwinow == null)
-        {
-            //新建一个popwindow
-            mPopupwinow = new PopupWindow(view_pop, LinearLayout.LayoutParams.WRAP_CONTENT,
-                                          LinearLayout.LayoutParams.WRAP_CONTENT, true);
-        }
-        mPopupwinow.setFocusable(true);
-        mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
-        mPopupwinow.setOutsideTouchable(true);
-        mPopupwinow.showAtLocation(view_pop, Gravity.TOP | Gravity.RIGHT,
-                                   (int)AllUtils.dipToPx(getContext(), 3),
-                                   (int)AllUtils.dipToPx(getContext(), 60));
-    }
-
     @Override
     public void onClick(View v)
     {
@@ -270,10 +212,6 @@ public class PatientsFragment extends BaseFragment
             case R.id.fragment_cooperate_apply_layout:
                 intent = new Intent(getContext(), ApplyPatientActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_PATIENT_APPLY);
-                break;
-            case R.id.fragment_exchange_patient_layout:
-                intent = new Intent(getContext(), TransferPatientFromActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_PATIENT_EXCHANGE);
                 break;
             case R.id.public_title_bar_more_three:
                 IntentIntegrator.forSupportFragment(this)
@@ -302,9 +240,6 @@ public class PatientsFragment extends BaseFragment
             case REQUEST_CODE_PATIENT_APPLY://患者申请操作
                 getApplyPatientList();
                 break;
-            case REQUEST_CODE_PATIENT_EXCHANGE://转诊申请操作
-                getPatientFromList();
-                break;
             case REQUEST_CODE:
                 IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode,
                                                                            data);
@@ -315,11 +250,22 @@ public class PatientsFragment extends BaseFragment
                     }
                     else
                     {
-                        //                        addPatientByScan(result.getContents(), ADD_PATIENT);
-                        Intent intent = new Intent(getContext(), AddFriendsPatientActivity.class);
-                        intent.putExtra(CommonData.KEY_PATIENT_ID, result.getContents());
-                        intent.putExtra(CommonData.KEY_PUBLIC, true);
-                        startActivity(intent);
+                        String id = result.getContents();
+                        if (!TextUtils.isEmpty(id) && id.contains("d"))
+                        {
+                            Intent intent = new Intent(getContext(), AddFriendsDocActivity.class);
+                            intent.putExtra(CommonData.KEY_DOCTOR_ID, result.getContents());
+                            intent.putExtra(CommonData.KEY_PUBLIC, true);
+                            startActivity(intent);
+                        }
+                        else
+                        {
+                            Intent intent = new Intent(getContext(),
+                                                       AddFriendsPatientActivity.class);
+                            intent.putExtra(CommonData.KEY_PATIENT_ID, id);
+                            intent.putExtra(CommonData.KEY_PUBLIC, true);
+                            startActivity(intent);
+                        }
                     }
                 }
                 else
@@ -402,25 +348,6 @@ public class PatientsFragment extends BaseFragment
                     onApplyCallbackListener.onApplyCallback();
                 }
                 break;
-            case GET_PATIENTS_FROM_LIST://转诊申请
-                //2018年10月15日11:20:45 暂时不显示转诊提醒
-                //                ArrayList<TransPatientBean> transPatientBeans = response.getData();
-                //                if (transPatientBeans.size() > 0)
-                //                {
-                //                    rlMsgHint2.setVisibility(View.VISIBLE);
-                //                    tvExNum.setText(String.valueOf(transPatientBeans.size()));
-                //                }
-                //                else
-                //                {
-                //                    rlMsgHint2.setVisibility(View.GONE);
-                //                }
-                //                sharePreferenceUtil.putString(CommonData.KEY_CHANGE_PATIENT_NUM,
-                //                                              String.valueOf(transPatientBeans.size()));
-                //                if (onApplyCallbackListener != null)
-                //                {
-                //                    onApplyCallbackListener.onApplyCallback();
-                //                }
-                break;
         }
     }
 
@@ -474,9 +401,5 @@ public class PatientsFragment extends BaseFragment
         //注销患者状态监听
         iNotifyChangeListenerServer.registerPatientStatusChangeListener(patientStatusChangeListener,
                                                                         RegisterType.UNREGISTER);
-        //        //注销转诊申请监听
-        //        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(
-        //                doctorTransferPatientListener,
-        //                RegisterType.UNREGISTER);
     }
 }

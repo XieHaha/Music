@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.yht.yihuantong.api.RegisterType;
 import com.yht.yihuantong.api.notify.INotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.activity.AddFriendsDocActivity;
+import com.yht.yihuantong.ui.activity.AddFriendsPatientActivity;
 import com.yht.yihuantong.ui.activity.ApplyCooperateDocActivity;
 import com.yht.yihuantong.ui.activity.UserInfoActivity;
 import com.yht.yihuantong.ui.adapter.CooperateDocListAdapter;
@@ -239,10 +241,22 @@ public class CooperateDocFragment extends BaseFragment
                     else
                     {
                         //                        applyCooperateDoc(result.getContents(), 1);
-                        Intent intent = new Intent(getContext(), AddFriendsDocActivity.class);
-                        intent.putExtra(CommonData.KEY_DOCTOR_ID, result.getContents());
-                        intent.putExtra(CommonData.KEY_PUBLIC, true);
-                        startActivity(intent);
+                        String id = result.getContents();
+                        if (!TextUtils.isEmpty(id) && id.contains("d"))
+                        {
+                            Intent intent = new Intent(getContext(), AddFriendsDocActivity.class);
+                            intent.putExtra(CommonData.KEY_DOCTOR_ID, result.getContents());
+                            intent.putExtra(CommonData.KEY_PUBLIC, true);
+                            startActivity(intent);
+                        }
+                        else
+                        {
+                            Intent intent = new Intent(getContext(),
+                                                       AddFriendsPatientActivity.class);
+                            intent.putExtra(CommonData.KEY_PATIENT_ID, id);
+                            intent.putExtra(CommonData.KEY_PUBLIC, true);
+                            startActivity(intent);
+                        }
                     }
                 }
                 else
@@ -328,6 +342,12 @@ public class CooperateDocFragment extends BaseFragment
                 {
                     rlMsgHint.setVisibility(View.GONE);
                 }
+                sharePreferenceUtil.putString(CommonData.KEY_DOCTOR_APPLY_NUM,
+                                              String.valueOf(list.size()));
+                if (onDocApplyCallbackListener != null)
+                {
+                    onDocApplyCallbackListener.onDocApplyCallback();
+                }
                 break;
         }
     }
@@ -361,6 +381,18 @@ public class CooperateDocFragment extends BaseFragment
     {
         super.onResponseEnd(task);
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    private OnDocApplyCallbackListener onDocApplyCallbackListener;
+
+    public void setOnDocApplyCallbackListener(OnDocApplyCallbackListener onDocApplyCallbackListener)
+    {
+        this.onDocApplyCallbackListener = onDocApplyCallbackListener;
+    }
+
+    public interface OnDocApplyCallbackListener
+    {
+        void onDocApplyCallback();
     }
 
     @Override
