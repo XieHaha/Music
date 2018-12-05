@@ -10,13 +10,8 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
 
-import org.litepal.crud.DataSupport;
-
-import java.util.List;
-
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.PatientBean;
-import custom.frame.bean.RegistrationTypeBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.ToastUtil;
@@ -26,7 +21,6 @@ import custom.frame.utils.ToastUtil;
  */
 public class ServiceInfoActivity extends BaseActivity
 {
-    private List<RegistrationTypeBean> registrationTypeBeans;
     private PatientBean patientBean;
     private String patientId;
     /**
@@ -61,7 +55,6 @@ public class ServiceInfoActivity extends BaseActivity
     public void initData(@NonNull Bundle savedInstanceState)
     {
         super.initData(savedInstanceState);
-        registrationTypeBeans = DataSupport.findAll(RegistrationTypeBean.class, false);
         if (getIntent() != null)
         {
             patientBean = (PatientBean)getIntent().getSerializableExtra(
@@ -73,12 +66,7 @@ public class ServiceInfoActivity extends BaseActivity
     @Override
     public void initListener()
     {
-        super.initListener();
         findViewById(R.id.act_service_package_change_layout).setOnClickListener(this);
-        findViewById(R.id.act_service_package_prescription_layout).setOnClickListener(this);
-        findViewById(R.id.act_service_package_check_layout).setOnClickListener(this);
-        findViewById(R.id.act_service_package_chemical_layout).setOnClickListener(this);
-        findViewById(R.id.act_service_package_health_check_layout).setOnClickListener(this);
         findViewById(R.id.act_service_package_delete_layout).setOnClickListener(this);
         findViewById(R.id.act_service_package_service_layout).setOnClickListener(this);
     }
@@ -113,42 +101,6 @@ public class ServiceInfoActivity extends BaseActivity
                 intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientBean);
                 intent.putExtra(CommonData.KEY_PUBLIC, true);
                 startActivityForResult(intent, CHANGE_PATIENT_REQUEST_CODE);
-                break;
-            case R.id.act_service_package_prescription_layout:
-                ToastUtil.toast(this, "敬请期待");
-                break;
-            case R.id.act_service_package_check_layout:
-                intent = new Intent(this, RegistrationActivity.class);
-                if (registrationTypeBeans != null && registrationTypeBeans.size() > 0)
-                {
-                    intent.putExtra(CommonData.KEY_PUBLIC,
-                                    registrationTypeBeans.get(0).getFieldId());
-                }
-                intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "检查");
-                intent.putExtra(CommonData.KEY_PATIENT_ID, patientId);
-                startActivity(intent);
-                break;
-            case R.id.act_service_package_chemical_layout:
-                intent = new Intent(this, RegistrationActivity.class);
-                if (registrationTypeBeans != null && registrationTypeBeans.size() > 1)
-                {
-                    intent.putExtra(CommonData.KEY_PUBLIC,
-                                    registrationTypeBeans.get(1).getFieldId());
-                }
-                intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "化验");
-                intent.putExtra(CommonData.KEY_PATIENT_ID, patientId);
-                startActivity(intent);
-                break;
-            case R.id.act_service_package_health_check_layout:
-                intent = new Intent(this, RegistrationActivity.class);
-                if (registrationTypeBeans != null && registrationTypeBeans.size() > 2)
-                {
-                    intent.putExtra(CommonData.KEY_PUBLIC,
-                                    registrationTypeBeans.get(2).getFieldId());
-                }
-                intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "体检");
-                intent.putExtra(CommonData.KEY_PATIENT_ID, patientId);
-                startActivity(intent);
                 break;
             case R.id.act_service_package_delete_layout:
                 new SimpleDialog(this, "确定删除当前患者?", (dialog, which) -> deletePatient(),

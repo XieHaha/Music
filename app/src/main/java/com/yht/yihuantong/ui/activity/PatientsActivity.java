@@ -1,20 +1,15 @@
-package com.yht.yihuantong.ui.fragment;
+package com.yht.yihuantong.ui.activity;
 
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -26,13 +21,7 @@ import com.yht.yihuantong.api.IChange;
 import com.yht.yihuantong.api.RegisterType;
 import com.yht.yihuantong.api.notify.INotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
-import com.yht.yihuantong.ui.activity.AddFriendsDocActivity;
-import com.yht.yihuantong.ui.activity.AddFriendsPatientActivity;
-import com.yht.yihuantong.ui.activity.ApplyPatientActivity;
-import com.yht.yihuantong.ui.activity.HealthCardActivity;
-import com.yht.yihuantong.ui.activity.TransferPatientFromActivity;
 import com.yht.yihuantong.ui.adapter.PatientsListAdapter;
-import com.yht.yihuantong.utils.AllUtils;
 
 import org.litepal.crud.DataSupport;
 
@@ -42,7 +31,7 @@ import java.util.List;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.PatientBean;
 import custom.frame.http.Tasks;
-import custom.frame.ui.fragment.BaseFragment;
+import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
@@ -52,7 +41,7 @@ import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
  *
  * @author DUNDUN
  */
-public class PatientsFragment extends BaseFragment
+public class PatientsActivity extends BaseActivity
         implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener
 {
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -110,30 +99,30 @@ public class PatientsFragment extends BaseFragment
     };
 
     @Override
+    protected boolean isInitBackBtn()
+    {
+        return true;
+    }
+
+    @Override
     public int getLayoutID()
     {
         return R.layout.fragment_patients;
     }
 
     @Override
-    public void initView(@NonNull View view, @NonNull Bundle savedInstanceState)
+    public void initView(@NonNull Bundle savedInstanceState)
     {
-        super.initView(view, savedInstanceState);
-        //获取状态栏高度，填充
-        View mStateBarFixer = view.findViewById(R.id.status_bar_fix);
-        mStateBarFixer.setLayoutParams(
-                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                              getStateBarHeight(getActivity())));//填充状态栏
-        ((TextView)view.findViewById(R.id.public_title_bar_title)).setText("我的患者");
-        swipeRefreshLayout = view.findViewById(R.id.fragment_patients_swipe_layout);
-        autoLoadRecyclerView = view.findViewById(R.id.fragment_patients_recycler_view);
-        ivTitleBarMore = view.findViewById(R.id.public_title_bar_more_three);
+        super.initView(savedInstanceState);
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("我的患者");
+        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.fragment_patients_swipe_layout);
+        autoLoadRecyclerView = (AutoLoadRecyclerView)findViewById(
+                R.id.fragment_patients_recycler_view);
+        ivTitleBarMore = (ImageView)findViewById(R.id.public_title_bar_more_three);
         ivTitleBarMore.setVisibility(View.VISIBLE);
-        headerView = LayoutInflater.from(getContext())
-                                   .inflate(R.layout.view_cooperate_doc_header, null);
-        exHeaderView = LayoutInflater.from(getContext())
-                                     .inflate(R.layout.view_change_patient_header, null);
-        footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_list_footerr, null);
+        headerView = LayoutInflater.from(this).inflate(R.layout.view_cooperate_doc_header, null);
+        exHeaderView = LayoutInflater.from(this).inflate(R.layout.view_change_patient_header, null);
+        footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
         tvHeanderHintTxt = headerView.findViewById(R.id.view_header_hint_txt);
         rlMsgHint = headerView.findViewById(R.id.message_red_point);
         tvNum = headerView.findViewById(R.id.item_msg_num);
@@ -150,7 +139,7 @@ public class PatientsFragment extends BaseFragment
     @Override
     public void initData(@NonNull Bundle savedInstanceState)
     {
-        patientsListAdapter = new PatientsListAdapter(getContext(), patientBeanList);
+        patientsListAdapter = new PatientsListAdapter(this, patientBeanList);
         patientsListAdapter.addFooterView(footerView);
         patientsListAdapter.addHeaderView(headerView);
         //只显示在个人页面
@@ -170,12 +159,12 @@ public class PatientsFragment extends BaseFragment
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
         autoLoadRecyclerView.setLayoutManager(
-                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(patientsListAdapter);
         patientsListAdapter.setOnItemClickListener((v, position, item) ->
                                                    {
-                                                       Intent intent = new Intent(getContext(),
+                                                       Intent intent = new Intent(this,
                                                                                   HealthCardActivity.class);
                                                        intent.putExtra(CommonData.KEY_PATIENT_BEAN,
                                                                        item);
@@ -210,14 +199,13 @@ public class PatientsFragment extends BaseFragment
         switch (v.getId())
         {
             case R.id.fragment_cooperate_apply_layout:
-                intent = new Intent(getContext(), ApplyPatientActivity.class);
+                intent = new Intent(this, ApplyPatientActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_PATIENT_APPLY);
                 break;
             case R.id.public_title_bar_more_three:
-                IntentIntegrator.forSupportFragment(this)
-                                .setBarcodeImageEnabled(false)
-                                .setPrompt("将二维码放入框内，即可自动识别")
-                                .initiateScan();
+                new IntentIntegrator(this).setBarcodeImageEnabled(false)
+                                          .setPrompt("将二维码放入框内，即可自动识别")
+                                          .initiateScan();
                 break;
             default:
                 break;
@@ -228,7 +216,7 @@ public class PatientsFragment extends BaseFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != getActivity().RESULT_OK)
+        if (resultCode != RESULT_OK)
         {
             return;
         }
@@ -253,15 +241,14 @@ public class PatientsFragment extends BaseFragment
                         String id = result.getContents();
                         if (!TextUtils.isEmpty(id) && id.contains("d"))
                         {
-                            Intent intent = new Intent(getContext(), AddFriendsDocActivity.class);
+                            Intent intent = new Intent(this, AddFriendsDocActivity.class);
                             intent.putExtra(CommonData.KEY_DOCTOR_ID, result.getContents());
                             intent.putExtra(CommonData.KEY_PUBLIC, true);
                             startActivity(intent);
                         }
                         else
                         {
-                            Intent intent = new Intent(getContext(),
-                                                       AddFriendsPatientActivity.class);
+                            Intent intent = new Intent(this, AddFriendsPatientActivity.class);
                             intent.putExtra(CommonData.KEY_PATIENT_ID, id);
                             intent.putExtra(CommonData.KEY_PUBLIC, true);
                             startActivity(intent);
@@ -328,7 +315,7 @@ public class PatientsFragment extends BaseFragment
                                               String.valueOf(patientBeanList.size()));
                 break;
             case ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT:
-                ToastUtil.toast(getContext(), response.getMsg());
+                ToastUtil.toast(this, response.getMsg());
                 break;
             case GET_APPLY_PATIENT_LIST://患者申请
                 ArrayList<PatientBean> list = response.getData();

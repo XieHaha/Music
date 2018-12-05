@@ -41,7 +41,7 @@ import com.yht.yihuantong.chat.ChatActivity;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.ui.fragment.CooperateDocFragment;
-import com.yht.yihuantong.ui.fragment.PatientsFragment;
+import com.yht.yihuantong.ui.fragment.MainFragment;
 import com.yht.yihuantong.ui.fragment.UserFragment;
 import com.yht.yihuantong.version.presenter.VersionPresenter;
 import com.yht.yihuantong.version.view.VersionUpdateDialog;
@@ -66,15 +66,14 @@ public class MainActivity extends BaseActivity
         implements EaseConversationListFragment.EaseConversationListItemClickListener,
                    VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener,
                    EaseConversationListFragment.EaseConversationListItemLongClickListener,
-                   PatientsFragment.OnApplyCallbackListener,
                    UserFragment.OnTransferCallbackListener,
                    CooperateDocFragment.OnDocApplyCallbackListener
 {
-    private RippleLinearLayout tabMsg, tabDoc, tabCase, tabMy;
+    private RippleLinearLayout tab1, tab2, tab3, tab4;
     private RelativeLayout rlMsgPointLayout, rlMsgPointLayout2, rlMsgPointLayout3, rlMsgPointLayout4;
     private TextView tvUnReadMsgCount, tvUnReadMsgCount2, tvUnReadMsgCount3, tvUnReadMsgCount4;
     private CooperateDocFragment cooperateDocFragment;
-    private PatientsFragment patientFragment;
+    private MainFragment mainFragment;
     private UserFragment userFragment;
     private EaseConversationListFragment easeConversationListFragment;
     /**
@@ -147,7 +146,7 @@ public class MainActivity extends BaseActivity
     {
         fragmentManager = getSupportFragmentManager();
         transaction = fragmentManager.beginTransaction();
-        tabEaseMsgView();
+        tabMainView();
         setAlias();
     }
 
@@ -161,15 +160,15 @@ public class MainActivity extends BaseActivity
         }
         if (type == -1)
         {
+            tabMainView();
+        }
+        else if (type == 1)
+        {
             tabEaseMsgView();
         }
         else if (type == 2)
         {
             tabCooperateDocView();
-        }
-        else if (type == 1)
-        {
-            tabPatientView();
         }
         else if (type == 3)
         {
@@ -190,10 +189,10 @@ public class MainActivity extends BaseActivity
     {
         super.initView(savedInstanceState);
         transparencyBar(this);
-        tabMsg = (RippleLinearLayout)findViewById(R.id.act_main_tab1);
-        tabDoc = (RippleLinearLayout)findViewById(R.id.act_main_tab2);
-        tabCase = (RippleLinearLayout)findViewById(R.id.act_main_tab3);
-        tabMy = (RippleLinearLayout)findViewById(R.id.act_main_tab4);
+        tab1 = (RippleLinearLayout)findViewById(R.id.act_main_tab1);
+        tab2 = (RippleLinearLayout)findViewById(R.id.act_main_tab2);
+        tab3 = (RippleLinearLayout)findViewById(R.id.act_main_tab3);
+        tab4 = (RippleLinearLayout)findViewById(R.id.act_main_tab4);
         rlMsgPointLayout = (RelativeLayout)findViewById(R.id.message_red_point);
         rlMsgPointLayout2 = (RelativeLayout)findViewById(R.id.message_red_point2);
         rlMsgPointLayout3 = (RelativeLayout)findViewById(R.id.message_red_point3);
@@ -225,10 +224,10 @@ public class MainActivity extends BaseActivity
     public void initListener()
     {
         super.initListener();
-        tabMsg.setOnClickListener(this);
-        tabDoc.setOnClickListener(this);
-        tabCase.setOnClickListener(this);
-        tabMy.setOnClickListener(this);
+        tab1.setOnClickListener(this);
+        tab2.setOnClickListener(this);
+        tab3.setOnClickListener(this);
+        tab4.setOnClickListener(this);
         //注册一个监听连接状态的listener
         connectionListener = new MyConnectionListener();
         EMClient.getInstance().addConnectionListener(connectionListener);
@@ -371,8 +370,8 @@ public class MainActivity extends BaseActivity
         msgUnReadCount = EMClient.getInstance().chatManager().getUnreadMessageCount();
         if (msgUnReadCount > 0)
         {
-            rlMsgPointLayout.setVisibility(View.VISIBLE);
-            tvUnReadMsgCount.setText(msgUnReadCount > 99 ? "99+" : msgUnReadCount + "");
+            rlMsgPointLayout2.setVisibility(View.VISIBLE);
+            tvUnReadMsgCount2.setText(msgUnReadCount > 99 ? "99+" : msgUnReadCount + "");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             {
                 sendSubscribeMsg(msgUnReadCount);
@@ -384,7 +383,7 @@ public class MainActivity extends BaseActivity
         }
         else
         {
-            rlMsgPointLayout.setVisibility(View.GONE);
+            rlMsgPointLayout2.setVisibility(View.GONE);
             removeShortcutBadge();
         }
     }
@@ -520,11 +519,10 @@ public class MainActivity extends BaseActivity
         switch (v.getId())
         {
             case R.id.act_main_tab1:
-                //                tabMsgView();
-                tabEaseMsgView();
+                tabMainView();
                 break;
             case R.id.act_main_tab2:
-                tabPatientView();
+                tabEaseMsgView();
                 break;
             case R.id.act_main_tab3:
                 tabCooperateDocView();
@@ -536,6 +534,24 @@ public class MainActivity extends BaseActivity
                 tabEaseMsgView();
                 break;
         }
+    }
+
+    private void tabMainView()
+    {
+        transaction = fragmentManager.beginTransaction();
+        hideAll(transaction);
+        if (mainFragment == null)
+        {
+            mainFragment = new MainFragment();
+            transaction.add(R.id.act_main_tab_frameLayout, mainFragment);
+        }
+        else
+        {
+            transaction.show(mainFragment);
+            mainFragment.onResume();
+        }
+        transaction.commitAllowingStateLoss();
+        selectTab(0);
     }
 
     /**
@@ -557,25 +573,6 @@ public class MainActivity extends BaseActivity
         }
         easeConversationListFragment.setConversationListItemClickListener(this);
         easeConversationListFragment.setConversationListItemLongClickListener(this);
-        transaction.commitAllowingStateLoss();
-        selectTab(0);
-    }
-
-    private void tabPatientView()
-    {
-        transaction = fragmentManager.beginTransaction();
-        hideAll(transaction);
-        if (patientFragment == null)
-        {
-            patientFragment = new PatientsFragment();
-            patientFragment.setOnApplyCallbackListener(this);
-            transaction.add(R.id.act_main_tab_frameLayout, patientFragment);
-        }
-        else
-        {
-            transaction.show(patientFragment);
-            patientFragment.onResume();
-        }
         transaction.commitAllowingStateLoss();
         selectTab(1);
     }
@@ -627,7 +624,7 @@ public class MainActivity extends BaseActivity
         {
             transaction.hide(easeConversationListFragment);
         }
-        if (patientFragment != null) { transaction.hide(patientFragment); }
+        if (mainFragment != null) { transaction.hide(mainFragment); }
         if (cooperateDocFragment != null) { transaction.hide(cooperateDocFragment); }
         if (userFragment != null) { transaction.hide(userFragment); }
     }
@@ -640,34 +637,34 @@ public class MainActivity extends BaseActivity
         switch (index)
         {
             case 0:
-                tabMsg.setSelected(true);
-                tabDoc.setSelected(false);
-                tabCase.setSelected(false);
-                tabMy.setSelected(false);
+                tab1.setSelected(true);
+                tab2.setSelected(false);
+                tab3.setSelected(false);
+                tab4.setSelected(false);
                 break;
             case 1:
-                tabMsg.setSelected(false);
-                tabDoc.setSelected(true);
-                tabCase.setSelected(false);
-                tabMy.setSelected(false);
+                tab1.setSelected(false);
+                tab2.setSelected(true);
+                tab3.setSelected(false);
+                tab4.setSelected(false);
                 break;
             case 2:
-                tabMsg.setSelected(false);
-                tabDoc.setSelected(false);
-                tabCase.setSelected(true);
-                tabMy.setSelected(false);
+                tab1.setSelected(false);
+                tab2.setSelected(false);
+                tab3.setSelected(true);
+                tab4.setSelected(false);
                 break;
             case 3:
-                tabMsg.setSelected(false);
-                tabDoc.setSelected(false);
-                tabCase.setSelected(false);
-                tabMy.setSelected(true);
+                tab1.setSelected(false);
+                tab2.setSelected(false);
+                tab3.setSelected(false);
+                tab4.setSelected(true);
                 break;
             default:
-                tabMsg.setSelected(true);
-                tabDoc.setSelected(false);
-                tabCase.setSelected(false);
-                tabMy.setSelected(false);
+                tab1.setSelected(true);
+                tab2.setSelected(false);
+                tab3.setSelected(false);
+                tab4.setSelected(false);
                 break;
         }
     }
@@ -713,36 +710,35 @@ public class MainActivity extends BaseActivity
         mVersionPresenter.getNewAPK(isMustUpdate);
         ToastUtil.toast(this, "开始下载");
     }
-
-    /**
-     * 患者、申请回调
-     */
-    @Override
-    public void onApplyCallback()
-    {
-        try
-        {
-            String pNum = sharePreferenceUtil.getString(CommonData.KEY_PATIENT_APPLY_NUM);
-            if (TextUtils.isEmpty(pNum))
-            {
-                return;
-            }
-            int num = Integer.valueOf(pNum);
-            if (num > 0)
-            {
-                rlMsgPointLayout2.setVisibility(View.VISIBLE);
-                tvUnReadMsgCount2.setText(num > 99 ? "99+" : num + "");
-            }
-            else
-            {
-                rlMsgPointLayout2.setVisibility(View.GONE);
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
+    //    /**
+    //     * 患者、申请回调
+    //     */
+    //    @Override
+    //    public void onApplyCallback()
+    //    {
+    //        try
+    //        {
+    //            String pNum = sharePreferenceUtil.getString(CommonData.KEY_PATIENT_APPLY_NUM);
+    //            if (TextUtils.isEmpty(pNum))
+    //            {
+    //                return;
+    //            }
+    //            int num = Integer.valueOf(pNum);
+    //            if (num > 0)
+    //            {
+    //                rlMsgPointLayout2.setVisibility(View.VISIBLE);
+    //                tvUnReadMsgCount2.setText(num > 99 ? "99+" : num + "");
+    //            }
+    //            else
+    //            {
+    //                rlMsgPointLayout2.setVisibility(View.GONE);
+    //            }
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            e.printStackTrace();
+    //        }
+    //    }
 
     /**
      * 合作医生申请

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="67dp"
-
+    android:layout_height="100dp"
     android:background="@color/app_white_color">
 
     <RelativeLayout
@@ -14,8 +13,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/item_trans_patient_list_patient_img"
-            android:layout_width="53dp"
-            android:layout_height="53dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_centerVertical="true"
             android:src="@mipmap/icon_patient_default_imgs" />
 
@@ -23,27 +22,27 @@
             android:id="@+id/item_trans_patient_list_patient_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="82dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="58dp"
+            android:layout_marginTop="21dp"
             android:layout_toRightOf="@id/headimg_layout"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="姓名"
-            android:textColor="#ff000000"
-            android:textSize="14sp" />
+            android:textColor="@color/app_main_txt_color"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/item_trans_patient_list_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="21dp"
             android:layout_marginLeft="13dp"
             android:layout_toRightOf="@id/item_trans_patient_list_patient_name"
             android:ellipsize="end"
             android:maxLines="1"
             android:text=""
-            android:textColor="#ff000000"
-            android:textSize="14sp" />
+            android:textColor="@color/app_main_txt_color"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/item_trans_patient_list_doctor_name"
@@ -51,13 +50,25 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="sssss"
-            android:layout_marginLeft="82dp"
+            android:layout_marginLeft="58dp"
             android:layout_toRightOf="@id/headimg_layout"
             android:layout_below="@id/item_trans_patient_list_patient_name"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="2dp"
+            android:textColor="@color/app_main_txt_color"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/item_trans_patient_list_doctor_hospital"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_marginLeft="58dp"
+            android:layout_toRightOf="@id/headimg_layout"
+            android:layout_below="@id/item_trans_patient_list_doctor_name"
+            android:layout_marginTop="2dp"
             android:textColor="#ff000000"
-            android:textSize="13sp" />
+            android:textSize="12sp" />
 
 
         <ImageView

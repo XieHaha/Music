@@ -12,7 +12,6 @@ import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CombineBean;
 import custom.frame.bean.CooperateDocBean;
 import custom.frame.bean.HospitalBean;
-import custom.frame.bean.HospitalProductBean;
 import custom.frame.bean.HospitalProductTypeBean;
 import custom.frame.bean.LoginSuccessBean;
 import custom.frame.bean.PatientBean;
@@ -491,20 +490,6 @@ public class IRequest extends BaseRequest
     }
 
     /**
-     * 获取医院商品列表
-     */
-    public Tasks getHospitalProductList(String hospitalId, int productTypeId,
-            final ResponseListener<BaseResponse> listener)
-    {
-        Map<String, Object> merchant = new HashMap<>(16);
-        merchant.put("hospitalId", hospitalId);
-        merchant.put("productTypeId", productTypeId);
-        return requestBaseResponseListByJson("/product/info/doctor/hospital/product",
-                                             Tasks.GET_HOSPITAL_PRODUCT_LIST,
-                                             HospitalProductBean.class, merchant, listener);
-    }
-
-    /**
      * 根据医生id获取医院列表
      */
     public Tasks getHospitalListByDoctorId(String doctorId,
@@ -528,23 +513,6 @@ public class IRequest extends BaseRequest
         return requestBaseResponseListByJson("/product/info/doctor/hospital/type/product",
                                              Tasks.GET_HOSPITAL_PRODUCT_LIST_BY_HOSPITALID,
                                              HospitalProductTypeBean.class, merchant, listener);
-    }
-
-    /**
-     * 新增订单
-     */
-    public Tasks addProductOrder(String doctorId, String patientId, String hospitalId,
-            String productId, int productTypeId, final ResponseListener<BaseResponse> listener)
-    {
-        Map<String, Object> merchant = new HashMap<>(16);
-        merchant.put("doctorId", doctorId);
-        merchant.put("patientId", patientId);
-        merchant.put("hospitalId", hospitalId);
-        merchant.put("productId", productId);
-        merchant.put("productTypeId", productTypeId);
-        return requestBaseResponseListByJson("/product/info/doctor/operator/add",
-                                             Tasks.ADD_PRODUCT_ORDER, HospitalProductBean.class,
-                                             merchant, listener);
     }
 
     /**

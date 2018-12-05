@@ -16,6 +16,10 @@ public class HospitalProductBean implements Serializable
     private String productPrice;
     private String productPriceUnit;
     private String productDescription;
+    private String productContactName;
+    private String productContactPhone;
+    private String productAccessChannel;
+    private String productOtherInfo;
     private long gmtCreate;
     private long gmtModified;
 
@@ -87,6 +91,46 @@ public class HospitalProductBean implements Serializable
     public void setProductDescription(String productDescription)
     {
         this.productDescription = productDescription;
+    }
+
+    public String getProductContactName()
+    {
+        return productContactName;
+    }
+
+    public void setProductContactName(String productContactName)
+    {
+        this.productContactName = productContactName;
+    }
+
+    public String getProductContactPhone()
+    {
+        return productContactPhone;
+    }
+
+    public void setProductContactPhone(String productContactPhone)
+    {
+        this.productContactPhone = productContactPhone;
+    }
+
+    public String getProductAccessChannel()
+    {
+        return productAccessChannel;
+    }
+
+    public void setProductAccessChannel(String productAccessChannel)
+    {
+        this.productAccessChannel = productAccessChannel;
+    }
+
+    public String getProductOtherInfo()
+    {
+        return productOtherInfo;
+    }
+
+    public void setProductOtherInfo(String productOtherInfo)
+    {
+        this.productOtherInfo = productOtherInfo;
     }
 
     public long getGmtCreate()

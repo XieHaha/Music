@@ -16,6 +16,7 @@ import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -415,6 +416,37 @@ public abstract class BaseActivity<T> extends AppCompatActivity
         if (task != null && requestList != null) {
             requestList.remove(task);
         }
+    }
+
+
+    /**
+     * 把json转换成基础响应对象列表类
+     */
+    public final BaseResponse praseBaseResponseList(JSONObject jsonObject,
+            Class<T> classOfT) throws JSONException
+    {
+        BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(EntityCode))
+                                                      .setMsg(jsonObject.optString(EntityMsg));
+        List<T> list = new ArrayList<>();
+        if (jsonObject.opt(EntityData) != null)
+        {
+            JSONArray jsonArray = jsonObject.optJSONArray(EntityData);
+            if (jsonArray != null)
+            {
+                for (int i = 0; i < jsonArray.length(); i++)
+                {
+                    try
+                    {
+                        list.add(JSON.parseObject(jsonArray.get(i).toString(), classOfT));
+                    }
+                    catch (Exception e)
+                    {
+                    }
+                }
+            }
+        }
+        baseResponse.setData(list);
+        return baseResponse;
     }
 
     /**

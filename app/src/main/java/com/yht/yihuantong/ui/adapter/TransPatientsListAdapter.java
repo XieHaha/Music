@@ -9,13 +9,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
-import custom.frame.utils.GlideHelper;
 
 import java.util.List;
 
 import custom.frame.bean.TransPatientBean;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.ui.adapter.BaseViewHolder;
+import custom.frame.utils.GlideHelper;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -67,7 +67,7 @@ public class TransPatientsListAdapter extends BaseRecyclerAdapter<TransPatientBe
             tvStatus = itemView.findViewById(R.id.item_trans_patient_list_status);
             tvPatName = itemView.findViewById(R.id.item_trans_patient_list_patient_name);
             tvDocName = itemView.findViewById(R.id.item_trans_patient_list_doctor_name);
-            tvDocHospital = itemView.findViewById(R.id.item_trans_patient_list_doctor_name);
+            tvDocHospital = itemView.findViewById(R.id.item_trans_patient_list_doctor_hospital);
         }
 
         @Override
@@ -80,11 +80,13 @@ public class TransPatientsListAdapter extends BaseRecyclerAdapter<TransPatientBe
             tvPatName.setText(item.getPatientName());
             if (isFrom)
             {
+                tvDocHospital.setText(item.getFromDoctorHospitalName());
                 tvDocName.setText("来自：" + item.getFromDoctorName());
             }
             else
             {
                 tvDocName.setText("转给：" + item.getToDoctorName());
+                tvDocHospital.setText(item.getToDoctorHospitalName());
             }
             switch (item.getAcceptState())
             {

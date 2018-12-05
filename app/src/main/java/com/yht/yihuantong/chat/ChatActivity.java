@@ -23,12 +23,7 @@ import com.yht.yihuantong.ui.activity.ServicePackActivity;
 import com.yht.yihuantong.ui.activity.UserInfoActivity;
 import com.yht.yihuantong.utils.AllUtils;
 
-import org.litepal.crud.DataSupport;
-
-import java.util.List;
-
 import custom.frame.bean.PatientBean;
-import custom.frame.bean.RegistrationTypeBean;
 import custom.frame.ui.activity.BaseActivity;
 
 /**
@@ -41,8 +36,7 @@ public class ChatActivity extends BaseActivity
     private EaseChatFragment easeChatFragment;
     private PopupWindow mPopupwinow;
     private View view_pop;
-    private RelativeLayout rlInfoLayout, rlServiceLayout, rlPrescriptionLayout, rlCheckLayout, rlHealthCheckLayout, rlChemicalLayout;
-    private List<RegistrationTypeBean> registrationTypeBeans;
+    private RelativeLayout rlInfoLayout, rlServiceLayout;
 
     @Override
     public int getLayoutID()
@@ -70,12 +64,6 @@ public class ChatActivity extends BaseActivity
         easeChatFragment.hideTitleBar();
         easeChatFragment.setArguments(args);
         replaceFragment(R.id.act_chat_root, easeChatFragment, ChatActivity.class.getName());
-    }
-
-    @Override
-    public void initData(@NonNull Bundle savedInstanceState)
-    {
-        registrationTypeBeans = DataSupport.findAll(RegistrationTypeBean.class, false);
     }
 
     /**
@@ -130,51 +118,6 @@ public class ChatActivity extends BaseActivity
                     }
                 }
                 break;
-            //            case R.id.check_layout:
-            //                intent = new Intent(this, RegistrationActivity.class);
-            //                if (registrationTypeBeans != null && registrationTypeBeans.size() > 0)
-            //                {
-            //                    intent.putExtra(CommonData.KEY_PUBLIC,
-            //                                    registrationTypeBeans.get(0).getFieldId());
-            //                }
-            //                intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "检查");
-            //                intent.putExtra(CommonData.KEY_PATIENT_ID, chatId);
-            //                startActivity(intent);
-            //                break;
-            //            case R.id.chemical_layout:
-            //                intent = new Intent(this, RegistrationActivity.class);
-            //                if (registrationTypeBeans != null && registrationTypeBeans.size() > 1)
-            //                {
-            //                    intent.putExtra(CommonData.KEY_PUBLIC,
-            //                                    registrationTypeBeans.get(1).getFieldId());
-            //                }
-            //                intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "化验");
-            //                intent.putExtra(CommonData.KEY_PATIENT_ID, chatId);
-            //                startActivity(intent);
-            //                break;
-            //            case R.id.health_check_layout:
-            //                intent = new Intent(this, RegistrationActivity.class);
-            //                if (registrationTypeBeans != null && registrationTypeBeans.size() > 2)
-            //                {
-            //                    intent.putExtra(CommonData.KEY_PUBLIC,
-            //                                    registrationTypeBeans.get(2).getFieldId());
-            //                }
-            //                intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "体检");
-            //                intent.putExtra(CommonData.KEY_PATIENT_ID, chatId);
-            //                startActivity(intent);
-            //                break;
-            //            case R.id.prescription_layout:
-            //                ToastUtil.toast(this, "敬请期待");
-            //                //                intent = new Intent(this, RegistrationActivity.class);
-            //                //                if (registrationTypeBeans != null && registrationTypeBeans.size() > 3)
-            //                //                {
-            //                //                    intent.putExtra(CommonData.KEY_PUBLIC,
-            //                //                                    registrationTypeBeans.get(3).getFieldId());
-            //                //                }
-            //                //                intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "处方");
-            //                //                intent.putExtra(CommonData.KEY_PATIENT_ID, chatId);
-            //                //                startActivity(intent);
-            //                break;
             case R.id.service_layout:
                 intent = new Intent(this, ServicePackActivity.class);
                 intent.putExtra(CommonData.KEY_PATIENT_ID, chatId);
@@ -199,26 +142,14 @@ public class ChatActivity extends BaseActivity
         view_pop = LayoutInflater.from(this).inflate(R.layout.main_pop_msg, null);
         rlInfoLayout = (RelativeLayout)view_pop.findViewById(R.id.info_layout);
         rlServiceLayout = (RelativeLayout)view_pop.findViewById(R.id.service_layout);
-        //        rlPrescriptionLayout = (RelativeLayout)view_pop.findViewById(R.id.prescription_layout);
-        //        rlCheckLayout = (RelativeLayout)view_pop.findViewById(R.id.check_layout);
-        //        rlHealthCheckLayout = (RelativeLayout)view_pop.findViewById(R.id.health_check_layout);
-        //        rlChemicalLayout = (RelativeLayout)view_pop.findViewById(R.id.chemical_layout);
         rlInfoLayout.setOnClickListener(this);
         if (chatId.contains("d"))
         {
             rlServiceLayout.setVisibility(View.GONE);
-            //            rlPrescriptionLayout.setVisibility(View.GONE);
-            //            rlCheckLayout.setVisibility(View.GONE);
-            //            rlHealthCheckLayout.setVisibility(View.GONE);
-            //            rlChemicalLayout.setVisibility(View.GONE);
         }
         else
         {
             rlServiceLayout.setOnClickListener(this);
-            //            rlPrescriptionLayout.setOnClickListener(this);
-            //            rlCheckLayout.setOnClickListener(this);
-            //            rlHealthCheckLayout.setOnClickListener(this);
-            //            rlChemicalLayout.setOnClickListener(this);
         }
         if (mPopupwinow == null)
         {

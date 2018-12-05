@@ -12,6 +12,10 @@ import android.view.ViewGroup;
 
 import com.alibaba.fastjson.JSON;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +35,7 @@ import custom.frame.utils.ToastUtil;
 /**
  * @author dundun
  */
-public abstract class BaseFragment extends Fragment
+public abstract class BaseFragment<T> extends Fragment
         implements FragmentInterface, ResponseListener<BaseResponse>, View.OnClickListener,
                    ConstantsCommon
 {
@@ -311,4 +315,75 @@ public abstract class BaseFragment extends Fragment
             requestList.remove(task);
         }
     }
+
+    /**
+     * 把json转换成基础响应对象列表类
+     */
+    public final BaseResponse praseBaseResponseList(JSONObject jsonObject,
+            Class<T> classOfT) throws JSONException
+    {
+        BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(EntityCode))
+                                                      .setMsg(jsonObject.optString(EntityMsg));
+        List<T> list = new ArrayList<>();
+        if (jsonObject.opt(EntityData) != null)
+        {
+            JSONArray jsonArray = jsonObject.optJSONArray(EntityData);
+            if (jsonArray != null)
+            {
+                for (int i = 0; i < jsonArray.length(); i++)
+                {
+                    try
+                    {
+                        list.add(JSON.parseObject(jsonArray.get(i).toString(), classOfT));
+                    }
+                    catch (Exception e)
+                    {
+                    }
+                }
+            }
+        }
+        baseResponse.setData(list);
+        return baseResponse;
+    }
+
+    /**
+     * 把json转换成基础响应对象类
+     *
+     * @param jsonObject jsonobject对象
+     * @param classOfT   待转换的实体类,为空则data为空
+     */
+    public final BaseResponse praseBaseResponse(JSONObject jsonObject, Class<T> classOfT)
+            throws JSONException
+    {
+        Object data = null;
+        if (classOfT != null)
+        {
+            if (classOfT == String.class)
+            {
+                data = jsonObject.optString(EntityData);
+            }
+            else
+            {
+                if (jsonObject.opt(EntityData) != null)
+                {
+                    try
+                    {
+                        data = JSON.parseObject(jsonObject.optString(EntityData), classOfT);
+                    }
+                    catch (Exception e)
+                    {
+                    }
+                }
+            }
+        }
+        BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(EntityCode))
+                                                      .setMsg(jsonObject.optString(EntityMsg))
+                                                      .setData(data);
+        return baseResponse;
+    }
+
+    //=============================================请求辅助方法==============================
+    public String EntityData = "data";
+    public String EntityCode = "code";
+    public String EntityMsg = "msg";
 }

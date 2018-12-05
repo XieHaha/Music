@@ -9,9 +9,11 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yanzhenjie.nohttp.RequestMethod;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
@@ -24,6 +26,7 @@ import com.yht.yihuantong.ui.adapter.RegistrationAdapter;
 import com.yht.yihuantong.ui.adapter.RegistrationProductAdapter;
 import com.yht.yihuantong.ui.adapter.RegistrationProductTypeAdapter;
 import com.yht.yihuantong.ui.dialog.HintDialog;
+import com.yht.yihuantong.ui.dialog.listener.OnEnterClickListener;
 import com.yht.yihuantong.utils.AllUtils;
 
 import org.json.JSONException;
@@ -43,8 +46,10 @@ import custom.frame.bean.PatientBean;
 import custom.frame.http.Tasks;
 import custom.frame.http.data.HttpConstants;
 import custom.frame.ui.activity.BaseActivity;
+import custom.frame.utils.GlideHelper;
 import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by dundun on 18/9/13.
@@ -58,6 +63,11 @@ public class ServicePackActivity<T> extends BaseActivity
     private TextView tvTitle1, tvTitle2, tvTitle3, tvTitle4;
     private TextView tvNext;
     private EditText etDes;
+    private CircleImageView ivHosspitalImg;
+    private TextView tvHospitalName, tvHospitalAddress, tvHospitalGrade;
+    private RelativeLayout rlHospitalLayout;
+    private TextView tvContact, tvContactPhone, tvUseful, tvAttention;
+    private View line;
     private ScrollView llProductDetaillayout;
     private View footerView, productTypeFooterView, productFooterView;
     private RegistrationAdapter registrationAdapter;
@@ -118,6 +128,16 @@ public class ServicePackActivity<T> extends BaseActivity
         tvTitle2 = (TextView)findViewById(R.id.act_service_pack_goods_price_txt);
         tvTitle4 = (TextView)findViewById(R.id.act_service_pack_goods_info_txt);
         etDes = (EditText)findViewById(R.id.act_service_pack_des);
+        line = findViewById(R.id.title_line);
+        rlHospitalLayout = (RelativeLayout)findViewById(R.id.act_service_pack_hint_hospital_layout);
+        ivHosspitalImg = (CircleImageView)findViewById(R.id.act_service_pack_hint_hospital_img);
+        tvHospitalName = (TextView)findViewById(R.id.act_service_pack_hint_hospital_name);
+        tvHospitalAddress = (TextView)findViewById(R.id.act_service_pack_hint_hospital_address);
+        tvHospitalGrade = (TextView)findViewById(R.id.act_service_pack_hint_hospital_grade);
+        tvContact = (TextView)findViewById(R.id.act_service_pack_contact);
+        tvContactPhone = (TextView)findViewById(R.id.act_service_pack_contact_phone);
+        tvUseful = (TextView)findViewById(R.id.act_service_pack_useful);
+        tvAttention = (TextView)findViewById(R.id.act_service_pack_attention);
     }
 
     @Override
@@ -161,8 +181,19 @@ public class ServicePackActivity<T> extends BaseActivity
                                                    {
                                                        curPage = 2;
                                                        curHospital = item;
-                                                       tvHintTxt.setText(
+                                                       tvHintTxt.setVisibility(View.GONE);
+                                                       line.setVisibility(View.GONE);
+                                                       rlHospitalLayout.setVisibility(View.VISIBLE);
+                                                       tvHospitalName.setText(
                                                                curHospital.getHospitalName());
+                                                       tvHospitalAddress.setText(
+                                                               curHospital.getCityName());
+                                                       tvHospitalGrade.setText(
+                                                               curHospital.getHospitalLevel());
+                                                       Glide.with(this)
+                                                            .load(curHospital.getHospitalLogo())
+                                                            .apply(GlideHelper.getOptionsHospitalPic())
+                                                            .into(ivHosspitalImg);
                                                        autoLoadRecyclerView.setVisibility(
                                                                View.GONE);
                                                        hospitalProductTypeRecycler.setVisibility(
@@ -173,6 +204,11 @@ public class ServicePackActivity<T> extends BaseActivity
                                                               {
                                                                   curPage = 3;
                                                                   curProductType = item;
+                                                                  tvHintTxt.setVisibility(
+                                                                          View.VISIBLE);
+                                                                  line.setVisibility(View.VISIBLE);
+                                                                  rlHospitalLayout.setVisibility(
+                                                                          View.GONE);
                                                                   tvHintTxt.setText(
                                                                           curHospital.getHospitalName() +
                                                                           " > " +
@@ -218,13 +254,19 @@ public class ServicePackActivity<T> extends BaseActivity
      */
     private void initProductDetailPage()
     {
-        tvHintTxt.setText(
-                curHospital.getHospitalName() + " > " + curProductType.getProductTypeName() +
-                " > " + curProduct.getProductName());
+        tvHintTxt.setVisibility(View.GONE);
+        rlHospitalLayout.setVisibility(View.VISIBLE);
+        //        tvHintTxt.setText(
+        //                curHospital.getHospitalName() + " > " + curProductType.getProductTypeName() +
+        //                " > " + curProduct.getProductName());
         tvGoodsName.setText(curProduct.getProductName());
         tvGoodsPrice.setText(curProduct.getProductPrice() + curProduct.getProductPriceUnit());
         tvGoodsType.setText(curProduct.getProductTypeName());
         tvGoodsInfo.setText(curProduct.getProductDescription());
+        tvContact.setText(curProduct.getProductContactName());
+        tvContactPhone.setText(curProduct.getProductContactPhone());
+        tvUseful.setText(curProduct.getProductAccessChannel());
+        tvAttention.setText(curProduct.getProductOtherInfo());
         hospitalProductRecycler.setVisibility(View.GONE);
         llProductDetaillayout.setVisibility(View.VISIBLE);
         if (patientBean != null)
@@ -270,16 +312,6 @@ public class ServicePackActivity<T> extends BaseActivity
     /**
      * 新增订单
      */
-    private void addProductOrder()
-    {
-        mIRequest.addProductOrder(loginSuccessBean.getDoctorId(), patientId,
-                                  curHospital.getHospitalId(), curProduct.getProductId(),
-                                  productTypeId, this);
-    }
-
-    /**
-     * 新增订单
-     */
     private void addProductOrderNew()
     {
         String diagnosisInfo = etDes.getText().toString().trim();
@@ -316,6 +348,7 @@ public class ServicePackActivity<T> extends BaseActivity
             @Override
             public void onStart(int what)
             {
+                showProgressDialog("请稍等...");
             }
 
             @Override
@@ -371,8 +404,17 @@ public class ServicePackActivity<T> extends BaseActivity
                 }
                 break;
             case R.id.act_service_pack_next:
-                //                addProductOrder();
-                addProductOrderNew();
+                HintDialog hintDialog = new HintDialog(this);
+                hintDialog.setContentString("确定发送给患者？");
+                hintDialog.setOnEnterClickListener(new OnEnterClickListener()
+                {
+                    @Override
+                    public void onEnter()
+                    {
+                        addProductOrderNew();
+                    }
+                });
+                hintDialog.show();
                 break;
         }
     }
@@ -421,6 +463,9 @@ public class ServicePackActivity<T> extends BaseActivity
         if (curPage == 4)
         {
             curPage = 3;
+            tvHintTxt.setVisibility(View.VISIBLE);
+            line.setVisibility(View.VISIBLE);
+            rlHospitalLayout.setVisibility(View.GONE);
             tvHintTxt.setText(
                     curHospital.getHospitalName() + " > " + curProductType.getProductTypeName());
             tvNext.setVisibility(View.GONE);
@@ -431,7 +476,17 @@ public class ServicePackActivity<T> extends BaseActivity
         else if (curPage == 3)
         {
             curPage = 2;
-            tvHintTxt.setText(curHospital.getHospitalName());
+            //            tvHintTxt.setText(curHospital.getHospitalName());
+            tvHintTxt.setVisibility(View.GONE);
+            line.setVisibility(View.GONE);
+            rlHospitalLayout.setVisibility(View.VISIBLE);
+            tvHospitalName.setText(curHospital.getHospitalName());
+            tvHospitalAddress.setText(curHospital.getCityName());
+            tvHospitalGrade.setText(curHospital.getHospitalLevel());
+            Glide.with(this)
+                 .load(curHospital.getHospitalLogo())
+                 .apply(GlideHelper.getOptionsHospitalPic())
+                 .into(ivHosspitalImg);
             tvNext.setVisibility(View.GONE);
             hospitalProductTypeRecycler.setVisibility(View.VISIBLE);
             hospitalProductRecycler.setVisibility(View.GONE);
@@ -440,6 +495,9 @@ public class ServicePackActivity<T> extends BaseActivity
         else if (curPage == 2)
         {
             curPage = 1;
+            tvHintTxt.setVisibility(View.VISIBLE);
+            line.setVisibility(View.VISIBLE);
+            rlHospitalLayout.setVisibility(View.GONE);
             tvHintTxt.setText(
                     String.format(getString(R.string.txt_registration_type_hint), typeName));
             hospitalProductTypeRecycler.setVisibility(View.GONE);

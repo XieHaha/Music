@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@color/app_minor_bg"
     android:layout_height="match_parent">
@@ -17,20 +18,94 @@
         android:textSize="14sp"
         android:gravity="center_vertical"
         android:paddingLeft="12dp"
-        android:textColor="#999999"
+        android:textColor="@color/app_hint_color"
         android:layout_height="48dp" />
+
+    <RelativeLayout
+        android:id="@+id/act_service_pack_hint_hospital_layout"
+        android:layout_width="match_parent"
+        android:layout_below="@id/title_bar"
+        android:background="@color/app_white_color"
+        android:paddingTop="15dp"
+        android:visibility="gone"
+        android:layout_height="95dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/act_service_pack_hint_hospital_img"
+            android:layout_width="65dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:src="@mipmap/icon_hospital_defaut"
+            android:layout_height="65dp" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/act_service_pack_hint_hospital_img"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/act_service_pack_hint_hospital_name"
+                android:layout_width="wrap_content"
+                tools:text="医院"
+                android:textSize="17sp"
+                android:textColor="@color/app_main_txt_color"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="7dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/act_service_pack_hint_hospital_address"
+                    android:layout_width="wrap_content"
+                    tools:text="位置"
+                    android:textSize="15sp"
+                    android:textColor="@color/app_hint_color"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/act_service_pack_hint_hospital_grade"
+                    android:layout_width="wrap_content"
+                    tools:text="等级"
+                    android:textSize="15sp"
+                    android:layout_marginLeft="15dp"
+                    android:textColor="@color/app_hint_color"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:background="@color/app_main_divideline"
+            android:layout_height="1px" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/title_line"
+        android:layout_width="match_parent"
+        android:layout_below="@id/act_service_pack_hint_txt"
+        android:background="@color/app_main_divideline"
+        android:layout_height="1px" />
 
     <custom.frame.widgets.recyclerview.AutoLoadRecyclerView
         android:id="@+id/act_service_pack_hospital_list"
         android:layout_width="match_parent"
-        android:layout_below="@id/act_service_pack_hint_txt"
+        android:layout_below="@id/title_line"
         android:layout_height="match_parent" />
 
     <custom.frame.widgets.recyclerview.AutoLoadRecyclerView
         android:id="@+id/act_service_pack_hospital_product_type_list"
         android:layout_width="match_parent"
         android:visibility="gone"
-        android:layout_below="@id/act_service_pack_hint_txt"
+        android:layout_below="@id/act_service_pack_hint_hospital_layout"
         android:layout_height="match_parent" />
 
 
@@ -38,7 +113,7 @@
         android:id="@+id/act_service_pack_hospital_product_list"
         android:layout_width="match_parent"
         android:visibility="gone"
-        android:layout_below="@id/act_service_pack_hint_txt"
+        android:layout_below="@id/title_line"
         android:layout_height="match_parent" />
 
 
@@ -47,8 +122,8 @@
         android:layout_width="match_parent"
         android:scrollbars="none"
         android:layout_marginBottom="46dp"
-        android:layout_below="@id/act_service_pack_hint_txt"
-        android:visibility="gone"
+        android:layout_below="@id/act_service_pack_hint_hospital_layout"
+        android:visibility="visible"
         android:layout_height="match_parent">
 
         <LinearLayout
@@ -69,7 +144,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="12dp"
                     android:text="项目："
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:textSize="15sp" />
 
                 <TextView
@@ -82,7 +157,7 @@
                     android:layout_toRightOf="@id/act_service_pack_goods_name_txt"
                     android:gravity="center_vertical"
                     android:text="暂无记录"
-                    android:textColor="#333333"
+                    android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp" />
 
                 <View
@@ -105,7 +180,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="12dp"
                     android:text="价格："
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:textSize="15sp" />
 
                 <TextView
@@ -118,7 +193,7 @@
                     android:layout_toRightOf="@id/act_service_pack_goods_price_txt"
                     android:gravity="center_vertical"
                     android:text="暂无记录"
-                    android:textColor="#333333"
+                    android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp" />
 
                 <View
@@ -141,7 +216,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="12dp"
                     android:text="类别："
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:textSize="15sp" />
 
                 <TextView
@@ -154,7 +229,7 @@
                     android:layout_toRightOf="@id/act_service_pack_goods_type_txt"
                     android:gravity="center_vertical"
                     android:text="暂无记录"
-                    android:textColor="#333333"
+                    android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp" />
 
                 <View
@@ -178,7 +253,7 @@
                     android:layout_marginLeft="12dp"
                     android:text="内容："
                     android:layout_marginTop="12dp"
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:textSize="15sp" />
 
                 <TextView
@@ -192,7 +267,7 @@
                     android:paddingTop="12dp"
                     android:layout_toRightOf="@id/act_service_pack_goods_info_txt"
                     android:text="暂无记录"
-                    android:textColor="#333333"
+                    android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp" />
 
             </RelativeLayout>
@@ -205,11 +280,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:text="患者信息"
-                android:textSize="10sp"
                 android:paddingLeft="12dp"
+                android:textSize="14sp"
+                android:textColor="@color/app_hint_color"
                 android:background="@color/app_white_color"
                 android:gravity="center_vertical"
-                android:layout_height="34dp" />
+                android:layout_height="40dp" />
 
             <View
                 android:layout_width="match_parent"
@@ -227,7 +303,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:text="姓名："
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:textSize="15sp"
                     android:layout_height="wrap_content" />
 
@@ -236,7 +312,7 @@
                     android:layout_width="wrap_content"
                     android:text="暂无信息"
                     android:layout_marginLeft="19dp"
-                    android:textColor="#333333"
+                    android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp"
                     android:layout_height="wrap_content" />
 
@@ -258,7 +334,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:text="年龄："
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:textSize="15sp"
                     android:layout_height="wrap_content" />
 
@@ -267,7 +343,7 @@
                     android:layout_width="wrap_content"
                     android:text="暂无信息"
                     android:layout_marginLeft="19dp"
-                    android:textColor="#333333"
+                    android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp"
                     android:layout_height="wrap_content" />
 
@@ -281,12 +357,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:text="诊断信息"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 android:textColor="@color/app_hint_color"
                 android:paddingLeft="12dp"
                 android:background="@color/app_white_color"
                 android:gravity="center_vertical"
-                android:layout_height="34dp" />
+                android:layout_height="40dp" />
 
             <View
                 android:layout_width="match_parent"
@@ -309,6 +385,128 @@
                 android:textColor="@color/app_minor_color"
                 android:layout_height="wrap_content" />
 
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/app_minor_bg"
+                android:layout_height="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:text="注意事项"
+                android:textSize="14sp"
+                android:textColor="@color/app_hint_color"
+                android:paddingLeft="12dp"
+                android:background="@color/app_white_color"
+                android:gravity="center_vertical"
+                android:layout_height="40dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/app_main_divideline"
+                android:layout_height="1px" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="18dp"
+                android:background="@color/app_white_color"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="负责人："
+                    android:textSize="14sp"
+                    android:textColor="@color/app_hint_color"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/act_service_pack_contact"
+                    android:layout_width="wrap_content"
+                    android:text=""
+                    android:textSize="14sp"
+                    android:textColor="@color/app_main_txt_color"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="2dp"
+                android:background="@color/app_white_color"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="联系方式："
+                    android:textSize="14sp"
+                    android:textColor="@color/app_hint_color"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/act_service_pack_contact_phone"
+                    android:layout_width="wrap_content"
+                    android:text=""
+                    android:textSize="14sp"
+                    android:textColor="@color/app_main_txt_color"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="2dp"
+                android:background="@color/app_white_color"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="使用须知："
+                    android:textSize="14sp"
+                    android:textColor="@color/app_hint_color"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/act_service_pack_useful"
+                    android:layout_width="wrap_content"
+                    android:text=""
+                    android:textSize="14sp"
+                    android:textColor="@color/app_main_txt_color"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="18dp"
+                android:background="@color/app_white_color"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="注意事项："
+                    android:textSize="14sp"
+                    android:textColor="@color/app_hint_color"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/act_service_pack_attention"
+                    android:layout_width="wrap_content"
+                    android:text=""
+                    android:textSize="14sp"
+                    android:textColor="@color/app_main_txt_color"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

@@ -19,6 +19,10 @@ public final class GlideHelper
      * 图片
      */
     public static RequestOptions optionsPic;
+    /**
+     * 图片
+     */
+    public static RequestOptions optionsHospitalPic;
 
     public static RequestOptions getOptions()
     {
@@ -54,5 +58,16 @@ public final class GlideHelper
                                              .priority(Priority.NORMAL);
         }
         return optionsPic;
+    }
+    public static RequestOptions getOptionsHospitalPic()
+    {
+        if (optionsHospitalPic == null)
+        {
+            optionsHospitalPic = new RequestOptions().centerCrop()
+                                             .placeholder(R.mipmap.icon_hospital_defaut)
+                                             .error(R.mipmap.icon_hospital_defaut)
+                                             .priority(Priority.NORMAL);
+        }
+        return optionsHospitalPic;
     }
 }

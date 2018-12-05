@@ -31,64 +31,6 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="42dp"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:id="@+id/act_main_tab1_icon"
-                        android:layout_width="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_centerInParent="true"
-                        android:gravity="center_horizontal"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="21dp"
-                            android:src="@drawable/main_tab_chat_selector" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
-                            android:text="@string/main_tab_msg"
-                            android:textColor="@color/tab_txt_color_selector"
-                            android:textSize="9sp" />
-                    </LinearLayout>
-
-                    <RelativeLayout
-                        android:id="@+id/message_red_point"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_alignParentRight="true"
-                        android:visibility="visible"
-                        android:layout_marginTop="3dp"
-                        android:background="@drawable/bg_red_point"
-                        android:gravity="center_vertical">
-
-                        <TextView
-                            android:id="@+id/item_msg_num"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:textColor="@color/app_white_color"
-                            android:text="0"
-                            android:textSize="10sp" />
-                    </RelativeLayout>
-
-                </RelativeLayout>
-            </custom.frame.widgets.ripples.RippleLinearLayout>
-
-            <custom.frame.widgets.ripples.RippleLinearLayout
-                android:id="@+id/act_main_tab2"
-                style="@style/RippleBtnMaxCircleStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
                 android:orientation="vertical"
                 android:visibility="visible">
 
@@ -97,7 +39,7 @@
                     android:layout_height="match_parent">
 
                     <LinearLayout
-                        android:id="@+id/act_main_tab2_icon"
+                        android:id="@+id/act_main_tab1_icon"
                         android:layout_width="wrap_content"
                         android:orientation="vertical"
                         android:layout_centerInParent="true"
@@ -119,11 +61,70 @@
                     </LinearLayout>
 
                     <RelativeLayout
-                        android:id="@+id/message_red_point2"
+                        android:id="@+id/message_red_point"
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:layout_alignParentRight="true"
                         android:visibility="gone"
+                        android:layout_marginTop="3dp"
+                        android:background="@drawable/bg_red_point"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/item_msg_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:textColor="@color/app_white_color"
+                            android:text="0"
+                            android:textSize="10sp" />
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+            </custom.frame.widgets.ripples.RippleLinearLayout>
+
+            <custom.frame.widgets.ripples.RippleLinearLayout
+                android:id="@+id/act_main_tab2"
+                style="@style/RippleBtnMaxCircleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="42dp"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/act_main_tab2_icon"
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_centerInParent="true"
+                        android:gravity="center_horizontal"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="21dp"
+                            android:src="@drawable/main_tab_chat_selector" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:text="@string/main_tab_msg"
+                            android:textColor="@color/tab_txt_color_selector"
+                            android:textSize="9sp" />
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/message_red_point2"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentRight="true"
+                        android:visibility="visible"
                         android:layout_marginTop="3dp"
                         android:background="@drawable/bg_red_point"
                         android:gravity="center_vertical">
@@ -139,7 +140,6 @@
                     </RelativeLayout>
 
                 </RelativeLayout>
-
             </custom.frame.widgets.ripples.RippleLinearLayout>
 
             <custom.frame.widgets.ripples.RippleLinearLayout

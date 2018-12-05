@@ -95,6 +95,18 @@ public interface CommonData
      */
     String KEY_CHANGE_PATIENT_NUM = "key_change_patient_num";
     /**
+     * registrationBean id
+     */
+    String KEY_REGISTRATION_ID = "key_registration_id";
+    /**
+     * patient case detail bean
+     */
+    String KEY_REGISTRATION_BEAN = "key_registration_bean";
+    /**
+     * patient case detail list
+     */
+    String KEY_REGISTRATION_LIST = "key_registration_list";
+    /**
      * 极光-合作医生申请码
      */
     int JIGUANG_CODE_COLLEBORATE_DOCTOR_REQUEST = 101;

@@ -27,7 +27,7 @@
     <string name="toast_txt_get_verifycoder_error">请先获取验证码</string>
     <!--主页-->
     <string name="main_tab_msg">消息</string>
-    <string name="main_tab_patients">病人</string>
+    <string name="main_tab_patients">首页</string>
     <string name="main_tab_cooperate">合作</string>
     <string name="main_tab_my">我的</string>
 
