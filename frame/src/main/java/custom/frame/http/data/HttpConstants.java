@@ -43,4 +43,8 @@ public interface HttpConstants
      * 登录协议
      */
     String BASE_BASIC_PROTOCOL_URL = "http://www.zychealth.com/privacy/privacy-policy.html";
+    /**
+     * 下载页面
+     */
+    String BASE_BASIC_DOWNLOAD_URL = "http://www.zychealth.com/downloadapp/index.html?doctorId=";
 }

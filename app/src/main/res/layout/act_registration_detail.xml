@@ -27,7 +27,7 @@
                 android:visibility="visible"
                 android:layout_height="95dp">
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <ImageView
                     android:id="@+id/act_service_pack_hint_hospital_img"
                     android:layout_width="65dp"
                     android:layout_centerVertical="true"

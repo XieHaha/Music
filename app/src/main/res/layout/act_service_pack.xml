@@ -30,7 +30,7 @@
         android:visibility="gone"
         android:layout_height="95dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:id="@+id/act_service_pack_hint_hospital_img"
             android:layout_width="65dp"
             android:layout_centerVertical="true"
@@ -123,7 +123,7 @@
         android:scrollbars="none"
         android:layout_marginBottom="46dp"
         android:layout_below="@id/act_service_pack_hint_hospital_layout"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_height="match_parent">
 
         <LinearLayout

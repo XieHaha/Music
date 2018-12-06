@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -49,7 +50,6 @@ import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.GlideHelper;
 import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by dundun on 18/9/13.
@@ -63,7 +63,7 @@ public class ServicePackActivity<T> extends BaseActivity
     private TextView tvTitle1, tvTitle2, tvTitle3, tvTitle4;
     private TextView tvNext;
     private EditText etDes;
-    private CircleImageView ivHosspitalImg;
+    private ImageView ivHosspitalImg;
     private TextView tvHospitalName, tvHospitalAddress, tvHospitalGrade;
     private RelativeLayout rlHospitalLayout;
     private TextView tvContact, tvContactPhone, tvUseful, tvAttention;
@@ -130,7 +130,7 @@ public class ServicePackActivity<T> extends BaseActivity
         etDes = (EditText)findViewById(R.id.act_service_pack_des);
         line = findViewById(R.id.title_line);
         rlHospitalLayout = (RelativeLayout)findViewById(R.id.act_service_pack_hint_hospital_layout);
-        ivHosspitalImg = (CircleImageView)findViewById(R.id.act_service_pack_hint_hospital_img);
+        ivHosspitalImg = (ImageView)findViewById(R.id.act_service_pack_hint_hospital_img);
         tvHospitalName = (TextView)findViewById(R.id.act_service_pack_hint_hospital_name);
         tvHospitalAddress = (TextView)findViewById(R.id.act_service_pack_hint_hospital_address);
         tvHospitalGrade = (TextView)findViewById(R.id.act_service_pack_hint_hospital_grade);

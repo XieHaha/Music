@@ -1,6 +1,7 @@
 package com.yht.yihuantong.ui.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,27 +74,35 @@ public class RegistrationListAdapter extends BaseRecyclerAdapter<RegistrationBea
             switch (item.getOrderState())
             {
                 case STATUS_SUBSCRIBE_NONE:
-                    tvOrderStatus.setText("未预约");
+                    tvOrderStatus.setText("待预约");
+                    tvOrderStatus.setTextColor(
+                            ContextCompat.getColor(context, R.color.app_main_txt_color));
                     break;
                 case STATUS_SUBSCRIBE:
                     tvOrderStatus.setText("已预约");
+                    tvOrderStatus.setTextColor(
+                            ContextCompat.getColor(context, R.color.app_main_color));
                     break;
                 case STATUS_COMPLETE:
                     tvOrderStatus.setText("完成检查");
+                    tvOrderStatus.setTextColor(ContextCompat.getColor(context, R.color._1F6BAC));
                     break;
                 case STATUS_SEND_REPORT:
-                    tvOrderStatus.setText("报告已发送");
+                    tvOrderStatus.setText("已出报告");
+                    tvOrderStatus.setTextColor(
+                            ContextCompat.getColor(context, R.color.app_hint_color));
                     break;
                 case STATUS_REFUSE:
                     tvOrderStatus.setText("拒绝");
+                    tvOrderStatus.setTextColor(ContextCompat.getColor(context, R.color._F16798));
                     break;
             }
             tvOrderPatientName.setText(item.getPatientName());
             tvOrderPatientSex.setText(item.getPatientSex());
-            tvOrderPatientAge.setText(
+            tvOrderPatientAge.setText(AllUtils.formatDateByAge(item.getPatientBirthDate()) + "岁");
+            tvOrderDetail.setText(item.getHospitalName());
+            tvOrderHospital.setText(
                     AllUtils.formatDate(item.getOrderDate(), AllUtils.YYYY_MM_DD_HH_MM));
-            tvOrderDetail.setText(item.getProductDescription());
-            tvOrderHospital.setText(item.getHospitalName());
         }
     }
 }

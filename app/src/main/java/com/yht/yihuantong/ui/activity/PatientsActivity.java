@@ -1,6 +1,7 @@
 package com.yht.yihuantong.ui.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -238,18 +239,20 @@ public class PatientsActivity extends BaseActivity
                     }
                     else
                     {
-                        String id = result.getContents();
-                        if (!TextUtils.isEmpty(id) && id.contains("d"))
+                        String url = result.getContents();
+                        String doctorId = Uri.parse(url).getQueryParameter("doctorId");
+                        String patientId = Uri.parse(url).getQueryParameter("patientId");
+                        if (!TextUtils.isEmpty(doctorId))
                         {
                             Intent intent = new Intent(this, AddFriendsDocActivity.class);
-                            intent.putExtra(CommonData.KEY_DOCTOR_ID, result.getContents());
+                            intent.putExtra(CommonData.KEY_DOCTOR_ID, doctorId);
                             intent.putExtra(CommonData.KEY_PUBLIC, true);
                             startActivity(intent);
                         }
                         else
                         {
                             Intent intent = new Intent(this, AddFriendsPatientActivity.class);
-                            intent.putExtra(CommonData.KEY_PATIENT_ID, id);
+                            intent.putExtra(CommonData.KEY_PATIENT_ID, patientId);
                             intent.putExtra(CommonData.KEY_PUBLIC, true);
                             startActivity(intent);
                         }

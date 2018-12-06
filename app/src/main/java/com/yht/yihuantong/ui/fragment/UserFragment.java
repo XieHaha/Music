@@ -54,6 +54,7 @@ import java.util.List;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.LoginSuccessBean;
 import custom.frame.http.Tasks;
+import custom.frame.http.data.HttpConstants;
 import custom.frame.permission.OnPermissionCallback;
 import custom.frame.permission.Permission;
 import custom.frame.permission.PermissionHelper;
@@ -275,7 +276,9 @@ public class UserFragment extends BaseFragment
         loginSuccessBean = YihtApplication.getInstance().getLoginSuccessBean();
         if (loginSuccessBean != null)
         {
-            barCodeImageView = new BarCodeImageView(getContext(), loginSuccessBean.getDoctorId());
+            barCodeImageView = new BarCodeImageView(getContext(),
+                                                    HttpConstants.BASE_BASIC_DOWNLOAD_URL +
+                                                    loginSuccessBean.getDoctorId());
             if (!TextUtils.isEmpty(loginSuccessBean.getPortraitUrl()))
             {
                 headImgUrl = loginSuccessBean.getPortraitUrl();
@@ -743,7 +746,7 @@ public class UserFragment extends BaseFragment
     public void onDestroy()
     {
         super.onDestroy();
-        //注册患者状态监听
+        //注销患者状态监听
         iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(
                 doctorAuthStatusChangeListener, RegisterType.UNREGISTER);
         //注销转诊申请监听

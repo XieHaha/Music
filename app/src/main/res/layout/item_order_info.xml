@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:paddingTop="18dp"
+    android:paddingTop="12dp"
     android:background="@color/app_white_color"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,14 +26,14 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/item_order_price"
+            android:id="@+id/item_order_status"
             android:layout_width="wrap_content"
             android:textColor="@color/app_main_txt_color"
             android:textSize="14sp"
             android:maxLines="1"
             android:singleLine="true"
             android:ellipsize="end"
-            tools:text="价格"
+            tools:text="预约"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
@@ -70,19 +70,7 @@
             android:textColor="@color/app_main_txt_color"
             android:layout_marginLeft="20dp"
             android:textSize="15sp"
-            android:layout_weight="1"
             tools:text="年龄"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/item_order_status"
-            android:layout_width="wrap_content"
-            android:textColor="@color/app_main_txt_color"
-            android:textSize="14sp"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:ellipsize="end"
-            tools:text="预约"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
@@ -101,6 +89,7 @@
             android:layout_width="wrap_content"
             android:textColor="@color/app_main_txt_color"
             android:textSize="17sp"
+            android:text="诊断："
             android:layout_height="wrap_content" />
 
         <TextView
@@ -111,6 +100,7 @@
             android:maxLines="1"
             android:singleLine="true"
             android:ellipsize="end"
+            tools:text="怎么么么"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
@@ -123,13 +113,13 @@
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:layout_marginTop="2dp"
-        tools:text="转给"
+        tools:text="医院"
         android:layout_height="wrap_content" />
 
     <View
         android:layout_width="match_parent"
         android:background="@color/app_main_divideline"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="12dp"
         android:layout_height="1px" />
 
 </LinearLayout>

@@ -30,7 +30,6 @@ import custom.frame.http.data.HttpConstants;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.GlideHelper;
 import custom.frame.utils.ToastUtil;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by dundun on 18/8/10.
@@ -41,7 +40,7 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
     private TextView tvTitle, tvNext;
     private TextView tvGoodsName, tvGoodsPrice, tvGoodsType, tvGoodsInfo;
     private TextView tvContact, tvContactPhone, tvUseful, tvAttention;
-    private CircleImageView ivHospitalImg;
+    private ImageView ivHospitalImg;
     private TextView tvHospitalName, tvHospitalAddress, tvHospitalGrade;
     private TextView tvPatientName, tvPatientSex, tvPatientAge, tvDes, tvDoctorName, tvDoctorHospital;
     private RegistrationBean registrationBean;
@@ -80,7 +79,7 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
         tvDes = (TextView)findViewById(R.id.act_registration_detail_des);
         tvDoctorName = (TextView)findViewById(R.id.act_registration_detail_doctor_name);
         tvDoctorHospital = (TextView)findViewById(R.id.act_registration_detail_doctor_hospital);
-        ivHospitalImg = (CircleImageView)findViewById(R.id.act_service_pack_hint_hospital_img);
+        ivHospitalImg = (ImageView)findViewById(R.id.act_service_pack_hint_hospital_img);
         tvHospitalName = (TextView)findViewById(R.id.act_service_pack_hint_hospital_name);
         tvHospitalAddress = (TextView)findViewById(R.id.act_service_pack_hint_hospital_address);
         tvHospitalGrade = (TextView)findViewById(R.id.act_service_pack_hint_hospital_grade);
