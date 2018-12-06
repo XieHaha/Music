@@ -19,7 +19,6 @@ import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
-import custom.frame.utils.GlideHelper;
 import com.yht.yihuantong.ui.dialog.HintDialog;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.utils.AllUtils;
@@ -36,6 +35,7 @@ import custom.frame.bean.PatientBean;
 import custom.frame.bean.TransPatientBean;
 import custom.frame.http.data.HttpConstants;
 import custom.frame.ui.activity.BaseActivity;
+import custom.frame.utils.GlideHelper;
 import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.FilterEmojiEditText;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -49,7 +49,7 @@ public class TransferPatientActivity extends BaseActivity
     private ImageView ivArrow;
     private FilterEmojiEditText filterEmojiEditText;
     private TextView tvName, tvSex, tvAge, tvTransferDoc;
-    private TextView tvDocName, tvDocHospital, tvNext, tvTransferNext;
+    private TextView tvDocName, tvDocHospital, tvNext, tvTransferNext, tvTime;
     private TextView tvTransferStatus, tvTransferTxt;
     private ImageView ivTransferStatu;
     private LinearLayout llTransferDocLayout, llTransferDocLayout1, llTransferStatusLayout;
@@ -101,6 +101,7 @@ public class TransferPatientActivity extends BaseActivity
         tvDocHospital = (TextView)findViewById(R.id.act_transfer_patient_doc_hospital);
         tvTransferStatus = (TextView)findViewById(R.id.act_transfer_patient_status);
         tvTransferTxt = (TextView)findViewById(R.id.act_transfer_patient_transfer_txt);
+        tvTime = (TextView)findViewById(R.id.act_transfer_patient_transfer_time);
         tvNext = (TextView)findViewById(R.id.act_transfer_patient_next);
         tvTransferNext = (TextView)findViewById(R.id.act_transfer_patient_transfer_next);
         ivTransferStatu = (ImageView)findViewById(R.id.act_transfer_patient_status_icon);
@@ -182,6 +183,8 @@ public class TransferPatientActivity extends BaseActivity
                      .load(transPatientBean.getPatientImage())
                      .apply(GlideHelper.getOptions())
                      .into(ivHeadImg);
+                tvTime.setText(AllUtils.formatDate(transPatientBean.getTransferDate(),
+                                                   AllUtils.YYYY_MM_DD_HH_MM));
                 tvName.setText(transPatientBean.getPatientName());
                 tvSex.setText(transPatientBean.getPatientSex());
                 tvAge.setText(AllUtils.formatDateByAge(transPatientBean.getPatientBirthDate()));
@@ -199,21 +202,26 @@ public class TransferPatientActivity extends BaseActivity
                     switch (transPatientBean.getAcceptState())
                     {
                         case 0:
-                            tvTransferStatus.setText(getString(R.string.txt_transfer_patient_to_comfirm));
+                            tvTransferStatus.setText(
+                                    getString(R.string.txt_transfer_patient_to_comfirm));
                             tvTransferNext.setVisibility(View.VISIBLE);
-                            tvTransferNext.setText(getString(R.string.txt_transfer_patient_to_recved));
+                            tvTransferNext.setText(
+                                    getString(R.string.txt_transfer_patient_to_recved));
                             ivTransferStatu.setSelected(false);
                             orderState = 1;
                             break;
                         case 1:
-                            tvTransferStatus.setText(getString(R.string.txt_transfer_patient_to_wait_visit));
+                            tvTransferStatus.setText(
+                                    getString(R.string.txt_transfer_patient_to_wait_visit));
                             tvTransferNext.setVisibility(View.VISIBLE);
-                            tvTransferNext.setText(getString(R.string.txt_transfer_patient_to_visit));
+                            tvTransferNext.setText(
+                                    getString(R.string.txt_transfer_patient_to_visit));
                             ivTransferStatu.setSelected(false);
                             orderState = 2;
                             break;
                         case 2:
-                            tvTransferStatus.setText( getString(R.string.txt_transfer_patient_to_complete_visit));
+                            tvTransferStatus.setText(
+                                    getString(R.string.txt_transfer_patient_to_complete_visit));
                             tvTransferNext.setVisibility(View.GONE);
                             ivTransferStatu.setSelected(true);
                             break;

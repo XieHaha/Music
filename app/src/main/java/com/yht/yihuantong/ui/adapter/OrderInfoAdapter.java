@@ -115,14 +115,14 @@ public class OrderInfoAdapter extends BaseAdapter implements OrderStatus, Common
                 holder.tvOrderStatus.setText("报告已发送");
                 break;
             case STATUS_REFUSE:
-                holder.tvOrderStatus.setText("拒绝");
+                holder.tvOrderStatus.setText("已拒绝");
                 break;
         }
         holder.tvOrderPatientName.setText(curRegistrationBean.getPatientName());
         holder.tvOrderPatientSex.setText(curRegistrationBean.getPatientSex());
         holder.tvOrderPatientAge.setText(
-                AllUtils.formatDateByAge(curRegistrationBean.getPatientBirthDate()));
-        holder.tvOrderDetail.setText(curRegistrationBean.getProductDescription());
+                AllUtils.formatDateByAge(curRegistrationBean.getPatientBirthDate()) + "岁");
+        holder.tvOrderDetail.setText(curRegistrationBean.getDiagnosisInfo());
         holder.tvOrderHospital.setText(curRegistrationBean.getHospitalName());
     }
 

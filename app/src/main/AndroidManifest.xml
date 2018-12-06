@@ -74,14 +74,6 @@
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.CompleteInfoActivity"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.CompleteInfo2Activity"
-            android:windowSoftInputMode="adjustPan|stateHidden"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.activity.HealthCardActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:launchMode="singleTask"

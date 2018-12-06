@@ -93,7 +93,7 @@ public class RegistrationListAdapter extends BaseRecyclerAdapter<RegistrationBea
                             ContextCompat.getColor(context, R.color.app_hint_color));
                     break;
                 case STATUS_REFUSE:
-                    tvOrderStatus.setText("拒绝");
+                    tvOrderStatus.setText("已拒绝");
                     tvOrderStatus.setTextColor(ContextCompat.getColor(context, R.color._F16798));
                     break;
             }

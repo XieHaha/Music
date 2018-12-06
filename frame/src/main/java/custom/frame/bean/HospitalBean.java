@@ -13,6 +13,9 @@ public class HospitalBean implements Serializable
     private String cityName;
     private String hospitalLevel;
     private String hospitalLogo;
+    private String hospitalDescription;
+    private String hospitalPhone;
+    private String address;
 
     public String getHospitalName()
     {
@@ -62,5 +65,35 @@ public class HospitalBean implements Serializable
     public void setHospitalLogo(String hospitalLogo)
     {
         this.hospitalLogo = hospitalLogo;
+    }
+
+    public String getHospitalDescription()
+    {
+        return hospitalDescription;
+    }
+
+    public void setHospitalDescription(String hospitalDescription)
+    {
+        this.hospitalDescription = hospitalDescription;
+    }
+
+    public String getHospitalPhone()
+    {
+        return hospitalPhone;
+    }
+
+    public void setHospitalPhone(String hospitalPhone)
+    {
+        this.hospitalPhone = hospitalPhone;
+    }
+
+    public String getAddress()
+    {
+        return address;
+    }
+
+    public void setAddress(String address)
+    {
+        this.address = address;
     }
 }

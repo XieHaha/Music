@@ -1,9 +1,11 @@
 package com.yht.yihuantong.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -25,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import custom.frame.bean.BaseResponse;
+import custom.frame.bean.HospitalBean;
 import custom.frame.bean.RegistrationBean;
 import custom.frame.http.data.HttpConstants;
 import custom.frame.ui.activity.BaseActivity;
@@ -43,6 +46,7 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
     private ImageView ivHospitalImg;
     private TextView tvHospitalName, tvHospitalAddress, tvHospitalGrade;
     private TextView tvPatientName, tvPatientSex, tvPatientAge, tvDes, tvDoctorName, tvDoctorHospital;
+    private RelativeLayout rlHospitalLayout;
     private RegistrationBean registrationBean;
     private String registrationId;
 
@@ -83,6 +87,7 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
         tvHospitalName = (TextView)findViewById(R.id.act_service_pack_hint_hospital_name);
         tvHospitalAddress = (TextView)findViewById(R.id.act_service_pack_hint_hospital_address);
         tvHospitalGrade = (TextView)findViewById(R.id.act_service_pack_hint_hospital_grade);
+        rlHospitalLayout = (RelativeLayout)findViewById(R.id.act_service_pack_hint_hospital_layout);
     }
 
     @Override
@@ -109,6 +114,7 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
     public void initListener()
     {
         ivTitleMore.setOnClickListener(this);
+        rlHospitalLayout.setOnClickListener(this);
         tvNext.setOnClickListener(this);
     }
 
@@ -215,5 +221,25 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
             {
             }
         });
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+        switch (v.getId())
+        {
+            case R.id.act_service_pack_hint_hospital_layout:
+                HospitalBean hospitalBean = new HospitalBean();
+                hospitalBean.setHospitalName(registrationBean.getHospitalName());
+                hospitalBean.setCityName(registrationBean.getCityName());
+                hospitalBean.setHospitalLevel(registrationBean.getHospitalLevel());
+                hospitalBean.setAddress(registrationBean.getHospitalAddress());
+                hospitalBean.setHospitalPhone(registrationBean.getHospitalPhone());
+                hospitalBean.setHospitalDescription(registrationBean.getHospitalDescription());
+                Intent intent = new Intent(this, HospitalInfoActivity.class);
+                intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, hospitalBean);
+                startActivity(intent);
+                break;
+        }
     }
 }

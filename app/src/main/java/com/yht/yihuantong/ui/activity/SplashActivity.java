@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -62,17 +61,9 @@ public class SplashActivity extends BaseActivity
     {
         if (loginSuccessBean != null)
         {
-            if (TextUtils.isEmpty(loginSuccessBean.getName()))
-            {
-                startActivity(new Intent(this, CompleteInfoActivity.class));
-                finish();
-            }
-            else
-            {
-                startActivity(new Intent(this, MainActivity.class));
-                finish();
-                overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
-            }
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+            overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
         }
         else
         {

@@ -93,7 +93,7 @@ public class MainFragment extends BaseFragment
             switch (msg.what)
             {
                 case TRANSFER_CODE:
-                    getPatientFromList();
+                    getTransferList();
                     break;
             }
         }
@@ -168,7 +168,7 @@ public class MainFragment extends BaseFragment
         orderInfoAdapter = new OrderInfoAdapter(getContext());
         orderInfoAdapter.setList(registrationBeans);
         orderInfoListView.setAdapter(orderInfoAdapter);
-        getPatientFromList();
+        getTransferList();
         getApplyPatientList();
         getOrderList();
         getPatientsData();
@@ -279,11 +279,63 @@ public class MainFragment extends BaseFragment
     }
 
     /**
-     * 收到转诊申请
+     * 转诊记录   包括转入转出
      */
-    private void getPatientFromList()
+    private void getTransferList()
     {
-        mIRequest.getTransferPatientFromList(loginSuccessBean.getDoctorId(), 0, PAGE_SIZE, this);
+        RequestQueue queue = NoHttp.getRequestQueueInstance();
+        final Request<String> request = NoHttp.createStringRequest(
+                HttpConstants.BASE_BASIC_URL + "/trans/all/doctor/notes", RequestMethod.POST);
+        Map<String, Object> params = new HashMap<>();
+        params.put("doctorId", loginSuccessBean.getDoctorId());
+        params.put("pageNo", 0);
+        params.put("pageSize", PAGE_SIZE);
+        JSONObject jsonObject = new JSONObject(params);
+        request.setDefineRequestBodyForJson(jsonObject.toString());
+        queue.add(1, request, new OnResponseListener<String>()
+        {
+            @Override
+            public void onStart(int what)
+            {
+            }
+
+            @Override
+            public void onSucceed(int what, Response<String> response)
+            {
+                String s = response.get();
+                try
+                {
+                    JSONObject object = new JSONObject(s);
+                    BaseResponse baseResponse = praseBaseResponseList(object,
+                                                                      TransPatientBean.class);
+                    if (baseResponse.getCode() == 200)
+                    {
+                        transPatientBeans = baseResponse.getData();
+                        initTransferData();
+                    }
+                    else
+                    {
+                        ToastUtil.toast(getContext(), baseResponse.getMsg());
+                    }
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response)
+            {
+                ToastUtil.toast(getContext(), response.getException().getMessage());
+            }
+
+            @Override
+            public void onFinish(int what)
+            {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     /**
@@ -373,10 +425,6 @@ public class MainFragment extends BaseFragment
     {
         switch (task)
         {
-            case GET_PATIENTS_FROM_LIST:
-                transPatientBeans = response.getData();
-                initTransferData();
-                break;
             case GET_PATIENTS_LIST:
                 List<PatientBean> list = response.getData();
                 if (list != null && list.size() > 0)
@@ -422,7 +470,7 @@ public class MainFragment extends BaseFragment
     @Override
     public void onRefresh()
     {
-        getPatientFromList();
+        getTransferList();
         getApplyPatientList();
         getOrderList();
         getPatientsData();

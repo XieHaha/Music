@@ -306,15 +306,7 @@ public class LoginActivity extends BaseActivity
     private void jumpTopage()
     {
         closeProgressDialog();
-        //暂时只判断用户名是否为空  为空进入信息完善流程
-        if (TextUtils.isEmpty(loginSuccessBean.getName()))
-        {
-            startActivity(new Intent(this, CompleteInfoActivity.class));
-        }
-        else
-        {
-            startActivity(new Intent(this, MainActivity.class));
-        }
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 

@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -177,6 +178,7 @@ public class ServicePackActivity<T> extends BaseActivity
     {
         findViewById(R.id.public_title_bar_back).setOnClickListener(this);
         tvNext.setOnClickListener(this);
+        rlHospitalLayout.setOnClickListener(this);
         registrationAdapter.setOnItemClickListener((v, position, item) ->
                                                    {
                                                        curPage = 2;
@@ -415,6 +417,11 @@ public class ServicePackActivity<T> extends BaseActivity
                     }
                 });
                 hintDialog.show();
+                break;
+            case R.id.act_service_pack_hint_hospital_layout:
+                Intent intent = new Intent(this, HospitalInfoActivity.class);
+                intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, curHospital);
+                startActivity(intent);
                 break;
         }
     }

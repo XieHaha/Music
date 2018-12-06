@@ -253,7 +253,7 @@ public class UserInfoActivity extends BaseActivity
                                  (dialog, which) -> dialog.dismiss()).show();
                 break;
             case R.id.act_user_info_hospital_layout:
-                startActivity(new Intent(this, HospitalInfoActivity.class));
+                //                startActivity(new Intent(this, HospitalInfoActivity.class));
                 break;
             default:
                 break;

@@ -35,6 +35,9 @@ public class RegistrationBean implements Serializable
     private String cityName;
     private String hospitalLevel;
     private String hospitalLogo;
+    private String hospitalAddress;
+    private String hospitalPhone;
+    private String hospitalDescription;
 
     public String getProductOrderId()
     {
@@ -304,5 +307,35 @@ public class RegistrationBean implements Serializable
     public void setHospitalLogo(String hospitalLogo)
     {
         this.hospitalLogo = hospitalLogo;
+    }
+
+    public String getHospitalAddress()
+    {
+        return hospitalAddress;
+    }
+
+    public void setHospitalAddress(String hospitalAddress)
+    {
+        this.hospitalAddress = hospitalAddress;
+    }
+
+    public String getHospitalPhone()
+    {
+        return hospitalPhone;
+    }
+
+    public void setHospitalPhone(String hospitalPhone)
+    {
+        this.hospitalPhone = hospitalPhone;
+    }
+
+    public String getHospitalDescription()
+    {
+        return hospitalDescription;
+    }
+
+    public void setHospitalDescription(String hospitalDescription)
+    {
+        this.hospitalDescription = hospitalDescription;
     }
 }
