@@ -91,7 +91,6 @@ public class TransferPatientFromFragment extends BaseFragment
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         patientsListAdapter = new TransPatientsListAdapter(getContext(), new ArrayList<>());
-        patientsListAdapter.setFrom(true);
         patientsListAdapter.addFooterView(footerView);
         autoLoadRecyclerView.setAdapter(patientsListAdapter);
         patientsListAdapter.setOnItemClickListener(this);
@@ -125,7 +124,6 @@ public class TransferPatientFromFragment extends BaseFragment
     {
         Intent intent = new Intent(getContext(), TransferPatientActivity.class);
         intent.putExtra(CommonData.KEY_PUBLIC, false);
-        intent.putExtra("isFrom", true);
         intent.putExtra(CommonData.KEY_TRANSFER_BEAN, item);
         startActivity(intent);
     }

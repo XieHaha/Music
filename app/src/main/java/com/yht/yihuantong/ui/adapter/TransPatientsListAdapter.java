@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.YihtApplication;
 
 import java.util.List;
 
@@ -27,7 +28,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class TransPatientsListAdapter extends BaseRecyclerAdapter<TransPatientBean>
 {
     private Context context;
-    private boolean isFrom;
 
     public TransPatientsListAdapter(Context context, List<TransPatientBean> list)
     {
@@ -41,11 +41,6 @@ public class TransPatientsListAdapter extends BaseRecyclerAdapter<TransPatientBe
         View view = LayoutInflater.from(parent.getContext())
                                   .inflate(R.layout.item_trans_patient_list, parent, false);
         return new PatientsHolder(view);
-    }
-
-    public void setFrom(boolean from)
-    {
-        isFrom = from;
     }
 
     @Override
@@ -78,7 +73,7 @@ public class TransPatientsListAdapter extends BaseRecyclerAdapter<TransPatientBe
                  .apply(GlideHelper.getOptions())
                  .into(ivPatHeadImg);
             tvPatName.setText(item.getPatientName());
-            if (isFrom)
+            if (!YihtApplication.getInstance().getLoginSuccessBean().getDoctorId().equals(item.getFromDoctorId()))
             {
                 tvDocHospital.setText(item.getFromDoctorHospitalName());
                 tvDocName.setText("来自：" + item.getFromDoctorName());

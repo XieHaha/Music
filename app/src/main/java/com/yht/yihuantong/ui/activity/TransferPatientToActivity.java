@@ -94,7 +94,6 @@ public class TransferPatientToActivity extends BaseActivity
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         transPatientsListAdapter = new TransPatientsListAdapter(this, new ArrayList<>());
-        transPatientsListAdapter.setFrom(false);
         transPatientsListAdapter.addFooterView(footerView);
         autoLoadRecyclerView.setAdapter(transPatientsListAdapter);
         transPatientsListAdapter.setOnItemClickListener(this);
@@ -123,7 +122,6 @@ public class TransferPatientToActivity extends BaseActivity
     {
         Intent intent = new Intent(this, TransferPatientActivity.class);
         intent.putExtra(CommonData.KEY_PUBLIC, false);
-        intent.putExtra("isFrom", false);
         intent.putExtra(CommonData.KEY_TRANSFER_BEAN, item);
         startActivity(intent);
     }

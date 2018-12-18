@@ -65,10 +65,6 @@ public class TransferPatientActivity extends BaseActivity
      */
     private boolean isAddTransferMode;
     /**
-     * 是否为接收转诊
-     */
-    private boolean isFrom;
-    /**
      * 当前转诊单状态
      */
     private int orderState;
@@ -123,7 +119,6 @@ public class TransferPatientActivity extends BaseActivity
             transPatientBean = (TransPatientBean)getIntent().getSerializableExtra(
                     CommonData.KEY_TRANSFER_BEAN);
             isAddTransferMode = getIntent().getBooleanExtra(CommonData.KEY_PUBLIC, false);
-            isFrom = getIntent().getBooleanExtra("isFrom", false);
         }
         initPageData();
     }
@@ -189,7 +184,7 @@ public class TransferPatientActivity extends BaseActivity
                 tvSex.setText(transPatientBean.getPatientSex());
                 tvAge.setText(AllUtils.formatDateByAge(transPatientBean.getPatientBirthDate()));
                 filterEmojiEditText.setText(transPatientBean.getFromDoctorDiagnosisInfo());
-                if (isFrom)//接收转诊
+                if (!loginSuccessBean.getDoctorId().equals(transPatientBean.getFromDoctorId()))//接收转诊
                 {
                     tvTransferTxt.setText("转诊来自");
                     //转诊医生信息

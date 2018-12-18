@@ -193,7 +193,6 @@ public class MainFragment extends BaseFragment
             {
                 Intent intent = new Intent(getContext(), TransferPatientActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC, false);
-                intent.putExtra("isFrom", true);
                 intent.putExtra(CommonData.KEY_TRANSFER_BEAN, transPatientBeans.get(position));
                 startActivity(intent);
             }

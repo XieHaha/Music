@@ -5,11 +5,11 @@ public interface HttpConstants
     /**
      * 测试服务器
      */
-    String BASE_BASIC_URL = "http://gray.zychealth.com";
+    //    String BASE_BASIC_URL = "http://gray.zychealth.com";
     /**
      * 正式服务器
      */
-    //    String BASE_BASIC_URL = "http://www.zychealth.com";
+    String BASE_BASIC_URL = "http://www.zychealth.com";
     /**
      * 超时时间
      */

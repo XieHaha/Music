@@ -39,7 +39,6 @@ import custom.frame.utils.ToastUtil;
  */
 public class RegistrationDetailActivity extends BaseActivity implements OrderStatus
 {
-    private ImageView ivTitleMore;
     private TextView tvTitle, tvNext;
     private TextView tvGoodsName, tvGoodsPrice, tvGoodsType, tvGoodsInfo;
     private TextView tvContact, tvContactPhone, tvUseful, tvAttention;
@@ -67,7 +66,6 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
     {
         super.initView(savedInstanceState);
         tvTitle = (TextView)findViewById(R.id.public_title_bar_title);
-        ivTitleMore = (ImageView)findViewById(R.id.public_title_bar_more_two);
         tvNext = (TextView)findViewById(R.id.act_registration_next);
         tvGoodsName = (TextView)findViewById(R.id.act_registration_goods_name);
         tvGoodsType = (TextView)findViewById(R.id.act_registration_goods_type);
@@ -113,7 +111,6 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
     @Override
     public void initListener()
     {
-        ivTitleMore.setOnClickListener(this);
         rlHospitalLayout.setOnClickListener(this);
         tvNext.setOnClickListener(this);
     }
@@ -150,16 +147,14 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
         switch (registrationBean.getOrderState())
         {
             case STATUS_SUBSCRIBE_NONE:
-                tvNext.setVisibility(View.VISIBLE);
-                ivTitleMore.setVisibility(View.VISIBLE);
                 break;
             case STATUS_SUBSCRIBE:
-                tvNext.setVisibility(View.GONE);
-                ivTitleMore.setVisibility(View.GONE);
                 break;
             case STATUS_COMPLETE:
                 break;
             case STATUS_SEND_REPORT:
+                tvNext.setVisibility(View.VISIBLE);
+                tvNext.setText("查看报告");
                 break;
             case STATUS_REFUSE:
                 break;
@@ -226,6 +221,7 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
     @Override
     public void onClick(View v)
     {
+        Intent intent;
         switch (v.getId())
         {
             case R.id.act_service_pack_hint_hospital_layout:
@@ -236,8 +232,13 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
                 hospitalBean.setAddress(registrationBean.getHospitalAddress());
                 hospitalBean.setHospitalPhone(registrationBean.getHospitalPhone());
                 hospitalBean.setHospitalDescription(registrationBean.getHospitalDescription());
-                Intent intent = new Intent(this, HospitalInfoActivity.class);
+                intent = new Intent(this, HospitalInfoActivity.class);
                 intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, hospitalBean);
+                startActivity(intent);
+                break;
+            case R.id.act_registration_next:
+                intent = new Intent(this, FileListActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC, registrationBean.getOrderReportAddress());
                 startActivity(intent);
                 break;
         }

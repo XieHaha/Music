@@ -9,10 +9,15 @@ package com.yht.yihuantong.utils;
 
 import android.app.ActivityManager;
 import android.app.KeyguardManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Build;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.TypedValue;
 
@@ -32,6 +37,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import custom.frame.utils.ToastUtil;
 
 import static android.content.Context.KEYGUARD_SERVICE;
 
@@ -644,5 +651,50 @@ public class AllUtils
             return true;
         }
         return false;
+    }
+
+    /**
+     * 打开文件
+     *
+     * @param context
+     * @param filePath 文件路径
+     */
+    public static void openFile(Context context, String filePath)
+    {
+        try
+        {
+            String type = "*/*";
+            Intent intent = new Intent();
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //设置intent的Action属性
+            intent.setAction(Intent.ACTION_VIEW);
+            //获取文件file的MIME类型
+            type = MimeUtils.getMime(FileUtils.getFileExtNoPoint(filePath));
+            Uri uri = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            {
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                uri = FileProvider.getUriForFile(context, "com.yht.yihuantong_p.fileprovider",
+                                                 new File(filePath));
+            }
+            else
+            {
+                uri = Uri.fromFile(new File(filePath));
+            }
+            //设置intent的data和Type属性。
+            intent.setDataAndType(uri, type);
+            //跳转
+            context.startActivity(intent);
+        }
+        catch (ActivityNotFoundException e)
+        {
+            e.printStackTrace();
+            ToastUtil.toast(context, "无法打开文件");
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+            ToastUtil.toast(context, "无法打开文件");
+        }
     }
 }

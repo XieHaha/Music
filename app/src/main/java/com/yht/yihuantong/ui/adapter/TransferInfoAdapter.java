@@ -65,7 +65,7 @@ public class TransferInfoAdapter extends BaseAdapter implements OrderStatus, Com
             holder = new ViewHolder();
             convertView = LayoutInflater.from(context)
                                         .inflate(R.layout.item_transfer, parent, false);
-            holder.tvTraansferType = convertView.findViewById(R.id.item_transfer_status);
+            holder.tvTransferType = convertView.findViewById(R.id.item_transfer_status);
             holder.tvFromType = convertView.findViewById(R.id.item_transfer_status_txt);
             holder.tvPatientName = convertView.findViewById(R.id.item_transfer_patient_name);
             holder.tvTime = convertView.findViewById(R.id.item_transfer_time);
@@ -87,7 +87,6 @@ public class TransferInfoAdapter extends BaseAdapter implements OrderStatus, Com
         TransPatientBean curTransferPatient = list.get(position);
         holder.tvPatientName.setText(curTransferPatient.getPatientName());
         holder.tvPatientCase.setText(curTransferPatient.getFromDoctorDiagnosisInfo());
-        holder.tvDoctorName.setText(curTransferPatient.getFromDoctorName());
         holder.tvDoctorHospital.setText(curTransferPatient.getFromDoctorHospitalName());
         holder.tvTime.setText(AllUtils.formatDate(curTransferPatient.getTransferDate(),
                                                   AllUtils.YYYY_MM_DD_HH_MM));
@@ -96,18 +95,20 @@ public class TransferInfoAdapter extends BaseAdapter implements OrderStatus, Com
                                                      .getLoginSuccessBean()
                                                      .getDoctorId()))
         {
-            holder.tvTraansferType.setText("转出");
+            holder.tvDoctorName.setText(curTransferPatient.getToDoctorName());
+            holder.tvTransferType.setText("转出");
             holder.tvFromType.setText("转给");
         }
         else
         {
-            holder.tvTraansferType.setText("转入");
+            holder.tvDoctorName.setText(curTransferPatient.getFromDoctorName());
+            holder.tvTransferType.setText("转入");
             holder.tvFromType.setText("来自");
         }
     }
 
     class ViewHolder
     {
-        private TextView tvTraansferType, tvFromType, tvPatientName, tvPatientCase, tvDoctorName, tvDoctorHospital, tvTime;
+        private TextView tvTransferType, tvFromType, tvPatientName, tvPatientCase, tvDoctorName, tvDoctorHospital, tvTime;
     }
 }
