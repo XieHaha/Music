@@ -10,44 +10,39 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/item_transfer_patient_name"
+            android:layout_width="wrap_content"
+            android:textColor="@color/app_main_txt_color"
+            android:textSize="17sp"
+            android:layout_marginLeft="12dp"
+            android:layout_weight="1"
+            android:layout_marginRight="12dp"
+            tools:text="姓名"
+            android:layout_height="wrap_content" />
+
         <TextView
             android:id="@+id/item_transfer_status"
             android:layout_width="wrap_content"
             android:textColor="@color/_1F6BAC"
             android:textSize="14sp"
-            android:layout_weight="1"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:text="转入"
             android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/item_transfer_time"
-            android:layout_width="wrap_content"
-            android:textColor="@color/app_hint_color"
-            android:textSize="14sp"
-            android:layout_marginRight="12dp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
 
-    <TextView
-        android:id="@+id/item_transfer_patient_name"
-        android:layout_width="wrap_content"
-        android:textColor="@color/app_main_txt_color"
-        android:textSize="17sp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginTop="5dp"
-        tools:text="姓名"
-        android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/item_transfer_patient_case"
         android:layout_width="wrap_content"
         android:textColor="@color/app_main_txt_color"
         android:textSize="15sp"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:maxLines="1"
@@ -67,6 +62,19 @@
         android:text="来自"
         android:layout_height="wrap_content" />
 
+    <TextView
+        android:id="@+id/item_transfer_doc_name"
+        android:layout_width="wrap_content"
+        android:textColor="@color/app_main_txt_color"
+        android:textSize="14sp"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="12dp"
+        tools:text="病例"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
@@ -77,10 +85,10 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/item_transfer_doc_name"
+            android:id="@+id/item_transfer_hospital"
             android:layout_width="wrap_content"
-            android:textColor="@color/app_main_txt_color"
-            android:textSize="14sp"
+            android:textColor="@color/app_hint_color"
+            android:textSize="12sp"
             android:maxLines="1"
             android:singleLine="true"
             android:ellipsize="end"
@@ -89,14 +97,10 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/item_transfer_hospital"
+            android:id="@+id/item_transfer_time"
             android:layout_width="wrap_content"
             android:textColor="@color/app_hint_color"
-            android:textSize="12sp"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:ellipsize="end"
-            tools:text="病例"
+            android:textSize="14sp"
             android:layout_height="wrap_content" />
 
     </LinearLayout>

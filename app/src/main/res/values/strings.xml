@@ -30,6 +30,12 @@
     <string name="main_tab_patients">首页</string>
     <string name="main_tab_cooperate">合作</string>
     <string name="main_tab_my">我的</string>
+    <string name="fragment_main_service">服务包</string>
+    <string name="fragment_main_telemedicine">远程会诊</string>
+    <string name="fragment_main_train">培训</string>
+    <string name="fragment_main_doctor_group">医生集团</string>
+    <string name="fragment_main_hospital">合作医院</string>
+    <string name="fragment_main_integral">积分</string>
 
     <!--信息界面-->
     <!--ImageAlbumFragment-->

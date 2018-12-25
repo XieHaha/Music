@@ -15,7 +15,7 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
 
 import custom.frame.bean.LoginSuccessBean;
-
+import custom.frame.utils.GlideHelper;
 
 /**
  * Created by zhangrj on 2017/4/10.
@@ -77,7 +77,7 @@ public class DialogPersonalBarCode extends Dialog {
 
     private void getUserInfo() {
         LoginSuccessBean loginSuccessBean = YihtApplication.getInstance().getLoginSuccessBean();
-        Glide.with(mActivity).load(loginSuccessBean.getPortraitUrl()).into(imgHead);
+        Glide.with(mActivity).load(loginSuccessBean.getPortraitUrl()).apply(GlideHelper.getOptions()).into(imgHead);
         tvName.setText(loginSuccessBean.getName());
     }
 

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@drawable/item_bg_press"
+    android:paddingTop="18dp"
+    android:layout_height="104dp">
+
+    <TextView
+        android:id="@+id/item_health_info_title"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:textColor="@color/app_main_txt_color"
+        android:textSize="16sp"
+        tools:text="标题"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/item_health_info_creator_layout"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="@color/app_main_txt_color"
+            android:textSize="14sp"
+            android:text="来自"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/item_health_info_doctor_name"
+            android:layout_width="wrap_content"
+            android:textColor="@color/_1F6BAC"
+            android:layout_marginLeft="15dp"
+            android:textSize="14sp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/item_health_info_time"
+        android:layout_width="wrap_content"
+        android:textColor="@color/app_hint_color"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:textSize="12sp"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:background="@color/app_main_divideline"
+        android:layout_width="match_parent"
+        android:layout_marginTop="18dp"
+        android:layout_height="1px" />
+
+</LinearLayout>

@@ -535,4 +535,21 @@ public class IRequest extends BaseRequest
         return requestBaseResponse(GET, "/patient/combine", Tasks.GET_PATIENT_COMBINE,
                                    CombineBean.class, params, listener);
     }
+
+    /**
+     * 我的转诊记录
+     */
+    public Tasks getTransferPatientHistoryList(String patientId, int pageNo, int pageSize, int days,
+            final ResponseListener<BaseResponse> listener)
+    {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("patientId", patientId);
+        merchant.put("pageNo", pageNo);
+        merchant.put("pageSize", pageSize);
+        //传0 代表不限制时间
+        merchant.put("days", days);
+        return requestBaseResponseListByJson("/trans/patient/notes",
+                                             Tasks.GET_TRANSFER_PATIENT_HISTORY_LIST,
+                                             TransPatientBean.class, merchant, listener);
+    }
 }

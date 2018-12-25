@@ -20,12 +20,12 @@ import custom.frame.bean.TransPatientBean;
 /**
  * Created by dundun on 18/7/14.
  */
-public class TransferInfoAdapter extends BaseAdapter implements OrderStatus, CommonData
+public class TransferInfoLimitAdapter extends BaseAdapter implements OrderStatus, CommonData
 {
     private Context context;
     private ArrayList<TransPatientBean> list = new ArrayList<>();
 
-    public TransferInfoAdapter(Context context)
+    public TransferInfoLimitAdapter(Context context)
     {
         this.context = context;
     }

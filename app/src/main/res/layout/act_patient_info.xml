@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/public_title_bar"
+        android:id="@+id/title_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/title_bar"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:background="@color/app_main_color"
+            android:layout_height="205dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/act_patient_info_headImg"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="10dp"
+                android:src="@mipmap/icon_patient_default_imgs"
+                android:layout_marginTop="18dp" />
+
+            <TextView
+                android:id="@+id/act_patient_info_name"
+                android:layout_width="wrap_content"
+                android:textColor="@color/app_white_color"
+                android:textSize="17sp"
+                android:layout_marginTop="23dp"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/act_patient_info_headImg"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/act_patient_info_sex"
+                android:layout_width="wrap_content"
+                android:textColor="@color/app_white_color"
+                android:textSize="16sp"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="10dp"
+                android:layout_below="@id/act_patient_info_name"
+                android:layout_toRightOf="@id/act_patient_info_headImg"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/act_patient_info_age"
+                android:layout_width="wrap_content"
+                android:textColor="@color/app_white_color"
+                android:textSize="16sp"
+                android:layout_marginTop="3dp"
+                android:layout_marginLeft="8dp"
+                android:layout_below="@id/act_patient_info_name"
+                android:layout_toRightOf="@id/act_patient_info_sex"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/act_patient_info_company"
+                android:layout_width="wrap_content"
+                android:layout_below="@id/act_patient_info_age"
+                android:layout_toRightOf="@id/act_patient_info_headImg"
+                android:drawableLeft="@mipmap/icon_transfer"
+                android:drawablePadding="5dp"
+                android:textSize="12sp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/app_white_color"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/act_patient_info_address"
+                android:layout_width="wrap_content"
+                android:layout_below="@id/act_patient_info_company"
+                android:layout_toRightOf="@id/act_patient_info_headImg"
+                android:drawableLeft="@mipmap/icon_transfer"
+                android:drawablePadding="5dp"
+                android:textSize="12sp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/app_white_color"
+                android:layout_height="wrap_content" />
+
+            <custom.frame.widgets.view.SearchLabelLayout
+                android:id="@+id/act_patient_info_searchLabelLayout"
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/act_patient_info_headImg"
+                android:layout_height="wrap_content">
+
+            </custom.frame.widgets.view.SearchLabelLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/act_health_card_viewpager_title"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <Button
+                android:id="@+id/act_patient_info_health_info"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/bg_btn_press"
+                android:gravity="center"
+                android:text="健康档案"
+                android:textColor="@color/btn_main_txt_color_selector"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/act_patient_info_order_info"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/bg_btn_press"
+                android:text="开单记录"
+                android:textColor="@color/btn_main_txt_color_selector"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/act_patient_info_transfer_info"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/bg_btn_press"
+                android:text="转诊记录"
+                android:textColor="@color/btn_main_txt_color_selector"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/act_patient_info_indicator"
+            android:layout_width="100dp"
+            android:layout_height="2dp"
+            android:layout_below="@+id/act_health_card_viewpager_title"
+            android:background="@color/app_main_color" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/act_patient_info_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/act_health_card_indicator"></android.support.v4.view.ViewPager>
+
+    </LinearLayout>
+</RelativeLayout>

@@ -171,5 +171,9 @@ public enum Tasks
      * 获取患者综合病史
      */
     GET_PATIENT_COMBINE,
+    /**
+     * 我的转诊记录
+     */
+    GET_TRANSFER_PATIENT_HISTORY_LIST,
 }
 

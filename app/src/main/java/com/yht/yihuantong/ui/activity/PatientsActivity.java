@@ -166,7 +166,7 @@ public class PatientsActivity extends BaseActivity
         patientsListAdapter.setOnItemClickListener((v, position, item) ->
                                                    {
                                                        Intent intent = new Intent(this,
-                                                                                  HealthCardActivity.class);
+                                                                                  PatientInfoActivity.class);
                                                        intent.putExtra(CommonData.KEY_PATIENT_BEAN,
                                                                        item);
                                                        startActivityForResult(intent,

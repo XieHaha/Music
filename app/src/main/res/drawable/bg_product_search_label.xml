@@ -7,5 +7,5 @@
     <stroke
         android:dashGap="0dp"
         android:width="1dp"
-        android:color="@color/app_minor_color" />
+        android:color="@color/app_white_color" />
 </shape>
