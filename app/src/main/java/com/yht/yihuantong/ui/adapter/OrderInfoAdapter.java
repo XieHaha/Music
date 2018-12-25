@@ -1,133 +1,108 @@
 package com.yht.yihuantong.ui.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.data.OrderStatus;
 import com.yht.yihuantong.utils.AllUtils;
 
-import java.util.ArrayList;
+import org.litepal.crud.DataSupport;
+
+import java.util.List;
 
 import custom.frame.bean.RegistrationBean;
+import custom.frame.bean.RegistrationTypeBean;
+import custom.frame.ui.adapter.BaseRecyclerAdapter;
+import custom.frame.ui.adapter.BaseViewHolder;
 
 /**
  * Created by dundun on 18/7/14.
+ * 患者开单记录适配器
  */
-public class OrderInfoAdapter extends BaseAdapter implements OrderStatus, CommonData
+public class OrderInfoAdapter extends BaseRecyclerAdapter<RegistrationBean> implements OrderStatus
 {
     private Context context;
-    private ArrayList<RegistrationBean> list = new ArrayList<>();
-    private boolean showAll = false;
 
-    public OrderInfoAdapter(Context context)
+    public OrderInfoAdapter(Context context, List<RegistrationBean> list)
     {
+        super(list);
         this.context = context;
     }
 
-    public void setList(ArrayList<RegistrationBean> list)
+    @Override
+    public BaseViewHolder onCreateViewHolder(ViewGroup parent)
     {
-        this.list = list;
-    }
-
-    public void setShowAll(boolean showAll)
-    {
-        this.showAll = showAll;
-    }
-
-    public boolean isShowAll()
-    {
-        return showAll;
+        View view = LayoutInflater.from(parent.getContext())
+                                  .inflate(R.layout.item_order_info, parent, false);
+        return new OrderInfoAdapter.Transferholder(view);
     }
 
     @Override
-    public int getCount()
+    public void onBindViewHolder(BaseViewHolder holder, int position, RegistrationBean item)
     {
-        if (showAll)
+        super.onBindViewHolder(holder, position, item);
+        holder.showView(position, item);
+    }
+
+    public class Transferholder extends BaseViewHolder<RegistrationBean>
+    {
+        private TextView tvPatientCase, tvCaseType, tvStatus, tvTime;
+
+        public Transferholder(View itemView)
         {
-            return list.size();
+            super(itemView);
+            tvTime = itemView.findViewById(R.id.item_order_info_time);
+            tvPatientCase = itemView.findViewById(R.id.item_order_info_patient_case);
+            tvCaseType = itemView.findViewById(R.id.item_order_info_case_type);
+            tvStatus = itemView.findViewById(R.id.item_order_info_status);
         }
-        //不显示全部 只显示两条
-        return ((list.size() > CommonData.DATA_LIST_BASE_NUM)
-                ? CommonData.DATA_LIST_BASE_NUM
-                : list.size());
-    }
 
-    @Override
-    public Object getItem(int position)
-    {
-        return list.get(position);
-    }
-
-    @Override
-    public long getItemId(int position)
-    {
-        return position;
-    }
-
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent)
-    {
-        final ViewHolder holder;
-        if (convertView == null)
+        @Override
+        public void showView(final int position, final RegistrationBean curTransferPatient)
         {
-            holder = new ViewHolder();
-            convertView = LayoutInflater.from(context)
-                                        .inflate(R.layout.item_order_info, parent, false);
-            holder.tvOrderType = convertView.findViewById(R.id.item_order_type);
-            holder.tvOrderStatus = convertView.findViewById(R.id.item_order_status);
-            holder.tvOrderPatientName = convertView.findViewById(R.id.item_order_patient_name);
-            holder.tvOrderPatientSex = convertView.findViewById(R.id.item_order_patient_sex);
-            holder.tvOrderPatientAge = convertView.findViewById(R.id.item_order_patient_age);
-            holder.tvOrderDetail = convertView.findViewById(R.id.item_order_detail);
-            holder.tvOrderHospital = convertView.findViewById(R.id.item_order_hospital);
-            convertView.setTag(holder);
+            tvPatientCase.setText(curTransferPatient.getDiagnosisInfo());
+            tvTime.setText(AllUtils.formatDate(curTransferPatient.getOrderDate(),
+                                               AllUtils.YYYY_MM_DD_HH_MM));
+            List<RegistrationTypeBean> list = DataSupport.where("fieldId = ?",
+                                                                curTransferPatient.getProductTypeId())
+                                                         .find(RegistrationTypeBean.class);
+            if (list != null && list.size() > 0)
+            {
+                RegistrationTypeBean bean = list.get(0);
+                tvCaseType.setText("#" + bean.getProductTypeName());
+            }
+            switch (curTransferPatient.getOrderState())
+            {
+                case STATUS_SUBSCRIBE_NONE:
+                    tvStatus.setText("待预约");
+                    tvStatus.setTextColor(
+                            ContextCompat.getColor(context, R.color.app_main_txt_color));
+                    break;
+                case STATUS_SUBSCRIBE:
+                    tvStatus.setText("待检查");
+                    tvStatus.setTextColor(
+                            ContextCompat.getColor(context, R.color.app_main_color));
+                    break;
+                case STATUS_COMPLETE:
+                    tvStatus.setText("已检查");
+                    tvStatus.setTextColor(
+                            ContextCompat.getColor(context, R.color.app_main_txt_color));
+                    break;
+                case STATUS_SEND_REPORT:
+                    tvStatus.setText("报告已发送");
+                    tvStatus.setTextColor(ContextCompat.getColor(context, R.color._1F6BAC));
+                    break;
+                case STATUS_REFUSE:
+                    tvStatus.setText("已拒绝");
+                    tvStatus.setTextColor(
+                            ContextCompat.getColor(context, R.color.app_red_color));
+                    break;
+            }
         }
-        else
-        {
-            holder = (ViewHolder)convertView.getTag();
-        }
-        initData(holder, position);
-        return convertView;
-    }
-
-    private void initData(ViewHolder holder, int position)
-    {
-        RegistrationBean curRegistrationBean = list.get(position);
-        holder.tvOrderType.setText(curRegistrationBean.getProductName());
-        switch (curRegistrationBean.getOrderState())
-        {
-            case STATUS_SUBSCRIBE_NONE:
-                holder.tvOrderStatus.setText("未预约");
-                break;
-            case STATUS_SUBSCRIBE:
-                holder.tvOrderStatus.setText("已预约");
-                break;
-            case STATUS_COMPLETE:
-                holder.tvOrderStatus.setText("完成检查");
-                break;
-            case STATUS_SEND_REPORT:
-                holder.tvOrderStatus.setText("报告已发送");
-                break;
-            case STATUS_REFUSE:
-                holder.tvOrderStatus.setText("已拒绝");
-                break;
-        }
-        holder.tvOrderPatientName.setText(curRegistrationBean.getPatientName());
-        holder.tvOrderPatientSex.setText(curRegistrationBean.getPatientSex());
-        holder.tvOrderPatientAge.setText(
-                AllUtils.formatDateByAge(curRegistrationBean.getPatientBirthDate()) + "岁");
-        holder.tvOrderDetail.setText(curRegistrationBean.getDiagnosisInfo());
-        holder.tvOrderHospital.setText(curRegistrationBean.getHospitalName());
-    }
-
-    class ViewHolder
-    {
-        private TextView tvOrderType, tvOrderStatus, tvOrderPatientName, tvOrderPatientSex, tvOrderPatientAge, tvOrderDetail, tvOrderHospital;
     }
 }

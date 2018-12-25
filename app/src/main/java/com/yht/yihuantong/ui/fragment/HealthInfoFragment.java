@@ -3,10 +3,12 @@ package com.yht.yihuantong.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
@@ -23,6 +25,7 @@ import custom.frame.bean.PatientBean;
 import custom.frame.bean.PatientCaseDetailBean;
 import custom.frame.http.Tasks;
 import custom.frame.http.data.BaseNetCode;
+import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.ui.fragment.BaseFragment;
 import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
@@ -33,9 +36,15 @@ import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
  *
  * @author DUNDUN
  */
-public class HealthInfoFragment extends BaseFragment implements LoadMoreListener
+public class HealthInfoFragment extends BaseFragment
+        implements LoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
+                   BaseRecyclerAdapter.OnItemClickListener<PatientCaseDetailBean>,
+                   BaseRecyclerAdapter.OnItemLongClickListener<PatientCaseDetailBean>
 {
+    private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
+    private LinearLayout llNoneLayout;
+    private TextView tvNoneTxt;
     private View footerView;
     private TextView tvHintTxt;
     /**
@@ -74,9 +83,16 @@ public class HealthInfoFragment extends BaseFragment implements LoadMoreListener
     public void initView(@NonNull View view, @NonNull Bundle savedInstanceState)
     {
         super.initView(view, savedInstanceState);
+        swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.fragment_swipe_layout);
         autoLoadRecyclerView = view.findViewById(R.id.fragment_health_record_recycler);
+        llNoneLayout = view.findViewById(R.id.fragment_info_none_layout);
+        tvNoneTxt = view.findViewById(R.id.fragment_info_none_txt);
         footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
+                                                   android.R.color.holo_red_light,
+                                                   android.R.color.holo_orange_light,
+                                                   android.R.color.holo_green_light);
     }
 
     @Override
@@ -96,38 +112,14 @@ public class HealthInfoFragment extends BaseFragment implements LoadMoreListener
     public void initListener()
     {
         super.initListener();
+        swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
         autoLoadRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(healthInfoAdapter);
-        healthInfoAdapter.setOnItemClickListener((v, position, item) ->
-                                                     {
-                                                         Intent intent = new Intent(getContext(),
-                                                                                    HealthDetailActivity.class);
-                                                         intent.putExtra(
-                                                                 CommonData.KEY_ADD_NEW_HEALTH,
-                                                                 false);
-                                                         intent.putExtra(CommonData.KEY_PATIENT_ID,
-                                                                         item.getPatientId());
-                                                         intent.putExtra(
-                                                                 CommonData.PATIENT_CASE_DETAIL_BEAN,
-                                                                 item);
-                                                         startActivity(intent);
-                                                     });
-        healthInfoAdapter.setOnItemLongClickListener((v, position, item) ->
-                                                         {
-                                                             new SimpleDialog(getActivity(),
-                                                                              "删除当前病例",
-                                                                              (dialog, which) ->
-                                                                              {
-                                                                                  deletePatientCaseList(
-                                                                                          caseRecordList
-                                                                                                  .get(position));
-                                                                              },
-                                                                              (dialog, which) -> dialog
-                                                                                      .dismiss()).show();
-                                                         });
+        healthInfoAdapter.setOnItemClickListener(this);
+        healthInfoAdapter.setOnItemLongClickListener(this);
     }
 
     public void setPatientBean(PatientBean patientBean)
@@ -153,6 +145,25 @@ public class HealthInfoFragment extends BaseFragment implements LoadMoreListener
     }
 
     @Override
+    public void onItemClick(View v, int position, PatientCaseDetailBean item)
+    {
+        Intent intent = new Intent(getContext(), HealthDetailActivity.class);
+        intent.putExtra(CommonData.KEY_ADD_NEW_HEALTH, false);
+        intent.putExtra(CommonData.KEY_PATIENT_ID, item.getPatientId());
+        intent.putExtra(CommonData.PATIENT_CASE_DETAIL_BEAN, item);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onItemLongClick(View v, int position, PatientCaseDetailBean item)
+    {
+        new SimpleDialog(getActivity(), "删除当前病例", (dialog, which) ->
+        {
+            deletePatientCaseList(caseRecordList.get(position));
+        }, (dialog, which) -> dialog.dismiss()).show();
+    }
+
+    @Override
     public void onResponseSuccess(Tasks task, BaseResponse response)
     {
         super.onResponseSuccess(task, response);
@@ -166,7 +177,13 @@ public class HealthInfoFragment extends BaseFragment implements LoadMoreListener
                 ArrayList<PatientCaseDetailBean> list = response.getData();
                 if (list != null && list.size() > 0)
                 {
+                    llNoneLayout.setVisibility(View.GONE);
                     caseRecordList.addAll(list);
+                }
+                else
+                {
+                    llNoneLayout.setVisibility(View.VISIBLE);
+                    tvNoneTxt.setText("还没有健康档案哦~");
                 }
                 healthInfoAdapter.notifyDataSetChanged();
                 if (caseRecordList.size() < PAGE_SIZE)
@@ -225,9 +242,23 @@ public class HealthInfoFragment extends BaseFragment implements LoadMoreListener
     }
 
     @Override
+    public void onResponseEnd(Tasks task)
+    {
+        super.onResponseEnd(task);
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
     public void loadMore()
     {
         page++;
+        getPatientCaseList();
+    }
+
+    @Override
+    public void onRefresh()
+    {
+        page = 0;
         getPatientCaseList();
     }
 }

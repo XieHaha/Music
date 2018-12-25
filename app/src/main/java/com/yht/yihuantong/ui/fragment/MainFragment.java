@@ -47,7 +47,7 @@ import com.yht.yihuantong.ui.activity.RegistrationListActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientHistoryActivity;
 import com.yht.yihuantong.ui.adapter.MainOptionsAdapter;
-import com.yht.yihuantong.ui.adapter.OrderInfoAdapter;
+import com.yht.yihuantong.ui.adapter.OrderInfoLimitAdapter;
 import com.yht.yihuantong.ui.adapter.TransferInfoLimitAdapter;
 import com.yht.yihuantong.utils.AllUtils;
 
@@ -95,7 +95,7 @@ public class MainFragment extends BaseFragment
      */
     private BarCodeImageView barCodeImageView;
     private TransferInfoLimitAdapter transferInfoLimitAdapter;
-    private OrderInfoAdapter orderInfoAdapter;
+    private OrderInfoLimitAdapter orderInfoAdapter;
     private INotifyChangeListenerServer iNotifyChangeListenerServer;
     /**
      * 转诊
@@ -207,7 +207,7 @@ public class MainFragment extends BaseFragment
         transferInfoLimitAdapter = new TransferInfoLimitAdapter(getContext());
         transferInfoLimitAdapter.setList(transPatientBeans);
         transferInfoListView.setAdapter(transferInfoLimitAdapter);
-        orderInfoAdapter = new OrderInfoAdapter(getContext());
+        orderInfoAdapter = new OrderInfoLimitAdapter(getContext());
         orderInfoAdapter.setList(registrationBeans);
         orderInfoListView.setAdapter(orderInfoAdapter);
         barCodeImageView = new BarCodeImageView(getContext(),

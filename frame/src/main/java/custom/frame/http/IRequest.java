@@ -16,6 +16,7 @@ import custom.frame.bean.HospitalProductTypeBean;
 import custom.frame.bean.LoginSuccessBean;
 import custom.frame.bean.PatientBean;
 import custom.frame.bean.PatientCaseDetailBean;
+import custom.frame.bean.RegistrationBean;
 import custom.frame.bean.RegistrationTypeBean;
 import custom.frame.bean.TransPatientBean;
 import custom.frame.bean.Version;
@@ -222,8 +223,8 @@ public class IRequest extends BaseRequest
     /**
      * 医生扫码添加患者
      */
-    public Tasks addPatientByScan(String doctorId, String patientId,
-            int requestSource, final ResponseListener<BaseResponse> listener)
+    public Tasks addPatientByScan(String doctorId, String patientId, int requestSource,
+            final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
@@ -350,8 +351,8 @@ public class IRequest extends BaseRequest
     /**
      * 拒绝患者申请
      */
-    public Tasks refusePatientApply(String doctorId, String patientId,
-            int requestSource, final ResponseListener<BaseResponse> listener)
+    public Tasks refusePatientApply(String doctorId, String patientId, int requestSource,
+            final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
@@ -364,8 +365,8 @@ public class IRequest extends BaseRequest
     /**
      * 同意患者申请
      */
-    public Tasks agreePatientApply(String doctorId, String patientId,
-            int requestSource, final ResponseListener<BaseResponse> listener)
+    public Tasks agreePatientApply(String doctorId, String patientId, int requestSource,
+            final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
@@ -551,5 +552,20 @@ public class IRequest extends BaseRequest
         return requestBaseResponseListByJson("/trans/patient/notes",
                                              Tasks.GET_TRANSFER_PATIENT_HISTORY_LIST,
                                              TransPatientBean.class, merchant, listener);
+    }
+
+    /**
+     * 获取患者所有订单
+     */
+    public Tasks getPatientAllOrders(String patientId, int page, int pageSize,
+            final ResponseListener<BaseResponse> listener)
+    {
+        Map<String, Object> params = new HashMap<>();
+        params.put("pageNo", page);
+        params.put("pageSize", pageSize);
+        params.put("patientId", patientId);
+        return requestBaseResponseListByJson("/order/patient/all/orders",
+                                             Tasks.GET_PATIENT_ORDER_LIST, RegistrationBean.class,
+                                             params, listener);
     }
 }

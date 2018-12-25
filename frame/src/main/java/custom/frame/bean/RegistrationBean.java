@@ -22,8 +22,8 @@ public class RegistrationBean implements Serializable
     private long orderDate;
     private long patientBirthDate;
     private int hospitalId;
-    private int productTypeId;
     private int productId;
+    private String productTypeId;
     private String patientId;
     private String patientName;
     private String patientSex;
@@ -179,12 +179,12 @@ public class RegistrationBean implements Serializable
         this.hospitalId = hospitalId;
     }
 
-    public int getProductTypeId()
+    public String getProductTypeId()
     {
         return productTypeId;
     }
 
-    public void setProductTypeId(int productTypeId)
+    public void setProductTypeId(String productTypeId)
     {
         this.productTypeId = productTypeId;
     }

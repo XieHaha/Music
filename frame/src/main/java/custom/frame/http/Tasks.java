@@ -172,8 +172,12 @@ public enum Tasks
      */
     GET_PATIENT_COMBINE,
     /**
-     * 我的转诊记录
+     * 患者转诊记录
      */
     GET_TRANSFER_PATIENT_HISTORY_LIST,
+    /**
+     * 患者订单记录
+     */
+    GET_PATIENT_ORDER_LIST,
 }
 

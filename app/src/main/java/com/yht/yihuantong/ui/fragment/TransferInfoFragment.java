@@ -3,26 +3,27 @@ package com.yht.yihuantong.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
-import com.yht.yihuantong.ui.activity.HealthDetailActivity;
-import com.yht.yihuantong.ui.adapter.CaseRecordListAdapter;
+import com.yht.yihuantong.ui.activity.TransferPatientActivity;
+import com.yht.yihuantong.ui.adapter.TransferInfoAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.PatientBean;
-import custom.frame.bean.PatientCaseDetailBean;
 import custom.frame.bean.TransPatientBean;
 import custom.frame.http.Tasks;
 import custom.frame.http.data.BaseNetCode;
+import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.ui.fragment.BaseFragment;
 import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
@@ -33,9 +34,14 @@ import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
  *
  * @author DUNDUN
  */
-public class TransferInfoFragment extends BaseFragment implements LoadMoreListener
+public class TransferInfoFragment extends BaseFragment
+        implements LoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
+                   BaseRecyclerAdapter.OnItemClickListener<TransPatientBean>
 {
+    private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
+    private LinearLayout llNoneLayout;
+    private TextView tvNoneTxt;
     private View footerView;
     private TextView tvHintTxt;
     /**
@@ -46,7 +52,7 @@ public class TransferInfoFragment extends BaseFragment implements LoadMoreListen
      * 患者id
      */
     private String patientId;
-    private CaseRecordListAdapter caseRecordListAdapter;
+    private TransferInfoAdapter transferInfoAdapter;
     /**
      * 转诊信息列表
      */
@@ -81,17 +87,24 @@ public class TransferInfoFragment extends BaseFragment implements LoadMoreListen
     public void initView(@NonNull View view, @NonNull Bundle savedInstanceState)
     {
         super.initView(view, savedInstanceState);
+        swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.fragment_swipe_layout);
         autoLoadRecyclerView = view.findViewById(R.id.fragment_health_record_recycler);
+        llNoneLayout = view.findViewById(R.id.fragment_info_none_layout);
+        tvNoneTxt = view.findViewById(R.id.fragment_info_none_txt);
         footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
+                                                   android.R.color.holo_red_light,
+                                                   android.R.color.holo_orange_light,
+                                                   android.R.color.holo_green_light);
     }
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState)
     {
         super.initData(savedInstanceState);
-        caseRecordListAdapter = new CaseRecordListAdapter(getContext(), caseRecordList);
-        caseRecordListAdapter.addFooterView(footerView);
+        transferInfoAdapter = new TransferInfoAdapter(getContext(), transferPatientBeanList);
+        transferInfoAdapter.addFooterView(footerView);
         if (patientBean != null)
         {
             patientId = patientBean.getPatientId();
@@ -102,25 +115,12 @@ public class TransferInfoFragment extends BaseFragment implements LoadMoreListen
     public void initListener()
     {
         super.initListener();
-        autoLoadRecyclerView.setLoadMoreListener(this);
+        swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        autoLoadRecyclerView.setAdapter(caseRecordListAdapter);
-        caseRecordListAdapter.setOnItemClickListener((v, position, item) ->
-                                                     {
-                                                         Intent intent = new Intent(getContext(),
-                                                                                    HealthDetailActivity.class);
-                                                         intent.putExtra(
-                                                                 CommonData.KEY_ADD_NEW_HEALTH,
-                                                                 false);
-                                                         intent.putExtra(CommonData.KEY_PATIENT_ID,
-                                                                         item.getPatientId());
-                                                         intent.putExtra(
-                                                                 CommonData.PATIENT_CASE_DETAIL_BEAN,
-                                                                 item);
-                                                         startActivity(intent);
-                                                     });
+        autoLoadRecyclerView.setAdapter(transferInfoAdapter);
+        transferInfoAdapter.setOnItemClickListener(this);
     }
 
     public void setPatientBean(PatientBean patientBean)
@@ -133,8 +133,16 @@ public class TransferInfoFragment extends BaseFragment implements LoadMoreListen
      */
     private void getTransferInfoList()
     {
-        mIRequest.getTransferPatientHistoryList(patientId, page, PAGE_SIZE,
-                                                DAYS_DATA, this);
+        mIRequest.getTransferPatientHistoryList(patientId, page, PAGE_SIZE, DAYS_DATA, this);
+    }
+
+    @Override
+    public void onItemClick(View v, int position, TransPatientBean item)
+    {
+        Intent intent = new Intent(getContext(), TransferPatientActivity.class);
+        intent.putExtra(CommonData.KEY_PUBLIC, false);
+        intent.putExtra(CommonData.KEY_TRANSFER_BEAN, item);
+        startActivity(intent);
     }
 
     @Override
@@ -145,6 +153,15 @@ public class TransferInfoFragment extends BaseFragment implements LoadMoreListen
         {
             case GET_TRANSFER_PATIENT_HISTORY_LIST:
                 transferPatientBeanList = response.getData();
+                if (transferPatientBeanList != null && transferPatientBeanList.size() > 0)
+                {
+                    llNoneLayout.setVisibility(View.GONE);
+                }
+                else
+                {
+                    llNoneLayout.setVisibility(View.VISIBLE);
+                    tvNoneTxt.setText("还没有健康档案哦~");
+                }
                 transferInfoAdapter.setList(transferPatientBeanList);
                 transferInfoAdapter.notifyDataSetChanged();
                 break;
@@ -187,9 +204,23 @@ public class TransferInfoFragment extends BaseFragment implements LoadMoreListen
     }
 
     @Override
+    public void onResponseEnd(Tasks task)
+    {
+        super.onResponseEnd(task);
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
     public void loadMore()
     {
         page++;
-        getPatientCaseList();
+        getTransferInfoList();
+    }
+
+    @Override
+    public void onRefresh()
+    {
+        page = 0;
+        getTransferInfoList();
     }
 }

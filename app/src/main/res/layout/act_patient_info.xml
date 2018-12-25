@@ -65,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_below="@id/act_patient_info_age"
                 android:layout_toRightOf="@id/act_patient_info_headImg"
-                android:drawableLeft="@mipmap/icon_transfer"
+                android:drawableLeft="@mipmap/icon_company"
                 android:drawablePadding="5dp"
                 android:textSize="12sp"
                 android:layout_marginLeft="8dp"
@@ -78,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_below="@id/act_patient_info_company"
                 android:layout_toRightOf="@id/act_patient_info_headImg"
-                android:drawableLeft="@mipmap/icon_transfer"
+                android:drawableLeft="@mipmap/icon_address"
                 android:drawablePadding="5dp"
                 android:textSize="12sp"
                 android:layout_marginLeft="8dp"
@@ -90,6 +90,8 @@
                 android:id="@+id/act_patient_info_searchLabelLayout"
                 android:layout_width="match_parent"
                 android:layout_marginTop="10dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
                 android:layout_below="@id/act_patient_info_headImg"
                 android:layout_height="wrap_content">
 
@@ -150,4 +152,14 @@
             android:layout_below="@+id/act_health_card_indicator"></android.support.v4.view.ViewPager>
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/act_patient_info_more"
+        android:layout_width="wrap_content"
+        android:src="@mipmap/icon_info_more"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="37dp"
+        android:layout_marginBottom="20dp"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

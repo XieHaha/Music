@@ -3,28 +3,28 @@ package com.yht.yihuantong.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
-import com.yht.yihuantong.ui.activity.HealthDetailActivity;
-import com.yht.yihuantong.ui.adapter.CaseRecordListAdapter;
-import com.yht.yihuantong.ui.dialog.SimpleDialog;
+import com.yht.yihuantong.ui.activity.RegistrationDetailActivity;
+import com.yht.yihuantong.ui.adapter.OrderInfoAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.PatientBean;
-import custom.frame.bean.PatientCaseDetailBean;
+import custom.frame.bean.RegistrationBean;
 import custom.frame.http.Tasks;
-import custom.frame.http.data.BaseNetCode;
+import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.ui.fragment.BaseFragment;
-import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
@@ -33,9 +33,14 @@ import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
  *
  * @author DUNDUN
  */
-public class OrderInfoFragment extends BaseFragment implements LoadMoreListener
+public class OrderInfoFragment extends BaseFragment
+        implements LoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
+                   BaseRecyclerAdapter.OnItemClickListener<RegistrationBean>
 {
+    private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
+    private LinearLayout llNoneLayout;
+    private TextView tvNoneTxt;
     private View footerView;
     private TextView tvHintTxt;
     /**
@@ -46,8 +51,8 @@ public class OrderInfoFragment extends BaseFragment implements LoadMoreListener
      * 患者id
      */
     private String patientId;
-    private CaseRecordListAdapter caseRecordListAdapter;
-    private List<PatientCaseDetailBean> caseRecordList = new ArrayList<>();
+    private OrderInfoAdapter orderInfoAdapter;
+    private List<RegistrationBean> registrationBeans = new ArrayList<>();
     /**
      * 当前页码
      */
@@ -64,69 +69,45 @@ public class OrderInfoFragment extends BaseFragment implements LoadMoreListener
     }
 
     @Override
-    public void onResume()
-    {
-        super.onResume();
-        getPatientCaseList();
-    }
-
-    @Override
     public void initView(@NonNull View view, @NonNull Bundle savedInstanceState)
     {
         super.initView(view, savedInstanceState);
+        swipeRefreshLayout = view.findViewById(R.id.fragment_swipe_layout);
         autoLoadRecyclerView = view.findViewById(R.id.fragment_health_record_recycler);
+        llNoneLayout = view.findViewById(R.id.fragment_info_none_layout);
+        tvNoneTxt = view.findViewById(R.id.fragment_info_none_txt);
         footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
+                                                   android.R.color.holo_red_light,
+                                                   android.R.color.holo_orange_light,
+                                                   android.R.color.holo_green_light);
     }
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState)
     {
         super.initData(savedInstanceState);
-        caseRecordListAdapter = new CaseRecordListAdapter(getContext(), caseRecordList);
-        caseRecordListAdapter.addFooterView(footerView);
         if (patientBean != null)
         {
             patientId = patientBean.getPatientId();
         }
+        orderInfoAdapter = new OrderInfoAdapter(getContext(), registrationBeans);
+        orderInfoAdapter.addFooterView(footerView);
+        getPatientAllOrders();
     }
 
     @Override
     public void initListener()
     {
         super.initListener();
+        swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
         autoLoadRecyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        autoLoadRecyclerView.setAdapter(caseRecordListAdapter);
-        caseRecordListAdapter.setOnItemClickListener((v, position, item) ->
-                                                     {
-                                                         Intent intent = new Intent(getContext(),
-                                                                                    HealthDetailActivity.class);
-                                                         intent.putExtra(
-                                                                 CommonData.KEY_ADD_NEW_HEALTH,
-                                                                 false);
-                                                         intent.putExtra(CommonData.KEY_PATIENT_ID,
-                                                                         item.getPatientId());
-                                                         intent.putExtra(
-                                                                 CommonData.PATIENT_CASE_DETAIL_BEAN,
-                                                                 item);
-                                                         startActivity(intent);
-                                                     });
-        caseRecordListAdapter.setOnItemLongClickListener((v, position, item) ->
-                                                         {
-                                                             new SimpleDialog(getActivity(),
-                                                                              "删除当前病例",
-                                                                              (dialog, which) ->
-                                                                              {
-                                                                                  deletePatientCaseList(
-                                                                                          caseRecordList
-                                                                                                  .get(position));
-                                                                              },
-                                                                              (dialog, which) -> dialog
-                                                                                      .dismiss()).show();
-                                                         });
+        autoLoadRecyclerView.setAdapter(orderInfoAdapter);
+        orderInfoAdapter.setOnItemClickListener(this);
     }
 
     public void setPatientBean(PatientBean patientBean)
@@ -137,18 +118,17 @@ public class OrderInfoFragment extends BaseFragment implements LoadMoreListener
     /**
      * 获取患者病例列表
      */
-    private void getPatientCaseList()
+    private void getPatientAllOrders()
     {
-        mIRequest.getPatientCaseList(patientId, this);
+        mIRequest.getPatientAllOrders(patientId, page, PAGE_SIZE, this);
     }
 
-    /**
-     * 删除患者病例列表
-     */
-    private void deletePatientCaseList(PatientCaseDetailBean bean)
+    @Override
+    public void onItemClick(View v, int position, RegistrationBean item)
     {
-        mIRequest.deletePatientCase(patientId, bean.getFieldId(), bean.getCaseCreatorId(),
-                                    loginSuccessBean.getDoctorId(), this);
+        Intent intent = new Intent(getContext(), RegistrationDetailActivity.class);
+        intent.putExtra(CommonData.KEY_REGISTRATION_BEAN, item);
+        startActivity(intent);
     }
 
     @Override
@@ -157,18 +137,24 @@ public class OrderInfoFragment extends BaseFragment implements LoadMoreListener
         super.onResponseSuccess(task, response);
         switch (task)
         {
-            case GET_PATIENT_CASE_LIST:
+            case GET_PATIENT_ORDER_LIST:
                 if (page == 0)
                 {
-                    caseRecordList.clear();
+                    registrationBeans.clear();
                 }
-                ArrayList<PatientCaseDetailBean> list = response.getData();
+                ArrayList<RegistrationBean> list = response.getData();
                 if (list != null && list.size() > 0)
                 {
-                    caseRecordList.addAll(list);
+                    llNoneLayout.setVisibility(View.GONE);
+                    registrationBeans.addAll(list);
                 }
-                caseRecordListAdapter.notifyDataSetChanged();
-                if (caseRecordList.size() < PAGE_SIZE)
+                else
+                {
+                    llNoneLayout.setVisibility(View.VISIBLE);
+                    tvNoneTxt.setText("还没有开单记录哦~");
+                }
+                orderInfoAdapter.notifyDataSetChanged();
+                if (registrationBeans.size() < PAGE_SIZE)
                 {
                     tvHintTxt.setText("暂无更多数据");
                     autoLoadRecyclerView.loadFinish(false);
@@ -178,12 +164,6 @@ public class OrderInfoFragment extends BaseFragment implements LoadMoreListener
                     tvHintTxt.setText("上拉加载更多");
                     autoLoadRecyclerView.loadFinish(true);
                 }
-                break;
-            case DELETE_PATIENT_CASE:
-                ToastUtil.toast(getContext(), response.getMsg());
-                getPatientCaseList();
-                break;
-            default:
                 break;
         }
     }
@@ -202,12 +182,6 @@ public class OrderInfoFragment extends BaseFragment implements LoadMoreListener
                 tvHintTxt.setText("暂无更多数据");
                 autoLoadRecyclerView.loadFinish();
                 break;
-            case DELETE_PATIENT_CASE:
-                if (BaseNetCode.CODE_MODIFY_CASE_RECORD == response.getCode())
-                {
-                    ToastUtil.toast(getContext(), response.getMsg());
-                }
-                break;
         }
     }
 
@@ -224,9 +198,23 @@ public class OrderInfoFragment extends BaseFragment implements LoadMoreListener
     }
 
     @Override
+    public void onResponseEnd(Tasks task)
+    {
+        super.onResponseEnd(task);
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
     public void loadMore()
     {
         page++;
-        getPatientCaseList();
+        getPatientAllOrders();
+    }
+
+    @Override
+    public void onRefresh()
+    {
+        page = 0;
+        getPatientAllOrders();
     }
 }
