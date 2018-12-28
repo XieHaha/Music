@@ -27,7 +27,7 @@ import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.activity.AddFriendsDocActivity;
 import com.yht.yihuantong.ui.activity.AddFriendsPatientActivity;
 import com.yht.yihuantong.ui.activity.ApplyCooperateDocActivity;
-import com.yht.yihuantong.ui.activity.UserInfoActivity;
+import com.yht.yihuantong.ui.activity.DoctorInfoActivity;
 import com.yht.yihuantong.ui.adapter.CooperateDocListAdapter;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
 
@@ -150,7 +150,7 @@ public class CooperateDocFragment extends BaseFragment
         cooperateDocListAdapter.setOnItemClickListener((v, position, item) ->
                                                        {
                                                            Intent intent = new Intent(getContext(),
-                                                                                      UserInfoActivity.class);
+                                                                                      DoctorInfoActivity.class);
                                                            intent.putExtra(
                                                                    CommonData.KEY_DOCTOR_BEAN,
                                                                    item);

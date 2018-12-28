@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/app_minor_bg"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/top_bar"
+        layout="@layout/public_title_bar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:scrollbars="none"
+        android:layout_below="@id/top_bar"
+        android:layout_marginBottom="50dp"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/bg_img"
+                android:layout_width="match_parent"
+                android:background="@color/app_main_color"
+                android:scaleType="centerCrop"
+                android:layout_height="135dp" />
+
+            <RelativeLayout
+                android:id="@+id/act_user_info_layout"
+                android:layout_width="match_parent"
+                android:layout_marginRight="25dp"
+                android:layout_marginLeft="25dp"
+                android:paddingRight="10dp"
+                android:paddingLeft="30dp"
+                android:layout_marginTop="25dp"
+                android:elevation="2dp"
+                android:background="@drawable/corner_white_full_bg"
+                android:layout_height="135dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/act_user_info_headimg"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/icon_default_imgs"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#50ffffff" />
+
+                <TextView
+                    android:id="@+id/act_user_info_auth_status"
+                    android:layout_width="wrap_content"
+                    android:textSize="12sp"
+                    android:layout_marginTop="15dp"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/auth_txt_color_selector"
+                    android:drawableLeft="@drawable/auth_status_selector"
+                    android:drawablePadding="5dp"
+                    android:text=""
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@id/act_user_info_auth_status"
+                    android:layout_toRightOf="@id/act_user_info_headimg"
+                    android:layout_marginLeft="10dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/act_user_info_name"
+                        android:layout_width="wrap_content"
+                        android:textSize="17sp"
+                        android:textColor="@color/app_main_txt_color"
+                        android:text="姓名"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/act_user_info_hospital"
+                        android:layout_width="wrap_content"
+                        android:background="@null"
+                        android:textColor="@color/app_main_txt_color"
+                        android:textSize="15sp"
+                        android:layout_marginTop="3dp"
+                        android:gravity="center_vertical"
+                        android:text="医院"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="3dp"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/act_user_info_title"
+                            android:layout_width="wrap_content"
+                            android:textSize="15sp"
+                            android:textColor="@color/app_minor_color"
+                            android:text=""
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/act_user_info_type"
+                            android:layout_width="wrap_content"
+                            android:textSize="15sp"
+                            android:layout_marginLeft="5dp"
+                            android:textColor="@color/app_minor_color"
+                            android:text=""
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/act_user_info_cooperate_doc_info_layout"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/act_user_info_layout"
+                android:layout_height="wrap_content">
+
+
+                <LinearLayout
+                    android:id="@+id/act_user_info_cooperate_doc_info_txt_layout"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingLeft="12dp"
+                    android:background="@color/app_white_color"
+                    android:layout_height="wrap_content">
+
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:src="@mipmap/icon_doc_info"
+                        android:layout_gravity="center_vertical"
+                        android:layout_height="15dp" />
+
+                    <TextView
+                        android:id="@+id/act_user_info_cooperate_doc_info_txt"
+                        android:layout_width="match_parent"
+                        android:text="医生简介"
+                        android:layout_marginLeft="8dp"
+                        android:textColor="@color/app_main_txt_color"
+                        android:textSize="17sp"
+                        android:gravity="center_vertical"
+                        android:layout_height="50dp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_below="@id/act_user_info_cooperate_doc_info_txt_layout"
+                    android:background="@color/app_main_divideline"
+                    android:layout_height="1px" />
+
+                <TextView
+                    android:id="@+id/act_user_info_introduce"
+                    android:layout_width="match_parent"
+                    android:background="@color/app_white_color"
+                    android:textColor="@color/app_main_txt_color"
+                    android:layout_below="@id/act_user_info_layout"
+                    android:textSize="14sp"
+                    android:text="暂无简介"
+                    android:padding="12dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/act_user_info_cooperate_doc_layout"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/act_user_info_cooperate_doc_info_layout"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/act_user_info_cooperate_doc_txt_layout"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingLeft="12dp"
+                    android:background="@color/app_white_color"
+                    android:layout_height="wrap_content">
+
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:src="@mipmap/icon_cooprate_doc"
+                        android:layout_gravity="center_vertical"
+                        android:layout_height="15dp" />
+
+                    <TextView
+                        android:id="@+id/act_user_info_cooperate_doc_txt"
+                        android:layout_width="match_parent"
+                        android:text="合作医生"
+                        android:layout_marginLeft="8dp"
+                        android:textColor="@color/app_main_txt_color"
+                        android:textSize="17sp"
+                        android:gravity="center_vertical"
+                        android:layout_height="50dp" />
+                </LinearLayout>
+
+
+                <View
+                    android:id="@+id/line"
+                    android:layout_width="match_parent"
+                    android:layout_below="@id/act_user_info_cooperate_doc_txt_layout"
+                    android:background="@color/app_main_divideline"
+                    android:layout_height="1px" />
+
+                <custom.frame.widgets.recyclerview.AutoLoadRecyclerView
+                    android:id="@+id/act_user_info_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_below="@id/line"
+                    android:background="@color/app_white_color"
+                    android:padding="10dp"
+                    android:layout_height="wrap_content">
+
+                </custom.frame.widgets.recyclerview.AutoLoadRecyclerView>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/line1"
+                android:layout_width="match_parent"
+                android:layout_below="@id/act_user_info_cooperate_doc_layout"
+                android:background="@color/app_minor_bg"
+                android:layout_height="10dp" />
+
+            <LinearLayout
+                android:id="@+id/act_user_info_coop_hospital_layout"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:background="@color/app_white_color"
+                android:layout_below="@id/line1"
+                android:layout_height="wrap_content">
+
+
+                <LinearLayout
+                    android:id="@+id/act_user_info_cooperate_hospital_txt_layout"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingLeft="12dp"
+                    android:background="@color/app_white_color"
+                    android:layout_height="wrap_content">
+
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:src="@mipmap/icon_cooprate_hos"
+                        android:layout_gravity="center_vertical"
+                        android:layout_height="15dp" />
+
+                    <TextView
+                        android:id="@+id/act_user_info_cooperate_hospital_txt"
+                        android:layout_width="match_parent"
+                        android:text="合作医院"
+                        android:textColor="@color/app_main_txt_color"
+                        android:textSize="17sp"
+                        android:layout_marginLeft="8dp"
+                        android:gravity="center_vertical"
+                        android:layout_height="50dp" />
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/app_main_divideline"
+                    android:layout_height="1px" />
+
+                <custom.frame.widgets.recyclerview.AutoLoadRecyclerView
+                    android:id="@+id/act_user_info_hospital_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_below="@id/line"
+                    android:background="@color/app_white_color"
+                    android:padding="10dp"
+                    android:layout_height="wrap_content">
+
+                </custom.frame.widgets.recyclerview.AutoLoadRecyclerView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/app_minor_bg"
+                    android:layout_height="10dp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/act_user_info_chat"
+        android:layout_width="match_parent"
+        android:textSize="18sp"
+        android:text="发起会话"
+        android:gravity="center"
+        android:background="@color/app_main_color"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/app_white_color"
+        android:layout_height="50dp" />
+
+</RelativeLayout>

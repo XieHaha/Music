@@ -63,6 +63,10 @@ public interface CommonData
      */
     String KEY_CHAT_NAME = "key_chat_name";
     /**
+     * doctor 昵称
+     */
+    String KEY_DOCTOR_NICKNAME = "key_doctor_nickname";
+    /**
      * 是否能对合作医生操作
      */
     String KEY_IS_DEAL_DOC = "key_is_deal_doc";
