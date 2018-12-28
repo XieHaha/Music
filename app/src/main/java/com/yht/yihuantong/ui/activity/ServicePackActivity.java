@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -66,6 +67,7 @@ public class ServicePackActivity<T> extends BaseActivity
     private EditText etDes;
     private ImageView ivHosspitalImg;
     private TextView tvHospitalName, tvHospitalAddress, tvHospitalGrade;
+    private LinearLayout llPatientInfoLayout;
     private RelativeLayout rlHospitalLayout;
     private TextView tvContact, tvContactPhone, tvUseful, tvAttention;
     private View line;
@@ -89,6 +91,10 @@ public class ServicePackActivity<T> extends BaseActivity
      * 1 医院列表   2 商品列表  3 商品详情
      */
     private int curPage;
+    /**
+     * 只是查看信息 不开单
+     */
+    private boolean limit;
 
     @Override
     protected boolean isInitBackBtn()
@@ -139,6 +145,7 @@ public class ServicePackActivity<T> extends BaseActivity
         tvContactPhone = (TextView)findViewById(R.id.act_service_pack_contact_phone);
         tvUseful = (TextView)findViewById(R.id.act_service_pack_useful);
         tvAttention = (TextView)findViewById(R.id.act_service_pack_attention);
+        llPatientInfoLayout = (LinearLayout)findViewById(R.id.act_service_pack_patient_info_layout);
     }
 
     @Override
@@ -146,6 +153,7 @@ public class ServicePackActivity<T> extends BaseActivity
     {
         if (getIntent() != null)
         {
+            limit = getIntent().getBooleanExtra("limit", false);
             productTypeId = getIntent().getIntExtra(CommonData.KEY_PUBLIC, -1);
             typeName = getIntent().getStringExtra(CommonData.KEY_REGISTRATION_TYPE);
             patientId = getIntent().getStringExtra(CommonData.KEY_PATIENT_ID);
@@ -232,15 +240,23 @@ public class ServicePackActivity<T> extends BaseActivity
 
     private void ininPageData()
     {
-        List<PatientBean> list = DataSupport.where("patientId = ?", patientId)
-                                            .find(PatientBean.class);
-        if (list != null && list.size() > 0)
+        if (!limit)
         {
-            patientBean = list.get(0);
+            List<PatientBean> list = DataSupport.where("patientId = ?", patientId)
+                                                .find(PatientBean.class);
+            if (list != null && list.size() > 0)
+            {
+                patientBean = list.get(0);
+            }
+            else
+            {
+                getPatientInfo();
+            }
+            llPatientInfoLayout.setVisibility(View.VISIBLE);
         }
         else
         {
-            getPatientInfo();
+            llPatientInfoLayout.setVisibility(View.GONE);
         }
         tvTitle.setText(typeName);
         tvHintTxt.setText(String.format(getString(R.string.txt_registration_type_hint), typeName));
@@ -284,7 +300,10 @@ public class ServicePackActivity<T> extends BaseActivity
             }
             tvPatientAge.setText(AllUtils.formatDateByAge(patientBean.getBirthDate()));
         }
-        tvNext.setVisibility(View.VISIBLE);
+        if (!limit)
+        {
+            tvNext.setVisibility(View.VISIBLE);
+        }
     }
 
     /**

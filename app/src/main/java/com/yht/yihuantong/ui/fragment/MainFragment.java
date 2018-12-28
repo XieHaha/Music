@@ -44,6 +44,7 @@ import com.yht.yihuantong.ui.activity.AddFriendsPatientActivity;
 import com.yht.yihuantong.ui.activity.PatientsActivity;
 import com.yht.yihuantong.ui.activity.RegistrationDetailActivity;
 import com.yht.yihuantong.ui.activity.RegistrationListActivity;
+import com.yht.yihuantong.ui.activity.ServicePackActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientHistoryActivity;
 import com.yht.yihuantong.ui.adapter.MainOptionsAdapter;
@@ -255,6 +256,20 @@ public class MainFragment extends BaseFragment
                 Intent intent = new Intent(getContext(), RegistrationDetailActivity.class);
                 intent.putExtra(CommonData.KEY_REGISTRATION_BEAN, registrationBeans.get(position));
                 startActivity(intent);
+            }
+        });
+        customGridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                if (0 == position)
+                {
+                    Intent intent = new Intent(getContext(), ServicePackActivity.class);
+                    intent.putExtra("limit", true);
+                    intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "服务");
+                    startActivity(intent);
+                }
             }
         });
     }

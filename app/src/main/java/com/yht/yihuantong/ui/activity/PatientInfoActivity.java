@@ -1,21 +1,29 @@
 package com.yht.yihuantong.ui.activity;
 
+import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.YihtApplication;
+import com.yht.yihuantong.chat.ChatActivity;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.adapter.FragmentVpAdapter;
+import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.ui.fragment.HealthInfoFragment;
 import com.yht.yihuantong.ui.fragment.OrderInfoFragment;
 import com.yht.yihuantong.ui.fragment.TransferInfoFragment;
@@ -31,6 +39,9 @@ import custom.frame.bean.PatientBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.GlideHelper;
+import custom.frame.utils.ToastUtil;
+import custom.frame.widgets.menu.AnnularMenu;
+import custom.frame.widgets.menu.SatelliteMenu;
 import custom.frame.widgets.view.SearchLabelLayout;
 import custom.frame.widgets.view.ViewPrepared;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -39,15 +50,21 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * 我的页面
  */
 public class PatientInfoActivity extends BaseActivity
+        implements SatelliteMenu.OnMenuItemClickListener
 {
     private Button btnHealthInfo, btnOrderInfo, btnTransferInfo;
     private ImageView ivTitleMore;
     private CircleImageView ivHeadImg;
     private TextView tvName, tvSex, tvAge, tvCompany, tvAddress;
+    private AnnularMenu annularMenu;
+    private SatelliteMenu mSatelliteMenuRightBottom;
     private SearchLabelLayout searchLabelLayout;
     private View viewIndicator;
     private ViewPager viewPager;
     private FragmentVpAdapter fragmentVpAdapter;
+    private View view_pop;
+    private PopupWindow mPopupwinow;
+    private TextView tvOne, tvTwo;
     /**
      * 健康档案
      */
@@ -78,6 +95,10 @@ public class PatientInfoActivity extends BaseActivity
      * 过敏信息
      */
     private ArrayList<CombineChildBean> patientAllergyList = new ArrayList<>();
+    /**
+     * 修改备注回调
+     */
+    public static final int REEMARK_REQUEST_CODE = 101;
 
     @Override
     protected boolean isInitBackBtn()
@@ -106,6 +127,7 @@ public class PatientInfoActivity extends BaseActivity
         tvAddress = (TextView)findViewById(R.id.act_patient_info_address);
         searchLabelLayout = (SearchLabelLayout)findViewById(
                 R.id.act_patient_info_searchLabelLayout);
+        //        annularMenu = (AnnularMenu)findViewById(R.id.act_patient_info_more);
         btnHealthInfo = (Button)findViewById(R.id.act_patient_info_health_info);
         btnOrderInfo = (Button)findViewById(R.id.act_patient_info_order_info);
         btnTransferInfo = (Button)findViewById(R.id.act_patient_info_transfer_info);
@@ -142,6 +164,23 @@ public class PatientInfoActivity extends BaseActivity
         viewPager.setCurrentItem(0);
         initPageData();
         getPatientCombine();
+        mSatelliteMenuRightBottom = (SatelliteMenu)findViewById(R.id.mSatelliteMenuRightBottom);
+        List<String> nameMenuItem = new ArrayList<>();//菜单图片,可根据需要设置子菜单个数
+        nameMenuItem.add("对话");
+        nameMenuItem.add("转诊");
+        nameMenuItem.add("服务包");
+        nameMenuItem.add("病历");
+        List<Integer> imageResourceRightBottom = new ArrayList<>();//菜单图片,可根据需要设置子菜单个数
+        imageResourceRightBottom.add(R.mipmap.icon_info_chat);
+        imageResourceRightBottom.add(R.mipmap.icon_info_transfer);
+        imageResourceRightBottom.add(R.mipmap.icon_info_service);
+        imageResourceRightBottom.add(R.mipmap.icon_info_health_history);
+        mSatelliteMenuRightBottom.getmBuilder()
+                                 .setMenuItemNameTexts(nameMenuItem)
+                                 .setMenuImage(R.mipmap.icon_info_more)
+                                 .setMenuItemImageResource(imageResourceRightBottom)
+                                 .setOnMenuItemClickListener(this)
+                                 .creat();
     }
 
     @Override
@@ -189,6 +228,9 @@ public class PatientInfoActivity extends BaseActivity
             {
             }
         });
+        //        annularMenu.setOnMenuItemClickListener(
+        //                (view, position) -> Toast.makeText(PatientInfoActivity.this, position + "条目被点击",
+        //                                                   Toast.LENGTH_SHORT).show());
     }
 
     /**
@@ -198,7 +240,15 @@ public class PatientInfoActivity extends BaseActivity
     {
         if (patientBean != null)
         {
-            tvName.setText(patientBean.getName());
+            if (!TextUtils.isEmpty(patientBean.getNickname()) &&
+                patientBean.getNickname().length() < 20)
+            {
+                tvName.setText(patientBean.getNickname() + "(" + patientBean.getName() + ")");
+            }
+            else
+            {
+                tvName.setText(patientBean.getName());
+            }
             tvSex.setText(patientBean.getSex());
             tvAge.setText(AllUtils.formatDateByAge(patientBean.getBirthDate()) + "岁");
             if (!TextUtils.isEmpty(patientBean.getUnitName()))
@@ -283,10 +333,18 @@ public class PatientInfoActivity extends BaseActivity
         mIRequest.getPatientCombine(patientBean.getPatientId(), this);
     }
 
+    /**
+     * 删除病人(取消关注)
+     */
+    private void deletePatient()
+    {
+        mIRequest.deletePatient(loginSuccessBean.getDoctorId(), patientBean.getPatientId(), this);
+    }
+
     @Override
     public void onClick(View v)
     {
-        super.onClick(v);
+        Intent intent;
         switch (v.getId())
         {
             case R.id.act_patient_info_health_info:
@@ -308,6 +366,64 @@ public class PatientInfoActivity extends BaseActivity
                 btnTransferInfo.setSelected(true);
                 break;
             case R.id.public_title_bar_more_two:
+                showPop();
+                break;
+            case R.id.txt_one:
+                if (mPopupwinow != null)
+                {
+                    mPopupwinow.dismiss();
+                }
+                intent = new Intent(this, EditRemarkActivity.class);
+                intent.putExtra(CommonData.KEY_IS_DEAL_DOC, false);
+                intent.putExtra(CommonData.KEY_PUBLIC, patientBean.getNickname());
+                intent.putExtra(CommonData.KEY_ID, patientBean.getPatientId());
+                startActivityForResult(intent, REEMARK_REQUEST_CODE);
+                break;
+            case R.id.txt_two:
+                if (mPopupwinow != null)
+                {
+                    mPopupwinow.dismiss();
+                }
+                new SimpleDialog(this, "确定删除当前患者?", (dialog, which) -> deletePatient(),
+                                 (dialog, which) -> dialog.dismiss()).show();
+                break;
+        }
+    }
+
+    @Override
+    public void onMenuClick(View view, int postion)
+    {
+        Intent intent;
+        switch (postion)
+        {
+            case 0://对话
+                if (patientBean != null)
+                {
+                    intent = new Intent(PatientInfoActivity.this, ChatActivity.class);
+                    intent.putExtra(CommonData.KEY_CHAT_ID, patientBean.getPatientId());
+                    //存储临时数据
+                    YihtApplication.getInstance().setEaseName(patientBean.getName());
+                    YihtApplication.getInstance().setEaseHeadImgUrl(patientBean.getPatientImgUrl());
+                    startActivity(intent);
+                }
+                break;
+            case 1://转诊
+                intent = new Intent(PatientInfoActivity.this, TransferPatientActivity.class);
+                intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientBean);
+                intent.putExtra(CommonData.KEY_PUBLIC, true);
+                startActivity(intent);
+                break;
+            case 2://服务包
+                intent = new Intent(PatientInfoActivity.this, ServicePackActivity.class);
+                intent.putExtra(CommonData.KEY_PATIENT_ID, patientBean.getPatientId());
+                intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "服务");
+                startActivity(intent);
+                break;
+            case 3://病例
+                intent = new Intent(PatientInfoActivity.this, HealthDetailActivity.class);
+                intent.putExtra(CommonData.KEY_ADD_NEW_HEALTH, true);
+                intent.putExtra(CommonData.KEY_PATIENT_ID, patientBean.getPatientId());
+                startActivity(intent);
                 break;
         }
     }
@@ -328,6 +444,65 @@ public class PatientInfoActivity extends BaseActivity
                     initHealthData();
                 }
                 break;
+            case DELETE_PATIENT:
+                ToastUtil.toast(this, response.getMsg());
+                setResult(RESULT_OK);
+                finish();
+                break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK)
+        {
+            return;
+        }
+        switch (requestCode)
+        {
+            case REEMARK_REQUEST_CODE:
+                setResult(RESULT_OK);
+                if (data != null)
+                {
+                    String remark = data.getStringExtra(CommonData.KEY_PUBLIC);
+                    if (!TextUtils.isEmpty(remark))
+                    {
+                        tvName.setText(remark + "(" + patientBean.getName() + ")");
+                        patientBean.setNickname(remark);
+                    }
+                    else
+                    {
+                        tvName.setText(patientBean.getName());
+                        patientBean.setNickname(remark);
+                    }
+                }
+                break;
+        }
+    }
+
+    /**
+     * 显示pop
+     */
+    private void showPop()
+    {
+        view_pop = LayoutInflater.from(this).inflate(R.layout.health_pop_menu, null);
+        tvOne = view_pop.findViewById(R.id.txt_one);
+        tvTwo = view_pop.findViewById(R.id.txt_two);
+        tvTwo.setText("删除好友");
+        tvOne.setOnClickListener(this);
+        tvTwo.setOnClickListener(this);
+        if (mPopupwinow == null)
+        {
+            //新建一个popwindow
+            mPopupwinow = new PopupWindow(view_pop, LinearLayout.LayoutParams.WRAP_CONTENT,
+                                          LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        }
+        mPopupwinow.setFocusable(true);
+        mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
+        mPopupwinow.setOutsideTouchable(true);
+        mPopupwinow.showAtLocation(view_pop, Gravity.TOP | Gravity.RIGHT, 0,
+                                   (int)AllUtils.dipToPx(this, 55));
     }
 }

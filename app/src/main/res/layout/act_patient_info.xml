@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:layout_height="match_parent">
@@ -90,8 +91,8 @@
                 android:id="@+id/act_patient_info_searchLabelLayout"
                 android:layout_width="match_parent"
                 android:layout_marginTop="10dp"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginLeft="12dp"
                 android:layout_below="@id/act_patient_info_headImg"
                 android:layout_height="wrap_content">
 
@@ -153,13 +154,21 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/act_patient_info_more"
-        android:layout_width="wrap_content"
-        android:src="@mipmap/icon_info_more"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="37dp"
+    <!--右下-->
+    <custom.frame.widgets.menu.SatelliteMenu
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginBottom="20dp"
-        android:layout_height="wrap_content" />
+        android:layout_marginRight="28dp"
+        app:menu_postion="right_bottom"
+        app:radius="120dp"
+        app:menu_image_width="40dp"
+        app:menu_item_image_width="60dp"
+        app:menu_item_text_size="4sp"
+        app:menu_item_text_color="@color/app_main_txt_color"
+        android:id="@+id/mSatelliteMenuRightBottom" />
+
+    <!--<include-->
+    <!--layout="@layout/right_bottom_menu"-->
+    <!--android:id="@+id/act_patient_info_more" />-->
 </RelativeLayout>

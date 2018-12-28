@@ -65,6 +65,10 @@ public class TransferPatientActivity extends BaseActivity
      */
     private boolean isAddTransferMode;
     /**
+     * 是否限制操作
+     */
+    private boolean limit;
+    /**
      * 当前转诊单状态
      */
     private int orderState;
@@ -119,6 +123,7 @@ public class TransferPatientActivity extends BaseActivity
             transPatientBean = (TransPatientBean)getIntent().getSerializableExtra(
                     CommonData.KEY_TRANSFER_BEAN);
             isAddTransferMode = getIntent().getBooleanExtra(CommonData.KEY_PUBLIC, false);
+            limit = getIntent().getBooleanExtra("limit", false);
         }
         initPageData();
     }
@@ -184,7 +189,8 @@ public class TransferPatientActivity extends BaseActivity
                 tvSex.setText(transPatientBean.getPatientSex());
                 tvAge.setText(AllUtils.formatDateByAge(transPatientBean.getPatientBirthDate()));
                 filterEmojiEditText.setText(transPatientBean.getFromDoctorDiagnosisInfo());
-                if (!loginSuccessBean.getDoctorId().equals(transPatientBean.getFromDoctorId()))//接收转诊
+                if (!loginSuccessBean.getDoctorId()
+                                     .equals(transPatientBean.getFromDoctorId()))//接收转诊
                 {
                     tvTransferTxt.setText("转诊来自");
                     //转诊医生信息
@@ -254,6 +260,11 @@ public class TransferPatientActivity extends BaseActivity
                     }
                 }
             }
+        }
+        if (limit)
+        {
+            tvTransferNext.setVisibility(View.GONE);
+            tvNext.setVisibility(View.GONE);
         }
     }
 
