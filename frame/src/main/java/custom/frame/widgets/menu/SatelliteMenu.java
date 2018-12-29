@@ -368,7 +368,8 @@ public class SatelliteMenu extends RelativeLayout implements View.OnClickListene
                 }
             });
             AnimatorSet mAnimatorSet = new AnimatorSet();
-            mAnimatorSet.playTogether(animatorX, animatorY, animatorRotation);
+            //            mAnimatorSet.playTogether(animatorX, animatorY, animatorRotation);
+            mAnimatorSet.playTogether(animatorX, animatorY);
             mAnimatorSet.setDuration(400);
             if (!isMenuOpen)
             {
@@ -392,7 +393,6 @@ public class SatelliteMenu extends RelativeLayout implements View.OnClickListene
         ObjectAnimator animatorMenu;
         if (isMenuOpen)
         {
-            //animatorMenu = ObjectAnimator.ofFloat(ivAdd, "rotation", 0, 90, 0);//0到90°再到0°
             animatorMenu = ObjectAnimator.ofFloat(ivAdd, "rotation", 0, 90);//旋转
         }
         else
@@ -412,7 +412,6 @@ public class SatelliteMenu extends RelativeLayout implements View.OnClickListene
      */
     private void menuClickAnim(final View view)
     {
-        //ObjectAnimator animatorAlpha = new ObjectAnimator();//错误的写法 透明度
         ObjectAnimator animatorAlpha = ObjectAnimator.ofFloat(view, "alpha", 1f, 0f);
         ObjectAnimator scaleX = animatorAlpha.ofFloat(view, "scaleX", 1f, 1.5f);//缩放Scale
         ObjectAnimator scaleY = animatorAlpha.ofFloat(view, "scaleY", 1f, 1.5f);//缩放Scale
@@ -507,29 +506,11 @@ public class SatelliteMenu extends RelativeLayout implements View.OnClickListene
     }
 
     /**
-     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
-     */
-    public static int dip2px(Context context, float dpValue)
-    {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int)(dpValue * scale + 0.5f);
-    }
-
-    /**
-     * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
-     */
-    public static int px2dip(Context context, float pxValue)
-    {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int)(pxValue / scale + 0.5f);
-    }
-
-    /**
      * 构造器
      */
     public class Builder
     {
-        private int menuImageResource;
+        private int menuImageResource, menuImageResourceGrey;
         private List<String> menuItemName;
         private List<Integer> imageMenuItemImageResource;
         private SatelliteMenu mSatelliteMenu;
@@ -541,9 +522,10 @@ public class SatelliteMenu extends RelativeLayout implements View.OnClickListene
             this.mContext = mContext;
         }
 
-        public Builder setMenuImage(int menuImageResource)
+        public Builder setMenuImage(int menuImageResource, int menuImageResourceGrey)
         {
             this.menuImageResource = menuImageResource;
+            this.menuImageResourceGrey = menuImageResourceGrey;
             return this;
         }
 

@@ -29,7 +29,7 @@ public class RecentContactUtils
     }
 
     /**
-     *
+     * 初始化
      */
     public static void init(Context context)
     {
@@ -40,6 +40,11 @@ public class RecentContactUtils
         sharePreferenceUtil = new SharePreferenceUtil(context);
     }
 
+    /**
+     * 存
+     *
+     * @param id
+     */
     public static void save(String id)
     {
         List<String> value = getList(id);
@@ -53,6 +58,28 @@ public class RecentContactUtils
             value.add(id);
             Collections.sort(value);
             saveString(value);
+        }
+    }
+
+    /**
+     * 删
+     *
+     * @param id
+     */
+    public static void delete(String id)
+    {
+        String value = sharePreferenceUtil.getString(KEY);
+        if (!TextUtils.isEmpty(value))
+        {
+            List<String> values = new ArrayList(Arrays.asList(value.split(",")));
+            if (values != null)
+            {
+                if (values.contains(id))
+                {
+                    values.remove(id);
+                }
+                saveString(values);
+            }
         }
     }
 

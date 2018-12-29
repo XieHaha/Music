@@ -65,7 +65,7 @@ public class OrderInfoAdapter extends BaseRecyclerAdapter<RegistrationBean> impl
         @Override
         public void showView(final int position, final RegistrationBean curTransferPatient)
         {
-            tvPatientCase.setText(curTransferPatient.getDiagnosisInfo());
+            tvPatientCase.setText(curTransferPatient.getProductName());
             tvTime.setText(AllUtils.formatDate(curTransferPatient.getOrderDate(),
                                                AllUtils.YYYY_MM_DD_HH_MM));
             List<RegistrationTypeBean> list = DataSupport.where("fieldId = ?",

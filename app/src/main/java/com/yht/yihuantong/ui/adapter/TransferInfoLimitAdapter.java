@@ -87,7 +87,6 @@ public class TransferInfoLimitAdapter extends BaseAdapter implements OrderStatus
         TransPatientBean curTransferPatient = list.get(position);
         holder.tvPatientName.setText(curTransferPatient.getPatientName());
         holder.tvPatientCase.setText(curTransferPatient.getFromDoctorDiagnosisInfo());
-        holder.tvDoctorHospital.setText(curTransferPatient.getFromDoctorHospitalName());
         holder.tvTime.setText(AllUtils.formatDate(curTransferPatient.getTransferDate(),
                                                   AllUtils.YYYY_MM_DD_HH_MM));
         if (curTransferPatient.getFromDoctorId()
@@ -96,12 +95,14 @@ public class TransferInfoLimitAdapter extends BaseAdapter implements OrderStatus
                                                      .getDoctorId()))
         {
             holder.tvDoctorName.setText(curTransferPatient.getToDoctorName());
+            holder.tvDoctorHospital.setText(curTransferPatient.getToDoctorHospitalName());
             holder.tvTransferType.setText("转出");
             holder.tvFromType.setText("转给");
         }
         else
         {
             holder.tvDoctorName.setText(curTransferPatient.getFromDoctorName());
+            holder.tvDoctorHospital.setText(curTransferPatient.getFromDoctorHospitalName());
             holder.tvTransferType.setText("转入");
             holder.tvFromType.setText("来自");
         }

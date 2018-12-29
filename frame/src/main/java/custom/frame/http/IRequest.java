@@ -555,6 +555,24 @@ public class IRequest extends BaseRequest
     }
 
     /**
+     * 获取某个患者的转诊单
+     */
+    public Tasks getTransferByPatient(String doctorId, String patientId, int pageNo, int pageSize,
+            int days, final ResponseListener<BaseResponse> listener)
+    {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("patientId", patientId);
+        merchant.put("pageNo", pageNo);
+        merchant.put("pageSize", pageSize);
+        //传0 代表不限制时间
+        merchant.put("days", days);
+        return requestBaseResponseListByJson("/trans/doctor/patient/notes",
+                                             Tasks.GET_TRANSFER_BY_PATIENT,
+                                             TransPatientBean.class, merchant, listener);
+    }
+
+    /**
      * 获取患者所有订单
      */
     public Tasks getPatientAllOrders(String patientId, int page, int pageSize,

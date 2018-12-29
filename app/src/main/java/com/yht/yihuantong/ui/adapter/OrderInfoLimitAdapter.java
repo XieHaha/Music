@@ -1,6 +1,7 @@
 package com.yht.yihuantong.ui.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,6 +87,7 @@ public class OrderInfoLimitAdapter extends BaseAdapter implements OrderStatus, C
             holder.tvOrderPatientAge = convertView.findViewById(R.id.item_order_patient_age);
             holder.tvOrderDetail = convertView.findViewById(R.id.item_order_detail);
             holder.tvOrderHospital = convertView.findViewById(R.id.item_order_hospital);
+            holder.tvTime = convertView.findViewById(R.id.item_order_time);
             convertView.setTag(holder);
         }
         else
@@ -100,22 +102,33 @@ public class OrderInfoLimitAdapter extends BaseAdapter implements OrderStatus, C
     {
         RegistrationBean curRegistrationBean = list.get(position);
         holder.tvOrderType.setText(curRegistrationBean.getProductName());
+        holder.tvTime.setText(
+                AllUtils.formatDate(curRegistrationBean.getOrderDate(), AllUtils.YYYY_MM_DD_HH_MM));
         switch (curRegistrationBean.getOrderState())
         {
             case STATUS_SUBSCRIBE_NONE:
-                holder.tvOrderStatus.setText("未预约");
+                holder.tvOrderStatus.setText("待预约");
+                holder.tvOrderStatus.setTextColor(
+                        ContextCompat.getColor(context, R.color.app_main_txt_color));
                 break;
             case STATUS_SUBSCRIBE:
-                holder.tvOrderStatus.setText("已预约");
+                holder.tvOrderStatus.setText("待检查");
+                holder.tvOrderStatus.setTextColor(
+                        ContextCompat.getColor(context, R.color.app_main_color));
                 break;
             case STATUS_COMPLETE:
-                holder.tvOrderStatus.setText("完成检查");
+                holder.tvOrderStatus.setText("已检查");
+                holder.tvOrderStatus.setTextColor(
+                        ContextCompat.getColor(context, R.color.app_main_txt_color));
                 break;
             case STATUS_SEND_REPORT:
                 holder.tvOrderStatus.setText("报告已发送");
+                holder.tvOrderStatus.setTextColor(ContextCompat.getColor(context, R.color._1F6BAC));
                 break;
             case STATUS_REFUSE:
                 holder.tvOrderStatus.setText("已拒绝");
+                holder.tvOrderStatus.setTextColor(
+                        ContextCompat.getColor(context, R.color.app_red_color));
                 break;
         }
         holder.tvOrderPatientName.setText(curRegistrationBean.getPatientName());
@@ -128,6 +141,6 @@ public class OrderInfoLimitAdapter extends BaseAdapter implements OrderStatus, C
 
     class ViewHolder
     {
-        private TextView tvOrderType, tvOrderStatus, tvOrderPatientName, tvOrderPatientSex, tvOrderPatientAge, tvOrderDetail, tvOrderHospital;
+        private TextView tvOrderType, tvOrderStatus, tvOrderPatientName, tvOrderPatientSex, tvOrderPatientAge, tvOrderDetail, tvOrderHospital, tvTime;
     }
 }

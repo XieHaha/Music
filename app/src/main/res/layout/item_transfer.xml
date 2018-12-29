@@ -100,7 +100,7 @@
             android:id="@+id/item_transfer_time"
             android:layout_width="wrap_content"
             android:textColor="@color/app_hint_color"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:layout_height="wrap_content" />
 
     </LinearLayout>

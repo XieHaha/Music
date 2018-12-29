@@ -42,7 +42,6 @@ import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.GlideHelper;
 import custom.frame.utils.ToastUtil;
-import custom.frame.widgets.menu.AnnularMenu;
 import custom.frame.widgets.menu.SatelliteMenu;
 import custom.frame.widgets.view.SearchLabelLayout;
 import custom.frame.widgets.view.ViewPrepared;
@@ -58,7 +57,6 @@ public class PatientInfoActivity extends BaseActivity
     private ImageView ivTitleMore;
     private CircleImageView ivHeadImg;
     private TextView tvName, tvSex, tvAge, tvCompany, tvAddress;
-    private AnnularMenu annularMenu;
     private SatelliteMenu mSatelliteMenuRightBottom;
     private SearchLabelLayout searchLabelLayout;
     private View viewIndicator;
@@ -129,7 +127,6 @@ public class PatientInfoActivity extends BaseActivity
         tvAddress = (TextView)findViewById(R.id.act_patient_info_address);
         searchLabelLayout = (SearchLabelLayout)findViewById(
                 R.id.act_patient_info_searchLabelLayout);
-        //        annularMenu = (AnnularMenu)findViewById(R.id.act_patient_info_more);
         btnHealthInfo = (Button)findViewById(R.id.act_patient_info_health_info);
         btnOrderInfo = (Button)findViewById(R.id.act_patient_info_order_info);
         btnTransferInfo = (Button)findViewById(R.id.act_patient_info_transfer_info);
@@ -179,7 +176,8 @@ public class PatientInfoActivity extends BaseActivity
         imageResourceRightBottom.add(R.mipmap.icon_info_health_history);
         mSatelliteMenuRightBottom.getmBuilder()
                                  .setMenuItemNameTexts(nameMenuItem)
-                                 .setMenuImage(R.mipmap.icon_info_more)
+                                 .setMenuImage(R.mipmap.icon_info_more,
+                                               R.mipmap.icon_info_more_close)
                                  .setMenuItemImageResource(imageResourceRightBottom)
                                  .setOnMenuItemClickListener(this)
                                  .creat();
@@ -230,9 +228,6 @@ public class PatientInfoActivity extends BaseActivity
             {
             }
         });
-        //        annularMenu.setOnMenuItemClickListener(
-        //                (view, position) -> Toast.makeText(PatientInfoActivity.this, position + "条目被点击",
-        //                                                   Toast.LENGTH_SHORT).show());
     }
 
     /**
@@ -255,21 +250,19 @@ public class PatientInfoActivity extends BaseActivity
             tvAge.setText(AllUtils.formatDateByAge(patientBean.getBirthDate()) + "岁");
             if (!TextUtils.isEmpty(patientBean.getUnitName()))
             {
-                tvCompany.setVisibility(View.VISIBLE);
                 tvCompany.setText(patientBean.getUnitName());
             }
             else
             {
-                tvCompany.setVisibility(View.GONE);
+                tvCompany.setText("未填写单位");
             }
             if (!TextUtils.isEmpty(patientBean.getAddress()))
             {
-                tvAddress.setVisibility(View.VISIBLE);
                 tvAddress.setText(patientBean.getAddress());
             }
             else
             {
-                tvAddress.setVisibility(View.GONE);
+                tvAddress.setText("未填写地址");
             }
             if (!TextUtils.isEmpty(patientBean.getPatientImgUrl()))
             {
@@ -450,6 +443,8 @@ public class PatientInfoActivity extends BaseActivity
                 }
                 break;
             case DELETE_PATIENT:
+                RecentContactUtils.delete(patientBean.getPatientId());
+                NotifyChangeListenerServer.getInstance().notifyRecentContactChange("");
                 ToastUtil.toast(this, response.getMsg());
                 setResult(RESULT_OK);
                 finish();

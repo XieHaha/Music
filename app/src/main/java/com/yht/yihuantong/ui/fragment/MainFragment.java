@@ -43,15 +43,16 @@ import com.yht.yihuantong.qrcode.BarCodeImageView;
 import com.yht.yihuantong.qrcode.DialogPersonalBarCode;
 import com.yht.yihuantong.ui.activity.AddFriendsDocActivity;
 import com.yht.yihuantong.ui.activity.AddFriendsPatientActivity;
+import com.yht.yihuantong.ui.activity.PatientInfoActivity;
 import com.yht.yihuantong.ui.activity.PatientsActivity;
 import com.yht.yihuantong.ui.activity.RegistrationDetailActivity;
 import com.yht.yihuantong.ui.activity.RegistrationListActivity;
 import com.yht.yihuantong.ui.activity.ServicePackActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientHistoryActivity;
-import com.yht.yihuantong.ui.adapter.RecentContactAdapter;
 import com.yht.yihuantong.ui.adapter.MainOptionsAdapter;
 import com.yht.yihuantong.ui.adapter.OrderInfoLimitAdapter;
+import com.yht.yihuantong.ui.adapter.RecentContactAdapter;
 import com.yht.yihuantong.ui.adapter.TransferInfoLimitAdapter;
 import com.yht.yihuantong.utils.AllUtils;
 import com.yht.yihuantong.utils.RecentContactUtils;
@@ -70,6 +71,7 @@ import custom.frame.bean.RegistrationBean;
 import custom.frame.bean.TransPatientBean;
 import custom.frame.http.Tasks;
 import custom.frame.http.data.HttpConstants;
+import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.ui.fragment.BaseFragment;
 import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.gridview.CustomGridView;
@@ -86,7 +88,7 @@ public class MainFragment extends BaseFragment
     private ImageView ivTitleBarMore;
     private TextView tvTransferMore, tvOrderMore;
     private TextView tvPatientNum;
-    private LinearLayout llTransferNoneLayout, llOrderNoneLayout;
+    private LinearLayout llTransferNoneLayout, llOrderNoneLayout, llNoneRecentContactLayout;
     private TextView tvApplyPatientNum;
     private RelativeLayout rlApplyPatientNumLayout;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -102,7 +104,13 @@ public class MainFragment extends BaseFragment
      * 二维码
      */
     private BarCodeImageView barCodeImageView;
+    /**
+     * 转诊记录
+     */
     private TransferInfoLimitAdapter transferInfoLimitAdapter;
+    /**
+     * 开单记录
+     */
     private OrderInfoLimitAdapter orderInfoAdapter;
     private INotifyChangeListenerServer iNotifyChangeListenerServer;
     /**
@@ -149,6 +157,14 @@ public class MainFragment extends BaseFragment
                     break;
                 case TRANSFER_CODE_RECENT:
                     recentContacts = RecentContactUtils.getRecentContactList();
+                    if (recentContacts.size() > 0)
+                    {
+                        llNoneRecentContactLayout.setVisibility(View.GONE);
+                    }
+                    else
+                    {
+                        llNoneRecentContactLayout.setVisibility(View.VISIBLE);
+                    }
                     ArrayList<PatientBean> list = new ArrayList<>();
                     list.addAll(recentContacts);
                     recentContactAdapter.setList(list);
@@ -222,6 +238,7 @@ public class MainFragment extends BaseFragment
         tvOrderMore = view.findViewById(R.id.fragment_main_order_info_more);
         llTransferNoneLayout = view.findViewById(R.id.fragment_main_transfer_info_none_layout);
         llOrderNoneLayout = view.findViewById(R.id.fragment_main_order_info_none_layout);
+        llNoneRecentContactLayout = view.findViewById(R.id.fragment_main_my_recent_contacts_none);
         tvPatientNum = view.findViewById(R.id.fragment_main_my_health_num);
         customGridView = view.findViewById(R.id.fragment_main_options);
     }
@@ -247,6 +264,14 @@ public class MainFragment extends BaseFragment
         customGridView.setAdapter(mainOptionsAdapter);
         //最近联系人
         recentContacts = RecentContactUtils.getRecentContactList();
+        if (recentContacts.size() > 0)
+        {
+            llNoneRecentContactLayout.setVisibility(View.GONE);
+        }
+        else
+        {
+            llNoneRecentContactLayout.setVisibility(View.VISIBLE);
+        }
         recentContactAdapter = new RecentContactAdapter(getContext(), recentContacts);
         recyclerView.setLayoutManager(
                 new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -307,8 +332,23 @@ public class MainFragment extends BaseFragment
                     intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "服务");
                     startActivity(intent);
                 }
+                else
+                {
+                    ToastUtil.toast(getContext(), "敬请期待");
+                }
             }
         });
+        recentContactAdapter.setOnItemClickListener(
+                new BaseRecyclerAdapter.OnItemClickListener<PatientBean>()
+                {
+                    @Override
+                    public void onItemClick(View v, int position, PatientBean item)
+                    {
+                        Intent intent = new Intent(getContext(), PatientInfoActivity.class);
+                        intent.putExtra(CommonData.KEY_PATIENT_BEAN, item);
+                        startActivity(intent);
+                    }
+                });
     }
 
     /**

@@ -133,7 +133,8 @@ public class TransferInfoFragment extends BaseFragment
      */
     private void getTransferInfoList()
     {
-        mIRequest.getTransferPatientHistoryList(patientId, page, PAGE_SIZE, DAYS_DATA, this);
+        mIRequest.getTransferByPatient(loginSuccessBean.getDoctorId(), patientId, page, PAGE_SIZE,
+                                       DAYS_DATA, this);
     }
 
     @Override
@@ -152,7 +153,7 @@ public class TransferInfoFragment extends BaseFragment
         super.onResponseSuccess(task, response);
         switch (task)
         {
-            case GET_TRANSFER_PATIENT_HISTORY_LIST:
+            case GET_TRANSFER_BY_PATIENT:
                 transferPatientBeanList = response.getData();
                 if (transferPatientBeanList != null && transferPatientBeanList.size() > 0)
                 {

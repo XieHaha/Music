@@ -19,12 +19,14 @@ import android.widget.TextView;
 
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
+import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
 import com.yht.yihuantong.chat.ChatActivity;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.adapter.FragmentVpAdapter;
 import com.yht.yihuantong.ui.fragment.BaseInfoFragment;
 import com.yht.yihuantong.ui.fragment.CaseRecordFragment;
 import com.yht.yihuantong.utils.AllUtils;
+import com.yht.yihuantong.utils.RecentContactUtils;
 
 import org.litepal.crud.DataSupport;
 
@@ -289,6 +291,8 @@ public class HealthCardActivity extends BaseActivity
                 }
                 break;
             case DELETE_PATIENT:
+                RecentContactUtils.delete(patientBean.getPatientId());
+                NotifyChangeListenerServer.getInstance().notifyRecentContactChange("");
                 ToastUtil.toast(this, response.getMsg());
                 setResult(RESULT_OK);
                 finish();
