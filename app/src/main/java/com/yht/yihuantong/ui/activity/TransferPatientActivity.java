@@ -468,7 +468,8 @@ public class TransferPatientActivity extends BaseActivity
                                          {
                                              updateTransferPatient();
                                              //保存最近联系人
-                                             RecentContactUtils.save(patientBean.getPatientId());
+                                             RecentContactUtils.save(
+                                                     transPatientBean.getPatientId());
                                              NotifyChangeListenerServer.getInstance()
                                                                        .notifyRecentContactChange(
                                                                                "");

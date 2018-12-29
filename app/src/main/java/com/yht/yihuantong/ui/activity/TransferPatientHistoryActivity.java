@@ -31,11 +31,11 @@ public class TransferPatientHistoryActivity extends BaseActivity
     private View viewIndicator;
     private FragmentVpAdapter fragmentVpAdapter;
     /**
-     * 患者基础信息
+     * 转入
      */
     private TransferPatientFromFragment transferPatientFromFragment;
     /**
-     * 患者病例
+     * 转出
      */
     private TransferPatientToFragment transferPatientToFragment;
     private List<Fragment> fragmentList = new ArrayList<>();

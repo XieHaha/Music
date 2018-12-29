@@ -79,22 +79,23 @@ public class RegistrationListAdapter extends BaseRecyclerAdapter<RegistrationBea
                             ContextCompat.getColor(context, R.color.app_main_txt_color));
                     break;
                 case STATUS_SUBSCRIBE:
-                    tvOrderStatus.setText("已预约");
+                    tvOrderStatus.setText("待检查");
                     tvOrderStatus.setTextColor(
                             ContextCompat.getColor(context, R.color.app_main_color));
                     break;
                 case STATUS_COMPLETE:
-                    tvOrderStatus.setText("完成检查");
-                    tvOrderStatus.setTextColor(ContextCompat.getColor(context, R.color._1F6BAC));
+                    tvOrderStatus.setText("已检查");
+                    tvOrderStatus.setTextColor(
+                            ContextCompat.getColor(context, R.color.app_main_txt_color));
                     break;
                 case STATUS_SEND_REPORT:
-                    tvOrderStatus.setText("已出报告");
-                    tvOrderStatus.setTextColor(
-                            ContextCompat.getColor(context, R.color.app_hint_color));
+                    tvOrderStatus.setText("报告已发送");
+                    tvOrderStatus.setTextColor(ContextCompat.getColor(context, R.color._1F6BAC));
                     break;
                 case STATUS_REFUSE:
                     tvOrderStatus.setText("已拒绝");
-                    tvOrderStatus.setTextColor(ContextCompat.getColor(context, R.color._F16798));
+                    tvOrderStatus.setTextColor(
+                            ContextCompat.getColor(context, R.color.app_red_color));
                     break;
             }
             tvOrderPatientName.setText(item.getPatientName());

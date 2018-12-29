@@ -70,15 +70,15 @@ public class HealthInfoAdapter extends BaseRecyclerAdapter<PatientCaseDetailBean
         public void showView(final int position, final PatientCaseDetailBean item)
         {
             tvContent.setText(item.getDiagnosisInfo());
-            if (item.getCaseCreatorId().equals(patientId))
-            {
-                llCreatorLayout.setVisibility(View.INVISIBLE);
-            }
-            else
-            {
-                llCreatorLayout.setVisibility(View.VISIBLE);
-                tvDoctorName.setText(item.getCreatorName());
-            }
+            //            if (item.getCaseCreatorId().equals(patientId))
+            //            {
+            //                llCreatorLayout.setVisibility(View.INVISIBLE);
+            //            }
+            //            else
+            //            {
+            //                llCreatorLayout.setVisibility(View.VISIBLE);
+            //            }
+            tvDoctorName.setText(item.getCreatorName());
             tvTime.setText(AllUtils.formatDate(item.getGmtCreate(), AllUtils.YYYY_MM_DD_HH_MM));
         }
     }

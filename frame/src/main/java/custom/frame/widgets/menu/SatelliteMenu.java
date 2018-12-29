@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -202,7 +203,6 @@ public class SatelliteMenu extends RelativeLayout implements View.OnClickListene
                     b = child.getMeasuredHeight();
                     child.layout(l, t, r, b);
                 }
-                System.out.println("===changed===" + changed);
             }
             else if (mPostion == MenuPosition.RIGHT_TOP)
             {
@@ -315,24 +315,28 @@ public class SatelliteMenu extends RelativeLayout implements View.OnClickListene
             }
             else if (mPostion == MenuPosition.RIGHT_BOTTOM)
             {
-                mX = (float)(-distance * Math.sin(
-                        Math.PI / 2 / (textViews.size() - 1) * (textViews.size() - 1 - i))) *
-                     flag;//位移位置是相对于本身原来所在的点
+                mX = (float)(-distance * Math.sin(Math.PI / 2 / (textViews.size() - 1) *
+                                                  (textViews.size() - 1 - i)));//位移位置是相对于本身原来所在的点
                 mY = ((float)-(distance * Math.cos(
-                        Math.PI / 2 / (textViews.size() - 1) * (textViews.size() - 1 - i)))) * flag;
+                        Math.PI / 2 / (textViews.size() - 1) * (textViews.size() - 1 - i))));
             }
-            ObjectAnimator animatorX = ObjectAnimator.ofFloat(textViews.get(i), "translationX", 0,
-                                                              mX);//平移动画
-            ObjectAnimator animatorY = ObjectAnimator.ofFloat(textViews.get(i), "translationY", 0,
-                                                              mY);
-            ObjectAnimator animatorRotation = ObjectAnimator.ofFloat(textViews.get(i), "rotation",
-                                                                     0, 720);//旋转动画
+            ObjectAnimator animatorX, animatorY;
+            if (flag == -1)
+            {
+                animatorX = ObjectAnimator.ofFloat(textViews.get(i), "translationX", mX, 0);//平移动画
+                animatorY = ObjectAnimator.ofFloat(textViews.get(i), "translationY", mY, 0);
+            }
+            else
+            {
+                animatorX = ObjectAnimator.ofFloat(textViews.get(i), "translationX", 0, mX);//平移动画
+                animatorY = ObjectAnimator.ofFloat(textViews.get(i), "translationY", 0, mY);
+            }
             if (!isMenuOpen)
             {
                 ObjectAnimator animatorAlpha = ObjectAnimator.ofFloat(textViews.get(i), "alpha",
                                                                       1.0f, 0f);
                 animatorAlpha.setDuration(300);
-                animatorAlpha.setStartDelay(200);
+                animatorAlpha.setStartDelay(100);
                 animatorAlpha.start();
             }
             animatorX.addListener(new Animator.AnimatorListener()
@@ -368,18 +372,13 @@ public class SatelliteMenu extends RelativeLayout implements View.OnClickListene
                 }
             });
             AnimatorSet mAnimatorSet = new AnimatorSet();
-            //            mAnimatorSet.playTogether(animatorX, animatorY, animatorRotation);
             mAnimatorSet.playTogether(animatorX, animatorY);
-            mAnimatorSet.setDuration(400);
+            mAnimatorSet.setDuration(300);
             if (!isMenuOpen)
             {
-                mAnimatorSet.setStartDelay(200);
+                mAnimatorSet.setStartDelay(100);
             }
-            //mAnimatorSet.setInterpolator(new BounceInterpolator());//动画插值器 自由落体动画效果
             mAnimatorSet.setInterpolator(new AccelerateInterpolator());
-            //mAnimatorSet.setInterpolator(new LinearInterpolator());
-            //mAnimatorSet.setInterpolator(new DecelerateInterpolator());
-            //            mAnimatorSet.setStartDelay(i * 100);//可设置单个按钮的延时,看起来有先后顺序
             mAnimatorSet.start();
         }
     }
@@ -478,14 +477,13 @@ public class SatelliteMenu extends RelativeLayout implements View.OnClickListene
                 mPaint.setTextSize(mMenuItemTextSize);
                 String name = nameMenuItem.get(i);
                 Rect rect = new Rect();
-                mPaint.getTextBounds(name, 0, name.length(), rect);//get text width and height
+                mPaint.getTextBounds(name, 0, 2, rect);//get text width and height
                 Drawable drawable = getResources().getDrawable(imageResource.get(i));
                 drawable.setBounds(0, 0, (int)mMenuItemImageWidth -
                                          Math.max(rect.width() * 2, rect.height()),
                                    (int)mMenuItemImageWidth -
                                    Math.max(rect.width(), rect.height()) * 2);
-                tv.setCompoundDrawables(null, drawable, null, null);//设置TextView的drawableleft
-                //tv.setCompoundDrawablePadding(2);//设置图片和text之间的间距
+                tv.setCompoundDrawables(null, drawable, null, null);
                 tv.setText(nameMenuItem.get(i));
                 tv.setTextSize(mMenuItemTextSize);
                 tv.setTextColor(mMenuItemTextColor);

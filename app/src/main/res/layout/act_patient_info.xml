@@ -167,8 +167,4 @@
         app:menu_item_text_size="4sp"
         app:menu_item_text_color="@color/app_main_txt_color"
         android:id="@+id/mSatelliteMenuRightBottom" />
-
-    <!--<include-->
-    <!--layout="@layout/right_bottom_menu"-->
-    <!--android:id="@+id/act_patient_info_more" />-->
 </RelativeLayout>

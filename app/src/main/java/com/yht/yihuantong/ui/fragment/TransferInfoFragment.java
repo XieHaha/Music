@@ -162,7 +162,7 @@ public class TransferInfoFragment extends BaseFragment
                 else
                 {
                     llNoneLayout.setVisibility(View.VISIBLE);
-                    tvNoneTxt.setText("还没有健康档案哦~");
+                    tvNoneTxt.setText("还没有转诊记录哦~");
                 }
                 transferInfoAdapter.setList(transferPatientBeanList);
                 transferInfoAdapter.notifyDataSetChanged();
