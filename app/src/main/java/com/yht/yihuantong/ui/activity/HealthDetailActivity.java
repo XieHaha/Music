@@ -26,12 +26,14 @@ import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.dialog.ActionSheetDialog;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.utils.AllUtils;
 import com.yht.yihuantong.utils.FileUtils;
 import com.yht.yihuantong.utils.LogUtils;
+import com.yht.yihuantong.utils.RecentContactUtils;
 import com.yht.yihuantong.utils.ScalingUtils;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -348,6 +350,9 @@ public class HealthDetailActivity extends BaseActivity
                     BaseResponse baseResponse = praseBaseResponse(object, String.class);
                     if (baseResponse != null && baseResponse.getCode() == 200)
                     {
+                        //保存最近联系人
+                        RecentContactUtils.save(patientId);
+                        NotifyChangeListenerServer.getInstance().notifyRecentContactChange("");
                         ToastUtil.toast(HealthDetailActivity.this, baseResponse.getMsg());
                         setResult(RESULT_OK);
                         finish();

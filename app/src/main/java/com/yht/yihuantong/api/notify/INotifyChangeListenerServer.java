@@ -39,4 +39,11 @@ public interface INotifyChangeListenerServer
      * @param registerType 注册类型
      */
     void registerDoctorAuthStatusChangeListener(@NonNull IChange<Integer> listener, @NonNull RegisterType registerType);
+    /**
+     * 最近联系人监听
+     *
+     * @param listener     接收消息监听器
+     * @param registerType 注册类型
+     */
+    void registerRecentContactChangeListener(@NonNull IChange<String> listener, @NonNull RegisterType registerType);
 }

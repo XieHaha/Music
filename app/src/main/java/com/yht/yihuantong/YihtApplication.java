@@ -13,8 +13,9 @@ import com.hyphenate.easeui.domain.EaseAvatarOptions;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.yht.yihuantong.api.ApiHelper;
-import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.chat.HxHelper;
+import com.yht.yihuantong.data.CommonData;
+import com.yht.yihuantong.utils.RecentContactUtils;
 
 import org.litepal.LitePal;
 import org.litepal.LitePalApplication;
@@ -90,6 +91,8 @@ public class YihtApplication extends LitePalApplication
      */
     private void initEase()
     {
+        //最近联系人
+        RecentContactUtils.init(this);
         //环信初始化
         EMOptions options = new EMOptions();
         // 默认添加好友时，是不需要验证的，改成需要验证

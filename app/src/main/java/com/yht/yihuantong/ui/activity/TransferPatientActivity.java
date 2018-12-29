@@ -18,10 +18,12 @@ import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.dialog.HintDialog;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.utils.AllUtils;
+import com.yht.yihuantong.utils.RecentContactUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -315,6 +317,9 @@ public class TransferPatientActivity extends BaseActivity
                     BaseResponse baseResponse = praseBaseResponse(object, String.class);
                     if (baseResponse != null && baseResponse.getCode() == 200)
                     {
+                        //保存最近联系人
+                        RecentContactUtils.save(patientBean.getPatientId());
+                        NotifyChangeListenerServer.getInstance().notifyRecentContactChange("");
                         HintDialog hintDialog = new HintDialog(TransferPatientActivity.this);
                         hintDialog.isShowCancelBtn(false);
                         hintDialog.setContentString(
@@ -459,9 +464,15 @@ public class TransferPatientActivity extends BaseActivity
                     case 1://接受转诊
                         new SimpleDialog(TransferPatientActivity.this, String.format(
                                 getString(R.string.txt_transfer_patient_to_isrecv_doc),
-                                transPatientBean.getFromDoctorName()),
-                                         (dialog, which) -> updateTransferPatient(),
-                                         (dialog, which) -> dialog.dismiss()).show();
+                                transPatientBean.getFromDoctorName()), (dialog, which) ->
+                                         {
+                                             updateTransferPatient();
+                                             //保存最近联系人
+                                             RecentContactUtils.save(patientBean.getPatientId());
+                                             NotifyChangeListenerServer.getInstance()
+                                                                       .notifyRecentContactChange(
+                                                                               "");
+                                         }, (dialog, which) -> dialog.dismiss()).show();
                         break;
                     case 2://确认患者就诊
                         new SimpleDialog(TransferPatientActivity.this, String.format(

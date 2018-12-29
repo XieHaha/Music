@@ -29,6 +29,10 @@ public class NotifyChangeListenerServer implements INotifyChangeListenerServer
      * 转诊申请
      */
     private List<IChange<String>> mDoctorTransferPatientListeners = new CopyOnWriteArrayList<>();
+    /**
+     * 最近联系人
+     */
+    private List<IChange<String>> mRecentContactChangeListener = new CopyOnWriteArrayList<>();
 
     private NotifyChangeListenerServer()
     {
@@ -106,6 +110,21 @@ public class NotifyChangeListenerServer implements INotifyChangeListenerServer
         else
         {
             mDoctorAuthStatusChangeListeners.remove(listener);
+        }
+    }
+
+    @Override
+    public void registerRecentContactChangeListener(@NonNull IChange<String> listener,
+            @NonNull RegisterType registerType)
+    {
+        if (listener == null) { return; }
+        if (RegisterType.REGISTER == registerType)
+        {
+            mRecentContactChangeListener.add(listener);
+        }
+        else
+        {
+            mRecentContactChangeListener.remove(listener);
         }
     }
 
@@ -204,6 +223,33 @@ public class NotifyChangeListenerServer implements INotifyChangeListenerServer
                 try
                 {
                     final IChange<Integer> change = mDoctorAuthStatusChangeListeners.get(i);
+                    if (null != change)
+                    {
+                        change.onChange(data);
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogUtils.w(TAG, "notifyMessageChange error", e);
+                }
+            }
+        }
+    }
+
+    /**
+     * 最近联系人
+     *
+     * @param data
+     */
+    public void notifyRecentContactChange(final String data)
+    {
+        synchronized (mRecentContactChangeListener)
+        {
+            for (int i = 0, size = mRecentContactChangeListener.size(); i < size; i++)
+            {
+                try
+                {
+                    final IChange<String> change = mRecentContactChangeListener.get(i);
                     if (null != change)
                     {
                         change.onChange(data);

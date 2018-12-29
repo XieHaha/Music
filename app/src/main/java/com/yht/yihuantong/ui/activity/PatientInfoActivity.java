@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
+import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
 import com.yht.yihuantong.chat.ChatActivity;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.adapter.FragmentVpAdapter;
@@ -28,6 +29,7 @@ import com.yht.yihuantong.ui.fragment.HealthInfoFragment;
 import com.yht.yihuantong.ui.fragment.OrderInfoFragment;
 import com.yht.yihuantong.ui.fragment.TransferInfoFragment;
 import com.yht.yihuantong.utils.AllUtils;
+import com.yht.yihuantong.utils.RecentContactUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -401,6 +403,9 @@ public class PatientInfoActivity extends BaseActivity
                 {
                     intent = new Intent(PatientInfoActivity.this, ChatActivity.class);
                     intent.putExtra(CommonData.KEY_CHAT_ID, patientBean.getPatientId());
+                    //保存最近联系人
+                    RecentContactUtils.save(patientBean.getPatientId());
+                    NotifyChangeListenerServer.getInstance().notifyRecentContactChange("");
                     //存储临时数据
                     YihtApplication.getInstance().setEaseName(patientBean.getName());
                     YihtApplication.getInstance().setEaseHeadImgUrl(patientBean.getPatientImgUrl());

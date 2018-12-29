@@ -24,6 +24,7 @@ import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.adapter.RegistrationAdapter;
 import com.yht.yihuantong.ui.adapter.RegistrationProductAdapter;
@@ -31,6 +32,7 @@ import com.yht.yihuantong.ui.adapter.RegistrationProductTypeAdapter;
 import com.yht.yihuantong.ui.dialog.HintDialog;
 import com.yht.yihuantong.ui.dialog.listener.OnEnterClickListener;
 import com.yht.yihuantong.utils.AllUtils;
+import com.yht.yihuantong.utils.RecentContactUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -378,6 +380,9 @@ public class ServicePackActivity<T> extends BaseActivity
                 String s = response.get();
                 try
                 {
+                    //保存最近联系人
+                    RecentContactUtils.save(patientBean.getPatientId());
+                    NotifyChangeListenerServer.getInstance().notifyRecentContactChange("");
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponse(object, String.class);
                     if (baseResponse != null && baseResponse.getCode() == 200)

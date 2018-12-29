@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -47,10 +49,12 @@ import com.yht.yihuantong.ui.activity.RegistrationListActivity;
 import com.yht.yihuantong.ui.activity.ServicePackActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientHistoryActivity;
+import com.yht.yihuantong.ui.adapter.RecentContactAdapter;
 import com.yht.yihuantong.ui.adapter.MainOptionsAdapter;
 import com.yht.yihuantong.ui.adapter.OrderInfoLimitAdapter;
 import com.yht.yihuantong.ui.adapter.TransferInfoLimitAdapter;
 import com.yht.yihuantong.utils.AllUtils;
+import com.yht.yihuantong.utils.RecentContactUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,6 +73,7 @@ import custom.frame.http.data.HttpConstants;
 import custom.frame.ui.fragment.BaseFragment;
 import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.gridview.CustomGridView;
+import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -85,9 +90,11 @@ public class MainFragment extends BaseFragment
     private TextView tvApplyPatientNum;
     private RelativeLayout rlApplyPatientNumLayout;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private AutoLoadRecyclerView recyclerView;
     private ListView orderInfoListView, transferInfoListView;
     private CustomGridView customGridView;
     private MainOptionsAdapter mainOptionsAdapter;
+    private RecentContactAdapter recentContactAdapter;
     private View view_pop;
     private PopupWindow mPopupwinow;
     private TextView tvOne, tvTwo;
@@ -106,6 +113,7 @@ public class MainFragment extends BaseFragment
      * 开单记录
      */
     private ArrayList<RegistrationBean> registrationBeans = new ArrayList<>();
+    private List<PatientBean> recentContacts = new ArrayList<>();
     private int[] optionsTxt = {
             R.string.fragment_main_service, R.string.fragment_main_telemedicine,
             R.string.fragment_main_train, R.string.fragment_main_doctor_group,
@@ -122,6 +130,10 @@ public class MainFragment extends BaseFragment
      */
     private static final int TRANSFER_CODE = 1;
     /**
+     * 最近联系人
+     */
+    private static final int TRANSFER_CODE_RECENT = 2;
+    /**
      * 扫码结果
      */
     public static final int REQUEST_CODE = 0x0000c0de;
@@ -134,6 +146,13 @@ public class MainFragment extends BaseFragment
             {
                 case TRANSFER_CODE:
                     getTransferList();
+                    break;
+                case TRANSFER_CODE_RECENT:
+                    recentContacts = RecentContactUtils.getRecentContactList();
+                    ArrayList<PatientBean> list = new ArrayList<>();
+                    list.addAll(recentContacts);
+                    recentContactAdapter.setList(list);
+                    recentContactAdapter.notifyDataSetChanged();
                     break;
             }
         }
@@ -162,6 +181,13 @@ public class MainFragment extends BaseFragment
             getApplyPatientList();
         }
     };
+    /**
+     * 推送回调监听  转诊申请
+     */
+    private IChange<String> mRecentContactChangeListener = data ->
+    {
+        handler.sendEmptyMessage(TRANSFER_CODE_RECENT);
+    };
 
     @Override
     public int getLayoutID()
@@ -187,6 +213,7 @@ public class MainFragment extends BaseFragment
                                                    android.R.color.holo_red_light,
                                                    android.R.color.holo_orange_light,
                                                    android.R.color.holo_green_light);
+        recyclerView = view.findViewById(R.id.fragment_main_my_recent_contacts);
         orderInfoListView = view.findViewById(R.id.fragment_main_order_info_listview);
         transferInfoListView = view.findViewById(R.id.fragment_main_transfer_info_listview);
         rlApplyPatientNumLayout = view.findViewById(R.id.message_red_point_layout);
@@ -218,6 +245,13 @@ public class MainFragment extends BaseFragment
         mainOptionsAdapter.setOptionsIcon(optionsIcon);
         mainOptionsAdapter.setOptionsTxt(optionsTxt);
         customGridView.setAdapter(mainOptionsAdapter);
+        //最近联系人
+        recentContacts = RecentContactUtils.getRecentContactList();
+        recentContactAdapter = new RecentContactAdapter(getContext(), recentContacts);
+        recyclerView.setLayoutManager(
+                new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(recentContactAdapter);
         getTransferList();
         getApplyPatientList();
         getOrderList();
@@ -237,6 +271,9 @@ public class MainFragment extends BaseFragment
         //注册转诊申请监听
         iNotifyChangeListenerServer.registerDoctorTransferPatientListener(
                 doctorTransferPatientListener, RegisterType.REGISTER);
+        //最近联系人
+        iNotifyChangeListenerServer.registerRecentContactChangeListener(
+                mRecentContactChangeListener, RegisterType.REGISTER);
         transferInfoListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
@@ -661,5 +698,8 @@ public class MainFragment extends BaseFragment
         //注销患者状态监听
         iNotifyChangeListenerServer.registerDoctorTransferPatientListener(
                 doctorTransferPatientListener, RegisterType.UNREGISTER);
+        //最近联系人
+        iNotifyChangeListenerServer.registerRecentContactChangeListener(
+                mRecentContactChangeListener, RegisterType.UNREGISTER);
     }
 }
