@@ -127,6 +127,11 @@ public class HealthInfoFragment extends BaseFragment
         this.patientBean = patientBean;
     }
 
+    public void setPatientId(String patientId)
+    {
+        this.patientId = patientId;
+    }
+
     /**
      * 获取患者病例列表
      */

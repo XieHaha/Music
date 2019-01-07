@@ -79,6 +79,7 @@ public class PatientInfoActivity extends BaseActivity
     private TransferInfoFragment transferInfoFragment;
     private List<Fragment> fragmentList = new ArrayList<>();
     private PatientBean patientBean;
+    private String patientId;
     /**
      * 综合病史信息
      */
@@ -142,6 +143,7 @@ public class PatientInfoActivity extends BaseActivity
         {
             patientBean = (PatientBean)getIntent().getSerializableExtra(
                     CommonData.KEY_PATIENT_BEAN);
+            patientId = getIntent().getStringExtra(CommonData.KEY_PATIENT_ID);
         }
         new ViewPrepared().asyncPrepare(btnHealthInfo, (w, h) ->
         {
@@ -150,19 +152,53 @@ public class PatientInfoActivity extends BaseActivity
             viewIndicator.setLayoutParams(params);
         });
         healthInfoFragment = new HealthInfoFragment();
-        healthInfoFragment.setPatientBean(patientBean);
+        if (patientBean == null)
+        {
+            healthInfoFragment.setPatientId(patientId);
+        }
+        else
+        {
+            healthInfoFragment.setPatientBean(patientBean);
+        }
         orderInfoFragment = new OrderInfoFragment();
-        orderInfoFragment.setPatientBean(patientBean);
+        if (patientBean == null)
+        {
+            orderInfoFragment.setPatientId(patientId);
+        }
+        else
+        {
+            orderInfoFragment.setPatientBean(patientBean);
+        }
         transferInfoFragment = new TransferInfoFragment();
-        transferInfoFragment.setPatientBean(patientBean);
+        if (patientBean == null)
+        {
+            transferInfoFragment.setPatientId(patientId);
+        }
+        else
+        {
+            transferInfoFragment.setPatientBean(patientBean);
+        }
         fragmentList.add(healthInfoFragment);
         fragmentList.add(orderInfoFragment);
         fragmentList.add(transferInfoFragment);
         fragmentVpAdapter = new FragmentVpAdapter(getSupportFragmentManager(), fragmentList);
         viewPager.setAdapter(fragmentVpAdapter);
         viewPager.setCurrentItem(0);
-        initPageData();
+        initMenu();
+        if (patientBean == null)
+        {
+            getPatientInfo();
+        }
+        else
+        {
+            patientId = patientBean.getPatientId();
+            initPageData();
+        }
         getPatientCombine();
+    }
+
+    private void initMenu()
+    {
         mSatelliteMenuRightBottom = (SatelliteMenu)findViewById(R.id.mSatelliteMenuRightBottom);
         List<String> nameMenuItem = new ArrayList<>();//菜单图片,可根据需要设置子菜单个数
         nameMenuItem.add("对话");
@@ -321,11 +357,19 @@ public class PatientInfoActivity extends BaseActivity
     }
 
     /**
+     * 获取患者个人信息
+     */
+    private void getPatientInfo()
+    {
+        mIRequest.getPatientInfo(patientId, this);
+    }
+
+    /**
      * 获取患者基础信息
      */
     private void getPatientCombine()
     {
-        mIRequest.getPatientCombine(patientBean.getPatientId(), this);
+        mIRequest.getPatientCombine(patientId, this);
     }
 
     /**
@@ -333,7 +377,7 @@ public class PatientInfoActivity extends BaseActivity
      */
     private void deletePatient()
     {
-        mIRequest.deletePatient(loginSuccessBean.getDoctorId(), patientBean.getPatientId(), this);
+        mIRequest.deletePatient(loginSuccessBean.getDoctorId(), patientId, this);
     }
 
     @Override
@@ -432,6 +476,10 @@ public class PatientInfoActivity extends BaseActivity
         super.onResponseSuccess(task, response);
         switch (task)
         {
+            case GET_PATIENT_INFO:
+                patientBean = response.getData();
+                initPageData();
+                break;
             case GET_PATIENT_COMBINE:
                 combineBean = response.getData();
                 if (combineBean != null)

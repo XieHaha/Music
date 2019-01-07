@@ -128,6 +128,11 @@ public class TransferInfoFragment extends BaseFragment
         this.patientBean = patientBean;
     }
 
+    public void setPatientId(String patientId)
+    {
+        this.patientId = patientId;
+    }
+
     /**
      * 获取我的转诊记录
      */

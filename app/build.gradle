@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 def releaseTime() {
-    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+    return new Date().format("MM月dd日", TimeZone.getTimeZone("UTC"))
 }
 
 android {
@@ -11,8 +11,8 @@ android {
         applicationId "com.yht.yihuantong"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 8
-        versionName "1.8"
+        versionCode 12
+        versionName "1.8.8"
         multiDexEnabled true
         ndk {
 //            abiFilters 'arm64-v8a','armeabi-v7a','x86'
@@ -44,7 +44,7 @@ android {
     }
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "会珍医生版-${variant.versionName}-${releaseTime()}.apk"
+            outputFileName = "会珍医生版V${variant.versionName}-${releaseTime()}.apk"
         }
     }
     compileOptions {

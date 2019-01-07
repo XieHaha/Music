@@ -18,12 +18,11 @@ import com.hyphenate.easeui.permission.OnPermissionCallback;
 import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
-import com.yht.yihuantong.ui.activity.HealthCardActivity;
+import com.yht.yihuantong.ui.activity.PatientInfoActivity;
 import com.yht.yihuantong.ui.activity.ServicePackActivity;
 import com.yht.yihuantong.ui.activity.UserInfoActivity;
 import com.yht.yihuantong.utils.AllUtils;
 
-import custom.frame.bean.PatientBean;
 import custom.frame.ui.activity.BaseActivity;
 
 /**
@@ -110,10 +109,8 @@ public class ChatActivity extends BaseActivity
                     }
                     else
                     {
-                        intent = new Intent(this, HealthCardActivity.class);
-                        PatientBean patientBean = new PatientBean();
-                        patientBean.setPatientId(chatId);
-                        intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientBean);
+                        intent = new Intent(this, PatientInfoActivity.class);
+                        intent.putExtra(CommonData.KEY_PATIENT_ID, chatId);
                         startActivity(intent);
                     }
                 }
