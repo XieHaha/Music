@@ -47,6 +47,7 @@ import com.yht.yihuantong.ui.activity.PatientInfoActivity;
 import com.yht.yihuantong.ui.activity.PatientsActivity;
 import com.yht.yihuantong.ui.activity.RegistrationDetailActivity;
 import com.yht.yihuantong.ui.activity.RegistrationListActivity;
+import com.yht.yihuantong.ui.activity.xiaoyu.RemoteConsultationActivity;
 import com.yht.yihuantong.ui.activity.ServicePackActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientHistoryActivity;
@@ -129,6 +130,12 @@ public class MainFragment extends BaseFragment
     private int[] optionsIcon = {
             R.mipmap.icon_service, R.mipmap.icon_telemedicine, R.mipmap.icon_train,
             R.mipmap.icon_doctor_group, R.mipmap.icon_main_hospital, R.mipmap.icon_integral };
+    public static final int SERVICE_PACKAGE = 0,//服务包
+            REMOTE_CONSULTATION = 1,//远程会诊
+            CULTIVATE = 2,//培训
+            DOCTOR_GROUP = 3,//医生集团
+            HOSPITAL_GROUP = 4,//合作医院
+            INTEGRAL = 5;//积分
     /**
      * 一页最大数
      */
@@ -325,16 +332,26 @@ public class MainFragment extends BaseFragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                if (0 == position)
+                Intent intent;
+                switch (position)
                 {
-                    Intent intent = new Intent(getContext(), ServicePackActivity.class);
-                    intent.putExtra("limit", true);
-                    intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "服务");
-                    startActivity(intent);
-                }
-                else
-                {
-                    ToastUtil.toast(getContext(), "敬请期待");
+                    case SERVICE_PACKAGE:
+                        intent = new Intent(getContext(), ServicePackActivity.class);
+                        intent.putExtra("limit", true);
+                        intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "服务");
+                        startActivity(intent);
+                        break;
+                    case REMOTE_CONSULTATION:
+                        intent = new Intent(getContext(), RemoteConsultationActivity.class);
+                        startActivity(intent);
+                        break;
+                    case CULTIVATE:
+                    case DOCTOR_GROUP:
+                    case HOSPITAL_GROUP:
+                    case INTEGRAL:
+                    default:
+                        ToastUtil.toast(getContext(), "敬请期待");
+                        break;
                 }
             }
         });

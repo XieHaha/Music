@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/public_title_bar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/app_white_color"
+        android:layout_height="60dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:text="会议主题:"
+            android:textColor="@color/app_main_txt_color"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/act_create_theme"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="95dp"
+            android:layout_marginRight="16dp"
+            android:background="@null"
+            android:text=""
+            android:gravity="center_vertical"
+            android:maxLength="20"
+            android:textColor="@color/app_minor_color"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/app_main_divideline" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/app_white_color"
+        android:layout_height="60dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:text="会议时间:"
+            android:textColor="@color/app_main_txt_color"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/act_create_time"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="95dp"
+            android:layout_marginRight="16dp"
+            android:background="@null"
+            android:text=""
+            android:minHeight="45dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/app_minor_color"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/app_main_divideline" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/app_white_color"
+        android:layout_height="60dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:text="参会人数:"
+            android:textColor="@color/app_main_txt_color"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/act_create_number"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="95dp"
+            android:layout_marginRight="16dp"
+            android:background="@null"
+            android:maxLength="3"
+            android:inputType="number"
+            android:gravity="center_vertical"
+            android:textColor="@color/app_minor_color"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/app_main_divideline" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/app_white_color"
+        android:layout_height="60dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:text="参会密码:"
+            android:textColor="@color/app_main_txt_color"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/act_create_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="95dp"
+            android:layout_marginRight="16dp"
+            android:background="@null"
+            android:maxLength="10"
+            android:inputType="number"
+            android:gravity="center_vertical"
+            android:textColor="@color/app_minor_color"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/app_main_divideline" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/app_white_color"
+        android:layout_height="60dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dp"
+            android:text="主持会议密码:"
+            android:textColor="@color/app_main_txt_color"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/act_create_meet_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="125dp"
+            android:layout_marginRight="16dp"
+            android:background="@null"
+            android:maxLength="10"
+            android:inputType="number"
+            android:gravity="center_vertical"
+            android:textColor="@color/app_minor_color"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/app_main_divideline" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/act_create_next"
+        android:layout_width="175dp"
+        android:background="@drawable/corner_main_color_full_bg"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="92dp"
+        android:gravity="center"
+        android:text="提交"
+        android:textSize="16sp"
+        android:textColor="@color/app_white_color"
+        android:layout_height="40dp" />
+
+</LinearLayout>

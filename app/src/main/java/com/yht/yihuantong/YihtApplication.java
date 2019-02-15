@@ -1,11 +1,17 @@
 package com.yht.yihuantong;
 
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Process;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.ainemo.sdk.otf.NemoSDK;
+import com.ainemo.sdk.otf.Settings;
 import com.alibaba.fastjson.JSON;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.EaseUI;
@@ -15,10 +21,13 @@ import com.yanzhenjie.nohttp.NoHttp;
 import com.yht.yihuantong.api.ApiHelper;
 import com.yht.yihuantong.chat.HxHelper;
 import com.yht.yihuantong.data.CommonData;
+import com.yht.yihuantong.ui.activity.xiaoyu.IncomingCallService;
 import com.yht.yihuantong.utils.RecentContactUtils;
 
 import org.litepal.LitePal;
 import org.litepal.LitePalApplication;
+
+import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
 import custom.frame.bean.LoginSuccessBean;
@@ -61,6 +70,7 @@ public class YihtApplication extends LitePalApplication
     {
         MultiDex.install(this);
         super.onCreate();
+        initXYSDk();
         mIRequest = IRequest.getInstance(this);
         //监听类初始化
         ApiHelper.init(this);
@@ -72,6 +82,7 @@ public class YihtApplication extends LitePalApplication
         initEase();
         initJPush();
         initImageLoader();
+        initXYSDk();
     }
 
     @Override
@@ -146,6 +157,38 @@ public class YihtApplication extends LitePalApplication
     private void initImageLoader()
     {
         ImageLoadUtil.getInstance().initImageLoader(getApplicationContext());
+    }
+
+    /**
+     * 小鱼sdk
+     */
+    private void initXYSDk()
+    {
+        //        Settings settings = new Settings("BMVNGNNNNMNNT");   //线上环境
+        Settings settings = new Settings("23a05bc3dcdaa4ec9936a5c01aa0804757f99a66");   //测试环境
+        int pId = Process.myPid();
+        String processName = "";
+        ActivityManager am = (ActivityManager)getApplicationContext().getSystemService(
+                ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> ps = am.getRunningAppProcesses();
+        for (ActivityManager.RunningAppProcessInfo p : ps)
+        {
+            if (p.pid == pId)
+            {
+                processName = p.processName;
+                break;
+            }
+        }
+        // 避免被初始化多次
+        if (processName.equals(getPackageName()))
+        {
+            Log.i("test", " NemoSDK init.....");
+            NemoSDK nemoSDK = NemoSDK.getInstance();
+            nemoSDK.init(this, settings);
+            // 被叫服务，不使用被叫功能的请忽略
+            Intent incomingCallService = new Intent(this, IncomingCallService.class);
+            startService(incomingCallService);
+        }
     }
 
     public static YihtApplication getInstance()

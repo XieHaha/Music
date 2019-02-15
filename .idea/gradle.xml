@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/frame" />
             <option value="$PROJECT_DIR$/shortcutbadge" />
             <option value="$PROJECT_DIR$/volleyNew" />
+            <option value="$PROJECT_DIR$/xylink" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

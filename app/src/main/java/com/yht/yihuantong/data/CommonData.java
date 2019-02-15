@@ -115,6 +115,10 @@ public interface CommonData
      */
     String KEY_HOSPITAL_BEAN = "key_hospital_bean";
     /**
+     * meeting bean
+     */
+    String KEY_MEETING_BEAN = "key_meeting_bean";
+    /**
      * 首页列表基础显示条数
      */
     int DATA_LIST_BASE_NUM = 3;
@@ -155,13 +159,25 @@ public interface CommonData
      */
     int JIGUANG_NEW_PRESCRIPTION = 109;
     /**
-     * 收到转诊通知 合作医生接受了我的转诊
+     * 收到转诊通知 合作医生接受了我的转诊 (医生端接收)
+     */
+    int JIGUANG_CODE_TRANS_PATIENT_SUCCESS_P = 112;
+    /**
+     * 收到转诊通知 合作医生接受了我的转诊 (患者端接收)
      */
     int JIGUANG_CODE_TRANS_PATIENT_SUCCESS = 113;
     /**
      * 收到转诊通知 合作医生接受我转诊的患者已经就诊
      */
     int JIGUANG_CODE_TRANS_PATIENT_VISIT_SUCCESS = 123;
+    /**
+     * 收到转诊通知 合作医生接受我转诊的患者已经就诊 (患者端接收)
+     */
+    int JIGUANG_CODE_TRANS_PATIENT_VISIT_SUCCESS_P = 122;
+    /**
+     * 收到转诊通知 患者端接收
+     */
+    int JIGUANG_CODE_TRANS_PATIENT_APPLY_P = 132;
     /**
      * 收到转诊通知 合作医生转给我的
      */

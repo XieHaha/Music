@@ -241,7 +241,6 @@
                             android:orientation="vertical"
                             android:gravity="center"
                             android:visibility="visible"
-                            android:onClick="test"
                             android:layout_height="140dp">
 
                             <ImageView
@@ -339,7 +338,6 @@
                             android:orientation="vertical"
                             android:gravity="center"
                             android:visibility="visible"
-                            android:onClick="test1"
                             android:layout_height="140dp">
 
                             <ImageView
