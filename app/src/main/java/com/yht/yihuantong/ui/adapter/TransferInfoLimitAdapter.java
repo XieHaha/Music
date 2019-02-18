@@ -1,10 +1,12 @@
 package com.yht.yihuantong.ui.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
@@ -16,6 +18,7 @@ import com.yht.yihuantong.utils.AllUtils;
 import java.util.ArrayList;
 
 import custom.frame.bean.TransPatientBean;
+import custom.frame.utils.SharePreferenceUtil;
 
 /**
  * Created by dundun on 18/7/14.
@@ -23,11 +26,13 @@ import custom.frame.bean.TransPatientBean;
 public class TransferInfoLimitAdapter extends BaseAdapter implements OrderStatus, CommonData
 {
     private Context context;
+    private SharePreferenceUtil sharePreferenceUtil;
     private ArrayList<TransPatientBean> list = new ArrayList<>();
 
     public TransferInfoLimitAdapter(Context context)
     {
         this.context = context;
+        sharePreferenceUtil = new SharePreferenceUtil(context);
     }
 
     public void setList(ArrayList<TransPatientBean> list)
@@ -72,6 +77,7 @@ public class TransferInfoLimitAdapter extends BaseAdapter implements OrderStatus
             holder.tvPatientCase = convertView.findViewById(R.id.item_transfer_patient_case);
             holder.tvDoctorName = convertView.findViewById(R.id.item_transfer_doc_name);
             holder.tvDoctorHospital = convertView.findViewById(R.id.item_transfer_hospital);
+            holder.rlReadHint = convertView.findViewById(R.id.message_red_point_read);
             convertView.setTag(holder);
         }
         else
@@ -85,6 +91,16 @@ public class TransferInfoLimitAdapter extends BaseAdapter implements OrderStatus
     private void initData(ViewHolder holder, int position)
     {
         TransPatientBean curTransferPatient = list.get(position);
+        String ids = sharePreferenceUtil.getString("ids");
+        if (!TextUtils.isEmpty(ids) &&
+            ids.contains(String.valueOf(curTransferPatient.getTransferId())))
+        {
+            holder.rlReadHint.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            holder.rlReadHint.setVisibility(View.GONE);
+        }
         holder.tvPatientName.setText(curTransferPatient.getPatientName());
         holder.tvPatientCase.setText(curTransferPatient.getFromDoctorDiagnosisInfo());
         holder.tvTime.setText(AllUtils.formatDate(curTransferPatient.getTransferDate(),
@@ -111,5 +127,6 @@ public class TransferInfoLimitAdapter extends BaseAdapter implements OrderStatus
     class ViewHolder
     {
         private TextView tvTransferType, tvFromType, tvPatientName, tvPatientCase, tvDoctorName, tvDoctorHospital, tvTime;
+        private RelativeLayout rlReadHint;
     }
 }

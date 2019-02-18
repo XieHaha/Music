@@ -149,10 +149,10 @@ public class UserFragment extends BaseFragment
      */
     private IChange<String> doctorTransferPatientListener = data ->
     {
-        if ("from".equals(data))
-        {
-            handler.sendEmptyMessage(10);
-        }
+        //        if ("from".equals(data))
+        //        {
+        //            handler.sendEmptyMessage(10);
+        //        }
     };
     /**
      * 医生认证状态

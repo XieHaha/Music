@@ -67,10 +67,12 @@ public class MainActivity extends BaseActivity
                    VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener,
                    EaseConversationListFragment.EaseConversationListItemLongClickListener,
                    UserFragment.OnTransferCallbackListener,
-                   CooperateDocFragment.OnDocApplyCallbackListener
+                   CooperateDocFragment.OnDocApplyCallbackListener,
+                   MainFragment.OnPatientApplyCallbackListener
 {
     private RippleLinearLayout tab1, tab2, tab3, tab4;
     private RelativeLayout rlMsgPointLayout, rlMsgPointLayout2, rlMsgPointLayout3, rlMsgPointLayout4;
+    private RelativeLayout rlReadHintLayout;
     private TextView tvUnReadMsgCount, tvUnReadMsgCount2, tvUnReadMsgCount3, tvUnReadMsgCount4;
     private CooperateDocFragment cooperateDocFragment;
     private MainFragment mainFragment;
@@ -193,6 +195,7 @@ public class MainActivity extends BaseActivity
         tab2 = (RippleLinearLayout)findViewById(R.id.act_main_tab2);
         tab3 = (RippleLinearLayout)findViewById(R.id.act_main_tab3);
         tab4 = (RippleLinearLayout)findViewById(R.id.act_main_tab4);
+        rlReadHintLayout = (RelativeLayout)findViewById(R.id.message_red_point_read);
         rlMsgPointLayout = (RelativeLayout)findViewById(R.id.message_red_point);
         rlMsgPointLayout2 = (RelativeLayout)findViewById(R.id.message_red_point2);
         rlMsgPointLayout3 = (RelativeLayout)findViewById(R.id.message_red_point3);
@@ -543,6 +546,7 @@ public class MainActivity extends BaseActivity
         if (mainFragment == null)
         {
             mainFragment = new MainFragment();
+            mainFragment.setOnPatientApplyCallbackListener(this);
             transaction.add(R.id.act_main_tab_frameLayout, mainFragment);
         }
         else
@@ -787,6 +791,33 @@ public class MainActivity extends BaseActivity
             else
             {
                 rlMsgPointLayout4.setVisibility(View.GONE);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onPatientApplyCallback()
+    {
+        try
+        {
+            String pNum = sharePreferenceUtil.getString(CommonData.KEY_PATIENT_APPLY_NUM);
+            if (TextUtils.isEmpty(pNum))
+            {
+                return;
+            }
+            int num = Integer.valueOf(pNum);
+            if (num > 0)
+            {
+                rlMsgPointLayout.setVisibility(View.VISIBLE);
+                tvUnReadMsgCount.setText(num > 99 ? "99+" : num + "");
+            }
+            else
+            {
+                rlMsgPointLayout.setVisibility(View.GONE);
             }
         }
         catch (Exception e)

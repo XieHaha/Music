@@ -25,6 +25,15 @@
             tools:text="血常规"
             android:layout_height="wrap_content" />
 
+        <RelativeLayout
+            android:id="@+id/message_red_point_read"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:visibility="gone"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/bg_red_point"
+            android:gravity="center_vertical"></RelativeLayout>
+
         <TextView
             android:id="@+id/item_order_status"
             android:layout_width="wrap_content"

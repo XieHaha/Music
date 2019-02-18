@@ -2,10 +2,12 @@ package com.yht.yihuantong.ui.adapter;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
@@ -16,6 +18,7 @@ import com.yht.yihuantong.utils.AllUtils;
 import java.util.ArrayList;
 
 import custom.frame.bean.RegistrationBean;
+import custom.frame.utils.SharePreferenceUtil;
 
 /**
  * Created by dundun on 18/7/14.
@@ -24,11 +27,13 @@ public class OrderInfoLimitAdapter extends BaseAdapter implements OrderStatus, C
 {
     private Context context;
     private ArrayList<RegistrationBean> list = new ArrayList<>();
+    private SharePreferenceUtil sharePreferenceUtil;
     private boolean showAll = false;
 
     public OrderInfoLimitAdapter(Context context)
     {
         this.context = context;
+        sharePreferenceUtil = new SharePreferenceUtil(context);
     }
 
     public void setList(ArrayList<RegistrationBean> list)
@@ -88,6 +93,7 @@ public class OrderInfoLimitAdapter extends BaseAdapter implements OrderStatus, C
             holder.tvOrderDetail = convertView.findViewById(R.id.item_order_detail);
             holder.tvOrderHospital = convertView.findViewById(R.id.item_order_hospital);
             holder.tvTime = convertView.findViewById(R.id.item_order_time);
+            holder.rlReadHint = convertView.findViewById(R.id.message_red_point_read);
             convertView.setTag(holder);
         }
         else
@@ -101,6 +107,16 @@ public class OrderInfoLimitAdapter extends BaseAdapter implements OrderStatus, C
     private void initData(ViewHolder holder, int position)
     {
         RegistrationBean curRegistrationBean = list.get(position);
+        String ids = sharePreferenceUtil.getString("ids");
+        if (!TextUtils.isEmpty(ids) &&
+            ids.contains(String.valueOf(curRegistrationBean.getProductOrderId())))
+        {
+            holder.rlReadHint.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            holder.rlReadHint.setVisibility(View.GONE);
+        }
         holder.tvOrderType.setText(curRegistrationBean.getProductName());
         holder.tvTime.setText(
                 AllUtils.formatDate(curRegistrationBean.getOrderDate(), AllUtils.YYYY_MM_DD_HH_MM));
@@ -142,5 +158,6 @@ public class OrderInfoLimitAdapter extends BaseAdapter implements OrderStatus, C
     class ViewHolder
     {
         private TextView tvOrderType, tvOrderStatus, tvOrderPatientName, tvOrderPatientSex, tvOrderPatientAge, tvOrderDetail, tvOrderHospital, tvTime;
+        private RelativeLayout rlReadHint;
     }
 }

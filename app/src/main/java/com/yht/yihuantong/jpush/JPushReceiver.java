@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import java.util.Iterator;
 
 import cn.jpush.android.api.JPushInterface;
+import custom.frame.utils.SharePreferenceUtil;
 
 /**
  * 自定义接收器
@@ -61,6 +62,21 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
                 Log.d(TAG, "[JPushReceiver] 接收到推送下来的通知的ID: " + notifactionId);
                 JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
                 int type = json.optInt("newsid");
+                int msgId = json.optInt("msg");
+                SharePreferenceUtil sharePreferenceUtil = new SharePreferenceUtil(context);
+                String ids = sharePreferenceUtil.getString("ids");
+                if (TextUtils.isEmpty(ids))
+                {
+                    ids = String.valueOf(msgId);
+                }
+                else
+                {
+                    StringBuilder stringBuilder = new StringBuilder(ids);
+                    stringBuilder.append(",");
+                    stringBuilder.append(msgId);
+                    ids = stringBuilder.toString();
+                }
+                sharePreferenceUtil.putString("ids", ids);
                 notifyStatusChange(type);
             }
             else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction()))
@@ -121,6 +137,7 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
                 NotifyChangeListenerServer.getInstance().notifyDoctorAuthStatus(type);
                 break;
             case JIGUANG_CODE_TRANS_PATIENT_SUCCESS://我的转诊成功
+            case JIGUANG_CODE_TRANS_PATIENT_VISIT_SUCCESS://转出的患者已就诊
                 NotifyChangeListenerServer.getInstance().notifyDoctorTransferPatient("to");
                 break;
             case JIGUANG_CODE_TRANS_PATIENT_APPLY://合作医生的转诊申请
@@ -163,7 +180,7 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
             case JIGUANG_CODE_DOCTOR_DP_ADD_REQUEST:
                 mainIntent = new Intent(context, MainActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mainIntent.putExtra(CommonData.KEY_PUBLIC, 1);
+                mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
                 baseIntent = new Intent(context, ApplyPatientActivity.class);
                 intents = new Intent[] { mainIntent, baseIntent };
                 context.startActivities(intents);
@@ -171,7 +188,7 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
             case JIGUANG_CODE_DOCTOR_DP_ADD_SUCCESS:
                 mainIntent = new Intent(context, MainActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mainIntent.putExtra(CommonData.KEY_PUBLIC, 1);
+                mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
                 context.startActivity(mainIntent);
                 break;
             case JIGUANG_CODE_PATIENT_DP_ADD_REQUEST:

@@ -185,10 +185,10 @@ public class MainFragment extends BaseFragment
      */
     private IChange<String> doctorTransferPatientListener = data ->
     {
-        if ("from".equals(data))
-        {
-            handler.sendEmptyMessage(TRANSFER_CODE);
-        }
+        //        if ("from".equals(data))
+        //        {
+        handler.sendEmptyMessage(TRANSFER_CODE);
+        //        }
     };
     /**
      * 推送回调监听  患者申请
@@ -199,13 +199,10 @@ public class MainFragment extends BaseFragment
         {
             getPatientsData();
         }
-        else
-        {
-            getApplyPatientList();
-        }
+        getApplyPatientList();
     };
     /**
-     * 推送回调监听  转诊申请
+     * 推送回调监听  最近联系人
      */
     private IChange<String> mRecentContactChangeListener = data ->
     {
@@ -311,10 +308,31 @@ public class MainFragment extends BaseFragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
+                TransPatientBean transPatientBean = transPatientBeans.get(position);
+                String transferId = String.valueOf(transPatientBean.getTransferId());
+                String string = sharePreferenceUtil.getString("ids");
+                if (!TextUtils.isEmpty(string))
+                {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String[] ids = string.split(",");
+                    for (int i = 0; i < ids.length; i++)
+                    {
+                        if (!transferId.equals(ids[i]))
+                        {
+                            stringBuilder.append(ids[i]);
+                            if (ids.length - 1 != i)
+                            {
+                                stringBuilder.append(",");
+                            }
+                        }
+                    }
+                    sharePreferenceUtil.putString("ids", stringBuilder.toString());
+                }
                 Intent intent = new Intent(getContext(), TransferPatientActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC, false);
-                intent.putExtra(CommonData.KEY_TRANSFER_BEAN, transPatientBeans.get(position));
+                intent.putExtra(CommonData.KEY_TRANSFER_BEAN, transPatientBean);
                 startActivity(intent);
+                transferInfoLimitAdapter.notifyDataSetChanged();
             }
         });
         orderInfoListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -322,9 +340,30 @@ public class MainFragment extends BaseFragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
+                RegistrationBean registrationBean = registrationBeans.get(position);
+                String transferId = String.valueOf(registrationBean.getProductOrderId());
+                String string = sharePreferenceUtil.getString("ids");
+                if (!TextUtils.isEmpty(string))
+                {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String[] ids = string.split(",");
+                    for (int i = 0; i < ids.length; i++)
+                    {
+                        if (!transferId.equals(ids[i]))
+                        {
+                            stringBuilder.append(ids[i]);
+                            if (ids.length - 1 != i)
+                            {
+                                stringBuilder.append(",");
+                            }
+                        }
+                    }
+                    sharePreferenceUtil.putString("ids", stringBuilder.toString());
+                }
                 Intent intent = new Intent(getContext(), RegistrationDetailActivity.class);
-                intent.putExtra(CommonData.KEY_REGISTRATION_BEAN, registrationBeans.get(position));
+                intent.putExtra(CommonData.KEY_REGISTRATION_BEAN, registrationBean);
                 startActivity(intent);
+                orderInfoAdapter.notifyDataSetChanged();
             }
         });
         customGridView.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -624,6 +663,12 @@ public class MainFragment extends BaseFragment
                 {
                     rlApplyPatientNumLayout.setVisibility(View.GONE);
                 }
+                sharePreferenceUtil.putString(CommonData.KEY_PATIENT_APPLY_NUM,
+                                              String.valueOf(patientBeans.size()));
+                if (onPatientApplyCallbackListener != null)
+                {
+                    onPatientApplyCallbackListener.onPatientApplyCallback();
+                }
                 break;
         }
     }
@@ -743,6 +788,19 @@ public class MainFragment extends BaseFragment
         //        {
         //            scrollView.scrollTo(0, 0);
         //        }
+    }
+
+    private OnPatientApplyCallbackListener onPatientApplyCallbackListener;
+
+    public void setOnPatientApplyCallbackListener(
+            OnPatientApplyCallbackListener onPatientApplyCallbackListener)
+    {
+        this.onPatientApplyCallbackListener = onPatientApplyCallbackListener;
+    }
+
+    public interface OnPatientApplyCallbackListener
+    {
+        void onPatientApplyCallback();
     }
 
     @Override
