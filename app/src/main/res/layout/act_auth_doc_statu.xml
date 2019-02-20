@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@color/app_auth_bg"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="21dp"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/public_title_bar_back"
+            android:layout_width="48dp"
+            android:paddingLeft="12dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:layout_height="48dp"
+            android:visibility="visible"
+            android:layout_gravity="left"
+            android:src="@mipmap/icon_back_black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="返回"
+            android:textColor="@color/app_main_txt_color"
+            android:textSize="16sp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/act_auth_doc_statu_verifying"
+        android:layout_width="wrap_content"
+        android:textSize="19sp"
+        android:layout_marginTop="17dp"
+        android:text="@string/txt_doc_auth_verifying"
+        android:textColor="@color/app_main_txt_color"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/act_auth_doc_statu_img"
+        android:layout_width="wrap_content"
+        android:src="@drawable/bg_doc_auth_selector"
+        android:layout_marginTop="13dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/act_auth_doc_statu_name"
+        android:layout_width="wrap_content"
+        android:textSize="19sp"
+        android:layout_marginTop="44dp"
+        android:layout_gravity="left"
+        android:layout_marginLeft="75dp"
+        android:text="@string/txt_doc_auth_name"
+        android:textColor="@color/app_main_txt_color"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/act_auth_doc_statu_hint"
+        android:layout_width="wrap_content"
+        android:textSize="15sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="75dp"
+        android:layout_marginRight="75dp"
+        android:layout_weight="1"
+        android:text="@string/txt_doc_auth_hint"
+        android:textColor="@color/app_minor_color"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/act_auth_doc_statu_next"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/btn_20_main_color_selector"
+        android:gravity="center"
+        android:layout_marginBottom="34dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginRight="28dp"
+        android:text="@string/txt_doc_auth_next"
+        android:textColor="@color/app_white_color"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/act_auth_doc_statu_again"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_marginBottom="34dp"
+        android:text="@string/txt_doc_auth_again_apply"
+        android:textColor="#216db4"
+        android:textSize="16sp" />
+
+
+</LinearLayout>

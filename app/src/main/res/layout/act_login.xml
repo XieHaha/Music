@@ -79,6 +79,7 @@
                 android:layout_height="48dp"
                 android:hint="输入验证码"
                 android:maxEms="10"
+                android:inputType="number"
                 android:imeOptions="actionDone"
                 android:singleLine="true"
                 android:maxLines="1"

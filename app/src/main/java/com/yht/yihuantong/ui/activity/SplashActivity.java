@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.data.DocAuthStatu;
 
 import custom.frame.ui.activity.BaseActivity;
 
@@ -19,7 +20,7 @@ import custom.frame.ui.activity.BaseActivity;
  *
  * @author DUNDUN
  */
-public class SplashActivity extends BaseActivity
+public class SplashActivity extends BaseActivity implements DocAuthStatu
 {
     private TextView tvStart;
     private ImageView ivBg;
@@ -61,6 +62,26 @@ public class SplashActivity extends BaseActivity
     {
         if (loginSuccessBean != null)
         {
+//            int checked = loginSuccessBean.getChecked();
+//            switch (checked)
+//            {
+//                case NONE:
+//                case VERIFYING:
+//                case VERIFY_FAILD:
+//                    startActivity(new Intent(this, AuthDocStatuActivity.class));
+//                    finish();
+//                    break;
+//                case VERIFY_SUCCESS:
+//                    startActivity(new Intent(this, MainActivity.class));
+//                    finish();
+//                    overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
+//                    break;
+//                default:
+//                    startActivity(new Intent(this, MainActivity.class));
+//                    finish();
+//                    overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
+//                    break;
+//            }
             startActivity(new Intent(this, MainActivity.class));
             finish();
             overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);

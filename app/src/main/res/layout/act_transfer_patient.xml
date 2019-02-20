@@ -173,7 +173,7 @@
                         android:layout_width="wrap_content"
                         android:textSize="15sp"
                         android:textColor="@color/_000000"
-                        android:text="转诊给"
+                        android:text="@string/txt_transfer_patient_to"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:layout_height="match_parent" />
@@ -277,7 +277,6 @@
                     <ImageView
                         android:id="@+id/act_transfer_patient_status_icon"
                         android:layout_width="13dp"
-                        android:src="@drawable/transfer_patient_statu_selector"
                         android:layout_height="13dp" />
 
                     <TextView
@@ -295,31 +294,112 @@
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/app_minor_bg"
+                android:layout_height="10dp" />
+
+            <LinearLayout
+                android:id="@+id/act_transfer_patient_select_hospital_layout"
+                android:layout_width="match_parent"
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
+                android:orientation="vertical"
+                android:background="@color/app_white_color"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="@color/_000000"
+                    android:text="@string/txt_transfer_patient_to_select_hospital_title"
+                    android:gravity="center_vertical"
+                    android:layout_height="44dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/app_main_divideline" />
+
+                <LinearLayout
+                    android:id="@+id/act_transfer_patient_select_hospital"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_height="44dp">
+
+                    <TextView
+                        android:id="@+id/act_transfer_patient_select_hospital_name"
+                        android:layout_width="wrap_content"
+                        android:textSize="15sp"
+                        android:textColor="@color/app_minor_color"
+                        android:text="@string/txt_transfer_patient_to_select_hospital"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:layout_height="match_parent" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:src="@mipmap/icon_arrow_right"
+                        android:layout_alignParentRight="true"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/act_transfer_patient_next"
-                android:layout_width="100dp"
+                android:layout_width="190dp"
                 android:background="@drawable/corner_main_color_full_bg"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="35dp"
-                android:text="确定"
+                android:text="@string/dialog_txt_confirm"
                 android:gravity="center"
                 android:layout_marginBottom="20dp"
                 android:textColor="@color/app_white_color"
                 android:textSize="16sp"
-                android:layout_height="33dp" />
+                android:layout_height="50dp" />
 
             <TextView
                 android:id="@+id/act_transfer_patient_transfer_next"
-                android:layout_width="100dp"
+                android:layout_width="190dp"
                 android:background="@drawable/corner_main_color_full_bg"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="35dp"
-                android:text="确定"
+                android:text="@string/dialog_txt_confirm"
                 android:gravity="center"
                 android:layout_marginBottom="20dp"
                 android:textColor="@color/app_white_color"
                 android:textSize="16sp"
-                android:layout_height="33dp" />
+                android:layout_height="50dp" />
+
+            <TextView
+                android:id="@+id/act_transfer_patient_transfer_refuse"
+                android:layout_width="190dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:text="@string/txt_transfer_patient_to_refuse"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/_1F6BAC"
+                android:textSize="16sp"
+                android:layout_height="50dp" />
+
+            <TextView
+                android:id="@+id/act_transfer_patient_transfer_cancel"
+                android:layout_width="190dp"
+                android:background="@drawable/corner_ea5f5f_color_full_bg"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="35dp"
+                android:text="@string/txt_transfer_patient_to_cancel"
+                android:visibility="gone"
+                android:gravity="center"
+                android:layout_marginBottom="20dp"
+                android:textColor="@color/app_white_color"
+                android:textSize="16sp"
+                android:layout_height="50dp" />
 
         </LinearLayout>
     </ScrollView>

@@ -21,6 +21,7 @@ import com.hyphenate.chat.EMClient;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.data.CommonData;
+import com.yht.yihuantong.data.DocAuthStatu;
 import com.yht.yihuantong.utils.AllUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +43,7 @@ import custom.frame.utils.ToastUtil;
  *
  * @author DUNDUN
  */
-public class LoginActivity extends BaseActivity
+public class LoginActivity extends BaseActivity implements DocAuthStatu
 {
     private TextView tvGetVerify;
     private EditText etPhone, etVerifyCode;
@@ -306,8 +307,23 @@ public class LoginActivity extends BaseActivity
     private void jumpTopage()
     {
         closeProgressDialog();
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
+        int checked = loginSuccessBean.getChecked();
+        switch (checked)
+        {
+            case NONE:
+            case VERIFYING:
+            case VERIFY_FAILD:
+                startActivity(new Intent(this, AuthDocStatuActivity.class));
+                break;
+            case VERIFY_SUCCESS:
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+                break;
+            default:
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+                break;
+        }
     }
 
     @Override

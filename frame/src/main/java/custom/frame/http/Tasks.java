@@ -156,6 +156,14 @@ public enum Tasks
      */
     GET_HOSPITAL_LIST_BY_DOCTORID,
     /**
+     * 根据医生id获取获取合作医院
+     */
+    GET_COOPERATE_HOSPITAL_LIST_BY_DOCTORID,
+    /**
+     * 根据医生id获取获取合作医院下所有医生
+     */
+    GET_COOPERATE_HOSPITAL_DOCTOR_LIST,
+    /**
      * 根据医院id获取商品类型和类型下的商品详情
      */
     GET_HOSPITAL_PRODUCT_LIST_BY_HOSPITALID,

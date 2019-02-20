@@ -303,6 +303,7 @@ public class AuthDocActivity extends BaseActivity
                 //改变认证状态，当前为审核中
                 loginSuccessBean.setChecked(1);
                 YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
+                setResult(RESULT_OK);
                 finish();
                 break;
         }

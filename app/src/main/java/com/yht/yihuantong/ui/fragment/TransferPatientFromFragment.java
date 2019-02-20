@@ -52,7 +52,7 @@ public class TransferPatientFromFragment extends BaseFragment
     /**
      * 一页最大数
      */
-    private static final int PAGE_SIZE = 20;
+    private static final int PAGE_SIZE = 500;
 
     @Override
     public int getLayoutID()

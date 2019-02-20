@@ -37,6 +37,18 @@
     <string name="fragment_main_hospital">合作医院</string>
     <string name="fragment_main_integral">积分</string>
 
+
+    <!--医生认证-->
+    <string name="txt_doc_auth_next">立即认证</string>
+    <string name="txt_doc_auth_again">重新认证</string>
+    <string name="txt_doc_auth_again_apply">重新提交认证信息</string>
+    <string name="txt_doc_auth_verifying">等待后台认证</string>
+    <string name="txt_doc_auth_verify_faild">认证失败</string>
+    <string name="txt_doc_auth_name">尊敬的&#160;%s&#160;医生</string>
+    <string name="txt_doc_auth_hint">您还未通过平台医生认证，认证流程需要您提供身份证照片及相关行医资格证件照片。</string>
+    <string name="txt_doc_auth_hint1">您的身份信息我们正在加紧认证中，一般会花费一个工作日，请耐心等待。</string>
+    <string name="txt_doc_auth_hint2">您的身份信息未能通过平台认证，请您仔细核对您的提交信息，尝试再次提交。</string>
+
     <!--信息界面-->
     <!--ImageAlbumFragment-->
     <string name="tip_max_checked">最多选择%s张图片</string>
@@ -66,12 +78,20 @@
     <string name="txt_transfer_patient_to_isrecv_doc">确定接受&#160;%s&#160;医生的转诊吗</string>
     <string name="txt_transfer_patient_to_isvisit">确定&#160;%s&#160;已就诊</string>
     <string name="txt_transfer_patient_to_input_diagnosisinfo">请输入诊断内容</string>
-    <string name="txt_transfer_patient_to_comfirm">待确认</string>
+    <string name="txt_transfer_patient_to">转诊给</string>
+    <string name="txt_transfer_patient_from">转诊来自</string>
+    <string name="txt_transfer_patient_to_comfirm">待接受</string>
     <string name="txt_transfer_patient_to_recved">接收转诊</string>
+    <string name="txt_transfer_patient_to_cancel">取消转诊</string>
+    <string name="txt_transfer_patient_to_refuse">拒绝转诊</string>
     <string name="txt_transfer_patient_to_visit">确认就诊</string>
-    <string name="txt_transfer_patient_to_wait_visit">已接受-待就诊</string>
-    <string name="txt_transfer_patient_to_complete_visit">已接受-已就诊</string>
+    <string name="txt_transfer_patient_to_wait_visit">待就诊</string>
+    <string name="txt_transfer_patient_to_refuse_visit">已拒绝</string>
+    <string name="txt_transfer_patient_to_cancel_visit">已取消</string>
+    <string name="txt_transfer_patient_to_complete_visit">已就诊</string>
     <string name="txt_transfer_patient_to_select_doc">请选择合作医生</string>
+    <string name="txt_transfer_patient_to_select_hospital_title">接诊医院</string>
+    <string name="txt_transfer_patient_to_select_hospital">请选择医院</string>
 
     <!--Toast-->
     <string name="toast_save_image_failed">保存图片失败</string>

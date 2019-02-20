@@ -57,7 +57,7 @@ public class CaseRecordFragment extends BaseFragment implements LoadMoreListener
     /**
      * 一页最大数
      */
-    private static final int PAGE_SIZE = 10000;
+    private static final int PAGE_SIZE = 500;
 
     @Override
     public int getLayoutID()

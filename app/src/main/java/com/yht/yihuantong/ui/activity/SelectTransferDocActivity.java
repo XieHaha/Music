@@ -45,12 +45,12 @@ public class SelectTransferDocActivity extends BaseActivity
     /**
      * 一页最大数
      */
-    private static final int PAGE_SIZE = 20;
+    private static final int PAGE_SIZE = 500;
 
     @Override
     public int getLayoutID()
     {
-        return R.layout.act_cooperate_doc;
+        return R.layout.act_select_transfer_doc;
     }
 
     @Override

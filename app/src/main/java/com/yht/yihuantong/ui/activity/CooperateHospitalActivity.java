@@ -8,18 +8,17 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
-import com.yht.yihuantong.ui.adapter.TransPatientsListAdapter;
+import com.yht.yihuantong.ui.adapter.CooperateHospitalAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import custom.frame.bean.BaseResponse;
-import custom.frame.bean.TransPatientBean;
+import custom.frame.bean.HospitalBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
@@ -27,20 +26,20 @@ import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
- * Created by dundun on 18/10/11.
- * 我转给合作医生的
+ * 合作医院
+ *
+ * @author DUNDUN
  */
-public class TransferPatientToActivity extends BaseActivity
-        implements LoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
-                   BaseRecyclerAdapter.OnItemClickListener<TransPatientBean>
+public class CooperateHospitalActivity extends BaseActivity
+        implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener,
+                   BaseRecyclerAdapter.OnItemClickListener<HospitalBean>
 {
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
-    private TransPatientsListAdapter transPatientsListAdapter;
-    private ImageView ivTitleBarMore;
     private View footerView;
-    private TextView tvFooterHintTxt;
-    private List<TransPatientBean> patientBeanList = new ArrayList<>();
+    private TextView tvHintTxt;
+    private CooperateHospitalAdapter cooperateHospitalAdapter;
+    private List<HospitalBean> hospitalBeans = new ArrayList<>();
     /**
      * 当前页码
      */
@@ -51,120 +50,98 @@ public class TransferPatientToActivity extends BaseActivity
     private static final int PAGE_SIZE = 500;
 
     @Override
+    public int getLayoutID()
+    {
+        return R.layout.act_cooperate_hospital;
+    }
+
+    @Override
     protected boolean isInitBackBtn()
     {
         return true;
     }
 
     @Override
-    public int getLayoutID()
-    {
-        return R.layout.act_transfer_patient_list;
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        page = 0;
-        getPatientToList();
-    }
-
-    @Override
     public void initView(@NonNull Bundle savedInstanceState)
     {
         super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("我转出的患者");
-        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.act_patients_swipe_layout);
-        autoLoadRecyclerView = (AutoLoadRecyclerView)findViewById(R.id.act_patients_recycler_view);
-        footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
-        tvFooterHintTxt = footerView.findViewById(R.id.footer_hint_txt);
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("合作医院");
+        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(
+                R.id.act_apply_cooperate_swipe_layout);
+        autoLoadRecyclerView = (AutoLoadRecyclerView)findViewById(
+                R.id.act_apply_cooperate_recycler_view);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
                                                    android.R.color.holo_red_light,
                                                    android.R.color.holo_orange_light,
                                                    android.R.color.holo_green_light);
+        footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
+        tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
+    }
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState)
+    {
+        super.initData(savedInstanceState);
+        cooperateHospitalAdapter = new CooperateHospitalAdapter(this, hospitalBeans);
+        cooperateHospitalAdapter.addFooterView(footerView);
+        page = 0;
+        getHospitalListByDoctorId();
     }
 
     @Override
     public void initListener()
     {
+        super.initListener();
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
         autoLoadRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        transPatientsListAdapter = new TransPatientsListAdapter(this, new ArrayList<>());
-        transPatientsListAdapter.addFooterView(footerView);
-        autoLoadRecyclerView.setAdapter(transPatientsListAdapter);
-        transPatientsListAdapter.setOnItemClickListener(this);
+        autoLoadRecyclerView.setAdapter(cooperateHospitalAdapter);
+        cooperateHospitalAdapter.setOnItemClickListener(this);
     }
 
-    private void getPatientToList()
+    /**
+     * 获取医院列表
+     */
+    private void getHospitalListByDoctorId()
     {
-        mIRequest.getTransferPatientToList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
-    }
-
-    @Override
-    public void onClick(View v)
-    {
-        super.onClick(v);
-        switch (v.getId())
-        {
-            case R.id.fragment_cooperate_apply_layout:
-                Intent intent = new Intent(this, ApplyPatientActivity.class);
-                startActivity(intent);
-                break;
-        }
+        mIRequest.getCooperateHospitalListByDoctorId(loginSuccessBean.getDoctorId(), this);
     }
 
     @Override
-    public void onItemClick(View v, int position, TransPatientBean item)
+    public void onItemClick(View v, int position, HospitalBean item)
     {
-        Intent intent = new Intent(this, TransferPatientActivity.class);
-        intent.putExtra(CommonData.KEY_PUBLIC, false);
-        intent.putExtra(CommonData.KEY_TRANSFER_BEAN, item);
+        Intent intent = new Intent(this, CooperateDocActivity.class);
+        intent.putExtra(CommonData.KEY_HOSPITAL_BEAN,item);
         startActivity(intent);
-    }
-
-    @Override
-    public void onRefresh()
-    {
-        page = 0;
-        getPatientToList();
-    }
-
-    @Override
-    public void loadMore()
-    {
-        swipeRefreshLayout.setRefreshing(true);
-        page++;
-        getPatientToList();
     }
 
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response)
     {
+        super.onResponseSuccess(task, response);
         switch (task)
         {
-            case GET_PATIENTS_TO_LIST:
-                patientBeanList = response.getData();
+            case GET_COOPERATE_HOSPITAL_LIST_BY_DOCTORID:
+                hospitalBeans = response.getData();
                 if (page == 0)
                 {
-                    transPatientsListAdapter.setList(patientBeanList);
+                    cooperateHospitalAdapter.setList(hospitalBeans);
                 }
                 else
                 {
-                    transPatientsListAdapter.addList(patientBeanList);
+                    cooperateHospitalAdapter.addList(hospitalBeans);
                 }
-                transPatientsListAdapter.notifyDataSetChanged();
-                if (patientBeanList.size() < PAGE_SIZE)
+                cooperateHospitalAdapter.notifyDataSetChanged();
+                if (hospitalBeans.size() < PAGE_SIZE)
                 {
-                    tvFooterHintTxt.setText("暂无更多数据");
+                    tvHintTxt.setText("暂无更多数据");
                     autoLoadRecyclerView.loadFinish(false);
                 }
                 else
                 {
-                    tvFooterHintTxt.setText("上拉加载更多");
+                    tvHintTxt.setText("上拉加载更多");
                     autoLoadRecyclerView.loadFinish(true);
                 }
                 break;
@@ -181,7 +158,7 @@ public class TransferPatientToActivity extends BaseActivity
         {
             page--;
         }
-        tvFooterHintTxt.setText("暂无更多数据");
+        tvHintTxt.setText("暂无更多数据");
         autoLoadRecyclerView.loadFinish();
     }
 
@@ -193,7 +170,7 @@ public class TransferPatientToActivity extends BaseActivity
         {
             page--;
         }
-        tvFooterHintTxt.setText("暂无更多数据");
+        tvHintTxt.setText("暂无更多数据");
         autoLoadRecyclerView.loadFinish();
     }
 
@@ -202,5 +179,20 @@ public class TransferPatientToActivity extends BaseActivity
     {
         super.onResponseEnd(task);
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onRefresh()
+    {
+        page = 0;
+        getHospitalListByDoctorId();
+    }
+
+    @Override
+    public void loadMore()
+    {
+        swipeRefreshLayout.setRefreshing(true);
+        page++;
+        getHospitalListByDoctorId();
     }
 }

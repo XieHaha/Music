@@ -55,20 +55,7 @@
         android:id="@+id/act_health_card_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="46dp"
         android:layout_below="@+id/act_health_card_indicator"></android.support.v4.view.ViewPager>
-
-    <TextView
-        android:id="@+id/act_health_card_chat"
-        android:layout_width="match_parent"
-        android:textSize="18sp"
-        android:text="发起会话"
-        android:gravity="center"
-        android:visibility="gone"
-        android:background="@color/app_main_color"
-        android:layout_alignParentBottom="true"
-        android:textColor="@color/app_white_color"
-        android:layout_height="46dp" />
 
 
 </RelativeLayout>

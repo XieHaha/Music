@@ -47,7 +47,7 @@ public class ApplyCooperateDocActivity extends BaseActivity
     /**
      * 一页最大数
      */
-    private static final int PAGE_SIZE = 20;
+    private static final int PAGE_SIZE = 500;
     /**
      * 操作返回码
      */

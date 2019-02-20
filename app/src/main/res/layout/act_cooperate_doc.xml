@@ -7,6 +7,35 @@
 
     <include layout="@layout/public_title_bar" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/corner_white_full_bg"
+        android:layout_height="40dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:src="@mipmap/icon_search_main_color"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/act_cooperate_doc_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="16sp"
+            android:textColor="@color/app_minor_color"
+            android:inputType="text"
+            android:singleLine="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@null"
+            android:imeOptions="actionSearch" />
+
+    </LinearLayout>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/act_cooperate_swipe_layout"
         android:layout_width="match_parent"

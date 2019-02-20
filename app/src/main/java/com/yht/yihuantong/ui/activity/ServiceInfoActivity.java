@@ -98,7 +98,7 @@ public class ServiceInfoActivity extends BaseActivity
         switch (v.getId())
         {
             case R.id.act_service_package_change_layout:
-                //                intent = new Intent(this, CooperateDocActivity.class);
+                //                intent = new Intent(this, SelectTransferDocActivity.class);
                 intent = new Intent(this, TransferPatientActivity.class);
                 intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientBean);
                 intent.putExtra(CommonData.KEY_PUBLIC, true);

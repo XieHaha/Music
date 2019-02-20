@@ -24,6 +24,8 @@
     <color name="app_parting_minor_bg">#e7e7e7</color>
     <!-- 次要背景色 (239,239,244)-->
     <color name="app_minor_bg">#efeff4</color>
+    <!-- 医生认证背景色-->
+    <color name="app_auth_bg">#fff4f8</color>
 
     <color name="cebebeb">#ebebeb</color>
     <color name="app_auth_success">#00cc66</color>
@@ -34,4 +36,10 @@
     <color name="_1F6BAC">#1F6BAC</color>
     <color name="_F16798">#F16798</color>
     <color name="_000000">#000000</color>
+    
+    <!--2019年2月20日17:32:22-->
+    <!--转诊-->
+    <color name="_FF6417">#FF6417</color>
+    <color name="_EA5F5F">#EA5F5F</color>
+    <color name="_E40505">#E40505</color>
 </resources>

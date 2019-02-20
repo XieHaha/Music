@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
@@ -19,25 +23,28 @@ import java.util.List;
 
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CooperateDocBean;
+import custom.frame.bean.HospitalBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
- * 转诊医生
+ * 合作医院医生列表
  *
  * @author DUNDUN
  */
 public class CooperateDocActivity extends BaseActivity
         implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener
 {
-    private TextView tvHintTxt;
+    private TextView tvHintTxt, tvTitle;
+    private EditText editText;
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
     private View footerView;
     private CooperateDocListAdapter cooperateDocListAdapter;
     private List<CooperateDocBean> cooperateDocBeanList = new ArrayList<>();
+    private HospitalBean hospitalBean;
     /**
      * 当前页码
      */
@@ -45,7 +52,7 @@ public class CooperateDocActivity extends BaseActivity
     /**
      * 一页最大数
      */
-    private static final int PAGE_SIZE = 20;
+    private static final int PAGE_SIZE = 500;
 
     @Override
     public int getLayoutID()
@@ -63,9 +70,10 @@ public class CooperateDocActivity extends BaseActivity
     public void initView(@NonNull Bundle savedInstanceState)
     {
         super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("合作医生");
+        tvTitle = ((TextView)findViewById(R.id.public_title_bar_title));
         swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.act_cooperate_swipe_layout);
         autoLoadRecyclerView = (AutoLoadRecyclerView)findViewById(R.id.act_cooperate_recycler_view);
+        editText = (EditText)findViewById(R.id.act_cooperate_doc_search);
         footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
@@ -81,7 +89,16 @@ public class CooperateDocActivity extends BaseActivity
         cooperateDocListAdapter = new CooperateDocListAdapter(this, cooperateDocBeanList);
         cooperateDocListAdapter.addFooterView(footerView);
         page = 0;
-        getCooperateList();
+        if (getIntent() != null)
+        {
+            hospitalBean = (HospitalBean)getIntent().getSerializableExtra(
+                    CommonData.KEY_HOSPITAL_BEAN);
+        }
+        if (hospitalBean != null)
+        {
+            tvTitle.setText(hospitalBean.getHospitalName());
+        }
+        getCooperateHospitalDoctorList();
     }
 
     @Override
@@ -102,21 +119,33 @@ public class CooperateDocActivity extends BaseActivity
                                                            setResult(RESULT_OK, intent);
                                                            finish();
                                                        });
+        editText.setOnEditorActionListener((v, actionId, event) ->
+                                           {
+                                               if (actionId == EditorInfo.IME_ACTION_SEARCH)
+                                               {
+                                                   hideSoftInputFromWindow();
+                                               }
+                                               return false;
+                                           });
     }
 
     /**
-     * 获取合作医生列表数据
+     * 获取合作医院下所有医生
      */
-    private void getCooperateList()
+    private void getCooperateHospitalDoctorList()
     {
-        mIRequest.getCooperateList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
+        if (hospitalBean != null)
+        {
+            mIRequest.getCooperateHospitalDoctorList(hospitalBean.getHospitalId(), page, PAGE_SIZE,
+                                                     this);
+        }
     }
 
     @Override
     public void onRefresh()
     {
         page = 0;
-        getCooperateList();
+        getCooperateHospitalDoctorList();
     }
 
     @Override
@@ -124,7 +153,7 @@ public class CooperateDocActivity extends BaseActivity
     {
         swipeRefreshLayout.setRefreshing(true);
         page++;
-        getCooperateList();
+        getCooperateHospitalDoctorList();
     }
 
     @Override
@@ -133,7 +162,7 @@ public class CooperateDocActivity extends BaseActivity
         super.onResponseSuccess(task, response);
         switch (task)
         {
-            case GET_COOPERATE_DOC_LIST:
+            case GET_COOPERATE_HOSPITAL_DOCTOR_LIST:
                 if (response.getData() != null)
                 {
                     cooperateDocBeanList = response.getData();
@@ -192,5 +221,15 @@ public class CooperateDocActivity extends BaseActivity
     {
         super.onResponseEnd(task);
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    /**
+     * 隐藏软键盘
+     */
+    private void hideSoftInputFromWindow()
+    {
+        InputMethodManager inputmanger = (InputMethodManager)getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        inputmanger.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 }

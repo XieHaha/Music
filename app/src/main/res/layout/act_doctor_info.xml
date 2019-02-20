@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:background="@color/app_minor_bg"
+    android:orientation="vertical"
     android:layout_height="match_parent">
 
     <include
@@ -12,8 +13,8 @@
         android:layout_width="match_parent"
         android:scrollbars="none"
         android:layout_below="@id/top_bar"
-        android:layout_marginBottom="50dp"
-        android:layout_height="match_parent">
+        android:layout_weight="1"
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -292,10 +293,11 @@
         android:layout_width="match_parent"
         android:textSize="18sp"
         android:text="发起会话"
+        android:visibility="visible"
         android:gravity="center"
         android:background="@color/app_main_color"
         android:layout_alignParentBottom="true"
         android:textColor="@color/app_white_color"
         android:layout_height="50dp" />
 
-</RelativeLayout>
+</LinearLayout>

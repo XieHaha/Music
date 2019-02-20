@@ -3,6 +3,7 @@ package com.yht.yihuantong.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -51,10 +52,10 @@ public class TransferPatientActivity extends BaseActivity
     private ImageView ivArrow;
     private FilterEmojiEditText filterEmojiEditText;
     private TextView tvName, tvSex, tvAge, tvTransferDoc;
-    private TextView tvDocName, tvDocHospital, tvNext, tvTransferNext, tvTime;
-    private TextView tvTransferStatus, tvTransferTxt;
+    private TextView tvDocName, tvDocHospital, tvNext, tvTransferNext, tvTransferRefuse, tvTransferCancel, tvTime;
+    private TextView tvTransferStatus, tvTransferTxt, tvSelectHospitalName;
     private ImageView ivTransferStatu;
-    private LinearLayout llTransferDocLayout, llTransferDocLayout1, llTransferStatusLayout;
+    private LinearLayout llTransferDocLayout, llTransferDocLayout1, llTransferStatusLayout, llSelectHospitalLayout;
     private PatientBean patientBean;
     private CooperateDocBean cooperateDocBean;
     private TransPatientBean transPatientBean;
@@ -103,15 +104,21 @@ public class TransferPatientActivity extends BaseActivity
         tvDocHospital = (TextView)findViewById(R.id.act_transfer_patient_doc_hospital);
         tvTransferStatus = (TextView)findViewById(R.id.act_transfer_patient_status);
         tvTransferTxt = (TextView)findViewById(R.id.act_transfer_patient_transfer_txt);
+        tvSelectHospitalName = (TextView)findViewById(
+                R.id.act_transfer_patient_select_hospital_name);
         tvTime = (TextView)findViewById(R.id.act_transfer_patient_transfer_time);
         tvNext = (TextView)findViewById(R.id.act_transfer_patient_next);
         tvTransferNext = (TextView)findViewById(R.id.act_transfer_patient_transfer_next);
+        tvTransferRefuse = (TextView)findViewById(R.id.act_transfer_patient_transfer_refuse);
+        tvTransferCancel = (TextView)findViewById(R.id.act_transfer_patient_transfer_cancel);
         ivTransferStatu = (ImageView)findViewById(R.id.act_transfer_patient_status_icon);
         filterEmojiEditText = (FilterEmojiEditText)findViewById(R.id.act_transfer_patient_intro);
         llTransferDocLayout = (LinearLayout)findViewById(R.id.act_transfer_patient_doc_layout);
         llTransferDocLayout1 = (LinearLayout)findViewById(R.id.act_transfer_patient_doc_layout1);
         llTransferStatusLayout = (LinearLayout)findViewById(
                 R.id.act_transfer_patient_status_layout);
+        llSelectHospitalLayout = (LinearLayout)findViewById(
+                R.id.act_transfer_patient_select_hospital_layout);
     }
 
     @Override
@@ -136,6 +143,9 @@ public class TransferPatientActivity extends BaseActivity
         super.initListener();
         tvNext.setOnClickListener(this);
         tvTransferNext.setOnClickListener(this);
+        tvTransferRefuse.setOnClickListener(this);
+        tvTransferCancel.setOnClickListener(this);
+        findViewById(R.id.act_transfer_patient_select_hospital).setOnClickListener(this);
         filterEmojiEditText.setOnEditorActionListener((v, actionId, event) ->
                                                       {
                                                           //屏蔽换行符
@@ -157,6 +167,7 @@ public class TransferPatientActivity extends BaseActivity
         {
             llTransferStatusLayout.setVisibility(View.GONE);
             llTransferDocLayout1.setVisibility(View.GONE);
+            llSelectHospitalLayout.setVisibility(View.GONE);
             llTransferDocLayout.setVisibility(View.VISIBLE);
             llTransferDocLayout.setOnClickListener(this);
             llTransferDocLayout1.setOnClickListener(this);
@@ -194,7 +205,7 @@ public class TransferPatientActivity extends BaseActivity
                 if (!loginSuccessBean.getDoctorId()
                                      .equals(transPatientBean.getFromDoctorId()))//接收转诊
                 {
-                    tvTransferTxt.setText("转诊来自");
+                    tvTransferTxt.setText(R.string.txt_transfer_patient_from);
                     //转诊医生信息
                     Glide.with(this)
                          .load(transPatientBean.getFromDoctorImage())
@@ -205,34 +216,61 @@ public class TransferPatientActivity extends BaseActivity
                     switch (transPatientBean.getAcceptState())
                     {
                         case 0:
-                            tvTransferStatus.setText(
-                                    getString(R.string.txt_transfer_patient_to_comfirm));
+                            tvTransferStatus.setText(R.string.txt_transfer_patient_to_comfirm);
+                            tvTransferStatus.setTextColor(
+                                    ContextCompat.getColor(this, R.color._FF6417));
                             tvTransferNext.setVisibility(View.VISIBLE);
-                            tvTransferNext.setText(
-                                    getString(R.string.txt_transfer_patient_to_recved));
-                            ivTransferStatu.setSelected(false);
+                            tvTransferRefuse.setVisibility(View.VISIBLE);
+                            llSelectHospitalLayout.setVisibility(View.VISIBLE);
+                            tvTransferNext.setText(R.string.txt_transfer_patient_to_recved);
                             orderState = 1;
+                            ivTransferStatu.setImageResource(R.mipmap.icon_wait);
                             break;
                         case 1:
-                            tvTransferStatus.setText(
-                                    getString(R.string.txt_transfer_patient_to_wait_visit));
+                            tvTransferStatus.setText(R.string.txt_transfer_patient_to_wait_visit);
+                            tvTransferStatus.setTextColor(
+                                    ContextCompat.getColor(this, R.color._1F6BAC));
+                            llSelectHospitalLayout.setVisibility(View.GONE);
                             tvTransferNext.setVisibility(View.VISIBLE);
-                            tvTransferNext.setText(
-                                    getString(R.string.txt_transfer_patient_to_visit));
-                            ivTransferStatu.setSelected(false);
+                            tvTransferRefuse.setVisibility(View.GONE);
+                            tvTransferNext.setText(R.string.txt_transfer_patient_to_visit);
                             orderState = 2;
+                            ivTransferStatu.setImageResource(R.mipmap.icon_wait_visit);
                             break;
                         case 2:
                             tvTransferStatus.setText(
-                                    getString(R.string.txt_transfer_patient_to_complete_visit));
+                                    R.string.txt_transfer_patient_to_complete_visit);
+                            tvTransferStatus.setTextColor(
+                                    ContextCompat.getColor(this, R.color.app_main_color));
+                            llSelectHospitalLayout.setVisibility(View.GONE);
                             tvTransferNext.setVisibility(View.GONE);
-                            ivTransferStatu.setSelected(true);
+                            tvTransferRefuse.setVisibility(View.GONE);
+                            ivTransferStatu.setImageResource(R.mipmap.icon_complete);
+                            break;
+                        case 3:
+                            tvTransferNext.setVisibility(View.GONE);
+                            tvTransferRefuse.setVisibility(View.GONE);
+                            tvTransferCancel.setVisibility(View.GONE);
+                            tvTransferStatus.setText(R.string.txt_transfer_patient_to_refuse_visit);
+                            tvTransferStatus.setTextColor(
+                                    ContextCompat.getColor(this, R.color._E40505));
+                            ivTransferStatu.setImageResource(R.mipmap.icon_refuse);
+                            break;
+                        case 4:
+                            tvTransferNext.setVisibility(View.GONE);
+                            tvTransferRefuse.setVisibility(View.GONE);
+                            tvTransferCancel.setVisibility(View.GONE);
+                            tvTransferStatus.setText(R.string.txt_transfer_patient_to_cancel_visit);
+                            tvTransferStatus.setTextColor(
+                                    ContextCompat.getColor(this, R.color._E40505));
+                            ivTransferStatu.setImageResource(R.mipmap.icon_refuse);
                             break;
                     }
                 }
                 else
                 {
-                    tvTransferTxt.setText("转诊给");
+                    tvTransferTxt.setText(R.string.txt_transfer_patient_to);
+                    llSelectHospitalLayout.setVisibility(View.GONE);
                     tvTransferNext.setVisibility(View.GONE);
                     //转诊医生信息
                     Glide.with(this)
@@ -245,19 +283,39 @@ public class TransferPatientActivity extends BaseActivity
                     switch (transPatientBean.getAcceptState())
                     {
                         case 0:
-                            tvTransferStatus.setText(
-                                    getString(R.string.txt_transfer_patient_to_comfirm));
-                            ivTransferStatu.setSelected(false);
+                            tvTransferCancel.setVisibility(View.VISIBLE);
+                            tvTransferStatus.setText(R.string.txt_transfer_patient_to_comfirm);
+                            tvTransferStatus.setTextColor(
+                                    ContextCompat.getColor(this, R.color._FF6417));
+                            ivTransferStatu.setImageResource(R.mipmap.icon_wait);
                             break;
                         case 1:
-                            tvTransferStatus.setText(
-                                    getString(R.string.txt_transfer_patient_to_wait_visit));
-                            ivTransferStatu.setSelected(false);
+                            tvTransferStatus.setText(R.string.txt_transfer_patient_to_wait_visit);
+                            tvTransferStatus.setTextColor(
+                                    ContextCompat.getColor(this, R.color._1F6BAC));
+                            ivTransferStatu.setImageResource(R.mipmap.icon_wait_visit);
                             break;
                         case 2:
+                            tvTransferCancel.setVisibility(View.GONE);
                             tvTransferStatus.setText(
-                                    getString(R.string.txt_transfer_patient_to_complete_visit));
-                            ivTransferStatu.setSelected(true);
+                                    R.string.txt_transfer_patient_to_complete_visit);
+                            tvTransferStatus.setTextColor(
+                                    ContextCompat.getColor(this, R.color.app_main_color));
+                            ivTransferStatu.setImageResource(R.mipmap.icon_complete);
+                            break;
+                        case 3:
+                            tvTransferCancel.setVisibility(View.GONE);
+                            tvTransferStatus.setText(R.string.txt_transfer_patient_to_refuse_visit);
+                            tvTransferStatus.setTextColor(
+                                    ContextCompat.getColor(this, R.color._E40505));
+                            ivTransferStatu.setImageResource(R.mipmap.icon_refuse);
+                            break;
+                        case 4:
+                            tvTransferCancel.setVisibility(View.GONE);
+                            tvTransferStatus.setText(R.string.txt_transfer_patient_to_cancel_visit);
+                            tvTransferStatus.setTextColor(
+                                    ContextCompat.getColor(this, R.color._E40505));
+                            ivTransferStatu.setImageResource(R.mipmap.icon_refuse);
                             break;
                     }
                 }
@@ -437,7 +495,7 @@ public class TransferPatientActivity extends BaseActivity
         {
             case R.id.act_transfer_patient_doc_layout:
             case R.id.act_transfer_patient_doc_layout1:
-                intent = new Intent(this, CooperateDocActivity.class);
+                intent = new Intent(this, SelectTransferDocActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_TRANSFER_DOC);
                 break;
             case R.id.act_transfer_patient_next:
@@ -483,6 +541,12 @@ public class TransferPatientActivity extends BaseActivity
                                          (dialog, which) -> dialog.dismiss()).show();
                         break;
                 }
+                break;
+            case R.id.act_transfer_patient_select_hospital://选择接诊医院
+                break;
+            case R.id.act_transfer_patient_transfer_cancel://取消转诊
+                break;
+            case R.id.act_transfer_patient_transfer_refuse://拒绝转诊
                 break;
         }
     }

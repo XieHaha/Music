@@ -108,7 +108,7 @@
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.CooperateDocActivity"
+            android:name=".ui.activity.SelectTransferDocActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:screenOrientation="portrait" />
         <activity
@@ -210,6 +210,18 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.xiaoyu.MeetingDetailActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.AuthDocStatuActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.CooperateHospitalActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.CooperateDocActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"
             android:screenOrientation="portrait" />
         <activity

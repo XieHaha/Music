@@ -1,6 +1,7 @@
 package com.yht.yihuantong.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,11 +9,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -27,9 +30,11 @@ import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.activity.AddFriendsDocActivity;
 import com.yht.yihuantong.ui.activity.AddFriendsPatientActivity;
 import com.yht.yihuantong.ui.activity.ApplyCooperateDocActivity;
+import com.yht.yihuantong.ui.activity.CooperateHospitalActivity;
 import com.yht.yihuantong.ui.activity.DoctorInfoActivity;
 import com.yht.yihuantong.ui.adapter.CooperateDocListAdapter;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
+import com.yht.yihuantong.utils.AllUtils;
 
 import org.litepal.crud.DataSupport;
 
@@ -61,6 +66,9 @@ public class CooperateDocFragment extends BaseFragment
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
     private View headerView, footerView;
+    private View view_pop;
+    private PopupWindow mPopupwinow;
+    private TextView tvOne, tvTwo;
     private CooperateDocListAdapter cooperateDocListAdapter;
     private INotifyChangeListenerServer iNotifyChangeListenerServer;
     private List<CooperateDocBean> cooperateDocBeanList = new ArrayList<>();
@@ -202,21 +210,62 @@ public class CooperateDocFragment extends BaseFragment
         mIRequest.getApplyCooperateList(loginSuccessBean.getDoctorId(), 0, PAGE_SIZE, this);
     }
 
+    /**
+     * 显示pop
+     */
+    private void showPop()
+    {
+        view_pop = LayoutInflater.from(getContext()).inflate(R.layout.health_pop_menu, null);
+        tvOne = view_pop.findViewById(R.id.txt_one);
+        tvTwo = view_pop.findViewById(R.id.txt_two);
+        tvOne.setText("扫一扫");
+        tvTwo.setText("合作医院医生");
+        tvOne.setOnClickListener(this);
+        tvTwo.setOnClickListener(this);
+        if (mPopupwinow == null)
+        {
+            //新建一个popwindow
+            mPopupwinow = new PopupWindow(view_pop, LinearLayout.LayoutParams.WRAP_CONTENT,
+                                          LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        }
+        mPopupwinow.setFocusable(true);
+        mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
+        mPopupwinow.setOutsideTouchable(true);
+        mPopupwinow.showAtLocation(view_pop, Gravity.TOP | Gravity.RIGHT, 0,
+                                   (int)AllUtils.dipToPx(getContext(), 55));
+    }
+
     @Override
     public void onClick(View v)
     {
+        Intent intent;
         super.onClick(v);
         switch (v.getId())
         {
             case R.id.fragment_cooperate_apply_layout:
-                Intent intent = new Intent(getContext(), ApplyCooperateDocActivity.class);
+                intent = new Intent(getContext(), ApplyCooperateDocActivity.class);
                 startActivity(intent);
                 break;
             case R.id.public_title_bar_more_three:
+                showPop();
+                break;
+            case R.id.txt_one:
+                if (mPopupwinow != null)
+                {
+                    mPopupwinow.dismiss();
+                }
                 IntentIntegrator.forSupportFragment(this)
                                 .setBarcodeImageEnabled(false)
                                 .setPrompt(getString(R.string.txt_camera_hint))
                                 .initiateScan();
+                break;
+            case R.id.txt_two:
+                if (mPopupwinow != null)
+                {
+                    mPopupwinow.dismiss();
+                }
+                intent = new Intent(getContext(), CooperateHospitalActivity.class);
+                startActivity(intent);
                 break;
         }
     }

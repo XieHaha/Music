@@ -504,6 +504,34 @@ public class IRequest extends BaseRequest
     }
 
     /**
+     * 获取合作医院
+     */
+    public Tasks getCooperateHospitalListByDoctorId(String doctorId,
+            final ResponseListener<BaseResponse> listener)
+    {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        return requestBaseResponseListByJson("/hospital/doctor/relation/collaborate/hospital/list",
+                                             Tasks.GET_COOPERATE_HOSPITAL_LIST_BY_DOCTORID,
+                                             HospitalBean.class, merchant, listener);
+    }
+
+    /**
+     * 获取合作医院下面的医生
+     */
+    public Tasks getCooperateHospitalDoctorList(String hospitalId, int pageNo, int pageSize,
+            final ResponseListener<BaseResponse> listener)
+    {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("hospitalId", hospitalId);
+        merchant.put("pageNo", pageNo);
+        merchant.put("pageSize", pageSize);
+        return requestBaseResponseListByJson("/hospital/doctor/relation/internal/doctor/list",
+                                             Tasks.GET_COOPERATE_HOSPITAL_DOCTOR_LIST,
+                                             CooperateDocBean.class, merchant, listener);
+    }
+
+    /**
      * 根据医院id获取商品类型和类型下的商品详情
      */
     public Tasks getHospitalProductListByHospitalId(String hospitalId,
@@ -568,8 +596,8 @@ public class IRequest extends BaseRequest
         //传0 代表不限制时间
         merchant.put("days", days);
         return requestBaseResponseListByJson("/trans/doctor/patient/notes",
-                                             Tasks.GET_TRANSFER_BY_PATIENT,
-                                             TransPatientBean.class, merchant, listener);
+                                             Tasks.GET_TRANSFER_BY_PATIENT, TransPatientBean.class,
+                                             merchant, listener);
     }
 
     /**
