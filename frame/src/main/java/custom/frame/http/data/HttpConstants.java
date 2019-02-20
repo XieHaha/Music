@@ -7,9 +7,13 @@ public interface HttpConstants
      */
     //    String BASE_BASIC_URL = "http://gray.zychealth.com";
     /**
+     * 开发服务器
+     */
+    String BASE_BASIC_URL = "http://test.zychealth.com";
+    /**
      * 正式服务器
      */
-    String BASE_BASIC_URL = "http://www.zychealth.com";
+    //    String BASE_BASIC_URL = "http://www.zychealth.com";
     /**
      * 超时时间
      */
