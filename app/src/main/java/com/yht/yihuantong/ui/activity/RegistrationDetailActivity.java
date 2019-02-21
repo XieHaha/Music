@@ -45,6 +45,7 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
     private ImageView ivHospitalImg;
     private TextView tvHospitalName, tvHospitalAddress, tvHospitalGrade;
     private TextView tvPatientName, tvPatientSex, tvPatientAge, tvDes, tvDoctorName, tvDoctorHospital;
+    private TextView tvReserveTime, tvReserveTips;
     private RelativeLayout rlHospitalLayout;
     private RegistrationBean registrationBean;
     private String registrationId;
@@ -85,6 +86,8 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
         tvHospitalName = (TextView)findViewById(R.id.act_service_pack_hint_hospital_name);
         tvHospitalAddress = (TextView)findViewById(R.id.act_service_pack_hint_hospital_address);
         tvHospitalGrade = (TextView)findViewById(R.id.act_service_pack_hint_hospital_grade);
+        tvReserveTime = (TextView)findViewById(R.id.act_registration_detail_time);
+        tvReserveTips = (TextView)findViewById(R.id.act_registration_detail_hint);
         rlHospitalLayout = (RelativeLayout)findViewById(R.id.act_service_pack_hint_hospital_layout);
     }
 
@@ -144,6 +147,10 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
         tvContactPhone.setText(registrationBean.getProductContactPhone());
         tvUseful.setText(registrationBean.getProductAccessChannel());
         tvAttention.setText(registrationBean.getProductOtherInfo());
+        //预约信息
+        tvReserveTime.setText(AllUtils.formatDate(registrationBean.getHospitalReserveTime(),
+                                                  AllUtils.YYYY_MM_DD_HH_MM));
+        tvReserveTips.setText(registrationBean.getHospitalReserveTips());
         switch (registrationBean.getOrderState())
         {
             case STATUS_SUBSCRIBE_NONE:

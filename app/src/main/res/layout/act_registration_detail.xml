@@ -511,6 +511,7 @@
                 android:orientation="vertical"
                 android:layout_below="@id/act_service_pack_contact_layout"
                 android:background="@color/app_white_color"
+                android:paddingBottom="10dp"
                 android:layout_height="wrap_content">
 
 

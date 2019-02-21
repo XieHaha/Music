@@ -1,14 +1,19 @@
 package com.yht.yihuantong.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -67,9 +72,10 @@ public class ServicePackActivity<T> extends BaseActivity
     private TextView tvTitle1, tvTitle2, tvTitle3, tvTitle4;
     private TextView tvNext;
     private EditText etDes;
+    private EditText searchEdit;
     private ImageView ivHosspitalImg;
     private TextView tvHospitalName, tvHospitalAddress, tvHospitalGrade;
-    private LinearLayout llPatientInfoLayout;
+    private LinearLayout llPatientInfoLayout, llSearchLayout;
     private RelativeLayout rlHospitalLayout;
     private TextView tvContact, tvContactPhone, tvUseful, tvAttention;
     private View line;
@@ -137,6 +143,7 @@ public class ServicePackActivity<T> extends BaseActivity
         tvTitle2 = (TextView)findViewById(R.id.act_service_pack_goods_price_txt);
         tvTitle4 = (TextView)findViewById(R.id.act_service_pack_goods_info_txt);
         etDes = (EditText)findViewById(R.id.act_service_pack_des);
+        searchEdit = (EditText)findViewById(R.id.act_cooperate_doc_search);
         line = findViewById(R.id.title_line);
         rlHospitalLayout = (RelativeLayout)findViewById(R.id.act_service_pack_hint_hospital_layout);
         ivHosspitalImg = (ImageView)findViewById(R.id.act_service_pack_hint_hospital_img);
@@ -148,6 +155,7 @@ public class ServicePackActivity<T> extends BaseActivity
         tvUseful = (TextView)findViewById(R.id.act_service_pack_useful);
         tvAttention = (TextView)findViewById(R.id.act_service_pack_attention);
         llPatientInfoLayout = (LinearLayout)findViewById(R.id.act_service_pack_patient_info_layout);
+        llSearchLayout = (LinearLayout)findViewById(R.id.search_layout);
     }
 
     @Override
@@ -195,6 +203,7 @@ public class ServicePackActivity<T> extends BaseActivity
                                                        curHospital = item;
                                                        tvHintTxt.setVisibility(View.GONE);
                                                        line.setVisibility(View.GONE);
+                                                       llSearchLayout.setVisibility(View.GONE);
                                                        rlHospitalLayout.setVisibility(View.VISIBLE);
                                                        tvHospitalName.setText(
                                                                curHospital.getHospitalName());
@@ -225,12 +234,18 @@ public class ServicePackActivity<T> extends BaseActivity
                                                                           curHospital.getHospitalName() +
                                                                           " > " +
                                                                           curProductType.getProductTypeName());
+                                                                  llSearchLayout.setVisibility(
+                                                                          View.VISIBLE);
                                                                   hospitalProductTypeRecycler.setVisibility(
                                                                           View.GONE);
                                                                   hospitalProductRecycler.setVisibility(
                                                                           View.VISIBLE);
+                                                                  productBeans = item.getProductInfoByHospitalIdResList();
+                                                                  DataSupport.deleteAll(
+                                                                          HospitalProductBean.class);
+                                                                  DataSupport.saveAll(productBeans);
                                                                   registrationProductAdapter.setList(
-                                                                          item.getProductInfoByHospitalIdResList());
+                                                                          productBeans);
                                                               });
         registrationProductAdapter.setOnItemClickListener((v, position, item) ->
                                                           {
@@ -238,6 +253,41 @@ public class ServicePackActivity<T> extends BaseActivity
                                                               curProduct = item;
                                                               initProductDetailPage();
                                                           });
+        searchEdit.setOnEditorActionListener((v, actionId, event) ->
+                                             {
+                                                 if (actionId == EditorInfo.IME_ACTION_SEARCH)
+                                                 {
+                                                     hideSoftInputFromWindow();
+                                                     search(v.getText().toString());
+                                                 }
+                                                 return false;
+                                             });
+        searchEdit.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                if (!TextUtils.isEmpty(s))
+                {
+                    search(s.toString());
+                }
+                else
+                {
+                    registrationProductAdapter.setList(productBeans);
+                    registrationProductAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+            }
+        });
     }
 
     private void ininPageData()
@@ -276,6 +326,7 @@ public class ServicePackActivity<T> extends BaseActivity
     {
         tvHintTxt.setVisibility(View.GONE);
         rlHospitalLayout.setVisibility(View.VISIBLE);
+        llSearchLayout.setVisibility(View.GONE);
         //        tvHintTxt.setText(
         //                curHospital.getHospitalName() + " > " + curProductType.getProductTypeName() +
         //                " > " + curProduct.getProductName());
@@ -306,6 +357,19 @@ public class ServicePackActivity<T> extends BaseActivity
         {
             tvNext.setVisibility(View.VISIBLE);
         }
+    }
+
+    /**
+     * 匹配搜索
+     *
+     * @param key
+     */
+    private void search(String key)
+    {
+        List<HospitalProductBean> datas = DataSupport.where("productName like ?", "%" + key + "%")
+                                                     .find(HospitalProductBean.class);
+        registrationProductAdapter.setList(datas);
+        registrationProductAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -497,6 +561,7 @@ public class ServicePackActivity<T> extends BaseActivity
             tvHintTxt.setVisibility(View.VISIBLE);
             line.setVisibility(View.VISIBLE);
             rlHospitalLayout.setVisibility(View.GONE);
+            llSearchLayout.setVisibility(View.VISIBLE);
             tvHintTxt.setText(
                     curHospital.getHospitalName() + " > " + curProductType.getProductTypeName());
             tvNext.setVisibility(View.GONE);
@@ -510,6 +575,7 @@ public class ServicePackActivity<T> extends BaseActivity
             //            tvHintTxt.setText(curHospital.getHospitalName());
             tvHintTxt.setVisibility(View.GONE);
             line.setVisibility(View.GONE);
+            llSearchLayout.setVisibility(View.GONE);
             rlHospitalLayout.setVisibility(View.VISIBLE);
             tvHospitalName.setText(curHospital.getHospitalName());
             tvHospitalAddress.setText(curHospital.getCityName());
@@ -536,5 +602,15 @@ public class ServicePackActivity<T> extends BaseActivity
             return false;
         }
         return true;
+    }
+
+    /**
+     * 隐藏软键盘
+     */
+    private void hideSoftInputFromWindow()
+    {
+        InputMethodManager inputmanger = (InputMethodManager)getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        inputmanger.hideSoftInputFromWindow(searchEdit.getWindowToken(), 0);
     }
 }

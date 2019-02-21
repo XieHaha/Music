@@ -80,11 +80,11 @@
     <string name="txt_transfer_patient_to_input_diagnosisinfo">请输入诊断内容</string>
     <string name="txt_transfer_patient_to">转诊给</string>
     <string name="txt_transfer_patient_from">转诊来自</string>
-    <string name="txt_transfer_patient_to_comfirm">待接受</string>
     <string name="txt_transfer_patient_to_recved">接收转诊</string>
     <string name="txt_transfer_patient_to_cancel">取消转诊</string>
     <string name="txt_transfer_patient_to_refuse">拒绝转诊</string>
     <string name="txt_transfer_patient_to_visit">确认就诊</string>
+    <string name="txt_transfer_patient_to_comfirm">待接受</string>
     <string name="txt_transfer_patient_to_wait_visit">待就诊</string>
     <string name="txt_transfer_patient_to_refuse_visit">已拒绝</string>
     <string name="txt_transfer_patient_to_cancel_visit">已取消</string>

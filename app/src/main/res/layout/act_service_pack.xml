@@ -1,13 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:background="@color/app_minor_bg"
     android:layout_height="match_parent">
 
     <include
         layout="@layout/public_title_bar"
         android:id="@+id/title_bar" />
+
+    <LinearLayout
+        android:id="@+id/search_layout"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        android:visibility="gone"
+        android:gravity="center_vertical"
+        android:background="@drawable/corner_white_full_bg"
+        android:layout_height="40dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:src="@mipmap/icon_search_main_color"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/act_cooperate_doc_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="16sp"
+            android:textColor="@color/app_minor_color"
+            android:inputType="text"
+            android:singleLine="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@null"
+            android:imeOptions="actionSearch" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/act_service_pack_hint_txt"
@@ -105,7 +137,6 @@
         android:id="@+id/act_service_pack_hospital_product_type_list"
         android:layout_width="match_parent"
         android:visibility="gone"
-        android:layout_below="@id/act_service_pack_hint_hospital_layout"
         android:layout_height="match_parent" />
 
 
@@ -113,7 +144,6 @@
         android:id="@+id/act_service_pack_hospital_product_list"
         android:layout_width="match_parent"
         android:visibility="gone"
-        android:layout_below="@id/title_line"
         android:layout_height="match_parent" />
 
 
@@ -121,10 +151,11 @@
         android:id="@+id/act_service_pack_goods_detail_layout"
         android:layout_width="match_parent"
         android:scrollbars="none"
-        android:layout_marginBottom="46dp"
-        android:layout_below="@id/act_service_pack_hint_hospital_layout"
         android:visibility="gone"
-        android:layout_height="match_parent">
+        android:layout_weight="1"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -531,4 +562,4 @@
         android:textColor="@color/app_white_color"
         android:textSize="16sp" />
 
-</RelativeLayout>
+</LinearLayout>

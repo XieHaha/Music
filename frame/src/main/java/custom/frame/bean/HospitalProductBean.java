@@ -1,11 +1,13 @@
 package custom.frame.bean;
 
+import org.litepal.crud.DataSupport;
+
 import java.io.Serializable;
 
 /**
  * Created by dundun on 18/8/15.
  */
-public class HospitalProductBean implements Serializable
+public class HospitalProductBean extends DataSupport implements Serializable
 {
     private static final long serialVersionUID = 144695042019835544L;
 

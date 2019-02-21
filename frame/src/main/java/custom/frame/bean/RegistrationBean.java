@@ -38,6 +38,8 @@ public class RegistrationBean implements Serializable
     private String hospitalAddress;
     private String hospitalPhone;
     private String hospitalDescription;
+    private long hospitalReserveTime;
+    private String hospitalReserveTips;
 
     public String getProductOrderId()
     {
@@ -337,5 +339,25 @@ public class RegistrationBean implements Serializable
     public void setHospitalDescription(String hospitalDescription)
     {
         this.hospitalDescription = hospitalDescription;
+    }
+
+    public long getHospitalReserveTime()
+    {
+        return hospitalReserveTime;
+    }
+
+    public void setHospitalReserveTime(long hospitalReserveTime)
+    {
+        this.hospitalReserveTime = hospitalReserveTime;
+    }
+
+    public String getHospitalReserveTips()
+    {
+        return hospitalReserveTips;
+    }
+
+    public void setHospitalReserveTips(String hospitalReserveTips)
+    {
+        this.hospitalReserveTips = hospitalReserveTips;
     }
 }
