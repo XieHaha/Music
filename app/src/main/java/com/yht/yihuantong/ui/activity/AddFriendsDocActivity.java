@@ -85,6 +85,14 @@ public class AddFriendsDocActivity extends BaseActivity
             tvAgree.setText("通过验证");
             tvRefuse.setVisibility(View.VISIBLE);
         }
+        if (loginSuccessBean.getDoctorId().equals(doctorId))
+        {
+            tvAgree.setVisibility(View.GONE);
+        }
+        else
+        {
+            tvAgree.setVisibility(View.VISIBLE);
+        }
         getDocInfo();
     }
 

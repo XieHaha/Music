@@ -69,6 +69,10 @@ public class TransferInfoFragment extends BaseFragment
      * 0  表示不限制
      */
     private static final int DAYS_DATA = 0;
+    /**
+     * 转诊状态发生改变回调
+     */
+    public static final int REQUEST_CODE_STATUS_CHANGE = 100;
 
     @Override
     public int getLayoutID()
@@ -149,7 +153,7 @@ public class TransferInfoFragment extends BaseFragment
         intent.putExtra(CommonData.KEY_PUBLIC, false);
         intent.putExtra("limit", true);
         intent.putExtra(CommonData.KEY_TRANSFER_BEAN, item);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE_STATUS_CHANGE);
     }
 
     @Override
@@ -229,5 +233,21 @@ public class TransferInfoFragment extends BaseFragment
     {
         page = 0;
         getTransferInfoList();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != getActivity().RESULT_OK)
+        {
+            return;
+        }
+        switch (requestCode)
+        {
+            case REQUEST_CODE_STATUS_CHANGE:
+                getTransferInfoList();
+                break;
+        }
     }
 }

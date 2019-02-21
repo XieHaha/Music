@@ -340,6 +340,7 @@
                         android:layout_height="match_parent" />
 
                     <ImageView
+                        android:id="@+id/img"
                         android:layout_width="wrap_content"
                         android:src="@mipmap/icon_arrow_right"
                         android:layout_alignParentRight="true"
@@ -347,7 +348,10 @@
                 </LinearLayout>
 
             </LinearLayout>
-
+            <View
+                android:layout_width="match_parent"
+                android:background="@color/app_minor_bg"
+                android:layout_height="10dp" />
             <TextView
                 android:id="@+id/act_transfer_patient_next"
                 android:layout_width="190dp"

@@ -11,6 +11,7 @@ import java.util.Map;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CombineBean;
 import custom.frame.bean.CooperateDocBean;
+import custom.frame.bean.CooperateHospitalDocBean;
 import custom.frame.bean.HospitalBean;
 import custom.frame.bean.HospitalProductTypeBean;
 import custom.frame.bean.LoginSuccessBean;
@@ -427,6 +428,19 @@ public class IRequest extends BaseRequest
     }
 
     /**
+     * 好友验证 是否为好友
+     */
+    public Tasks friendsVerify(String doctorId, String patientId,
+            final ResponseListener<BaseResponse> listener)
+    {
+        RequestParams params = new RequestParams();
+        params.addBodyParameter("doctorId ", doctorId);
+        params.addBodyParameter("patientId", patientId);
+        return requestBaseResponse(GET, "/dp/verify", Tasks.FRIENDS_VERIFY, CooperateDocBean.class,
+                                   params, listener);
+    }
+
+    /**
      * 删除患者病例
      */
     public Tasks deletePatientCase(String patientId, int fieldId, String caseCreatorId,
@@ -489,22 +503,34 @@ public class IRequest extends BaseRequest
                                              Tasks.GET_HOSPITAL_LIST, HospitalBean.class, merchant,
                                              listener);
     }
+    //    /**
+    //     * 根据医生id获取医院列表
+    //     */
+    //    public Tasks getHospitalListByDoctorId(String doctorId,
+    //            final ResponseListener<BaseResponse> listener)
+    //    {
+    //        Map<String, Object> merchant = new HashMap<>(16);
+    //        merchant.put("doctorId", doctorId);
+    //        return requestBaseResponseListByJson("/doctor/info/hospitals",
+    //                                             Tasks.GET_HOSPITAL_LIST_BY_DOCTORID,
+    //                                             HospitalBean.class, merchant, listener);
+    //    }
 
     /**
-     * 根据医生id获取医院列表
+     * 根据医生id获取医院列表  2019年2月21日16:02:40
      */
     public Tasks getHospitalListByDoctorId(String doctorId,
             final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
-        return requestBaseResponseListByJson("/doctor/info/hospitals",
+        return requestBaseResponseListByJson("/hospital/doctor/relation/list",
                                              Tasks.GET_HOSPITAL_LIST_BY_DOCTORID,
                                              HospitalBean.class, merchant, listener);
     }
 
     /**
-     * 获取合作医院
+     * 获取我的合作医院
      */
     public Tasks getCooperateHospitalListByDoctorId(String doctorId,
             final ResponseListener<BaseResponse> listener)
@@ -528,7 +554,7 @@ public class IRequest extends BaseRequest
         merchant.put("pageSize", pageSize);
         return requestBaseResponseListByJson("/hospital/doctor/relation/internal/doctor/list",
                                              Tasks.GET_COOPERATE_HOSPITAL_DOCTOR_LIST,
-                                             CooperateDocBean.class, merchant, listener);
+                                             CooperateHospitalDocBean.class, merchant, listener);
     }
 
     /**

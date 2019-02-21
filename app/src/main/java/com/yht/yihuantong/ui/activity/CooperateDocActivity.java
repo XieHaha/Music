@@ -7,6 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -16,13 +19,15 @@ import android.widget.TextView;
 
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
-import com.yht.yihuantong.ui.adapter.CooperateDocListAdapter;
+import com.yht.yihuantong.ui.adapter.CooperateHospitalDocListAdapter;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import custom.frame.bean.BaseResponse;
-import custom.frame.bean.CooperateDocBean;
+import custom.frame.bean.CooperateHospitalDocBean;
 import custom.frame.bean.HospitalBean;
 import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
@@ -42,8 +47,8 @@ public class CooperateDocActivity extends BaseActivity
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
     private View footerView;
-    private CooperateDocListAdapter cooperateDocListAdapter;
-    private List<CooperateDocBean> cooperateDocBeanList = new ArrayList<>();
+    private CooperateHospitalDocListAdapter cooperateHospitalDocListAdapter;
+    private List<CooperateHospitalDocBean> cooperateHospitalDocBeans = new ArrayList<>();
     private HospitalBean hospitalBean;
     /**
      * 当前页码
@@ -86,8 +91,9 @@ public class CooperateDocActivity extends BaseActivity
     public void initData(@NonNull Bundle savedInstanceState)
     {
         super.initData(savedInstanceState);
-        cooperateDocListAdapter = new CooperateDocListAdapter(this, cooperateDocBeanList);
-        cooperateDocListAdapter.addFooterView(footerView);
+        cooperateHospitalDocListAdapter = new CooperateHospitalDocListAdapter(this,
+                                                                              cooperateHospitalDocBeans);
+        cooperateHospitalDocListAdapter.addFooterView(footerView);
         page = 0;
         if (getIntent() != null)
         {
@@ -109,24 +115,54 @@ public class CooperateDocActivity extends BaseActivity
         autoLoadRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        autoLoadRecyclerView.setAdapter(cooperateDocListAdapter);
-        cooperateDocListAdapter.setOnItemClickListener((v, position, item) ->
-                                                       {
-                                                           Intent intent = new Intent();
-                                                           intent.putExtra(
-                                                                   CommonData.KEY_DOCTOR_BEAN,
-                                                                   item);
-                                                           setResult(RESULT_OK, intent);
-                                                           finish();
-                                                       });
+        autoLoadRecyclerView.setAdapter(cooperateHospitalDocListAdapter);
+        cooperateHospitalDocListAdapter.setOnItemClickListener((v, position, item) ->
+                                                               {
+                                                                   Intent intent = new Intent(this,
+                                                                                              AddFriendsDocActivity.class);
+                                                                   intent.putExtra(
+                                                                           CommonData.KEY_DOCTOR_ID,
+                                                                           item.getDoctorId());
+                                                                   intent.putExtra(
+                                                                           CommonData.KEY_PUBLIC,
+                                                                           true);
+                                                                   startActivity(intent);
+                                                               });
         editText.setOnEditorActionListener((v, actionId, event) ->
                                            {
                                                if (actionId == EditorInfo.IME_ACTION_SEARCH)
                                                {
                                                    hideSoftInputFromWindow();
+                                                   search(v.getText().toString());
                                                }
                                                return false;
                                            });
+        editText.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                if (!TextUtils.isEmpty(s))
+                {
+                    search(s.toString());
+                }
+                else
+                {
+                    cooperateHospitalDocListAdapter.setList(cooperateHospitalDocBeans);
+                    cooperateHospitalDocListAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+            }
+        });
     }
 
     /**
@@ -139,6 +175,19 @@ public class CooperateDocActivity extends BaseActivity
             mIRequest.getCooperateHospitalDoctorList(hospitalBean.getHospitalId(), page, PAGE_SIZE,
                                                      this);
         }
+    }
+
+    /**
+     * 匹配搜索
+     *
+     * @param key
+     */
+    private void search(String key)
+    {
+        List<CooperateHospitalDocBean> datas = DataSupport.where("name like ?", "%" + key + "%")
+                                                          .find(CooperateHospitalDocBean.class);
+        cooperateHospitalDocListAdapter.setList(datas);
+        cooperateHospitalDocListAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -165,17 +214,17 @@ public class CooperateDocActivity extends BaseActivity
             case GET_COOPERATE_HOSPITAL_DOCTOR_LIST:
                 if (response.getData() != null)
                 {
-                    cooperateDocBeanList = response.getData();
+                    cooperateHospitalDocBeans = response.getData();
                     if (page == 0)
                     {
-                        cooperateDocListAdapter.setList(cooperateDocBeanList);
+                        cooperateHospitalDocListAdapter.setList(cooperateHospitalDocBeans);
                     }
                     else
                     {
-                        cooperateDocListAdapter.addList(cooperateDocBeanList);
+                        cooperateHospitalDocListAdapter.addList(cooperateHospitalDocBeans);
                     }
-                    cooperateDocListAdapter.notifyDataSetChanged();
-                    if (cooperateDocBeanList.size() < PAGE_SIZE)
+                    cooperateHospitalDocListAdapter.notifyDataSetChanged();
+                    if (cooperateHospitalDocBeans.size() < PAGE_SIZE)
                     {
                         tvHintTxt.setText("暂无更多数据");
                         autoLoadRecyclerView.loadFinish(false);
@@ -185,6 +234,9 @@ public class CooperateDocActivity extends BaseActivity
                         tvHintTxt.setText("上拉加载更多");
                         autoLoadRecyclerView.loadFinish(true);
                     }
+                    //数据存储
+                    DataSupport.deleteAll(CooperateHospitalDocBean.class);
+                    DataSupport.saveAll(cooperateHospitalDocBeans);
                 }
                 break;
             default:

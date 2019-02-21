@@ -24,7 +24,6 @@ import custom.frame.bean.BaseResponse;
 import custom.frame.bean.PatientBean;
 import custom.frame.bean.TransPatientBean;
 import custom.frame.http.Tasks;
-import custom.frame.ui.activity.BaseActivity;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.ui.fragment.BaseFragment;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
@@ -53,6 +52,10 @@ public class TransferPatientFromFragment extends BaseFragment
      * 一页最大数
      */
     private static final int PAGE_SIZE = 500;
+    /**
+     * 转诊状态发生改变回调
+     */
+    public static final int REQUEST_CODE_STATUS_CHANGE = 100;
 
     @Override
     public int getLayoutID()
@@ -125,7 +128,7 @@ public class TransferPatientFromFragment extends BaseFragment
         Intent intent = new Intent(getContext(), TransferPatientActivity.class);
         intent.putExtra(CommonData.KEY_PUBLIC, false);
         intent.putExtra(CommonData.KEY_TRANSFER_BEAN, item);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE_STATUS_CHANGE);
     }
 
     @Override
@@ -202,5 +205,21 @@ public class TransferPatientFromFragment extends BaseFragment
     {
         super.onResponseEnd(task);
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != getActivity().RESULT_OK)
+        {
+            return;
+        }
+        switch (requestCode)
+        {
+            case REQUEST_CODE_STATUS_CHANGE:
+                getPatientFromList();
+                break;
+        }
     }
 }

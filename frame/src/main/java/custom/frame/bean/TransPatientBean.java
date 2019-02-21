@@ -30,6 +30,8 @@ public class TransPatientBean implements Serializable
     private String patientImage;
     private String patientIdentityNumber;
     private String fromDoctorDiagnosisInfo;
+    private int hospitalId;
+    private String hospitalName;
 
     public int getTransferId()
     {
@@ -249,5 +251,25 @@ public class TransPatientBean implements Serializable
     public void setFromDoctorDiagnosisInfo(String fromDoctorDiagnosisInfo)
     {
         this.fromDoctorDiagnosisInfo = fromDoctorDiagnosisInfo;
+    }
+
+    public int getHospitalId()
+    {
+        return hospitalId;
+    }
+
+    public void setHospitalId(int hospitalId)
+    {
+        this.hospitalId = hospitalId;
+    }
+
+    public String getHospitalName()
+    {
+        return hospitalName;
+    }
+
+    public void setHospitalName(String hospitalName)
+    {
+        this.hospitalName = hospitalName;
     }
 }

@@ -34,6 +34,7 @@
     <list>
         <mapping class="custom.frame.bean.PatientBean"></mapping>
         <mapping class="custom.frame.bean.CooperateDocBean"></mapping>
+        <mapping class="custom.frame.bean.CooperateHospitalDocBean"></mapping>
         <mapping class="custom.frame.bean.RegistrationTypeBean"></mapping>
     </list>
 

@@ -116,6 +116,10 @@ public enum Tasks
      */
     GET_PATIENT_CASE_LIST,
     /**
+     * 好友验证
+     */
+    FRIENDS_VERIFY,
+    /**
      * 新增患者病例
      */
     ADD_PATIENT_CASE,

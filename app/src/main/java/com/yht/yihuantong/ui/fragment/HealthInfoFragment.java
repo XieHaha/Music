@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import custom.frame.bean.BaseResponse;
+import custom.frame.bean.CooperateDocBean;
 import custom.frame.bean.PatientBean;
 import custom.frame.bean.PatientCaseDetailBean;
 import custom.frame.http.Tasks;
@@ -44,13 +45,14 @@ public class HealthInfoFragment extends BaseFragment
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
     private LinearLayout llNoneLayout;
-    private TextView tvNoneTxt;
+    private TextView tvNoneTxt, tvAuthFaild;
     private View footerView;
     private TextView tvHintTxt;
     /**
      * 患者 bean
      */
     private PatientBean patientBean;
+    private CooperateDocBean cooperateDocBean;
     /**
      * 患者id
      */
@@ -77,6 +79,7 @@ public class HealthInfoFragment extends BaseFragment
     {
         super.onResume();
         getPatientCaseList();
+        friendsVerify();
     }
 
     @Override
@@ -87,6 +90,7 @@ public class HealthInfoFragment extends BaseFragment
         autoLoadRecyclerView = view.findViewById(R.id.fragment_health_record_recycler);
         llNoneLayout = view.findViewById(R.id.fragment_info_none_layout);
         tvNoneTxt = view.findViewById(R.id.fragment_info_none_txt);
+        tvAuthFaild = view.findViewById(R.id.fragment_info_auth_faild);
         footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
@@ -133,11 +137,40 @@ public class HealthInfoFragment extends BaseFragment
     }
 
     /**
+     * 是否有权限查看健康档案
+     */
+    private void initHealthAuth()
+    {
+        if (cooperateDocBean != null)
+        {
+            switch (cooperateDocBean.getIsAuthorityOpen())
+            {
+                case 0:
+                    tvAuthFaild.setVisibility(View.VISIBLE);
+                    autoLoadRecyclerView.setVisibility(View.GONE);
+                    break;
+                case 1:
+                    tvAuthFaild.setVisibility(View.GONE);
+                    autoLoadRecyclerView.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
+    }
+
+    /**
      * 获取患者病例列表
      */
     private void getPatientCaseList()
     {
         mIRequest.getPatientCaseList(patientId, this);
+    }
+
+    /**
+     * 获取个人信息 以及好友验证
+     */
+    private void friendsVerify()
+    {
+        mIRequest.friendsVerify(loginSuccessBean.getDoctorId(), patientId, this);
     }
 
     /**
@@ -205,6 +238,10 @@ public class HealthInfoFragment extends BaseFragment
             case DELETE_PATIENT_CASE:
                 ToastUtil.toast(getContext(), response.getMsg());
                 getPatientCaseList();
+                break;
+            case FRIENDS_VERIFY:
+                cooperateDocBean = response.getData();
+                initHealthAuth();
                 break;
             default:
                 break;

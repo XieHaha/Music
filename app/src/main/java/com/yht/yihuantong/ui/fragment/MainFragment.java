@@ -152,6 +152,10 @@ public class MainFragment extends BaseFragment
      * 扫码结果
      */
     public static final int REQUEST_CODE = 0x0000c0de;
+    /**
+     * 转诊状态发生改变回调
+     */
+    public static final int REQUEST_CODE_STATUS_CHANGE = 100;
     private Handler handler = new Handler()
     {
         @Override
@@ -331,7 +335,7 @@ public class MainFragment extends BaseFragment
                 Intent intent = new Intent(getContext(), TransferPatientActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC, false);
                 intent.putExtra(CommonData.KEY_TRANSFER_BEAN, transPatientBean);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_STATUS_CHANGE);
                 transferInfoLimitAdapter.notifyDataSetChanged();
             }
         });
@@ -724,6 +728,9 @@ public class MainFragment extends BaseFragment
                 {
                     super.onActivityResult(requestCode, resultCode, data);
                 }
+                break;
+            case REQUEST_CODE_STATUS_CHANGE:
+                getTransferList();
                 break;
         }
     }

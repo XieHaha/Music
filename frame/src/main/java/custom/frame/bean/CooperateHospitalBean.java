@@ -20,6 +20,7 @@ public class CooperateHospitalBean implements Serializable
     private String address;
     private String hospitalDescription;
     private String image;
+    private int relationshipId;//1，执业医院   2，合作医院
 
     public String getHospitalId()
     {
@@ -129,5 +130,15 @@ public class CooperateHospitalBean implements Serializable
     public void setImage(String image)
     {
         this.image = image;
+    }
+
+    public int getRelationshipId()
+    {
+        return relationshipId;
+    }
+
+    public void setRelationshipId(int relationshipId)
+    {
+        this.relationshipId = relationshipId;
     }
 }

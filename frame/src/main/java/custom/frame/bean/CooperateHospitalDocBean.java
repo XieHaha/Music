@@ -5,9 +5,9 @@ import org.litepal.crud.DataSupport;
 import java.io.Serializable;
 
 /**
- * 合作医生
+ * 合作医院下属医生
  */
-public class CooperateDocBean extends DataSupport implements Serializable
+public class CooperateHospitalDocBean extends DataSupport implements Serializable
 {
     private static final long serialVersionUID = -5825956356939935298L;
     private int fieldId;
@@ -24,8 +24,6 @@ public class CooperateDocBean extends DataSupport implements Serializable
     private String checkUrl;
     private String identityNumber;
     private String nickname;
-    private int isFriends;//1为好友
-    private int isAuthorityOpen;//0 关闭   1打开  默认为0；
 
     public int getFieldId()
     {
@@ -165,25 +163,5 @@ public class CooperateDocBean extends DataSupport implements Serializable
     public void setNickname(String nickname)
     {
         this.nickname = nickname;
-    }
-
-    public int getIsFriends()
-    {
-        return isFriends;
-    }
-
-    public void setIsFriends(int isFriends)
-    {
-        this.isFriends = isFriends;
-    }
-
-    public int getIsAuthorityOpen()
-    {
-        return isAuthorityOpen;
-    }
-
-    public void setIsAuthorityOpen(int isAuthorityOpen)
-    {
-        this.isAuthorityOpen = isAuthorityOpen;
     }
 }
