@@ -64,7 +64,7 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
                 int type = json.optInt("newsid");
                 int msgId = json.optInt("msg");
                 SharePreferenceUtil sharePreferenceUtil = new SharePreferenceUtil(context);
-                String ids = sharePreferenceUtil.getString("ids");
+                String ids = sharePreferenceUtil.getString(CommonData.KEY_NEW_MESSAGE_REMIND);
                 if (TextUtils.isEmpty(ids))
                 {
                     ids = String.valueOf(msgId);
@@ -76,7 +76,7 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
                     stringBuilder.append(msgId);
                     ids = stringBuilder.toString();
                 }
-                sharePreferenceUtil.putString("ids", ids);
+                sharePreferenceUtil.putString(CommonData.KEY_NEW_MESSAGE_REMIND, ids);
                 notifyStatusChange(type);
             }
             else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction()))

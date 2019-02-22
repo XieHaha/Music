@@ -74,7 +74,7 @@ public class RegistrationListAdapter extends BaseRecyclerAdapter<RegistrationBea
             switch (item.getOrderState())
             {
                 case STATUS_SUBSCRIBE_NONE:
-                    tvOrderStatus.setText("待预约");
+                    tvOrderStatus.setText("未确认");
                     tvOrderStatus.setTextColor(
                             ContextCompat.getColor(context, R.color.app_main_txt_color));
                     break;

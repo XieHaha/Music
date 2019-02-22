@@ -97,7 +97,6 @@ public class MainFragment extends BaseFragment
     private ListView orderInfoListView, transferInfoListView;
     private CustomGridView customGridView;
     private MainOptionsAdapter mainOptionsAdapter;
-    private RecentContactAdapter recentContactAdapter;
     private View view_pop;
     private PopupWindow mPopupwinow;
     private TextView tvOne, tvTwo;
@@ -105,6 +104,10 @@ public class MainFragment extends BaseFragment
      * 二维码
      */
     private BarCodeImageView barCodeImageView;
+    /**
+     * 最近联系人
+     */
+    private RecentContactAdapter recentContactAdapter;
     /**
      * 转诊记录
      */
@@ -314,7 +317,7 @@ public class MainFragment extends BaseFragment
             {
                 TransPatientBean transPatientBean = transPatientBeans.get(position);
                 String transferId = String.valueOf(transPatientBean.getTransferId());
-                String string = sharePreferenceUtil.getString("ids");
+                String string = sharePreferenceUtil.getString(CommonData.KEY_NEW_MESSAGE_REMIND);
                 if (!TextUtils.isEmpty(string))
                 {
                     StringBuilder stringBuilder = new StringBuilder();
@@ -330,7 +333,8 @@ public class MainFragment extends BaseFragment
                             }
                         }
                     }
-                    sharePreferenceUtil.putString("ids", stringBuilder.toString());
+                    sharePreferenceUtil.putString(CommonData.KEY_NEW_MESSAGE_REMIND,
+                                                  stringBuilder.toString());
                 }
                 Intent intent = new Intent(getContext(), TransferPatientActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC, false);
@@ -346,7 +350,7 @@ public class MainFragment extends BaseFragment
             {
                 RegistrationBean registrationBean = registrationBeans.get(position);
                 String transferId = String.valueOf(registrationBean.getProductOrderId());
-                String string = sharePreferenceUtil.getString("ids");
+                String string = sharePreferenceUtil.getString(CommonData.KEY_NEW_MESSAGE_REMIND);
                 if (!TextUtils.isEmpty(string))
                 {
                     StringBuilder stringBuilder = new StringBuilder();
@@ -362,7 +366,8 @@ public class MainFragment extends BaseFragment
                             }
                         }
                     }
-                    sharePreferenceUtil.putString("ids", stringBuilder.toString());
+                    sharePreferenceUtil.putString(CommonData.KEY_NEW_MESSAGE_REMIND,
+                                                  stringBuilder.toString());
                 }
                 Intent intent = new Intent(getContext(), RegistrationDetailActivity.class);
                 intent.putExtra(CommonData.KEY_REGISTRATION_BEAN, registrationBean);

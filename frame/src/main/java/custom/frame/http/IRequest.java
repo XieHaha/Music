@@ -419,12 +419,15 @@ public class IRequest extends BaseRequest
     /**
      * 获取患者病例列表
      */
-    public Tasks getPatientCaseList(String patientId, final ResponseListener<BaseResponse> listener)
+    public Tasks getPatientLimitCaseList(String doctorId, String patientId,
+            final ResponseListener<BaseResponse> listener)
     {
-        RequestParams params = new RequestParams();
-        params.addBodyParameter("patientId", patientId);
-        return requestBaseResponseList(GET, "/case/nameCase", Tasks.GET_PATIENT_CASE_LIST,
-                                       PatientCaseDetailBean.class, params, listener);
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("patientId", patientId);
+        return requestBaseResponseListByJson("/case/doctor/query",
+                                             Tasks.GET_PATIENT_LIMIT_CASE_LIST,
+                                             PatientCaseDetailBean.class, merchant, listener);
     }
 
     /**
@@ -637,6 +640,23 @@ public class IRequest extends BaseRequest
         params.put("pageSize", pageSize);
         params.put("patientId", patientId);
         return requestBaseResponseListByJson("/order/patient/all/orders",
+                                             Tasks.GET_PATIENT_ALL_ORDER_LIST,
+                                             RegistrationBean.class, params, listener);
+    }
+
+    /**
+     * 获取当前医生给患者患者所有订单
+     */
+    public Tasks getPatientOrders(String doctorId, String patientId, int page, int pageSize,
+            final ResponseListener<BaseResponse> listener)
+    {
+        Map<String, Object> params = new HashMap<>();
+        params.put("days", 0);
+        params.put("pageNo", page);
+        params.put("pageSize", pageSize);
+        params.put("patientId", patientId);
+        params.put("doctorId", doctorId);
+        return requestBaseResponseListByJson("/order/doctor/patient/notes",
                                              Tasks.GET_PATIENT_ORDER_LIST, RegistrationBean.class,
                                              params, listener);
     }

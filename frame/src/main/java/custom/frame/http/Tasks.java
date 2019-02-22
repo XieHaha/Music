@@ -114,7 +114,7 @@ public enum Tasks
     /**
      * 获取患者病例列表
      */
-    GET_PATIENT_CASE_LIST,
+    GET_PATIENT_LIMIT_CASE_LIST,
     /**
      * 好友验证
      */
@@ -193,6 +193,10 @@ public enum Tasks
     GET_TRANSFER_BY_PATIENT,
     /**
      * 患者订单记录
+     */
+    GET_PATIENT_ALL_ORDER_LIST,
+    /**
+     * 当前医生给患者开的订单记录
      */
     GET_PATIENT_ORDER_LIST,
 }

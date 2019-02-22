@@ -52,6 +52,8 @@
                             android:textSize="17sp"
                             android:textColor="@color/app_main_txt_color"
                             android:text="我的患者"
+                            android:drawableLeft="@mipmap/icon_my_patients"
+                            android:drawablePadding="5dp"
                             android:layout_height="wrap_content" />
 
 

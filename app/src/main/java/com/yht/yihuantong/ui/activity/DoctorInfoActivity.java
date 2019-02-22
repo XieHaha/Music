@@ -61,8 +61,9 @@ public class DoctorInfoActivity extends BaseActivity
 {
     private CircleImageView ivHeadImg;
     private ImageView ivMore;
-    private TextView tvName, tvType, tvTitle, tvIntroduce, tvHospital, tvChat, tvAuthStatus;
+    private TextView tvName, tvType, tvTitle, tvIntroduce, tvHospital, tvChat;
     private TextView tvChange, tvDelete;
+    private TextView tvHospitalVerify, tvPlatformVerify;
     private AutoLoadRecyclerView recyclerView, hospitalRecyclerView;
     private PopupWindow mPopupwinow;
     /**
@@ -127,8 +128,9 @@ public class DoctorInfoActivity extends BaseActivity
         tvTitle = (TextView)findViewById(R.id.act_user_info_title);
         tvType = (TextView)findViewById(R.id.act_user_info_type);
         tvChat = (TextView)findViewById(R.id.act_user_info_chat);
-        tvAuthStatus = (TextView)findViewById(R.id.act_user_info_auth_status);
         tvIntroduce = (TextView)findViewById(R.id.act_user_info_introduce);
+        tvHospitalVerify = (TextView)findViewById(R.id.act_user_info_hospital_verify);
+        tvPlatformVerify = (TextView)findViewById(R.id.act_user_info_platform_verify);
         recyclerView = (AutoLoadRecyclerView)findViewById(R.id.act_user_info_recycler);
         hospitalRecyclerView = (AutoLoadRecyclerView)findViewById(
                 R.id.act_user_info_hospital_recycler);
@@ -244,6 +246,15 @@ public class DoctorInfoActivity extends BaseActivity
             tvHospital.setText(cooperateDocBean.getHospital());
             tvTitle.setText(cooperateDocBean.getTitle());
             tvType.setText(cooperateDocBean.getDepartment());
+            tvHospitalVerify.setSelected(true);
+            if (cooperateDocBean.getChecked() == 6)
+            {
+                tvPlatformVerify.setSelected(true);
+            }
+            else
+            {
+                tvPlatformVerify.setSelected(false);
+            }
             if (!TextUtils.isEmpty(cooperateDocBean.getDoctorDescription()))
             {
                 tvIntroduce.setText(cooperateDocBean.getDoctorDescription());
@@ -251,16 +262,6 @@ public class DoctorInfoActivity extends BaseActivity
             else
             {
                 tvIntroduce.setText("暂无简介");
-            }
-            if (6 == cooperateDocBean.getChecked())
-            {
-                tvAuthStatus.setText("已认证");
-                tvAuthStatus.setSelected(true);
-            }
-            else
-            {
-                tvAuthStatus.setText("待认证");
-                tvAuthStatus.setSelected(false);
             }
         }
     }

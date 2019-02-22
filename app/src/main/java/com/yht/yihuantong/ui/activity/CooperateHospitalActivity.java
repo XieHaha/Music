@@ -106,14 +106,14 @@ public class CooperateHospitalActivity extends BaseActivity
      */
     private void getHospitalListByDoctorId()
     {
-        mIRequest.getCooperateHospitalListByDoctorId(loginSuccessBean.getDoctorId(), this);
+        mIRequest.getHospitalListByDoctorId(loginSuccessBean.getDoctorId(), this);
     }
 
     @Override
     public void onItemClick(View v, int position, HospitalBean item)
     {
         Intent intent = new Intent(this, CooperateDocActivity.class);
-        intent.putExtra(CommonData.KEY_HOSPITAL_BEAN,item);
+        intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, item);
         startActivity(intent);
     }
 
@@ -123,7 +123,7 @@ public class CooperateHospitalActivity extends BaseActivity
         super.onResponseSuccess(task, response);
         switch (task)
         {
-            case GET_COOPERATE_HOSPITAL_LIST_BY_DOCTORID:
+            case GET_HOSPITAL_LIST_BY_DOCTORID:
                 hospitalBeans = response.getData();
                 if (page == 0)
                 {

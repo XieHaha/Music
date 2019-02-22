@@ -79,7 +79,7 @@ public class OrderInfoAdapter extends BaseRecyclerAdapter<RegistrationBean> impl
             switch (curTransferPatient.getOrderState())
             {
                 case STATUS_SUBSCRIBE_NONE:
-                    tvStatus.setText("待预约");
+                    tvStatus.setText("未确认");
                     tvStatus.setTextColor(
                             ContextCompat.getColor(context, R.color.app_main_txt_color));
                     break;

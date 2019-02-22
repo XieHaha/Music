@@ -30,10 +30,10 @@
             <RelativeLayout
                 android:id="@+id/act_user_info_layout"
                 android:layout_width="match_parent"
-                android:layout_marginRight="25dp"
-                android:layout_marginLeft="25dp"
-                android:paddingRight="10dp"
-                android:paddingLeft="30dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:paddingRight="20dp"
+                android:paddingLeft="10dp"
                 android:layout_marginTop="25dp"
                 android:elevation="2dp"
                 android:background="@drawable/corner_white_full_bg"
@@ -52,6 +52,7 @@
                     android:id="@+id/act_user_info_auth_status"
                     android:layout_width="wrap_content"
                     android:textSize="12sp"
+                    android:visibility="invisible"
                     android:layout_marginTop="15dp"
                     android:layout_alignParentRight="true"
                     android:textColor="@color/auth_txt_color_selector"
@@ -108,6 +109,40 @@
                             android:layout_marginLeft="5dp"
                             android:textColor="@color/app_minor_color"
                             android:text=""
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/act_user_info_hospital_verify"
+                            android:layout_width="wrap_content"
+                            android:text="医院已认证"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@id/act_user_info_hospital"
+                            android:gravity="center_vertical"
+                            android:drawablePadding="5dp"
+                            android:drawableLeft="@drawable/doc_verify_status_selector"
+                            android:textSize="13sp"
+                            android:textColor="@color/app_main_txt_color"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:id="@+id/act_user_info_platform_verify"
+                            android:layout_width="wrap_content"
+                            android:text="平台已认证"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@id/act_user_info_hospital"
+                            android:gravity="center_vertical"
+                            android:drawablePadding="5dp"
+                            android:layout_marginLeft="15dp"
+                            android:drawableLeft="@drawable/doc_verify_status_selector"
+                            android:textSize="13sp"
+                            android:textColor="@color/app_main_txt_color"
                             android:layout_height="wrap_content" />
 
                     </LinearLayout>

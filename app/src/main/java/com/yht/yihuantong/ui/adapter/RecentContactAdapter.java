@@ -1,7 +1,6 @@
 package com.yht.yihuantong.ui.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,15 +68,15 @@ public class RecentContactAdapter extends BaseRecyclerAdapter<PatientBean>
                  .load(patientBean.getPatientImgUrl())
                  .apply(GlideHelper.getOptionsP())
                  .into(ivHeadImg);
-            if (!TextUtils.isEmpty(patientBean.getNickname()) &&
-                patientBean.getNickname().length() < 20)
-            {
-                tvName.setText(patientBean.getNickname());
-            }
-            else
-            {
-                tvName.setText(patientBean.getName());
-            }
+            //            if (!TextUtils.isEmpty(patientBean.getNickname()) &&
+            //                patientBean.getNickname().length() < 20)
+            //            {
+            //                tvName.setText(patientBean.getNickname());
+            //            }
+            //            else
+            //            {
+            tvName.setText(patientBean.getName());
+            //            }
         }
     }
 }

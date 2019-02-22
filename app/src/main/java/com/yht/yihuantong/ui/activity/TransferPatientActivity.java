@@ -62,6 +62,7 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
     private CooperateDocBean cooperateDocBean;
     private CooperateHospitalBean cooperateHospitalBean;
     private TransPatientBean transPatientBean;
+    private int transferId;
     /**
      * 选择合作医生
      */
@@ -140,10 +141,18 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                     CommonData.KEY_PATIENT_BEAN);
             transPatientBean = (TransPatientBean)getIntent().getSerializableExtra(
                     CommonData.KEY_TRANSFER_BEAN);
+            transferId = getIntent().getIntExtra(CommonData.KEY_TRANSFER_ID, 0);
             isAddTransferMode = getIntent().getBooleanExtra(CommonData.KEY_PUBLIC, false);
             limit = getIntent().getBooleanExtra("limit", false);
         }
-        initPageData();
+        if (patientBean == null)
+        {
+            getTransferDetailById();
+        }
+        else
+        {
+            initPageData();
+        }
     }
 
     @Override
@@ -356,6 +365,60 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
             tvTransferNext.setVisibility(View.GONE);
             tvNext.setVisibility(View.GONE);
         }
+    }
+
+    /**
+     * 获取转诊详情  新接口2019年2月22日11:55:40
+     */
+    private void getTransferDetailById()
+    {
+        RequestQueue queue = NoHttp.getRequestQueueInstance();
+        final Request<String> request = NoHttp.createStringRequest(
+                HttpConstants.BASE_BASIC_URL + "/trans/single/detail", RequestMethod.POST);
+        Map<String, Object> params = new HashMap<>();
+        params.put("transferId", transferId);
+        JSONObject jsonObject = new JSONObject(params);
+        request.setDefineRequestBodyForJson(jsonObject.toString());
+        queue.add(1, request, new OnResponseListener<String>()
+        {
+            @Override
+            public void onStart(int what)
+            {
+            }
+
+            @Override
+            public void onSucceed(int what, Response<String> response)
+            {
+                String s = response.get();
+                try
+                {
+                    JSONObject object = new JSONObject(s);
+                    BaseResponse baseResponse = praseBaseResponse(object, TransPatientBean.class);
+                    if (baseResponse != null && baseResponse.getCode() == 200)
+                    {
+                        transPatientBean = baseResponse.getData();
+                        initPageData();
+                    }
+                    ToastUtil.toast(TransferPatientActivity.this, baseResponse.getMsg());
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailed(int what, Response<String> response)
+            {
+                ToastUtil.toast(TransferPatientActivity.this, response.getException().getMessage());
+            }
+
+            @Override
+            public void onFinish(int what)
+            {
+                closeProgressDialog();
+            }
+        });
     }
 
     /**

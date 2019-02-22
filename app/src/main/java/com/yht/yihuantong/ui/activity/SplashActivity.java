@@ -62,29 +62,29 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu
     {
         if (loginSuccessBean != null)
         {
-            //            int checked = loginSuccessBean.getChecked();
-            //            switch (checked)
-            //            {
-            //                case NONE:
-            //                case VERIFYING:
-            //                case VERIFY_FAILD:
-            //                    startActivity(new Intent(this, AuthDocStatuActivity.class));
-            //                    finish();
-            //                    break;
-            //                case VERIFY_SUCCESS:
-            //                    startActivity(new Intent(this, MainActivity.class));
-            //                    finish();
-            //                    overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
-            //                    break;
-            //                default:
-            //                    startActivity(new Intent(this, MainActivity.class));
-            //                    finish();
-            //                    overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
-            //                    break;
-            //            }
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-            overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
+            int checked = loginSuccessBean.getChecked();
+            switch (checked)
+            {
+                case NONE:
+                case VERIFYING:
+                case VERIFY_FAILD:
+                    startActivity(new Intent(this, AuthDocStatuActivity.class));
+                    finish();
+                    break;
+                case VERIFY_SUCCESS:
+                    startActivity(new Intent(this, MainActivity.class));
+                    finish();
+                    overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
+                    break;
+                default:
+                    startActivity(new Intent(this, MainActivity.class));
+                    finish();
+                    overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
+                    break;
+            }
+            //            startActivity(new Intent(this, MainActivity.class));
+            //            finish();
+            //            overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
         }
         else
         {

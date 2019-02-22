@@ -39,18 +39,4 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/fragment_info_auth_faild"
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:visibility="gone"
-        android:text="您暂无查看权限"
-        android:textColor="@color/app_hint_color"
-        android:textSize="14sp"
-        android:background="@color/app_white_color"
-        android:layout_height="140dp">
-
-    </TextView>
-
 </RelativeLayout>

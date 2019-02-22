@@ -45,7 +45,7 @@ public class HealthInfoFragment extends BaseFragment
     private SwipeRefreshLayout swipeRefreshLayout;
     private AutoLoadRecyclerView autoLoadRecyclerView;
     private LinearLayout llNoneLayout;
-    private TextView tvNoneTxt, tvAuthFaild;
+    private TextView tvNoneTxt;
     private View footerView;
     private TextView tvHintTxt;
     /**
@@ -78,8 +78,7 @@ public class HealthInfoFragment extends BaseFragment
     public void onResume()
     {
         super.onResume();
-        getPatientCaseList();
-        friendsVerify();
+        getPatientLimitCaseList();
     }
 
     @Override
@@ -90,7 +89,6 @@ public class HealthInfoFragment extends BaseFragment
         autoLoadRecyclerView = view.findViewById(R.id.fragment_health_record_recycler);
         llNoneLayout = view.findViewById(R.id.fragment_info_none_layout);
         tvNoneTxt = view.findViewById(R.id.fragment_info_none_txt);
-        tvAuthFaild = view.findViewById(R.id.fragment_info_auth_faild);
         footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
@@ -137,40 +135,11 @@ public class HealthInfoFragment extends BaseFragment
     }
 
     /**
-     * 是否有权限查看健康档案
+     * 获取患者病例列表  只能查看当前医生自己开的健康档案
      */
-    private void initHealthAuth()
+    private void getPatientLimitCaseList()
     {
-        if (cooperateDocBean != null)
-        {
-            switch (cooperateDocBean.getIsAuthorityOpen())
-            {
-                case 0:
-                    tvAuthFaild.setVisibility(View.VISIBLE);
-                    autoLoadRecyclerView.setVisibility(View.GONE);
-                    break;
-                case 1:
-                    tvAuthFaild.setVisibility(View.GONE);
-                    autoLoadRecyclerView.setVisibility(View.VISIBLE);
-                    break;
-            }
-        }
-    }
-
-    /**
-     * 获取患者病例列表
-     */
-    private void getPatientCaseList()
-    {
-        mIRequest.getPatientCaseList(patientId, this);
-    }
-
-    /**
-     * 获取个人信息 以及好友验证
-     */
-    private void friendsVerify()
-    {
-        mIRequest.friendsVerify(loginSuccessBean.getDoctorId(), patientId, this);
+        mIRequest.getPatientLimitCaseList(loginSuccessBean.getDoctorId(), patientId, this);
     }
 
     /**
@@ -207,16 +176,16 @@ public class HealthInfoFragment extends BaseFragment
         super.onResponseSuccess(task, response);
         switch (task)
         {
-            case GET_PATIENT_CASE_LIST:
+            case GET_PATIENT_LIMIT_CASE_LIST:
                 if (page == 0)
                 {
                     caseRecordList.clear();
                 }
-                ArrayList<PatientCaseDetailBean> list = response.getData();
-                if (list != null && list.size() > 0)
+                ArrayList<PatientCaseDetailBean> list1 = response.getData();
+                if (list1 != null && list1.size() > 0)
                 {
                     llNoneLayout.setVisibility(View.GONE);
-                    caseRecordList.addAll(list);
+                    caseRecordList.addAll(list1);
                 }
                 else
                 {
@@ -237,11 +206,7 @@ public class HealthInfoFragment extends BaseFragment
                 break;
             case DELETE_PATIENT_CASE:
                 ToastUtil.toast(getContext(), response.getMsg());
-                getPatientCaseList();
-                break;
-            case FRIENDS_VERIFY:
-                cooperateDocBean = response.getData();
-                initHealthAuth();
+                getPatientLimitCaseList();
                 break;
             default:
                 break;
@@ -254,7 +219,7 @@ public class HealthInfoFragment extends BaseFragment
         super.onResponseCodeError(task, response);
         switch (task)
         {
-            case GET_PATIENT_CASE_LIST:
+            case GET_PATIENT_LIMIT_CASE_LIST:
                 if (page > 0)
                 {
                     page--;
@@ -294,13 +259,13 @@ public class HealthInfoFragment extends BaseFragment
     public void loadMore()
     {
         page++;
-        getPatientCaseList();
+        getPatientLimitCaseList();
     }
 
     @Override
     public void onRefresh()
     {
         page = 0;
-        getPatientCaseList();
+        getPatientLimitCaseList();
     }
 }

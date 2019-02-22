@@ -185,14 +185,6 @@ public class TransferInfoFragment extends BaseFragment
         super.onResponseCodeError(task, response);
         switch (task)
         {
-            case GET_PATIENT_CASE_LIST:
-                if (page > 0)
-                {
-                    page--;
-                }
-                tvHintTxt.setText("暂无更多数据");
-                autoLoadRecyclerView.loadFinish();
-                break;
             case DELETE_PATIENT_CASE:
                 if (BaseNetCode.CODE_MODIFY_CASE_RECORD == response.getCode())
                 {

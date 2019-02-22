@@ -16,6 +16,7 @@ public class HospitalBean implements Serializable
     private String hospitalDescription;
     private String hospitalPhone;
     private String address;
+    private int relationshipId;//1，执业医院   2，合作医院
 
     public String getHospitalName()
     {
@@ -95,5 +96,15 @@ public class HospitalBean implements Serializable
     public void setAddress(String address)
     {
         this.address = address;
+    }
+
+    public int getRelationshipId()
+    {
+        return relationshipId;
+    }
+
+    public void setRelationshipId(int relationshipId)
+    {
+        this.relationshipId = relationshipId;
     }
 }

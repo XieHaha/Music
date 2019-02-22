@@ -33,7 +33,7 @@ public class CooperateHospitalAdapter extends BaseRecyclerAdapter<HospitalBean>
     public BaseViewHolder onCreateViewHolder(ViewGroup parent)
     {
         View view = LayoutInflater.from(parent.getContext())
-                                  .inflate(R.layout.item_registration, parent, false);
+                                  .inflate(R.layout.item_select_hospital, parent, false);
         return new ApplyCooperateHolder(view);
     }
 
@@ -46,18 +46,28 @@ public class CooperateHospitalAdapter extends BaseRecyclerAdapter<HospitalBean>
 
     public class ApplyCooperateHolder extends BaseViewHolder<HospitalBean>
     {
-        private TextView tvHospitalName;
+        private TextView tvHospitalName, tvHospitalType;
 
         public ApplyCooperateHolder(View itemView)
         {
             super(itemView);
             tvHospitalName = itemView.findViewById(R.id.item_registration_name);
+            tvHospitalType = itemView.findViewById(R.id.item_registration_type);
         }
 
         @Override
         public void showView(final int position, final HospitalBean item)
         {
             tvHospitalName.setText(item.getHospitalName());
+            switch (item.getRelationshipId())
+            {
+                case 1://执业医院
+                    tvHospitalType.setText("执业医院");
+                    break;
+                case 2://合作医院
+                    tvHospitalType.setText("合作医院");
+                    break;
+            }
         }
     }
 }

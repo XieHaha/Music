@@ -107,7 +107,7 @@ public class OrderInfoLimitAdapter extends BaseAdapter implements OrderStatus, C
     private void initData(ViewHolder holder, int position)
     {
         RegistrationBean curRegistrationBean = list.get(position);
-        String ids = sharePreferenceUtil.getString("ids");
+        String ids = sharePreferenceUtil.getString(CommonData.KEY_NEW_MESSAGE_REMIND);
         if (!TextUtils.isEmpty(ids) &&
             ids.contains(String.valueOf(curRegistrationBean.getProductOrderId())))
         {
@@ -123,7 +123,7 @@ public class OrderInfoLimitAdapter extends BaseAdapter implements OrderStatus, C
         switch (curRegistrationBean.getOrderState())
         {
             case STATUS_SUBSCRIBE_NONE:
-                holder.tvOrderStatus.setText("待预约");
+                holder.tvOrderStatus.setText("未确认");
                 holder.tvOrderStatus.setTextColor(
                         ContextCompat.getColor(context, R.color.app_main_txt_color));
                 break;

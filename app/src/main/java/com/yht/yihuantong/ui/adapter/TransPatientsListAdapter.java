@@ -91,11 +91,11 @@ public class TransPatientsListAdapter extends BaseRecyclerAdapter<TransPatientBe
             switch (item.getAcceptState())
             {
                 case TRANSFER_NONE:
-                    tvStatus.setText("(待确认)");
+                    tvStatus.setText("(待接受)");
                     tvStatus.setTextColor(ContextCompat.getColor(context, R.color._F16798));
                     break;
                 case TRANSFER_RECV:
-                    tvStatus.setText("(未就诊)");
+                    tvStatus.setText("(待就诊)");
                     tvStatus.setTextColor(ContextCompat.getColor(context, R.color._1F6BAC));
                     break;
                 case TRANSFER_VISIT:

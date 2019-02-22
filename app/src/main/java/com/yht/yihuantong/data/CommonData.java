@@ -47,6 +47,10 @@ public interface CommonData
      */
     String KEY_DOCTOR_BEAN = "key_doctor_bean";
     /**
+     * transfer id
+     */
+    String KEY_TRANSFER_ID = "key_transfer_id";
+    /**
      * transfer bean
      */
     String KEY_TRANSFER_BEAN = "key_transfer_bean";
@@ -118,6 +122,10 @@ public interface CommonData
      * meeting bean
      */
     String KEY_MEETING_BEAN = "key_meeting_bean";
+    /**
+     * 新订单、转诊小红点提醒
+     */
+    String KEY_NEW_MESSAGE_REMIND = "key_new_message_remind";
     /**
      * 首页列表基础显示条数
      */

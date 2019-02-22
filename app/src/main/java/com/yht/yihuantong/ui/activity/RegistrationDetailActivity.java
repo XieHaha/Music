@@ -3,8 +3,10 @@ package com.yht.yihuantong.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -46,6 +48,7 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
     private TextView tvHospitalName, tvHospitalAddress, tvHospitalGrade;
     private TextView tvPatientName, tvPatientSex, tvPatientAge, tvDes, tvDoctorName, tvDoctorHospital;
     private TextView tvReserveTime, tvReserveTips;
+    private LinearLayout llReserveLayout;
     private RelativeLayout rlHospitalLayout;
     private RegistrationBean registrationBean;
     private String registrationId;
@@ -89,6 +92,7 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
         tvReserveTime = (TextView)findViewById(R.id.act_registration_detail_time);
         tvReserveTips = (TextView)findViewById(R.id.act_registration_detail_hint);
         rlHospitalLayout = (RelativeLayout)findViewById(R.id.act_service_pack_hint_hospital_layout);
+        llReserveLayout = (LinearLayout)findViewById(R.id.act_registration_detail_time_layout);
     }
 
     @Override
@@ -148,9 +152,17 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
         tvUseful.setText(registrationBean.getProductAccessChannel());
         tvAttention.setText(registrationBean.getProductOtherInfo());
         //预约信息
-        tvReserveTime.setText(AllUtils.formatDate(registrationBean.getHospitalReserveTime(),
-                                                  AllUtils.YYYY_MM_DD_HH_MM));
-        tvReserveTips.setText(registrationBean.getHospitalReserveTips());
+        if (TextUtils.isEmpty(registrationBean.getHospitalReserveTips()))
+        {
+            llReserveLayout.setVisibility(View.GONE);
+        }
+        else
+        {
+            tvReserveTime.setText(AllUtils.formatDate(registrationBean.getHospitalReserveTime(),
+                                                      AllUtils.YYYY_MM_DD_HH_MM));
+            tvReserveTips.setText(registrationBean.getHospitalReserveTips());
+            llReserveLayout.setVisibility(View.VISIBLE);
+        }
         switch (registrationBean.getOrderState())
         {
             case STATUS_SUBSCRIBE_NONE:

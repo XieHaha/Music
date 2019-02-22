@@ -121,11 +121,11 @@ public class OrderInfoFragment extends BaseFragment
     }
 
     /**
-     * 获取患者病例列表
+     * 获取患者订单
      */
     private void getPatientAllOrders()
     {
-        mIRequest.getPatientAllOrders(patientId, page, PAGE_SIZE, this);
+        mIRequest.getPatientOrders(loginSuccessBean.getDoctorId(),patientId, page, PAGE_SIZE, this);
     }
 
     @Override
@@ -169,23 +169,6 @@ public class OrderInfoFragment extends BaseFragment
                     tvHintTxt.setText("上拉加载更多");
                     autoLoadRecyclerView.loadFinish(true);
                 }
-                break;
-        }
-    }
-
-    @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response)
-    {
-        super.onResponseCodeError(task, response);
-        switch (task)
-        {
-            case GET_PATIENT_CASE_LIST:
-                if (page > 0)
-                {
-                    page--;
-                }
-                tvHintTxt.setText("暂无更多数据");
-                autoLoadRecyclerView.loadFinish();
                 break;
         }
     }
