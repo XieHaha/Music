@@ -92,7 +92,7 @@
     <string name="txt_transfer_patient_to_select_doc">请选择合作医生</string>
     <string name="txt_transfer_patient_to_select_hospital_title">接诊医院</string>
     <string name="txt_transfer_patient_to_select_hospital">请选择接诊医院</string>
-
+    <string name="txt_transfer_patient_reverse_time_title">检查时间</string>
     <!--Toast-->
     <string name="toast_save_image_failed">保存图片失败</string>
     <string name="toast_save_image_success">保存图片成功</string>

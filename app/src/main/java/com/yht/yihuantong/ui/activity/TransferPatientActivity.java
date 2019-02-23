@@ -2,6 +2,8 @@ package com.yht.yihuantong.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -19,6 +21,10 @@ import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.api.ApiManager;
+import com.yht.yihuantong.api.IChange;
+import com.yht.yihuantong.api.RegisterType;
+import com.yht.yihuantong.api.notify.INotifyChangeListenerServer;
 import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.data.TransferStatu;
@@ -83,6 +89,35 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
      * 当前转诊单状态
      */
     private int orderState;
+    private INotifyChangeListenerServer iNotifyChangeListenerServer;
+    private Handler handler = new Handler()
+    {
+        @Override
+        public void handleMessage(Message msg)
+        {
+            switch (msg.what)
+            {
+                case 0:
+                    getTransferDetailById();
+                    break;
+            }
+        }
+    };
+    /**
+     * 推送回调监听  转诊申请
+     */
+    private IChange<String> doctorTransferPatientListener = data ->
+    {
+        try
+        {
+            transferId = Integer.valueOf(data);
+            handler.sendEmptyMessage(0);
+        }
+        catch (NumberFormatException e)
+        {
+            e.printStackTrace();
+        }
+    };
 
     @Override
     protected boolean isInitBackBtn()
@@ -145,6 +180,8 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
             isAddTransferMode = getIntent().getBooleanExtra(CommonData.KEY_PUBLIC, false);
             limit = getIntent().getBooleanExtra("limit", false);
         }
+        iNotifyChangeListenerServer = ApiManager.getInstance()
+                                                .getServer(INotifyChangeListenerServer.class);
         if (transPatientBean == null && patientBean == null)
         {
             getTransferDetailById();
@@ -173,6 +210,9 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                                                           }
                                                           return false;
                                                       });
+        //注册转诊状态监听
+        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(
+                doctorTransferPatientListener, RegisterType.REGISTER);
     }
 
     /**
@@ -874,5 +914,14 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        //注销转诊状态监听
+        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(
+                doctorTransferPatientListener, RegisterType.UNREGISTER);
     }
 }

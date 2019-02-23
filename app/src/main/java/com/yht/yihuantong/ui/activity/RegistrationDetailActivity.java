@@ -2,6 +2,8 @@ package com.yht.yihuantong.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
@@ -18,6 +20,10 @@ import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.api.ApiManager;
+import com.yht.yihuantong.api.IChange;
+import com.yht.yihuantong.api.RegisterType;
+import com.yht.yihuantong.api.notify.INotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.data.OrderStatus;
 import com.yht.yihuantong.utils.AllUtils;
@@ -47,11 +53,40 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
     private ImageView ivHospitalImg;
     private TextView tvHospitalName, tvHospitalAddress, tvHospitalGrade;
     private TextView tvPatientName, tvPatientSex, tvPatientAge, tvDes, tvDoctorName, tvDoctorHospital;
-    private TextView tvReserveTime, tvReserveTips;
+    private TextView tvReserveTime,tvReserveTimeTitle, tvReserveTips;
     private LinearLayout llReserveLayout;
     private RelativeLayout rlHospitalLayout;
     private RegistrationBean registrationBean;
     private String registrationId;
+    private INotifyChangeListenerServer iNotifyChangeListenerServer;
+    private Handler handler = new Handler()
+    {
+        @Override
+        public void handleMessage(Message msg)
+        {
+            switch (msg.what)
+            {
+                case 0:
+                    getDetailById();
+                    break;
+            }
+        }
+    };
+    /**
+     * 推送回调监听  转诊申请
+     */
+    private IChange<String> orderStatusChangeListener = data ->
+    {
+        try
+        {
+            registrationId = data;
+            handler.sendEmptyMessage(0);
+        }
+        catch (NumberFormatException e)
+        {
+            e.printStackTrace();
+        }
+    };
 
     @Override
     protected boolean isInitBackBtn()
@@ -69,30 +104,31 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
     public void initView(@NonNull Bundle savedInstanceState)
     {
         super.initView(savedInstanceState);
-        tvTitle = (TextView)findViewById(R.id.public_title_bar_title);
-        tvNext = (TextView)findViewById(R.id.act_registration_next);
-        tvGoodsName = (TextView)findViewById(R.id.act_registration_goods_name);
-        tvGoodsType = (TextView)findViewById(R.id.act_registration_goods_type);
-        tvGoodsInfo = (TextView)findViewById(R.id.act_registration_goods_info);
-        tvGoodsPrice = (TextView)findViewById(R.id.act_registration_goods_price);
-        tvContact = (TextView)findViewById(R.id.act_service_pack_contact);
-        tvContactPhone = (TextView)findViewById(R.id.act_service_pack_contact_phone);
-        tvUseful = (TextView)findViewById(R.id.act_service_pack_useful);
-        tvAttention = (TextView)findViewById(R.id.act_service_pack_attention);
-        tvPatientName = (TextView)findViewById(R.id.act_registration_detail_patient_name);
-        tvPatientAge = (TextView)findViewById(R.id.act_registration_detail_patient_age);
-        tvPatientSex = (TextView)findViewById(R.id.act_registration_detail_patient_sex);
-        tvDes = (TextView)findViewById(R.id.act_registration_detail_des);
-        tvDoctorName = (TextView)findViewById(R.id.act_registration_detail_doctor_name);
-        tvDoctorHospital = (TextView)findViewById(R.id.act_registration_detail_doctor_hospital);
-        ivHospitalImg = (ImageView)findViewById(R.id.act_service_pack_hint_hospital_img);
-        tvHospitalName = (TextView)findViewById(R.id.act_service_pack_hint_hospital_name);
-        tvHospitalAddress = (TextView)findViewById(R.id.act_service_pack_hint_hospital_address);
-        tvHospitalGrade = (TextView)findViewById(R.id.act_service_pack_hint_hospital_grade);
-        tvReserveTime = (TextView)findViewById(R.id.act_registration_detail_time);
-        tvReserveTips = (TextView)findViewById(R.id.act_registration_detail_hint);
-        rlHospitalLayout = (RelativeLayout)findViewById(R.id.act_service_pack_hint_hospital_layout);
-        llReserveLayout = (LinearLayout)findViewById(R.id.act_registration_detail_time_layout);
+        tvTitle = findViewById(R.id.public_title_bar_title);
+        tvNext = findViewById(R.id.act_registration_next);
+        tvGoodsName = findViewById(R.id.act_registration_goods_name);
+        tvGoodsType = findViewById(R.id.act_registration_goods_type);
+        tvGoodsInfo = findViewById(R.id.act_registration_goods_info);
+        tvGoodsPrice = findViewById(R.id.act_registration_goods_price);
+        tvContact = findViewById(R.id.act_service_pack_contact);
+        tvContactPhone = findViewById(R.id.act_service_pack_contact_phone);
+        tvUseful = findViewById(R.id.act_service_pack_useful);
+        tvAttention = findViewById(R.id.act_service_pack_attention);
+        tvPatientName = findViewById(R.id.act_registration_detail_patient_name);
+        tvPatientAge = findViewById(R.id.act_registration_detail_patient_age);
+        tvPatientSex = findViewById(R.id.act_registration_detail_patient_sex);
+        tvDes = findViewById(R.id.act_registration_detail_des);
+        tvDoctorName = findViewById(R.id.act_registration_detail_doctor_name);
+        tvDoctorHospital = findViewById(R.id.act_registration_detail_doctor_hospital);
+        ivHospitalImg = findViewById(R.id.act_service_pack_hint_hospital_img);
+        tvHospitalName = findViewById(R.id.act_service_pack_hint_hospital_name);
+        tvHospitalAddress = findViewById(R.id.act_service_pack_hint_hospital_address);
+        tvHospitalGrade = findViewById(R.id.act_service_pack_hint_hospital_grade);
+        tvReserveTime = findViewById(R.id.act_registration_detail_time);
+        tvReserveTimeTitle = findViewById(R.id.act_registration_detail_time_title);
+        tvReserveTips = findViewById(R.id.act_registration_detail_hint);
+        rlHospitalLayout = findViewById(R.id.act_service_pack_hint_hospital_layout);
+        llReserveLayout = findViewById(R.id.act_registration_detail_time_layout);
     }
 
     @Override
@@ -105,6 +141,8 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
             registrationId = getIntent().getStringExtra(CommonData.KEY_REGISTRATION_ID);
         }
         tvTitle.setText("订单详情");
+        iNotifyChangeListenerServer = ApiManager.getInstance()
+                                                .getServer(INotifyChangeListenerServer.class);
         if (registrationBean == null)
         {
             getDetailById();
@@ -120,6 +158,9 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
     {
         rlHospitalLayout.setOnClickListener(this);
         tvNext.setOnClickListener(this);
+        //注册订单状态监听
+        iNotifyChangeListenerServer.registerOrderStatusChangeListener(orderStatusChangeListener,
+                                                                          RegisterType.REGISTER);
     }
 
     private void initPageData()
@@ -170,10 +211,12 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
             case STATUS_SUBSCRIBE:
                 break;
             case STATUS_COMPLETE:
+                tvReserveTimeTitle.setText(R.string.txt_transfer_patient_reverse_time_title);
                 break;
             case STATUS_SEND_REPORT:
-                tvNext.setVisibility(View.VISIBLE);
+                tvReserveTimeTitle.setText(R.string.txt_transfer_patient_reverse_time_title);
                 tvNext.setText("查看报告");
+                tvNext.setVisibility(View.VISIBLE);
                 break;
             case STATUS_REFUSE:
                 break;
@@ -261,5 +304,14 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
                 startActivity(intent);
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        //注销订单状态监听
+        iNotifyChangeListenerServer.registerOrderStatusChangeListener(orderStatusChangeListener,
+                                                                          RegisterType.UNREGISTER);
     }
 }

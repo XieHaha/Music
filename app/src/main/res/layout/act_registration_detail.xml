@@ -521,6 +521,7 @@
                     android:layout_height="10dp" />
 
                 <TextView
+                    android:id="@+id/act_registration_detail_time_title"
                     android:layout_width="match_parent"
                     android:text="预约时间"
                     android:textSize="14sp"
@@ -544,15 +545,28 @@
                     android:textColor="@color/app_main_txt_color"
                     android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/act_registration_detail_hint"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:text=""
-                    android:textSize="14sp"
+                    android:orientation="horizontal"
                     android:paddingLeft="12dp"
                     android:paddingTop="2dp"
-                    android:textColor="@color/app_minor_color"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="注意事项："
+                        android:textSize="14sp"
+                        android:textColor="@color/app_main_txt_color"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/act_registration_detail_hint"
+                        android:layout_width="wrap_content"
+                        android:text=""
+                        android:textSize="14sp"
+                        android:textColor="@color/app_minor_color"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
 

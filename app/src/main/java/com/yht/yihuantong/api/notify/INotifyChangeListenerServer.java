@@ -46,4 +46,11 @@ public interface INotifyChangeListenerServer
      * @param registerType 注册类型
      */
     void registerRecentContactChangeListener(@NonNull IChange<String> listener, @NonNull RegisterType registerType);
+    /**
+     * 服务包订单状态
+     *
+     * @param listener     接收消息监听器
+     * @param registerType 注册类型
+     */
+    void registerOrderStatusChangeListener(@NonNull IChange<String> listener, @NonNull RegisterType registerType);
 }

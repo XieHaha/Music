@@ -48,6 +48,10 @@ public interface HttpConstants
      */
     String BASE_BASIC_PROTOCOL_URL = "http://www.zychealth.com/privacy/privacy-policy.html";
     /**
+     * 用户协议
+     */
+    String BASE_BASIC_USER_PROTOCOL_URL = "http://www.zychealth.com/privacy/user.html";
+    /**
      * 下载页面
      */
     String BASE_BASIC_DOWNLOAD_URL = "http://www.zychealth.com/downloadapp/index.html?doctorId=";

@@ -188,7 +188,7 @@ public class LoginActivity extends BaseActivity implements DocAuthStatu
                 break;
             case R.id.act_login_protocol:
                 Intent intent = new Intent(this, WebViewActivity.class);
-                intent.putExtra("url", HttpConstants.BASE_BASIC_PROTOCOL_URL);
+                intent.putExtra("url", HttpConstants.BASE_BASIC_USER_PROTOCOL_URL);
                 startActivity(intent);
                 break;
             case R.id.act_login_protocol_img:

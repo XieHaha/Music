@@ -12,10 +12,11 @@ import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.activity.ApplyCooperateDocActivity;
 import com.yht.yihuantong.ui.activity.ApplyPatientActivity;
-import com.yht.yihuantong.ui.activity.AuthDocActivity;
+import com.yht.yihuantong.ui.activity.AuthDocStatuActivity;
 import com.yht.yihuantong.ui.activity.MainActivity;
-import com.yht.yihuantong.ui.activity.TransferPatientFromActivity;
-import com.yht.yihuantong.ui.activity.TransferPatientToActivity;
+import com.yht.yihuantong.ui.activity.PatientsActivity;
+import com.yht.yihuantong.ui.activity.RegistrationDetailActivity;
+import com.yht.yihuantong.ui.activity.TransferPatientActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,14 +78,15 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
                     ids = stringBuilder.toString();
                 }
                 sharePreferenceUtil.putString(CommonData.KEY_NEW_MESSAGE_REMIND, ids);
-                notifyStatusChange(type);
+                notifyStatusChange(type, String.valueOf(msgId));
             }
             else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction()))
             {
                 Log.d(TAG, "[JPushReceiver] 用户点击打开了通知");
                 JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
                 int type = json.optInt("newsid");
-                jumpPageByType(context, type);
+                int msgId = json.optInt("msg");
+                jumpPageByType(context, type, msgId);
             }
             else if (JPushInterface.ACTION_RICHPUSH_CALLBACK.equals(intent.getAction()))
             {
@@ -114,26 +116,22 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
      *
      * @param type
      */
-    private void notifyStatusChange(int type)
+    private void notifyStatusChange(int type, String msgId)
     {
         switch (type)
         {
-            case JIGUANG_CODE_COLLEBORATE_DOCTOR_REQUEST:
-            case JIGUANG_CODE_COLLEBORATE_ADD_SUCCESS:
+            case JIGUANG_CODE_COLLEBORATE_DOCTOR_REQUEST://合作医生申请
+            case JIGUANG_CODE_COLLEBORATE_ADD_SUCCESS://合作医生添加成功
                 NotifyChangeListenerServer.getInstance().notifyDoctorStatusChange("");
                 break;
-            case JIGUANG_CODE_DOCTOR_DP_ADD_SUCCESS:
+            case JIGUANG_CODE_DOCTOR_DP_ADD_SUCCESS://添加好友成功
                 NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("add");
                 break;
-            case JIGUANG_CODE_DOCTOR_DP_ADD_REQUEST:
+            case JIGUANG_CODE_DOCTOR_DP_ADD_REQUEST://患者申请添加好友
                 NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("");
                 break;
-            case JIGUANG_CODE_PATIENT_DP_ADD_SUCCESS:
-            case JIGUANG_CODE_PATIENT_DP_ADD_REQUEST:
-                NotifyChangeListenerServer.getInstance().notifyDoctorStatusChange("");
-                break;
-            case JIGUANG_CODE_DOCTOR_INFO_CHECK_SUCCESS:
-            case JIGUANG_CODE_DOCTOR_INFO_CHECK_FAILED:
+            case JIGUANG_CODE_DOCTOR_INFO_CHECK_SUCCESS://医生认证成功
+            case JIGUANG_CODE_DOCTOR_INFO_CHECK_FAILED://医生认证失败
                 NotifyChangeListenerServer.getInstance().notifyDoctorAuthStatus(type);
                 break;
             case JIGUANG_CODE_TRANS_PATIENT_SUCCESS://我的转诊成功
@@ -142,6 +140,19 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
                 break;
             case JIGUANG_CODE_TRANS_PATIENT_APPLY://合作医生的转诊申请
                 NotifyChangeListenerServer.getInstance().notifyDoctorTransferPatient("from");
+                break;
+            case JIGUANG_CODE_DOCTOR_TRANS_REFUSE://拒绝接受转诊
+            case JIGUANG_CODE_FROM_DOCTOR_TRANSFER_FINISHED://医院取消转诊（发送给发起医生）
+            case JIGUANG_CODE_TO_DOCTOR_TRANSFER_FINISHED://医院取消转诊（发送给接受医生）
+                NotifyChangeListenerServer.getInstance().notifyDoctorTransferPatient(msgId);
+                break;
+            case JIGUANG_CODE_DOCTOR_PRODUCT_ACCEPTED://极光-患者确认服务包订单（发送给医生）
+            case JIGUANG_CODE_DOCTOR_PRODUCT_REFUSED://极光-患者拒绝服务包订单（发送给医生）
+            case JIGUANG_CODE_DOCTOR_PRODUCT_FINISH://极光-后台确认完成检查（发送给医生）
+            case JIGUANG_CODE_DOCTOR_PRODUCT_REPORT://极光-后台确认发送报告（发送给医生）
+            case JIGUANG_CODE_FROM_DOCTOR_TRANSFER_FINISH_SUCCESS://极光-医院确认患者就诊（发送给发起医生）
+            case JIGUANG_CODE_TO_DOCTOR_TRANSFER_FINISH_SUCCESS://极光-医院确认患者就诊（发送给接受医生）
+                NotifyChangeListenerServer.getInstance().notifyOrderStatusChange(msgId);
                 break;
         }
     }
@@ -167,7 +178,7 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
      *
      * @param type
      */
-    private void jumpPageByType(Context context, int type)
+    private void jumpPageByType(Context context, int type, int id)
     {
         if (YihtApplication.getInstance().getLoginSuccessBean() == null)
         {
@@ -177,7 +188,7 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
         Intent intents[];
         switch (type)
         {
-            case JIGUANG_CODE_DOCTOR_DP_ADD_REQUEST:
+            case JIGUANG_CODE_DOCTOR_DP_ADD_REQUEST://患者申请
                 mainIntent = new Intent(context, MainActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
@@ -185,13 +196,15 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
                 intents = new Intent[] { mainIntent, baseIntent };
                 context.startActivities(intents);
                 break;
-            case JIGUANG_CODE_DOCTOR_DP_ADD_SUCCESS:
+            case JIGUANG_CODE_DOCTOR_DP_ADD_SUCCESS://患者添加成功
                 mainIntent = new Intent(context, MainActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
-                context.startActivity(mainIntent);
+                baseIntent = new Intent(context, PatientsActivity.class);
+                intents = new Intent[] { mainIntent, baseIntent };
+                context.startActivities(intents);
                 break;
-            case JIGUANG_CODE_PATIENT_DP_ADD_REQUEST:
+            case JIGUANG_CODE_COLLEBORATE_DOCTOR_REQUEST://合作医生申请
                 mainIntent = new Intent(context, MainActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mainIntent.putExtra(CommonData.KEY_PUBLIC, 2);
@@ -199,54 +212,44 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
                 intents = new Intent[] { mainIntent, baseIntent };
                 context.startActivities(intents);
                 break;
-            case JIGUANG_CODE_PATIENT_DP_ADD_SUCCESS:
+            case JIGUANG_CODE_COLLEBORATE_ADD_SUCCESS://合作医生添加成功
                 mainIntent = new Intent(context, MainActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mainIntent.putExtra(CommonData.KEY_PUBLIC, 2);
                 context.startActivity(mainIntent);
                 break;
-            case JIGUANG_CODE_COLLEBORATE_DOCTOR_REQUEST:
-                mainIntent = new Intent(context, MainActivity.class);
+            case JIGUANG_CODE_DOCTOR_INFO_CHECK_SUCCESS://医生认证成功
+            case JIGUANG_CODE_DOCTOR_INFO_CHECK_FAILED://医生认证失败
+                mainIntent = new Intent(context, AuthDocStatuActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mainIntent.putExtra(CommonData.KEY_PUBLIC, 2);
-                baseIntent = new Intent(context, ApplyCooperateDocActivity.class);
-                intents = new Intent[] { mainIntent, baseIntent };
-                context.startActivities(intents);
-                break;
-            case JIGUANG_CODE_COLLEBORATE_ADD_SUCCESS:
-                mainIntent = new Intent(context, MainActivity.class);
-                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mainIntent.putExtra(CommonData.KEY_PUBLIC, 2);
                 context.startActivity(mainIntent);
+                NotifyChangeListenerServer.getInstance().notifyDoctorAuthStatus(type);
                 break;
-            case JIGUANG_CODE_DOCTOR_INFO_CHECK_FAILED:
-                mainIntent = new Intent(context, MainActivity.class);
-                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mainIntent.putExtra(CommonData.KEY_PUBLIC, 3);
-                baseIntent = new Intent(context, AuthDocActivity.class);
-                intents = new Intent[] { mainIntent, baseIntent };
-                context.startActivities(intents);
-                break;
-            case JIGUANG_CODE_DOCTOR_INFO_CHECK_SUCCESS:
-                mainIntent = new Intent(context, MainActivity.class);
-                mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mainIntent.putExtra(CommonData.KEY_PUBLIC, 3);
-                context.startActivity(mainIntent);
-                break;
+            case JIGUANG_CODE_TRANS_PATIENT_APPLY://收到转诊
             case JIGUANG_CODE_TRANS_PATIENT_SUCCESS://合作医生接受转诊
             case JIGUANG_CODE_TRANS_PATIENT_VISIT_SUCCESS://合作医生接收转诊的患者已就诊
+            case JIGUANG_CODE_DOCTOR_TRANS_REFUSE://合作医生拒绝接受转诊
+            case JIGUANG_CODE_FROM_DOCTOR_TRANSFER_FINISHED://医院取消转诊（发送给发起医生）
+            case JIGUANG_CODE_TO_DOCTOR_TRANSFER_FINISHED://医院取消转诊（发送给接受医生）
                 mainIntent = new Intent(context, MainActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mainIntent.putExtra(CommonData.KEY_PUBLIC, 3);
-                baseIntent = new Intent(context, TransferPatientToActivity.class);
+                mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
+                baseIntent = new Intent(context, TransferPatientActivity.class);
+                baseIntent.putExtra(CommonData.KEY_TRANSFER_ID, id);
                 intents = new Intent[] { mainIntent, baseIntent };
                 context.startActivities(intents);
                 break;
-            case JIGUANG_CODE_TRANS_PATIENT_APPLY:
+            case JIGUANG_CODE_DOCTOR_PRODUCT_ACCEPTED://极光-患者确认服务包订单（发送给医生）
+            case JIGUANG_CODE_DOCTOR_PRODUCT_REFUSED://极光-患者拒绝服务包订单（发送给医生）
+            case JIGUANG_CODE_DOCTOR_PRODUCT_FINISH://极光-后台确认完成检查（发送给医生）
+            case JIGUANG_CODE_DOCTOR_PRODUCT_REPORT://极光-后台确认发送报告（发送给医生）
+            case JIGUANG_CODE_FROM_DOCTOR_TRANSFER_FINISH_SUCCESS://极光-医院确认患者就诊（发送给发起医生）
+            case JIGUANG_CODE_TO_DOCTOR_TRANSFER_FINISH_SUCCESS://极光-医院确认患者就诊（发送给接受医生）
                 mainIntent = new Intent(context, MainActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mainIntent.putExtra(CommonData.KEY_PUBLIC, 3);
-                baseIntent = new Intent(context, TransferPatientFromActivity.class);
+                mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
+                baseIntent = new Intent(context, RegistrationDetailActivity.class);
+                baseIntent.putExtra(CommonData.KEY_REGISTRATION_ID, String.valueOf(id));
                 intents = new Intent[] { mainIntent, baseIntent };
                 context.startActivities(intents);
                 break;

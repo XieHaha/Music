@@ -147,49 +147,61 @@ public interface CommonData
      */
     int JIGUANG_CODE_DOCTOR_INFO_CHECK_FAILED = 104;
     /**
-     * 添加患者成功
-     */
-    int JIGUANG_CODE_PATIENT_DP_ADD_SUCCESS = 105;
-    /**
-     * 添加医生成功(患者添加)
+     * 医患好友添加成功 (医生端)
      */
     int JIGUANG_CODE_DOCTOR_DP_ADD_SUCCESS = 106;
     /**
-     * 申请添加患者(医生申请)
-     */
-    int JIGUANG_CODE_PATIENT_DP_ADD_REQUEST = 107;
-    /**
-     * 申请添加医生(患者申请)
+     * 申请添加医生 患者申请(医生端)
      */
     int JIGUANG_CODE_DOCTOR_DP_ADD_REQUEST = 108;
     /**
-     * 新增处方
-     */
-    int JIGUANG_NEW_PRESCRIPTION = 109;
-    /**
-     * 收到转诊通知 合作医生接受了我的转诊 (患者端接收)
-     */
-    int JIGUANG_CODE_TRANS_PATIENT_SUCCESS_P = 112;
-    /**
      * 收到转诊通知 合作医生接受了我的转诊
      */
-    int JIGUANG_CODE_TRANS_PATIENT_SUCCESS = 113;
-    /**
-     * 收到转诊通知 合作医生接受我转诊的患者已经就诊 (患者端接收)
-     */
-    int JIGUANG_CODE_TRANS_PATIENT_VISIT_SUCCESS_P = 122;
+    int JIGUANG_CODE_TRANS_PATIENT_SUCCESS = 112;
     /**
      * 收到转诊通知 合作医生接受我转诊的患者已经就诊
      */
     int JIGUANG_CODE_TRANS_PATIENT_VISIT_SUCCESS = 123;
     /**
-     * 收到转诊通知 患者端接收
-     */
-    int JIGUANG_CODE_TRANS_PATIENT_APPLY_P = 132;
-    /**
      * 收到转诊通知 合作医生转给我的
      */
     int JIGUANG_CODE_TRANS_PATIENT_APPLY = 133;
+    /**
+     * 极光-合作医生修改转诊单-拒绝接收该转诊（发送给医生）
+     */
+    int JIGUANG_CODE_DOCTOR_TRANS_REFUSE = 134;
+    /**
+     * 极光-医院取消转诊（发送给发起医生）
+     */
+    int JIGUANG_CODE_FROM_DOCTOR_TRANSFER_FINISHED = 136;
+    /**
+     * 极光-医院取消转诊（发送给接受医生）
+     */
+    int JIGUANG_CODE_TO_DOCTOR_TRANSFER_FINISHED = 137;
+    /**
+     * 极光-患者确认服务包订单（发送给医生）
+     */
+    int JIGUANG_CODE_DOCTOR_PRODUCT_ACCEPTED = 141;
+    /**
+     * 极光-患者拒绝服务包订单（发送给医生）
+     */
+    int JIGUANG_CODE_DOCTOR_PRODUCT_REFUSED = 147;
+    /**
+     * 极光-后台确认完成检查（发送给医生）
+     */
+    int JIGUANG_CODE_DOCTOR_PRODUCT_FINISH = 144;
+    /**
+     * 极光-后台确认发送报告（发送给医生）
+     */
+    int JIGUANG_CODE_DOCTOR_PRODUCT_REPORT = 146;
+    /**
+     * 极光-医院确认患者就诊（发送给发起医生）
+     */
+    int JIGUANG_CODE_FROM_DOCTOR_TRANSFER_FINISH_SUCCESS = 160;
+    /**
+     * 极光-医院确认患者就诊（发送给接受医生）
+     */
+    int JIGUANG_CODE_TO_DOCTOR_TRANSFER_FINISH_SUCCESS = 161;
     /**
      * 患者病例 诊断
      */

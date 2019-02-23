@@ -33,6 +33,10 @@ public class NotifyChangeListenerServer implements INotifyChangeListenerServer
      * 最近联系人
      */
     private List<IChange<String>> mRecentContactChangeListener = new CopyOnWriteArrayList<>();
+    /**
+     * 服务包订单
+     */
+    private List<IChange<String>> mOrderStatusChangeListener = new CopyOnWriteArrayList<>();
 
     private NotifyChangeListenerServer()
     {
@@ -125,6 +129,21 @@ public class NotifyChangeListenerServer implements INotifyChangeListenerServer
         else
         {
             mRecentContactChangeListener.remove(listener);
+        }
+    }
+
+    @Override
+    public void registerOrderStatusChangeListener(@NonNull IChange<String> listener,
+            @NonNull RegisterType registerType)
+    {
+        if (listener == null) { return; }
+        if (RegisterType.REGISTER == registerType)
+        {
+            mOrderStatusChangeListener.add(listener);
+        }
+        else
+        {
+            mOrderStatusChangeListener.remove(listener);
         }
     }
 
@@ -250,6 +269,33 @@ public class NotifyChangeListenerServer implements INotifyChangeListenerServer
                 try
                 {
                     final IChange<String> change = mRecentContactChangeListener.get(i);
+                    if (null != change)
+                    {
+                        change.onChange(data);
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogUtils.w(TAG, "notifyMessageChange error", e);
+                }
+            }
+        }
+    }
+
+    /**
+     * 服务包订单
+     *
+     * @param data
+     */
+    public void notifyOrderStatusChange(final String data)
+    {
+        synchronized (mOrderStatusChangeListener)
+        {
+            for (int i = 0, size = mOrderStatusChangeListener.size(); i < size; i++)
+            {
+                try
+                {
+                    final IChange<String> change = mOrderStatusChangeListener.get(i);
                     if (null != change)
                     {
                         change.onChange(data);

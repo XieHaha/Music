@@ -4,15 +4,18 @@ import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -61,6 +64,9 @@ import custom.frame.utils.DensityUtil;
 import custom.frame.utils.ScreenUtils;
 import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.ripples.RippleLinearLayout;
+
+import static android.support.v4.app.NotificationCompat.DEFAULT_SOUND;
+import static android.support.v4.app.NotificationCompat.DEFAULT_VIBRATE;
 
 public class MainActivity extends BaseActivity
         implements EaseConversationListFragment.EaseConversationListItemClickListener,
@@ -134,6 +140,12 @@ public class MainActivity extends BaseActivity
      * 未读消息总数
      */
     private int msgUnReadCount = 0;
+    /**
+     * 聊天渠道
+     */
+    public static final String CHANNEL_CHAT = "channel_chat";
+    private Bitmap largeIcon = null;
+    private NotificationManager mNotificationManager;
 
     @Override
     public int getLayoutID()
@@ -207,6 +219,9 @@ public class MainActivity extends BaseActivity
         messagePop = LayoutInflater.from(this).inflate(R.layout.message_pop_menu, null);
         tvDelete = messagePop.findViewById(R.id.message_pop_menu_play);
         initTab();
+        largeIcon = ((BitmapDrawable)getResources().getDrawable(R.mipmap.icon_logo)).getBitmap();
+        mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        initNotify();
     }
 
     @Override
@@ -245,6 +260,8 @@ public class MainActivity extends BaseActivity
                     easeConversationListFragment.refresh();
                 }
                 runOnUiThread(() -> updateUnReadCount());
+                initNotify();
+                sendChatMsg(messages.get(0));
             }
 
             @Override
@@ -343,6 +360,17 @@ public class MainActivity extends BaseActivity
                                     });
     }
 
+    private void initNotify()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            String channelId = CHANNEL_CHAT;
+            String channelName = "聊天消息";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            createNotificationChannel(channelId, channelName, importance);
+        }
+    }
+
     /**
      * 获取所有商品
      */
@@ -377,7 +405,7 @@ public class MainActivity extends BaseActivity
             tvUnReadMsgCount2.setText(msgUnReadCount > 99 ? "99+" : msgUnReadCount + "");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             {
-                sendSubscribeMsg(msgUnReadCount);
+                //                sendSubscribeMsg(msgUnReadCount);
             }
             else
             {
@@ -407,34 +435,95 @@ public class MainActivity extends BaseActivity
         ShortcutBadger.removeCount(this);
     }
 
+    public void sendChatMsg(EMMessage message)
+    {
+        NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        String title = "聊天通知";
+        Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+        intent.putExtra(CommonData.KEY_CHAT_ID, message.getFrom());
+        PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, 0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            Notification notification = new NotificationCompat.Builder(this,
+                                                                       CHANNEL_CHAT).setContentTitle(
+                    title)
+                                                                                    .setContentText(
+                                                                                            "收到新的消息")
+                                                                                    .setWhen(
+                                                                                            System.currentTimeMillis())
+                                                                                    .setSmallIcon(
+                                                                                            R.mipmap.icon_logo)
+                                                                                    .setLargeIcon(
+                                                                                            largeIcon)
+                                                                                    .setDefaults(
+                                                                                            DEFAULT_VIBRATE |
+                                                                                            DEFAULT_SOUND)
+                                                                                    .setAutoCancel(
+                                                                                            true)
+                                                                                    .setContentIntent(
+                                                                                            pendingIntent)
+                                                                                    .build();
+            manager.notify(1, notification);
+        }
+        else
+        {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this);
+            builder.setSmallIcon(R.mipmap.icon_logo);
+            builder.setAutoCancel(true);
+            builder.setContentTitle(title);
+            builder.setContentText("收到新消息");
+            builder.setContentIntent(pendingIntent);
+            int defaults = Notification.DEFAULT_LIGHTS;
+            defaults |= Notification.DEFAULT_VIBRATE;
+            defaults |= Notification.DEFAULT_SOUND;
+            builder.setDefaults(defaults);
+            builder.setWhen(System.currentTimeMillis());
+            mNotificationManager.notify(1, builder.build());
+        }
+        //        String id = message.getFrom();
+        //        if (id.contains("d"))
+        //        {
+        //            List<PatientBean> list = DataSupport.where("patientId = ?", id)
+        //                                                .find(PatientBean.class);
+        //            if (list != null && list.size() > 0)
+        //            {
+        //                PatientBean bean = list.get(0);
+        //                if (!TextUtils.isEmpty(bean.getNickname()) && bean.getNickname().length() < 20)
+        //                {
+        //                    title = bean.getNickname();
+        //                }
+        //                else
+        //                {
+        //                    title = bean.getName();
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            List<CooperateDocBean> list = DataSupport.where("doctorId = ?", id)
+        //                                                     .find(CooperateDocBean.class);
+        //            if (list != null && list.size() > 0)
+        //            {
+        //                CooperateDocBean bean = list.get(0);
+        //                if (!TextUtils.isEmpty(bean.getNickname()) && bean.getNickname().length() < 20)
+        //                {
+        //                    title = bean.getNickname();
+        //                }
+        //                else
+        //                {
+        //                    title = bean.getName();
+        //                }
+        //            }
+        //        }
+    }
+
     @TargetApi(Build.VERSION_CODES.O)
     private void createNotificationChannel(String channelId, String channelName, int importance)
     {
         NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
-        channel.setShowBadge(true);
         NotificationManager notificationManager = (NotificationManager)getSystemService(
                 NOTIFICATION_SERVICE);
         notificationManager.createNotificationChannel(channel);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void sendSubscribeMsg(int msgUnReadCount)
-    {
-        String channelID = "1";
-        String channelName = "channel_name";
-        NotificationChannel channel = new NotificationChannel(channelID, channelName,
-                                                              NotificationManager.IMPORTANCE_HIGH);
-        channel.setShowBadge(true);
-        NotificationManager manager = (NotificationManager)getSystemService(
-                Context.NOTIFICATION_SERVICE);
-        manager.createNotificationChannel(channel);
-        Notification.Builder builder = new Notification.Builder(this);
-        //创建通知时指定channelID
-        builder.setChannelId(channelID);
-        builder.setNumber(msgUnReadCount);
-        builder.setSmallIcon(R.mipmap.icon_logo);
-        Notification notification = builder.build();
-        manager.notify(0, notification);
     }
 
     @Override
