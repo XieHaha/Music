@@ -158,10 +158,10 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
         }
         else
         {
+            llReserveLayout.setVisibility(View.VISIBLE);
             tvReserveTime.setText(AllUtils.formatDate(registrationBean.getHospitalReserveTime(),
                                                       AllUtils.YYYY_MM_DD_HH_MM));
             tvReserveTips.setText(registrationBean.getHospitalReserveTips());
-            llReserveLayout.setVisibility(View.VISIBLE);
         }
         switch (registrationBean.getOrderState())
         {

@@ -145,7 +145,7 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
             isAddTransferMode = getIntent().getBooleanExtra(CommonData.KEY_PUBLIC, false);
             limit = getIntent().getBooleanExtra("limit", false);
         }
-        if (patientBean == null)
+        if (transPatientBean == null && patientBean == null)
         {
             getTransferDetailById();
         }

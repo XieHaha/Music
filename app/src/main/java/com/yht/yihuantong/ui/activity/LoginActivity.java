@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +48,8 @@ import custom.frame.utils.ToastUtil;
 public class LoginActivity extends BaseActivity implements DocAuthStatu
 {
     private TextView tvGetVerify;
+    private LinearLayout llProtolLayout;
+    private ImageView ivProtolImg;
     private EditText etPhone, etVerifyCode;
     private SharePreferenceUtil sharePreferenceUtil;
     private String phone, verifyCode;
@@ -90,6 +94,8 @@ public class LoginActivity extends BaseActivity implements DocAuthStatu
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         findViewById(R.id.act_login_btn).setOnClickListener(this);
         tvGetVerify = (TextView)findViewById(R.id.act_login_verify);
+        ivProtolImg = (ImageView)findViewById(R.id.act_login_protocol_img);
+        llProtolLayout = (LinearLayout)findViewById(R.id.act_login_protocol_layout);
         etPhone = (EditText)findViewById(R.id.act_login_phone);
         etVerifyCode = (EditText)findViewById(R.id.act_login_verifycode);
     }
@@ -106,6 +112,7 @@ public class LoginActivity extends BaseActivity implements DocAuthStatu
             etPhone.setSelection(phone.length());
             tvGetVerify.setSelected(true);
         }
+        ivProtolImg.setSelected(true);
     }
 
     @Override
@@ -114,6 +121,7 @@ public class LoginActivity extends BaseActivity implements DocAuthStatu
         super.initListener();
         findViewById(R.id.act_login_protocol).setOnClickListener(this);
         tvGetVerify.setOnClickListener(this);
+        ivProtolImg.setOnClickListener(this);
         etPhone.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -183,6 +191,16 @@ public class LoginActivity extends BaseActivity implements DocAuthStatu
                 intent.putExtra("url", HttpConstants.BASE_BASIC_PROTOCOL_URL);
                 startActivity(intent);
                 break;
+            case R.id.act_login_protocol_img:
+                if (ivProtolImg.isSelected())
+                {
+                    ivProtolImg.setSelected(false);
+                }
+                else
+                {
+                    ivProtolImg.setSelected(true);
+                }
+                break;
             default:
                 break;
         }
@@ -225,6 +243,11 @@ public class LoginActivity extends BaseActivity implements DocAuthStatu
         if (StringUtils.isEmpty(verifyCode))
         {
             ToastUtil.toast(this, R.string.toast_txt_verify_hint);
+            return;
+        }
+        if (!ivProtolImg.isSelected())
+        {
+            ToastUtil.toast(this, "请仔细阅读用户协议");
             return;
         }
         showProgressDialog("登录中", false);

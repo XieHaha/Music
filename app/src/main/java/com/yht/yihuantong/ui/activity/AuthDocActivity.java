@@ -61,6 +61,10 @@ public class AuthDocActivity extends BaseActivity
     private String txtName, txtCardNum, txtHospital, txtTitle, txtDepart;
     private CooperateDocBean cooperateDocBean;
     /**
+     * 是否为重新提交资料
+     */
+    private boolean again;
+    /**
      * 请求修改头像 相册
      */
     private static final int RC_PICK_IMG = 0x0001;
@@ -127,22 +131,20 @@ public class AuthDocActivity extends BaseActivity
     @Override
     public void initData(@NonNull Bundle savedInstanceState)
     {
+        if (getIntent() != null)
+        {
+            again = getIntent().getBooleanExtra("again", false);
+        }
         authStatus = loginSuccessBean.getChecked();
-        if (authStatus != 0)
-        {
-            tvTitleMore.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            tvTitleMore.setVisibility(View.GONE);
-        }
-        if (authStatus == 0)
+        if (authStatus == 0 || again)
         {
             updateMode(true);
+            tvTitleMore.setVisibility(View.GONE);
         }
         else
         {
             updateMode(false);
+            tvTitleMore.setVisibility(View.VISIBLE);
         }
         getDocInfo();
     }
@@ -286,80 +288,6 @@ public class AuthDocActivity extends BaseActivity
         mIRequest.getDocInfo(loginSuccessBean.getDoctorId(), this);
     }
 
-    @Override
-    public void onResponseSuccess(Tasks task, BaseResponse response)
-    {
-        super.onResponseSuccess(task, response);
-        switch (task)
-        {
-            case GET_DOC_INFO:
-                closeProgressDialog();
-                cooperateDocBean = response.getData();
-                initPageData();
-                break;
-            case QUALIFIY_DOC:
-                closeProgressDialog();
-                ToastUtil.toast(this, response.getMsg());
-                //改变认证状态，当前为审核中
-                loginSuccessBean.setChecked(1);
-                YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
-                setResult(RESULT_OK);
-                finish();
-                break;
-        }
-    }
-
-    @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response)
-    {
-        super.onResponseCodeError(task, response);
-        switch (task)
-        {
-            case GET_DOC_INFO:
-                break;
-            case QUALIFIY_DOC:
-                closeProgressDialog();
-                ToastUtil.toast(this, response.getMsg());
-                break;
-        }
-    }
-
-    @Override
-    public void onClick(View v)
-    {
-        super.onClick(v);
-        switch (v.getId())
-        {
-            case R.id.act_auth_doc_idcard_front_hint:
-            case R.id.act_auth_doc_idcard_front_layout:
-                uploadImg(ID_CARD_FRONT);
-                break;
-            case R.id.act_auth_doc_idcard_back_hint:
-            case R.id.act_auth_doc_idcard_back_layout:
-                uploadImg(ID_CARD_BACK);
-                break;
-            case R.id.act_auth_doc_doccard_front_hint:
-            case R.id.act_auth_doc_doccard_front_layout:
-                uploadImg(DOC_CARD_FRONT);
-                break;
-            case R.id.act_auth_doc_doccard_back_hint:
-            case R.id.act_auth_doc_doccard_back_layout:
-                uploadImg(DOC_CARD_BACK);
-                break;
-            case R.id.act_auth_doc_apply:
-                qualifiyDoc();
-                break;
-        }
-    }
-
-    /**
-     * @param view
-     */
-    public void onTitleMoreClick(View view)
-    {
-        tvTitleMore.setVisibility(View.GONE);
-        updateMode(true);
-    }
     /**
      * 提交审核 医生资质认证
      */
@@ -416,6 +344,85 @@ public class AuthDocActivity extends BaseActivity
                                                              Permission.STORAGE_WRITE });
                                                  })
                                    .show();
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+        super.onClick(v);
+        switch (v.getId())
+        {
+            case R.id.act_auth_doc_idcard_front_hint:
+            case R.id.act_auth_doc_idcard_front_layout:
+                uploadImg(ID_CARD_FRONT);
+                break;
+            case R.id.act_auth_doc_idcard_back_hint:
+            case R.id.act_auth_doc_idcard_back_layout:
+                uploadImg(ID_CARD_BACK);
+                break;
+            case R.id.act_auth_doc_doccard_front_hint:
+            case R.id.act_auth_doc_doccard_front_layout:
+                uploadImg(DOC_CARD_FRONT);
+                break;
+            case R.id.act_auth_doc_doccard_back_hint:
+            case R.id.act_auth_doc_doccard_back_layout:
+                uploadImg(DOC_CARD_BACK);
+                break;
+            case R.id.act_auth_doc_apply:
+                qualifiyDoc();
+                break;
+        }
+    }
+
+    /**
+     * @param view
+     */
+    public void onTitleMoreClick(View view)
+    {
+        tvTitleMore.setVisibility(View.GONE);
+        updateMode(true);
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response)
+    {
+        super.onResponseSuccess(task, response);
+        switch (task)
+        {
+            case GET_DOC_INFO:
+                closeProgressDialog();
+                cooperateDocBean = response.getData();
+                initPageData();
+                break;
+            case QUALIFIY_DOC:
+                closeProgressDialog();
+                ToastUtil.toast(this, response.getMsg());
+                //改变认证状态，当前为审核中
+                loginSuccessBean.setChecked(1);
+                loginSuccessBean.setName(txtName);
+                loginSuccessBean.setTitle(txtTitle);
+                loginSuccessBean.setDepartment(txtDepart);
+                loginSuccessBean.setHospital(txtHospital);
+                YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
+                setResult(RESULT_OK);
+                finish();
+                break;
+        }
+    }
+
+    @Override
+    public void onResponseCodeError(Tasks task, BaseResponse response)
+    {
+        super.onResponseCodeError(task, response);
+        switch (task)
+        {
+            case GET_DOC_INFO:
+                break;
+            case QUALIFIY_DOC:
+                closeProgressDialog();
+                ToastUtil.toast(this, response.getMsg());
+                break;
+        }
     }
 
     /**

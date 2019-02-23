@@ -120,16 +120,31 @@
             android:textColor="@color/app_white_color"
             android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/act_login_protocol"
+        <LinearLayout
+            android:id="@+id/act_login_protocol_layout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
-            android:text="隐私政策"
+            android:gravity="center_vertical"
             android:padding="10dp"
-            android:textColor="#ffe73278"
-            android:textSize="10dp" />
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/act_login_protocol_img"
+                android:layout_width="15dp"
+                android:src="@drawable/login_protol_status_selector"
+                android:layout_height="15dp" />
+
+            <TextView
+                android:id="@+id/act_login_protocol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="用户协议"
+                android:textColor="@color/app_main_color"
+                android:textSize="14sp" />
+        </LinearLayout>
+
     </LinearLayout>
 
 

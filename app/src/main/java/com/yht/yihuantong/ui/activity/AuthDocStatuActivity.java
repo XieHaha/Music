@@ -2,6 +2,8 @@ package com.yht.yihuantong.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 import android.view.View;
@@ -12,6 +14,11 @@ import android.widget.TextView;
 import com.hyphenate.chat.EMClient;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
+import com.yht.yihuantong.api.ApiManager;
+import com.yht.yihuantong.api.IChange;
+import com.yht.yihuantong.api.RegisterType;
+import com.yht.yihuantong.api.notify.INotifyChangeListenerServer;
+import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.data.DocAuthStatu;
 
 import custom.frame.ui.activity.BaseActivity;
@@ -19,10 +26,11 @@ import custom.frame.ui.activity.BaseActivity;
 /**
  * Created by dundun on 19/2/19.
  */
-public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu
+public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, CommonData
 {
     private TextView tvName, tvVerifying, tvHint, tvNext, tvAgain;
     private ImageView ivBack, ivImg;
+    private INotifyChangeListenerServer iNotifyChangeListenerServer;
     /**
      * 认证
      */
@@ -31,6 +39,35 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu
      * 重新认证
      */
     public static final int REQUEST_CODE_AUTH_AGAIN = 200;
+    private Handler handler = new Handler()
+    {
+        @Override
+        public void handleMessage(Message msg)
+        {
+            switch (msg.what)
+            {
+                case JIGUANG_CODE_DOCTOR_INFO_CHECK_FAILED:
+                    //认证失败  更新本地数据
+                    loginSuccessBean.setChecked(2);
+                    YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
+                    initPageData();
+                    break;
+                case JIGUANG_CODE_DOCTOR_INFO_CHECK_SUCCESS:
+                    //认证成功  更新本地数据
+                    loginSuccessBean.setChecked(6);
+                    YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
+                    initPageData();
+                    break;
+            }
+        }
+    };
+    /**
+     * 医生认证状态
+     */
+    private IChange<Integer> doctorAuthStatusChangeListener = data ->
+    {
+        handler.sendEmptyMessage(data);
+    };
 
     @Override
     public int getLayoutID()
@@ -57,6 +94,8 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu
     public void initData(@NonNull Bundle savedInstanceState)
     {
         super.initData(savedInstanceState);
+        iNotifyChangeListenerServer = ApiManager.getInstance()
+                                                .getServer(INotifyChangeListenerServer.class);
         tvName.setText(
                 String.format(getString(R.string.txt_doc_auth_name), loginSuccessBean.getName()));
         initPageData();
@@ -69,6 +108,9 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu
         ivBack.setOnClickListener(this);
         tvNext.setOnClickListener(this);
         tvAgain.setOnClickListener(this);
+        //注册患者状态监听
+        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(
+                doctorAuthStatusChangeListener, RegisterType.REGISTER);
     }
 
     private void initPageData()
@@ -86,6 +128,7 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu
                 break;
             case VERIFYING:
                 tvVerifying.setVisibility(View.VISIBLE);
+                tvVerifying.setText(R.string.txt_doc_auth_verifying);
                 tvHint.setText(R.string.txt_doc_auth_hint1);
                 tvNext.setVisibility(View.GONE);
                 tvAgain.setVisibility(View.VISIBLE);
@@ -98,6 +141,10 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu
                 tvNext.setVisibility(View.VISIBLE);
                 tvNext.setText(R.string.txt_doc_auth_again);
                 tvAgain.setVisibility(View.GONE);
+                break;
+            case VERIFY_SUCCESS:
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
                 break;
             default:
                 break;
@@ -112,10 +159,16 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu
         {
             case R.id.act_auth_doc_statu_next:
                 intent = new Intent(this, AuthDocActivity.class);
+                //认证失败
+                if (VERIFY_FAILD == loginSuccessBean.getChecked())
+                {
+                    intent.putExtra("again", true);
+                }
                 startActivityForResult(intent, REQUEST_CODE_AUTH);
                 break;
             case R.id.act_auth_doc_statu_again:
                 intent = new Intent(this, AuthDocActivity.class);
+                intent.putExtra("again", true);
                 startActivityForResult(intent, REQUEST_CODE_AUTH_AGAIN);
                 break;
             case R.id.public_title_bar_back:
@@ -165,5 +218,14 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu
                 initPageData();
                 break;
         }
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        //注销患者状态监听
+        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(
+                doctorAuthStatusChangeListener, RegisterType.UNREGISTER);
     }
 }

@@ -1,7 +1,6 @@
 package com.yht.yihuantong.ui.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +38,7 @@ public class CooperateHospitalDocListAdapter extends BaseRecyclerAdapter<Coopera
     public BaseViewHolder onCreateViewHolder(ViewGroup parent)
     {
         View view = LayoutInflater.from(parent.getContext())
-                                  .inflate(R.layout.item_cooperate_list, parent, false);
+                                  .inflate(R.layout.item_cooperate_hospital_doc, parent, false);
         return new CooperateDocHolder(view);
     }
 
@@ -53,7 +52,7 @@ public class CooperateHospitalDocListAdapter extends BaseRecyclerAdapter<Coopera
     public class CooperateDocHolder extends BaseViewHolder<CooperateHospitalDocBean>
     {
         private CircleImageView ivHeadImg;
-        private TextView tvName, tvType, tvHopital;
+        private TextView tvName, tvType, tvTitle, tvHopital, tvDocType;
 
         public CooperateDocHolder(View itemView)
         {
@@ -61,6 +60,8 @@ public class CooperateHospitalDocListAdapter extends BaseRecyclerAdapter<Coopera
             ivHeadImg = itemView.findViewById(R.id.item_cooperate_list_headimg);
             tvName = itemView.findViewById(R.id.item_cooperate_list_name);
             tvType = itemView.findViewById(R.id.item_cooperate_list_type);
+            tvTitle = itemView.findViewById(R.id.item_cooperate_list_title);
+            tvDocType = itemView.findViewById(R.id.item_cooperate_list_doc_type);
             tvHopital = itemView.findViewById(R.id.item_cooperate_list_hospital);
             tvName = itemView.findViewById(R.id.item_cooperate_list_name);
         }
@@ -72,16 +73,25 @@ public class CooperateHospitalDocListAdapter extends BaseRecyclerAdapter<Coopera
                  .load(item.getPortraitUrl())
                  .apply(GlideHelper.getOptions())
                  .into(ivHeadImg);
-            if (!TextUtils.isEmpty(item.getNickname()) && item.getNickname().length() < 20)
+            //            if (!TextUtils.isEmpty(item.getNickname()) && item.getNickname().length() < 20)
+            //            {
+            //                tvName.setText(item.getNickname());
+            //            }
+            //            else
+            //            {
+            tvName.setText(item.getName());
+            //            }
+            tvHopital.setText(item.getPlatformHospitalName());
+            tvType.setText(item.getDepartment());
+            tvTitle.setText(item.getTitle());
+            if (1 == item.getRelationId())
             {
-                tvName.setText(item.getNickname());
+                tvDocType.setText("执业");
             }
             else
             {
-                tvName.setText(item.getName());
+                tvDocType.setText("合作");
             }
-            tvHopital.setText(item.getHospital());
-            tvType.setText(item.getDepartment());
         }
     }
 }

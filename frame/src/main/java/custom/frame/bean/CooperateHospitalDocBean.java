@@ -24,6 +24,8 @@ public class CooperateHospitalDocBean extends DataSupport implements Serializabl
     private String checkUrl;
     private String identityNumber;
     private String nickname;
+    private int relationId;//1,执业医生   2,合作医生
+    private String platformHospitalName;
 
     public int getFieldId()
     {
@@ -163,5 +165,25 @@ public class CooperateHospitalDocBean extends DataSupport implements Serializabl
     public void setNickname(String nickname)
     {
         this.nickname = nickname;
+    }
+
+    public int getRelationId()
+    {
+        return relationId;
+    }
+
+    public void setRelationId(int relationId)
+    {
+        this.relationId = relationId;
+    }
+
+    public String getPlatformHospitalName()
+    {
+        return platformHospitalName;
+    }
+
+    public void setPlatformHospitalName(String platformHospitalName)
+    {
+        this.platformHospitalName = platformHospitalName;
     }
 }

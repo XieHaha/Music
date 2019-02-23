@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/app_white_color"
+    android:layout_height="90dp">
+
+    <FrameLayout
+        android:id="@+id/headimg_layout"
+        android:layout_width="69dp"
+        android:layout_marginLeft="5dp"
+        android:layout_centerVertical="true"
+        android:layout_height="69dp">
+
+        <!--<ImageView-->
+        <!--android:id="@+id/item_cooperate_list_headimg"-->
+        <!--android:layout_width="50dp"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:src="@mipmap/icon_default_imgs_rect"-->
+        <!--android:layout_centerInParent="true" />-->
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/item_cooperate_list_headimg"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/icon_default_imgs" />
+
+        <RelativeLayout
+            android:id="@+id/message_red_point"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="3dp"
+            android:visibility="gone"
+            android:layout_marginRight="3dp"
+            android:background="@drawable/bg_red_point"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/item_msg_list_msg_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="@color/app_white_color"
+                android:text="1"
+                android:textSize="10sp" />
+        </RelativeLayout>
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@id/headimg_layout"
+        android:layout_centerVertical="true"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/item_cooperate_list_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:text="aa"
+                android:textColor="@color/app_main_txt_color"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/item_cooperate_list_doc_type"
+                android:layout_width="wrap_content"
+                android:text="aa"
+                android:textSize="14sp"
+                android:textColor="@color/app_hint_color"
+                android:layout_marginRight="12dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/item_cooperate_list_hospital"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:maxLines="1"
+            android:text=""
+            android:textSize="15sp"
+            android:textColor="@color/app_minor_color"
+            android:ellipsize="end" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="3dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/item_cooperate_list_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textSize="15sp"
+                android:textColor="@color/app_minor_color"
+                android:text=""
+                android:ellipsize="end" />
+
+            <View
+                android:layout_width="1dp"
+                android:background="@color/app_hint_color"
+                android:layout_marginLeft="5dp"
+                android:layout_height="10dp" />
+
+            <TextView
+                android:id="@+id/item_cooperate_list_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textSize="15sp"
+                android:textColor="@color/app_minor_color"
+                android:maxLines="1"
+                android:text=""
+                android:ellipsize="end" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/item_cooperate_list_layout"
+        android:layout_width="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingRight="12dp"
+        android:visibility="gone"
+        android:layout_alignParentRight="true"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/item_cooperate_list_refuse"
+            android:layout_width="51dp"
+            android:layout_height="30dp"
+            android:textSize="12sp"
+            android:text="拒绝"
+            android:gravity="center"
+            android:background="@drawable/corner_main_color_bg"
+            android:textColor="@color/app_main_color" />
+
+        <TextView
+            android:id="@+id/item_cooperate_list_agree"
+            android:layout_width="51dp"
+            android:layout_height="30dp"
+            android:textSize="12sp"
+            android:text="通过"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:background="@drawable/corner_main_color_full_bg"
+            android:textColor="@color/app_white_color" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:background="@color/app_parting_minor_bg"
+        android:layout_height="2px" />
+
+</RelativeLayout>

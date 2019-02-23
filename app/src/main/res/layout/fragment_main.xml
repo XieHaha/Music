@@ -39,60 +39,10 @@
                     android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:id="@+id/fragment_main_my_patient_layout"
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:gravity="center_vertical"
-                        android:layout_height="50dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:textSize="17sp"
-                            android:textColor="@color/app_main_txt_color"
-                            android:text="我的患者"
-                            android:drawableLeft="@mipmap/icon_my_patients"
-                            android:drawablePadding="5dp"
-                            android:layout_height="wrap_content" />
-
-
-                        <RelativeLayout
-                            android:id="@+id/message_red_point_layout"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:visibility="gone"
-                            android:layout_marginLeft="5dp"
-                            android:background="@drawable/bg_red_point"
-                            android:gravity="center_vertical">
-
-                            <TextView
-                                android:id="@+id/item_msg_num"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:textColor="@color/app_white_color"
-                                android:text="0"
-                                android:textSize="10sp" />
-                        </RelativeLayout>
-
-                        <TextView
-                            android:id="@+id/fragment_main_my_health_num"
-                            android:layout_width="match_parent"
-                            tools:text="1人"
-                            android:gravity="right"
-                            android:textColor="@color/app_hint_color"
-                            android:textSize="14sp"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
                         android:id="@+id/fragment_main_my_recent_contact_layout"
                         android:layout_width="match_parent"
                         android:orientation="vertical"
                         android:visibility="visible"
-                        android:layout_below="@id/fragment_main_my_patient_layout"
                         android:layout_height="wrap_content">
 
                         <View
@@ -141,7 +91,6 @@
                         </custom.frame.widgets.recyclerview.AutoLoadRecyclerView>
                     </LinearLayout>
 
-
                 </RelativeLayout>
 
                 <View
@@ -166,6 +115,70 @@
                     </custom.frame.widgets.gridview.CustomGridView>
 
                 </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:background="@drawable/corner15_white_full_bg"
+                    android:orientation="vertical"
+                    android:elevation="2dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_height="100dp">
+
+                    <LinearLayout
+                        android:id="@+id/fragment_main_my_patient_layout"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:gravity="center_vertical"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textSize="17sp"
+                            android:textColor="@color/app_main_txt_color"
+                            android:gravity="center_vertical"
+                            android:text="我的患者"
+                            android:drawableLeft="@mipmap/icon_my_patients"
+                            android:drawablePadding="10dp"
+                            android:layout_height="wrap_content" />
+
+                        <RelativeLayout
+                            android:id="@+id/message_red_point_layout"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:visibility="gone"
+                            android:layout_marginLeft="5dp"
+                            android:background="@drawable/bg_red_point"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/item_msg_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:textColor="@color/app_white_color"
+                                android:text="0"
+                                android:textSize="10sp" />
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/fragment_main_my_health_num"
+                            android:layout_width="match_parent"
+                            tools:text="1人"
+                            android:gravity="right"
+                            android:textColor="@color/app_hint_color"
+                            android:textSize="14sp"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+                </RelativeLayout>
+
 
                 <View
                     android:layout_width="match_parent"

@@ -35,7 +35,9 @@ import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.qrcode.BarCodeImageView;
 import com.yht.yihuantong.qrcode.DialogPersonalBarCode;
 import com.yht.yihuantong.ui.activity.AuthDocActivity;
+import com.yht.yihuantong.ui.activity.AuthDocStatuActivity;
 import com.yht.yihuantong.ui.activity.EditInfoActivity;
+import com.yht.yihuantong.ui.activity.LoginActivity;
 import com.yht.yihuantong.ui.activity.SettingActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientFromActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientToActivity;
@@ -48,16 +50,21 @@ import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
 
+import org.litepal.crud.DataSupport;
+
 import java.io.File;
 import java.util.List;
 
 import custom.frame.bean.BaseResponse;
+import custom.frame.bean.CooperateDocBean;
 import custom.frame.bean.LoginSuccessBean;
+import custom.frame.bean.PatientBean;
 import custom.frame.http.Tasks;
 import custom.frame.http.data.HttpConstants;
 import custom.frame.permission.OnPermissionCallback;
 import custom.frame.permission.Permission;
 import custom.frame.permission.PermissionHelper;
+import custom.frame.ui.activity.AppManager;
 import custom.frame.ui.fragment.BaseFragment;
 import custom.frame.utils.DirHelper;
 import custom.frame.utils.GlideHelper;
@@ -112,6 +119,10 @@ public class UserFragment extends BaseFragment
      * 图片  裁剪
      */
     public static final int RC_CROP_IMG = RC_PICK_CAMERA_IMG + 1;
+    /**
+     * 图片  裁剪
+     */
+    public static final int REQUEST_CODE_DOC_AUTH = RC_CROP_IMG + 1;
     private String headImgUrl;
     private Handler handler = new Handler()
     {
@@ -370,7 +381,7 @@ public class UserFragment extends BaseFragment
                 break;
             case R.id.fragment_my_auth_layout:
                 intent = new Intent(getContext(), AuthDocActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_DOC_AUTH);
                 break;
             case R.id.fragmrnt_user_info_headimg:
                 editHeadImg();
@@ -634,6 +645,13 @@ public class UserFragment extends BaseFragment
                 }
                 //上传完成，替换本地图片
                 Glide.with(this).load(cutFileUri).into(headImg);
+                break;
+            case REQUEST_CODE_DOC_AUTH:
+                //清除数据库数据
+                DataSupport.deleteAll(PatientBean.class);
+                DataSupport.deleteAll(CooperateDocBean.class);
+                startActivity(new Intent(getContext(), AuthDocStatuActivity.class));
+                getActivity().finish();
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);

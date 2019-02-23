@@ -43,14 +43,15 @@ import com.yht.yihuantong.qrcode.BarCodeImageView;
 import com.yht.yihuantong.qrcode.DialogPersonalBarCode;
 import com.yht.yihuantong.ui.activity.AddFriendsDocActivity;
 import com.yht.yihuantong.ui.activity.AddFriendsPatientActivity;
+import com.yht.yihuantong.ui.activity.CooperateHospitalActivity;
 import com.yht.yihuantong.ui.activity.PatientInfoActivity;
 import com.yht.yihuantong.ui.activity.PatientsActivity;
 import com.yht.yihuantong.ui.activity.RegistrationDetailActivity;
 import com.yht.yihuantong.ui.activity.RegistrationListActivity;
-import com.yht.yihuantong.ui.activity.xiaoyu.RemoteConsultationActivity;
 import com.yht.yihuantong.ui.activity.ServicePackActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientHistoryActivity;
+import com.yht.yihuantong.ui.activity.xiaoyu.RemoteConsultationActivity;
 import com.yht.yihuantong.ui.adapter.MainOptionsAdapter;
 import com.yht.yihuantong.ui.adapter.OrderInfoLimitAdapter;
 import com.yht.yihuantong.ui.adapter.RecentContactAdapter;
@@ -393,9 +394,12 @@ public class MainFragment extends BaseFragment
                         intent = new Intent(getContext(), RemoteConsultationActivity.class);
                         startActivity(intent);
                         break;
+                    case HOSPITAL_GROUP:
+                        intent = new Intent(getContext(), CooperateHospitalActivity.class);
+                        startActivity(intent);
+                        break;
                     case CULTIVATE:
                     case DOCTOR_GROUP:
-                    case HOSPITAL_GROUP:
                     case INTEGRAL:
                     default:
                         ToastUtil.toast(getContext(), "敬请期待");
