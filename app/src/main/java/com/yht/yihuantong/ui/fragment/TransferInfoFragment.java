@@ -151,7 +151,7 @@ public class TransferInfoFragment extends BaseFragment
     {
         Intent intent = new Intent(getContext(), TransferPatientActivity.class);
         intent.putExtra(CommonData.KEY_PUBLIC, false);
-        intent.putExtra("limit", true);
+        //        intent.putExtra("limit", true);
         intent.putExtra(CommonData.KEY_TRANSFER_BEAN, item);
         startActivityForResult(intent, REQUEST_CODE_STATUS_CHANGE);
     }

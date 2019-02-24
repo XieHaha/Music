@@ -112,7 +112,6 @@ public class LoginActivity extends BaseActivity implements DocAuthStatu
             etPhone.setSelection(phone.length());
             tvGetVerify.setSelected(true);
         }
-        ivProtolImg.setSelected(true);
     }
 
     @Override

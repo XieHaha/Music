@@ -42,6 +42,7 @@ import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
 import com.yht.yihuantong.chat.ChatActivity;
 import com.yht.yihuantong.data.CommonData;
+import com.yht.yihuantong.receive.EaseMsgClickBroadCastReceiver;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.ui.fragment.CooperateDocFragment;
 import com.yht.yihuantong.ui.fragment.MainFragment;
@@ -439,9 +440,11 @@ public class MainActivity extends BaseActivity
     {
         NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         String title = "聊天通知";
-        Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+        Intent intent = new Intent(MainActivity.this, EaseMsgClickBroadCastReceiver.class);
         intent.putExtra(CommonData.KEY_CHAT_ID, message.getFrom());
-        PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, 0);
+        intent.setAction("ease.msg.android.intent.CLICK");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent,
+                                                                PendingIntent.FLAG_ONE_SHOT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
             Notification notification = new NotificationCompat.Builder(this,

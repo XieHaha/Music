@@ -245,6 +245,17 @@
             android:screenOrientation="portrait"
             tools:replace="screenOrientation" />
 
+        <!--环信消息点击事件处理-->
+        <receiver
+            android:name=".receive.EaseMsgClickBroadCastReceiver"
+            android:exported="false"
+            android:enabled="true">
+            <intent-filter>
+                <!--通知栏消息点击-->
+                <action android:name="ease.msg.android.intent.CLICK" />
+            </intent-filter>
+        </receiver>
+
         <!--小鱼配置-->
         <!-- 注意： 此处需设置 APP_ID -->
         <meta-data
