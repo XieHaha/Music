@@ -246,7 +246,7 @@ public class LoginActivity extends BaseActivity implements DocAuthStatu
         }
         if (!ivProtolImg.isSelected())
         {
-            ToastUtil.toast(this, "请仔细阅读用户协议");
+            ToastUtil.toast(this, "请先阅读并勾选使用协议");
             return;
         }
         showProgressDialog("登录中", false);

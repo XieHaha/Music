@@ -415,8 +415,9 @@ public class MainFragment extends BaseFragment
                         startActivity(intent);
                         break;
                     case REMOTE_CONSULTATION:
-                        intent = new Intent(getContext(), RemoteConsultationActivity.class);
-                        startActivity(intent);
+                        //                        intent = new Intent(getContext(), RemoteConsultationActivity.class);
+                        //                        startActivity(intent);
+                        ToastUtil.toast(getContext(), "敬请期待");
                         break;
                     case HOSPITAL_GROUP:
                         intent = new Intent(getContext(), CooperateHospitalActivity.class);

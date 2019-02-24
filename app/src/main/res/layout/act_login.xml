@@ -125,22 +125,23 @@
             android:layout_width="wrap_content"
             android:layout_marginTop="15dp"
             android:gravity="center_vertical"
-            android:padding="10dp"
             android:layout_gravity="center_horizontal"
-            android:layout_height="wrap_content">
+            android:layout_height="35dp">
 
             <ImageView
                 android:id="@+id/act_login_protocol_img"
-                android:layout_width="15dp"
+                android:padding="10dp"
+                android:layout_width="35dp"
                 android:src="@drawable/login_protol_status_selector"
-                android:layout_height="15dp" />
+                android:layout_height="35dp" />
 
             <TextView
                 android:id="@+id/act_login_protocol"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:text="使用协议"
+                android:gravity="center"
                 android:textColor="@color/app_main_color"
                 android:textSize="14sp" />
         </LinearLayout>
