@@ -147,6 +147,7 @@ public class MainActivity extends BaseActivity
     public static final String CHANNEL_CHAT = "channel_chat";
     private Bitmap largeIcon = null;
     private NotificationManager mNotificationManager;
+    private int pending_count = 1;
 
     @Override
     public int getLayoutID()
@@ -438,20 +439,27 @@ public class MainActivity extends BaseActivity
 
     public void sendChatMsg(EMMessage message)
     {
-        NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        String title = "聊天通知";
+        //当前消息发送者与正在聊天界面对象一致时，不显示通知
+        if (message.getFrom().equals(YihtApplication.getInstance().getChatId()))
+        {
+            return;
+        }
+        if (pending_count > 10000)
+        {
+            pending_count = 1;
+        }
+        pending_count++;
         Intent intent = new Intent(MainActivity.this, EaseMsgClickBroadCastReceiver.class);
         intent.putExtra(CommonData.KEY_CHAT_ID, message.getFrom());
         intent.setAction("ease.msg.android.intent.CLICK");
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent,
-                                                                PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, pending_count,
+                                                                 intent,
+                                                                 PendingIntent.FLAG_UPDATE_CURRENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
             Notification notification = new NotificationCompat.Builder(this,
-                                                                       CHANNEL_CHAT).setContentTitle(
-                    title)
-                                                                                    .setContentText(
-                                                                                            "收到新的消息")
+                                                                       CHANNEL_CHAT).setContentText(
+                    "收到新的消息")
                                                                                     .setWhen(
                                                                                             System.currentTimeMillis())
                                                                                     .setSmallIcon(
@@ -466,14 +474,13 @@ public class MainActivity extends BaseActivity
                                                                                     .setContentIntent(
                                                                                             pendingIntent)
                                                                                     .build();
-            manager.notify(1, notification);
+            mNotificationManager.notify(message.getFrom(), 1, notification);
         }
         else
         {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this);
             builder.setSmallIcon(R.mipmap.icon_logo);
             builder.setAutoCancel(true);
-            builder.setContentTitle(title);
             builder.setContentText("收到新消息");
             builder.setContentIntent(pendingIntent);
             int defaults = Notification.DEFAULT_LIGHTS;
@@ -481,43 +488,8 @@ public class MainActivity extends BaseActivity
             defaults |= Notification.DEFAULT_SOUND;
             builder.setDefaults(defaults);
             builder.setWhen(System.currentTimeMillis());
-            mNotificationManager.notify(1, builder.build());
+            mNotificationManager.notify(message.getFrom(), 1, builder.build());
         }
-        //        String id = message.getFrom();
-        //        if (id.contains("d"))
-        //        {
-        //            List<PatientBean> list = DataSupport.where("patientId = ?", id)
-        //                                                .find(PatientBean.class);
-        //            if (list != null && list.size() > 0)
-        //            {
-        //                PatientBean bean = list.get(0);
-        //                if (!TextUtils.isEmpty(bean.getNickname()) && bean.getNickname().length() < 20)
-        //                {
-        //                    title = bean.getNickname();
-        //                }
-        //                else
-        //                {
-        //                    title = bean.getName();
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            List<CooperateDocBean> list = DataSupport.where("doctorId = ?", id)
-        //                                                     .find(CooperateDocBean.class);
-        //            if (list != null && list.size() > 0)
-        //            {
-        //                CooperateDocBean bean = list.get(0);
-        //                if (!TextUtils.isEmpty(bean.getNickname()) && bean.getNickname().length() < 20)
-        //                {
-        //                    title = bean.getNickname();
-        //                }
-        //                else
-        //                {
-        //                    title = bean.getName();
-        //                }
-        //            }
-        //        }
     }
 
     @TargetApi(Build.VERSION_CODES.O)

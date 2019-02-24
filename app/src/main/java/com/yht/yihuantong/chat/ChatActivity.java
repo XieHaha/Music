@@ -1,5 +1,7 @@
 package com.yht.yihuantong.chat;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.permission.OnPermissionCallback;
 import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.activity.PatientInfoActivity;
 import com.yht.yihuantong.ui.activity.ServicePackActivity;
@@ -36,6 +39,7 @@ public class ChatActivity extends BaseActivity
     private PopupWindow mPopupwinow;
     private View view_pop;
     private RelativeLayout rlInfoLayout, rlServiceLayout;
+    private NotificationManager manager;
 
     @Override
     public int getLayoutID()
@@ -52,6 +56,7 @@ public class ChatActivity extends BaseActivity
             chatId = getIntent().getStringExtra(CommonData.KEY_CHAT_ID);
             chatName = getIntent().getStringExtra(CommonData.KEY_CHAT_NAME);
         }
+        YihtApplication.getInstance().setChatId(chatId);
         //        ((TextView)findViewById(R.id.public_title_bar_title)).setText(chatName);
         easeChatFragment = new EaseChatFragment();  //环信聊天界面
         easeChatFragment.setChatFragmentHelper(new ChatHelper());
@@ -63,6 +68,14 @@ public class ChatActivity extends BaseActivity
         easeChatFragment.hideTitleBar();
         easeChatFragment.setArguments(args);
         replaceFragment(R.id.act_chat_root, easeChatFragment, ChatActivity.class.getName());
+    }
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState)
+    {
+        super.initData(savedInstanceState);
+        manager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.cancel(chatId, 1);
     }
 
     /**
@@ -223,5 +236,12 @@ public class ChatActivity extends BaseActivity
         {
             easeChatFragment.onNoPermissionNeeded(permissionName);
         }
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        YihtApplication.getInstance().setChatId("");
     }
 }

@@ -151,7 +151,11 @@ public class MainFragment extends BaseFragment
     /**
      * 最近联系人
      */
-    private static final int TRANSFER_CODE_RECENT = 2;
+    private static final int RECENT_PEOPLE_CODE = 2;
+    /**
+     * 最近联系人
+     */
+    private static final int ORDER_STATUS_CODE = 3;
     /**
      * 扫码结果
      */
@@ -170,7 +174,7 @@ public class MainFragment extends BaseFragment
                 case TRANSFER_CODE:
                     getTransferList();
                     break;
-                case TRANSFER_CODE_RECENT:
+                case RECENT_PEOPLE_CODE:
                     recentContacts = RecentContactUtils.getRecentContactList();
                     if (recentContacts.size() > 0)
                     {
@@ -184,6 +188,9 @@ public class MainFragment extends BaseFragment
                     list.addAll(recentContacts);
                     recentContactAdapter.setList(list);
                     recentContactAdapter.notifyDataSetChanged();
+                    break;
+                case ORDER_STATUS_CODE:
+                    getOrderList();
                     break;
             }
         }
@@ -214,7 +221,21 @@ public class MainFragment extends BaseFragment
      */
     private IChange<String> mRecentContactChangeListener = data ->
     {
-        handler.sendEmptyMessage(TRANSFER_CODE_RECENT);
+        handler.sendEmptyMessage(RECENT_PEOPLE_CODE);
+    };
+    /**
+     * 推送回调监听  订单状态
+     */
+    private IChange<String> orderStatusChangeListener = data ->
+    {
+        try
+        {
+            handler.sendEmptyMessage(ORDER_STATUS_CODE);
+        }
+        catch (NumberFormatException e)
+        {
+            e.printStackTrace();
+        }
     };
 
     @Override
@@ -311,6 +332,9 @@ public class MainFragment extends BaseFragment
         //最近联系人
         iNotifyChangeListenerServer.registerRecentContactChangeListener(
                 mRecentContactChangeListener, RegisterType.REGISTER);
+        //注册订单状态监听
+        iNotifyChangeListenerServer.registerOrderStatusChangeListener(orderStatusChangeListener,
+                                                                      RegisterType.REGISTER);
         transferInfoListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
@@ -832,5 +856,8 @@ public class MainFragment extends BaseFragment
         //最近联系人
         iNotifyChangeListenerServer.registerRecentContactChangeListener(
                 mRecentContactChangeListener, RegisterType.UNREGISTER);
+        //注销订单状态监听
+        iNotifyChangeListenerServer.registerOrderStatusChangeListener(orderStatusChangeListener,
+                                                                      RegisterType.UNREGISTER);
     }
 }

@@ -61,6 +61,10 @@ public class YihtApplication extends LitePalApplication
      */
     private String easeName;
     /**
+     * 当前正在聊天的id
+     */
+    private String chatId;
+    /**
      * 版本更新标识
      */
     private boolean versionRemind = false;
@@ -250,6 +254,16 @@ public class YihtApplication extends LitePalApplication
     public void setEaseName(String easeName)
     {
         this.easeName = easeName;
+    }
+
+    public String getChatId()
+    {
+        return chatId;
+    }
+
+    public void setChatId(String chatId)
+    {
+        this.chatId = chatId;
     }
 
     public boolean isVersionRemind()
