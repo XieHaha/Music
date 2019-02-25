@@ -21,6 +21,7 @@ public class CooperateDocBean extends DataSupport implements Serializable
     private String doctorDescription;
     private int requestSource;
     private int checked;
+    private int hospitalAuthorityCode;//0,未认证    1，已认证
     private String checkUrl;
     private String identityNumber;
     private String nickname;
@@ -185,5 +186,15 @@ public class CooperateDocBean extends DataSupport implements Serializable
     public void setIsAuthorityOpen(int isAuthorityOpen)
     {
         this.isAuthorityOpen = isAuthorityOpen;
+    }
+
+    public int getHospitalAuthorityCode()
+    {
+        return hospitalAuthorityCode;
+    }
+
+    public void setHospitalAuthorityCode(int hospitalAuthorityCode)
+    {
+        this.hospitalAuthorityCode = hospitalAuthorityCode;
     }
 }

@@ -17,6 +17,7 @@ import com.yht.yihuantong.version.view.VersionUpdateDialog;
 
 import org.litepal.crud.DataSupport;
 
+import cn.jpush.android.api.JPushInterface;
 import custom.frame.bean.CooperateDocBean;
 import custom.frame.bean.PatientBean;
 import custom.frame.bean.Version;
@@ -121,6 +122,8 @@ public class SettingActivity extends BaseActivity
                     //清除数据库数据
                     DataSupport.deleteAll(PatientBean.class);
                     DataSupport.deleteAll(CooperateDocBean.class);
+                    //极光推送
+                    JPushInterface.deleteAlias(this, 100);
                     //删除环信会话列表
                     //TODO
                     //退出环信

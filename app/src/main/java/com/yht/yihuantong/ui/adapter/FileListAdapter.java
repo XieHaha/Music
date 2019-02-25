@@ -107,6 +107,8 @@ public class FileListAdapter extends BaseRecyclerAdapter<FileBean>
                                                                                       int what,
                                                                                       Exception exception)
                                                                               {
+                                                                                  tvDown.setClickable(
+                                                                                          true);
                                                                                   tvDown.setText(
                                                                                           "重试");
                                                                               }
@@ -123,6 +125,8 @@ public class FileListAdapter extends BaseRecyclerAdapter<FileBean>
                                                                                           View.VISIBLE);
                                                                                   tvDown.setText(
                                                                                           "下载中");
+                                                                                  tvDown.setClickable(
+                                                                                          false);
                                                                               }
 
                                                                               @Override

@@ -246,7 +246,14 @@ public class DoctorInfoActivity extends BaseActivity
             tvHospital.setText(cooperateDocBean.getHospital());
             tvTitle.setText(cooperateDocBean.getTitle());
             tvType.setText(cooperateDocBean.getDepartment());
-            tvHospitalVerify.setSelected(true);
+            if (cooperateDocBean.getHospitalAuthorityCode() == 1)
+            {
+                tvHospitalVerify.setSelected(true);
+            }
+            else
+            {
+                tvHospitalVerify.setSelected(false);
+            }
             if (cooperateDocBean.getChecked() == 6)
             {
                 tvPlatformVerify.setSelected(true);
