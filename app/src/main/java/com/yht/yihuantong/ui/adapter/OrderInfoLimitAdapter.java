@@ -150,7 +150,7 @@ public class OrderInfoLimitAdapter extends BaseAdapter implements OrderStatus, C
         holder.tvOrderPatientName.setText(curRegistrationBean.getPatientName());
         holder.tvOrderPatientSex.setText(curRegistrationBean.getPatientSex());
         holder.tvOrderPatientAge.setText(
-                AllUtils.formatDateByAge(curRegistrationBean.getPatientBirthDate()) + "岁");
+                AllUtils.getAge(curRegistrationBean.getPatientBirthDate()) + "岁");
         holder.tvOrderDetail.setText(curRegistrationBean.getDiagnosisInfo());
         holder.tvOrderHospital.setText(curRegistrationBean.getHospitalName());
     }

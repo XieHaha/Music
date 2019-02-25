@@ -351,7 +351,7 @@ public class ServicePackActivity<T> extends BaseActivity
             {
                 tvPatientName.setText(patientBean.getName());
             }
-            tvPatientAge.setText(AllUtils.formatDateByAge(patientBean.getBirthDate()));
+            tvPatientAge.setText(AllUtils.getAge(patientBean.getBirthDate()));
         }
         if (!limit)
         {

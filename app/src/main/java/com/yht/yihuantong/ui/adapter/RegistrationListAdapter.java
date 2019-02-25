@@ -100,7 +100,7 @@ public class RegistrationListAdapter extends BaseRecyclerAdapter<RegistrationBea
             }
             tvOrderPatientName.setText(item.getPatientName());
             tvOrderPatientSex.setText(item.getPatientSex());
-            tvOrderPatientAge.setText(AllUtils.formatDateByAge(item.getPatientBirthDate()) + "岁");
+            tvOrderPatientAge.setText(AllUtils.getAge(item.getPatientBirthDate()) + "岁");
             tvOrderDetail.setText(item.getHospitalName());
             tvOrderHospital.setText(
                     AllUtils.formatDate(item.getOrderDate(), AllUtils.YYYY_MM_DD_HH_MM));

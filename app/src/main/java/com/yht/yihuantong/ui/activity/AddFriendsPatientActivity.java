@@ -145,7 +145,7 @@ public class AddFriendsPatientActivity extends BaseActivity
                 tvName.setText(patientBean.getName());
             }
             tvSex.setText(patientBean.getSex());
-            tvAge.setText(AllUtils.formatDateByAge(patientBean.getBirthDate()) + "岁");
+            tvAge.setText(AllUtils.getAge(patientBean.getBirthDate()) + "岁");
             if (!TextUtils.isEmpty(patientBean.getAddress()))
             {
                 tvAddress.setText(patientBean.getAddress());

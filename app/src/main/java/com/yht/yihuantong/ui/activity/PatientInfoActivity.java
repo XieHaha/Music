@@ -283,7 +283,7 @@ public class PatientInfoActivity extends BaseActivity
                 tvName.setText(patientBean.getName());
             }
             tvSex.setText(patientBean.getSex());
-            tvAge.setText(AllUtils.formatDateByAge(patientBean.getBirthDate()) + "岁");
+            tvAge.setText(AllUtils.getAge(patientBean.getBirthDate()) + "岁");
             if (!TextUtils.isEmpty(patientBean.getUnitName()))
             {
                 tvCompany.setText(patientBean.getUnitName());

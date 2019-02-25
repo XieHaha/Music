@@ -234,7 +234,7 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                  .into(ivHeadImg);
             tvName.setText(patientBean.getName());
             tvSex.setText(patientBean.getSex());
-            tvAge.setText(AllUtils.formatDateByAge(patientBean.getBirthDate()));
+            tvAge.setText(AllUtils.getAge(patientBean.getBirthDate()));
             tvTransferNext.setVisibility(View.GONE);
         }
         else//已有转诊单
@@ -257,7 +257,7 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                                                    AllUtils.YYYY_MM_DD_HH_MM));
                 tvName.setText(transPatientBean.getPatientName());
                 tvSex.setText(transPatientBean.getPatientSex());
-                tvAge.setText(AllUtils.formatDateByAge(transPatientBean.getPatientBirthDate()));
+                tvAge.setText(AllUtils.getAge(transPatientBean.getPatientBirthDate()));
                 filterEmojiEditText.setText(transPatientBean.getFromDoctorDiagnosisInfo());
                 if (!loginSuccessBean.getDoctorId()
                                      .equals(transPatientBean.getFromDoctorId()))//接收转诊

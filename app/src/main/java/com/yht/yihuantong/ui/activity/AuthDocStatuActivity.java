@@ -124,7 +124,7 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
                 tvHint.setText(R.string.txt_doc_auth_hint);
                 tvNext.setVisibility(View.VISIBLE);
                 tvAgain.setVisibility(View.GONE);
-                ivImg.setSelected(false);
+                ivImg.setImageResource(R.mipmap.icon_doc_auth);
                 break;
             case VERIFYING:
                 tvVerifying.setVisibility(View.VISIBLE);
@@ -132,12 +132,12 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
                 tvHint.setText(R.string.txt_doc_auth_hint1);
                 tvNext.setVisibility(View.GONE);
                 tvAgain.setVisibility(View.VISIBLE);
-                ivImg.setSelected(false);
+                ivImg.setImageResource(R.mipmap.icon_doc_auth_wait);
                 break;
             case VERIFY_FAILD:
                 tvVerifying.setText(R.string.txt_doc_auth_verify_faild);
                 tvHint.setText(R.string.txt_doc_auth_hint2);
-                ivImg.setSelected(true);
+                ivImg.setImageResource(R.mipmap.icon_doc_auth_faild);
                 tvNext.setVisibility(View.VISIBLE);
                 tvNext.setText(R.string.txt_doc_auth_again);
                 tvAgain.setVisibility(View.GONE);

@@ -44,7 +44,7 @@
     <ImageView
         android:id="@+id/act_auth_doc_statu_img"
         android:layout_width="wrap_content"
-        android:src="@drawable/bg_doc_auth_selector"
+        android:src="@mipmap/icon_doc_auth"
         android:layout_marginTop="13dp"
         android:layout_height="wrap_content" />
 

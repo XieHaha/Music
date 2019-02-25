@@ -183,7 +183,7 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
         tvPatientName.setText(registrationBean.getPatientName());
         tvPatientSex.setText(registrationBean.getPatientSex());
         tvPatientAge.setText(
-                AllUtils.formatDateByAge(registrationBean.getPatientBirthDate()) + "岁");
+                AllUtils.getAge(registrationBean.getPatientBirthDate()) + "岁");
         tvDes.setText(registrationBean.getDiagnosisInfo());
         tvDoctorName.setText(registrationBean.getDoctorName());
         tvDoctorHospital.setText(registrationBean.getHospitalName());

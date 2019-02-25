@@ -84,7 +84,7 @@ public class PatientsListAdapter extends BaseRecyclerAdapter<PatientBean>
             {
                 tvName.setText(item.getName());
             }
-            tvAge.setText(AllUtils.formatDateByAge(item.getBirthDate()));
+            tvAge.setText(AllUtils.getAge(item.getBirthDate()));
             if ("男".equals(item.getSex()))
             {
                 lllayout.setSelected(true);
