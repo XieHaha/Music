@@ -159,10 +159,6 @@ public interface CommonData
      */
     int JIGUANG_CODE_TRANS_PATIENT_SUCCESS = 112;
     /**
-     * 收到转诊通知 合作医生接受我转诊的患者已经就诊
-     */
-    int JIGUANG_CODE_TRANS_PATIENT_VISIT_SUCCESS = 123;
-    /**
      * 收到转诊通知 合作医生转给我的
      */
     int JIGUANG_CODE_TRANS_PATIENT_APPLY = 133;

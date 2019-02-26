@@ -1,6 +1,8 @@
 package com.yht.yihuantong.tools;
 
 import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
 
 import com.yanzhenjie.nohttp.FileBinary;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -56,14 +58,14 @@ public class FileTransferServer
         downloadQueue.start();
     }
 
-    public void uploadFile(String jid, String filePath, String fileType, OnResponseListener responseListener,
-            OnUploadListener uploadListener)
+    public void uploadFile(String jid, String filePath, String fileType,
+            OnResponseListener responseListener, OnUploadListener uploadListener)
     {
         uploadFile(0, jid, filePath, fileType, responseListener, uploadListener);
     }
 
-    public void uploadFile(int what, String jid, String filePath, String fileType, OnResponseListener responseListener,
-            OnUploadListener uploadListener)
+    public void uploadFile(int what, String jid, String filePath, String fileType,
+            OnResponseListener responseListener, OnUploadListener uploadListener)
     {
         String url = "";
         Request request = new JsonObjectRequest(url, RequestMethod.POST);
@@ -74,19 +76,24 @@ public class FileTransferServer
         FileBinary fileBinary = new FileBinary(new File(filePath));
         fileBinary.setUploadListener(what, uploadListener);
         request.set("file", fileBinary);
-//        ImHttpServer.getInstance(ApiManager.getInstance().getContext()).addHeader(request);
+        //        ImHttpServer.getInstance(ApiManager.getInstance().getContext()).addHeader(request);
         uploadrQueue.add(what, request, responseListener);
     }
 
-    public void downloadFile(String url, String savePath, String fileName, DownloadListener downloadListener)
+    public void downloadFile(String url, String savePath, String fileName,
+            DownloadListener downloadListener)
     {
         downloadFile(0, url, savePath, fileName, downloadListener);
     }
 
-    public void downloadFile(int what, String url, String savePath, String fileName, DownloadListener downloadListener)
+    public void downloadFile(int what, String urlStr, String savePath, String fileName,
+            DownloadListener downloadListener)
     {
-        DownloadRequest request = NoHttp.createDownloadRequest(url, savePath, fileName, false, true);
-//        ImHttpServer.getInstance(ApiManager.getInstance().getContext()).addHeader(request);
+        String url;
+        url = urlStr.contains(" ") ? urlStr.replace(" ", "%20") : urlStr;
+        Log.i("test", url);
+        DownloadRequest request = NoHttp.createDownloadRequest(Uri.encode(url, url), savePath,
+                                                               fileName, false, true);
         downloadQueue.add(what, request, downloadListener);
     }
 

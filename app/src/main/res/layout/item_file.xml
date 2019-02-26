@@ -5,57 +5,67 @@
     android:background="@color/app_white_color"
     android:layout_height="60dp">
 
-    <TextView
-        android:id="@+id/item_file_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:layout_marginLeft="12dp"
-        android:maxLines="1"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/headimg_layout"
-        android:text="文件名"
-        android:textColor="#ff000000"
-        android:ellipsize="end" />
 
-    <custom.frame.widgets.view.CircleProgressBar
-        android:id="@+id/item_file_progress"
-        android:layout_width="32dip"
-        android:layout_height="32dip"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="65dp"
-        android:visibility="gone"
-        app:progressColor="@color/app_main_color"
-        app:txtColor="@color/app_main_color"
-        app:max="100" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/item_file_status"
-        android:layout_width="51dp"
-        android:layout_height="30dp"
-        android:textSize="12sp"
-        android:text="查看"
-        android:layout_marginRight="12dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:gravity="center"
-        android:background="@drawable/corner_main_color_full_bg"
-        android:textColor="@color/app_white_color" />
+        <TextView
+            android:id="@+id/item_file_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_weight="1"
+            android:text="文件名"
+            android:textColor="#ff000000"
+            android:ellipsize="end" />
 
-    <TextView
-        android:id="@+id/item_file_down"
-        android:layout_width="51dp"
-        android:layout_height="30dp"
-        android:textSize="12sp"
-        android:text="下载"
-        android:visibility="gone"
-        android:layout_marginRight="12dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:gravity="center"
-        android:background="@drawable/corner_main_color_full_bg"
-        android:textColor="@color/app_white_color" />
+        <custom.frame.widgets.view.CircleProgressBar
+            android:id="@+id/item_file_progress"
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:visibility="gone"
+            app:progressColor="@color/app_main_color"
+            app:txtColor="@color/app_main_color"
+            app:max="100" />
+
+        <TextView
+            android:id="@+id/item_file_status"
+            android:layout_width="51dp"
+            android:layout_height="30dp"
+            android:textSize="12sp"
+            android:text="查看"
+            android:layout_marginRight="12dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:visibility="visible"
+            android:gravity="center"
+            android:background="@drawable/corner_main_color_full_bg"
+            android:textColor="@color/app_white_color" />
+
+        <TextView
+            android:id="@+id/item_file_down"
+            android:layout_width="51dp"
+            android:layout_height="30dp"
+            android:textSize="12sp"
+            android:text="下载"
+            android:visibility="gone"
+            android:layout_marginRight="12dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:background="@drawable/corner_main_color_full_bg"
+            android:textColor="@color/app_white_color" />
+    </LinearLayout>
+
 
     <View
         android:layout_width="match_parent"

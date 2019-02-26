@@ -135,7 +135,6 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
                 NotifyChangeListenerServer.getInstance().notifyDoctorAuthStatus(type);
                 break;
             case JIGUANG_CODE_TRANS_PATIENT_SUCCESS://我的转诊成功
-            case JIGUANG_CODE_TRANS_PATIENT_VISIT_SUCCESS://转出的患者已就诊
                 NotifyChangeListenerServer.getInstance().notifyDoctorTransferPatient("to");
                 break;
             case JIGUANG_CODE_TRANS_PATIENT_APPLY://合作医生的转诊申请
@@ -144,14 +143,14 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
             case JIGUANG_CODE_DOCTOR_TRANS_REFUSE://拒绝接受转诊
             case JIGUANG_CODE_FROM_DOCTOR_TRANSFER_FINISHED://医院取消转诊（发送给发起医生）
             case JIGUANG_CODE_TO_DOCTOR_TRANSFER_FINISHED://医院取消转诊（发送给接受医生）
+            case JIGUANG_CODE_FROM_DOCTOR_TRANSFER_FINISH_SUCCESS://极光-医院确认患者就诊（发送给发起医生）
+            case JIGUANG_CODE_TO_DOCTOR_TRANSFER_FINISH_SUCCESS://极光-医院确认患者就诊（发送给接受医生）
                 NotifyChangeListenerServer.getInstance().notifyDoctorTransferPatient(msgId);
                 break;
             case JIGUANG_CODE_DOCTOR_PRODUCT_ACCEPTED://极光-患者确认服务包订单（发送给医生）
             case JIGUANG_CODE_DOCTOR_PRODUCT_REFUSED://极光-患者拒绝服务包订单（发送给医生）
             case JIGUANG_CODE_DOCTOR_PRODUCT_FINISH://极光-后台确认完成检查（发送给医生）
             case JIGUANG_CODE_DOCTOR_PRODUCT_REPORT://极光-后台确认发送报告（发送给医生）
-            case JIGUANG_CODE_FROM_DOCTOR_TRANSFER_FINISH_SUCCESS://极光-医院确认患者就诊（发送给发起医生）
-            case JIGUANG_CODE_TO_DOCTOR_TRANSFER_FINISH_SUCCESS://极光-医院确认患者就诊（发送给接受医生）
                 NotifyChangeListenerServer.getInstance().notifyOrderStatusChange(msgId);
                 break;
         }
@@ -227,10 +226,11 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
                 break;
             case JIGUANG_CODE_TRANS_PATIENT_APPLY://收到转诊
             case JIGUANG_CODE_TRANS_PATIENT_SUCCESS://合作医生接受转诊
-            case JIGUANG_CODE_TRANS_PATIENT_VISIT_SUCCESS://合作医生接收转诊的患者已就诊
             case JIGUANG_CODE_DOCTOR_TRANS_REFUSE://合作医生拒绝接受转诊
             case JIGUANG_CODE_FROM_DOCTOR_TRANSFER_FINISHED://医院取消转诊（发送给发起医生）
             case JIGUANG_CODE_TO_DOCTOR_TRANSFER_FINISHED://医院取消转诊（发送给接受医生）
+            case JIGUANG_CODE_FROM_DOCTOR_TRANSFER_FINISH_SUCCESS://极光-医院确认患者就诊（发送给发起医生）
+            case JIGUANG_CODE_TO_DOCTOR_TRANSFER_FINISH_SUCCESS://极光-医院确认患者就诊（发送给接受医生）
                 mainIntent = new Intent(context, MainActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
@@ -243,8 +243,6 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
             case JIGUANG_CODE_DOCTOR_PRODUCT_REFUSED://极光-患者拒绝服务包订单（发送给医生）
             case JIGUANG_CODE_DOCTOR_PRODUCT_FINISH://极光-后台确认完成检查（发送给医生）
             case JIGUANG_CODE_DOCTOR_PRODUCT_REPORT://极光-后台确认发送报告（发送给医生）
-            case JIGUANG_CODE_FROM_DOCTOR_TRANSFER_FINISH_SUCCESS://极光-医院确认患者就诊（发送给发起医生）
-            case JIGUANG_CODE_TO_DOCTOR_TRANSFER_FINISH_SUCCESS://极光-医院确认患者就诊（发送给接受医生）
                 mainIntent = new Intent(context, MainActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mainIntent.putExtra(CommonData.KEY_PUBLIC, 0);
