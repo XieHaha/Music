@@ -318,6 +318,8 @@ public class LoginActivity extends BaseActivity implements DocAuthStatu
                             public void onError(int code, String message)
                             {
                                 Log.d("main", "登录聊天服务器失败！");
+                                //环信登陆失败 清除服务器登录信息
+                                YihtApplication.getInstance().clearLoginSuccessBean();
                                 closeProgressDialog();
                             }
                         });

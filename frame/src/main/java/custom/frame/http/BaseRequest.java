@@ -166,6 +166,7 @@ public class BaseRequest<T> extends HttpProxy {
             default:
                 break;
         }
+        printfRequestLog(task,url.toString());
         objectRequest = new StringRequest(method, url.toString(), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -271,6 +272,7 @@ public class BaseRequest<T> extends HttpProxy {
             default:
                 break;
         }
+        printfRequestLog(task,url.toString());
         objectRequest = new StringRequest(method, url.toString(), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -351,6 +353,7 @@ public class BaseRequest<T> extends HttpProxy {
         final JSONObject jsonObject = new JSONObject(merchant);
         Log.i("YHT_D", "Task:" +task+"  params:" + jsonObject.toString());
         String url = appendUrl(moduleName);
+        printfRequestLog(task,url);
         jsonRequest = new JsonObjectRequest(method, url, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -435,6 +438,7 @@ public class BaseRequest<T> extends HttpProxy {
         final JSONObject jsonObject = new JSONObject(merchant);
         Log.i("YHT_D", "Task:" +task+"  params:" + jsonObject.toString());
         String url = appendUrl(moduleName);
+        printfRequestLog(task,url);
         jsonRequest = new JsonObjectRequest(method, url, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -521,7 +525,7 @@ public class BaseRequest<T> extends HttpProxy {
             listener.onResponseStart(task);
         }
         String url = appendUrl(moduleName);
-
+        printfRequestLog(task,url);
         multipartRequest = new MultipartRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -601,7 +605,7 @@ public class BaseRequest<T> extends HttpProxy {
             listener.onResponseStart(task);
         }
         String url = appendUrl(moduleName);
-
+        printfRequestLog(task,url);
         multipartRequest = new MultipartRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -743,7 +747,7 @@ public class BaseRequest<T> extends HttpProxy {
     private final void printfRequestLog(Tasks task, String url) {
         if (url != null) {
             MLog.d(Global.getInstance().getAPP_DEBUG_HEADER() + "#" + HttpTag,
-                    task + " Request url:" + getAPPUrl() + " url = " + url.toString());
+                    task + " Request url:" + url.toString());
         } else {
             MLog.d(Global.getInstance().getAPP_DEBUG_HEADER() + "#" + HttpTag,
                     " Request url:" + getAPPUrl());

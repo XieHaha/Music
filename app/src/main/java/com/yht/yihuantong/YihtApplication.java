@@ -8,7 +8,6 @@ import android.content.res.Resources;
 import android.os.Process;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.ainemo.sdk.otf.NemoSDK;
 import com.ainemo.sdk.otf.Settings;
@@ -74,6 +73,8 @@ public class YihtApplication extends LitePalApplication
     {
         MultiDex.install(this);
         super.onCreate();
+        initContext();
+        //小鱼
         initXYSDk();
         mIRequest = IRequest.getInstance(this);
         //监听类初始化
@@ -82,11 +83,12 @@ public class YihtApplication extends LitePalApplication
         NoHttp.initialize(this);
         //数据库
         LitePal.initialize(this);
-        initContext();
+        //环信
         initEase();
+        //极光
         initJPush();
+        //
         initImageLoader();
-        initXYSDk();
     }
 
     @Override
@@ -168,7 +170,6 @@ public class YihtApplication extends LitePalApplication
      */
     private void initXYSDk()
     {
-        //        Settings settings = new Settings("BMVNGNNNNMNNT");   //线上环境
         Settings settings = new Settings("23a05bc3dcdaa4ec9936a5c01aa0804757f99a66");   //测试环境
         int pId = Process.myPid();
         String processName = "";
@@ -186,7 +187,6 @@ public class YihtApplication extends LitePalApplication
         // 避免被初始化多次
         if (processName.equals(getPackageName()))
         {
-            Log.i("test", " NemoSDK init.....");
             NemoSDK nemoSDK = NemoSDK.getInstance();
             nemoSDK.init(this, settings);
             // 被叫服务，不使用被叫功能的请忽略
