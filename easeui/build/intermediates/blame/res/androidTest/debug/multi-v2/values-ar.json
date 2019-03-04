@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "F:\\YHT_D\\easeui\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-ar\\values-ar.xml",
+            "outputFile": "F:\\ZYC_D\\easeui\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-ar\\values-ar.xml",
             "map": [
                 {
                     "source": "C:\\Users\\dundun\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-base-11.4.0.aar\\aba6dd2f9d1e8954747140e6c6cea23d\\res\\values-ar\\values.xml",

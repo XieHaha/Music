@@ -63,7 +63,7 @@ public class HttpHeaderParser {
         boolean hasCacheControl = false;
         boolean mustRevalidate = false;
 
-        String serverEtag = null;
+        String serverEtag;
         String headerValue;
 
         headerValue = headers.get("Date");

@@ -135,6 +135,7 @@ public class NetworkResponse {
     /** Network roundtrip time in milliseconds. */
     public final long networkTimeMs;
 
+    @SuppressWarnings("MixedMutabilityReturnType")
     private static Map<String, String> toHeaderMap(List<Header> allHeaders) {
         if (allHeaders == null) {
             return null;
@@ -150,6 +151,7 @@ public class NetworkResponse {
         return headers;
     }
 
+    @SuppressWarnings("MixedMutabilityReturnType")
     private static List<Header> toAllHeaderList(Map<String, String> headers) {
         if (headers == null) {
             return null;
