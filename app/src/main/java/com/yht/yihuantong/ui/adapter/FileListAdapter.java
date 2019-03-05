@@ -11,7 +11,6 @@ import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.OnEventTriggerListener;
 import com.yht.yihuantong.tools.FileTransferServer;
-import com.yht.yihuantong.utils.AllUtils;
 
 import java.io.File;
 import java.util.List;
@@ -91,7 +90,10 @@ public class FileListAdapter extends BaseRecyclerAdapter<FileBean>
             tvFileName.setText(fileName);
             tvStatus.setOnClickListener(v ->
                                         {
-                                            AllUtils.openFile(context, filePath);
+                                            if (openFileListener != null)
+                                            {
+                                                openFileListener.onOpen(position,filePath,fileName);
+                                            }
                                         });
             tvDown.setOnClickListener(v ->
                                       {
@@ -161,5 +163,17 @@ public class FileListAdapter extends BaseRecyclerAdapter<FileBean>
                                                                           });
                                       });
         }
+    }
+
+    private OpenFileListener openFileListener;
+
+    public void setOpenFileListener(OpenFileListener openFileListener)
+    {
+        this.openFileListener = openFileListener;
+    }
+
+    public interface OpenFileListener
+    {
+        void onOpen(int position,String path,String fileName);
     }
 }

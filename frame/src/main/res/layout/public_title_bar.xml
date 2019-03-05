@@ -33,6 +33,10 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             tools:text="标题"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:maxEms="10"
+            android:ellipsize="end"
             android:textColor="@color/app_white_color"
             android:textSize="@dimen/app_main_title" />
 

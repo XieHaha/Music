@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,17 +12,20 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.adapter.FileListAdapter;
 import com.yht.yihuantong.utils.AllUtils;
+import com.yht.yihuantong.utils.FileUtils;
+import com.yht.yihuantong.utils.MimeUtils;
 
 import java.util.ArrayList;
 
 import custom.frame.bean.FileBean;
+import custom.frame.bean.NormImage;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 
 /**
  * Created by dundun on 18/8/24.
  */
-public class FileListActivity extends BaseActivity
+public class FileListActivity extends BaseActivity implements FileListAdapter.OpenFileListener
 {
     private AutoLoadRecyclerView autoLoadRecyclerView;
     private FileListAdapter fileListAdapter;
@@ -75,6 +79,31 @@ public class FileListActivity extends BaseActivity
             }
         }
         fileListAdapter = new FileListAdapter(this, fileBeans);
+        fileListAdapter.setOpenFileListener(this);
         autoLoadRecyclerView.setAdapter(fileListAdapter);
+    }
+
+    @Override
+    public void onOpen(int position, String path, String fileName)
+    {
+        String type = MimeUtils.getMime(FileUtils.getFileExtNoPoint(path));
+        if ("image/bmp".equals(type) || "image/gif".equals(type) || "image/jpeg".equals(type) ||
+            "image/png".equals(type))
+        {
+            ArrayList<NormImage> imageList = new ArrayList<>();
+            NormImage normImage = new NormImage();
+            normImage.setBigImageUrl(fileBeans.get(position).getFileUrl());
+            normImage.setMiddleImageUrl(fileBeans.get(position).getFileUrl());
+            normImage.setSmallImageUrl(fileBeans.get(position).getFileUrl());
+            imageList.add(normImage);
+            Intent intent = new Intent(this, ImagePreviewActivity.class);
+            intent.putExtra(ImagePreviewActivity.INTENT_URLS, imageList);
+            startActivity(intent);
+            overridePendingTransition(R.anim.fade_in, R.anim.keep);
+        }
+        else
+        {
+            FileDisplayActivity.show(this, path, fileName);
+        }
     }
 }

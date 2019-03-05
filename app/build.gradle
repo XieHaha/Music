@@ -15,7 +15,7 @@ android {
         flavorDimensions "default"
         multiDexEnabled true
         ndk {
-            abiFilters 'armeabi', 'armeabi-v7a'
+            abiFilters 'armeabi-v7a'
         }
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -30,6 +30,15 @@ android {
                                     jpush_appkey: "8b803f7221a77f19b78b3523"]
         }
 
+        develop {
+            dimension "zyc"
+            applicationId "com.yht.yihuantong"
+            buildConfigField "String", "BASE_BASIC_URL", "\"http://test.zychealth.com\""
+            resValue "string", "APP_NAME", "\"会珍医生开发版\""
+            manifestPlaceholders = [ease_appkey : "1110180330253249#dpappproject",
+                                    jpush_appkey: "8b803f7221a77f19b78b3523"]
+        }
+
         beta {
             dimension "zyc"
             applicationId "com.yht.yihuantong_test"
@@ -40,13 +49,13 @@ android {
         }
     }
     signingConfigs {
-        zyc {
+        release {
             keyAlias '智予成'
             keyPassword '123456'
             storeFile file('F:/ZYC/上线/zyc.jks')
             storePassword 'android'
         }
-        beta {
+        debug {
             keyAlias '测试'
             keyPassword '999999'
             storeFile file('F:/ZYC/上线/zyc.jks')
@@ -65,7 +74,7 @@ android {
             }
         }
         debug {
-            signingConfig signingConfigs.beta
+            signingConfig signingConfigs.debug
         }
     }
 

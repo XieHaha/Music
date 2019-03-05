@@ -20,6 +20,7 @@ android {
 dependencies {
     api project(':volleyNew')
     api project(':easeui')
+    api project(':superweb')
     api 'com.klinkerapps:link_builder:1.3.1@aar'
     api 'cn.bingoogolapple:bga-badgeview:1.0.6@aar'
     api 'com.bigkoo:convenientbanner:2.0.5'
