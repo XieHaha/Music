@@ -268,7 +268,6 @@ public class UserFragment extends BaseFragment
         }
         JSONObject merchant = new JSONObject();
         //        Map<String, Object> merchant = new HashMap<>();
-        merchant.put("checked", loginSuccessBean.getChecked());
         merchant.put("portraitUrl", headImgUrl);
         mIRequest.updateUserInfo(loginSuccessBean.getDoctorId(), loginSuccessBean.getFieldId(),
                                  merchant, this);
@@ -499,7 +498,7 @@ public class UserFragment extends BaseFragment
                .countable(true)
                //                //相机
                //               .capture(true)
-               //               .captureStrategy(new CaptureStrategy(true, "com.yht.yihuantong.fileprovider"))
+               //               .captureStrategy(new CaptureStrategy(true, "${applicationId}.fileprovider"))
                // 黑色背景
                .theme(R.style.Matisse_Dracula)
                // 图片选择的最多数量
@@ -529,7 +528,7 @@ public class UserFragment extends BaseFragment
         {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            uri = FileProvider.getUriForFile(getContext(), "com.yht.yihuantong.fileprovider",
+            uri = FileProvider.getUriForFile(getContext(), "${applicationId}.fileprovider",
                                              cameraTempFile);
         }
         else
@@ -622,7 +621,7 @@ public class UserFragment extends BaseFragment
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
                     {
                         imageUri = FileProvider.getUriForFile(getContext(),
-                                                              "com.yht.yihuantong.fileprovider",
+                                                              "${applicationId}.fileprovider",
                                                               cameraTempFile);
                     }
                     else

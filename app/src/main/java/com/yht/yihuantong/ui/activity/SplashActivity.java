@@ -1,19 +1,37 @@
 package com.yht.yihuantong.ui.activity;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.yanzhenjie.nohttp.Headers;
+import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.data.DocAuthStatu;
+import com.yht.yihuantong.tools.FileTransferServer;
 
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+
+import java.io.File;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+import custom.frame.bean.BaseResponse;
+import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
+import custom.frame.utils.DirHelper;
 
 /**
  * 启动界面
@@ -22,9 +40,32 @@ import custom.frame.ui.activity.BaseActivity;
  */
 public class SplashActivity extends BaseActivity implements DocAuthStatu
 {
-    private TextView tvStart;
+    private TextView tvStart, tvTimeHint;
     private ImageView ivBg;
     private LinearLayout llSplashPage;
+    private ScheduledExecutorService executorService;
+    private final String filePath = DirHelper.getPathImage() + "/splash.png";
+    private int time = 0;
+    /**
+     * 广告页最长等待时间
+     */
+    private static final int MAX_WAIT_TIME = 4;
+    private Handler handler = new Handler(new Handler.Callback()
+    {
+        @Override
+        public boolean handleMessage(Message message)
+        {
+            if (time <= 0)
+            {
+                initPage();
+            }
+            else
+            {
+                tvTimeHint.setText(String.format(getString(R.string.txt_splash_time_hint), time));
+            }
+            return true;
+        }
+    });
 
     @Override
     public int getLayoutID()
@@ -37,22 +78,64 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu
     {
         super.initView(savedInstanceState);
         hideBottomUIMenu();
-        ivBg = (ImageView)findViewById(R.id.iv_start);
-        tvStart = (TextView)findViewById(R.id.act_splash_btn);
+        ivBg = findViewById(R.id.iv_start);
+        tvStart = findViewById(R.id.act_splash_btn);
+        tvTimeHint = findViewById(R.id.act_splash_time_hint);
+        llSplashPage = findViewById(R.id.act_splash_layout);
+    }
+
+    @Override
+    public void initData(@NonNull Bundle savedInstanceState)
+    {
+        super.initData(savedInstanceState);
+        initSplashImg();
+        getSplash();
+        time = MAX_WAIT_TIME;
+        executorService = new ScheduledThreadPoolExecutor(1,
+                                                          new BasicThreadFactory.Builder().namingPattern(
+                                                                  "yht-thread-pool-%d")
+                                                                                          .daemon(true)
+                                                                                          .build());
+        executorService.scheduleAtFixedRate(() ->
+                                            {
+                                                time--;
+                                                if (time < 0)
+                                                {
+                                                    time = 0;
+                                                    executorService.shutdownNow();
+                                                }
+                                                else
+                                                {
+                                                    handler.sendEmptyMessage(0);
+                                                }
+                                            }, 0, 1, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public void initListener()
+    {
+        super.initListener();
         tvStart.setOnClickListener(this);
-        llSplashPage = (LinearLayout)findViewById(R.id.act_splash_layout);
-        new Handler().postDelayed(() -> initPage(), 2000);
+        tvTimeHint.setOnClickListener(this);
     }
 
     /**
      * 跳转登录界面
      */
-    private void startMainPage()
+    private void startLoginPage()
     {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
         overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
+    }
+
+    private void initSplashImg()
+    {
+        if (isExist())
+        {
+            Glide.with(this).load(filePath).into(ivBg);
+        }
     }
 
     /**
@@ -82,15 +165,26 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu
                     overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
                     break;
             }
-            //            startActivity(new Intent(this, MainActivity.class));
-            //            finish();
-            //            overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
         }
         else
         {
-            ivBg.setImageResource(R.mipmap.img_splash_bg);
-            tvStart.setVisibility(View.VISIBLE);
-            llSplashPage.setVisibility(View.VISIBLE);
+            startLoginPage();
+        }
+    }
+
+    /**
+     * 广告页
+     */
+    private void getSplash()
+    {
+        try
+        {
+            String name = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            mIRequest.getSplash("doctor", "android", name, this);
+        }
+        catch (PackageManager.NameNotFoundException e)
+        {
+            e.printStackTrace();
         }
     }
 
@@ -101,10 +195,89 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu
         switch (v.getId())
         {
             case R.id.act_splash_btn:
-                startMainPage();
+                startLoginPage();
+                break;
+            case R.id.act_splash_time_hint:
+                if (executorService != null && !executorService.isShutdown())
+                {
+                    executorService.shutdownNow();
+                }
+                initPage();
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response)
+    {
+        switch (task)
+        {
+            case GET_SPLASH:
+                String url = response.getData();
+                String oldUrl = sharePreferenceUtil.getString(CommonData.KEY_SPLASH_IMG_URL);
+                if (!TextUtils.isEmpty(url) && !url.equals(oldUrl) || !isExist())
+                {
+                    sharePreferenceUtil.putString(CommonData.KEY_SPLASH_IMG_URL, url);
+                    downloadImg(url);
+                }
+                break;
+        }
+    }
+
+    private void downloadImg(String url)
+    {
+        FileTransferServer.getInstance(this)
+                          .downloadFile(0, url, DirHelper.getPathImage(), "splash.png",
+                                        new DownloadListener()
+                                        {
+                                            @Override
+                                            public void onDownloadError(int what,
+                                                    Exception exception)
+                                            {
+                                            }
+
+                                            @Override
+                                            public void onStart(int what, boolean isResume,
+                                                    long rangeSize, Headers responseHeaders,
+                                                    long allCount)
+                                            {
+                                            }
+
+                                            @Override
+                                            public void onProgress(int what, int progress,
+                                                    long fileCount, long speed)
+                                            {
+                                            }
+
+                                            @Override
+                                            public void onFinish(int what, String filePath)
+                                            {
+                                            }
+
+                                            @Override
+                                            public void onCancel(int what)
+                                            {
+                                            }
+                                        });
+    }
+
+    /**
+     * 判断本地文件是否存在
+     *
+     * @return
+     */
+    private boolean isExist()
+    {
+        File file = new File(filePath);
+        if (file != null && file.exists())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -114,18 +287,7 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu
     protected void hideBottomUIMenu()
     {
         //状态栏透明
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
+        //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        //        //隐藏虚拟按键，并且全屏
-        //        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB &&
-        //                Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-        //            View v = this.getWindow().getDecorView();
-        //            v.setSystemUiVisibility(View.GONE);
-        //        } else if (Build.VERSION.SDK_INT > 19) {
-        //            View decorView = getWindow().getDecorView();
-        //            int uiOptions =
-        //                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-        //            decorView.setSystemUiVisibility(uiOptions);
-        //        }
     }
 }

@@ -127,6 +127,10 @@ public interface CommonData
      */
     String KEY_NEW_MESSAGE_REMIND = "key_new_message_remind";
     /**
+     * 广告页下载链接
+     */
+    String KEY_SPLASH_IMG_URL = "key_splash_img_url";
+    /**
      * 首页列表基础显示条数
      */
     int DATA_LIST_BASE_NUM = 3;

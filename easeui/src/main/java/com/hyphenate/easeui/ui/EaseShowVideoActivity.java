@@ -58,7 +58,7 @@ public class EaseShowVideoActivity extends EaseBaseActivity{
 			Uri uri;
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 				//data是file类型,忘了复制过来
-				uri = FileProvider.getUriForFile(this, "com.yht.yihuantong.fileprovider", new File(localFilePath));
+				uri = FileProvider.getUriForFile(this, "${applicationId}.fileprovider", new File(localFilePath));
 			} else {
 				uri=Uri.fromFile(new File(localFilePath));
 			}
@@ -81,7 +81,7 @@ public class EaseShowVideoActivity extends EaseBaseActivity{
 		Uri uri;
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			//data是file类型,忘了复制过来
-			uri = FileProvider.getUriForFile(this, "com.yht.yihuantong.fileprovider", new File(localPath));
+			uri = FileProvider.getUriForFile(this, "${applicationId}.fileprovider", new File(localPath));
 		} else {
 			uri=Uri.fromFile(new File(localPath));
 		}

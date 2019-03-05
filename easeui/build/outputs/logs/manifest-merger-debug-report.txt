@@ -30,7 +30,7 @@ ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:11:9-20:20
 	android:grantUriPermissions
 		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:15:13-47
 	android:authorities
-		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:13:13-66
+		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:13:13-64
 	android:exported
 		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:14:13-37
 	android:name

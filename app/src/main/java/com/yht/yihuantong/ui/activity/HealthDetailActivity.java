@@ -734,7 +734,7 @@ public class HealthDetailActivity extends BaseActivity
                .countable(true)
                //                //相机
                //                .capture(true)
-               //                .captureStrategy(new CaptureStrategy(true, "com.yht.yihuantong.fileprovider"))
+               //                .captureStrategy(new CaptureStrategy(true, "${applicationId}.fileprovider"))
                // 黑色背景
                .theme(R.style.Matisse_Dracula)
                // 图片选择的最多数量
@@ -764,7 +764,7 @@ public class HealthDetailActivity extends BaseActivity
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
         {
             cameraintent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            uri = FileProvider.getUriForFile(this, "com.yht.yihuantong.fileprovider",
+            uri = FileProvider.getUriForFile(this, "${applicationId}.fileprovider",
                                              cameraTempFile);
         }
         else

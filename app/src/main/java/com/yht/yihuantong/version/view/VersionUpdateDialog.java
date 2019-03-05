@@ -209,7 +209,7 @@ public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode,
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
                     {
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        uri = FileProvider.getUriForFile(context, "com.yht.yihuantong.fileprovider",
+                        uri = FileProvider.getUriForFile(context, "${applicationId}.fileprovider",
                                                          file);
                     }
                     else

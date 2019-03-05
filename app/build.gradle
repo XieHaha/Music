@@ -6,6 +6,39 @@ def releaseTime() {
 }
 
 android {
+    compileSdkVersion 26
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 16
+        versionName "2.0"
+        flavorDimensions "default"
+        multiDexEnabled true
+        ndk {
+            abiFilters 'armeabi', 'armeabi-v7a'
+        }
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    flavorDimensions "zyc"
+    productFlavors {
+        zyc {
+            dimension "zyc"
+            applicationId "com.yht.yihuantong"
+            buildConfigField "String", "BASE_BASIC_URL", "\"http://www.zychealth.com\""
+            resValue "string", "APP_NAME", "\"会珍医生版\""
+            manifestPlaceholders = [ease_appkey : "1110180330253249#dpappproject",
+                                    jpush_appkey: "8b803f7221a77f19b78b3523"]
+        }
+
+        beta {
+            dimension "zyc"
+            applicationId "com.yht.yihuantong_test"
+            buildConfigField "String", "BASE_BASIC_URL", "\"http://gray.zychealth.com\""
+            resValue "string", "APP_NAME", "\"会珍医生测试版\""
+            manifestPlaceholders = [ease_appkey : "1105190122042534#dp-test-app",
+                                    jpush_appkey: "0253e6c0183a34f72630c349"]
+        }
+    }
     signingConfigs {
         zyc {
             keyAlias '智予成'
@@ -13,20 +46,12 @@ android {
             storeFile file('F:/ZYC/上线/zyc.jks')
             storePassword 'android'
         }
-    }
-    compileSdkVersion 26
-    defaultConfig {
-        applicationId "com.yht.yihuantong"
-//        applicationId "com.yht.yihuantong_test"
-        minSdkVersion 16
-        targetSdkVersion 26
-        versionCode 16
-        versionName "2.0"
-        multiDexEnabled true
-        ndk {
-            abiFilters 'armeabi', 'armeabi-v7a'
+        beta {
+            keyAlias '测试'
+            keyPassword '999999'
+            storeFile file('F:/ZYC/上线/zyc.jks')
+            storePassword 'android'
         }
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -40,9 +65,10 @@ android {
             }
         }
         debug {
-            signingConfig signingConfigs.zyc
+            signingConfig signingConfigs.beta
         }
     }
+
     configurations.all {
         resolutionStrategy.eachDependency { DependencyResolveDetails details ->
             def requested = details.requested

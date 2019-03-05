@@ -437,7 +437,7 @@ public class AuthDocActivity extends BaseActivity
                .countable(true)
                //                //相机
                //               .capture(true)
-               //               .captureStrategy(new CaptureStrategy(true, "com.yht.yihuantong.fileprovider"))
+               //               .captureStrategy(new CaptureStrategy(true, "${applicationId}.fileprovider"))
                // 黑色背景
                .theme(R.style.Matisse_Dracula)
                // 图片选择的最多数量
@@ -467,7 +467,7 @@ public class AuthDocActivity extends BaseActivity
         {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            uri = FileProvider.getUriForFile(this, "com.yht.yihuantong.fileprovider", tempFile);
+            uri = FileProvider.getUriForFile(this, "${applicationId}.fileprovider", tempFile);
         }
         else
         {
@@ -534,7 +534,7 @@ public class AuthDocActivity extends BaseActivity
                 Uri imageUri;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
                 {
-                    imageUri = FileProvider.getUriForFile(this, "com.yht.yihuantong.fileprovider",
+                    imageUri = FileProvider.getUriForFile(this, "${applicationId}.fileprovider",
                                                           tempFile);
                 }
                 else

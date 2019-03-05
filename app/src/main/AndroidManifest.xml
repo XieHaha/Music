@@ -8,13 +8,13 @@
         android:targetSdkVersion="26" />
     <!-- Required -->
     <permission
-        android:name="com.yht.yihuantong.permission.JPUSH_MESSAGE"
+        android:name="${applicationId}.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
 
     <!--适配8.0安装apk-->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <!-- Required  一些系统要求的权限，如访问网络等-->
-    <uses-permission android:name="com.yht.yihuantong.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -269,7 +269,7 @@
         <!-- 设置环信应用的AppKey -->
         <meta-data
             android:name="EASEMOB_APPKEY"
-            android:value="1110180330253249#dpappproject" />
+            android:value="${ease_appkey}" />
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="SU2qor7P14g8RhgfiuNWctt2Xa7MBNx4"></meta-data>
@@ -316,7 +316,7 @@
                 <action android:name="cn.jpush.android.ui.PushActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="com.yht.yihuantong" />
+                <category android:name="${applicationId}" />
             </intent-filter>
         </activity>
 
@@ -335,7 +335,7 @@
         </service>
         <!-- since 3.0.9 Required SDK 核心功能-->
         <provider
-            android:authorities="com.yht.yihuantong.DataProvider"
+            android:authorities="${applicationId}.DataProvider"
             android:name="cn.jpush.android.service.DataProvider"
             android:exported="false" />
 
@@ -347,13 +347,13 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.DaemonService" />
-                <category android:name="com.yht.yihuantong" />
+                <category android:name="${applicationId}" />
             </intent-filter>
 
         </service>
         <!-- since 3.1.0 Required SDK 核心功能-->
         <provider
-            android:authorities="com.yht.yihuantong.DownloadProvider"
+            android:authorities="${applicationId}.DownloadProvider"
             android:name="cn.jpush.android.service.DownloadProvider"
             android:exported="true" />
         <!-- Required SDK核心功能-->
@@ -363,7 +363,7 @@
             android:exported="false">
             <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />   <!--Required  显示通知栏 -->
-                <category android:name="com.yht.yihuantong" />
+                <category android:name="${applicationId}" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -394,7 +394,7 @@
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!--Required  用户接收SDK通知栏信息的intent-->
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!--Required  用户打开自定义通知栏的intent-->
                 <action android:name="cn.jpush.android.intent.CONNECTION" /><!-- 接收网络变化 连接/断开 since 1.6.3 -->
-                <category android:name="com.yht.yihuantong" />
+                <category android:name="${applicationId}" />
             </intent-filter>
         </receiver>
 
@@ -402,7 +402,7 @@
         <receiver android:name=".jpush.MyJPushMessageReceiver">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
-                <category android:name="com.yht.yihuantong"></category>
+                <category android:name="${applicationId}"></category>
             </intent-filter>
         </receiver>
         <!-- Required  . Enable it you getObject get statistics data with channel -->
@@ -411,12 +411,12 @@
             android:value="developer-default" />
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="8b803f7221a77f19b78b3523" /> <!--  </>值来自开发者平台取得的AppKey-->
+            android:value="${jpush_appkey}" /> <!--  </>值来自开发者平台取得的AppKey-->
         <!--极光推送-->
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.yht.yihuantong.fileprovider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

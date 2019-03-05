@@ -12,6 +12,18 @@
         android:fitsSystemWindows="true"
         android:src="@mipmap/img_splash"></ImageView>
 
+    <TextView
+        android:id="@+id/act_splash_time_hint"
+        android:layout_width="70dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="10dp"
+        android:textColor="@color/app_white_color"
+        android:gravity="center"
+        android:textSize="12sp"
+        android:background="@drawable/corner_half_translucent_bg"
+        android:layout_height="30dp" />
+
     <LinearLayout
         android:id="@+id/act_splash_layout"
         android:layout_width="match_parent"
@@ -24,7 +36,7 @@
             android:layout_width="120dp"
             android:layout_marginTop="120dp"
             android:visibility="visible"
-            android:src="@mipmap/img_splash_logo"
+            android:src="@mipmap/ic_launcher"
             android:layout_height="120dp" />
 
         <TextView

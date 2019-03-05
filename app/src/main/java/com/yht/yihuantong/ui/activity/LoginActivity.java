@@ -25,6 +25,8 @@ import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.data.DocAuthStatu;
 import com.yht.yihuantong.utils.AllUtils;
+import com.yht.yihuantong.version.presenter.VersionPresenter;
+import com.yht.yihuantong.version.view.VersionUpdateDialog;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
@@ -34,10 +36,10 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import custom.frame.bean.BaseResponse;
+import custom.frame.bean.Version;
 import custom.frame.http.Tasks;
 import custom.frame.http.data.HttpConstants;
 import custom.frame.ui.activity.BaseActivity;
-import custom.frame.utils.SharePreferenceUtil;
 import custom.frame.utils.ToastUtil;
 
 /**
@@ -45,15 +47,24 @@ import custom.frame.utils.ToastUtil;
  *
  * @author DUNDUN
  */
-public class LoginActivity extends BaseActivity implements DocAuthStatu
+public class LoginActivity extends BaseActivity
+        implements DocAuthStatu, VersionPresenter.VersionViewListener,
+                   VersionUpdateDialog.OnEnterClickListener
 {
     private TextView tvGetVerify;
     private LinearLayout llProtolLayout;
     private ImageView ivProtolImg;
     private EditText etPhone, etVerifyCode;
-    private SharePreferenceUtil sharePreferenceUtil;
     private String phone, verifyCode;
     private int time = 0;
+    /**
+     * 版本检测
+     */
+    private VersionPresenter mVersionPresenter;
+    /**
+     * 版本弹窗
+     */
+    private VersionUpdateDialog versionUpdateDialog;
     /**
      * 是否获取过验证码
      */
@@ -93,18 +104,21 @@ public class LoginActivity extends BaseActivity implements DocAuthStatu
         //状态栏透明
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         findViewById(R.id.act_login_btn).setOnClickListener(this);
-        tvGetVerify = (TextView)findViewById(R.id.act_login_verify);
-        ivProtolImg = (ImageView)findViewById(R.id.act_login_protocol_img);
-        llProtolLayout = (LinearLayout)findViewById(R.id.act_login_protocol_layout);
-        etPhone = (EditText)findViewById(R.id.act_login_phone);
-        etVerifyCode = (EditText)findViewById(R.id.act_login_verifycode);
+        tvGetVerify = findViewById(R.id.act_login_verify);
+        ivProtolImg = findViewById(R.id.act_login_protocol_img);
+        llProtolLayout = findViewById(R.id.act_login_protocol_layout);
+        etPhone = findViewById(R.id.act_login_phone);
+        etVerifyCode = findViewById(R.id.act_login_verifycode);
     }
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState)
     {
         super.initData(savedInstanceState);
-        sharePreferenceUtil = new SharePreferenceUtil(this);
+        //检查更新
+        mVersionPresenter = new VersionPresenter(this, mIRequest);
+        mVersionPresenter.setVersionViewListener(this);
+        mVersionPresenter.init();
         phone = sharePreferenceUtil.getString(CommonData.KEY_USER_PHONE);
         if (!TextUtils.isEmpty(phone))
         {
@@ -251,6 +265,48 @@ public class LoginActivity extends BaseActivity implements DocAuthStatu
         }
         showProgressDialog("登录中", false);
         mIRequest.loginAndRegister(phone, verifyCode, "d", this);
+    }
+
+    @Override
+    public void updateVersion(Version version, int mode, boolean isDownLoading)
+    {
+        if (mode == -1)
+        {
+            YihtApplication.getInstance().setVersionRemind(false);
+            return;
+        }
+        YihtApplication.getInstance().setVersionRemind(true);
+        versionUpdateDialog = new VersionUpdateDialog(this);
+        versionUpdateDialog.setCancelable(false);
+        versionUpdateDialog.setUpdateMode(mode).
+                setIsDownNewAPK(isDownLoading).setContent(version.getUpdateDescription());
+        versionUpdateDialog.setOnEnterClickListener(this);
+        versionUpdateDialog.show();
+    }
+
+    @Override
+    public void updateLoading(long total, long current)
+    {
+        if (versionUpdateDialog != null && versionUpdateDialog.isShowing())
+        {
+            versionUpdateDialog.setProgressValue(total, current);
+        }
+    }
+
+    /**
+     * 当无可用网络时回调
+     */
+    @Override
+    public void updateNetWorkError()
+    {
+        //        versionUpdateChecked = true;
+    }
+
+    @Override
+    public void onEnter(boolean isMustUpdate)
+    {
+        mVersionPresenter.getNewAPK(isMustUpdate);
+        ToastUtil.toast(this, "开始下载");
     }
 
     @Override

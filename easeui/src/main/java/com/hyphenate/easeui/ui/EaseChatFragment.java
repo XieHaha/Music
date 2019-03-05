@@ -1292,7 +1292,7 @@ public class EaseChatFragment extends EaseBaseFragment
         else
         {
             //Android 7.0及以上
-            fileUri = FileProvider.getUriForFile(getActivity(), "com.yht.yihuantong.fileprovider",
+            fileUri = FileProvider.getUriForFile(getActivity(), "${applicationId}.fileprovider",
                                                  cameraFile);
         }
         startActivityForResult(

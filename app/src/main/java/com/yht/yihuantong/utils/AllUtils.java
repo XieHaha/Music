@@ -713,7 +713,7 @@ public class AllUtils
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             {
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                uri = FileProvider.getUriForFile(context, "com.yht.yihuantong.fileprovider",
+                uri = FileProvider.getUriForFile(context, "${applicationId}.fileprovider",
                                                  new File(filePath));
             }
             else

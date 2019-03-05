@@ -221,7 +221,7 @@ public class MainActivity extends BaseActivity
         messagePop = LayoutInflater.from(this).inflate(R.layout.message_pop_menu, null);
         tvDelete = messagePop.findViewById(R.id.message_pop_menu_play);
         initTab();
-        largeIcon = ((BitmapDrawable)getResources().getDrawable(R.mipmap.icon_logo)).getBitmap();
+        largeIcon = ((BitmapDrawable)getResources().getDrawable(R.mipmap.ic_launcher)).getBitmap();
         mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         initNotify();
     }
@@ -463,7 +463,7 @@ public class MainActivity extends BaseActivity
                                                                                     .setWhen(
                                                                                             System.currentTimeMillis())
                                                                                     .setSmallIcon(
-                                                                                            R.mipmap.icon_logo)
+                                                                                            R.mipmap.ic_launcher)
                                                                                     .setLargeIcon(
                                                                                             largeIcon)
                                                                                     .setDefaults(
@@ -479,7 +479,7 @@ public class MainActivity extends BaseActivity
         else
         {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this);
-            builder.setSmallIcon(R.mipmap.icon_logo);
+            builder.setSmallIcon(R.mipmap.ic_launcher);
             builder.setAutoCancel(true);
             builder.setContentText("收到新消息");
             builder.setContentIntent(pendingIntent);
