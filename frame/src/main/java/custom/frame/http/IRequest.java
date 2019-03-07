@@ -92,8 +92,8 @@ public class IRequest extends BaseRequest
         merchant.put("client", client);
         merchant.put("deviceSystem", deviceSystem);
         merchant.put("edition", versionCode);
-        return requestBaseResponseByJson("/DPInternal/resource/splash", Tasks.GET_SPLASH, String.class,
-                                         merchant, listener);
+        return requestBaseResponseByJson("/DPInternal/resource/splash", Tasks.GET_SPLASH,
+                                         String.class, merchant, listener);
     }
 
     /**
@@ -380,13 +380,13 @@ public class IRequest extends BaseRequest
     /**
      * 同意患者申请
      */
-    public Tasks agreePatientApply(String doctorId, String patientId, String fromId,
-            int requestSource, final ResponseListener<BaseResponse> listener)
+    public Tasks agreePatientApply(String doctorId, String patientId, int requestSource,
+            final ResponseListener<BaseResponse> listener)
     {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
         merchant.put("patientId", patientId);
-        merchant.put("fromId", fromId);
+        merchant.put("fromId", doctorId);//操作者id
         merchant.put("requestSource", requestSource);
         return requestBaseResponseByJson("/dp/scan/agree/V2.0", Tasks.AGREE_PATIENT_APPLY,
                                          String.class, merchant, listener);

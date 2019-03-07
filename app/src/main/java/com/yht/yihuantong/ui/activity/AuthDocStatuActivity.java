@@ -22,11 +22,13 @@ import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.data.DocAuthStatu;
 
 import custom.frame.ui.activity.BaseActivity;
+import custom.frame.utils.StatusBarUtil;
+import me.jessyan.autosize.internal.CustomAdapt;
 
 /**
  * Created by dundun on 19/2/19.
  */
-public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, CommonData
+public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, CommonData,CustomAdapt
 {
     private TextView tvName, tvVerifying, tvHint, tvNext, tvAgain;
     private ImageView ivBack, ivImg;
@@ -70,6 +72,12 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
     };
 
     @Override
+    protected boolean isInitBackBtn()
+    {
+        return true;
+    }
+
+    @Override
     public int getLayoutID()
     {
         return R.layout.act_auth_doc_statu;
@@ -79,15 +87,15 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
     public void initView(@NonNull Bundle savedInstanceState)
     {
         super.initView(savedInstanceState);
-        //状态栏透明
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        ivBack = (ImageView)findViewById(R.id.public_title_bar_back);
-        ivImg = (ImageView)findViewById(R.id.act_auth_doc_statu_img);
-        tvName = (TextView)findViewById(R.id.act_auth_doc_statu_name);
-        tvVerifying = (TextView)findViewById(R.id.act_auth_doc_statu_verifying);
-        tvHint = (TextView)findViewById(R.id.act_auth_doc_statu_hint);
-        tvNext = (TextView)findViewById(R.id.act_auth_doc_statu_next);
-        tvAgain = (TextView)findViewById(R.id.act_auth_doc_statu_again);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);//状态栏透明
+        StatusBarUtil.StatusBarLightMode(this);
+        ivBack = findViewById(R.id.public_title_bar_back);
+        ivImg = findViewById(R.id.act_auth_doc_statu_img);
+        tvName = findViewById(R.id.act_auth_doc_statu_name);
+        tvVerifying = findViewById(R.id.act_auth_doc_statu_verifying);
+        tvHint = findViewById(R.id.act_auth_doc_statu_hint);
+        tvNext = findViewById(R.id.act_auth_doc_statu_next);
+        tvAgain = findViewById(R.id.act_auth_doc_statu_again);
     }
 
     @Override
@@ -117,7 +125,7 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
     {
         loginSuccessBean = YihtApplication.getInstance().getLoginSuccessBean();
         int checked = loginSuccessBean.getChecked();
-        switch (checked)
+        switch (6)
         {
             case NONE:
                 tvVerifying.setVisibility(View.INVISIBLE);
@@ -228,4 +236,19 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
         iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(
                 doctorAuthStatusChangeListener, RegisterType.UNREGISTER);
     }
+
+
+    //===================================屏幕适配
+    @Override
+    public boolean isBaseOnWidth()
+    {
+        return false;
+    }
+
+    @Override
+    public float getSizeInDp()
+    {
+        return 667;
+    }
+    //===================================屏幕适配
 }

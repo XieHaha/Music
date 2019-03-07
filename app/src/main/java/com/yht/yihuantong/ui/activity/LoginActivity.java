@@ -41,6 +41,7 @@ import custom.frame.http.Tasks;
 import custom.frame.http.data.HttpConstants;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.ToastUtil;
+import me.jessyan.autosize.internal.CustomAdapt;
 
 /**
  * 登录注册
@@ -49,7 +50,7 @@ import custom.frame.utils.ToastUtil;
  */
 public class LoginActivity extends BaseActivity
         implements DocAuthStatu, VersionPresenter.VersionViewListener,
-                   VersionUpdateDialog.OnEnterClickListener
+                   VersionUpdateDialog.OnEnterClickListener,CustomAdapt
 {
     private TextView tvGetVerify;
     private LinearLayout llProtolLayout;
@@ -424,4 +425,18 @@ public class LoginActivity extends BaseActivity
                 break;
         }
     }
+
+    //===================================屏幕适配
+    @Override
+    public boolean isBaseOnWidth()
+    {
+        return false;
+    }
+
+    @Override
+    public float getSizeInDp()
+    {
+        return 667;
+    }
+    //===================================屏幕适配
 }

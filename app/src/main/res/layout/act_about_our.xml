@@ -10,28 +10,19 @@
         layout="@layout/public_title_bar" />
 
     <ImageView
-        android:layout_width="100dp"
-        android:src="@mipmap/ic_launcher"
-        android:layout_marginTop="90dp"
+        android:layout_width="80dp"
+        android:src="@mipmap/icon_logo_round"
+        android:layout_marginTop="128dp"
         android:layout_gravity="center_horizontal"
-        android:layout_height="100dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:textColor="@color/app_main_txt_color"
-        android:text="会珍医生版"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:textSize="17sp"
-        android:layout_height="wrap_content" />
+        android:layout_height="80dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:textColor="@color/app_minor_color"
         android:text="成都繁简科技有限公司 版权所有"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:textSize="13sp"
+        android:layout_marginTop="20dp"
+        android:textSize="16sp"
         android:layout_height="wrap_content" />
 
 </LinearLayout>

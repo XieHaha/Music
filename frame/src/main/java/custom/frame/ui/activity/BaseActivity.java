@@ -173,6 +173,23 @@ public abstract class BaseActivity<T> extends AppCompatActivity
     }
 
     /**
+     * 获取状态栏高度,在页面还没有显示出来之前
+     *
+     * @param a
+     * @return
+     */
+    public static int getStateBarHeight(Activity a)
+    {
+        int result = 0;
+        int resourceId = a.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0)
+        {
+            result = a.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
+    /**
      * 修改状态栏为全透明
      *
      * @param activity

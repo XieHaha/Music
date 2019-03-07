@@ -394,7 +394,7 @@
             <TextView
                 android:id="@+id/act_transfer_patient_transfer_cancel"
                 android:layout_width="190dp"
-                android:background="@drawable/corner_ea5f5f_color_full_bg"
+                android:background="@drawable/corner_fb8b30_color_full_bg"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="35dp"
                 android:text="@string/txt_transfer_patient_to_cancel"

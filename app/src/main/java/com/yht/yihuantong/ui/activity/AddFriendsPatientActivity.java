@@ -235,8 +235,7 @@ public class AddFriendsPatientActivity extends BaseActivity
      */
     private void agreePatientApply()
     {
-        mIRequest.agreePatientApply(loginSuccessBean.getDoctorId(), patientId, patientId, MODE,
-                                    this);
+        mIRequest.agreePatientApply(loginSuccessBean.getDoctorId(), patientId, MODE, this);
     }
 
     @Override

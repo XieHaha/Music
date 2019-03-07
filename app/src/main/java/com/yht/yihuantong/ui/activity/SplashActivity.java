@@ -49,19 +49,16 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu
     /**
      * 广告页最长等待时间
      */
-    private static final int MAX_WAIT_TIME = 4;
+    private static final int MAX_WAIT_TIME = 5;
     private Handler handler = new Handler(new Handler.Callback()
     {
         @Override
         public boolean handleMessage(Message message)
         {
+            tvTimeHint.setText(String.format(getString(R.string.txt_splash_time_hint), time));
             if (time <= 0)
             {
                 initPage();
-            }
-            else
-            {
-                tvTimeHint.setText(String.format(getString(R.string.txt_splash_time_hint), time));
             }
             return true;
         }
@@ -87,28 +84,15 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu
     @Override
     public void initData(@NonNull Bundle savedInstanceState)
     {
-        super.initData(savedInstanceState);
-        initSplashImg();
+        if (isExist())
+        {
+            initSplashImg();
+        }
+        else
+        {
+            initScheduledThread();
+        }
         getSplash();
-        time = MAX_WAIT_TIME;
-        executorService = new ScheduledThreadPoolExecutor(1,
-                                                          new BasicThreadFactory.Builder().namingPattern(
-                                                                  "yht-thread-pool-%d")
-                                                                                          .daemon(true)
-                                                                                          .build());
-        executorService.scheduleAtFixedRate(() ->
-                                            {
-                                                time--;
-                                                if (time < 0)
-                                                {
-                                                    time = 0;
-                                                    executorService.shutdownNow();
-                                                }
-                                                else
-                                                {
-                                                    handler.sendEmptyMessage(0);
-                                                }
-                                            }, 0, 1, TimeUnit.SECONDS);
     }
 
     @Override
@@ -132,10 +116,9 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu
 
     private void initSplashImg()
     {
-        if (isExist())
-        {
-            Glide.with(this).load(filePath).into(ivBg);
-        }
+        File file = new File(filePath);
+        Glide.with(this).load(file).into(ivBg);
+        initScheduledThread();
     }
 
     /**
@@ -170,6 +153,29 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu
         {
             startLoginPage();
         }
+    }
+
+    private void initScheduledThread()
+    {
+        time = MAX_WAIT_TIME;
+        executorService = new ScheduledThreadPoolExecutor(1,
+                                                          new BasicThreadFactory.Builder().namingPattern(
+                                                                  "yht-thread-pool-%d")
+                                                                                          .daemon(true)
+                                                                                          .build());
+        executorService.scheduleAtFixedRate(() ->
+                                            {
+                                                time--;
+                                                if (time < 0)
+                                                {
+                                                    time = 0;
+                                                    executorService.shutdownNow();
+                                                }
+                                                else
+                                                {
+                                                    handler.sendEmptyMessage(0);
+                                                }
+                                            }, 0, 1, TimeUnit.SECONDS);
     }
 
     /**

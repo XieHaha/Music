@@ -67,7 +67,7 @@
             android:layout_width="65dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="12dp"
-            android:src="@mipmap/icon_hospital_defaut"
+            android:src="@mipmap/icon_hospital_default"
             android:layout_height="65dp" />
 
 

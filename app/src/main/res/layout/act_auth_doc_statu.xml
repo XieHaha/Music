@@ -3,58 +3,38 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:background="@color/app_auth_bg"
+    android:fitsSystemWindows="true"
+    android:background="@color/app_white_color"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_marginTop="21dp"
-        android:gravity="center_vertical"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/public_title_bar_back"
-            android:layout_width="48dp"
-            android:paddingLeft="12dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:layout_height="48dp"
-            android:visibility="visible"
-            android:layout_gravity="left"
-            android:src="@mipmap/icon_back_black" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="返回"
-            android:textColor="@color/app_main_txt_color"
-            android:textSize="16sp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+    <include layout="@layout/white_public_title_bar" />
 
     <TextView
         android:id="@+id/act_auth_doc_statu_verifying"
         android:layout_width="wrap_content"
-        android:textSize="19sp"
-        android:layout_marginTop="17dp"
+        android:textSize="16sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp"
         android:text="@string/txt_doc_auth_verifying"
         android:textColor="@color/app_main_txt_color"
         android:layout_height="wrap_content" />
 
     <ImageView
         android:id="@+id/act_auth_doc_statu_img"
-        android:layout_width="wrap_content"
+        android:layout_width="322dp"
+        android:layout_marginLeft="27dp"
+        android:layout_marginRight="27dp"
         android:src="@mipmap/icon_doc_auth"
-        android:layout_marginTop="13dp"
-        android:layout_height="wrap_content" />
+        android:scaleType="centerCrop"
+        android:layout_height="318dp" />
 
     <TextView
         android:id="@+id/act_auth_doc_statu_name"
         android:layout_width="wrap_content"
-        android:textSize="19sp"
-        android:layout_marginTop="44dp"
+        android:textSize="17sp"
+        android:layout_marginTop="20dp"
         android:layout_gravity="left"
-        android:layout_marginLeft="75dp"
+        android:layout_marginLeft="29dp"
         android:text="@string/txt_doc_auth_name"
         android:textColor="@color/app_main_txt_color"
         android:layout_height="wrap_content" />
@@ -63,9 +43,9 @@
         android:id="@+id/act_auth_doc_statu_hint"
         android:layout_width="wrap_content"
         android:textSize="15sp"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="75dp"
-        android:layout_marginRight="75dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
         android:layout_weight="1"
         android:text="@string/txt_doc_auth_hint"
         android:textColor="@color/app_minor_color"
@@ -76,9 +56,9 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/btn_20_main_color_selector"
+        android:background="@drawable/btn_main_color_selector_7"
         android:gravity="center"
-        android:layout_marginBottom="34dp"
+        android:layout_marginBottom="19dp"
         android:layout_marginLeft="28dp"
         android:layout_marginRight="28dp"
         android:text="@string/txt_doc_auth_next"
@@ -92,7 +72,7 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:visibility="gone"
-        android:layout_marginBottom="34dp"
+        android:layout_marginBottom="19dp"
         android:text="@string/txt_doc_auth_again_apply"
         android:textColor="#216db4"
         android:textSize="16sp" />

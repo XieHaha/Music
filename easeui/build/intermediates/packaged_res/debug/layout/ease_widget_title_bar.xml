@@ -3,7 +3,7 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="@dimen/height_top_bar"
-    android:background="#F95790"
+    android:background="#1491fc"
     android:gravity="center_vertical">
 
     <RelativeLayout

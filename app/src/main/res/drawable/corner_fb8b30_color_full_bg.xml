@@ -3,5 +3,5 @@
        android:shape="rectangle" >
     <corners android:radius="4dp" />
     <!-- 这是半透明，还可以设置全透明，那就是白色边框的效果了 -->
-    <solid android:color="@color/_EA5F5F"/>
+    <solid android:color="@color/_FB8B30"/>
 </shape>
