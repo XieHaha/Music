@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.version.ConstantsVersionMode;
 
 import java.io.File;
@@ -209,7 +210,7 @@ public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode,
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
                     {
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        uri = FileProvider.getUriForFile(context, "${applicationId}.fileprovider",
+                        uri = FileProvider.getUriForFile(context, YihtApplication.getInstance().getPackageName() + ".fileprovider",
                                                          file);
                     }
                     else

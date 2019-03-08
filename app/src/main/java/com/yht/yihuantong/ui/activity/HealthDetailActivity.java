@@ -26,6 +26,7 @@ import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.dialog.ActionSheetDialog;
@@ -89,7 +90,8 @@ public class HealthDetailActivity extends BaseActivity
      * 时间选择控件
      */
     private TimePickerView timePicker;
-    private String diagnosis, department, hospital, caseInfo, caseNow, caseCheck, caseDealType;
+    private String diagnosis = "", department = "", hospital = "", caseInfo = "", caseNow = "", caseImportment = "", caseCheck = "", caseDealType = "";
+    private String fieldId = "";
     /**
      * 是否新增病例
      */
@@ -734,7 +736,7 @@ public class HealthDetailActivity extends BaseActivity
                .countable(true)
                //                //相机
                //                .capture(true)
-               //                .captureStrategy(new CaptureStrategy(true, "${applicationId}.fileprovider"))
+               //                .captureStrategy(new CaptureStrategy(true, YihtApplication.getInstance().getPackageName() +".fileprovider"))
                // 黑色背景
                .theme(R.style.Matisse_Dracula)
                // 图片选择的最多数量
@@ -764,7 +766,7 @@ public class HealthDetailActivity extends BaseActivity
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
         {
             cameraintent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            uri = FileProvider.getUriForFile(this, "${applicationId}.fileprovider",
+            uri = FileProvider.getUriForFile(this, YihtApplication.getInstance().getPackageName() + ".fileprovider",
                                              cameraTempFile);
         }
         else

@@ -21,6 +21,8 @@ import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.TypedValue;
 
+import com.yht.yihuantong.YihtApplication;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -713,7 +715,7 @@ public class AllUtils
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             {
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                uri = FileProvider.getUriForFile(context, "${applicationId}.fileprovider",
+                uri = FileProvider.getUriForFile(context, YihtApplication.getInstance().getPackageName() + ".fileprovider",
                                                  new File(filePath));
             }
             else

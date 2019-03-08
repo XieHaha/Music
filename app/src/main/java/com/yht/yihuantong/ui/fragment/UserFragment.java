@@ -498,7 +498,7 @@ public class UserFragment extends BaseFragment
                .countable(true)
                //                //相机
                //               .capture(true)
-               //               .captureStrategy(new CaptureStrategy(true, "${applicationId}.fileprovider"))
+               //               .captureStrategy(new CaptureStrategy(true, YihtApplication.getInstance().getPackageName() +".fileprovider"))
                // 黑色背景
                .theme(R.style.Matisse_Dracula)
                // 图片选择的最多数量
@@ -528,8 +528,9 @@ public class UserFragment extends BaseFragment
         {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            uri = FileProvider.getUriForFile(getContext(), "${applicationId}.fileprovider",
-                                             cameraTempFile);
+            uri = FileProvider.getUriForFile(getContext(),
+                                             YihtApplication.getInstance().getPackageName() +
+                                             ".fileprovider", cameraTempFile);
         }
         else
         {
@@ -621,8 +622,9 @@ public class UserFragment extends BaseFragment
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
                     {
                         imageUri = FileProvider.getUriForFile(getContext(),
-                                                              "${applicationId}.fileprovider",
-                                                              cameraTempFile);
+                                                              YihtApplication.getInstance()
+                                                                             .getPackageName() +
+                                                              ".fileprovider", cameraTempFile);
                     }
                     else
                     {

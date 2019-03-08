@@ -125,7 +125,7 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
     {
         loginSuccessBean = YihtApplication.getInstance().getLoginSuccessBean();
         int checked = loginSuccessBean.getChecked();
-        switch (6)
+        switch (checked)
         {
             case NONE:
                 tvVerifying.setVisibility(View.INVISIBLE);

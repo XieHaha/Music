@@ -20,6 +20,7 @@ import android.widget.RemoteViews;
 import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.yht.yihuantong.R;
+import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.utils.NetWorkUtils;
 import com.yht.yihuantong.version.ConstantsVersionMode;
 import com.yht.yihuantong.version.model.VersionModel;
@@ -174,7 +175,7 @@ public class VersionPresenter implements ConstantsVersionMode
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
                     {
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        uri = FileProvider.getUriForFile(context, "${applicationId}.fileprovider",
+                        uri = FileProvider.getUriForFile(context, YihtApplication.getInstance().getPackageName() + ".fileprovider",
                                                          file);
                     }
                     else
