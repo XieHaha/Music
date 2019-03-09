@@ -26,7 +26,6 @@ import custom.frame.http.listener.ResponseListener;
 import static custom.frame.http.data.HttpConstants.Method.GET;
 
 /**
- * Created by luozi on 2015/12/30.
  * baseRequest include requestString and requestObject and requestList
  */
 public class IRequest extends BaseRequest

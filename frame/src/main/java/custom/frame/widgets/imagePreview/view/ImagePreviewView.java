@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -28,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.OverScroller;
 import android.widget.Scroller;
 
+import com.bumptech.glide.Glide;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -35,6 +37,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import custom.frame.R;
+import custom.frame.utils.GlideHelper;
 import custom.frame.widgets.imagePreview.utils.CacheUtils;
 
 /**
@@ -143,36 +146,47 @@ public class ImagePreviewView extends ImageView
     }
 
 
-    public void loadingImageAsync(final String smallUrl, final String bigUrl, final int position) {
+    public void loadingImageAsync(final String imgPath, final String smallUrl, final String bigUrl, final int position) {
         if (!isBreak) {
-            LOAD_STATE = CacheUtils.getInstance(getContext()).getCacheState(smallUrl, bigUrl);
-            switch (LOAD_STATE) {
-                case 0:
-                case 2:
-                    //URL相同，都为空，请求大图，显示默认背景
-                    if (!isBigLoaded) {
-                        setScaleType(ScaleType.MATRIX);
-                        Drawable smallDrawable = ContextCompat.getDrawable(getContext(), R.mipmap.icon_loading_img);
-                        setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.icon_loading_img));
-                        loadImgAsync(bigUrl, smallDrawable);
-                    }
-                    break;
-                case 1:
-                    //URL不同，小图不空大图为空，请求大图，不显示默认背景
-                    if (!isBigLoaded) {
-                        setScaleType(ScaleType.CENTER_INSIDE);
-                        Bitmap bitmap = CacheUtils.getInstance(getContext()).getBitmapFromImageLoaderCache(smallUrl);
-                        Drawable smallDrawable = new BitmapDrawable(getResources(), bitmap);
-                        setImageBitmap(bitmap);
-                        loadImgAsync(bigUrl, smallDrawable);
-                    }
-                    break;
-                default://有大图缓存
-                    setScaleType(ScaleType.FIT_CENTER);
-                    Drawable drawable = new BitmapDrawable(getResources(), CacheUtils.getInstance(getContext()).getBitmapFromCache(bigUrl));
-                    loadImgAsync(bigUrl, drawable);
+            if(TextUtils.isEmpty(imgPath))
+            {
+                LOAD_STATE = CacheUtils.getInstance(getContext()).getCacheState(smallUrl, bigUrl);
+                switch (LOAD_STATE) {
+                    case 0:
+                    case 2:
+                        //URL相同，都为空，请求大图，显示默认背景
+                        if (!isBigLoaded) {
+                            setScaleType(ScaleType.MATRIX);
+                            Drawable smallDrawable = ContextCompat.getDrawable(getContext(), R.mipmap.icon_loading_img);
+                            setImageBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.icon_loading_img));
+                            loadImgAsync(bigUrl, smallDrawable);
+                        }
+                        break;
+                    case 1:
+                        //URL不同，小图不空大图为空，请求大图，不显示默认背景
+                        if (!isBigLoaded) {
+                            setScaleType(ScaleType.CENTER_INSIDE);
+                            Bitmap bitmap = CacheUtils.getInstance(getContext()).getBitmapFromImageLoaderCache(smallUrl);
+                            Drawable smallDrawable = new BitmapDrawable(getResources(), bitmap);
+                            setImageBitmap(bitmap);
+                            loadImgAsync(bigUrl, smallDrawable);
+                        }
+                        break;
+                    default://有大图缓存
+                        setScaleType(ScaleType.FIT_CENTER);
+                        Drawable drawable = new BitmapDrawable(getResources(), CacheUtils.getInstance(getContext()).getBitmapFromCache(bigUrl));
+                        loadImgAsync(bigUrl, drawable);
+                }
+            }
+            else {
+                loadImaLocal(imgPath);
             }
         }
+    }
+
+    private void loadImaLocal(final String imgPth)
+    {
+        Glide.with(context).load(imgPth).apply(GlideHelper.getOptionsPic()).into(this);
     }
 
     /**
