@@ -236,7 +236,7 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
         @Override
         public View instantiateItem(final ViewGroup container, final int position) {
             currentPreviceView = imgPreViews.get(position);
-            currentPreviceView.loadingImageAsync(urls.get(position).getMiddleImageUrl(), urls.get(position).getBigImageUrl(), position);
+            currentPreviceView.loadingImageAsync(urls.get(position).getImagePath(), urls.get(position).getMiddleImageUrl(), urls.get(position).getBigImageUrl(), position);
             container.addView(currentPreviceView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
             return currentPreviceView;
         }

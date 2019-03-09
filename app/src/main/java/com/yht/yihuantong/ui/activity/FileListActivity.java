@@ -90,11 +90,10 @@ public class FileListActivity extends BaseActivity implements FileListAdapter.Op
         if ("image/bmp".equals(type) || "image/gif".equals(type) || "image/jpeg".equals(type) ||
             "image/png".equals(type))
         {
+
             ArrayList<NormImage> imageList = new ArrayList<>();
             NormImage normImage = new NormImage();
-            normImage.setBigImageUrl(fileBeans.get(position).getFileUrl());
-            normImage.setMiddleImageUrl(fileBeans.get(position).getFileUrl());
-            normImage.setSmallImageUrl(fileBeans.get(position).getFileUrl());
+            normImage.setImagePath(path);
             imageList.add(normImage);
             Intent intent = new Intent(this, ImagePreviewActivity.class);
             intent.putExtra(ImagePreviewActivity.INTENT_URLS, imageList);

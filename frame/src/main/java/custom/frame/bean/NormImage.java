@@ -46,6 +46,10 @@ public class NormImage implements Serializable
      * 小图名称没有后缀
      */
     String smallImageName;
+    /**
+     * 本地地址
+     */
+    String imagePath;
 
     public String getBigImageUrl()
     {
@@ -144,6 +148,16 @@ public class NormImage implements Serializable
     {
         this.smallImageName = smallImageName;
         return this;
+    }
+
+    public String getImagePath()
+    {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath)
+    {
+        this.imagePath = imagePath;
     }
 
     public void recyclerBitmaps()
