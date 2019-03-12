@@ -52,21 +52,21 @@ public final class GlideHelper
     {
         if (optionsPic == null)
         {
-            optionsPic = new RequestOptions().centerCrop()
-                                             .placeholder(R.mipmap.icon_loading_img)
+            optionsPic = new RequestOptions().placeholder(R.mipmap.icon_loading_img)
                                              .error(R.mipmap.icon_load_faild_img)
                                              .priority(Priority.NORMAL);
         }
         return optionsPic;
     }
+
     public static RequestOptions getOptionsHospitalPic()
     {
         if (optionsHospitalPic == null)
         {
             optionsHospitalPic = new RequestOptions().centerCrop()
-                                             .placeholder(R.mipmap.icon_hospital_default)
-                                             .error(R.mipmap.icon_hospital_default)
-                                             .priority(Priority.NORMAL);
+                                                     .placeholder(R.mipmap.icon_hospital_default)
+                                                     .error(R.mipmap.icon_hospital_default)
+                                                     .priority(Priority.NORMAL);
         }
         return optionsHospitalPic;
     }
