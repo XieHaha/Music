@@ -17,6 +17,8 @@ import com.yht.yihuantong.utils.MimeUtils;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import custom.frame.bean.FileBean;
 import custom.frame.bean.NormImage;
 import custom.frame.ui.activity.BaseActivity;
@@ -25,49 +27,41 @@ import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 /**
  * Created by dundun on 18/8/24.
  */
-public class FileListActivity extends BaseActivity implements FileListAdapter.OpenFileListener
-{
-    private AutoLoadRecyclerView autoLoadRecyclerView;
+public class FileListActivity extends BaseActivity implements FileListAdapter.OpenFileListener {
+    @BindView(R.id.act_file_recycler_view)
+    AutoLoadRecyclerView autoLoadRecyclerView;
     private FileListAdapter fileListAdapter;
     private ArrayList<FileBean> fileBeans = new ArrayList<>();
     private String urls;
 
     @Override
-    protected boolean isInitBackBtn()
-    {
+    protected boolean isInitBackBtn() {
         return true;
     }
 
     @Override
-    public int getLayoutID()
-    {
+    public int getLayoutID() {
         return R.layout.act_file_list;
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState)
-    {
+    public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("报告列表");
-        autoLoadRecyclerView = (AutoLoadRecyclerView)findViewById(R.id.act_file_recycler_view);
+        ((TextView) findViewById(R.id.public_title_bar_title)).setText("报告列表");
         autoLoadRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState)
-    {
+    public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        if (getIntent() != null)
-        {
+        if (getIntent() != null) {
             urls = getIntent().getStringExtra(CommonData.KEY_PUBLIC);
         }
-        if (!TextUtils.isEmpty(urls))
-        {
+        if (!TextUtils.isEmpty(urls)) {
             String[] values = urls.split(",");
-            for (int i = 0; i < values.length; i++)
-            {
+            for (int i = 0; i < values.length; i++) {
                 String fileUrl = values[i];
                 FileBean fileBean = new FileBean();
                 fileBean.setFileUrl(fileUrl);
@@ -84,12 +78,10 @@ public class FileListActivity extends BaseActivity implements FileListAdapter.Op
     }
 
     @Override
-    public void onOpen(int position, String path, String fileName)
-    {
+    public void onOpen(int position, String path, String fileName) {
         String type = MimeUtils.getMime(FileUtils.getFileExtNoPoint(path));
         if ("image/bmp".equals(type) || "image/gif".equals(type) || "image/jpeg".equals(type) ||
-            "image/png".equals(type))
-        {
+                "image/png".equals(type)) {
 
             ArrayList<NormImage> imageList = new ArrayList<>();
             NormImage normImage = new NormImage();
@@ -99,9 +91,7 @@ public class FileListActivity extends BaseActivity implements FileListAdapter.Op
             intent.putExtra(ImagePreviewActivity.INTENT_URLS, imageList);
             startActivity(intent);
             overridePendingTransition(R.anim.fade_in, R.anim.keep);
-        }
-        else
-        {
+        } else {
             FileDisplayActivity.show(this, path, fileName);
         }
     }

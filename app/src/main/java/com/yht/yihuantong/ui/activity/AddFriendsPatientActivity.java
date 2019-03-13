@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -15,6 +16,8 @@ import com.yht.yihuantong.utils.AllUtils;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CombineBean;
 import custom.frame.bean.CombineChildBean;
@@ -29,13 +32,29 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by dundun on 18/11/12.
  * 好友验证界面
  */
-public class AddFriendsPatientActivity extends BaseActivity
-{
-    private TextView tvTitle;
-    private CircleImageView ivHeadImg;
-    private TextView tvName, tvSex, tvAge, tvCompany, tvAddress, tvHint;
-    private TextView tvAgree, tvRefuse;
-    private LabelsView labelsView;
+public class AddFriendsPatientActivity extends BaseActivity {
+    @BindView(R.id.public_title_bar_title)
+    TextView tvTitle;
+    @BindView(R.id.act_add_friend_img)
+    CircleImageView ivHeadImg;
+    @BindView(R.id.act_add_friend_name)
+    TextView tvName;
+    @BindView(R.id.act_add_friend_sex)
+    TextView tvSex;
+    @BindView(R.id.act_add_friend_age)
+    TextView tvAge;
+    @BindView(R.id.act_add_friend_hint)
+    TextView tvHint;
+    @BindView(R.id.act_add_friend_labels)
+    LabelsView labelsView;
+    @BindView(R.id.act_add_friend_company)
+    TextView tvCompany;
+    @BindView(R.id.act_add_friend_address)
+    TextView tvAddress;
+    @BindView(R.id.act_add_friend_next)
+    TextView tvAgree;
+    @BindView(R.id.act_add_friend_refuse)
+    TextView tvRefuse;
     /**
      * 综合病史信息
      */
@@ -67,50 +86,32 @@ public class AddFriendsPatientActivity extends BaseActivity
     private static final int MODE = 1;
 
     @Override
-    protected boolean isInitBackBtn()
-    {
+    protected boolean isInitBackBtn() {
         return true;
     }
 
     @Override
-    public int getLayoutID()
-    {
+    public int getLayoutID() {
         return R.layout.act_add_friend_patient;
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState)
-    {
+    public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        tvTitle = (TextView)findViewById(R.id.public_title_bar_title);
-        ivHeadImg = (CircleImageView)findViewById(R.id.act_add_friend_img);
-        tvName = (TextView)findViewById(R.id.act_add_friend_name);
-        tvAge = (TextView)findViewById(R.id.act_add_friend_age);
-        tvSex = (TextView)findViewById(R.id.act_add_friend_sex);
-        tvAddress = (TextView)findViewById(R.id.act_add_friend_address);
-        tvCompany = (TextView)findViewById(R.id.act_add_friend_company);
-        tvAgree = (TextView)findViewById(R.id.act_add_friend_next);
-        tvRefuse = (TextView)findViewById(R.id.act_add_friend_refuse);
-        tvHint = (TextView)findViewById(R.id.act_add_friend_hint);
-        labelsView = (LabelsView)findViewById(R.id.act_add_friend_labels);
+
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState)
-    {
+    public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        if (getIntent() != null)
-        {
+        if (getIntent() != null) {
             isAdd = getIntent().getBooleanExtra(CommonData.KEY_PUBLIC, false);
             patientId = getIntent().getStringExtra(CommonData.KEY_PATIENT_ID);
         }
-        if (isAdd)
-        {
+        if (isAdd) {
             tvTitle.setText("添加好友");
             tvRefuse.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
             tvTitle.setText("好友申请");
             tvAgree.setText("通过验证");
             tvRefuse.setVisibility(View.VISIBLE);
@@ -120,38 +121,30 @@ public class AddFriendsPatientActivity extends BaseActivity
     }
 
     @Override
-    public void initListener()
-    {
+    public void initListener() {
         super.initListener();
         tvAgree.setOnClickListener(this);
         tvRefuse.setOnClickListener(this);
     }
 
-    private void iniPageData(PatientBean patientBean)
-    {
-        if (patientBean != null)
-        {
+    private void iniPageData(PatientBean patientBean) {
+        if (patientBean != null) {
             Glide.with(this)
-                 .load(patientBean.getPatientImgUrl())
-                 .apply(GlideHelper.getOptionsP())
-                 .into(ivHeadImg);
+                    .load(patientBean.getPatientImgUrl())
+                    .apply(GlideHelper.getOptionsP())
+                    .into(ivHeadImg);
             if (!TextUtils.isEmpty(patientBean.getNickname()) &&
-                patientBean.getNickname().length() < 20)
-            {
+                    patientBean.getNickname().length() < 20) {
                 tvName.setText(patientBean.getNickname() + "(" + patientBean.getName() + ")");
-            }
-            else
-            {
+            } else {
                 tvName.setText(patientBean.getName());
             }
             tvSex.setText(patientBean.getSex());
             tvAge.setText(AllUtils.getAge(patientBean.getBirthDate()) + "岁");
-            if (!TextUtils.isEmpty(patientBean.getAddress()))
-            {
+            if (!TextUtils.isEmpty(patientBean.getAddress())) {
                 tvAddress.setText(patientBean.getAddress());
             }
-            if (!TextUtils.isEmpty(patientBean.getUnitName()))
-            {
+            if (!TextUtils.isEmpty(patientBean.getUnitName())) {
                 tvCompany.setText(patientBean.getUnitName());
             }
         }
@@ -160,27 +153,20 @@ public class AddFriendsPatientActivity extends BaseActivity
     /**
      * 健康标签
      */
-    private void initHealthData()
-    {
+    private void initHealthData() {
         ArrayList<String> values = new ArrayList<>();
-        if (patientDiagnosisList != null && patientDiagnosisList.size() > 0)
-        {
-            for (int i = 0; i < patientDiagnosisList.size(); i++)
-            {
+        if (patientDiagnosisList != null && patientDiagnosisList.size() > 0) {
+            for (int i = 0; i < patientDiagnosisList.size(); i++) {
                 values.add(patientDiagnosisList.get(i).getDiagnosisInfo());
             }
         }
-        if (patientAllergyList != null && patientAllergyList.size() > 0)
-        {
-            for (int i = 0; i < patientAllergyList.size(); i++)
-            {
+        if (patientAllergyList != null && patientAllergyList.size() > 0) {
+            for (int i = 0; i < patientAllergyList.size(); i++) {
                 values.add(patientAllergyList.get(i).getAllergyInfo());
             }
         }
-        if (patientSurgeryList != null && patientSurgeryList.size() > 0)
-        {
-            for (int i = 0; i < patientSurgeryList.size(); i++)
-            {
+        if (patientSurgeryList != null && patientSurgeryList.size() > 0) {
+            for (int i = 0; i < patientSurgeryList.size(); i++) {
                 values.add(patientSurgeryList.get(i).getSurgeryName());
             }
         }
@@ -188,9 +174,7 @@ public class AddFriendsPatientActivity extends BaseActivity
         {
             labelsView.setVisibility(View.GONE);
             tvHint.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             labelsView.setVisibility(View.VISIBLE);
             tvHint.setVisibility(View.GONE);
             labelsView.setLabels(values);
@@ -200,16 +184,14 @@ public class AddFriendsPatientActivity extends BaseActivity
     /**
      * 获取患者个人信息
      */
-    private void getPatientInfo()
-    {
+    private void getPatientInfo() {
         mIRequest.getPatientInfo(patientId, this);
     }
 
     /**
      * 获取患者基础信息
      */
-    private void getPatientCombine()
-    {
+    private void getPatientCombine() {
         mIRequest.getPatientCombine(patientId, this);
     }
 
@@ -217,55 +199,47 @@ public class AddFriendsPatientActivity extends BaseActivity
      * 医生扫码添加患者  转诊患者
      * mode {@link #ADD_PATIENT}
      */
-    private void addPatientByScan()
-    {
+    private void addPatientByScan() {
         mIRequest.addPatientByScan(loginSuccessBean.getDoctorId(), patientId, ADD_PATIENT, this);
     }
 
     /**
      * 拒绝患者申请
      */
-    private void refusePatientApply()
-    {
+    private void refusePatientApply() {
         mIRequest.refusePatientApply(loginSuccessBean.getDoctorId(), patientId, MODE, this);
     }
 
     /**
      * 同意患者申请
      */
-    private void agreePatientApply()
-    {
+    private void agreePatientApply() {
         mIRequest.agreePatientApply(loginSuccessBean.getDoctorId(), patientId, MODE, this);
     }
 
     @Override
-    public void onClick(View v)
-    {
+    public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.act_add_friend_next:
-                if (isAdd)
-                {
+                if (isAdd) {
                     addPatientByScan();
-                }
-                else
-                {
+                } else {
                     agreePatientApply();
                 }
                 break;
             case R.id.act_add_friend_refuse:
                 refusePatientApply();
                 break;
+            default:
+                break;
         }
     }
 
     @Override
-    public void onResponseSuccess(Tasks task, BaseResponse response)
-    {
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        switch (task)
-        {
+        switch (task) {
             case ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT:
                 ToastUtil.toast(this, response.getMsg());
                 finish();
@@ -276,8 +250,7 @@ public class AddFriendsPatientActivity extends BaseActivity
                 break;
             case GET_PATIENT_COMBINE:
                 combineBean = response.getData();
-                if (combineBean != null)
-                {
+                if (combineBean != null) {
                     patientDiagnosisList = combineBean.getDiagnosisInfo();
                     patientAllergyList = combineBean.getAllergyInfo();
                     patientSurgeryList = combineBean.getSurgeryInfo();
@@ -296,14 +269,14 @@ public class AddFriendsPatientActivity extends BaseActivity
                 setResult(RESULT_OK);
                 finish();
                 break;
+            default:
+                break;
         }
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response)
-    {
-        switch (task)
-        {
+    public void onResponseCodeError(Tasks task, BaseResponse response) {
+        switch (task) {
             case AGREE_PATIENT_APPLY:
                 ToastUtil.toast(this, response.getMsg());
                 break;

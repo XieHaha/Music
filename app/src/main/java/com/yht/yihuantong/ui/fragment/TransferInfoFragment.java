@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,6 +20,9 @@ import com.yht.yihuantong.ui.adapter.TransferInfoAdapter;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.PatientBean;
 import custom.frame.bean.TransPatientBean;
@@ -36,12 +41,15 @@ import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
  */
 public class TransferInfoFragment extends BaseFragment
         implements LoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
-                   BaseRecyclerAdapter.OnItemClickListener<TransPatientBean>
-{
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private AutoLoadRecyclerView autoLoadRecyclerView;
-    private LinearLayout llNoneLayout;
-    private TextView tvNoneTxt;
+        BaseRecyclerAdapter.OnItemClickListener<TransPatientBean> {
+    @BindView(R.id.fragment_health_record_recycler)
+    AutoLoadRecyclerView autoLoadRecyclerView;
+    @BindView(R.id.fragment_swipe_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.fragment_info_none_txt)
+    TextView tvNoneTxt;
+    @BindView(R.id.fragment_info_none_layout)
+    LinearLayout llNoneLayout;
     private View footerView;
     private TextView tvHintTxt;
     /**
@@ -75,49 +83,39 @@ public class TransferInfoFragment extends BaseFragment
     public static final int REQUEST_CODE_STATUS_CHANGE = 100;
 
     @Override
-    public int getLayoutID()
-    {
+    public int getLayoutID() {
         return R.layout.fragment_info;
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         getTransferInfoList();
     }
 
     @Override
-    public void initView(@NonNull View view, @NonNull Bundle savedInstanceState)
-    {
+    public void initView(@NonNull View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
-        swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.fragment_swipe_layout);
-        autoLoadRecyclerView = view.findViewById(R.id.fragment_health_record_recycler);
-        llNoneLayout = view.findViewById(R.id.fragment_info_none_layout);
-        tvNoneTxt = view.findViewById(R.id.fragment_info_none_txt);
         footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                                                   android.R.color.holo_red_light,
-                                                   android.R.color.holo_orange_light,
-                                                   android.R.color.holo_green_light);
+                android.R.color.holo_red_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_green_light);
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState)
-    {
+    public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         transferInfoAdapter = new TransferInfoAdapter(getContext(), transferPatientBeanList);
         transferInfoAdapter.addFooterView(footerView);
-        if (patientBean != null)
-        {
+        if (patientBean != null) {
             patientId = patientBean.getPatientId();
         }
     }
 
     @Override
-    public void initListener()
-    {
+    public void initListener() {
         super.initListener();
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLayoutManager(
@@ -127,28 +125,24 @@ public class TransferInfoFragment extends BaseFragment
         transferInfoAdapter.setOnItemClickListener(this);
     }
 
-    public void setPatientBean(PatientBean patientBean)
-    {
+    public void setPatientBean(PatientBean patientBean) {
         this.patientBean = patientBean;
     }
 
-    public void setPatientId(String patientId)
-    {
+    public void setPatientId(String patientId) {
         this.patientId = patientId;
     }
 
     /**
      * 获取我的转诊记录
      */
-    private void getTransferInfoList()
-    {
+    private void getTransferInfoList() {
         mIRequest.getTransferByPatient(loginSuccessBean.getDoctorId(), patientId, page, PAGE_SIZE,
-                                       DAYS_DATA, this);
+                DAYS_DATA, this);
     }
 
     @Override
-    public void onItemClick(View v, int position, TransPatientBean item)
-    {
+    public void onItemClick(View v, int position, TransPatientBean item) {
         Intent intent = new Intent(getContext(), TransferPatientActivity.class);
         intent.putExtra(CommonData.KEY_PUBLIC, false);
         //        intent.putExtra("limit", true);
@@ -157,19 +151,14 @@ public class TransferInfoFragment extends BaseFragment
     }
 
     @Override
-    public void onResponseSuccess(Tasks task, BaseResponse response)
-    {
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        switch (task)
-        {
+        switch (task) {
             case GET_TRANSFER_BY_PATIENT:
                 transferPatientBeanList = response.getData();
-                if (transferPatientBeanList != null && transferPatientBeanList.size() > 0)
-                {
+                if (transferPatientBeanList != null && transferPatientBeanList.size() > 0) {
                     llNoneLayout.setVisibility(View.GONE);
-                }
-                else
-                {
+                } else {
                     llNoneLayout.setVisibility(View.VISIBLE);
                     tvNoneTxt.setText("还没有转诊记录哦~");
                 }
@@ -180,14 +169,11 @@ public class TransferInfoFragment extends BaseFragment
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response)
-    {
+    public void onResponseCodeError(Tasks task, BaseResponse response) {
         super.onResponseCodeError(task, response);
-        switch (task)
-        {
+        switch (task) {
             case DELETE_PATIENT_CASE:
-                if (BaseNetCode.CODE_MODIFY_CASE_RECORD == response.getCode())
-                {
+                if (BaseNetCode.CODE_MODIFY_CASE_RECORD == response.getCode()) {
                     ToastUtil.toast(getContext(), response.getMsg());
                 }
                 break;
@@ -195,11 +181,9 @@ public class TransferInfoFragment extends BaseFragment
     }
 
     @Override
-    public void onResponseError(Tasks task, Exception e)
-    {
+    public void onResponseError(Tasks task, Exception e) {
         super.onResponseError(task, e);
-        if (page > 0)
-        {
+        if (page > 0) {
             page--;
         }
         tvHintTxt.setText("暂无更多数据");
@@ -207,39 +191,34 @@ public class TransferInfoFragment extends BaseFragment
     }
 
     @Override
-    public void onResponseEnd(Tasks task)
-    {
+    public void onResponseEnd(Tasks task) {
         super.onResponseEnd(task);
         swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
-    public void loadMore()
-    {
+    public void loadMore() {
         page++;
         getTransferInfoList();
     }
 
     @Override
-    public void onRefresh()
-    {
+    public void onRefresh() {
         page = 0;
         getTransferInfoList();
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != getActivity().RESULT_OK)
-        {
+        if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        switch (requestCode)
-        {
+        switch (requestCode) {
             case REQUEST_CODE_STATUS_CHANGE:
                 getTransferInfoList();
                 break;
         }
     }
+
 }

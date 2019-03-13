@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hyphenate.chat.EMClient;
@@ -17,6 +19,8 @@ import com.yht.yihuantong.version.view.VersionUpdateDialog;
 
 import org.litepal.crud.DataSupport;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cn.jpush.android.api.JPushInterface;
 import custom.frame.bean.CooperateDocBean;
 import custom.frame.bean.PatientBean;
@@ -29,9 +33,12 @@ import custom.frame.utils.ToastUtil;
  * Created by dundun on 18/9/2.
  */
 public class SettingActivity extends BaseActivity
-        implements VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener
-{
-    private TextView tvVersion, tvVersionRemind;
+        implements VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener {
+    @BindView(R.id.act_setting_version)
+    TextView tvVersion;
+    @BindView(R.id.act_setting_version_remind)
+    TextView tvVersionRemind;
+
     /**
      * 版本检测
      */
@@ -46,71 +53,57 @@ public class SettingActivity extends BaseActivity
     private boolean versionUpdateChecked = false;
 
     @Override
-    protected boolean isInitBackBtn()
-    {
+    protected boolean isInitBackBtn() {
         return true;
     }
 
     @Override
-    public int getLayoutID()
-    {
+    public int getLayoutID() {
         return R.layout.act_setting;
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState)
-    {
+    public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("设置");
-        tvVersion = (TextView)findViewById(R.id.act_setting_version);
-        tvVersionRemind = (TextView)findViewById(R.id.act_setting_version_remind);
+        ((TextView) findViewById(R.id.public_title_bar_title)).setText("设置");
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState)
-    {
+    public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         //检查更新
         mVersionPresenter = new VersionPresenter(this, mIRequest);
         mVersionPresenter.setVersionViewListener(this);
-        if (YihtApplication.getInstance().isVersionRemind())
-        {
+        if (YihtApplication.getInstance().isVersionRemind()) {
             tvVersionRemind.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             tvVersionRemind.setVisibility(View.GONE);
         }
         getAppVersionCode();
     }
 
     @Override
-    public void initListener()
-    {
+    public void initListener() {
         super.initListener();
         findViewById(R.id.act_setting_vesion_layout).setOnClickListener(this);
         findViewById(R.id.act_setting_about_layout).setOnClickListener(this);
         findViewById(R.id.act_setting_exit_layout).setOnClickListener(this);
     }
 
-    private void getAppVersionCode()
-    {
-        try
-        {
+    private void getAppVersionCode() {
+        try {
             String name = getPackageManager().getPackageInfo(getPackageName(), 0).versionName + "";
-            if (!TextUtils.isEmpty(name)) { tvVersion.setText("V" + name); }
-        }
-        catch (PackageManager.NameNotFoundException e)
-        {
+            if (!TextUtils.isEmpty(name)) {
+                tvVersion.setText("V" + name);
+            }
+        } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void onClick(View v)
-    {
-        switch (v.getId())
-        {
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.act_setting_vesion_layout:
                 mVersionPresenter.init();
                 break;
@@ -137,15 +130,15 @@ public class SettingActivity extends BaseActivity
             case R.id.act_setting_about_layout:
                 startActivity(new Intent(this, AboutOurActivity.class));
                 break;
+            default:
+                break;
         }
     }
 
     /*********************版本更新回调*************************/
     @Override
-    public void updateVersion(Version version, int mode, boolean isDownLoading)
-    {
-        if (mode == -1)
-        {
+    public void updateVersion(Version version, int mode, boolean isDownLoading) {
+        if (mode == -1) {
             ToastUtil.toast(this, "当前已是最新版本");
             return;
         }
@@ -158,10 +151,8 @@ public class SettingActivity extends BaseActivity
     }
 
     @Override
-    public void updateLoading(long total, long current)
-    {
-        if (versionUpdateDialog != null && versionUpdateDialog.isShowing())
-        {
+    public void updateLoading(long total, long current) {
+        if (versionUpdateDialog != null && versionUpdateDialog.isShowing()) {
             versionUpdateDialog.setProgressValue(total, current);
         }
     }
@@ -170,15 +161,14 @@ public class SettingActivity extends BaseActivity
      * 当无可用网络时回调
      */
     @Override
-    public void updateNetWorkError()
-    {
+    public void updateNetWorkError() {
         versionUpdateChecked = true;
     }
 
     @Override
-    public void onEnter(boolean isMustUpdate)
-    {
+    public void onEnter(boolean isMustUpdate) {
         mVersionPresenter.getNewAPK(isMustUpdate);
         ToastUtil.toast(this, "开始下载");
     }
+
 }

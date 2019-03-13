@@ -8,6 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,6 +21,9 @@ import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CooperateDocBean;
 import custom.frame.bean.PatientBean;
@@ -39,13 +43,16 @@ import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
  */
 public class HealthInfoFragment extends BaseFragment
         implements LoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
-                   BaseRecyclerAdapter.OnItemClickListener<PatientCaseDetailBean>,
-                   BaseRecyclerAdapter.OnItemLongClickListener<PatientCaseDetailBean>
-{
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private AutoLoadRecyclerView autoLoadRecyclerView;
-    private LinearLayout llNoneLayout;
-    private TextView tvNoneTxt;
+        BaseRecyclerAdapter.OnItemClickListener<PatientCaseDetailBean>,
+        BaseRecyclerAdapter.OnItemLongClickListener<PatientCaseDetailBean> {
+    @BindView(R.id.fragment_health_record_recycler)
+    AutoLoadRecyclerView autoLoadRecyclerView;
+    @BindView(R.id.fragment_swipe_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.fragment_info_none_txt)
+    TextView tvNoneTxt;
+    @BindView(R.id.fragment_info_none_layout)
+    LinearLayout llNoneLayout;
     private View footerView;
     private TextView tvHintTxt;
     /**
@@ -69,40 +76,31 @@ public class HealthInfoFragment extends BaseFragment
     private static final int PAGE_SIZE = 500;
 
     @Override
-    public int getLayoutID()
-    {
+    public int getLayoutID() {
         return R.layout.fragment_info;
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         getPatientLimitCaseList();
     }
 
     @Override
-    public void initView(@NonNull View view, @NonNull Bundle savedInstanceState)
-    {
+    public void initView(@NonNull View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
-        swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.fragment_swipe_layout);
-        autoLoadRecyclerView = view.findViewById(R.id.fragment_health_record_recycler);
-        llNoneLayout = view.findViewById(R.id.fragment_info_none_layout);
-        tvNoneTxt = view.findViewById(R.id.fragment_info_none_txt);
         footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                                                   android.R.color.holo_red_light,
-                                                   android.R.color.holo_orange_light,
-                                                   android.R.color.holo_green_light);
+                android.R.color.holo_red_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_green_light);
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState)
-    {
+    public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        if (patientBean != null)
-        {
+        if (patientBean != null) {
             patientId = patientBean.getPatientId();
         }
         healthInfoAdapter = new HealthInfoAdapter(getContext(), caseRecordList);
@@ -111,8 +109,7 @@ public class HealthInfoFragment extends BaseFragment
     }
 
     @Override
-    public void initListener()
-    {
+    public void initListener() {
         super.initListener();
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
@@ -124,36 +121,31 @@ public class HealthInfoFragment extends BaseFragment
         healthInfoAdapter.setOnItemLongClickListener(this);
     }
 
-    public void setPatientBean(PatientBean patientBean)
-    {
+    public void setPatientBean(PatientBean patientBean) {
         this.patientBean = patientBean;
     }
 
-    public void setPatientId(String patientId)
-    {
+    public void setPatientId(String patientId) {
         this.patientId = patientId;
     }
 
     /**
      * 获取患者病例列表  只能查看当前医生自己开的健康档案
      */
-    private void getPatientLimitCaseList()
-    {
+    private void getPatientLimitCaseList() {
         mIRequest.getPatientLimitCaseList(loginSuccessBean.getDoctorId(), patientId, this);
     }
 
     /**
      * 删除患者病例列表
      */
-    private void deletePatientCaseList(PatientCaseDetailBean bean)
-    {
+    private void deletePatientCaseList(PatientCaseDetailBean bean) {
         mIRequest.deletePatientCase(patientId, bean.getFieldId(), bean.getCaseCreatorId(),
-                                    loginSuccessBean.getDoctorId(), this);
+                loginSuccessBean.getDoctorId(), this);
     }
 
     @Override
-    public void onItemClick(View v, int position, PatientCaseDetailBean item)
-    {
+    public void onItemClick(View v, int position, PatientCaseDetailBean item) {
         Intent intent = new Intent(getContext(), HealthDetailActivity.class);
         intent.putExtra(CommonData.KEY_ADD_NEW_HEALTH, false);
         intent.putExtra(CommonData.KEY_PATIENT_ID, item.getPatientId());
@@ -162,8 +154,7 @@ public class HealthInfoFragment extends BaseFragment
     }
 
     @Override
-    public void onItemLongClick(View v, int position, PatientCaseDetailBean item)
-    {
+    public void onItemLongClick(View v, int position, PatientCaseDetailBean item) {
         new SimpleDialog(getActivity(), "删除当前病例", (dialog, which) ->
         {
             deletePatientCaseList(caseRecordList.get(position));
@@ -171,35 +162,26 @@ public class HealthInfoFragment extends BaseFragment
     }
 
     @Override
-    public void onResponseSuccess(Tasks task, BaseResponse response)
-    {
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        switch (task)
-        {
+        switch (task) {
             case GET_PATIENT_LIMIT_CASE_LIST:
-                if (page == 0)
-                {
+                if (page == 0) {
                     caseRecordList.clear();
                 }
                 ArrayList<PatientCaseDetailBean> list1 = response.getData();
-                if (list1 != null && list1.size() > 0)
-                {
+                if (list1 != null && list1.size() > 0) {
                     llNoneLayout.setVisibility(View.GONE);
                     caseRecordList.addAll(list1);
-                }
-                else
-                {
+                } else {
                     llNoneLayout.setVisibility(View.VISIBLE);
                     tvNoneTxt.setText("还没有健康档案哦~");
                 }
                 healthInfoAdapter.notifyDataSetChanged();
-                if (caseRecordList.size() < PAGE_SIZE)
-                {
+                if (caseRecordList.size() < PAGE_SIZE) {
                     tvHintTxt.setText("暂无更多数据");
                     autoLoadRecyclerView.loadFinish(false);
-                }
-                else
-                {
+                } else {
                     tvHintTxt.setText("上拉加载更多");
                     autoLoadRecyclerView.loadFinish(true);
                 }
@@ -214,22 +196,18 @@ public class HealthInfoFragment extends BaseFragment
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response)
-    {
+    public void onResponseCodeError(Tasks task, BaseResponse response) {
         super.onResponseCodeError(task, response);
-        switch (task)
-        {
+        switch (task) {
             case GET_PATIENT_LIMIT_CASE_LIST:
-                if (page > 0)
-                {
+                if (page > 0) {
                     page--;
                 }
                 tvHintTxt.setText("暂无更多数据");
                 autoLoadRecyclerView.loadFinish();
                 break;
             case DELETE_PATIENT_CASE:
-                if (BaseNetCode.CODE_MODIFY_CASE_RECORD == response.getCode())
-                {
+                if (BaseNetCode.CODE_MODIFY_CASE_RECORD == response.getCode()) {
                     ToastUtil.toast(getContext(), response.getMsg());
                 }
                 break;
@@ -237,11 +215,9 @@ public class HealthInfoFragment extends BaseFragment
     }
 
     @Override
-    public void onResponseError(Tasks task, Exception e)
-    {
+    public void onResponseError(Tasks task, Exception e) {
         super.onResponseError(task, e);
-        if (page > 0)
-        {
+        if (page > 0) {
             page--;
         }
         tvHintTxt.setText("暂无更多数据");
@@ -249,23 +225,21 @@ public class HealthInfoFragment extends BaseFragment
     }
 
     @Override
-    public void onResponseEnd(Tasks task)
-    {
+    public void onResponseEnd(Tasks task) {
         super.onResponseEnd(task);
         swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
-    public void loadMore()
-    {
+    public void loadMore() {
         page++;
         getPatientLimitCaseList();
     }
 
     @Override
-    public void onRefresh()
-    {
+    public void onRefresh() {
         page = 0;
         getPatientLimitCaseList();
     }
+
 }

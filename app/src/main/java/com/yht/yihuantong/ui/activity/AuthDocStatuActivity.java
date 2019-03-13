@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hyphenate.chat.EMClient;
@@ -21,6 +22,8 @@ import com.yht.yihuantong.api.notify.INotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.data.DocAuthStatu;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.StatusBarUtil;
 import me.jessyan.autosize.internal.CustomAdapt;
@@ -28,10 +31,22 @@ import me.jessyan.autosize.internal.CustomAdapt;
 /**
  * Created by dundun on 19/2/19.
  */
-public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, CommonData,CustomAdapt
-{
-    private TextView tvName, tvVerifying, tvHint, tvNext, tvAgain;
-    private ImageView ivBack, ivImg;
+public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, CommonData, CustomAdapt {
+    @BindView(R.id.public_title_bar_back)
+    ImageView ivBack;
+    @BindView(R.id.act_auth_doc_statu_verifying)
+    TextView tvVerifying;
+    @BindView(R.id.act_auth_doc_statu_img)
+    ImageView ivImg;
+    @BindView(R.id.act_auth_doc_statu_name)
+    TextView tvName;
+    @BindView(R.id.act_auth_doc_statu_hint)
+    TextView tvHint;
+    @BindView(R.id.act_auth_doc_statu_next)
+    TextView tvNext;
+    @BindView(R.id.act_auth_doc_statu_again)
+    TextView tvAgain;
+
     private INotifyChangeListenerServer iNotifyChangeListenerServer;
     /**
      * 认证
@@ -41,13 +56,10 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
      * 重新认证
      */
     public static final int REQUEST_CODE_AUTH_AGAIN = 200;
-    private Handler handler = new Handler()
-    {
+    private Handler handler = new Handler() {
         @Override
-        public void handleMessage(Message msg)
-        {
-            switch (msg.what)
-            {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
                 case JIGUANG_CODE_DOCTOR_INFO_CHECK_FAILED:
                     //认证失败  更新本地数据
                     loginSuccessBean.setChecked(2);
@@ -59,6 +71,8 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
                     loginSuccessBean.setChecked(6);
                     YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
                     initPageData();
+                    break;
+                default:
                     break;
             }
         }
@@ -72,46 +86,35 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
     };
 
     @Override
-    protected boolean isInitBackBtn()
-    {
+    protected boolean isInitBackBtn() {
         return true;
     }
 
     @Override
-    public int getLayoutID()
-    {
+    public int getLayoutID() {
         return R.layout.act_auth_doc_statu;
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState)
-    {
+    public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);//状态栏透明
+        //状态栏透明
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         StatusBarUtil.StatusBarLightMode(this);
-        ivBack = findViewById(R.id.public_title_bar_back);
-        ivImg = findViewById(R.id.act_auth_doc_statu_img);
-        tvName = findViewById(R.id.act_auth_doc_statu_name);
-        tvVerifying = findViewById(R.id.act_auth_doc_statu_verifying);
-        tvHint = findViewById(R.id.act_auth_doc_statu_hint);
-        tvNext = findViewById(R.id.act_auth_doc_statu_next);
-        tvAgain = findViewById(R.id.act_auth_doc_statu_again);
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState)
-    {
+    public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         iNotifyChangeListenerServer = ApiManager.getInstance()
-                                                .getServer(INotifyChangeListenerServer.class);
+                .getServer(INotifyChangeListenerServer.class);
         tvName.setText(
                 String.format(getString(R.string.txt_doc_auth_name), loginSuccessBean.getName()));
         initPageData();
     }
 
     @Override
-    public void initListener()
-    {
+    public void initListener() {
         super.initListener();
         ivBack.setOnClickListener(this);
         tvNext.setOnClickListener(this);
@@ -121,12 +124,10 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
                 doctorAuthStatusChangeListener, RegisterType.REGISTER);
     }
 
-    private void initPageData()
-    {
+    private void initPageData() {
         loginSuccessBean = YihtApplication.getInstance().getLoginSuccessBean();
         int checked = loginSuccessBean.getChecked();
-        switch (checked)
-        {
+        switch (checked) {
             case NONE:
                 tvVerifying.setVisibility(View.INVISIBLE);
                 tvHint.setText(R.string.txt_doc_auth_hint);
@@ -160,16 +161,13 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
     }
 
     @Override
-    public void onClick(View v)
-    {
+    public void onClick(View v) {
         Intent intent;
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.act_auth_doc_statu_next:
                 intent = new Intent(this, AuthDocActivity.class);
                 //认证失败
-                if (VERIFY_FAILD == loginSuccessBean.getChecked())
-                {
+                if (VERIFY_FAILD == loginSuccessBean.getChecked()) {
                     intent.putExtra("again", true);
                 }
                 startActivityForResult(intent, REQUEST_CODE_AUTH);
@@ -182,14 +180,15 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
             case R.id.public_title_bar_back:
                 finishPage();
                 break;
+            default:
+                break;
         }
     }
 
     /**
      * 判断 登录
      */
-    private void finishPage()
-    {
+    private void finishPage() {
         //清除登录信息
         YihtApplication.getInstance().clearLoginSuccessBean();
         //退出环信
@@ -199,10 +198,8 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN)
-        {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             finishPage();
             return true;
         }
@@ -210,27 +207,25 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK)
-        {
+        if (resultCode != RESULT_OK) {
             return;
         }
-        switch (requestCode)
-        {
+        switch (requestCode) {
             case REQUEST_CODE_AUTH:
                 initPageData();
                 break;
             case REQUEST_CODE_AUTH_AGAIN:
                 initPageData();
                 break;
+            default:
+                break;
         }
     }
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         super.onDestroy();
         //注销患者状态监听
         iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(
@@ -240,15 +235,14 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
 
     //===================================屏幕适配
     @Override
-    public boolean isBaseOnWidth()
-    {
+    public boolean isBaseOnWidth() {
         return false;
     }
 
     @Override
-    public float getSizeInDp()
-    {
+    public float getSizeInDp() {
         return 667;
     }
+
     //===================================屏幕适配
 }

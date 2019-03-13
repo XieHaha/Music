@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
 import custom.frame.R;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.LoginSuccessBean;
@@ -89,6 +90,7 @@ public abstract class BaseActivity<T> extends AppCompatActivity
         } else {
             setContentView(getLayoutView());
         }
+        ButterKnife.bind(this);
         /**
          * 权限管理类
          */
@@ -178,12 +180,10 @@ public abstract class BaseActivity<T> extends AppCompatActivity
      * @param a
      * @return
      */
-    public static int getStateBarHeight(Activity a)
-    {
+    public static int getStateBarHeight(Activity a) {
         int result = 0;
         int resourceId = a.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0)
-        {
+        if (resourceId > 0) {
             result = a.getResources().getDimensionPixelSize(resourceId);
         }
         return result;
@@ -195,18 +195,18 @@ public abstract class BaseActivity<T> extends AppCompatActivity
      * @param activity
      */
     @TargetApi(19)
-    public  void transparencyBar(Activity activity) {
+    public void transparencyBar(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = activity.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                                                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(Color.TRANSPARENT);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window window = activity.getWindow();
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                            WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
     }
 
@@ -302,8 +302,7 @@ public abstract class BaseActivity<T> extends AppCompatActivity
     public void initListener() {
     }
 
-    private void initProgressDialog()
-    {
+    private void initProgressDialog() {
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setIndeterminateDrawable(getResources().getDrawable(R.drawable.public_progress));
         mProgressDialog.setIndeterminate(true);
@@ -315,18 +314,17 @@ public abstract class BaseActivity<T> extends AppCompatActivity
      *
      * @param msg 提示消息
      */
-    public void showProgressDialog(final String msg)
-    {
+    public void showProgressDialog(final String msg) {
         showProgressDialog(msg, true);
     }
+
     /**
      * 显示进度条
      *
      * @param resid 提示消息
      */
-    public void showProgressDialog(final int resid)
-    {
-        String  msg = getResources().getString(resid);
+    public void showProgressDialog(final int resid) {
+        String msg = getResources().getString(resid);
         showProgressDialog(msg, true);
     }
 
@@ -336,22 +334,17 @@ public abstract class BaseActivity<T> extends AppCompatActivity
      * @param msg    提示消息
      * @param cancel 是否可取消
      */
-    public void showProgressDialog(final String msg, final boolean cancel)
-    {
-        runOnUiThread(new Runnable()
-        {
+    public void showProgressDialog(final String msg, final boolean cancel) {
+        runOnUiThread(new Runnable() {
             @Override
-            public void run()
-            {
-                if (mProgressDialog == null)
-                {
+            public void run() {
+                if (mProgressDialog == null) {
                     initProgressDialog();
                 }
                 mProgressDialog.setCancelable(cancel);
                 mProgressDialog.setCanceledOnTouchOutside(cancel);
                 mProgressDialog.setMessage(msg);
-                if (!mProgressDialog.isShowing())
-                {
+                if (!mProgressDialog.isShowing()) {
                     mProgressDialog.show();
                 }
             }
@@ -361,16 +354,14 @@ public abstract class BaseActivity<T> extends AppCompatActivity
     /**
      * 关闭进度条
      */
-    public void closeProgressDialog()
-    {
-        runOnUiThread(new Runnable()
-        {
+    public void closeProgressDialog() {
+        runOnUiThread(new Runnable() {
             @Override
-            public void run()
-            {
-                if (mProgressDialog == null) { return; }
-                if (!mProgressDialog.isShowing())
-                {
+            public void run() {
+                if (mProgressDialog == null) {
+                    return;
+                }
+                if (!mProgressDialog.isShowing()) {
                     return;
                 }
                 mProgressDialog.setCancelable(true);
@@ -440,24 +431,17 @@ public abstract class BaseActivity<T> extends AppCompatActivity
      * 把json转换成基础响应对象列表类
      */
     public final BaseResponse praseBaseResponseList(JSONObject jsonObject,
-            Class<T> classOfT) throws JSONException
-    {
+                                                    Class<T> classOfT) throws JSONException {
         BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(EntityCode))
-                                                      .setMsg(jsonObject.optString(EntityMsg));
+                .setMsg(jsonObject.optString(EntityMsg));
         List<T> list = new ArrayList<>();
-        if (jsonObject.opt(EntityData) != null)
-        {
+        if (jsonObject.opt(EntityData) != null) {
             JSONArray jsonArray = jsonObject.optJSONArray(EntityData);
-            if (jsonArray != null)
-            {
-                for (int i = 0; i < jsonArray.length(); i++)
-                {
-                    try
-                    {
+            if (jsonArray != null) {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    try {
                         list.add(JSON.parseObject(jsonArray.get(i).toString(), classOfT));
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                     }
                 }
             }
@@ -473,32 +457,23 @@ public abstract class BaseActivity<T> extends AppCompatActivity
      * @param classOfT   待转换的实体类,为空则data为空
      */
     public final BaseResponse praseBaseResponse(JSONObject jsonObject, Class<T> classOfT)
-            throws JSONException
-    {
+            throws JSONException {
         Object data = null;
-        if (classOfT != null)
-        {
-            if (classOfT == String.class)
-            {
+        if (classOfT != null) {
+            if (classOfT == String.class) {
                 data = jsonObject.optString(EntityData);
-            }
-            else
-            {
-                if (jsonObject.opt(EntityData) != null)
-                {
-                    try
-                    {
+            } else {
+                if (jsonObject.opt(EntityData) != null) {
+                    try {
                         data = JSON.parseObject(jsonObject.optString(EntityData), classOfT);
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                     }
                 }
             }
         }
         BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(EntityCode))
-                                                      .setMsg(jsonObject.optString(EntityMsg))
-                                                      .setData(data);
+                .setMsg(jsonObject.optString(EntityMsg))
+                .setData(data);
         return baseResponse;
     }
 

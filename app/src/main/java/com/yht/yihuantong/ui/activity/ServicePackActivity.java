@@ -48,6 +48,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.HospitalBean;
 import custom.frame.bean.HospitalProductBean;
@@ -63,23 +65,68 @@ import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 /**
  * Created by dundun on 18/9/13.
  */
-public class ServicePackActivity<T> extends BaseActivity
-{
-    private AutoLoadRecyclerView autoLoadRecyclerView, hospitalProductTypeRecycler, hospitalProductRecycler;
-    private TextView tvHintTxt, tvTitle;
-    private TextView tvGoodsName, tvGoodsPrice, tvGoodsType, tvGoodsInfo;
-    private TextView tvPatientName, tvPatientAge;
-    private TextView tvTitle1, tvTitle2, tvTitle3, tvTitle4;
-    private TextView tvNext;
-    private EditText etDes;
-    private EditText searchEdit;
-    private ImageView ivHosspitalImg;
-    private TextView tvHospitalName, tvHospitalAddress, tvHospitalGrade;
-    private LinearLayout llPatientInfoLayout, llSearchLayout;
-    private RelativeLayout rlHospitalLayout;
-    private TextView tvContact, tvContactPhone, tvUseful, tvAttention;
-    private View line;
-    private ScrollView llProductDetaillayout;
+public class ServicePackActivity<T> extends BaseActivity {
+    @BindView(R.id.public_title_bar_title)
+    TextView tvTitle;
+    @BindView(R.id.act_cooperate_doc_search)
+    EditText searchEdit;
+    @BindView(R.id.search_layout)
+    LinearLayout llSearchLayout;
+    @BindView(R.id.act_service_pack_hint_txt)
+    TextView tvHintTxt;
+    @BindView(R.id.act_service_pack_hint_hospital_img)
+    ImageView ivHosspitalImg;
+    @BindView(R.id.act_service_pack_hint_hospital_name)
+    TextView tvHospitalName;
+    @BindView(R.id.act_service_pack_hint_hospital_address)
+    TextView tvHospitalAddress;
+    @BindView(R.id.act_service_pack_hint_hospital_grade)
+    TextView tvHospitalGrade;
+    @BindView(R.id.act_service_pack_hint_hospital_layout)
+    RelativeLayout rlHospitalLayout;
+    @BindView(R.id.title_line)
+    View line;
+    @BindView(R.id.act_service_pack_hospital_list)
+    AutoLoadRecyclerView autoLoadRecyclerView;
+    @BindView(R.id.act_service_pack_hospital_product_type_list)
+    AutoLoadRecyclerView hospitalProductTypeRecycler;
+    @BindView(R.id.act_service_pack_hospital_product_list)
+    AutoLoadRecyclerView hospitalProductRecycler;
+    @BindView(R.id.act_service_pack_goods_name_txt)
+    TextView tvTitle1;
+    @BindView(R.id.act_service_pack_goods_name)
+    TextView tvGoodsName;
+    @BindView(R.id.act_service_pack_goods_price_txt)
+    TextView tvTitle2;
+    @BindView(R.id.act_service_pack_goods_price)
+    TextView tvGoodsPrice;
+    @BindView(R.id.act_service_pack_goods_type)
+    TextView tvGoodsType;
+    @BindView(R.id.act_service_pack_goods_info_txt)
+    TextView tvTitle4;
+    @BindView(R.id.act_service_pack_goods_info)
+    TextView tvGoodsInfo;
+    @BindView(R.id.act_service_pack_patient_name)
+    TextView tvPatientName;
+    @BindView(R.id.act_service_pack_patient_age)
+    TextView tvPatientAge;
+    @BindView(R.id.act_service_pack_des)
+    EditText etDes;
+    @BindView(R.id.act_service_pack_contact)
+    TextView tvContact;
+    @BindView(R.id.act_service_pack_contact_phone)
+    TextView tvContactPhone;
+    @BindView(R.id.act_service_pack_useful)
+    TextView tvUseful;
+    @BindView(R.id.act_service_pack_attention)
+    TextView tvAttention;
+    @BindView(R.id.act_service_pack_patient_info_layout)
+    LinearLayout llPatientInfoLayout;
+    @BindView(R.id.act_service_pack_goods_detail_layout)
+    ScrollView llProductDetaillayout;
+    @BindView(R.id.act_service_pack_next)
+    TextView tvNext;
+
     private View footerView, productTypeFooterView, productFooterView;
     private RegistrationAdapter registrationAdapter;
     private RegistrationProductTypeAdapter registrationProductTypeAdapter;
@@ -105,64 +152,26 @@ public class ServicePackActivity<T> extends BaseActivity
     private boolean limit;
 
     @Override
-    protected boolean isInitBackBtn()
-    {
+    protected boolean isInitBackBtn() {
         return true;
     }
 
     @Override
-    public int getLayoutID()
-    {
+    public int getLayoutID() {
         return R.layout.act_service_pack;
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState)
-    {
+    public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        tvTitle = (TextView)findViewById(R.id.public_title_bar_title);
-        autoLoadRecyclerView = (AutoLoadRecyclerView)findViewById(
-                R.id.act_service_pack_hospital_list);
-        hospitalProductTypeRecycler = (AutoLoadRecyclerView)findViewById(
-                R.id.act_service_pack_hospital_product_type_list);
-        hospitalProductRecycler = (AutoLoadRecyclerView)findViewById(
-                R.id.act_service_pack_hospital_product_list);
         footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
         productFooterView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
         productTypeFooterView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
-        llProductDetaillayout = (ScrollView)findViewById(R.id.act_service_pack_goods_detail_layout);
-        tvNext = (TextView)findViewById(R.id.act_service_pack_next);
-        tvHintTxt = (TextView)findViewById(R.id.act_service_pack_hint_txt);
-        tvGoodsName = (TextView)findViewById(R.id.act_service_pack_goods_name);
-        tvGoodsType = (TextView)findViewById(R.id.act_service_pack_goods_type);
-        tvGoodsInfo = (TextView)findViewById(R.id.act_service_pack_goods_info);
-        tvGoodsPrice = (TextView)findViewById(R.id.act_service_pack_goods_price);
-        tvPatientName = (TextView)findViewById(R.id.act_service_pack_patient_name);
-        tvPatientAge = (TextView)findViewById(R.id.act_service_pack_patient_age);
-        tvTitle1 = (TextView)findViewById(R.id.act_service_pack_goods_name_txt);
-        tvTitle2 = (TextView)findViewById(R.id.act_service_pack_goods_price_txt);
-        tvTitle4 = (TextView)findViewById(R.id.act_service_pack_goods_info_txt);
-        etDes = (EditText)findViewById(R.id.act_service_pack_des);
-        searchEdit = (EditText)findViewById(R.id.act_cooperate_doc_search);
-        line = findViewById(R.id.title_line);
-        rlHospitalLayout = (RelativeLayout)findViewById(R.id.act_service_pack_hint_hospital_layout);
-        ivHosspitalImg = (ImageView)findViewById(R.id.act_service_pack_hint_hospital_img);
-        tvHospitalName = (TextView)findViewById(R.id.act_service_pack_hint_hospital_name);
-        tvHospitalAddress = (TextView)findViewById(R.id.act_service_pack_hint_hospital_address);
-        tvHospitalGrade = (TextView)findViewById(R.id.act_service_pack_hint_hospital_grade);
-        tvContact = (TextView)findViewById(R.id.act_service_pack_contact);
-        tvContactPhone = (TextView)findViewById(R.id.act_service_pack_contact_phone);
-        tvUseful = (TextView)findViewById(R.id.act_service_pack_useful);
-        tvAttention = (TextView)findViewById(R.id.act_service_pack_attention);
-        llPatientInfoLayout = (LinearLayout)findViewById(R.id.act_service_pack_patient_info_layout);
-        llSearchLayout = (LinearLayout)findViewById(R.id.search_layout);
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState)
-    {
-        if (getIntent() != null)
-        {
+    public void initData(@NonNull Bundle savedInstanceState) {
+        if (getIntent() != null) {
             limit = getIntent().getBooleanExtra("limit", false);
             productTypeId = getIntent().getIntExtra(CommonData.KEY_PUBLIC, -1);
             typeName = getIntent().getStringExtra(CommonData.KEY_REGISTRATION_TYPE);
@@ -192,122 +201,106 @@ public class ServicePackActivity<T> extends BaseActivity
     }
 
     @Override
-    public void initListener()
-    {
+    public void initListener() {
         findViewById(R.id.public_title_bar_back).setOnClickListener(this);
         tvNext.setOnClickListener(this);
         rlHospitalLayout.setOnClickListener(this);
         registrationAdapter.setOnItemClickListener((v, position, item) ->
-                                                   {
-                                                       curPage = 2;
-                                                       curHospital = item;
-                                                       tvHintTxt.setVisibility(View.GONE);
-                                                       line.setVisibility(View.GONE);
-                                                       llSearchLayout.setVisibility(View.GONE);
-                                                       rlHospitalLayout.setVisibility(View.VISIBLE);
-                                                       tvHospitalName.setText(
-                                                               curHospital.getHospitalName());
-                                                       tvHospitalAddress.setText(
-                                                               curHospital.getCityName());
-                                                       tvHospitalGrade.setText(
-                                                               curHospital.getHospitalLevel());
-                                                       Glide.with(this)
-                                                            .load(curHospital.getHospitalLogo())
-                                                            .apply(GlideHelper.getOptionsHospitalPic())
-                                                            .into(ivHosspitalImg);
-                                                       autoLoadRecyclerView.setVisibility(
-                                                               View.GONE);
-                                                       hospitalProductTypeRecycler.setVisibility(
-                                                               View.VISIBLE);
-                                                       getHospitalProductListByHospitalId();
-                                                   });
-        registrationProductTypeAdapter.setOnItemClickListener((v, position, item) ->
-                                                              {
-                                                                  curPage = 3;
-                                                                  curProductType = item;
-                                                                  tvHintTxt.setVisibility(
-                                                                          View.VISIBLE);
-                                                                  line.setVisibility(View.VISIBLE);
-                                                                  rlHospitalLayout.setVisibility(
-                                                                          View.GONE);
-                                                                  tvHintTxt.setText(
-                                                                          curHospital.getHospitalName() +
-                                                                          " > " +
-                                                                          curProductType.getProductTypeName());
-                                                                  llSearchLayout.setVisibility(
-                                                                          View.VISIBLE);
-                                                                  hospitalProductTypeRecycler.setVisibility(
-                                                                          View.GONE);
-                                                                  hospitalProductRecycler.setVisibility(
-                                                                          View.VISIBLE);
-                                                                  productBeans = item.getProductInfoByHospitalIdResList();
-                                                                  DataSupport.deleteAll(
-                                                                          HospitalProductBean.class);
-                                                                  DataSupport.saveAll(productBeans);
-                                                                  registrationProductAdapter.setList(
-                                                                          productBeans);
-                                                              });
-        registrationProductAdapter.setOnItemClickListener((v, position, item) ->
-                                                          {
-                                                              curPage = 4;
-                                                              curProduct = item;
-                                                              initProductDetailPage();
-                                                          });
-        searchEdit.setOnEditorActionListener((v, actionId, event) ->
-                                             {
-                                                 if (actionId == EditorInfo.IME_ACTION_SEARCH)
-                                                 {
-                                                     hideSoftInputFromWindow();
-                                                     search(v.getText().toString());
-                                                 }
-                                                 return false;
-                                             });
-        searchEdit.addTextChangedListener(new TextWatcher()
         {
+            curPage = 2;
+            curHospital = item;
+            tvHintTxt.setVisibility(View.GONE);
+            line.setVisibility(View.GONE);
+            llSearchLayout.setVisibility(View.GONE);
+            rlHospitalLayout.setVisibility(View.VISIBLE);
+            tvHospitalName.setText(
+                    curHospital.getHospitalName());
+            tvHospitalAddress.setText(
+                    curHospital.getCityName());
+            tvHospitalGrade.setText(
+                    curHospital.getHospitalLevel());
+            Glide.with(this)
+                    .load(curHospital.getHospitalLogo())
+                    .apply(GlideHelper.getOptionsHospitalPic())
+                    .into(ivHosspitalImg);
+            autoLoadRecyclerView.setVisibility(
+                    View.GONE);
+            hospitalProductTypeRecycler.setVisibility(
+                    View.VISIBLE);
+            getHospitalProductListByHospitalId();
+        });
+        registrationProductTypeAdapter.setOnItemClickListener((v, position, item) ->
+        {
+            curPage = 3;
+            curProductType = item;
+            tvHintTxt.setVisibility(
+                    View.VISIBLE);
+            line.setVisibility(View.VISIBLE);
+            rlHospitalLayout.setVisibility(
+                    View.GONE);
+            tvHintTxt.setText(
+                    curHospital.getHospitalName() +
+                            " > " +
+                            curProductType.getProductTypeName());
+            llSearchLayout.setVisibility(
+                    View.VISIBLE);
+            hospitalProductTypeRecycler.setVisibility(
+                    View.GONE);
+            hospitalProductRecycler.setVisibility(
+                    View.VISIBLE);
+            productBeans = item.getProductInfoByHospitalIdResList();
+            DataSupport.deleteAll(
+                    HospitalProductBean.class);
+            DataSupport.saveAll(productBeans);
+            registrationProductAdapter.setList(
+                    productBeans);
+        });
+        registrationProductAdapter.setOnItemClickListener((v, position, item) ->
+        {
+            curPage = 4;
+            curProduct = item;
+            initProductDetailPage();
+        });
+        searchEdit.setOnEditorActionListener((v, actionId, event) ->
+        {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                hideSoftInputFromWindow();
+                search(v.getText().toString());
+            }
+            return false;
+        });
+        searchEdit.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
-                if (!TextUtils.isEmpty(s))
-                {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!TextUtils.isEmpty(s)) {
                     search(s.toString());
-                }
-                else
-                {
+                } else {
                     registrationProductAdapter.setList(productBeans);
                     registrationProductAdapter.notifyDataSetChanged();
                 }
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
             }
         });
     }
 
-    private void ininPageData()
-    {
-        if (!limit)
-        {
+    private void ininPageData() {
+        if (!limit) {
             List<PatientBean> list = DataSupport.where("patientId = ?", patientId)
-                                                .find(PatientBean.class);
-            if (list != null && list.size() > 0)
-            {
+                    .find(PatientBean.class);
+            if (list != null && list.size() > 0) {
                 patientBean = list.get(0);
-            }
-            else
-            {
+            } else {
                 getPatientInfo();
             }
             llPatientInfoLayout.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             llPatientInfoLayout.setVisibility(View.GONE);
         }
         tvTitle.setText(typeName);
@@ -322,8 +315,7 @@ public class ServicePackActivity<T> extends BaseActivity
     /**
      * 产品详情页面
      */
-    private void initProductDetailPage()
-    {
+    private void initProductDetailPage() {
         tvHintTxt.setVisibility(View.GONE);
         rlHospitalLayout.setVisibility(View.VISIBLE);
         llSearchLayout.setVisibility(View.GONE);
@@ -340,21 +332,16 @@ public class ServicePackActivity<T> extends BaseActivity
         tvAttention.setText(curProduct.getProductOtherInfo());
         hospitalProductRecycler.setVisibility(View.GONE);
         llProductDetaillayout.setVisibility(View.VISIBLE);
-        if (patientBean != null)
-        {
+        if (patientBean != null) {
             if (!TextUtils.isEmpty(patientBean.getNickname()) &&
-                patientBean.getNickname().length() < 20)
-            {
+                    patientBean.getNickname().length() < 20) {
                 tvPatientName.setText(patientBean.getNickname());
-            }
-            else
-            {
+            } else {
                 tvPatientName.setText(patientBean.getName());
             }
             tvPatientAge.setText(AllUtils.getAge(patientBean.getBirthDate()));
         }
-        if (!limit)
-        {
+        if (!limit) {
             tvNext.setVisibility(View.VISIBLE);
         }
     }
@@ -364,10 +351,9 @@ public class ServicePackActivity<T> extends BaseActivity
      *
      * @param key
      */
-    private void search(String key)
-    {
+    private void search(String key) {
         List<HospitalProductBean> datas = DataSupport.where("productName like ?", "%" + key + "%")
-                                                     .find(HospitalProductBean.class);
+                .find(HospitalProductBean.class);
         registrationProductAdapter.setList(datas);
         registrationProductAdapter.notifyDataSetChanged();
     }
@@ -375,35 +361,30 @@ public class ServicePackActivity<T> extends BaseActivity
     /**
      * 获取患者个人信息
      */
-    private void getPatientInfo()
-    {
+    private void getPatientInfo() {
         mIRequest.getPatientInfo(patientId, this);
     }
 
     /**
      * 获取医院列表
      */
-    private void getHospitalListByDoctorId()
-    {
+    private void getHospitalListByDoctorId() {
         mIRequest.getHospitalListByDoctorId(loginSuccessBean.getDoctorId(), this);
     }
 
     /**
      * 获取医院商品列表
      */
-    private void getHospitalProductListByHospitalId()
-    {
+    private void getHospitalProductListByHospitalId() {
         mIRequest.getHospitalProductListByHospitalId(curHospital.getHospitalId(), this);
     }
 
     /**
      * 新增订单
      */
-    private void addProductOrderNew()
-    {
+    private void addProductOrderNew() {
         String diagnosisInfo = etDes.getText().toString().trim();
-        if (TextUtils.isEmpty(diagnosisInfo))
-        {
+        if (TextUtils.isEmpty(diagnosisInfo)) {
             ToastUtil.toast(this, "请输入描述信息");
             return;
         }
@@ -430,77 +411,61 @@ public class ServicePackActivity<T> extends BaseActivity
         params.put("productPriceUnit", curProduct.getProductPriceUnit());
         JSONObject jsonObject = new JSONObject(params);
         request.setDefineRequestBodyForJson(jsonObject.toString());
-        queue.add(1, request, new OnResponseListener<String>()
-        {
+        queue.add(1, request, new OnResponseListener<String>() {
             @Override
-            public void onStart(int what)
-            {
+            public void onStart(int what) {
                 showProgressDialog("请稍等...");
             }
 
             @Override
-            public void onSucceed(int what, Response<String> response)
-            {
+            public void onSucceed(int what, Response<String> response) {
                 String s = response.get();
-                try
-                {
+                try {
                     //保存最近联系人
                     RecentContactUtils.save(patientBean.getPatientId());
                     NotifyChangeListenerServer.getInstance().notifyRecentContactChange("");
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponse(object, String.class);
-                    if (baseResponse != null && baseResponse.getCode() == 200)
-                    {
+                    if (baseResponse != null && baseResponse.getCode() == 200) {
                         HintDialog hintDialog = new HintDialog(ServicePackActivity.this);
                         hintDialog.isShowCancelBtn(false);
                         hintDialog.setContentString("已发送给患者，请等待患者答复");
                         hintDialog.setOnEnterClickListener(() -> finish());
                         hintDialog.show();
-                    }
-                    else
-                    {
+                    } else {
                         ToastUtil.toast(ServicePackActivity.this, baseResponse.getMsg());
                     }
-                }
-                catch (JSONException e)
-                {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
 
             @Override
-            public void onFailed(int what, Response<String> response)
-            {
+            public void onFailed(int what, Response<String> response) {
                 ToastUtil.toast(ServicePackActivity.this, response.getException().getMessage());
             }
 
             @Override
-            public void onFinish(int what)
-            {
+            public void onFinish(int what) {
                 closeProgressDialog();
             }
         });
     }
 
     @Override
-    public void onClick(View v)
-    {
-        switch (v.getId())
-        {
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.public_title_bar_back:
-                if (onBack())
-                {
+                if (onBack()) {
                     finish();
                 }
                 break;
             case R.id.act_service_pack_next:
                 HintDialog hintDialog = new HintDialog(this);
                 hintDialog.setContentString("确定发送给患者？");
-                hintDialog.setOnEnterClickListener(new OnEnterClickListener()
-                {
+                hintDialog.setOnEnterClickListener(new OnEnterClickListener() {
                     @Override
-                    public void onEnter()
-                    {
+                    public void onEnter() {
                         addProductOrderNew();
                     }
                 });
@@ -515,10 +480,8 @@ public class ServicePackActivity<T> extends BaseActivity
     }
 
     @Override
-    public void onResponseSuccess(Tasks task, BaseResponse response)
-    {
-        switch (task)
-        {
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        switch (task) {
             case GET_HOSPITAL_LIST_BY_DOCTORID:
                 hospitalList = response.getData();
                 registrationAdapter.setList(hospitalList);
@@ -541,22 +504,17 @@ public class ServicePackActivity<T> extends BaseActivity
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN)
-        {
-            if (!onBack())
-            {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if (!onBack()) {
                 return true;
             }
         }
         return super.onKeyDown(keyCode, event);
     }
 
-    private boolean onBack()
-    {
-        if (curPage == 4)
-        {
+    private boolean onBack() {
+        if (curPage == 4) {
             curPage = 3;
             tvHintTxt.setVisibility(View.VISIBLE);
             line.setVisibility(View.VISIBLE);
@@ -568,9 +526,7 @@ public class ServicePackActivity<T> extends BaseActivity
             hospitalProductRecycler.setVisibility(View.VISIBLE);
             llProductDetaillayout.setVisibility(View.GONE);
             return false;
-        }
-        else if (curPage == 3)
-        {
+        } else if (curPage == 3) {
             curPage = 2;
             //            tvHintTxt.setText(curHospital.getHospitalName());
             tvHintTxt.setVisibility(View.GONE);
@@ -581,16 +537,14 @@ public class ServicePackActivity<T> extends BaseActivity
             tvHospitalAddress.setText(curHospital.getCityName());
             tvHospitalGrade.setText(curHospital.getHospitalLevel());
             Glide.with(this)
-                 .load(curHospital.getHospitalLogo())
-                 .apply(GlideHelper.getOptionsHospitalPic())
-                 .into(ivHosspitalImg);
+                    .load(curHospital.getHospitalLogo())
+                    .apply(GlideHelper.getOptionsHospitalPic())
+                    .into(ivHosspitalImg);
             tvNext.setVisibility(View.GONE);
             hospitalProductTypeRecycler.setVisibility(View.VISIBLE);
             hospitalProductRecycler.setVisibility(View.GONE);
             return false;
-        }
-        else if (curPage == 2)
-        {
+        } else if (curPage == 2) {
             curPage = 1;
             tvHintTxt.setVisibility(View.VISIBLE);
             line.setVisibility(View.VISIBLE);
@@ -607,10 +561,10 @@ public class ServicePackActivity<T> extends BaseActivity
     /**
      * 隐藏软键盘
      */
-    private void hideSoftInputFromWindow()
-    {
-        InputMethodManager inputmanger = (InputMethodManager)getSystemService(
+    private void hideSoftInputFromWindow() {
+        InputMethodManager inputmanger = (InputMethodManager) getSystemService(
                 Context.INPUT_METHOD_SERVICE);
         inputmanger.hideSoftInputFromWindow(searchEdit.getWindowToken(), 0);
     }
+
 }

@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import custom.frame.bean.BaseResponse;
 import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
@@ -25,9 +27,9 @@ import custom.frame.widgets.FilterEmojiEditText;
 /**
  * Created by dundun on 18/7/2.
  */
-public class EditRemarkActivity extends BaseActivity
-{
-    private FilterEmojiEditText etNickName;
+public class EditRemarkActivity extends BaseActivity {
+    @BindView(R.id.act_edit_remark_nickname)
+    FilterEmojiEditText actEditRemarkNickname;
     private String userId;
     private String nickName, remark;
     private int maxCount;
@@ -37,84 +39,68 @@ public class EditRemarkActivity extends BaseActivity
     private boolean isDealDoctor = false;
 
     @Override
-    protected boolean isInitBackBtn()
-    {
+    protected boolean isInitBackBtn() {
         return true;
     }
 
     @Override
-    public int getLayoutID()
-    {
+    public int getLayoutID() {
         return R.layout.act_edit_remark;
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState)
-    {
+    public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("设置备注");
-        etNickName = (FilterEmojiEditText)findViewById(R.id.act_edit_remark_nickname);
-        if (getIntent() != null)
-        {
+        ((TextView) findViewById(R.id.public_title_bar_title)).setText("设置备注");
+        if (getIntent() != null) {
             userId = getIntent().getStringExtra(CommonData.KEY_ID);
             nickName = getIntent().getStringExtra(CommonData.KEY_PUBLIC);
             isDealDoctor = getIntent().getBooleanExtra(CommonData.KEY_IS_DEAL_DOC, false);
         }
-        if (!TextUtils.isEmpty(nickName) && nickName.length() < 20)
-        {
-            etNickName.setText(nickName);
-            etNickName.setSelection(nickName.length());
+        if (!TextUtils.isEmpty(nickName) && nickName.length() < 20) {
+            actEditRemarkNickname.setText(nickName);
+            actEditRemarkNickname.setSelection(nickName.length());
         }
         maxCount = 10;
     }
 
     @Override
-    public void initListener()
-    {
+    public void initListener() {
         super.initListener();
         findViewById(R.id.act_edit_remark_save).setOnClickListener(this);
-        etNickName.addTextChangedListener(new TextWatcher()
-        {
+        actEditRemarkNickname.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 int mTextMaxlenght = 0;
-                Editable editable = etNickName.getText();
+                Editable editable = actEditRemarkNickname.getText();
                 String str = editable.toString().trim();
                 //得到最初字段的长度大小,用于光标位置的判断
                 int selEndIndex = Selection.getSelectionEnd(editable);
                 // 取出每个字符进行判断,如果是字母数字和标点符号则为一个字符加1,
                 //如果是汉字则为两个字符
-                for (int i = 0; i < str.length(); i++)
-                {
+                for (int i = 0; i < str.length(); i++) {
                     char charAt = str.charAt(i);
                     //32-122包含了空格,大小写字母,数字和一些常用的符号,
                     //如果在这个范围内则算一个字符,
                     //如果不在这个范围比如是汉字的话就是两个字符
-                    if (charAt >= 32 && charAt <= 122)
-                    {
+                    if (charAt >= 32 && charAt <= 122) {
                         mTextMaxlenght++;
-                    }
-                    else
-                    {
+                    } else {
                         mTextMaxlenght += 2;
                     }
                     // 当最大字符大于10时,进行字段的截取,并进行提示字段的大小
-                    if (mTextMaxlenght > 20)
-                    {
+                    if (mTextMaxlenght > 20) {
                         // 截取最大的字段
                         String newStr = str.substring(0, i);
-                        etNickName.setText(newStr);
+                        actEditRemarkNickname.setText(newStr);
                         // 得到新字段的长度值
-                        editable = etNickName.getText();
+                        editable = actEditRemarkNickname.getText();
                         int newLen = editable.length();
-                        if (selEndIndex > newLen)
-                        {
+                        if (selEndIndex > newLen) {
                             selEndIndex = editable.length();
                         }
                         // 设置新光标所在的位置
@@ -124,58 +110,49 @@ public class EditRemarkActivity extends BaseActivity
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
             }
         });
-        etNickName.setOnEditorActionListener((v, actionId, event) ->
-                                             {
-                                                 //屏蔽换行符
-                                                 if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
-                                                 {
-                                                     return true;
-                                                 }
-                                                 return false;
-                                             });
+        actEditRemarkNickname.setOnEditorActionListener((v, actionId, event) ->
+        {
+            //屏蔽换行符
+            if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                return true;
+            }
+            return false;
+        });
     }
 
     /**
      * 设置备注  合作医生
      */
-    private void modifyNickName()
-    {
+    private void modifyNickName() {
         mIRequest.modifyNickName(loginSuccessBean.getDoctorId(), userId, remark, this);
     }
 
     /**
      * 设置备注  患者
      */
-    private void modifyNickNameByPatient()
-    {
+    private void modifyNickNameByPatient() {
         mIRequest.modifyNickNameByPatient(loginSuccessBean.getDoctorId(), userId, remark, "d",
-                                          this);
+                this);
     }
 
     @Override
-    public void onClick(View v)
-    {
+    public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.act_edit_remark_save:
                 hideSoftInputFromWindow();
-                remark = etNickName.getText().toString().trim();
+                remark = actEditRemarkNickname.getText().toString().trim();
                 //                if (TextUtils.isEmpty(remark))
                 //                {
                 //                    ToastUtil.toast(this, "备注不能为空");
                 //                    return;
                 //                }
-                if (isDealDoctor)
-                {
+                if (isDealDoctor) {
                     modifyNickName();
-                }
-                else
-                {
+                } else {
                     modifyNickNameByPatient();
                 }
                 break;
@@ -183,10 +160,8 @@ public class EditRemarkActivity extends BaseActivity
     }
 
     @Override
-    public void onResponseSuccess(Tasks task, BaseResponse response)
-    {
-        switch (task)
-        {
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        switch (task) {
             case MODIFY_NICK_NAME:
             case MODIFY_NICK_NAME_BY_PATIENT:
                 Intent intent = new Intent();
@@ -198,11 +173,9 @@ public class EditRemarkActivity extends BaseActivity
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response)
-    {
+    public void onResponseCodeError(Tasks task, BaseResponse response) {
         super.onResponseCodeError(task, response);
-        switch (task)
-        {
+        switch (task) {
             case MODIFY_NICK_NAME:
                 ToastUtil.toast(this, response.getMsg());
                 break;
@@ -212,10 +185,9 @@ public class EditRemarkActivity extends BaseActivity
     /**
      * 隐藏软键盘
      */
-    private void hideSoftInputFromWindow()
-    {
-        InputMethodManager inputmanger = (InputMethodManager)getSystemService(
+    private void hideSoftInputFromWindow() {
+        InputMethodManager inputmanger = (InputMethodManager) getSystemService(
                 Context.INPUT_METHOD_SERVICE);
-        inputmanger.hideSoftInputFromWindow(etNickName.getWindowToken(), 0);
+        inputmanger.hideSoftInputFromWindow(actEditRemarkNickname.getWindowToken(), 0);
     }
 }

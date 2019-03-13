@@ -40,4 +40,6 @@ dependencies {
     api 'org.litepal.android:core:1.6.1'
 
     api 'me.jessyan:autosize:1.1.2'
+
+    api 'com.jakewharton:butterknife:8.8.0'
 }

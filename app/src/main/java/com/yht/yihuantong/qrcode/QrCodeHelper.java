@@ -14,6 +14,7 @@ import java.util.Map;
 
 /**
  * 二维码生成帮助类
+ *
  * @author DUNDUN
  */
 public class QrCodeHelper {
@@ -27,11 +28,11 @@ public class QrCodeHelper {
      * @param logoBm    二维码中心的Logo图标（可以为null）
      * @return 生成二维码及保存文件是否成功
      */
-    public static Bitmap createQRImage(String content, int widthPix, int heightPix, Bitmap logoBm)
-    {
-        try
-        {
-            if (android.text.TextUtils.isEmpty(content)) { return null; }
+    public static Bitmap createQRImage(String content, int widthPix, int heightPix, Bitmap logoBm) {
+        try {
+            if (android.text.TextUtils.isEmpty(content)) {
+                return null;
+            }
             //配置参数
             Map<EncodeHintType, Object> hints = new HashMap<>();
             hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
@@ -41,16 +42,11 @@ public class QrCodeHelper {
             hints.put(EncodeHintType.MARGIN, 0);
             BitMatrix bitMatrix = new QRCodeWriter().encode(content, BarcodeFormat.QR_CODE, widthPix, heightPix, hints);
             int[] pixels = new int[widthPix * heightPix];
-            for (int y = 0; y < heightPix; y++)
-            {
-                for (int x = 0; x < widthPix; x++)
-                {
-                    if (bitMatrix.get(x, y))
-                    {
+            for (int y = 0; y < heightPix; y++) {
+                for (int x = 0; x < widthPix; x++) {
+                    if (bitMatrix.get(x, y)) {
                         pixels[y * widthPix + x] = 0xff000000;
-                    }
-                    else
-                    {
+                    } else {
                         pixels[y * widthPix + x] = 0xffffffff;
                     }
                 }
@@ -58,14 +54,11 @@ public class QrCodeHelper {
             // 生成二维码图片的格式，使用ARGB_8888
             Bitmap bitmap = Bitmap.createBitmap(widthPix, heightPix, Bitmap.Config.ARGB_8888);
             bitmap.setPixels(pixels, 0, widthPix, 0, 0, widthPix, heightPix);
-            if (logoBm != null)
-            {
+            if (logoBm != null) {
                 bitmap = addLogo(bitmap, logoBm);
             }
             return bitmap;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -74,37 +67,36 @@ public class QrCodeHelper {
     /**
      * 在二维码中间添加Logo图案
      */
-    private static Bitmap addLogo(Bitmap src, Bitmap logo)
-    {
-        if (src == null) { return null; }
-        if (logo == null) { return src; }
+    private static Bitmap addLogo(Bitmap src, Bitmap logo) {
+        if (src == null) {
+            return null;
+        }
+        if (logo == null) {
+            return src;
+        }
         //获取图片的宽高
         int srcWidth = src.getWidth();
         int srcHeight = src.getHeight();
         int logoWidth = logo.getWidth();
         int logoHeight = logo.getHeight();
-        if (srcWidth == 0 || srcHeight == 0)
-        {
+        if (srcWidth == 0 || srcHeight == 0) {
             return null;
         }
-        if (logoWidth == 0 || logoHeight == 0)
-        {
+        if (logoWidth == 0 || logoHeight == 0) {
             return src;
         }
         //logo大小为二维码整体大小的1/5
         float scaleFactor = srcWidth * 1.0f / 5 / logoWidth;
         Bitmap bitmap = Bitmap.createBitmap(srcWidth, srcHeight, Bitmap.Config.ARGB_8888);
-        try
-        {
+        try {
             Canvas canvas = new Canvas(bitmap);
             canvas.drawBitmap(src, 0, 0, null);
             canvas.scale(scaleFactor, scaleFactor, srcWidth / 2, srcHeight / 2);
             canvas.drawBitmap(logo, (srcWidth - logoWidth) / 2, (srcHeight - logoHeight) / 2, null);
-            canvas.save(Canvas.ALL_SAVE_FLAG);
+            //            canvas.save(Canvas.ALL_SAVE_FLAG);
+            canvas.save();
             canvas.restore();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             bitmap = null;
             e.getStackTrace();
         }

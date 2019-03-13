@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -28,6 +29,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import custom.frame.bean.BaseResponse;
 import custom.frame.http.Tasks;
 import custom.frame.ui.activity.BaseActivity;
@@ -38,11 +41,14 @@ import custom.frame.utils.DirHelper;
  *
  * @author DUNDUN
  */
-public class SplashActivity extends BaseActivity implements DocAuthStatu
-{
-    private TextView tvStart, tvTimeHint;
-    private ImageView ivBg;
-    private LinearLayout llSplashPage;
+public class SplashActivity extends BaseActivity implements DocAuthStatu {
+    @BindView(R.id.iv_start)
+    ImageView ivBg;
+    @BindView(R.id.act_splash_time_hint)
+    TextView tvTimeHint;
+    @BindView(R.id.act_splash_btn)
+    TextView tvStart;
+
     private ScheduledExecutorService executorService;
     private final String filePath = DirHelper.getPathImage() + "/splash.png";
     private int time = 0;
@@ -50,14 +56,11 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu
      * 广告页最长等待时间
      */
     private static final int MAX_WAIT_TIME = 5;
-    private Handler handler = new Handler(new Handler.Callback()
-    {
+    private Handler handler = new Handler(new Handler.Callback() {
         @Override
-        public boolean handleMessage(Message message)
-        {
+        public boolean handleMessage(Message message) {
             tvTimeHint.setText(String.format(getString(R.string.txt_splash_time_hint), time));
-            if (time <= 0)
-            {
+            if (time <= 0) {
                 initPage();
             }
             return true;
@@ -65,39 +68,23 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu
     });
 
     @Override
-    public int getLayoutID()
-    {
+    public int getLayoutID() {
         return R.layout.act_splash;
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState)
-    {
-        super.initView(savedInstanceState);
+    public void initData(@NonNull Bundle savedInstanceState) {
         hideBottomUIMenu();
-        ivBg = findViewById(R.id.iv_start);
-        tvStart = findViewById(R.id.act_splash_btn);
-        tvTimeHint = findViewById(R.id.act_splash_time_hint);
-        llSplashPage = findViewById(R.id.act_splash_layout);
-    }
-
-    @Override
-    public void initData(@NonNull Bundle savedInstanceState)
-    {
-        if (isExist())
-        {
+        if (isExist()) {
             initSplashImg();
-        }
-        else
-        {
+        } else {
             initScheduledThread();
         }
         getSplash();
     }
 
     @Override
-    public void initListener()
-    {
+    public void initListener() {
         super.initListener();
         tvStart.setOnClickListener(this);
         tvTimeHint.setOnClickListener(this);
@@ -106,16 +93,14 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu
     /**
      * 跳转登录界面
      */
-    private void startLoginPage()
-    {
+    private void startLoginPage() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
         overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
     }
 
-    private void initSplashImg()
-    {
+    private void initSplashImg() {
         File file = new File(filePath);
         Glide.with(this).load(file).into(ivBg);
         initScheduledThread();
@@ -124,13 +109,10 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu
     /**
      * 页面初始化
      */
-    private void initPage()
-    {
-        if (loginSuccessBean != null)
-        {
+    private void initPage() {
+        if (loginSuccessBean != null) {
             int checked = loginSuccessBean.getChecked();
-            switch (checked)
-            {
+            switch (checked) {
                 case NONE:
                 case VERIFYING:
                 case VERIFY_FAILD:
@@ -148,64 +130,51 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu
                     overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
                     break;
             }
-        }
-        else
-        {
+        } else {
             startLoginPage();
         }
     }
 
-    private void initScheduledThread()
-    {
+    private void initScheduledThread() {
         time = MAX_WAIT_TIME;
         executorService = new ScheduledThreadPoolExecutor(1,
-                                                          new BasicThreadFactory.Builder().namingPattern(
-                                                                  "yht-thread-pool-%d")
-                                                                                          .daemon(true)
-                                                                                          .build());
+                new BasicThreadFactory.Builder().namingPattern(
+                        "yht-thread-pool-%d")
+                        .daemon(true)
+                        .build());
         executorService.scheduleAtFixedRate(() ->
-                                            {
-                                                time--;
-                                                if (time < 0)
-                                                {
-                                                    time = 0;
-                                                    executorService.shutdownNow();
-                                                }
-                                                else
-                                                {
-                                                    handler.sendEmptyMessage(0);
-                                                }
-                                            }, 0, 1, TimeUnit.SECONDS);
+        {
+            time--;
+            if (time < 0) {
+                time = 0;
+                executorService.shutdownNow();
+            } else {
+                handler.sendEmptyMessage(0);
+            }
+        }, 0, 1, TimeUnit.SECONDS);
     }
 
     /**
      * 广告页
      */
-    private void getSplash()
-    {
-        try
-        {
+    private void getSplash() {
+        try {
             String name = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
             mIRequest.getSplash("doctor", "android", name, this);
-        }
-        catch (PackageManager.NameNotFoundException e)
-        {
+        } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void onClick(View v)
-    {
+    public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.act_splash_btn:
                 startLoginPage();
                 break;
             case R.id.act_splash_time_hint:
-                if (executorService != null && !executorService.isShutdown())
-                {
+                if (executorService != null && !executorService.isShutdown()) {
                     executorService.shutdownNow();
                 }
                 initPage();
@@ -216,15 +185,12 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu
     }
 
     @Override
-    public void onResponseSuccess(Tasks task, BaseResponse response)
-    {
-        switch (task)
-        {
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        switch (task) {
             case GET_SPLASH:
                 String url = response.getData();
                 String oldUrl = sharePreferenceUtil.getString(CommonData.KEY_SPLASH_IMG_URL);
-                if (!TextUtils.isEmpty(url) && !url.equals(oldUrl) || !isExist())
-                {
+                if (!TextUtils.isEmpty(url) && !url.equals(oldUrl) || !isExist()) {
                     sharePreferenceUtil.putString(CommonData.KEY_SPLASH_IMG_URL, url);
                     downloadImg(url);
                 }
@@ -232,41 +198,34 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu
         }
     }
 
-    private void downloadImg(String url)
-    {
+    private void downloadImg(String url) {
         FileTransferServer.getInstance(this)
-                          .downloadFile(0, url, DirHelper.getPathImage(), "splash.png",
-                                        new DownloadListener()
-                                        {
-                                            @Override
-                                            public void onDownloadError(int what,
-                                                    Exception exception)
-                                            {
-                                            }
+                .downloadFile(0, url, DirHelper.getPathImage(), "splash.png",
+                        new DownloadListener() {
+                            @Override
+                            public void onDownloadError(int what,
+                                                        Exception exception) {
+                            }
 
-                                            @Override
-                                            public void onStart(int what, boolean isResume,
-                                                    long rangeSize, Headers responseHeaders,
-                                                    long allCount)
-                                            {
-                                            }
+                            @Override
+                            public void onStart(int what, boolean isResume,
+                                                long rangeSize, Headers responseHeaders,
+                                                long allCount) {
+                            }
 
-                                            @Override
-                                            public void onProgress(int what, int progress,
-                                                    long fileCount, long speed)
-                                            {
-                                            }
+                            @Override
+                            public void onProgress(int what, int progress,
+                                                   long fileCount, long speed) {
+                            }
 
-                                            @Override
-                                            public void onFinish(int what, String filePath)
-                                            {
-                                            }
+                            @Override
+                            public void onFinish(int what, String filePath) {
+                            }
 
-                                            @Override
-                                            public void onCancel(int what)
-                                            {
-                                            }
-                                        });
+                            @Override
+                            public void onCancel(int what) {
+                            }
+                        });
     }
 
     /**
@@ -274,15 +233,11 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu
      *
      * @return
      */
-    private boolean isExist()
-    {
+    private boolean isExist() {
         File file = new File(filePath);
-        if (file != null && file.exists())
-        {
+        if (file != null && file.exists()) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -290,10 +245,8 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu
     /**
      * 隐藏虚拟按键，并且全屏
      */
-    protected void hideBottomUIMenu()
-    {
+    protected void hideBottomUIMenu() {
         //状态栏透明
-        //        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 }

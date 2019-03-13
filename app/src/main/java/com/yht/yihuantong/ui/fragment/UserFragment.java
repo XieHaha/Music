@@ -16,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -37,7 +38,6 @@ import com.yht.yihuantong.qrcode.DialogPersonalBarCode;
 import com.yht.yihuantong.ui.activity.AuthDocActivity;
 import com.yht.yihuantong.ui.activity.AuthDocStatuActivity;
 import com.yht.yihuantong.ui.activity.EditInfoActivity;
-import com.yht.yihuantong.ui.activity.LoginActivity;
 import com.yht.yihuantong.ui.activity.SettingActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientFromActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientToActivity;
@@ -55,6 +55,9 @@ import org.litepal.crud.DataSupport;
 import java.io.File;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CooperateDocBean;
 import custom.frame.bean.LoginSuccessBean;
@@ -64,7 +67,6 @@ import custom.frame.http.data.HttpConstants;
 import custom.frame.permission.OnPermissionCallback;
 import custom.frame.permission.Permission;
 import custom.frame.permission.PermissionHelper;
-import custom.frame.ui.activity.AppManager;
 import custom.frame.ui.fragment.BaseFragment;
 import custom.frame.utils.DirHelper;
 import custom.frame.utils.GlideHelper;
@@ -76,17 +78,40 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * 我的页面
  */
 public class UserFragment extends BaseFragment
-        implements CustomListenScrollView.OnScrollChangeListener, CommonData
-{
-    private CircleImageView headImg, authImg;
-    private LinearLayout llTitleLayout;
-    private RelativeLayout rlAuthLayout, rlTransferMsg;
-    private CustomListenScrollView scrollView;
-    private TextView tvName, tvHospital, tvType, tvTitle, tvIntroduce;
-    private TextView tvAuth, tvAuthStatus;
-    private TextView tvDocNum, tvPatientNum;
-    private TextView tvRemind;
-    private ImageView ivEditInfo;
+        implements CustomListenScrollView.OnScrollChangeListener, CommonData {
+    @BindView(R.id.fragmrnt_user_info_headimg)
+    CircleImageView headImg;
+    @BindView(R.id.fragmrnt_user_info_auth)
+    CircleImageView authImg;
+    @BindView(R.id.fragmrnt_user_info_name)
+    TextView tvName;
+    @BindView(R.id.public_title_bar_back)
+    ImageView ivEditInfo;
+    @BindView(R.id.fragment_my_auth_status)
+    TextView tvAuthStatus;
+    @BindView(R.id.fragment_my_auth)
+    TextView tvAuth;
+    @BindView(R.id.fragment_my_auth_layout)
+    RelativeLayout rlAuthLayout;
+    @BindView(R.id.fragmrnt_user_info_title)
+    TextView tvTitle;
+    @BindView(R.id.fragmrnt_user_info_hospital)
+    TextView tvHospital;
+    @BindView(R.id.fragmrnt_user_info_type)
+    TextView tvType;
+    @BindView(R.id.fragmrnt_user_info_introduce)
+    TextView tvIntroduce;
+    @BindView(R.id.message_red_point)
+    RelativeLayout rlTransferMsg;
+    @BindView(R.id.fragmrnt_user_doctors_num)
+    TextView tvDocNum;
+    @BindView(R.id.fragmrnt_user_patients_num)
+    TextView tvPatientNum;
+    @BindView(R.id.fragment_user_remind)
+    TextView tvRemind;
+    @BindView(R.id.fragment_my_scrollview)
+    CustomListenScrollView scrollView;
+
     private LoginSuccessBean loginSuccessBean;
     private INotifyChangeListenerServer iNotifyChangeListenerServer;
     private Uri originUri, cutFileUri;
@@ -124,13 +149,10 @@ public class UserFragment extends BaseFragment
      */
     public static final int REQUEST_CODE_DOC_AUTH = RC_CROP_IMG + 1;
     private String headImgUrl;
-    private Handler handler = new Handler()
-    {
+    private Handler handler = new Handler() {
         @Override
-        public void handleMessage(Message msg)
-        {
-            switch (msg.what)
-            {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
                 case JIGUANG_CODE_DOCTOR_INFO_CHECK_FAILED:
                     //认证失败  更新本地数据
                     loginSuccessBean.setChecked(2);
@@ -146,8 +168,7 @@ public class UserFragment extends BaseFragment
                 case 10:
                     //TODO 统计未查看转诊申请数量
                     sharePreferenceUtil.putBoolean(CommonData.KEY_CHANGE_PATIENT_NUM, true);
-                    if (onTransferCallbackListener != null)
-                    {
+                    if (onTransferCallbackListener != null) {
                         onTransferCallbackListener.onTransferCallback();
                     }
                     rlTransferMsg.setVisibility(View.VISIBLE);
@@ -174,69 +195,47 @@ public class UserFragment extends BaseFragment
     };
 
     @Override
-    public int getLayoutID()
-    {
+    public int getLayoutID() {
         return R.layout.fragment_my;
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         initPageData();
     }
 
     @Override
-    public void initView(@NonNull View view, @NonNull Bundle savedInstanceState)
-    {
+    public void initView(@NonNull View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
         //获取状态栏高度，填充
         View mStateBarFixer = view.findViewById(R.id.status_bar_fix);
         mStateBarFixer.setLayoutParams(
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                              getStateBarHeight(getActivity())));//填充状态栏
-        ivEditInfo = view.findViewById(R.id.public_title_bar_back);
-        ivEditInfo.setOnClickListener(this);
+                        getStateBarHeight(getActivity())));//填充状态栏
         view.findViewById(R.id.fragmrnt_user_info_setting_layout).setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_info_train_layout).setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_info_service_layout).setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_transfer_to_layout).setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_transfer_from_layout).setOnClickListener(this);
-        rlAuthLayout = view.findViewById(R.id.fragment_my_auth_layout);
-        rlTransferMsg = view.findViewById(R.id.message_red_point);
-        scrollView = view.findViewById(R.id.fragment_my_scrollview);
-        llTitleLayout = view.findViewById(R.id.fragment_my_title_layout);
-        headImg = view.findViewById(R.id.fragmrnt_user_info_headimg);
-        authImg = view.findViewById(R.id.fragmrnt_user_info_auth);
-        tvName = view.findViewById(R.id.fragmrnt_user_info_name);
-        tvHospital = view.findViewById(R.id.fragmrnt_user_info_hospital);
-        tvType = view.findViewById(R.id.fragmrnt_user_info_type);
-        tvTitle = view.findViewById(R.id.fragmrnt_user_info_title);
-        tvIntroduce = view.findViewById(R.id.fragmrnt_user_info_introduce);
-        tvAuth = view.findViewById(R.id.fragment_my_auth);
-        tvAuthStatus = view.findViewById(R.id.fragment_my_auth_status);
-        tvDocNum = view.findViewById(R.id.fragmrnt_user_doctors_num);
-        tvPatientNum = view.findViewById(R.id.fragmrnt_user_patients_num);
-        tvRemind = view.findViewById(R.id.fragment_user_remind);
         view.findViewById(R.id.fragmrnt_user_info_qrcode_layout).setOnClickListener(this);
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState)
-    {
+    public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         /**
          * 权限管理类
          */
         permissionHelper = PermissionHelper.getInstance(getActivity(), onPermissionCallback);
         iNotifyChangeListenerServer = ApiManager.getInstance()
-                                                .getServer(INotifyChangeListenerServer.class);
+                .getServer(INotifyChangeListenerServer.class);
     }
 
     @Override
-    public void initListener()
-    {
+    public void initListener() {
         super.initListener();
+        ivEditInfo.setOnClickListener(this);
         headImg.setOnClickListener(this);
         scrollView.setOnScrollChangeListener(this);
         rlAuthLayout.setOnClickListener(this);
@@ -251,8 +250,7 @@ public class UserFragment extends BaseFragment
     /**
      * 上传头像
      */
-    private void uploadHeadImg(Uri uri)
-    {
+    private void uploadHeadImg(Uri uri) {
         File file = FileUtils.getFileByUri(uri, getContext());
         mIRequest.uploadHeadImg(file, "jpg", this);
     }
@@ -260,45 +258,37 @@ public class UserFragment extends BaseFragment
     /**
      * 上传基本信息
      */
-    private void updateBasicInfo()
-    {
-        if (TextUtils.isEmpty(headImgUrl))
-        {
+    private void updateBasicInfo() {
+        if (TextUtils.isEmpty(headImgUrl)) {
             return;
         }
         JSONObject merchant = new JSONObject();
         //        Map<String, Object> merchant = new HashMap<>();
         merchant.put("portraitUrl", headImgUrl);
         mIRequest.updateUserInfo(loginSuccessBean.getDoctorId(), loginSuccessBean.getFieldId(),
-                                 merchant, this);
+                merchant, this);
     }
 
     /**
      * 初始化界面数据
      */
-    private void initPageData()
-    {
+    private void initPageData() {
         tvPatientNum.setText(String.format(getString(R.string.txt_user_info_num),
-                                           sharePreferenceUtil.getString(
-                                                   CommonData.KEY_PATIENT_NUM)));
+                sharePreferenceUtil.getString(
+                        CommonData.KEY_PATIENT_NUM)));
         tvDocNum.setText(String.format(getString(R.string.txt_user_info_num),
-                                       sharePreferenceUtil.getString(CommonData.KEY_DOCTOR_NUM)));
+                sharePreferenceUtil.getString(CommonData.KEY_DOCTOR_NUM)));
         loginSuccessBean = YihtApplication.getInstance().getLoginSuccessBean();
-        if (loginSuccessBean != null)
-        {
+        if (loginSuccessBean != null) {
             barCodeImageView = new BarCodeImageView(getContext(),
-                                                    HttpConstants.BASE_BASIC_DOWNLOAD_URL +
-                                                    loginSuccessBean.getDoctorId());
-            if (!TextUtils.isEmpty(loginSuccessBean.getPortraitUrl()))
-            {
+                    HttpConstants.BASE_BASIC_DOWNLOAD_URL +
+                            loginSuccessBean.getDoctorId());
+            if (!TextUtils.isEmpty(loginSuccessBean.getPortraitUrl())) {
                 headImgUrl = loginSuccessBean.getPortraitUrl();
-            }
-            else if (!TextUtils.isEmpty(YihtApplication.getInstance().getHeadImgUrl()))
-            {
+            } else if (!TextUtils.isEmpty(YihtApplication.getInstance().getHeadImgUrl())) {
                 headImgUrl = YihtApplication.getInstance().getHeadImgUrl();
             }
-            if (!TextUtils.isEmpty(headImgUrl))
-            {
+            if (!TextUtils.isEmpty(headImgUrl)) {
                 Glide.with(this).load(headImgUrl).apply(GlideHelper.getOptions()).into(headImg);
             }
             //状态处理
@@ -309,12 +299,9 @@ public class UserFragment extends BaseFragment
             tvType.setText(loginSuccessBean.getDepartment());
             tvIntroduce.setText(loginSuccessBean.getDoctorDescription());
         }
-        if (YihtApplication.getInstance().isVersionRemind())
-        {
+        if (YihtApplication.getInstance().isVersionRemind()) {
             tvRemind.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             tvRemind.setVisibility(View.GONE);
         }
     }
@@ -324,10 +311,8 @@ public class UserFragment extends BaseFragment
      *
      * @param status
      */
-    private void initAuthStatus(int status)
-    {
-        switch (status)
-        {
+    private void initAuthStatus(int status) {
+        switch (status) {
             case 0://未认证
                 tvAuth.setText("去认证");
                 tvAuthStatus.setTextColor(
@@ -363,11 +348,9 @@ public class UserFragment extends BaseFragment
     }
 
     @Override
-    public void onClick(View v)
-    {
+    public void onClick(View v) {
         Intent intent;
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.public_title_bar_back:
                 intent = new Intent(getContext(), EditInfoActivity.class);
                 startActivity(intent);
@@ -395,8 +378,7 @@ public class UserFragment extends BaseFragment
             case R.id.fragmrnt_user_transfer_from_layout:
                 rlTransferMsg.setVisibility(View.GONE);
                 sharePreferenceUtil.putBoolean(CommonData.KEY_CHANGE_PATIENT_NUM, false);
-                if (onTransferCallbackListener != null)
-                {
+                if (onTransferCallbackListener != null) {
                     onTransferCallbackListener.onTransferCallback();
                 }
                 intent = new Intent(getContext(), TransferPatientFromActivity.class);
@@ -412,37 +394,34 @@ public class UserFragment extends BaseFragment
     /**
      * 更换头像
      */
-    private void editHeadImg()
-    {
+    private void editHeadImg() {
         new ActionSheetDialog(getContext()).builder()
-                                           .setCancelable(true)
-                                           .setCanceledOnTouchOutside(true)
-                                           .addSheetItem("相册",
-                                                         ActionSheetDialog.SheetItemColor.Blue,
-                                                         which ->
-                                                         {
-                                                             //动态申请权限
-                                                             permissionHelper.request(new String[] {
-                                                                     Permission.STORAGE_WRITE });
-                                                         })
-                                           .addSheetItem("拍照",
-                                                         ActionSheetDialog.SheetItemColor.Blue,
-                                                         which ->
-                                                         {
-                                                             //动态申请权限
-                                                             permissionHelper.request(new String[] {
-                                                                     Permission.CAMERA,
-                                                                     Permission.STORAGE_WRITE });
-                                                         })
-                                           .show();
+                .setCancelable(true)
+                .setCanceledOnTouchOutside(true)
+                .addSheetItem("相册",
+                        ActionSheetDialog.SheetItemColor.Blue,
+                        which ->
+                        {
+                            //动态申请权限
+                            permissionHelper.request(new String[]{
+                                    Permission.STORAGE_WRITE});
+                        })
+                .addSheetItem("拍照",
+                        ActionSheetDialog.SheetItemColor.Blue,
+                        which ->
+                        {
+                            //动态申请权限
+                            permissionHelper.request(new String[]{
+                                    Permission.CAMERA,
+                                    Permission.STORAGE_WRITE});
+                        })
+                .show();
     }
 
     @Override
-    public void onResponseSuccess(Tasks task, BaseResponse response)
-    {
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        switch (task)
-        {
+        switch (task) {
             case UPLOAD_FILE:
                 headImgUrl = response.getData();
                 Log.i("test", "headImgUrl:" + headImgUrl);
@@ -467,8 +446,7 @@ public class UserFragment extends BaseFragment
      * @param oldt
      */
     @Override
-    public void onScrollChanged(CustomListenScrollView scrollView, int l, int t, int oldl, int oldt)
-    {
+    public void onScrollChanged(CustomListenScrollView scrollView, int l, int t, int oldl, int oldt) {
         //        int scrollHeight = (scrollView.getChildAt(0).getHeight() - scrollView.getMeasuredHeight());
         //        int alpha;
         //        if (t < scrollHeight && t > 0)
@@ -489,62 +467,56 @@ public class UserFragment extends BaseFragment
     /**
      * 打开图片库
      */
-    private void openPhoto()
-    {
+    private void openPhoto() {
         Matisse.from(this)
-               // 选择 mime 的类型
-               .choose(MimeType.allOf())
-               // 显示选择的数量
-               .countable(true)
-               //                //相机
-               //               .capture(true)
-               //               .captureStrategy(new CaptureStrategy(true, YihtApplication.getInstance().getPackageName() +".fileprovider"))
-               // 黑色背景
-               .theme(R.style.Matisse_Dracula)
-               // 图片选择的最多数量
-               .maxSelectable(1)
-               // 列表中显示的图片大小
-               .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.app_picture_size))
-               .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-               // 缩略图的比例
-               .thumbnailScale(0.85f)
-               // 使用的图片加载引擎
-               .imageEngine(new PicassoEngine())
-               // 设置作为标记的请求码，返回图片时使用
-               .forResult(RC_PICK_IMG);
+                // 选择 mime 的类型
+                .choose(MimeType.allOf())
+                // 显示选择的数量
+                .countable(true)
+                //                //相机
+                //               .capture(true)
+                //               .captureStrategy(new CaptureStrategy(true, YihtApplication.getInstance().getPackageName() +".fileprovider"))
+                // 黑色背景
+                .theme(R.style.Matisse_Dracula)
+                // 图片选择的最多数量
+                .maxSelectable(1)
+                // 列表中显示的图片大小
+                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.app_picture_size))
+                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                // 缩略图的比例
+                .thumbnailScale(0.85f)
+                // 使用的图片加载引擎
+                .imageEngine(new PicassoEngine())
+                // 设置作为标记的请求码，返回图片时使用
+                .forResult(RC_PICK_IMG);
     }
 
     /**
      * 打开相机
      */
-    private void openCamera()
-    {
+    private void openCamera() {
         cameraTempFile = new File(DirHelper.getPathImage(), System.currentTimeMillis() + ".jpg");
         //选择拍照
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // 指定调用相机拍照后照片的储存路径
         Uri uri = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-        {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             uri = FileProvider.getUriForFile(getContext(),
-                                             YihtApplication.getInstance().getPackageName() +
-                                             ".fileprovider", cameraTempFile);
-        }
-        else
-        {
+                    YihtApplication.getInstance().getPackageName() +
+                            ".fileprovider", cameraTempFile);
+        } else {
             uri = Uri.fromFile(cameraTempFile);
         }
         List<ResolveInfo> resInfoList = getActivity().getPackageManager()
-                                                     .queryIntentActivities(intent,
-                                                                            PackageManager.MATCH_DEFAULT_ONLY);
-        for (ResolveInfo resolveInfo : resInfoList)
-        {
+                .queryIntentActivities(intent,
+                        PackageManager.MATCH_DEFAULT_ONLY);
+        for (ResolveInfo resolveInfo : resInfoList) {
             String packageName = resolveInfo.activityInfo.packageName;
             getActivity().grantUriPermission(packageName, uri,
-                                             Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
-                                             Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
+                            Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
         // 指定调用相机拍照后照片的储存路径
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
@@ -555,14 +527,12 @@ public class UserFragment extends BaseFragment
     /**
      * 图片裁剪
      */
-    private void startCutImg(Uri uri, Uri cutUri)
-    {
+    private void startCutImg(Uri uri, Uri cutUri) {
         originUri = uri;
         cutFileUri = cutUri;
         //系统裁剪
         Intent intent = new Intent("com.android.camera.action.CROP");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-        {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             //添加这一句表示对目标应用临时授权该Uri所代表的文件
             intent.addFlags(
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -572,14 +542,11 @@ public class UserFragment extends BaseFragment
         intent.putExtra("crop", "true");
         // aspectX aspectY 是宽高的比例
         if (Build.BRAND.toUpperCase().contains("HONOR") ||
-            Build.BRAND.toUpperCase().contains("HUAWEI"))
-        {
+                Build.BRAND.toUpperCase().contains("HUAWEI")) {
             //华为特殊处理 不然会显示圆
             intent.putExtra("aspectX", 9998);
             intent.putExtra("aspectY", 9999);
-        }
-        else
-        {
+        } else {
             intent.putExtra("aspectX", 1);
             intent.putExtra("aspectY", 1);
         }
@@ -594,18 +561,14 @@ public class UserFragment extends BaseFragment
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (resultCode != getActivity().RESULT_OK)
-        {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != getActivity().RESULT_OK) {
             return;
         }
-        switch (requestCode)
-        {
+        switch (requestCode) {
             case RC_PICK_IMG:
                 List<Uri> paths = Matisse.obtainResult(data);
-                if (null != paths && 0 != paths.size())
-                {
+                if (null != paths && 0 != paths.size()) {
                     cameraTempFile = FileUtils.getFileByUri(paths.get(0), getContext());
                     String fileName = "corp" + System.currentTimeMillis() + ".jpg";
                     File file = new File(DirHelper.getPathCache(), fileName);
@@ -613,21 +576,17 @@ public class UserFragment extends BaseFragment
                 }
                 break;
             case RC_PICK_CAMERA_IMG:
-                if (cameraTempFile.exists())
-                {
+                if (cameraTempFile.exists()) {
                     String fileName = "corp" + System.currentTimeMillis() + ".jpg";
                     File file = new File(DirHelper.getPathCache(), fileName);
                     Uri imageUri;
                     Uri cropUri;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-                    {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         imageUri = FileProvider.getUriForFile(getContext(),
-                                                              YihtApplication.getInstance()
-                                                                             .getPackageName() +
-                                                              ".fileprovider", cameraTempFile);
-                    }
-                    else
-                    {
+                                YihtApplication.getInstance()
+                                        .getPackageName() +
+                                        ".fileprovider", cameraTempFile);
+                    } else {
                         imageUri = Uri.fromFile(cameraTempFile);
                     }
                     cropUri = Uri.fromFile(file);
@@ -636,12 +595,9 @@ public class UserFragment extends BaseFragment
                 break;
             case RC_CROP_IMG:
                 //裁剪完成，上传图片
-                if (AllUtils.isNetworkAvaliable(getContext()))
-                {
+                if (AllUtils.isNetworkAvaliable(getContext())) {
                     uploadHeadImg(cutFileUri);
-                }
-                else
-                {
+                } else {
                     ToastUtil.toast(getContext(), R.string.toast_public_current_no_network);
                 }
                 //上传完成，替换本地图片
@@ -659,14 +615,11 @@ public class UserFragment extends BaseFragment
     }
 
     /***************************************权限处理**********************/
-    private boolean isSamePermission(String o, String n)
-    {
-        if (TextUtils.isEmpty(o) || TextUtils.isEmpty(n))
-        {
+    private boolean isSamePermission(String o, String n) {
+        if (TextUtils.isEmpty(o) || TextUtils.isEmpty(n)) {
             return false;
         }
-        if (o.equals(n))
-        {
+        if (o.equals(n)) {
             return true;
         }
         return false;
@@ -674,87 +627,66 @@ public class UserFragment extends BaseFragment
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults)
-    {
-        if (permissions == null)
-        {
+                                           @NonNull int[] grantResults) {
+        if (permissions == null) {
             return;
         }
         permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    private OnPermissionCallback onPermissionCallback = new OnPermissionCallback()
-    {
+    private OnPermissionCallback onPermissionCallback = new OnPermissionCallback() {
         @Override
-        public void onPermissionGranted(@NonNull String[] permissionName)
-        {
-            if (permissionName == null || permissionName.length == 0)
-            {
+        public void onPermissionGranted(@NonNull String[] permissionName) {
+            if (permissionName == null || permissionName.length == 0) {
                 return;
             }
-            if (isSamePermission(Permission.CAMERA, permissionName[0]))
-            {
+            if (isSamePermission(Permission.CAMERA, permissionName[0])) {
                 openCamera();
-            }
-            else if (isSamePermission(Permission.STORAGE_WRITE, permissionName[0]))
-            {
+            } else if (isSamePermission(Permission.STORAGE_WRITE, permissionName[0])) {
                 openPhoto();
             }
         }
 
         @Override
-        public void onPermissionDeclined(@NonNull String[] permissionName)
-        {
-            if (permissionName == null)
-            {
+        public void onPermissionDeclined(@NonNull String[] permissionName) {
+            if (permissionName == null) {
                 return;
             }
-            for (String permission : permissionName)
-            {
-                if (Permission.STORAGE_WRITE.equals(permission))
-                {
+            for (String permission : permissionName) {
+                if (Permission.STORAGE_WRITE.equals(permission)) {
                     ToastUtil.toast(getContext(),
-                                    custom.frame.R.string.dialog_no_storage_permission_tip);
+                            custom.frame.R.string.dialog_no_storage_permission_tip);
                     break;
                 }
-                if (Permission.CAMERA.equals(permission))
-                {
+                if (Permission.CAMERA.equals(permission)) {
                     ToastUtil.toast(getContext(),
-                                    custom.frame.R.string.dialog_no_camera_permission_tip);
+                            custom.frame.R.string.dialog_no_camera_permission_tip);
                     break;
                 }
             }
         }
 
         @Override
-        public void onPermissionPreGranted(@NonNull String permissionsName)
-        {
+        public void onPermissionPreGranted(@NonNull String permissionsName) {
             LogUtils.d("test", "onPermissionPreGranted:" + permissionsName);
         }
 
         @Override
-        public void onPermissionNeedExplanation(@NonNull String permissionName)
-        {
+        public void onPermissionNeedExplanation(@NonNull String permissionName) {
             permissionHelper.requestAfterExplanation(permissionName);
         }
 
         @Override
-        public void onPermissionReallyDeclined(@NonNull String permissionName)
-        {
+        public void onPermissionReallyDeclined(@NonNull String permissionName) {
             new SimpleDialog(getActivity(), R.string.dialog_no_camera_permission_tip, false).show();
         }
 
         @Override
-        public void onNoPermissionNeeded(@NonNull Object permissionName)
-        {
-            if (permissionName instanceof String[])
-            {
-                if (isSamePermission(Permission.STORAGE_WRITE, ((String[])permissionName)[0]))
-                {
+        public void onNoPermissionNeeded(@NonNull Object permissionName) {
+            if (permissionName instanceof String[]) {
+                if (isSamePermission(Permission.STORAGE_WRITE, ((String[]) permissionName)[0])) {
                     openPhoto();
-                }
-                else if (isSamePermission(Permission.CAMERA, ((String[])permissionName)[0]))
-                {
+                } else if (isSamePermission(Permission.CAMERA, ((String[]) permissionName)[0])) {
                     openCamera();
                 }
             }
@@ -762,8 +694,7 @@ public class UserFragment extends BaseFragment
     };
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         super.onDestroy();
         //注销患者状态监听
         iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(
@@ -775,13 +706,12 @@ public class UserFragment extends BaseFragment
 
     public OnTransferCallbackListener onTransferCallbackListener;
 
-    public void setOnTransferCallbackListener(OnTransferCallbackListener onTransferCallbackListener)
-    {
+    public void setOnTransferCallbackListener(OnTransferCallbackListener onTransferCallbackListener) {
         this.onTransferCallbackListener = onTransferCallbackListener;
     }
 
-    public interface OnTransferCallbackListener
-    {
+
+    public interface OnTransferCallbackListener {
         void onTransferCallback();
     }
 }

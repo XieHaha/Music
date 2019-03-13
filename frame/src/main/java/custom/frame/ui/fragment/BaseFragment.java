@@ -20,6 +20,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import custom.frame.R;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.LoginSuccessBean;
@@ -37,8 +39,7 @@ import custom.frame.utils.ToastUtil;
  */
 public abstract class BaseFragment<T> extends Fragment
         implements FragmentInterface, ResponseListener<BaseResponse>, View.OnClickListener,
-                   ConstantsCommon
-{
+        ConstantsCommon {
     /**
      * 任务队列列表
      */
@@ -60,9 +61,13 @@ public abstract class BaseFragment<T> extends Fragment
      */
     public IRequest mIRequest = null;
 
+    /**
+     * 注解
+     */
+    Unbinder unbinder;
+
     @Override
-    public final void onCreate(Bundle savedInstanceState)
-    {
+    public final void onCreate(Bundle savedInstanceState) {
         befordCreateView(savedInstanceState);
         super.onCreate(savedInstanceState);
     }
@@ -70,34 +75,29 @@ public abstract class BaseFragment<T> extends Fragment
     @Nullable
     @Override
     public final View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState)
-    {
+                                   Bundle savedInstanceState) {
         View view;
         int layoutID = getLayoutID();
-        if (layoutID != 0)
-        {
+        if (layoutID != 0) {
             view = inflater.inflate(getLayoutID(), null);
-        }
-        else
-        {
+        } else {
             view = getLayoutView();
         }
+        unbinder = ButterKnife.bind(this, view);
         init();
         init(view, savedInstanceState);
         return view;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState)
-    {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
 
     /**
      * 基础初始化
      */
-    private void init()
-    {
+    private void init() {
         requestList = new ArrayList<>();
         whiteRequestList = new ArrayList<>();
         mIRequest = IRequest.getInstance(getContext());
@@ -109,8 +109,7 @@ public abstract class BaseFragment<T> extends Fragment
     /**
      * 自定义的界面恢复回调
      */
-    public void onFragmentResume()
-    {
+    public void onFragmentResume() {
     }
 
     /**
@@ -119,12 +118,10 @@ public abstract class BaseFragment<T> extends Fragment
      * @param a
      * @return
      */
-    public static int getStateBarHeight(Activity a)
-    {
+    public static int getStateBarHeight(Activity a) {
         int result = 0;
         int resourceId = a.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0)
-        {
+        if (resourceId > 0) {
             result = a.getResources().getDimensionPixelSize(resourceId);
         }
         return result;
@@ -139,8 +136,7 @@ public abstract class BaseFragment<T> extends Fragment
      *
      * @param savedInstanceState
      */
-    private void init(@NonNull View view, @NonNull Bundle savedInstanceState)
-    {
+    private void init(@NonNull View view, @NonNull Bundle savedInstanceState) {
         initView(view, savedInstanceState);
         initObject(savedInstanceState);
         initData(savedInstanceState);
@@ -152,31 +148,31 @@ public abstract class BaseFragment<T> extends Fragment
      *
      * @return
      */
-    public LoginSuccessBean getLoginSuccessBean()
-    {
-        String userStr = (String)SharePreferenceUtil.getObject(getContext(),
-                                                               "key_login_success_bean", "");
-        if (!TextUtils.isEmpty(userStr))
-        {
+    public LoginSuccessBean getLoginSuccessBean() {
+        String userStr = (String) SharePreferenceUtil.getObject(getContext(),
+                "key_login_success_bean", "");
+        if (!TextUtils.isEmpty(userStr)) {
             loginSuccessBean = JSON.parseObject(userStr, LoginSuccessBean.class);
         }
         return loginSuccessBean;
     }
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @Override
+    public void onDestroy() {
         super.onDestroy();
         AppManager.getInstance().removeActivity(getActivity());
         //循环取消未完成的任务
-        if (requestList != null)
-        {
-            for (int i = 0; i < requestList.size(); i++)
-            {
+        if (requestList != null) {
+            for (int i = 0; i < requestList.size(); i++) {
                 Tasks task = requestList.get(i);
                 //如果白名单里有此任务则跳过此任务
-                if (whiteRequestList != null && whiteRequestList.contains(task))
-                {
+                if (whiteRequestList != null && whiteRequestList.contains(task)) {
                     MLog.d(getTag(), "跳过白名单task任务: " + task);
                     continue;
                 }
@@ -192,8 +188,7 @@ public abstract class BaseFragment<T> extends Fragment
     }
 
     @Override
-    public void onClick(View v)
-    {
+    public void onClick(View v) {
         onClick(v, v.getId());
     }
 
@@ -203,15 +198,13 @@ public abstract class BaseFragment<T> extends Fragment
      * @param v       点击的view
      * @param clickID 点击的控件id
      */
-    public void onClick(View v, int clickID)
-    {
+    public void onClick(View v, int clickID) {
     }
 
     /**
      * 添加白色任务，（在activity摧毁的时候此任务不会被移除请求）
      */
-    protected void addWhiteTask(Tasks tasks)
-    {
+    protected void addWhiteTask(Tasks tasks) {
         whiteRequestList.add(tasks);
     }
 
@@ -219,99 +212,81 @@ public abstract class BaseFragment<T> extends Fragment
      * 默认不适用此方法，在子类里可以重构他
      */
     @Override
-    public View getLayoutView()
-    {
+    public View getLayoutView() {
         return null;
     }
     //=====================setContentView 前回调
 
     @Override
-    public void befordCreateView(@NonNull Bundle savedInstanceState)
-    {
+    public void befordCreateView(@NonNull Bundle savedInstanceState) {
     }
 
     //=================创建后回调
     @Override
-    public void initView(@NonNull View view, @NonNull Bundle savedInstanceState)
-    {
+    public void initView(@NonNull View view, @NonNull Bundle savedInstanceState) {
     }
 
     @Override
-    public void initObject(@NonNull Bundle savedInstanceState)
-    {
+    public void initObject(@NonNull Bundle savedInstanceState) {
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState)
-    {
+    public void initData(@NonNull Bundle savedInstanceState) {
     }
 
     @Override
-    public void initListener()
-    {
+    public void initListener() {
     }
 
     /**
      * 得到本类名
      */
-    protected String getMTag()
-    {
+    protected String getMTag() {
         return getResources().getString(R.string.app_debug_flag) + "#" + getClass().getSimpleName();
     }
 
     //============================================网络回调
     @Override
-    public void onResponseSuccess(Tasks task, BaseResponse response)
-    {
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
     }
 
     @Override
-    public void onResponseError(Tasks task, Exception e)
-    {
+    public void onResponseError(Tasks task, Exception e) {
         ToastUtil.toast(getContext(), e.getMessage());
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response)
-    {
+    public void onResponseCodeError(Tasks task, BaseResponse response) {
     }
 
     @Override
-    public void onResponseStart(Tasks task)
-    {
+    public void onResponseStart(Tasks task) {
         //添加任务队列
-        if (task != null && requestList != null)
-        {
+        if (task != null && requestList != null) {
             requestList.add(task);
         }
     }
 
     @Override
-    public void onResponseEnd(Tasks task)
-    {
+    public void onResponseEnd(Tasks task) {
         //移除任务队列
-        if (task != null && requestList != null)
-        {
+        if (task != null && requestList != null) {
             requestList.remove(task);
         }
     }
 
     @Override
-    public void onResponseLoading(Tasks task, boolean isUpload, long total, long current)
-    {
+    public void onResponseLoading(Tasks task, boolean isUpload, long total, long current) {
     }
 
     @Override
-    public void onResponseFile(Tasks task, File file)
-    {
+    public void onResponseFile(Tasks task, File file) {
     }
 
     @Override
-    public void onResponseCancel(Tasks task)
-    {
+    public void onResponseCancel(Tasks task) {
         //移除任务队列
-        if (task != null && requestList != null)
-        {
+        if (task != null && requestList != null) {
             requestList.remove(task);
         }
     }
@@ -320,24 +295,17 @@ public abstract class BaseFragment<T> extends Fragment
      * 把json转换成基础响应对象列表类
      */
     public final BaseResponse praseBaseResponseList(JSONObject jsonObject,
-            Class<T> classOfT) throws JSONException
-    {
+                                                    Class<T> classOfT) throws JSONException {
         BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(EntityCode))
-                                                      .setMsg(jsonObject.optString(EntityMsg));
+                .setMsg(jsonObject.optString(EntityMsg));
         List<T> list = new ArrayList<>();
-        if (jsonObject.opt(EntityData) != null)
-        {
+        if (jsonObject.opt(EntityData) != null) {
             JSONArray jsonArray = jsonObject.optJSONArray(EntityData);
-            if (jsonArray != null)
-            {
-                for (int i = 0; i < jsonArray.length(); i++)
-                {
-                    try
-                    {
+            if (jsonArray != null) {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    try {
                         list.add(JSON.parseObject(jsonArray.get(i).toString(), classOfT));
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                     }
                 }
             }
@@ -353,32 +321,23 @@ public abstract class BaseFragment<T> extends Fragment
      * @param classOfT   待转换的实体类,为空则data为空
      */
     public final BaseResponse praseBaseResponse(JSONObject jsonObject, Class<T> classOfT)
-            throws JSONException
-    {
+            throws JSONException {
         Object data = null;
-        if (classOfT != null)
-        {
-            if (classOfT == String.class)
-            {
+        if (classOfT != null) {
+            if (classOfT == String.class) {
                 data = jsonObject.optString(EntityData);
-            }
-            else
-            {
-                if (jsonObject.opt(EntityData) != null)
-                {
-                    try
-                    {
+            } else {
+                if (jsonObject.opt(EntityData) != null) {
+                    try {
                         data = JSON.parseObject(jsonObject.optString(EntityData), classOfT);
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                     }
                 }
             }
         }
         BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(EntityCode))
-                                                      .setMsg(jsonObject.optString(EntityMsg))
-                                                      .setData(data);
+                .setMsg(jsonObject.optString(EntityMsg))
+                .setData(data);
         return baseResponse;
     }
 

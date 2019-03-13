@@ -10,6 +10,8 @@ import com.fanneng.android.web.file.FileReaderView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import custom.frame.ui.activity.BaseActivity;
 
 /**
@@ -17,37 +19,26 @@ import custom.frame.ui.activity.BaseActivity;
  *
  * @author dundun 2019年3月5日17:33:04
  */
-public class FileDisplayActivity extends BaseActivity
-{
-    private TextView tvTitle;
-    private FileReaderView mDocumentReaderView;
+public class FileDisplayActivity extends BaseActivity {
+    @BindView(R.id.public_title_bar_title)
+    TextView tvTitle;
+    @BindView(R.id.documentReaderView)
+    FileReaderView mDocumentReaderView;
 
     @Override
-    protected boolean isInitBackBtn()
-    {
+    protected boolean isInitBackBtn() {
         return true;
     }
 
     @Override
-    public int getLayoutID()
-    {
+    public int getLayoutID() {
         return R.layout.act_file_display;
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState)
-    {
-        super.initView(savedInstanceState);
-        tvTitle = findViewById(R.id.public_title_bar_title);
-        mDocumentReaderView = findViewById(R.id.documentReaderView);
-    }
-
-    @Override
-    public void initData(@NonNull Bundle savedInstanceState)
-    {
+    public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        if (getIntent() != null)
-        {
+        if (getIntent() != null) {
             tvTitle.setText(getIntent().getStringExtra(CommonData.KEY_PUBLIC_STRING));
             String url = getIntent().getStringExtra(CommonData.KEY_PUBLIC);
             mDocumentReaderView.show(url);
@@ -55,17 +46,14 @@ public class FileDisplayActivity extends BaseActivity
     }
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         super.onDestroy();
-        if (mDocumentReaderView != null)
-        {
+        if (mDocumentReaderView != null) {
             mDocumentReaderView.stop();
         }
     }
 
-    public static void show(Context context, String url, String fileName)
-    {
+    public static void show(Context context, String url, String fileName) {
         Intent intent = new Intent(context, FileDisplayActivity.class);
         intent.putExtra(CommonData.KEY_PUBLIC, url);
         intent.putExtra(CommonData.KEY_PUBLIC_STRING, fileName);

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -25,6 +26,8 @@ import org.litepal.crud.DataSupport;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CooperateDocBean;
 import custom.frame.http.Tasks;
@@ -38,19 +41,30 @@ import de.hdodenhof.circleimageview.CircleImageView;
  *
  * @author DUNDUN
  */
-public class UserInfoActivity extends BaseActivity
-{
-    private CircleImageView ivHeadImg, imgAuth;
-    private ImageView ivTitleMore;
-    private TextView tvName, tvType, tvTitle, tvIntroduce, tvHospital;
-    private TextView tvChat;
+public class UserInfoActivity extends BaseActivity {
+    @BindView(R.id.act_user_info_more)
+    ImageView ivTitleMore;
+    @BindView(R.id.act_user_info_headimg)
+    CircleImageView ivHeadImg;
+    @BindView(R.id.act_user_info_auth)
+    CircleImageView imgAuth;
+    @BindView(R.id.act_user_info_name)
+    TextView tvName;
+    @BindView(R.id.act_user_info_title)
+    TextView tvTitle;
+    @BindView(R.id.act_user_info_hospital)
+    TextView tvHospital;
+    @BindView(R.id.act_user_info_type)
+    TextView tvType;
+    @BindView(R.id.act_user_info_introduce)
+    TextView tvIntroduce;
+    @BindView(R.id.act_user_info_hospital_layout)
+    LinearLayout llHospitalLayout;
+    @BindView(R.id.act_user_info_chat)
+    TextView tvChat;
     private View view_pop;
     private PopupWindow mPopupwinow;
     private TextView tvOne, tvTwo;
-    /**
-     * 2018年10月9日10:59:42
-     */
-    private LinearLayout llCoopHopitalLayout, llHospitalLayout;
     private CooperateDocBean cooperateDocBean;
     private String doctorId;
     private String headImgUrl;
@@ -68,79 +82,52 @@ public class UserInfoActivity extends BaseActivity
     private static final int MODIFY_NICKNAME = 100;
 
     @Override
-    public int getLayoutID()
-    {
+    public int getLayoutID() {
         return R.layout.act_user_info;
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState)
-    {
+    public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ivHeadImg = (CircleImageView)findViewById(R.id.act_user_info_headimg);
-        imgAuth = (CircleImageView)findViewById(R.id.act_user_info_auth);
         findViewById(R.id.public_title_bar_back).setOnClickListener(this);
-        ivTitleMore = (ImageView)findViewById(R.id.act_user_info_more);
-        ivTitleMore.setOnClickListener(this);
-        tvChat = (TextView)findViewById(R.id.act_user_info_chat);
-        tvName = (TextView)findViewById(R.id.act_user_info_name);
-        tvHospital = (TextView)findViewById(R.id.act_user_info_hospital);
-        tvTitle = (TextView)findViewById(R.id.act_user_info_title);
-        tvType = (TextView)findViewById(R.id.act_user_info_type);
-        tvIntroduce = (TextView)findViewById(R.id.act_user_info_introduce);
-        llCoopHopitalLayout = (LinearLayout)findViewById(R.id.act_user_info_coop_hospital_layout);
-        llHospitalLayout = (LinearLayout)findViewById(R.id.act_user_info_hospital_layout);
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState)
-    {
-        if (getIntent() != null)
-        {
-            cooperateDocBean = (CooperateDocBean)getIntent().getSerializableExtra(
+    public void initData(@NonNull Bundle savedInstanceState) {
+        if (getIntent() != null) {
+            cooperateDocBean = (CooperateDocBean) getIntent().getSerializableExtra(
                     CommonData.KEY_DOCTOR_BEAN);
             doctorId = getIntent().getStringExtra(CommonData.KEY_DOCTOR_ID);
             isDealDoc = getIntent().getBooleanExtra(CommonData.KEY_IS_DEAL_DOC, false);
             isForbidChat = getIntent().getBooleanExtra(CommonData.KEY_IS_FORBID_CHAT, false);
         }
-        if (isDealDoc)
-        {
+        if (isDealDoc) {
             ivTitleMore.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             ivTitleMore.setVisibility(View.GONE);
         }
-        if (isForbidChat)
-        {
+        if (isForbidChat) {
             tvChat.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
             tvChat.setVisibility(View.VISIBLE);
         }
-        if (!TextUtils.isEmpty(doctorId))
-        {
+        if (!TextUtils.isEmpty(doctorId)) {
             List<CooperateDocBean> list = DataSupport.where("doctorId = ?", doctorId)
-                                                     .find(CooperateDocBean.class);
-            if (list != null && list.size() > 0)
-            {
+                    .find(CooperateDocBean.class);
+            if (list != null && list.size() > 0) {
                 cooperateDocBean = list.get(0);
             }
         }
-        if (cooperateDocBean == null)
-        {
+        if (cooperateDocBean == null) {
             getDocInfo();
-        }
-        else
-        {
+        } else {
             initPageData();
         }
     }
 
     @Override
-    public void initListener()
-    {
+    public void initListener() {
+        ivTitleMore.setOnClickListener(this);
         tvChat.setOnClickListener(this);
         llHospitalLayout.setOnClickListener(this);
     }
@@ -148,31 +135,22 @@ public class UserInfoActivity extends BaseActivity
     /**
      * 初始化界面数据
      */
-    private void initPageData()
-    {
-        if (cooperateDocBean != null)
-        {
+    private void initPageData() {
+        if (cooperateDocBean != null) {
             headImgUrl = cooperateDocBean.getPortraitUrl();
-            if (!TextUtils.isEmpty(headImgUrl))
-            {
+            if (!TextUtils.isEmpty(headImgUrl)) {
                 Glide.with(this).load(headImgUrl).apply(GlideHelper.getOptions()).into(ivHeadImg);
             }
-            if (6 == cooperateDocBean.getChecked())
-            {
+            if (6 == cooperateDocBean.getChecked()) {
                 Glide.with(this).load(R.mipmap.icon_certified).into(imgAuth);
-            }
-            else
-            {
+            } else {
                 Glide.with(this).load(R.mipmap.icon_uncertified).into(imgAuth);
             }
             if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) &&
-                cooperateDocBean.getNickname().length() < 20)
-            {
+                    cooperateDocBean.getNickname().length() < 20) {
                 tvName.setText(
                         cooperateDocBean.getNickname() + "(" + cooperateDocBean.getName() + ")");
-            }
-            else
-            {
+            } else {
                 tvName.setText(cooperateDocBean.getName());
             }
             tvHospital.setText(cooperateDocBean.getHospital());
@@ -185,48 +163,40 @@ public class UserInfoActivity extends BaseActivity
     /**
      * 获取个人信息
      */
-    private void getDocInfo()
-    {
+    private void getDocInfo() {
         mIRequest.getDocInfo(cooperateDocBean.getDoctorId(), this);
     }
 
     /**
      * 取消关注 合作医生
      */
-    private void cancelCooperateDoc()
-    {
+    private void cancelCooperateDoc() {
         mIRequest.cancelCooperateDoc(loginSuccessBean.getDoctorId(), cooperateDocBean.getDoctorId(),
-                                     this);
+                this);
     }
 
     @Override
-    public void onClick(View v)
-    {
+    public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.public_title_bar_back:
                 finish();
                 break;
             case R.id.act_user_info_chat:
-                if (cooperateDocBean != null)
-                {
+                if (cooperateDocBean != null) {
                     Intent intent = new Intent(this, ChatActivity.class);
                     intent.putExtra(CommonData.KEY_CHAT_ID, cooperateDocBean.getDoctorId());
                     if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) &&
-                        cooperateDocBean.getNickname().length() < 20)
-                    {
+                            cooperateDocBean.getNickname().length() < 20) {
                         intent.putExtra(CommonData.KEY_CHAT_NAME, cooperateDocBean.getNickname());
                         YihtApplication.getInstance().setEaseName(cooperateDocBean.getNickname());
-                    }
-                    else
-                    {
+                    } else {
                         intent.putExtra(CommonData.KEY_CHAT_NAME, cooperateDocBean.getName());
                         //存储临时数据
                         YihtApplication.getInstance().setEaseName(cooperateDocBean.getName());
                     }
                     YihtApplication.getInstance()
-                                   .setEaseHeadImgUrl(cooperateDocBean.getPortraitUrl());
+                            .setEaseHeadImgUrl(cooperateDocBean.getPortraitUrl());
                     startActivity(intent);
                 }
                 break;
@@ -234,8 +204,7 @@ public class UserInfoActivity extends BaseActivity
                 showPop();
                 break;
             case R.id.txt_one:
-                if (mPopupwinow != null)
-                {
+                if (mPopupwinow != null) {
                     mPopupwinow.dismiss();
                 }
                 Intent intent = new Intent(this, EditRemarkActivity.class);
@@ -245,12 +214,11 @@ public class UserInfoActivity extends BaseActivity
                 startActivityForResult(intent, MODIFY_NICKNAME);
                 break;
             case R.id.txt_two:
-                if (mPopupwinow != null)
-                {
+                if (mPopupwinow != null) {
                     mPopupwinow.dismiss();
                 }
                 new SimpleDialog(this, "确定删除?", (dialog, which) -> cancelCooperateDoc(),
-                                 (dialog, which) -> dialog.dismiss()).show();
+                        (dialog, which) -> dialog.dismiss()).show();
                 break;
             case R.id.act_user_info_hospital_layout:
                 //                startActivity(new Intent(this, HospitalInfoActivity.class));
@@ -261,11 +229,9 @@ public class UserInfoActivity extends BaseActivity
     }
 
     @Override
-    public void onResponseSuccess(Tasks task, BaseResponse response)
-    {
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
         super.onResponseSuccess(task, response);
-        switch (task)
-        {
+        switch (task) {
             case UPLOAD_FILE:
                 ToastUtil.toast(this, response.getMsg());
                 headImgUrl = response.getData();
@@ -285,30 +251,25 @@ public class UserInfoActivity extends BaseActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK)
-        {
+        if (resultCode != RESULT_OK) {
             return;
         }
-        switch (requestCode)
-        {
+        switch (requestCode) {
             case MODIFY_NICKNAME:
-                if (data != null)
-                {
+                if (data != null) {
                     String remark = data.getStringExtra(CommonData.KEY_PUBLIC);
-                    if (!TextUtils.isEmpty(remark))
-                    {
+                    if (!TextUtils.isEmpty(remark)) {
                         tvName.setText(remark + "(" + cooperateDocBean.getName() + ")");
                         cooperateDocBean.setNickname(remark);
-                    }
-                    else
-                    {
+                    } else {
                         tvName.setText(cooperateDocBean.getName());
                         cooperateDocBean.setNickname(remark);
                     }
                 }
+                break;
+            default:
                 break;
         }
     }
@@ -316,25 +277,23 @@ public class UserInfoActivity extends BaseActivity
     /**
      * 显示pop
      */
-    private void showPop()
-    {
+    private void showPop() {
         view_pop = LayoutInflater.from(this).inflate(R.layout.main_pop_menu, null);
-        tvOne = (TextView)view_pop.findViewById(R.id.txt_one);
-        tvTwo = (TextView)view_pop.findViewById(R.id.txt_two);
+        tvOne = (TextView) view_pop.findViewById(R.id.txt_one);
+        tvTwo = (TextView) view_pop.findViewById(R.id.txt_two);
         tvOne.setText("设置备注");
         tvTwo.setText("删除");
         tvOne.setOnClickListener(this);
         tvTwo.setOnClickListener(this);
-        if (mPopupwinow == null)
-        {
+        if (mPopupwinow == null) {
             //新建一个popwindow
             mPopupwinow = new PopupWindow(view_pop, LinearLayout.LayoutParams.WRAP_CONTENT,
-                                          LinearLayout.LayoutParams.WRAP_CONTENT, true);
+                    LinearLayout.LayoutParams.WRAP_CONTENT, true);
         }
         mPopupwinow.setFocusable(true);
         mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mPopupwinow.setOutsideTouchable(true);
         mPopupwinow.showAtLocation(view_pop, Gravity.TOP | Gravity.RIGHT, 0,
-                                   (int)AllUtils.dipToPx(this, 55));
+                (int) AllUtils.dipToPx(this, 55));
     }
 }

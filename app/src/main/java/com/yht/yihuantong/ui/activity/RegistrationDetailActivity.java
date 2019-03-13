@@ -34,6 +34,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.HospitalBean;
 import custom.frame.bean.RegistrationBean;
@@ -45,27 +47,65 @@ import custom.frame.utils.ToastUtil;
 /**
  * Created by dundun on 18/8/10.
  */
-public class RegistrationDetailActivity extends BaseActivity implements OrderStatus
-{
-    private TextView tvTitle, tvNext;
-    private TextView tvGoodsName, tvGoodsPrice, tvGoodsType, tvGoodsInfo;
-    private TextView tvContact, tvContactPhone, tvUseful, tvAttention;
-    private ImageView ivHospitalImg;
-    private TextView tvHospitalName, tvHospitalAddress, tvHospitalGrade;
-    private TextView tvPatientName, tvPatientSex, tvPatientAge, tvDes, tvDoctorName, tvDoctorHospital;
-    private TextView tvReserveTime,tvReserveTimeTitle, tvReserveTips;
-    private LinearLayout llReserveLayout;
-    private RelativeLayout rlHospitalLayout;
+public class RegistrationDetailActivity extends BaseActivity implements OrderStatus {
+    @BindView(R.id.public_title_bar_title)
+    TextView tvTitle;
+    @BindView(R.id.act_service_pack_hint_hospital_img)
+    ImageView ivHospitalImg;
+    @BindView(R.id.act_service_pack_hint_hospital_name)
+    TextView tvHospitalName;
+    @BindView(R.id.act_service_pack_hint_hospital_address)
+    TextView tvHospitalAddress;
+    @BindView(R.id.act_service_pack_hint_hospital_grade)
+    TextView tvHospitalGrade;
+    @BindView(R.id.act_service_pack_hint_hospital_layout)
+    RelativeLayout rlHospitalLayout;
+    @BindView(R.id.act_registration_goods_name)
+    TextView tvGoodsName;
+    @BindView(R.id.act_registration_goods_type)
+    TextView tvGoodsType;
+    @BindView(R.id.act_registration_goods_price)
+    TextView tvGoodsPrice;
+    @BindView(R.id.act_registration_goods_info)
+    TextView tvGoodsInfo;
+    @BindView(R.id.act_registration_detail_patient_name)
+    TextView tvPatientName;
+    @BindView(R.id.act_registration_detail_patient_sex)
+    TextView tvPatientSex;
+    @BindView(R.id.act_registration_detail_patient_age)
+    TextView tvPatientAge;
+    @BindView(R.id.act_registration_detail_des)
+    TextView tvDes;
+    @BindView(R.id.act_registration_detail_doctor_name)
+    TextView tvDoctorName;
+    @BindView(R.id.act_registration_detail_doctor_hospital)
+    TextView tvDoctorHospital;
+    @BindView(R.id.act_service_pack_contact)
+    TextView tvContact;
+    @BindView(R.id.act_service_pack_contact_phone)
+    TextView tvContactPhone;
+    @BindView(R.id.act_service_pack_useful)
+    TextView tvUseful;
+    @BindView(R.id.act_service_pack_attention)
+    TextView tvAttention;
+    @BindView(R.id.act_registration_detail_time_title)
+    TextView tvReserveTimeTitle;
+    @BindView(R.id.act_registration_detail_time)
+    TextView tvReserveTime;
+    @BindView(R.id.act_registration_detail_hint)
+    TextView tvReserveTips;
+    @BindView(R.id.act_registration_detail_time_layout)
+    LinearLayout llReserveLayout;
+    @BindView(R.id.act_registration_next)
+    TextView tvNext;
+
     private RegistrationBean registrationBean;
     private String registrationId;
     private INotifyChangeListenerServer iNotifyChangeListenerServer;
-    private Handler handler = new Handler()
-    {
+    private Handler handler = new Handler() {
         @Override
-        public void handleMessage(Message msg)
-        {
-            switch (msg.what)
-            {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
                 case 0:
                     getDetailById();
                     break;
@@ -77,102 +117,59 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
      */
     private IChange<String> orderStatusChangeListener = data ->
     {
-        try
-        {
+        try {
             registrationId = data;
             handler.sendEmptyMessage(0);
-        }
-        catch (NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             e.printStackTrace();
         }
     };
 
     @Override
-    protected boolean isInitBackBtn()
-    {
+    protected boolean isInitBackBtn() {
         return true;
     }
 
     @Override
-    public int getLayoutID()
-    {
+    public int getLayoutID() {
         return R.layout.act_registration_detail;
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState)
-    {
-        super.initView(savedInstanceState);
-        tvTitle = findViewById(R.id.public_title_bar_title);
-        tvNext = findViewById(R.id.act_registration_next);
-        tvGoodsName = findViewById(R.id.act_registration_goods_name);
-        tvGoodsType = findViewById(R.id.act_registration_goods_type);
-        tvGoodsInfo = findViewById(R.id.act_registration_goods_info);
-        tvGoodsPrice = findViewById(R.id.act_registration_goods_price);
-        tvContact = findViewById(R.id.act_service_pack_contact);
-        tvContactPhone = findViewById(R.id.act_service_pack_contact_phone);
-        tvUseful = findViewById(R.id.act_service_pack_useful);
-        tvAttention = findViewById(R.id.act_service_pack_attention);
-        tvPatientName = findViewById(R.id.act_registration_detail_patient_name);
-        tvPatientAge = findViewById(R.id.act_registration_detail_patient_age);
-        tvPatientSex = findViewById(R.id.act_registration_detail_patient_sex);
-        tvDes = findViewById(R.id.act_registration_detail_des);
-        tvDoctorName = findViewById(R.id.act_registration_detail_doctor_name);
-        tvDoctorHospital = findViewById(R.id.act_registration_detail_doctor_hospital);
-        ivHospitalImg = findViewById(R.id.act_service_pack_hint_hospital_img);
-        tvHospitalName = findViewById(R.id.act_service_pack_hint_hospital_name);
-        tvHospitalAddress = findViewById(R.id.act_service_pack_hint_hospital_address);
-        tvHospitalGrade = findViewById(R.id.act_service_pack_hint_hospital_grade);
-        tvReserveTime = findViewById(R.id.act_registration_detail_time);
-        tvReserveTimeTitle = findViewById(R.id.act_registration_detail_time_title);
-        tvReserveTips = findViewById(R.id.act_registration_detail_hint);
-        rlHospitalLayout = findViewById(R.id.act_service_pack_hint_hospital_layout);
-        llReserveLayout = findViewById(R.id.act_registration_detail_time_layout);
-    }
-
-    @Override
-    public void initData(@NonNull Bundle savedInstanceState)
-    {
-        if (getIntent() != null)
-        {
-            registrationBean = (RegistrationBean)getIntent().getSerializableExtra(
+    public void initData(@NonNull Bundle savedInstanceState) {
+        if (getIntent() != null) {
+            registrationBean = (RegistrationBean) getIntent().getSerializableExtra(
                     CommonData.KEY_REGISTRATION_BEAN);
             registrationId = getIntent().getStringExtra(CommonData.KEY_REGISTRATION_ID);
         }
         tvTitle.setText("订单详情");
         iNotifyChangeListenerServer = ApiManager.getInstance()
-                                                .getServer(INotifyChangeListenerServer.class);
-        if (registrationBean == null)
-        {
+                .getServer(INotifyChangeListenerServer.class);
+        if (registrationBean == null) {
             getDetailById();
-        }
-        else
-        {
+        } else {
             initPageData();
         }
     }
 
     @Override
-    public void initListener()
-    {
+    public void initListener() {
         rlHospitalLayout.setOnClickListener(this);
         tvNext.setOnClickListener(this);
         //注册订单状态监听
         iNotifyChangeListenerServer.registerOrderStatusChangeListener(orderStatusChangeListener,
-                                                                          RegisterType.REGISTER);
+                RegisterType.REGISTER);
     }
 
-    private void initPageData()
-    {
+    private void initPageData() {
         //医院信息
         tvHospitalName.setText(registrationBean.getHospitalName());
         tvHospitalAddress.setText(registrationBean.getCityName());
         tvHospitalGrade.setText(registrationBean.getHospitalLevel());
         Glide.with(this)
-             .load(registrationBean.getHospitalLogo())
-             .apply(GlideHelper.getOptionsHospitalPic())
-             .into(ivHospitalImg);
+                .load(registrationBean.getHospitalLogo())
+                .apply(GlideHelper.getOptionsHospitalPic())
+                .into(ivHospitalImg);
         //商品信息
         tvGoodsName.setText(registrationBean.getProductName());
         tvGoodsType.setText(registrationBean.getProductTypeName());
@@ -193,19 +190,15 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
         tvUseful.setText(registrationBean.getProductAccessChannel());
         tvAttention.setText(registrationBean.getProductOtherInfo());
         //预约信息
-        if (TextUtils.isEmpty(registrationBean.getHospitalReserveTips()))
-        {
+        if (TextUtils.isEmpty(registrationBean.getHospitalReserveTips())) {
             llReserveLayout.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
             llReserveLayout.setVisibility(View.VISIBLE);
             tvReserveTime.setText(AllUtils.formatDate(registrationBean.getHospitalReserveTime(),
-                                                      AllUtils.YYYY_MM_DD_HH_MM));
+                    AllUtils.YYYY_MM_DD_HH_MM));
             tvReserveTips.setText(registrationBean.getHospitalReserveTips());
         }
-        switch (registrationBean.getOrderState())
-        {
+        switch (registrationBean.getOrderState()) {
             case STATUS_SUBSCRIBE_NONE:
                 break;
             case STATUS_SUBSCRIBE:
@@ -226,8 +219,7 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
     /**
      * 获取病例详情
      */
-    private void getDetailById()
-    {
+    private void getDetailById() {
         RequestQueue queue = NoHttp.getRequestQueueInstance();
         final Request<String> request = NoHttp.createStringRequest(
                 HttpConstants.BASE_BASIC_URL + "/order/single", RequestMethod.POST);
@@ -235,57 +227,44 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
         params.put("fieldId", registrationId);
         JSONObject jsonObject = new JSONObject(params);
         request.setDefineRequestBodyForJson(jsonObject.toString());
-        queue.add(1, request, new OnResponseListener<String>()
-        {
+        queue.add(1, request, new OnResponseListener<String>() {
             @Override
-            public void onStart(int what)
-            {
+            public void onStart(int what) {
             }
 
             @Override
-            public void onSucceed(int what, Response<String> response)
-            {
+            public void onSucceed(int what, Response<String> response) {
                 String s = response.get();
-                try
-                {
+                try {
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponse(object, RegistrationBean.class);
-                    if (baseResponse != null && baseResponse.getCode() == 200)
-                    {
+                    if (baseResponse != null && baseResponse.getCode() == 200) {
                         registrationBean = baseResponse.getData();
                         initPageData();
-                    }
-                    else
-                    {
+                    } else {
                         ToastUtil.toast(RegistrationDetailActivity.this, baseResponse.getMsg());
                     }
-                }
-                catch (JSONException e)
-                {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
 
             @Override
-            public void onFailed(int what, Response<String> response)
-            {
+            public void onFailed(int what, Response<String> response) {
                 ToastUtil.toast(RegistrationDetailActivity.this,
-                                response.getException().getMessage());
+                        response.getException().getMessage());
             }
 
             @Override
-            public void onFinish(int what)
-            {
+            public void onFinish(int what) {
             }
         });
     }
 
     @Override
-    public void onClick(View v)
-    {
+    public void onClick(View v) {
         Intent intent;
-        switch (v.getId())
-        {
+        switch (v.getId()) {
             case R.id.act_service_pack_hint_hospital_layout:
                 HospitalBean hospitalBean = new HospitalBean();
                 hospitalBean.setHospitalName(registrationBean.getHospitalName());
@@ -307,11 +286,11 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
     }
 
     @Override
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         super.onDestroy();
         //注销订单状态监听
         iNotifyChangeListenerServer.registerOrderStatusChangeListener(orderStatusChangeListener,
-                                                                          RegisterType.UNREGISTER);
+                RegisterType.UNREGISTER);
     }
+
 }

@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.ToastUtil;
 
@@ -21,8 +23,10 @@ import custom.frame.utils.ToastUtil;
  * Created by dundun on 18/4/24.
  */
 public class AddCaseInfoActivity extends BaseActivity implements CommonData {
-    private TextView tvTitle;
-    private EditText editText;
+    @BindView(R.id.public_title_bar_title)
+    TextView publicTitleBarTitle;
+    @BindView(R.id.act_add_health_info_edit)
+    EditText actAddHealthInfoEdit;
     private int type = -1;
     private String value;
 
@@ -39,8 +43,6 @@ public class AddCaseInfoActivity extends BaseActivity implements CommonData {
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        tvTitle = findViewById(R.id.public_title_bar_title);
-        editText = findViewById(R.id.act_add_health_info_edit);
         findViewById(R.id.act_add_health_info_sure).setOnClickListener(this);
     }
 
@@ -51,30 +53,30 @@ public class AddCaseInfoActivity extends BaseActivity implements CommonData {
             value = getIntent().getStringExtra(KEY_PUBLIC_STRING);
         }
         if (!TextUtils.isEmpty(value)) {
-            editText.setText(value);
-            editText.setSelection(value.length());
+            actAddHealthInfoEdit.setText(value);
+            actAddHealthInfoEdit.setSelection(value.length());
         }
         switch (type) {
             case CODE_CASE_DIA:
-                tvTitle.setText("诊断");
+                publicTitleBarTitle.setText("诊断");
                 break;
             case CODE_CASE_HOSPITAL:
-                tvTitle.setText("医院");
+                publicTitleBarTitle.setText("医院");
                 break;
             case CODE_CASE_TYPE:
-                tvTitle.setText("科室");
+                publicTitleBarTitle.setText("科室");
                 break;
             case CODE_CASE_INFO:
-                tvTitle.setText("主诉");
+                publicTitleBarTitle.setText("主诉");
                 break;
             case CODE_CASE_NOW:
-                tvTitle.setText("病史");
+                publicTitleBarTitle.setText("病史");
                 break;
             case CODE_CASE_CHECK:
-                tvTitle.setText("体格检查");
+                publicTitleBarTitle.setText("体格检查");
                 break;
             case CODE_CASE_DEAL_WAY:
-                tvTitle.setText("治疗");
+                publicTitleBarTitle.setText("治疗");
                 break;
             default:
                 break;
@@ -83,7 +85,7 @@ public class AddCaseInfoActivity extends BaseActivity implements CommonData {
 
     @Override
     public void initListener() {
-        editText.setOnEditorActionListener(
+        actAddHealthInfoEdit.setOnEditorActionListener(
                 (v, actionId, event) -> (event.getKeyCode() == KeyEvent.KEYCODE_ENTER));
         backBtn.setOnClickListener(v ->
         {
@@ -97,7 +99,7 @@ public class AddCaseInfoActivity extends BaseActivity implements CommonData {
         switch (v.getId()) {
             case R.id.act_add_health_info_sure:
                 hideSoftInputFromWindow();
-                String value = editText.getText().toString().trim();
+                String value = actAddHealthInfoEdit.getText().toString().trim();
                 if (TextUtils.isEmpty(value)) {
                     ToastUtil.toast(this, "内容不能为空哦");
                 }
@@ -118,7 +120,7 @@ public class AddCaseInfoActivity extends BaseActivity implements CommonData {
         try {
             InputMethodManager inputmanger = (InputMethodManager) getSystemService(
                     Context.INPUT_METHOD_SERVICE);
-            inputmanger.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+            inputmanger.hideSoftInputFromWindow(actAddHealthInfoEdit.getWindowToken(), 0);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
