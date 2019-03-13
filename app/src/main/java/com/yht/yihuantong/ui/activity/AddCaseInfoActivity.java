@@ -20,49 +20,41 @@ import custom.frame.utils.ToastUtil;
 /**
  * Created by dundun on 18/4/24.
  */
-public class AddCaseInfoActivity extends BaseActivity implements CommonData
-{
+public class AddCaseInfoActivity extends BaseActivity implements CommonData {
     private TextView tvTitle;
     private EditText editText;
     private int type = -1;
     private String value;
 
     @Override
-    public int getLayoutID()
-    {
+    public int getLayoutID() {
         return R.layout.act_add_case_info;
     }
 
     @Override
-    protected boolean isInitBackBtn()
-    {
+    protected boolean isInitBackBtn() {
         return true;
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState)
-    {
+    public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        tvTitle = (TextView)findViewById(R.id.public_title_bar_title);
-        editText = (EditText)findViewById(R.id.act_add_health_info_edit);
+        tvTitle = findViewById(R.id.public_title_bar_title);
+        editText = findViewById(R.id.act_add_health_info_edit);
         findViewById(R.id.act_add_health_info_sure).setOnClickListener(this);
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState)
-    {
-        if (getIntent() != null)
-        {
+    public void initData(@NonNull Bundle savedInstanceState) {
+        if (getIntent() != null) {
             type = getIntent().getIntExtra(CommonData.KEY_PUBLIC, -1);
             value = getIntent().getStringExtra(KEY_PUBLIC_STRING);
         }
-        if (!TextUtils.isEmpty(value))
-        {
+        if (!TextUtils.isEmpty(value)) {
             editText.setText(value);
             editText.setSelection(value.length());
         }
-        switch (type)
-        {
+        switch (type) {
             case CODE_CASE_DIA:
                 tvTitle.setText("诊断");
                 break;
@@ -84,31 +76,29 @@ public class AddCaseInfoActivity extends BaseActivity implements CommonData
             case CODE_CASE_DEAL_WAY:
                 tvTitle.setText("治疗");
                 break;
+            default:
+                break;
         }
     }
 
     @Override
-    public void initListener()
-    {
+    public void initListener() {
         editText.setOnEditorActionListener(
                 (v, actionId, event) -> (event.getKeyCode() == KeyEvent.KEYCODE_ENTER));
         backBtn.setOnClickListener(v ->
-                                   {
-                                       hideSoftInputFromWindow();
-                                       finish();
-                                   });
+        {
+            hideSoftInputFromWindow();
+            finish();
+        });
     }
 
     @Override
-    public void onClick(View v)
-    {
-        switch (v.getId())
-        {
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.act_add_health_info_sure:
                 hideSoftInputFromWindow();
                 String value = editText.getText().toString().trim();
-                if (TextUtils.isEmpty(value))
-                {
+                if (TextUtils.isEmpty(value)) {
                     ToastUtil.toast(this, "内容不能为空哦");
                 }
                 Intent intent = new Intent(this, HealthDetailActivity.class);
@@ -116,16 +106,21 @@ public class AddCaseInfoActivity extends BaseActivity implements CommonData
                 setResult(RESULT_OK, intent);
                 finish();
                 break;
+            default:
+                break;
         }
     }
 
     /**
      * 隐藏软键盘
      */
-    private void hideSoftInputFromWindow()
-    {
-        InputMethodManager inputmanger = (InputMethodManager)getSystemService(
-                Context.INPUT_METHOD_SERVICE);
-        inputmanger.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+    private void hideSoftInputFromWindow() {
+        try {
+            InputMethodManager inputmanger = (InputMethodManager) getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            inputmanger.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 }
