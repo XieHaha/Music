@@ -51,20 +51,20 @@ public abstract class BaseFragment<T> extends Fragment
     /**
      * 登录数据
      */
-    public LoginSuccessBean loginSuccessBean;
+    protected LoginSuccessBean loginSuccessBean;
     /**
      * 数据存储
      */
-    public SharePreferenceUtil sharePreferenceUtil;
+    protected SharePreferenceUtil sharePreferenceUtil;
     /**
      * 网络请求单例
      */
-    public IRequest mIRequest = null;
+    protected IRequest mIRequest = null;
 
     /**
      * 注解
      */
-    Unbinder unbinder;
+    protected Unbinder unbinder;
 
     @Override
     public final void onCreate(Bundle savedInstanceState) {
@@ -344,7 +344,7 @@ public abstract class BaseFragment<T> extends Fragment
     }
 
     //=============================================请求辅助方法==============================
-    public String EntityData = "data";
-    public String EntityCode = "code";
-    public String EntityMsg = "msg";
+    protected static final String EntityData = "data";
+    protected static final String EntityCode = "code";
+    protected static final String EntityMsg = "msg";
 }

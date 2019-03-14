@@ -49,7 +49,7 @@ public class YihtApplication extends LitePalApplication
     /**
      * 网络请求单例
      */
-    public IRequest mIRequest = null;
+    private IRequest mIRequest = null;
     /**
      * 临时数据  头像url
      */

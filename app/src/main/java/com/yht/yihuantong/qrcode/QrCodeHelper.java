@@ -18,7 +18,6 @@ import java.util.Map;
  * @author DUNDUN
  */
 public class QrCodeHelper {
-
     /**
      * 生成二维码Bitmap
      *

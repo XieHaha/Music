@@ -33,8 +33,8 @@ public class HxHelper {
      */
     public static final String MSG_EXT_AVATAR = "hx_avatar";
     private static HxHelper instance;
-    public Application app;
-    public Opts mOpts;
+    private Application app;
+    private Opts mOpts;
     private IRequest iRequest;
     /**
      * 所有的会话集合

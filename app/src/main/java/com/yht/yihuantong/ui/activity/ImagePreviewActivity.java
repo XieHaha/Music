@@ -77,7 +77,7 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
     private final int LOAD_CANCEL = 300;
 
 
-    public Handler mHandler = new Handler() {
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -98,9 +98,11 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
         }
     };
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);//状态栏透明
+        //状态栏透明
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_image_view);
 
         Intent intent = getIntent();
@@ -114,7 +116,8 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
         //图片游标
         indicator = (NavigaterPageIndex) findViewById(R.id.act_image_view_page_indicator);
         indicator.initPageIndex(urls.size());
-        if (urls.size() == 1) {//当只有一张图，不显示图片游标
+        //当只有一张图，不显示图片游标
+        if (urls.size() == 1) {
             indicator.setVisibility(View.GONE);
         }
 
@@ -126,17 +129,15 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
         imgViewPager.setCurrentItem(currentIndex);
 
         btnSaveImage.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 String imageUri = urls.get(currentIndex).getBigImageUrl();
                 String fileName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-                if (CacheUtils.getInstance(getBaseContext()).saveImageFileToDisk(imageUri))
-                {
+                if (CacheUtils.getInstance(getBaseContext()).saveImageFileToDisk(imageUri)) {
                     Toast.makeText(ImagePreviewActivity.this, "图片 " + fileName + " 已保存到 " +
-                                                              PreviewOptions.ImageDownloadOptions.IMAGE_SAVE_REL_DIR,
-                                   Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
+                                    PreviewOptions.ImageDownloadOptions.IMAGE_SAVE_REL_DIR,
+                            Toast.LENGTH_SHORT).show();
+                } else {
                     downloadImg(imageUri, fileName);
                 }
             }
@@ -155,47 +156,40 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
      * @param imageUri
      * @param fileName
      */
-    private void downloadImg(String imageUri, String fileName)
-    {
+    private void downloadImg(String imageUri, String fileName) {
         FileTransferServer.getInstance(ImagePreviewActivity.this)
-                          .downloadFile(imageUri, DirHelper.getPathImage(), fileName,
-                                        new DownloadListener()
-                                        {
-                                            @Override
-                                            public void onDownloadError(int what,
-                                                    Exception exception)
-                                            {
-                                                Toast.makeText(ImagePreviewActivity.this, "保存失败",
-                                                               Toast.LENGTH_SHORT).show();
-                                            }
+                .downloadFile(imageUri, DirHelper.getPathImage(), fileName,
+                        new DownloadListener() {
+                            @Override
+                            public void onDownloadError(int what,
+                                                        Exception exception) {
+                                Toast.makeText(ImagePreviewActivity.this, "保存失败",
+                                        Toast.LENGTH_SHORT).show();
+                            }
 
-                                            @Override
-                                            public void onStart(int what, boolean isResume,
-                                                    long rangeSize, Headers responseHeaders,
-                                                    long allCount)
-                                            {
-                                            }
+                            @Override
+                            public void onStart(int what, boolean isResume,
+                                                long rangeSize, Headers responseHeaders,
+                                                long allCount) {
+                            }
 
-                                            @Override
-                                            public void onProgress(int what, int progress,
-                                                    long fileCount, long speed)
-                                            {
-                                            }
+                            @Override
+                            public void onProgress(int what, int progress,
+                                                   long fileCount, long speed) {
+                            }
 
-                                            @Override
-                                            public void onFinish(int what, String filePath)
-                                            {
-                                                Toast.makeText(ImagePreviewActivity.this,
-                                                               "图片 " + fileName + " 已保存到 " +
-                                                               PreviewOptions.ImageDownloadOptions.IMAGE_SAVE_REL_DIR,
-                                                               Toast.LENGTH_SHORT).show();
-                                            }
+                            @Override
+                            public void onFinish(int what, String filePath) {
+                                Toast.makeText(ImagePreviewActivity.this,
+                                        "图片 " + fileName + " 已保存到 " +
+                                                PreviewOptions.ImageDownloadOptions.IMAGE_SAVE_REL_DIR,
+                                        Toast.LENGTH_SHORT).show();
+                            }
 
-                                            @Override
-                                            public void onCancel(int what)
-                                            {
-                                            }
-                                        });
+                            @Override
+                            public void onCancel(int what) {
+                            }
+                        });
     }
 
     @Override

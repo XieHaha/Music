@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.yht.yihuantong.tools.FileTransferServer;
+import com.yht.yihuantong.utils.LogUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import custom.frame.utils.DirHelper;
  */
 public class VersionModel implements ResponseListener<BaseResponse>, VersionModelListener
 {
+    private static final String TAG = "VersionModel";
     private Context context;
     private IRequest request;
     private NewestVersionCallBack callBack;
@@ -46,7 +48,10 @@ public class VersionModel implements ResponseListener<BaseResponse>, VersionMode
         File file = new File(DirHelper.getPathFile() + "/YHT.apk");
         if (file.exists())
         {
-            file.delete();
+            if(!file.delete())
+            {
+                LogUtils.e(TAG,"delete error");
+            }
         }
     }
 
@@ -58,7 +63,10 @@ public class VersionModel implements ResponseListener<BaseResponse>, VersionMode
         File file = new File(DirHelper.getPathFile() + "/YHT.apk");
         if (file.exists())
         {
-            file.delete();
+            if(!file.delete())
+            {
+                LogUtils.e(TAG,"delete error");
+            }
         }
 //        url = "http://gdown.baidu.com/data/wisegame/89eb17d6287ae627/weixin_1300.apk";
         FileTransferServer.getInstance(context)

@@ -10,7 +10,7 @@ import custom.frame.http.data.HttpConstants;
  */
 public class HttpProxy implements HttpConstants, BaseNetCode
 {
-    public Context context;
+    private Context context;
 
     public HttpProxy(Context context)
     {

@@ -52,8 +52,8 @@ public abstract class BaseActivity<T> extends AppCompatActivity
     /**
      * 登录数据
      */
-    public LoginSuccessBean loginSuccessBean;
-    public SharePreferenceUtil sharePreferenceUtil;
+    protected LoginSuccessBean loginSuccessBean;
+    protected SharePreferenceUtil sharePreferenceUtil;
     /**
      * 权限管理类
      */
@@ -73,11 +73,11 @@ public abstract class BaseActivity<T> extends AppCompatActivity
     /**
      * 网络请求单例
      */
-    public IRequest mIRequest = null;
+    protected IRequest mIRequest = null;
     /**
      * 返回按钮对象
      */
-    public ImageView backBtn;
+    protected ImageView backBtn;
 
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
@@ -480,9 +480,9 @@ public abstract class BaseActivity<T> extends AppCompatActivity
     }
 
     //=============================================请求辅助方法==============================
-    public String EntityData = "data";
-    public String EntityCode = "code";
-    public String EntityMsg = "msg";
+    protected static final String EntityData = "data";
+    protected static final String EntityCode = "code";
+    protected static final String EntityMsg = "msg";
 
 
     //    --------------------------------权限申请--------------------------//

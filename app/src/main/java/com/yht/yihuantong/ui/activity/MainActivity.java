@@ -108,16 +108,16 @@ public class MainActivity extends BaseActivity
     /**
      * message 操作弹框view
      */
-    public View messagePop;
+    private View messagePop;
     private TextView tvDelete;
     /**
      * message 操作弹框
      */
-    public PopupWindow popupWindow;
+    private PopupWindow popupWindow;
     /**
      * 弹窗具体坐标
      */
-    public int[] location = new int[2];
+    private int[] location = new int[2];
     /**
      * 屏幕高度
      */

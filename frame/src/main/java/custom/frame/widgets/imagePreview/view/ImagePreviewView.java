@@ -99,16 +99,22 @@ public class ImagePreviewView extends ImageView {
     //
     private Handler mHandler;
     private DisplayImageOptions options;
-    //是否退出加载
+    /**
+     * 是否退出加载
+     */
     private static boolean isBreak = false;
-    //是否打开绘制加载动画 true 打开， false 关闭，并且使用默认动画
+    /**
+     * 是否打开绘制加载动画 true 打开， false 关闭，并且使用默认动画
+     */
     boolean isOpenLoadingAnimation = true;
     //------------  加载动画相关 END  ------------//
 
     //
     //-------------  图片加载缓存 BEGIN -------------//
     //
-    // -1 不请求； 0 只请求大图，缓存大图； 1 请求大图，缓存大图小图； 2 请求大小图，缓存大小图
+    /**
+     * -1 不请求； 0 只请求大图，缓存大图； 1 请求大图，缓存大图小图； 2 请求大小图，缓存大小图
+     */
     private int LOAD_STATE = -1;
     //-------------  图片加载缓存 ENG -------------//
 

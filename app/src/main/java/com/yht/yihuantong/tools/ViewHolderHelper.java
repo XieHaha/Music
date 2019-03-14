@@ -26,7 +26,7 @@ public class ViewHolderHelper
 {
     private final SparseArray<View> views;
     private final Context context;
-    public int position;
+    private int position;
     View convertView;
 
     public ViewHolderHelper(Context context, ViewGroup parent, View convertView, int position)

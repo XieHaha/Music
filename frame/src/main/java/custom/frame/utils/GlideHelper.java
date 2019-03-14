@@ -12,56 +12,45 @@ public final class GlideHelper {
     /**
      * 医生
      */
-    public static RequestOptions options;
+    public static final RequestOptions options = new RequestOptions();
     /**
      * 患者
      */
-    public static RequestOptions optionsP;
+    public static final RequestOptions optionsP = new RequestOptions();
     /**
      * 图片
      */
-    public static RequestOptions optionsPic;
+    public static final RequestOptions optionsPic = new RequestOptions();
     /**
      * 图片
      */
-    public static RequestOptions optionsHospitalPic;
+    public static final RequestOptions optionsHospitalPic = new RequestOptions();
 
     public static RequestOptions getOptions() {
-        if (options == null) {
-            options = new RequestOptions().centerCrop()
-                    .placeholder(R.mipmap.icon_default_imgs)
-                    .error(R.mipmap.icon_default_imgs)
-                    .priority(Priority.NORMAL);
-        }
-        return options;
+
+        return options.centerCrop()
+                .placeholder(R.mipmap.icon_default_imgs)
+                .error(R.mipmap.icon_default_imgs)
+                .priority(Priority.NORMAL);
     }
 
     public static RequestOptions getOptionsP() {
-        if (optionsP == null) {
-            optionsP = new RequestOptions().centerCrop()
-                    .placeholder(R.mipmap.icon_patient_default_imgs)
-                    .error(R.mipmap.icon_patient_default_imgs)
-                    .priority(Priority.NORMAL);
-        }
-        return optionsP;
+        return optionsP.centerCrop()
+                .placeholder(R.mipmap.icon_patient_default_imgs)
+                .error(R.mipmap.icon_patient_default_imgs)
+                .priority(Priority.NORMAL);
     }
 
     public static RequestOptions getOptionsPic() {
-        if (optionsPic == null) {
-            optionsPic = new RequestOptions().placeholder(R.mipmap.icon_loading_img)
-                    .error(R.mipmap.icon_load_faild_img)
-                    .priority(Priority.NORMAL);
-        }
-        return optionsPic;
+        return optionsPic.placeholder(R.mipmap.icon_loading_img)
+                .error(R.mipmap.icon_load_faild_img)
+                .priority(Priority.NORMAL);
     }
 
     public static RequestOptions getOptionsHospitalPic() {
-        if (optionsHospitalPic == null) {
-            optionsHospitalPic = new RequestOptions().centerCrop()
-                    .placeholder(R.mipmap.icon_hospital_default)
-                    .error(R.mipmap.icon_hospital_default)
-                    .priority(Priority.NORMAL);
-        }
-        return optionsHospitalPic;
+        return optionsHospitalPic.centerCrop()
+                .placeholder(R.mipmap.icon_hospital_default)
+                .error(R.mipmap.icon_hospital_default)
+                .priority(Priority.NORMAL);
     }
 }

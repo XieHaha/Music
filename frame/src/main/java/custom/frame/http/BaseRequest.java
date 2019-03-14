@@ -166,7 +166,7 @@ public class BaseRequest<T> extends HttpProxy {
             default:
                 break;
         }
-        printfRequestLog(task,url.toString());
+        printfRequestLog(task, url.toString());
         objectRequest = new StringRequest(method, url.toString(), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -219,7 +219,7 @@ public class BaseRequest<T> extends HttpProxy {
             }
         };
 
-        System.setProperty("sun.net.http.retryPost","false");
+        System.setProperty("sun.net.http.retryPost", "false");
         /**复写重试方针*/
         objectRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
 
@@ -238,8 +238,8 @@ public class BaseRequest<T> extends HttpProxy {
      * @param listener 请求回调
      */
     public final Tasks requestBaseResponseList(final Method metoh, String moduleName,
-                                           final Tasks task, final Class<T> classOfT, final RequestParams params,
-                                           final ResponseListener<BaseResponse> listener) {
+                                               final Tasks task, final Class<T> classOfT, final RequestParams params,
+                                               final ResponseListener<BaseResponse> listener) {
         StringRequest objectRequest;
         if (listener != null) {
             listener.onResponseStart(task);
@@ -272,7 +272,7 @@ public class BaseRequest<T> extends HttpProxy {
             default:
                 break;
         }
-        printfRequestLog(task,url.toString());
+        printfRequestLog(task, url.toString());
         objectRequest = new StringRequest(method, url.toString(), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -325,7 +325,7 @@ public class BaseRequest<T> extends HttpProxy {
             }
         };
 
-        System.setProperty("sun.net.http.retryPost","false");
+        System.setProperty("sun.net.http.retryPost", "false");
         /**复写重试方针*/
         objectRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
 
@@ -351,9 +351,9 @@ public class BaseRequest<T> extends HttpProxy {
         }
         int method = Request.Method.POST;
         final JSONObject jsonObject = new JSONObject(merchant);
-        Log.i("YHT_D", "Task:" +task+"  params:" + jsonObject.toString());
+        Log.i("YHT_D", "Task:" + task + "  params:" + jsonObject.toString());
         String url = appendUrl(moduleName);
-        printfRequestLog(task,url);
+        printfRequestLog(task, url);
         jsonRequest = new JsonObjectRequest(method, url, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -413,7 +413,7 @@ public class BaseRequest<T> extends HttpProxy {
         };
         /**复写重试方针*/
         jsonRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
-        System.setProperty("sun.net.http.retryPost","false");
+        System.setProperty("sun.net.http.retryPost", "false");
         //设置tag
         jsonRequest.setTag(task);
         //加入请求队列
@@ -436,9 +436,9 @@ public class BaseRequest<T> extends HttpProxy {
         }
         int method = Request.Method.POST;
         final JSONObject jsonObject = new JSONObject(merchant);
-        Log.i("YHT_D", "Task:" +task+"  params:" + jsonObject.toString());
+        Log.i("YHT_D", "Task:" + task + "  params:" + jsonObject.toString());
         String url = appendUrl(moduleName);
-        printfRequestLog(task,url);
+        printfRequestLog(task, url);
         jsonRequest = new JsonObjectRequest(method, url, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -498,7 +498,7 @@ public class BaseRequest<T> extends HttpProxy {
             }
         };
 
-        System.setProperty("sun.net.http.retryPost","false");
+        System.setProperty("sun.net.http.retryPost", "false");
         /**复写重试方针*/
         jsonRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
         //设置tag
@@ -510,6 +510,7 @@ public class BaseRequest<T> extends HttpProxy {
 
     /**
      * post
+     *
      * @param moduleName
      * @param task
      * @param file
@@ -525,7 +526,7 @@ public class BaseRequest<T> extends HttpProxy {
             listener.onResponseStart(task);
         }
         String url = appendUrl(moduleName);
-        printfRequestLog(task,url);
+        printfRequestLog(task, url);
         multipartRequest = new MultipartRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -564,7 +565,7 @@ public class BaseRequest<T> extends HttpProxy {
                     listener.onResponseEnd(task);
                 }
             }
-        }){
+        }) {
 
 //            @Override
 //            public Map<String, String> getHeaders() {
@@ -592,20 +593,21 @@ public class BaseRequest<T> extends HttpProxy {
     /**
      * 医生资质认证
      * post
+     *
      * @param moduleName
      * @param task
      * @param listener
      * @return
      */
-    public final Tasks qualityDoc(String moduleName, final Tasks task, final Map<String,File> files, final Map<String,String> params,
-            final Class<T> classOfT, final ResponseListener<BaseResponse> listener) {
+    public final Tasks qualityDoc(String moduleName, final Tasks task, final Map<String, File> files, final Map<String, String> params,
+                                  final Class<T> classOfT, final ResponseListener<BaseResponse> listener) {
 
         MultipartRequest multipartRequest;
         if (listener != null) {
             listener.onResponseStart(task);
         }
         String url = appendUrl(moduleName);
-        printfRequestLog(task,url);
+        printfRequestLog(task, url);
         multipartRequest = new MultipartRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -683,9 +685,9 @@ public class BaseRequest<T> extends HttpProxy {
     }
 
     //=============================================请求辅助方法==============================
-    public String EntityData = "data";
-    public String EntityCode = "code";
-    public String EntityMsg = "msg";
+    private static final String EntityData = "data";
+    private static final String EntityCode = "code";
+    private static final String EntityMsg = "msg";
 
     /**
      * 把json转换成基础响应对象类
@@ -816,8 +818,7 @@ public class BaseRequest<T> extends HttpProxy {
         if (map != null) {
             for (int i = 0; i < map.size(); i++) {
                 url.append(((RequestParams.StringContent) map.values().toArray()[i]).getValue());
-                if(i != map.size()-1)
-                {
+                if (i != map.size() - 1) {
                     url.append("/");
                 }
             }

@@ -18,28 +18,38 @@ import java.util.Set;
  * Created by admin on 2017/3/6.
  */
 public class SharePreferenceUtil {
-    public Context mContext;
-    public String spKey, spValue;
-    public SharedPreferences sp;
-    public Editor spEditor;
+    private Context mContext;
+    private String spKey, spValue;
+    private SharedPreferences sp;
+    private Editor spEditor;
     /**
      * 保存在手机里面的默认文件名
      */
-    public static final String FILE_NAME = "YHT";
+    private static final String FILE_NAME = "YHT";
 
     public SharePreferenceUtil(Context mContext) {
         super();
         this.mContext = mContext;
     }
 
-    //存
+    /**
+     * 存
+     *
+     * @param spKey
+     * @param spValue
+     */
     public void putString(String spKey, String spValue) {
         spEditor = mContext.getSharedPreferences(FILE_NAME, 0).edit();
         spEditor.putString(spKey, spValue);
         spEditor.commit();
     }
 
-    //取
+    /**
+     * 取
+     *
+     * @param spKey
+     * @return
+     */
     public String getString(String spKey) {
         sp = mContext.getSharedPreferences(FILE_NAME, 0);
         String value = "";
@@ -49,14 +59,24 @@ public class SharePreferenceUtil {
         return value;
     }
 
-    //存
+    /**
+     * 存
+     *
+     * @param spKey
+     * @param spValue
+     */
     public void putBoolean(String spKey, boolean spValue) {
         spEditor = mContext.getSharedPreferences(FILE_NAME, 0).edit();
         spEditor.putBoolean(spKey, spValue);
         spEditor.commit();
     }
 
-    //取
+    /**
+     * 取
+     *
+     * @param spKey
+     * @return
+     */
     public boolean getBoolean(String spKey) {
         sp = mContext.getSharedPreferences(FILE_NAME, 0);
         boolean value = false;
@@ -66,7 +86,11 @@ public class SharePreferenceUtil {
         return value;
     }
 
-    //删
+    /**
+     * 删
+     *
+     * @param spKey
+     */
     public void clear(String spKey) {
         sp = mContext.getSharedPreferences(FILE_NAME, 0);
         if (sp != null) {

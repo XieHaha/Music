@@ -4,6 +4,8 @@ package custom.frame.widgets.imagePreview.cache.disk;
  * Created by Kyle on 2015/12/14.
  */
 
+import android.util.Log;
+
 import java.io.BufferedWriter;
 import java.io.Closeable;
 import java.io.EOFException;
@@ -72,8 +74,10 @@ import java.util.regex.Pattern;
  * an error occurs while writing a cache value, the edit will fail silently.
  * Callers should handle other problems by catching {@code IOException} and
  * responding appropriately.
+ * @author dundun
  */
 public final class DiskLruCache implements Closeable {
+    private static final String TAG = "DiskLruCache";
     static final String JOURNAL_FILE = "journal";
     static final String JOURNAL_FILE_TEMP = "journal.tmp";
     static final String JOURNAL_FILE_BACKUP = "journal.bkp";
@@ -153,6 +157,7 @@ public final class DiskLruCache implements Closeable {
     final ThreadPoolExecutor executorService =
             new ThreadPoolExecutor(0, 1, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
     private final Callable<Void> cleanupCallable = new Callable<Void>() {
+        @Override
         public Void call() throws Exception {
             synchronized (DiskLruCache.this) {
                 if (journalWriter == null) {
@@ -203,7 +208,10 @@ public final class DiskLruCache implements Closeable {
             File journalFile = new File(directory, JOURNAL_FILE);
             // If journal file also exists just delete backup file.
             if (journalFile.exists()) {
-                backupFile.delete();
+                if(!backupFile.delete())
+                {
+                    Log.e(TAG,"delete error");
+                }
             } else {
                 renameTo(backupFile, journalFile, false);
             }
@@ -375,7 +383,10 @@ public final class DiskLruCache implements Closeable {
             renameTo(journalFile, journalFileBackup, true);
         }
         renameTo(journalFileTmp, journalFile, false);
-        journalFileBackup.delete();
+        if(!journalFileBackup.delete())
+        {
+            Log.e(TAG,"delete error");
+        }
 
         journalWriter = new BufferedWriter(
                 new OutputStreamWriter(new FileOutputStream(journalFile, true), Util.US_ASCII));
@@ -532,7 +543,10 @@ public final class DiskLruCache implements Closeable {
             if (success) {
                 if (dirty.exists()) {
                     File clean = entry.getCleanFile(i);
-                    dirty.renameTo(clean);
+                    if(!dirty.renameTo(clean))
+                    {
+                        Log.e(TAG,"renameTo error");
+                    }
                     long oldLength = entry.lengths[i];
                     long newLength = clean.length();
                     entry.lengths[i] = newLength;

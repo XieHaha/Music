@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Log;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -23,6 +24,8 @@ import custom.frame.utils.DirHelper;
  * @author dundun
  */
 public class QiniuUtils {
+
+    private static final String TAG = "QiniuUtils";
 
     /**
      * 初始化桩友圈发布信息不同大小的bitmap
@@ -70,9 +73,15 @@ public class QiniuUtils {
         File smallFile = new File(smallImgPath);
 
         try {
-            bigFile.createNewFile();
-            middleFile.createNewFile();
-            smallFile.createNewFile();
+            if (!bigFile.createNewFile()) {
+                Log.e(TAG, "create bigFile error");
+            }
+            if (!middleFile.createNewFile()) {
+                Log.e(TAG, "create middleFile error");
+            }
+            if (!smallFile.createNewFile()) {
+                Log.e(TAG, "create smallFile error");
+            }
 
             fOutBig = new FileOutputStream(bigFile);
             fOutMiddle = new FileOutputStream(middleFile);
@@ -136,9 +145,15 @@ public class QiniuUtils {
         File smallFile = new File(smallImgPath);
 
         try {
-            bigFile.createNewFile();
-            middleFile.createNewFile();
-            smallFile.createNewFile();
+            if (!bigFile.createNewFile()) {
+                Log.e(TAG, "create bigFile error");
+            }
+            if (!middleFile.createNewFile()) {
+                Log.e(TAG, "create middleFile error");
+            }
+            if (!smallFile.createNewFile()) {
+                Log.e(TAG, "create smallFile error");
+            }
 
             fOutBig = new FileOutputStream(bigFile);
             fOutMiddle = new FileOutputStream(middleFile);

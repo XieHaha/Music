@@ -3,18 +3,16 @@ package com.yht.yihuantong.utils;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MimeUtils
-{
-    public static String regDoc = "(^doc$)|(^docx$)";
-    public static String regXls = "(^xls$)|(^xlsx$)";
-    public static String regPpt = "(^ppt$)|(^pptx$)";
-    public static String regZip = "(^7z$)|(^gtar$)|(^gz$)|(^tar$)|(^tgz$)|(^z$)|(^zip$)|(^rar$)";
-    public static String regPdf = "^pdf$";
-    public static String regMedia = "(^3gp$)|(^avi$)|(^mp3$)|(^mp4$)|(^rmvb$)|(^wav$)|(^wma$)|(^wmv$)";
+public class MimeUtils {
+    public static final String regDoc = "(^doc$)|(^docx$)";
+    public static final String regXls = "(^xls$)|(^xlsx$)";
+    public static final String regPpt = "(^ppt$)|(^pptx$)";
+    public static final String regZip = "(^7z$)|(^gtar$)|(^gz$)|(^tar$)|(^tgz$)|(^z$)|(^zip$)|(^rar$)";
+    public static final String regPdf = "^pdf$";
+    public static final String regMedia = "(^3gp$)|(^avi$)|(^mp3$)|(^mp4$)|(^rmvb$)|(^wav$)|(^wma$)|(^wmv$)";
     public static Map<String, String> imageMime = new HashMap<String, String>();
 
-    static
-    {
+    static {
         imageMime.put("bmp", "image/bmp");
         imageMime.put("gif", "image/gif");
         imageMime.put("jpeg", "image/jpeg");
@@ -24,8 +22,7 @@ public class MimeUtils
 
     public static Map<String, String> mediaMime = new HashMap<String, String>();
 
-    static
-    {
+    static {
         mediaMime.put("3gp", "video/3gpp");
         mediaMime.put("avi", "video/x-msvideo");
         mediaMime.put("mp4", "video/mp4");
@@ -37,8 +34,7 @@ public class MimeUtils
 
     public static Map<String, String> otherMime = new HashMap<String, String>();
 
-    static
-    {
+    static {
         otherMime.put("3gp", "video/3gpp");
         otherMime.put("avi", "video/x-msvideo");
         otherMime.put("mp3", "audio/x-mpeg");
@@ -56,7 +52,7 @@ public class MimeUtils
         otherMime.put("cpp", "text/plain");
         otherMime.put("doc", "application/msword");
         otherMime.put("docx",
-                      "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         otherMime.put("xls", "application/vnd.ms-excel");
         otherMime.put("xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         otherMime.put("exe", "application/octet-stream");
@@ -89,7 +85,7 @@ public class MimeUtils
         otherMime.put("pps", "application/vnd.ms-powerpoint");
         otherMime.put("ppt", "application/vnd.ms-powerpoint");
         otherMime.put("pptx",
-                      "application/vnd.openxmlformats-officedocument.presentationml.presentation");
+                "application/vnd.openxmlformats-officedocument.presentationml.presentation");
         otherMime.put("prop", "text/plain");
         otherMime.put("rc", "text/plain");
         otherMime.put("rtf", "application/rtf");
@@ -109,10 +105,12 @@ public class MimeUtils
      * @param ext 文件后缀，不带.
      * @return true：图片类型 false:其他文件类型
      */
-    public static boolean isImageType(String ext)
-    {
-        if (imageMime.containsKey(ext.toLowerCase())) { return true; }
-        else { return false; }
+    public static boolean isImageType(String ext) {
+        if (imageMime.containsKey(ext.toLowerCase())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -121,10 +119,12 @@ public class MimeUtils
      * @param ext 文件后缀，不带.
      * @return true：图片类型 false:其他文件类型
      */
-    public static boolean isMediaType(String ext)
-    {
-        if (mediaMime.containsKey(ext.toLowerCase())) { return true; }
-        else { return false; }
+    public static boolean isMediaType(String ext) {
+        if (mediaMime.containsKey(ext.toLowerCase())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -133,11 +133,13 @@ public class MimeUtils
      * @param ext 文件扩展名
      * @return memi
      */
-    public static String getMime(String ext)
-    {
+    public static String getMime(String ext) {
         String memi = "";
-        if (imageMime.containsKey(ext.toLowerCase())) { memi = imageMime.get(ext); }
-        else if (otherMime.containsKey(ext.toLowerCase())) { memi = otherMime.get(ext); }
+        if (imageMime.containsKey(ext.toLowerCase())) {
+            memi = imageMime.get(ext);
+        } else if (otherMime.containsKey(ext.toLowerCase())) {
+            memi = otherMime.get(ext);
+        }
         return memi;
     }
 }

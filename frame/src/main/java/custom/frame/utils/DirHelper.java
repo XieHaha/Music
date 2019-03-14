@@ -22,16 +22,12 @@ public final class DirHelper {
     /**
      * 程序根目录
      */
-    public static String PATH_APP_ROOT = "YHT";
-
-    public static void init(String appName) {
-        PATH_APP_ROOT = appName;
-    }
+    private static final String PATH_APP_ROOT = "YHT";
 
     /**
      * 头像、图片缓存目录 universalimageloader中使用
      */
-    public static final String PATH_CACHE = "cache";
+    private static final String PATH_CACHE = "cache";
     /**
      * 日志文件目录
      */

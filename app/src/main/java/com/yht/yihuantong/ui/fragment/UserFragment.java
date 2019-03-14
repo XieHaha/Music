@@ -1,5 +1,6 @@
 package com.yht.yihuantong.ui.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -312,22 +313,24 @@ public class UserFragment extends BaseFragment
      */
     private void initAuthStatus(int status) {
         switch (status) {
-            case 0://未认证
+            //未认证
+            case 0:
                 tvAuth.setText("去认证");
                 tvAuthStatus.setTextColor(
                         ContextCompat.getColor(getContext(), R.color.app_auth_faild));
                 Glide.with(this).load(R.mipmap.icon_uncertified).into(authImg);
                 ivEditInfo.setVisibility(View.VISIBLE);
                 break;
-            case 1://审核中
+            //审核中
+            case 1:
                 tvAuthStatus.setText("审核中");
                 tvAuth.setText("查看");
                 tvAuthStatus.setTextColor(
                         ContextCompat.getColor(getContext(), R.color.app_auth_faild));
                 Glide.with(this).load(R.mipmap.icon_uncertified).into(authImg);
-                //                ivEditInfo.setVisibility(View.GONE);
                 break;
-            case 2://审核未通过
+            //审核未通过
+            case 2:
                 tvAuthStatus.setText("审核未通过");
                 tvAuth.setText("查看");
                 tvAuthStatus.setTextColor(
@@ -335,13 +338,16 @@ public class UserFragment extends BaseFragment
                 Glide.with(this).load(R.mipmap.icon_uncertified).into(authImg);
                 ivEditInfo.setVisibility(View.VISIBLE);
                 break;
-            case 6://审核已通过
+            //审核已通过
+            case 6:
                 tvAuthStatus.setText("已认证");
                 tvAuth.setText("查看");
                 tvAuthStatus.setTextColor(
                         ContextCompat.getColor(getContext(), R.color.app_auth_success));
                 Glide.with(this).load(R.mipmap.icon_certified).into(authImg);
                 ivEditInfo.setVisibility(View.GONE);
+                break;
+            default:
                 break;
         }
     }
@@ -386,6 +392,8 @@ public class UserFragment extends BaseFragment
             case R.id.fragmrnt_user_info_train_layout:
             case R.id.fragmrnt_user_info_service_layout:
                 ToastUtil.toast(getContext(), "敬请期待");
+                break;
+            default:
                 break;
         }
     }
@@ -432,6 +440,8 @@ public class UserFragment extends BaseFragment
                 loginSuccessBean.setPortraitUrl(headImgUrl);
                 YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
                 break;
+            default:
+                break;
         }
     }
 
@@ -446,21 +456,6 @@ public class UserFragment extends BaseFragment
      */
     @Override
     public void onScrollChanged(CustomListenScrollView scrollView, int l, int t, int oldl, int oldt) {
-        //        int scrollHeight = (scrollView.getChildAt(0).getHeight() - scrollView.getMeasuredHeight());
-        //        int alpha;
-        //        if (t < scrollHeight && t > 0)
-        //        {
-        //            alpha = t * 255 / scrollHeight;
-        //            llTitleLayout.setBackgroundColor(Color.argb(alpha, 231, 50, 120));
-        //        }
-        //        if (t >= scrollHeight)
-        //        {
-        //            llTitleLayout.setBackgroundColor(Color.argb(255, 231, 50, 120));
-        //        }
-        //        if (t <= 0)
-        //        {
-        //            llTitleLayout.setBackgroundColor(Color.argb(0, 231, 50, 120));
-        //        }
     }
 
     /**
@@ -561,7 +556,7 @@ public class UserFragment extends BaseFragment
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != getActivity().RESULT_OK) {
+        if (resultCode != Activity.RESULT_OK) {
             return;
         }
         switch (requestCode) {
@@ -608,6 +603,8 @@ public class UserFragment extends BaseFragment
                 DataSupport.deleteAll(CooperateDocBean.class);
                 startActivity(new Intent(getContext(), AuthDocStatuActivity.class));
                 getActivity().finish();
+                break;
+            default:
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);

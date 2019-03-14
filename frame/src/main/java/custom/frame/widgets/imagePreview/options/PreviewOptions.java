@@ -1,6 +1,5 @@
 package custom.frame.widgets.imagePreview.options;
 
-import android.graphics.Color;
 import android.os.Environment;
 
 /**
@@ -11,18 +10,6 @@ public class PreviewOptions {
 
     public static final String EXTERNAL_STORAGE = Environment.getExternalStorageDirectory().getPath();
     public static final long MAX_MEMORY = Runtime.getRuntime().maxMemory();
-
-    public static final class AsyncLoadBmpServiceOptions {
-        public static final int MAX_CONCURRENT_THREAD_COUNT = 7;
-    }
-
-    public static final class PreviewViewOptions {
-        public static int CIRCLE_COLOR = Color.parseColor("#AAFFFFFF");
-        public static float RADIUS = 50.0f;
-        public static int BUFFER_MAX_LENGTH = 1024;
-        public static final int CONNECT_TIME_OUT = 5000;
-        public static String REQUEST_METHOD = "GET";
-    }
 
     public static final class ImageDownloadOptions {
         private static final String APP_FILE_DIR = EXTERNAL_STORAGE;
