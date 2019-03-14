@@ -1,7 +1,8 @@
 package com.yht.yihuantong.api;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import com.yht.yihuantong.api.notify.NotifyChangeListenerManager;
 
 /**
  * Api获取帮助类
@@ -22,12 +23,11 @@ public class ApiHelper
     /**
      * 获取相关服务
      *
-     * @param apiClass 模块api类
      * @return 模块服务。若该模块不存在，返回为null
      */
-    public static <T> T getServer(@NonNull Class<T> apiClass)
+    public static NotifyChangeListenerManager.NotifyChangeListenerServer getServer()
     {
-        return ApiManager.getInstance().getServer(apiClass);
+        return ApiManager.getInstance().getServer();
     }
 
     /**

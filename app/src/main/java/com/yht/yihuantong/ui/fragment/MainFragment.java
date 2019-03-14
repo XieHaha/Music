@@ -74,6 +74,7 @@ import custom.frame.bean.PatientBean;
 import custom.frame.bean.RegistrationBean;
 import custom.frame.bean.TransPatientBean;
 import custom.frame.http.Tasks;
+import custom.frame.http.data.BaseNetCode;
 import custom.frame.http.data.HttpConstants;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
 import custom.frame.ui.fragment.BaseFragment;
@@ -262,7 +263,7 @@ public class MainFragment extends BaseFragment
         View mStateBarFixer = view.findViewById(R.id.status_bar_fix);
         mStateBarFixer.setLayoutParams(
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        getStateBarHeight(getActivity())));//填充状态栏
+                        getStateBarHeight(getActivity())));
         ((TextView) view.findViewById(R.id.public_title_bar_title)).setText("首页");
         view.findViewById(R.id.fragment_main_my_patient_layout).setOnClickListener(this);
         ivTitleBarMore.setVisibility(View.VISIBLE);
@@ -275,8 +276,7 @@ public class MainFragment extends BaseFragment
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        iNotifyChangeListenerServer = ApiManager.getInstance()
-                .getServer(INotifyChangeListenerServer.class);
+        iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         transferInfoLimitAdapter = new TransferInfoLimitAdapter(getContext());
         transferInfoLimitAdapter.setList(transPatientBeans);
         transferInfoListView.setAdapter(transferInfoLimitAdapter);
@@ -502,11 +502,13 @@ public class MainFragment extends BaseFragment
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponseList(object,
                             TransPatientBean.class);
-                    if (baseResponse.getCode() == 200) {
-                        transPatientBeans = baseResponse.getData();
-                        initTransferData();
-                    } else {
-                        ToastUtil.toast(getContext(), baseResponse.getMsg());
+                    if (baseResponse != null) {
+                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
+                            transPatientBeans = baseResponse.getData();
+                            initTransferData();
+                        } else {
+                            ToastUtil.toast(getContext(), baseResponse.getMsg());
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -550,11 +552,13 @@ public class MainFragment extends BaseFragment
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponseList(object,
                             RegistrationBean.class);
-                    if (baseResponse.getCode() == 200) {
-                        registrationBeans = baseResponse.getData();
-                        initOrderData();
-                    } else {
-                        ToastUtil.toast(getContext(), baseResponse.getMsg());
+                    if (baseResponse != null) {
+                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
+                            registrationBeans = baseResponse.getData();
+                            initOrderData();
+                        } else {
+                            ToastUtil.toast(getContext(), baseResponse.getMsg());
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -631,11 +635,12 @@ public class MainFragment extends BaseFragment
                 if (patientBeans != null && patientBeans.size() > 0) {
                     rlApplyPatientNumLayout.setVisibility(View.VISIBLE);
                     tvApplyPatientNum.setText(String.valueOf(patientBeans.size()));
+                    sharePreferenceUtil.putString(CommonData.KEY_PATIENT_APPLY_NUM,
+                            String.valueOf(patientBeans.size()));
                 } else {
                     rlApplyPatientNumLayout.setVisibility(View.GONE);
                 }
-                sharePreferenceUtil.putString(CommonData.KEY_PATIENT_APPLY_NUM,
-                        String.valueOf(patientBeans.size()));
+
                 if (onPatientApplyCallbackListener != null) {
                     onPatientApplyCallbackListener.onPatientApplyCallback();
                 }

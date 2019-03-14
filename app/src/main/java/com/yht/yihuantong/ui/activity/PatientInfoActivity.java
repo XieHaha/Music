@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
-import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
+import com.yht.yihuantong.api.notify.NotifyChangeListenerManager;
 import com.yht.yihuantong.chat.ChatActivity;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.adapter.FragmentVpAdapter;
@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CombineBean;
 import custom.frame.bean.CombineChildBean;
@@ -395,7 +394,7 @@ public class PatientInfoActivity extends BaseActivity
                     intent.putExtra(CommonData.KEY_CHAT_ID, patientBean.getPatientId());
                     //保存最近联系人
                     RecentContactUtils.save(patientBean.getPatientId());
-                    NotifyChangeListenerServer.getInstance().notifyRecentContactChange("");
+                    NotifyChangeListenerManager.getInstance().notifyRecentContactChange("");
                     //存储临时数据
                     YihtApplication.getInstance().setEaseName(patientBean.getName());
                     YihtApplication.getInstance().setEaseHeadImgUrl(patientBean.getPatientImgUrl());
@@ -442,7 +441,7 @@ public class PatientInfoActivity extends BaseActivity
                 break;
             case DELETE_PATIENT:
                 RecentContactUtils.delete(patientBean.getPatientId());
-                NotifyChangeListenerServer.getInstance().notifyRecentContactChange("");
+                NotifyChangeListenerManager.getInstance().notifyRecentContactChange("");
                 ToastUtil.toast(this, response.getMsg());
                 setResult(RESULT_OK);
                 finish();

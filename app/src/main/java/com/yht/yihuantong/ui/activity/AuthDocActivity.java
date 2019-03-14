@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +25,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
+import com.yht.yihuantong.qrcode.QrCodeHelper;
+import com.yht.yihuantong.tools.ThreadPoolHelper;
 import com.yht.yihuantong.ui.dialog.ActionSheetDialog;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.utils.AllUtils;
@@ -33,14 +37,9 @@ import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
 
-import org.apache.commons.lang3.concurrent.BasicThreadFactory;
-
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import custom.frame.bean.BaseResponse;
@@ -197,8 +196,7 @@ public class AuthDocActivity extends BaseActivity {
                 Glide.with(this).load(checkUrl.getQualifiedFront()).into(ivDocCardFront);
                 Glide.with(this).load(checkUrl.getQualifiedEnd()).into(ivDocCardBack);
             }
-            new Thread(() ->
-            {
+            ThreadPoolHelper.getInstance().execInSingle(() -> {
                 if (checkUrl != null) {
                     FutureTarget<File> target = Glide.with(AuthDocActivity.this)
                             .asFile()
@@ -223,11 +221,18 @@ public class AuthDocActivity extends BaseActivity {
                         docCardBackTempFile = target3.get();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+                        /**在代码中永远不应该忽略InterruptedExceptions，并且在这种情况下简单地记录异常计数为“忽略”。
+                         *  抛出InterruptedException会清除Thread的中断状态，因此如果未正确处理异常，
+                         *  则线程被中断的事实将会丢失。 相反，InterruptedExceptions应该被重新抛出
+                         *  - 立即或在清理方法的状态之后 - 或者应该通过调用Thread.interrupt（）重新中断线程，
+                         *  即使这应该是单线程应用程序。 任何其他行动方案都有可能延迟线程关闭并丢失线程被中断的信息 -
+                         *  可能没有完成任务。**/
+                        ThreadPoolHelper.clearup();
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     }
                 }
-            }).start();
+            });
         }
     }
 

@@ -114,16 +114,17 @@ public class BitmapDiskLruCache {
         BufferedOutputStream bos = null;
         try {
             bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
+            bitmap.compress(Bitmap.CompressFormat.PNG, PreviewOptions.DiskCacheOptions.IMAGE_QUALITY, bos);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
-        bitmap.compress(Bitmap.CompressFormat.PNG, PreviewOptions.DiskCacheOptions.IMAGE_QUALITY, bos);
-        try {
-            bos.flush();
-            bos.close();
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } finally {
+            try {
+                bos.flush();
+                bos.close();
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }

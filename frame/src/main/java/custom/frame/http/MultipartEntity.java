@@ -18,6 +18,7 @@ import java.util.Random;
 
 /**
  * 上传参数，二进制，文件自定义HttpEntity类
+ *
  * @author DUNDUN
  */
 public class MultipartEntity implements HttpEntity {
@@ -54,6 +55,7 @@ public class MultipartEntity implements HttpEntity {
      * 分隔符
      */
     private String mBoundary = null;
+    private Random rand = new Random();
     /**
      * 输出流
      */
@@ -70,7 +72,6 @@ public class MultipartEntity implements HttpEntity {
      */
     private final String generateBoundary() {
         final StringBuffer buf = new StringBuffer();
-        final Random rand = new Random();
         for (int i = 0; i < 30; i++) {
             buf.append(MULTIPART_CHARS[rand.nextInt(MULTIPART_CHARS.length)]);
         }
@@ -124,7 +125,7 @@ public class MultipartEntity implements HttpEntity {
      *
      * @param rawData
      */
-    public void addBinaryPart(String paramName, final byte[] rawData,final String filetype) {
+    public void addBinaryPart(String paramName, final byte[] rawData, final String filetype) {
         writeToOutputStream(paramName, rawData, filetype, BINARY_ENCODING, "no-file");
     }
 
@@ -134,7 +135,7 @@ public class MultipartEntity implements HttpEntity {
      * @param key
      * @param file
      */
-    public void addFilePart(final String key, final File file , final String filetype) {
+    public void addFilePart(final String key, final File file, final String filetype) {
         InputStream fin = null;
         try {
             fin = new FileInputStream(file);

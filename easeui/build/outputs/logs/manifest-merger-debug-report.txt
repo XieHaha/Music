@@ -1,46 +1,50 @@
 -- Merging decision tree log ---
 manifest
-ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:1:1-23:12
-INJECTED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:1:1-23:12
-INJECTED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:1:1-23:12
+ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:1:1-24:12
+INJECTED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:1:1-24:12
+INJECTED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:1:1-24:12
 	package
 		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:2:5-35
 		INJECTED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml
 		INJECTED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:1:11-69
+uses-permission#android.permission.VIBRATE
+ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:4:5-66
+	android:name
+		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:4:22-63
 application
-ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:4:5-21:19
+ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:5:5-22:19
 	android:allowBackup
-		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:4:18-44
+		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:5:18-44
 activity#com.hyphenate.easeui.ui.EaseShowBigImageActivity
-ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:7:9-65
+ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:8:9-65
 	android:name
-		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:7:19-62
+		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:8:19-62
 activity#com.hyphenate.easeui.ui.EaseShowVideoActivity
-ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:8:9-62
+ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:9:9-62
 	android:name
-		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:8:19-59
+		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:9:19-59
 activity#com.hyphenate.easeui.ui.EaseBaiduMapActivity
-ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:9:9-61
+ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:10:9-61
 	android:name
-		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:9:19-58
+		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:10:19-58
 provider#android.support.v4.content.FileProvider
-ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:11:9-20:20
+ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:12:9-21:20
 	android:grantUriPermissions
-		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:15:13-47
+		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:16:13-47
 	android:authorities
-		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:13:13-64
+		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:14:13-64
 	android:exported
-		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:14:13-37
+		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:15:13-37
 	android:name
-		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:12:13-67
+		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:13:13-67
 meta-data#android.support.FILE_PROVIDER_PATHS
-ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:16:9-18:67
+ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:17:9-19:67
 	android:resource
-		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:18:13-54
+		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:19:13-54
 	android:name
-		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:17:13-63
+		ADDED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml:18:13-63
 uses-sdk
 INJECTED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from F:\ZYC_D\easeui\src\main\AndroidManifest.xml

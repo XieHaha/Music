@@ -70,8 +70,7 @@ import static android.view.View.VISIBLE;
 @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
 public class VideoFragment extends Fragment
         implements CallActivity.CallListener, View.OnClickListener,
-                   VideoGroupView.ForceLayoutListener, VideoGroupView.BGCellLayoutInfoListener
-{
+        VideoGroupView.ForceLayoutListener, VideoGroupView.BGCellLayoutInfoListener {
     private AtomicBoolean audioMuteStatus = new AtomicBoolean(false);
     private static final String TAG = "VideoFragment";
     private final static int REFRESH_STATISTICS_INFO_DELAYED = 2000;
@@ -151,7 +150,7 @@ public class VideoFragment extends Fragment
     Random random = new Random();
     private int r = random.nextInt(1000);
     final String url = "https://devcdn.xylink.com/custom-host/index.html?cloudNo=918201507520&" +
-                       "extId=40260e9046bae2da238ac0b0c572326b91726a83&host=https://dev.xylink.com";
+            "extId=40260e9046bae2da238ac0b0c572326b91726a83&host=https://dev.xylink.com";
     //FECC
     private ImageButton mFeccLeftBtn;
     private ImageButton mFeccRightBtn;
@@ -177,18 +176,15 @@ public class VideoFragment extends Fragment
     private boolean mVisible = true;
     Handler handler = new Handler();
 
-    private boolean isSupportHorizontalFECC(int capability)
-    {
+    private boolean isSupportHorizontalFECC(int capability) {
         return (capability & 1 << 1) != 0;
     }
 
-    private boolean isSupportVerticalFECC(int capability)
-    {
+    private boolean isSupportVerticalFECC(int capability) {
         return (capability & 1 << 2) != 0;
     }
 
-    private boolean isSupportZoomInOut(int capability)
-    {
+    private boolean isSupportZoomInOut(int capability) {
         return (capability & 1 << 4) != 0;
     }
 
@@ -200,27 +196,23 @@ public class VideoFragment extends Fragment
     private VolumeManager mVolumeManager;
     private int currentVolume = -1;
 
-    public void setActionListener(UserActionListener actionListener)
-    {
+    public void setActionListener(UserActionListener actionListener) {
         this.actionListener = actionListener;
     }
 
     @Override
-    public void onAttach(Context context)
-    {
+    public void onAttach(Context context) {
         super.onAttach(context);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         return inflater.inflate(R.layout.call_fragment_layout, container, false);
     }
 
     @Override
-    public void onViewCreated(View view, final Bundle savedInstanceState)
-    {
+    public void onViewCreated(View view, final Bundle savedInstanceState) {
         countTimer();
         initialization(view);
         refreshMuteMicBtn();
@@ -229,44 +221,43 @@ public class VideoFragment extends Fragment
     }
 
     //初始化控件
-    private void initialization(View view)
-    {
-        mLayoutDropCall = (RelativeLayout)view.findViewById(R.id.ll_drop_call);
+    private void initialization(View view) {
+        mLayoutDropCall = (RelativeLayout) view.findViewById(R.id.ll_drop_call);
         //录制
-        mTimer = (TextView)view.findViewById(R.id.video_recording_timer);
-        mFlashView = (ImageView)view.findViewById(R.id.video_recording_icon);
-        mRecordVideoBtn = (ImageButton)view.findViewById(R.id.start_record_video);
-        mRecordVideoTxt = (TextView)view.findViewById(R.id.record_video_text);
-        mTimeLayout = (LinearLayout)view.findViewById(R.id.conversation_recording_layout);
-        mAudioOnlyBtn = (ImageButton)view.findViewById(R.id.audio_only_btn);
-        mAudioOnlyText = (TextView)view.findViewById(R.id.audio_only_text);
-        btnVideo = (ImageButton)view.findViewById(R.id.close_video);
-        btnVideoText = (TextView)view.findViewById(R.id.video_mute_text);
-        mSwitchSpeakerText = (TextView)view.findViewById(R.id.switch_speaker_text);
-        mSwitchSpeakerMode = (ImageButton)view.findViewById(R.id.switch_speaker_mode);
+        mTimer = (TextView) view.findViewById(R.id.video_recording_timer);
+        mFlashView = (ImageView) view.findViewById(R.id.video_recording_icon);
+        mRecordVideoBtn = (ImageButton) view.findViewById(R.id.start_record_video);
+        mRecordVideoTxt = (TextView) view.findViewById(R.id.record_video_text);
+        mTimeLayout = (LinearLayout) view.findViewById(R.id.conversation_recording_layout);
+        mAudioOnlyBtn = (ImageButton) view.findViewById(R.id.audio_only_btn);
+        mAudioOnlyText = (TextView) view.findViewById(R.id.audio_only_text);
+        btnVideo = (ImageButton) view.findViewById(R.id.close_video);
+        btnVideoText = (TextView) view.findViewById(R.id.video_mute_text);
+        mSwitchSpeakerText = (TextView) view.findViewById(R.id.switch_speaker_text);
+        mSwitchSpeakerMode = (ImageButton) view.findViewById(R.id.switch_speaker_mode);
         mViewContainer = view.findViewById(R.id.view_container);
-        mWebViewContainer = (LinearLayout)view.findViewById(R.id.conf_webview_container);
-        mContolEnter = (ImageButton)view.findViewById(R.id.contol_conf);
-        confControlWebview = (WebView)view.findViewById(R.id.conf_control_webview);
-        mMicContainer = (RelativeLayout)view.findViewById(R.id.mic_mute_container);
-        mMuteMicLabel = (TextView)view.findViewById(R.id.mute_mic_btn_label);
-        mHandupContainer = (RelativeLayout)view.findViewById(R.id.handup_view);
-        mHandupBtn = (ImageButton)view.findViewById(R.id.handup_btn);
-        mHandupLabel = (TextView)view.findViewById(R.id.handup_label);
-        mMuteMicBtn = (ImageButton)view.findViewById(R.id.mute_mic_btn);
-        mButtonCancel = (ImageButton)(view.findViewById(R.id.conn_mt_cancelcall_btn));
-        mSwitchCamera = (ImageButton)view.findViewById(R.id.switch_camera);
-        outgoingContainer = (RelativeLayout)view.findViewById(R.id.outgoing_container);
-        videoContainer = (RelativeLayout)view.findViewById(R.id.video_container);
-        mNetworkState = (ImageView)view.findViewById(R.id.network_state);
-        mVideoView = (VideoGroupView)view.findViewById(R.id.remote_video_view);
-        mContent = (ImageView)view.findViewById(R.id.shared_content);
-        toolbottom = (LinearLayout)view.findViewById(R.id.ll_bottom);
-        switchCameraLayout = (LinearLayout)view.findViewById(R.id.switch_camera_layout);
-        networkStateTimer = (TextView)view.findViewById(R.id.network_state_timer);
-        tvCallNumber = (TextView)view.findViewById(R.id.tv_call_number);
-        videoHideShowContainer = (LinearLayout)view.findViewById(R.id.ll_top_hide_show);
-        videoFunctionHideShow = (LinearLayout)view.findViewById(R.id.ll_video_function);
+        mWebViewContainer = (LinearLayout) view.findViewById(R.id.conf_webview_container);
+        mContolEnter = (ImageButton) view.findViewById(R.id.contol_conf);
+        confControlWebview = (WebView) view.findViewById(R.id.conf_control_webview);
+        mMicContainer = (RelativeLayout) view.findViewById(R.id.mic_mute_container);
+        mMuteMicLabel = (TextView) view.findViewById(R.id.mute_mic_btn_label);
+        mHandupContainer = (RelativeLayout) view.findViewById(R.id.handup_view);
+        mHandupBtn = (ImageButton) view.findViewById(R.id.handup_btn);
+        mHandupLabel = (TextView) view.findViewById(R.id.handup_label);
+        mMuteMicBtn = (ImageButton) view.findViewById(R.id.mute_mic_btn);
+        mButtonCancel = (ImageButton) (view.findViewById(R.id.conn_mt_cancelcall_btn));
+        mSwitchCamera = (ImageButton) view.findViewById(R.id.switch_camera);
+        outgoingContainer = (RelativeLayout) view.findViewById(R.id.outgoing_container);
+        videoContainer = (RelativeLayout) view.findViewById(R.id.video_container);
+        mNetworkState = (ImageView) view.findViewById(R.id.network_state);
+        mVideoView = (VideoGroupView) view.findViewById(R.id.remote_video_view);
+        mContent = (ImageView) view.findViewById(R.id.shared_content);
+        toolbottom = (LinearLayout) view.findViewById(R.id.ll_bottom);
+        switchCameraLayout = (LinearLayout) view.findViewById(R.id.switch_camera_layout);
+        networkStateTimer = (TextView) view.findViewById(R.id.network_state_timer);
+        tvCallNumber = (TextView) view.findViewById(R.id.tv_call_number);
+        videoHideShowContainer = (LinearLayout) view.findViewById(R.id.ll_top_hide_show);
+        videoFunctionHideShow = (LinearLayout) view.findViewById(R.id.ll_video_function);
         tvCallNumber.setText(callNumber);
         //
         mSwitchCamera.setOnClickListener(this);
@@ -286,25 +277,21 @@ public class VideoFragment extends Fragment
         mAudioOnlyBtn.setOnClickListener(this);
         mRecordVideoBtn.setOnClickListener(this);
         //用户看的统计
-        mNetworkState.setOnClickListener(new View.OnClickListener()
-        {
+        mNetworkState.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 startRefreshStatisticsInfo();
             }
         });
         mVideoView.init();
-        callRosterView = (CallRosterView)view.findViewById(R.id.conversation_roster);
-        callStatisticsView = (CallStatisticsView)view.findViewById(R.id.conversation_statics);
-        mSaveDump = (Button)view.findViewById(R.id.save_dump);
-        mRoster = (Button)view.findViewById(R.id.roster_btn);
-        mStats = (Button)view.findViewById(R.id.stats_btn);
-        callStatisticsView.setOnCloseListener(new View.OnClickListener()
-        {
+        callRosterView = (CallRosterView) view.findViewById(R.id.conversation_roster);
+        callStatisticsView = (CallStatisticsView) view.findViewById(R.id.conversation_statics);
+        mSaveDump = (Button) view.findViewById(R.id.save_dump);
+        mRoster = (Button) view.findViewById(R.id.roster_btn);
+        mStats = (Button) view.findViewById(R.id.stats_btn);
+        callStatisticsView.setOnCloseListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 callStatisticsView.setVisibility(GONE);
                 stopRefreshMediaStatistics();
                 callStatisticsView.clearData();
@@ -314,99 +301,83 @@ public class VideoFragment extends Fragment
         mSaveDump.setOnClickListener(this);
         mRoster.setOnClickListener(this);
         mStats.setOnClickListener(this);
-        ViewStub stub = (ViewStub)view.findViewById(R.id.view_statistics_info);
+        ViewStub stub = (ViewStub) view.findViewById(R.id.view_statistics_info);
         mStatisticsRender = new StatisticsRender(stub,
-                                                 new StatisticsRender.StatisticsOperationListener()
-                                                 {
-                                                     @Override
-                                                     public void stopStatisticsInfo()
-                                                     {
-                                                         stopRefreshStatisticsInfo();
-                                                     }
-                                                 });
+                new StatisticsRender.StatisticsOperationListener() {
+                    @Override
+                    public void stopStatisticsInfo() {
+                        stopRefreshStatisticsInfo();
+                    }
+                });
         mVideoView.setLocalFullScreen(false, false);
         mVideoView.setOnHoldMode(false);
         TimeHide();
         //FECC
-        mFeccLeftBtn = (ImageButton)view.findViewById(R.id.fecc_left);
-        mFeccRightBtn = (ImageButton)view.findViewById(R.id.fecc_right);
-        mFeccUpBtn = (ImageButton)view.findViewById(R.id.fecc_up);
-        mFeccDownBtn = (ImageButton)view.findViewById(R.id.fecc_down);//圆盘指令
-        mFeccControl = (LinearLayout)view.findViewById(R.id.fecc_control);
-        mFeccControlBg = (ImageView)view.findViewById(R.id.fecc_control_bg);
-        mFeccControlBgLeft = (ImageView)view.findViewById(R.id.fecc_control_bg_left);
-        mFeccControlBgRight = (ImageView)view.findViewById(R.id.fecc_control_bg_right);
-        mFeccControlBgUp = (ImageView)view.findViewById(R.id.fecc_control_bg_up);
-        mFeccControlBgDown = (ImageView)view.findViewById(R.id.fecc_control_bg_down);
-        mFeccPanView = (ImageView)view.findViewById(R.id.fecc_pan);
-        zoomInAdd = (ImageView)view.findViewById(R.id.zoom_in_add);
-        zoomInPlus = (ImageView)view.findViewById(R.id.zoom_out_plus);
+        mFeccLeftBtn = (ImageButton) view.findViewById(R.id.fecc_left);
+        mFeccRightBtn = (ImageButton) view.findViewById(R.id.fecc_right);
+        mFeccUpBtn = (ImageButton) view.findViewById(R.id.fecc_up);
+        mFeccDownBtn = (ImageButton) view.findViewById(R.id.fecc_down);//圆盘指令
+        mFeccControl = (LinearLayout) view.findViewById(R.id.fecc_control);
+        mFeccControlBg = (ImageView) view.findViewById(R.id.fecc_control_bg);
+        mFeccControlBgLeft = (ImageView) view.findViewById(R.id.fecc_control_bg_left);
+        mFeccControlBgRight = (ImageView) view.findViewById(R.id.fecc_control_bg_right);
+        mFeccControlBgUp = (ImageView) view.findViewById(R.id.fecc_control_bg_up);
+        mFeccControlBgDown = (ImageView) view.findViewById(R.id.fecc_control_bg_down);
+        mFeccPanView = (ImageView) view.findViewById(R.id.fecc_pan);
+        zoomInAdd = (ImageView) view.findViewById(R.id.zoom_in_add);
+        zoomInPlus = (ImageView) view.findViewById(R.id.zoom_out_plus);
         mVideoView.setBGCellLayoutInfoListener(this);
         mVideoView.setForceLayoutListener(this);
         initFeccEventListeners();
         mVideoView.setLocalLayoutInfo(buildLocalLayoutInfo());
         //FECC listeners
         FECCListeners();
-        moreDialog = (LinearLayout)view.findViewById(R.id.more_layout_dialog);
-        mMeetingMore = (ImageButton)view.findViewById(R.id.hold_meeting_more);
-        mMeetingMore.setOnClickListener(new View.OnClickListener()
-        {
+        moreDialog = (LinearLayout) view.findViewById(R.id.more_layout_dialog);
+        mMeetingMore = (ImageButton) view.findViewById(R.id.hold_meeting_more);
+        mMeetingMore.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                if (moreDialog.getVisibility() == INVISIBLE)
-                {
+            public void onClick(View view) {
+                if (moreDialog.getVisibility() == INVISIBLE) {
                     moreDialog.setVisibility(VISIBLE);
                     // shareDialog.setVisibility(GONE);
+                } else {
+                    hideMoreDialog(moreDialog);
                 }
-                else { hideMoreDialog(moreDialog); }
             }
         });
-        keyboard = (TextView)view.findViewById(R.id.keyboard);
-        keyboard.setOnClickListener(new View.OnClickListener()
-        {
+        keyboard = (TextView) view.findViewById(R.id.keyboard);
+        keyboard.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 L.i(TAG, "show keyboard true");
                 TimeHide();
                 showDtmfLayout();
                 hideMoreDialog(moreDialog);
             }
         });
-        dtmfLayout = (RelativeLayout)view.findViewById(R.id.dtmf_layout);
-        dtmfLay = (LinearLayout)view.findViewById(R.id.dtmf);
-        dtmf = new Dtmf(dtmfLay, new Dtmf.DtmfListener()
-        {
+        dtmfLayout = (RelativeLayout) view.findViewById(R.id.dtmf_layout);
+        dtmfLay = (LinearLayout) view.findViewById(R.id.dtmf);
+        dtmf = new Dtmf(dtmfLay, new Dtmf.DtmfListener() {
             @Override
-            public void onDtmfKey(String key)
-            {
+            public void onDtmfKey(String key) {
                 L.i(TAG, "onDtmfKey key::" + key);
-                if (layoutInfos != null)
-                {
-                    if (layoutInfos.size() > 0)
-                    {
+                if (layoutInfos != null) {
+                    if (layoutInfos.size() > 0) {
                         L.i("sendDtmf 1：" + layoutInfos.get(0).getRemoteID() + ":key:" + key);
                         NemoSDK.getInstance().sendDtmf(layoutInfos.get(0).getRemoteID(), key);
                     }
                 }
             }
         });
-        lockPeople = (LinearLayout)view.findViewById(R.id.layout_lock_people);
-        if (lockPeople != null)
-        {
-            lockPeople.setOnClickListener(new View.OnClickListener()
-            {
+        lockPeople = (LinearLayout) view.findViewById(R.id.layout_lock_people);
+        if (lockPeople != null) {
+            lockPeople.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     L.i("setForceLayout onClick:" + mLocalFullScreen);
-                    if (mLocalFullScreen)
-                    {
+                    if (mLocalFullScreen) {
                         mVideoView.switchLocalViewToSmallCell();
-                    }
-                    else
-                    {
+                    } else {
                         NemoSDK.getInstance().forceLayout(0);
                     }
                     lockPeople.setVisibility(View.GONE);
@@ -415,16 +386,12 @@ public class VideoFragment extends Fragment
                 }
             });
         }
-        if (mMuteMicBtn != null)
-        {
-            mMuteMicBtn.setOnLongClickListener(new View.OnLongClickListener()
-            {
+        if (mMuteMicBtn != null) {
+            mMuteMicBtn.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
-                public boolean onLongClick(View view)
-                {
+                public boolean onLongClick(View view) {
                     mMuteBtnLongPress++;
-                    if (mMuteBtnLongPress >= 3)
-                    {
+                    if (mMuteBtnLongPress >= 3) {
                         displayDebugButton();
                         mMuteBtnLongPress = 0;
                     }
@@ -433,60 +400,48 @@ public class VideoFragment extends Fragment
             });
         }
         mVolumeManager = new VolumeManager(getActivity(),
-                                           view.findViewById(R.id.operation_volume_brightness),
-                                           AudioManager.STREAM_VOICE_CALL);
+                view.findViewById(R.id.operation_volume_brightness),
+                AudioManager.STREAM_VOICE_CALL);
         //        mVolumeManager.setMuteCallback(this);
         currentVolume = mVolumeManager.getVolume();
     }
 
-    public void hideMoreDialog(LinearLayout moreDialog)
-    {
-        if (moreDialog != null)
-        {
-            if (moreDialog.getVisibility() == VISIBLE)
-            {
+    public void hideMoreDialog(LinearLayout moreDialog) {
+        if (moreDialog != null) {
+            if (moreDialog.getVisibility() == VISIBLE) {
                 moreDialog.setVisibility(INVISIBLE);
             }
         }
     }
 
-    private void showDtmfLayout()
-    {
+    private void showDtmfLayout() {
         dtmfLayout.setVisibility(View.VISIBLE);
         //toolbar.setVisibility(View.INVISIBLE);
-        if (dtmf != null)
-        {
+        if (dtmf != null) {
             dtmf.show();
         }
     }
 
-    private Runnable timerRunnable = new Runnable()
-    {
+    private Runnable timerRunnable = new Runnable() {
         @Override
-        public void run()
-        {
+        public void run() {
             recordingDuration += 1000;
             mTimer.setText(getResources().getString(R.string.recording_text) + " " +
-                           CommonTime.formatDuration(recordingDuration));
+                    CommonTime.formatDuration(recordingDuration));
             mTimer.postDelayed(timerRunnable, TIMER_DELAYED);
         }
     };
-    private Runnable flashingViewRunnable = new Runnable()
-    {
+    private Runnable flashingViewRunnable = new Runnable() {
         @Override
-        public void run()
-        {
+        public void run() {
             mFlashView.setVisibility(mFlashView.getVisibility() == VISIBLE ? INVISIBLE : VISIBLE);
             mFlashView.postDelayed(flashingViewRunnable, FLASH_ICON_DELAYED);
         }
     };
-    private Runnable TimerRunnable = new Runnable()
-    {
+    private Runnable TimerRunnable = new Runnable() {
         @Override
-        public void run()
-        {
-            if (!isStopCount)
-            {
+        public void run() {
+            if (!isStopCount) {
                 timer += 1000;
                 timeStr = CommonTime.formatDuration(timer);
                 networkStateTimer.setText(timeStr);
@@ -494,33 +449,26 @@ public class VideoFragment extends Fragment
             countTimer();
         }
     };
-    private Runnable refreshMSRunnable = new Runnable()
-    {
+    private Runnable refreshMSRunnable = new Runnable() {
         @Override
-        public void run()
-        {
+        public void run() {
             startRefreshMediaStatistics();
         }
     };
-    private Runnable refreshStatisticsInfoRunnable = new Runnable()
-    {
+    private Runnable refreshStatisticsInfoRunnable = new Runnable() {
         @Override
-        public void run()
-        {
+        public void run() {
             startRefreshStatisticsInfo();
         }
     };
 
-    private void countTimer()
-    {
+    private void countTimer() {
         mHandler.postDelayed(TimerRunnable, 1000);
     }
 
-    private Runnable runnable = new Runnable()
-    {
+    private Runnable runnable = new Runnable() {
         @Override
-        public void run()
-        {
+        public void run() {
             //TimeHide();
             videoContainer.setVisibility(INVISIBLE);
             toolbottom.setVisibility(INVISIBLE);
@@ -528,155 +476,121 @@ public class VideoFragment extends Fragment
         }
     };
 
-    private void StartToolbarVisibleTimer()
-    {
+    private void StartToolbarVisibleTimer() {
         handler.removeCallbacks(runnable);
         // handler.postDelayed(runnable, 5000);
     }
 
-    private void StopToolbarVisibleTimer()
-    {
+    private void StopToolbarVisibleTimer() {
         handler.removeCallbacks(menuRunnable);
     }
 
-    private Runnable menuRunnable = new Runnable()
-    {
+    private Runnable menuRunnable = new Runnable() {
         @Override
-        public void run()
-        {
+        public void run() {
             videoContainer.setVisibility(INVISIBLE);
             toolbottom.setVisibility(INVISIBLE);
             switchCameraLayout.setVisibility(INVISIBLE);
         }
     };
 
-    private void TimeHide()
-    {
+    private void TimeHide() {
         if (videoContainer.getVisibility() == VISIBLE && toolbottom.getVisibility() == VISIBLE &&
-            switchCameraLayout.getVisibility() == VISIBLE)
-        {
+                switchCameraLayout.getVisibility() == VISIBLE) {
             StartToolbarVisibleTimer();
             setFECCButtonVisible(false);
-        }
-        else
-        {
+        } else {
             videoContainer.setVisibility(VISIBLE);
             toolbottom.setVisibility(VISIBLE);
             switchCameraLayout.setVisibility(VISIBLE);
             StopToolbarVisibleTimer();
             setFECCButtonVisible(
                     videoInfo != null && !feccDisable && audioMode != videoInfo.isAudioMute() &&
-                    !videoInfo.isVideoMute() && (isSupportHorizontalFECC(videoInfo.getFeccOri()) ||
-                                                 isSupportVerticalFECC(
-                                                         videoInfo.getFeccOri()))); // 左右或上下至少支持一种才行，否则不显示。
+                            !videoInfo.isVideoMute() && (isSupportHorizontalFECC(videoInfo.getFeccOri()) ||
+                            isSupportVerticalFECC(
+                                    videoInfo.getFeccOri()))); // 左右或上下至少支持一种才行，否则不显示。
         }
     }
 
-    private View.OnClickListener videoFrameCellClickListener = new View.OnClickListener()
-    {
+    private View.OnClickListener videoFrameCellClickListener = new View.OnClickListener() {
         @Override
-        public void onClick(View v)
-        {
+        public void onClick(View v) {
             Log.i(TAG, "videoFrameCellClickListener==::" + mVisible);
             if (videoContainer.getVisibility() == VISIBLE &&
-                toolbottom.getVisibility() == VISIBLE &&
-                switchCameraLayout.getVisibility() == VISIBLE)
-            {
+                    toolbottom.getVisibility() == VISIBLE &&
+                    switchCameraLayout.getVisibility() == VISIBLE) {
                 videoContainer.setVisibility(INVISIBLE);
                 toolbottom.setVisibility(INVISIBLE);
                 switchCameraLayout.setVisibility(INVISIBLE);
                 mVisible = false;
                 setFECCButtonVisible(false);
-            }
-            else
-            {
+            } else {
                 mVisible = true;
                 TimeHide();
                 // handler.postDelayed(menuRunnable, 5000);
             }
-            if (moreDialog.getVisibility() == VISIBLE)
-            {
+            if (moreDialog.getVisibility() == VISIBLE) {
                 moreDialog.setVisibility(INVISIBLE);
-            }
-            else
-            {
+            } else {
                 moreDialog.setVisibility(INVISIBLE);
-                if (dtmf != null)
-                {
+                if (dtmf != null) {
                     dtmf.hide();
                 }
             }
-            if (isLock)
-            {
+            if (isLock) {
                 lockPeople.setVisibility(VISIBLE);
-                if (!isWhiteBoardLock)
-                {
+                if (!isWhiteBoardLock) {
                     lockPeople.setVisibility(mVisible ? View.GONE : View.VISIBLE);
                 }
-            }
-            else
-            {
+            } else {
                 lockPeople.setVisibility(GONE);
             }
         }
     };
-    private View.OnLongClickListener videoFrameLongClickListener = new View.OnLongClickListener()
-    {
+    private View.OnLongClickListener videoFrameLongClickListener = new View.OnLongClickListener() {
         @Override
-        public boolean onLongClick(View v)
-        {
+        public boolean onLongClick(View v) {
             mVideoView.moveThumbCellsToOriginal(); // 重置小窗口位置
             return false;
         }
     };
 
-    public void setCallNumber(String callNumber)
-    {
+    public void setCallNumber(String callNumber) {
         Log.i(TAG, "onViewCreated setDisplayName=" + callNumber);
         this.callNumber = callNumber;
     }
 
-    public void setDisplayName(String displayName)
-    {
+    public void setDisplayName(String displayName) {
         Log.i(TAG, "setDisplayName=" + displayName);
         this.mDisplayName = displayName;
     }
 
     //录制
-    public void setRecordVideo()
-    {
-        if (isControlEnable)
-        {
+    public void setRecordVideo() {
+        if (isControlEnable) {
             isControlEnable = false;
             mRecordVideoTxt.setText(R.string.button_text_stop);
             mTimeLayout.setVisibility(View.VISIBLE);
             mFlashView.postDelayed(flashingViewRunnable, FLASH_ICON_DELAYED);
             mRecordVideoBtn.setImageResource(R.mipmap.ic_toolbar_recording_ing);
             mTimer.setText(R.string.recording_text_preparing);
-            NemoSDK.getInstance().startRecord(callNumber, new RecordCallback()
-            {
+            NemoSDK.getInstance().startRecord(callNumber, new RecordCallback() {
                 @Override
-                public void onFailed(final int errorCode)
-                {
-                    getActivity().runOnUiThread(new Runnable()
-                    {
+                public void onFailed(final int errorCode) {
+                    getActivity().runOnUiThread(new Runnable() {
                         @Override
-                        public void run()
-                        {
+                        public void run() {
                         }
                     });
                 }
 
                 @Override
-                public void onSuccess()
-                {
+                public void onSuccess() {
                 }
             });
             recordingDuration = 0;
             mTimer.postDelayed(timerRunnable, TIMER_DELAYED);
-        }
-        else
-        {
+        } else {
             mRecordVideoTxt.setText(R.string.button_text_record);
             mRecordVideoBtn.setImageResource(R.drawable.ic_toolbar_recording);
             NemoSDK.getInstance().stopRecord();
@@ -689,26 +603,21 @@ public class VideoFragment extends Fragment
         }
     }
 
-    private void displayDebugButton()
-    {
+    private void displayDebugButton() {
         mStats.setVisibility(VISIBLE);
         //        mRoster.setVisibility(VISIBLE);
         //        mSaveDump.setVisibility(VISIBLE);
     }
 
     //语音模式
-    private void setSwitchCallState(boolean audioMode)
-    {
+    private void setSwitchCallState(boolean audioMode) {
         Log.i(TAG, "CellStateViewCSL setSwitchCallState=" + audioMode);
         mVideoView.setAudioOnlyMode(audioMode);
-        if (this.audioMode)
-        {
+        if (this.audioMode) {
             btnVideo.setEnabled(false);
             mAudioOnlyBtn.setImageResource(R.mipmap.ic_toolbar_audio_only_pressed);
             mAudioOnlyText.setText(R.string.close_switch_call_module);
-        }
-        else
-        {
+        } else {
             btnVideo.setEnabled(true);
             mAudioOnlyText.setText(R.string.switch_call_module);
             mAudioOnlyBtn.setImageResource(R.mipmap.ic_toolbar_audio_only);
@@ -716,17 +625,13 @@ public class VideoFragment extends Fragment
     }
 
     //视频关闭或者开启
-    private void setVideoState(boolean videoMute)
-    {
+    private void setVideoState(boolean videoMute) {
         mVideoView.setMuteLocalVideo(videoMute, getActivity().getString(R.string.call_video_mute));
-        if (this.videoMute)
-        {
+        if (this.videoMute) {
             mAudioOnlyBtn.setEnabled(false);
             btnVideo.setImageResource(R.mipmap.ic_toolbar_camera);
             btnVideoText.setText(getResources().getString(R.string.open_video));
-        }
-        else
-        {
+        } else {
             mAudioOnlyBtn.setEnabled(true);
             btnVideo.setImageResource(R.mipmap.ic_toolbar_camera_muted);
             btnVideoText.setText(getResources().getString(R.string.close_video));
@@ -738,21 +643,16 @@ public class VideoFragment extends Fragment
      *
      * @param isMicphoneMuted
      */
-    public void setMicphoneMuted(boolean isMicphoneMuted)
-    {
-        if (mVideoView != null)
-        {
+    public void setMicphoneMuted(boolean isMicphoneMuted) {
+        if (mVideoView != null) {
             Log.i(TAG, "setMicphoneMuted1==::" + isMicphoneMuted);
             audioMuteStatus.set(isMicphoneMuted);
             mVideoView.setMuteLocalAudio(isMicphoneMuted);
-            if (this.isMicphoneMuted)
-            {
+            if (this.isMicphoneMuted) {
                 Log.i(TAG, "setMicphoneMuted2==::" + this.isMicphoneMuted);
                 mMuteMicBtn.setImageResource(R.mipmap.ic_toolbar_mic_muted);
                 mMuteMicLabel.setText(R.string.mute_mic);
-            }
-            else
-            {
+            } else {
                 Log.i(TAG, "setMicphoneMuted3==::" + this.isMicphoneMuted);
                 mMuteMicBtn.setImageResource(R.mipmap.ic_toolbar_mic);
                 mMuteMicLabel.setText(R.string.mute_mic);
@@ -761,101 +661,77 @@ public class VideoFragment extends Fragment
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         boolean audioStatus = audioMuteStatus.get();
         Log.i(TAG, "onResume: audioStatus:" + audioStatus);
         setMicphoneMuted(audioStatus);
         NemoSDK.getInstance().enableMic(audioStatus, true);
-        if (mVideoView != null)
-        {
+        if (mVideoView != null) {
             mVideoView.setFrameCellClickListener(videoFrameCellClickListener);
         }
-        if (currentVolume >= 0)
-        {
+        if (currentVolume >= 0) {
             Log.i(TAG, "print onResume-->currentVolume=" + currentVolume);
             mVolumeManager.setVolume(0);
         }
     }
 
     @Override
-    public void onContentStateChanged(NemoSDKListener.ContentState contentState)
-    {
-        if (NemoSDKListener.ContentState.ON_START == contentState)
-        {
+    public void onContentStateChanged(NemoSDKListener.ContentState contentState) {
+        if (NemoSDKListener.ContentState.ON_START == contentState) {
             mContent.setVisibility(VISIBLE);
-        }
-        else
-        {
+        } else {
             mContent.setVisibility(GONE);
         }
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         mVideoView.onResume();
         super.onStart();
     }
 
     @Override
-    public void onStop()
-    {
+    public void onStop() {
         super.onStop();
         mVideoView.onPause();
     }
 
     @Override
-    public void onHiddenChanged(boolean hidden)
-    {
+    public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (null == mVideoView)
-        {
+        if (null == mVideoView) {
             return;
         }
-        if (!hidden)
-        {
+        if (!hidden) {
             NemoSDK.getInstance().enableMic(false, true);
             mRecordVideoBtn.setEnabled(true);
             tvCallNumber.setText(callNumber);
-        }
-        else
-        {
+        } else {
         }
     }
 
-    public void refreshMuteMicBtn()
-    {
-        if (isMuteDisable)
-        {
+    public void refreshMuteMicBtn() {
+        if (isMuteDisable) {
             mMicContainer.setVisibility(GONE);
             mHandupContainer.setVisibility(VISIBLE);
             isMicphoneMuted = NemoSDK.getInstance().isMicMuted();
-            if (isMicphoneMuted)
-            {
-                if (isHandupNow)
-                {
+            if (isMicphoneMuted) {
+                if (isHandupNow) {
                     // 取消举手
                     mHandupBtn.setImageResource(R.mipmap.ic_toolbar_handdown);
                     mHandupLabel.setText(R.string.hand_down);
-                }
-                else
-                {
+                } else {
                     // 举手发言
                     mHandupBtn.setImageResource(R.mipmap.ic_toolbar_hand_up);
                     mHandupLabel.setText(R.string.hand_up);
                 }
-            }
-            else
-            {
+            } else {
                 // 结束发言
                 mHandupBtn.setImageResource(R.mipmap.ic_toolbar_end_speech);
                 mHandupLabel.setText(R.string.end_speech);
             }
-        }
-        else
-        {
+        } else {
             mMicContainer.setVisibility(VISIBLE);
             mHandupContainer.setVisibility(GONE);
             isMicphoneMuted = !isMicphoneMuted;
@@ -869,13 +745,10 @@ public class VideoFragment extends Fragment
      *
      * @param level 1、2、3、4个等级,差-中-良-优
      */
-    public void onNetworkIndicatorLevel(final int level)
-    {
+    public void onNetworkIndicatorLevel(final int level) {
         L.i(TAG, "onNetworkIndicatorLevel" + level);
-        if (mNetworkState != null)
-        {
-            switch (level)
-            {
+        if (mNetworkState != null) {
+            switch (level) {
                 case 4:
                     L.i(TAG, "onNetworkIndicatorLevel=" + level);
                     mNetworkState.setImageResource(R.drawable.network_state_four);
@@ -904,21 +777,17 @@ public class VideoFragment extends Fragment
      * @param displayName
      */
     public void onRecordStatusNotification(final int callIndex, final boolean isStart,
-            String displayName)
-    {
+                                           String displayName) {
         //mainCallIndex = callIndex;
         Log.i(TAG, " csl onRecordStatusNotification" + isStart);
-        if (isStart)
-        {
+        if (isStart) {
             mRecordVideoBtn.setEnabled(false);
             mTimer.setText(displayName + "正在录制");
             mTimeLayout.setVisibility(View.VISIBLE);
             mFlashView.postDelayed(flashingViewRunnable, FLASH_ICON_DELAYED);
             mRecordVideoBtn.setImageResource(R.mipmap.ic_toolbar_recording_ing);
             mRecordVideoTxt.setText(R.string.button_text_stop);
-        }
-        else
-        {
+        } else {
             mRecordVideoBtn.setEnabled(true);
             mFlashView.removeCallbacks(flashingViewRunnable);
             mTimeLayout.setVisibility(GONE);
@@ -937,25 +806,19 @@ public class VideoFragment extends Fragment
      * @param isMuteDisable 是否为强制静音
      */
     public void onConfMgmtStateChanged(int callIndex, final String opearation,
-            boolean isMuteDisable)
-    {
+                                       boolean isMuteDisable) {
         this.isMuteDisable = isMuteDisable;
         L.i(TAG,
-            "onConfMgmtStateChanged called, callIndex=" + callIndex + ", opearation=" + opearation +
-            ", isMuteDisable=" + isMuteDisable);
-        if (opearation.equalsIgnoreCase("mute"))
-        {
+                "onConfMgmtStateChanged called, callIndex=" + callIndex + ", opearation=" + opearation +
+                        ", isMuteDisable=" + isMuteDisable);
+        if (opearation.equalsIgnoreCase("mute")) {
             NemoSDK.getInstance().enableMic(true, false);
-            if (mVideoView != null)
-            {
+            if (mVideoView != null) {
                 mVideoView.setMuteLocalAudio(true);
             }
-        }
-        else if (opearation.equalsIgnoreCase("unmute"))
-        {
+        } else if (opearation.equalsIgnoreCase("unmute")) {
             NemoSDK.getInstance().enableMic(false, false);
-            if (mVideoView != null)
-            {
+            if (mVideoView != null) {
                 mVideoView.setMuteLocalAudio(false);
             }
         }
@@ -964,22 +827,18 @@ public class VideoFragment extends Fragment
         refreshMuteMicBtn();
     }
 
-    public void showOutgoingContainer()
-    {
+    public void showOutgoingContainer() {
         if (outgoingContainer != null && videoHideShowContainer != null &&
-            videoFunctionHideShow != null)
-        {
+                videoFunctionHideShow != null) {
             outgoingContainer.setVisibility(VISIBLE);
             videoHideShowContainer.setVisibility(GONE);
             videoFunctionHideShow.setVisibility(GONE);
         }
     }
 
-    public void showVideContainer()
-    {
+    public void showVideContainer() {
         if (outgoingContainer != null && videoHideShowContainer != null &&
-            videoFunctionHideShow != null)
-        {
+                videoFunctionHideShow != null) {
             outgoingContainer.setVisibility(GONE);
             videoHideShowContainer.setVisibility(VISIBLE);
             videoFunctionHideShow.setVisibility(VISIBLE);
@@ -987,42 +846,35 @@ public class VideoFragment extends Fragment
     }
 
     @Override
-    public void onVideoDataSourceChange(List<VideoInfo> videoInfos)
-    {
-        if (mVideoView != null)
-        {
+    public void onVideoDataSourceChange(List<VideoInfo> videoInfos) {
+        if (mVideoView != null) {
             mVideoView.setLayoutInfo(videoInfos, false, false);
         }
         this.layoutInfos = videoInfos;
-        for (int i = 0; i < videoInfos.size(); i++)
-        {
+        for (int i = 0; i < videoInfos.size(); i++) {
             mParticipantId = videoInfos.get(i).getParticipantId();
             mFeccOri = videoInfos.get(i).getFeccOri();
         }
     }
 
-    private void stopRefreshStatisticsInfo()
-    {
+    private void stopRefreshStatisticsInfo() {
         handler.removeCallbacks(refreshStatisticsInfoRunnable);
     }
 
     @Override
-    public void onPause()
-    {
+    public void onPause() {
         super.onPause();
     }
 
     //视频初始状态
-    public void releaseResource()
-    {
+    public void releaseResource() {
         confControlWebview = null;
         //        NemoSDK.getInstance().enableMic(true, false);
         //        if (mVideoView != null) {
         //            mVideoView.setMuteLocalAudio(true);
         //        }
         mVideoView.destroy();
-        if (videoMute)
-        {
+        if (videoMute) {
             videoMute = false;
             setVideoState(videoMute);
         }
@@ -1030,20 +882,17 @@ public class VideoFragment extends Fragment
     }
 
     //语音初始状态
-    public void releaseSwitchResource()
-    {
+    public void releaseSwitchResource() {
         //  mVideoView.stopRender();
         mVideoView.destroy();
-        if (audioMode)
-        {
+        if (audioMode) {
             audioMode = false;
             setSwitchCallState(audioMode);
         }
     }
 
     //录制初始状态
-    public void RecordVideoResource()
-    {
+    public void RecordVideoResource() {
         isControlEnable = false;
         mTimer.removeCallbacks(timerRunnable);
         mFlashView.removeCallbacks(flashingViewRunnable);
@@ -1054,44 +903,37 @@ public class VideoFragment extends Fragment
         NemoSDK.getInstance().stopRecord();
     }
 
-    public void MicPhoneResource()
-    {
+    public void MicPhoneResource() {
         mVideoView.destroy();
         Log.i(TAG, "isMicphoneMuted==4" + isMicphoneMuted);
-        if (isMicphoneMuted)
-        {
+        if (isMicphoneMuted) {
             isMicphoneMuted = false;
             setMicphoneMuted(isMicphoneMuted);
         }
     }
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         super.onDestroy();
         mHandler.removeCallbacks(TimerRunnable);
         StopToolbarVisibleTimer();
     }
 
     //视频、音频等统计
-    private void startRefreshMediaStatistics()
-    {
+    private void startRefreshMediaStatistics() {
         Map<String, Object> map = NemoSDK.getInstance().getStatistics();
         Log.i(TAG, "====JSOn1" + map);
         callStatisticsView.updateStatistics(map);
-        if (null == map)
-        {
+        if (null == map) {
             return;
         }
         handler.removeCallbacks(refreshMSRunnable);
         handler.postDelayed(refreshMSRunnable, REFRESH_STATISTICS_INFO_DELAYED);
     }
 
-    private void startRefreshStatisticsInfo()
-    {
+    private void startRefreshStatisticsInfo() {
         NewStatisticsInfo newInfo = NemoSDK.getInstance().getStatisticsInfo();
-        if (null == newInfo)
-        {
+        if (null == newInfo) {
             return;
         }
         mStatisticsRender.show();
@@ -1100,19 +942,16 @@ public class VideoFragment extends Fragment
         handler.postDelayed(refreshStatisticsInfoRunnable, REFRESH_STATISTICS_INFO_DELAYED);
     }
 
-    private void stopRefreshMediaStatistics()
-    {
+    private void stopRefreshMediaStatistics() {
         handler.removeCallbacks(refreshMSRunnable);
     }
 
     //（String转成map）
-    public static Map<String, Object> parseJsonToMap(String jsonStr)
-    {
+    public static Map<String, Object> parseJsonToMap(String jsonStr) {
         Map<String, Object> map = new HashMap<String, Object>();
         Type type = TypeToken.get(map.getClass()).getType();
         map = new Gson().fromJson(jsonStr, type);
-        for (Map.Entry<String, Object> entry : map.entrySet())
-        {
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
             Log.i(TAG, "parseJsonToMapKey" + entry.getKey());
             Log.i(TAG, "parseJsonToMapValue" + entry.getValue());
         }
@@ -1120,22 +959,18 @@ public class VideoFragment extends Fragment
     }
 
     //Fecc
-    private void handleFECCControl(FECCCommand command)
-    {
-        if (videoInfo != null)
-        {
+    private void handleFECCControl(FECCCommand command) {
+        if (videoInfo != null) {
             NemoSDK.getInstance().farEndHardwareControl(videoInfo.getParticipantId(), command, 10);
             Log.i(TAG, "user Fragment farEndHardwareControl22==" + videoInfo.getParticipantId() +
-                       "==command==" + command);
+                    "==command==" + command);
         }
     }
 
     //data
-    private VideoInfo buildLocalLayoutInfo()
-    {
+    private VideoInfo buildLocalLayoutInfo() {
         VideoInfo li = null;
-        if (li == null)
-        {
+        if (li == null) {
             li = new VideoInfo();
             li.setLayoutVideoState(Enums.LAYOUT_STATE_RECEIVED);
             li.setDataSourceID(MediaSourceID.SOURCE_ID_LOCAL_PREVIEW);
@@ -1147,17 +982,14 @@ public class VideoFragment extends Fragment
     }
 
     @Override
-    public void onNewContentReceive(Bitmap bitmap)
-    {
+    public void onNewContentReceive(Bitmap bitmap) {
         mContent.setImageBitmap(bitmap);
     }
 
     //onClick事件
     @Override
-    public void onClick(View view)
-    {
-        switch (view.getId())
-        {
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.switch_camera:
                 foregroundCamera = !foregroundCamera;
                 cameraId = foregroundCamera ? 1 : 0;
@@ -1172,54 +1004,40 @@ public class VideoFragment extends Fragment
                 refreshMuteMicBtn();
                 break;
             case R.id.handup_btn:
-                if (NemoSDK.getInstance().isMicMuted())
-                {
-                    if (isHandupNow)
-                    {
+                if (NemoSDK.getInstance().isMicMuted()) {
+                    if (isHandupNow) {
                         // 取消举手
                         NemoSDK.getInstance().handDown();
                         isHandupNow = false;
-                    }
-                    else
-                    {
+                    } else {
                         // 举手发言
                         NemoSDK.getInstance().handUp();
                         isHandupNow = true;
                     }
-                }
-                else
-                {
+                } else {
                     // 结束发言
                     NemoSDK.getInstance().endSpeech();
                 }
                 refreshMuteMicBtn();
                 break;
             case R.id.contol_conf:
-                if (mWebViewContainer.getVisibility() == GONE)
-                {
+                if (mWebViewContainer.getVisibility() == GONE) {
                     mWebViewContainer.setVisibility(VISIBLE);
-                    if (!TextUtils.isEmpty(url) && confControlWebview != null)
-                    {
+                    if (!TextUtils.isEmpty(url) && confControlWebview != null) {
                         confControlWebview.loadUrl(url);
-                        confControlWebview.setWebViewClient(new WebViewClient()
-                        {
+                        confControlWebview.setWebViewClient(new WebViewClient() {
                             @Override
-                            public boolean shouldOverrideUrlLoading(WebView view, String url)
-                            {
-                                if (url != null)
-                                {
-                                    if (url.contains(JS_PARTICIPANTID_ROSTER))
-                                    {
+                            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                                if (url != null) {
+                                    if (url.contains(JS_PARTICIPANTID_ROSTER)) {
                                         String participantId = url.substring(
                                                 url.indexOf(JS_PARTICIPANTID_ROSTER) +
-                                                JS_PARTICIPANTID_ROSTER.length(), url.length());
+                                                        JS_PARTICIPANTID_ROSTER.length(), url.length());
                                         Log.i("participantId", "拦截的ID===2==" + participantId);
                                         //传给下层
                                         NemoSDK.getInstance()
-                                               .forceLayout(Integer.parseInt(participantId));
-                                    }
-                                    else
-                                    {
+                                                .forceLayout(Integer.parseInt(participantId));
+                                    } else {
                                         view.loadUrl(url);
                                     }
                                 }
@@ -1227,9 +1045,7 @@ public class VideoFragment extends Fragment
                             }
                         });
                     }
-                }
-                else
-                {
+                } else {
                     mWebViewContainer.setVisibility(GONE);
                 }
                 break;
@@ -1238,13 +1054,10 @@ public class VideoFragment extends Fragment
                 break;
             case R.id.switch_speaker_mode:
                 speakerMode = !speakerMode;
-                if (speakerMode)
-                {
+                if (speakerMode) {
                     mSwitchSpeakerText.setText(
                             getResources().getString(R.string.close_switch_speaker_mode));
-                }
-                else
-                {
+                } else {
                     mSwitchSpeakerText.setText(
                             getResources().getString(R.string.switch_speaker_mode));
                 }
@@ -1270,12 +1083,9 @@ public class VideoFragment extends Fragment
                 NemoSDK.getInstance().switchCallMode(audioMode);
                 break;
             case R.id.start_record_video:
-                if (NemoSDK.getInstance().isAuthorize())
-                {
+                if (NemoSDK.getInstance().isAuthorize()) {
                     setRecordVideo();
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getActivity(), "端终号不可录制", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -1295,168 +1105,125 @@ public class VideoFragment extends Fragment
     }
 
     @Override
-    public void onChanged(VideoInfo layoutInfo)
-    {
+    public void onChanged(VideoInfo layoutInfo) {
         videoInfo = layoutInfo;
-        if (videoInfo != null)
-        {
+        if (videoInfo != null) {
             L.i(TAG,
-                "main cell " + layoutInfo.getRemoteName() + ":layoutInfo:" + layoutInfo.toString());
+                    "main cell " + layoutInfo.getRemoteName() + ":layoutInfo:" + layoutInfo.toString());
         }
+        // 左右或上下至少支持一种才行，否则不显示。
         setFECCButtonVisible(
                 videoInfo != null && !feccDisable && audioMode != videoInfo.isAudioMute() &&
-                !videoInfo.isVideoMute() && (isSupportHorizontalFECC(videoInfo.getFeccOri()) ||
-                                             isSupportVerticalFECC(
-                                                     videoInfo.getFeccOri()))); // 左右或上下至少支持一种才行，否则不显示。
+                        !videoInfo.isVideoMute() && (isSupportHorizontalFECC(videoInfo.getFeccOri()) ||
+                        isSupportVerticalFECC(videoInfo.getFeccOri())));
         setZoomInOutVisible(videoInfo != null && isSupportZoomInOut(videoInfo.getFeccOri()));
         setFeccTiltControl(videoInfo != null && isSupportHorizontalFECC(videoInfo.getFeccOri()),
-                           layoutInfos != null && isSupportVerticalFECC(videoInfo.getFeccOri()));
+                layoutInfos != null && isSupportVerticalFECC(videoInfo.getFeccOri()));
     }
 
-    //FECC
-    private float GetFeccBtnPositon(ImageButton feccButton)
-    {
+    private float GetFeccBtnPositon(ImageButton feccButton) {
         float animator = 0f;
-        if (feccButton == mFeccRightBtn)
-        {
+        if (feccButton == mFeccRightBtn) {
             animator = mFeccRightBtn.getRight() - mFeccPanView.getWidth() + 40;
-        }
-        else if (feccButton == mFeccLeftBtn)
-        {
+        } else if (feccButton == mFeccLeftBtn) {
             animator = mFeccLeftBtn.getX();
-        }
-        else if (feccButton == mFeccUpBtn)
-        {
+        } else if (feccButton == mFeccUpBtn) {
             animator = mFeccUpBtn.getY();
-        }
-        else if (feccButton == mFeccDownBtn)
-        {
+        } else if (feccButton == mFeccDownBtn) {
             animator = mFeccDownBtn.getBottom() - mFeccPanView.getHeight() + 30;
         }
         return animator;
     }
 
-    private void FeccPanTurnSide(final ImageButton feccButton)
-    {
+    private void FeccPanTurnSide(final ImageButton feccButton) {
         float animator = GetFeccBtnPositon(feccButton);
         ObjectAnimator fadeIn = null;
-        if (feccButton == mFeccLeftBtn)
-        {
+        if (feccButton == mFeccLeftBtn) {
             mFeccControlBgLeft.setVisibility(View.VISIBLE);
             fadeIn = ObjectAnimator.ofFloat(mFeccPanView, "x", animator);
-        }
-        else if (feccButton == mFeccRightBtn)
-        {
+        } else if (feccButton == mFeccRightBtn) {
             mFeccControlBgRight.setVisibility(View.VISIBLE);
             fadeIn = ObjectAnimator.ofFloat(mFeccPanView, "x", animator);
-        }
-        else if (feccButton == mFeccUpBtn)
-        {
+        } else if (feccButton == mFeccUpBtn) {
             mFeccControlBgUp.setVisibility(View.VISIBLE);
             fadeIn = ObjectAnimator.ofFloat(mFeccPanView, "y", animator);
-        }
-        else if (feccButton == mFeccDownBtn)
-        {
+        } else if (feccButton == mFeccDownBtn) {
             mFeccControlBgDown.setVisibility(View.VISIBLE);
             fadeIn = ObjectAnimator.ofFloat(mFeccPanView, "y", animator);
         }
-        fadeIn.setDuration(100);
-        fadeIn.start();
+        if (fadeIn != null) {
+            fadeIn.setDuration(100);
+            fadeIn.start();
+        }
         mFeccControlBg.setVisibility(View.VISIBLE);
     }
 
-    private void FeccPanTurnPingPong(final ImageButton feccButton)
-    {
+    private void FeccPanTurnPingPong(final ImageButton feccButton) {
         float animator = GetFeccBtnPositon(feccButton);
         ObjectAnimator fadeIn = null;
-        if (feccButton == mFeccLeftBtn)
-        {
+        if (feccButton == mFeccLeftBtn) {
             fadeIn = ObjectAnimator.ofFloat(mFeccPanView, "x", mFeccPanView.getLeft(), animator,
-                                            mFeccPanView.getLeft());
+                    mFeccPanView.getLeft());
             fadeIn.setDuration(200);
-        }
-        else if (feccButton == mFeccRightBtn)
-        {
+        } else if (feccButton == mFeccRightBtn) {
             fadeIn = ObjectAnimator.ofFloat(mFeccPanView, "x", mFeccPanView.getLeft(), animator,
-                                            mFeccPanView.getLeft());
+                    mFeccPanView.getLeft());
             fadeIn.setDuration(200);
-        }
-        else if (feccButton == mFeccUpBtn)
-        {
+        } else if (feccButton == mFeccUpBtn) {
             fadeIn = ObjectAnimator.ofFloat(mFeccPanView, "y", mFeccPanView.getTop(), animator,
-                                            mFeccPanView.getTop());
+                    mFeccPanView.getTop());
             fadeIn.setDuration(200);
-        }
-        else if (feccButton == mFeccDownBtn)
-        {
+        } else if (feccButton == mFeccDownBtn) {
             fadeIn = ObjectAnimator.ofFloat(mFeccPanView, "y", mFeccPanView.getTop(), animator,
-                                            mFeccPanView.getTop());
+                    mFeccPanView.getTop());
             fadeIn.setDuration(200);
         }
-        fadeIn.addListener(new Animator.AnimatorListener()
-        {
-            @Override
-            public void onAnimationStart(Animator arg0)
-            {
-                if (feccButton == mFeccLeftBtn)
-                {
-                    mFeccControlBg.setVisibility(View.VISIBLE);
-                    mFeccControlBgLeft.setVisibility(View.VISIBLE);
+        if (fadeIn != null) {
+            fadeIn.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator arg0) {
+                    if (feccButton == mFeccLeftBtn) {
+                        mFeccControlBg.setVisibility(View.VISIBLE);
+                        mFeccControlBgLeft.setVisibility(View.VISIBLE);
+                    } else if (feccButton == mFeccRightBtn) {
+                        mFeccControlBg.setVisibility(View.VISIBLE);
+                        mFeccControlBgRight.setVisibility(View.VISIBLE);
+                    } else if (feccButton == mFeccUpBtn) {
+                        mFeccControlBg.setVisibility(View.VISIBLE);
+                        mFeccControlBgUp.setVisibility(View.VISIBLE);
+                    } else if (feccButton == mFeccDownBtn) {
+                        mFeccControlBg.setVisibility(View.VISIBLE);
+                        mFeccControlBgDown.setVisibility(View.VISIBLE);
+                    }
                 }
-                else if (feccButton == mFeccRightBtn)
-                {
-                    mFeccControlBg.setVisibility(View.VISIBLE);
-                    mFeccControlBgRight.setVisibility(View.VISIBLE);
-                }
-                else if (feccButton == mFeccUpBtn)
-                {
-                    mFeccControlBg.setVisibility(View.VISIBLE);
-                    mFeccControlBgUp.setVisibility(View.VISIBLE);
-                }
-                else if (feccButton == mFeccDownBtn)
-                {
-                    mFeccControlBg.setVisibility(View.VISIBLE);
-                    mFeccControlBgDown.setVisibility(View.VISIBLE);
-                }
-            }
 
-            @Override
-            public void onAnimationRepeat(Animator arg0)
-            {
-            }
+                @Override
+                public void onAnimationRepeat(Animator arg0) {
+                }
 
-            @Override
-            public void onAnimationCancel(Animator arg0)
-            {
-            }
+                @Override
+                public void onAnimationCancel(Animator arg0) {
+                }
 
-            @Override
-            public void onAnimationEnd(Animator arg0)
-            {
-                mFeccControlBg.setVisibility(View.VISIBLE);
-                if (feccButton == mFeccLeftBtn)
-                {
-                    mFeccControlBgLeft.setVisibility(GONE);
+                @Override
+                public void onAnimationEnd(Animator arg0) {
+                    mFeccControlBg.setVisibility(View.VISIBLE);
+                    if (feccButton == mFeccLeftBtn) {
+                        mFeccControlBgLeft.setVisibility(GONE);
+                    } else if (feccButton == mFeccRightBtn) {
+                        mFeccControlBgRight.setVisibility(GONE);
+                    } else if (feccButton == mFeccUpBtn) {
+                        mFeccControlBgUp.setVisibility(GONE);
+                    } else if (feccButton == mFeccDownBtn) {
+                        mFeccControlBgDown.setVisibility(GONE);
+                    }
                 }
-                else if (feccButton == mFeccRightBtn)
-                {
-                    mFeccControlBgRight.setVisibility(GONE);
-                }
-                else if (feccButton == mFeccUpBtn)
-                {
-                    mFeccControlBgUp.setVisibility(GONE);
-                }
-                else if (feccButton == mFeccDownBtn)
-                {
-                    mFeccControlBgDown.setVisibility(GONE);
-                }
-            }
-        });
-        fadeIn.start();
+            });
+            fadeIn.start();
+        }
     }
 
-    private void FeccPanTurnOrigin()
-    {
+    private void FeccPanTurnOrigin() {
         float animatorx = 0f;
         float animatory = 0f;
         animatorx = mFeccPanView.getLeft();
@@ -1474,88 +1241,77 @@ public class VideoFragment extends Fragment
         mFeccControlBgLeft.setVisibility(GONE);
     }
 
-    private void initFeccEventListeners()
-    {
+    private void initFeccEventListeners() {
         createFeccBtnGestureDetector(mFeccLeftBtn, UserActionListener.USER_ACTION_FECC_LEFT,
-                                     UserActionListener.USER_ACTION_FECC_STEP_LEFT);
+                UserActionListener.USER_ACTION_FECC_STEP_LEFT);
         createFeccBtnGestureDetector(mFeccRightBtn, UserActionListener.USER_ACTION_FECC_RIGHT,
-                                     UserActionListener.USER_ACTION_FECC_STEP_RIGHT);
+                UserActionListener.USER_ACTION_FECC_STEP_RIGHT);
         createFeccBtnGestureDetector(mFeccUpBtn, UserActionListener.USER_ACTION_FECC_UP,
-                                     UserActionListener.USER_ACTION_FECC_STEP_UP);
+                UserActionListener.USER_ACTION_FECC_STEP_UP);
         createFeccBtnGestureDetector(mFeccDownBtn, UserActionListener.USER_ACTION_FECC_DOWN,
-                                     UserActionListener.USER_ACTION_FECC_STEP_DOWN);
-        if (zoomInAdd != null)
-        {
+                UserActionListener.USER_ACTION_FECC_STEP_DOWN);
+        if (zoomInAdd != null) {
             createZoomInGestureDetector(zoomInAdd);
         }
-        if (zoomInPlus != null)
-        {
+        if (zoomInPlus != null) {
             createZoomOutGestureDetector(zoomInPlus);
         }
         createFeccPanGestureDetector(mFeccControlBg, mFeccPanView,
-                                     UserActionListener.USER_ACTION_FECC_LEFT,
-                                     UserActionListener.USER_ACTION_FECC_STEP_LEFT);
+                UserActionListener.USER_ACTION_FECC_LEFT,
+                UserActionListener.USER_ACTION_FECC_STEP_LEFT);
         createFeccPanGestureDetector(mFeccControlBg, mFeccPanView,
-                                     UserActionListener.USER_ACTION_FECC_RIGHT,
-                                     UserActionListener.USER_ACTION_FECC_STEP_RIGHT);
+                UserActionListener.USER_ACTION_FECC_RIGHT,
+                UserActionListener.USER_ACTION_FECC_STEP_RIGHT);
         createFeccPanGestureDetector(mFeccControlBg, mFeccPanView,
-                                     UserActionListener.USER_ACTION_FECC_UP,
-                                     UserActionListener.USER_ACTION_FECC_STEP_UP);
+                UserActionListener.USER_ACTION_FECC_UP,
+                UserActionListener.USER_ACTION_FECC_STEP_UP);
         createFeccPanGestureDetector(mFeccControlBg, mFeccPanView,
-                                     UserActionListener.USER_ACTION_FECC_DOWN,
-                                     UserActionListener.USER_ACTION_FECC_STEP_DOWN);
+                UserActionListener.USER_ACTION_FECC_DOWN,
+                UserActionListener.USER_ACTION_FECC_STEP_DOWN);
     }
 
     private void createFeccBtnGestureDetector(final ImageButton feccButton, final int actionTurn,
-            final int actionStep)
-    {
+                                              final int actionStep) {
         final GestureDetector mGestureDetector = new GestureDetector(feccButton.getContext(),
-                                                                     new GestureDetector.SimpleOnGestureListener()
-                                                                     {
-                                                                         @Override
-                                                                         public void onLongPress(
-                                                                                 MotionEvent e)
-                                                                         {
-                                                                             sendFeccCommand(
-                                                                                     actionTurn);
-                                                                             FeccPanTurnSide(
-                                                                                     feccButton);
-                                                                         }
+                new GestureDetector.SimpleOnGestureListener() {
+                    @Override
+                    public void onLongPress(
+                            MotionEvent e) {
+                        sendFeccCommand(
+                                actionTurn);
+                        FeccPanTurnSide(
+                                feccButton);
+                    }
 
-                                                                         @Override
-                                                                         public boolean onSingleTapConfirmed(
-                                                                                 MotionEvent e)
-                                                                         {
-                                                                             sendFeccCommand(
-                                                                                     actionStep);
-                                                                             FeccPanTurnPingPong(
-                                                                                     feccButton);
-                                                                             return true;
-                                                                         }
-                                                                     });
-        feccButton.setOnTouchListener(new View.OnTouchListener()
-        {
+                    @Override
+                    public boolean onSingleTapConfirmed(
+                            MotionEvent e) {
+                        sendFeccCommand(
+                                actionStep);
+                        FeccPanTurnPingPong(
+                                feccButton);
+                        return true;
+                    }
+                });
+        feccButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                if (mGestureDetector.onTouchEvent(event)) { return true; }
-                switch (event.getAction() & MotionEvent.ACTION_MASK)
-                {
+            public boolean onTouch(View v, MotionEvent event) {
+                if (mGestureDetector.onTouchEvent(event)) {
+                    return true;
+                }
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
                     case MotionEvent.ACTION_UP:
                     case MotionEvent.ACTION_CANCEL:
                         FeccPanTurnOrigin();
                         if (actionTurn == UserActionListener.USER_ACTION_FECC_LEFT ||
-                            actionTurn == UserActionListener.USER_ACTION_FECC_RIGHT ||
-                            actionStep == UserActionListener.USER_ACTION_FECC_STEP_LEFT ||
-                            actionStep == UserActionListener.USER_ACTION_FECC_STEP_RIGHT)
-                        {
+                                actionTurn == UserActionListener.USER_ACTION_FECC_RIGHT ||
+                                actionStep == UserActionListener.USER_ACTION_FECC_STEP_LEFT ||
+                                actionStep == UserActionListener.USER_ACTION_FECC_STEP_RIGHT) {
                             sendFeccCommand(UserActionListener.USER_ACTION_FECC_STOP);
-                        }
-                        else if (actionTurn == UserActionListener.USER_ACTION_FECC_UP ||
-                                 actionTurn == UserActionListener.USER_ACTION_FECC_DOWN ||
-                                 actionStep == UserActionListener.USER_ACTION_FECC_STEP_UP ||
-                                 actionStep == UserActionListener.USER_ACTION_FECC_STEP_DOWN)
-                        {
+                        } else if (actionTurn == UserActionListener.USER_ACTION_FECC_UP ||
+                                actionTurn == UserActionListener.USER_ACTION_FECC_DOWN ||
+                                actionStep == UserActionListener.USER_ACTION_FECC_STEP_UP ||
+                                actionStep == UserActionListener.USER_ACTION_FECC_STEP_DOWN) {
                             sendFeccCommand(UserActionListener.USER_ACTION_FECC_UP_DOWN_STOP);
                         }
                         return true;
@@ -1565,45 +1321,37 @@ public class VideoFragment extends Fragment
         });
     }
 
-    private void createZoomInGestureDetector(ImageView zoomInAdd)
-    {
+    private void createZoomInGestureDetector(ImageView zoomInAdd) {
         final GestureDetector zoomGestureDetector = new GestureDetector(zoomInAdd.getContext(),
-                                                                        new GestureDetector.SimpleOnGestureListener()
-                                                                        {
-                                                                            @Override
-                                                                            public void onLongPress(
-                                                                                    MotionEvent e)
-                                                                            {
-                                                                                L.i(TAG,
-                                                                                    "createZoomInGestureDetector onLongPress...");
-                                                                                actionListener.onUserAction(
-                                                                                        UserActionListener.FECC_ZOOM_IN,
-                                                                                        null);
-                                                                            }
+                new GestureDetector.SimpleOnGestureListener() {
+                    @Override
+                    public void onLongPress(
+                            MotionEvent e) {
+                        L.i(TAG,
+                                "createZoomInGestureDetector onLongPress...");
+                        actionListener.onUserAction(
+                                UserActionListener.FECC_ZOOM_IN,
+                                null);
+                    }
 
-                                                                            @Override
-                                                                            public boolean onSingleTapConfirmed(
-                                                                                    MotionEvent e)
-                                                                            {
-                                                                                L.i(TAG,
-                                                                                    "createZoomInGestureDetector onSingleTapConfirmed...");
-                                                                                actionListener.onUserAction(
-                                                                                        UserActionListener.FECC_STEP_ZOOM_IN,
-                                                                                        null);
-                                                                                return true;
-                                                                            }
-                                                                        });
-        zoomInAdd.setOnTouchListener(new View.OnTouchListener()
-        {
+                    @Override
+                    public boolean onSingleTapConfirmed(
+                            MotionEvent e) {
+                        L.i(TAG,
+                                "createZoomInGestureDetector onSingleTapConfirmed...");
+                        actionListener.onUserAction(
+                                UserActionListener.FECC_STEP_ZOOM_IN,
+                                null);
+                        return true;
+                    }
+                });
+        zoomInAdd.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                if (zoomGestureDetector.onTouchEvent(event))
-                {
+            public boolean onTouch(View v, MotionEvent event) {
+                if (zoomGestureDetector.onTouchEvent(event)) {
                     return true;
                 }
-                switch (event.getAction() & MotionEvent.ACTION_MASK)
-                {
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
                     case MotionEvent.ACTION_UP:
                     case MotionEvent.ACTION_CANCEL:
                         L.i(TAG, "createZoomInGestureDetector ACTION_UP...");
@@ -1615,45 +1363,37 @@ public class VideoFragment extends Fragment
         });
     }
 
-    private void createZoomOutGestureDetector(ImageView zoomInPlus)
-    {
+    private void createZoomOutGestureDetector(ImageView zoomInPlus) {
         final GestureDetector zoomGestureDetector = new GestureDetector(zoomInPlus.getContext(),
-                                                                        new GestureDetector.SimpleOnGestureListener()
-                                                                        {
-                                                                            @Override
-                                                                            public void onLongPress(
-                                                                                    MotionEvent e)
-                                                                            {
-                                                                                L.i(TAG,
-                                                                                    "createZoomOutGestureDetector onLongPress...");
-                                                                                actionListener.onUserAction(
-                                                                                        UserActionListener.FECC_ZOOM_OUT,
-                                                                                        null);
-                                                                            }
+                new GestureDetector.SimpleOnGestureListener() {
+                    @Override
+                    public void onLongPress(
+                            MotionEvent e) {
+                        L.i(TAG,
+                                "createZoomOutGestureDetector onLongPress...");
+                        actionListener.onUserAction(
+                                UserActionListener.FECC_ZOOM_OUT,
+                                null);
+                    }
 
-                                                                            @Override
-                                                                            public boolean onSingleTapConfirmed(
-                                                                                    MotionEvent e)
-                                                                            {
-                                                                                L.i(TAG,
-                                                                                    "createZoomOutGestureDetector onSingleTapConfirmed...");
-                                                                                actionListener.onUserAction(
-                                                                                        UserActionListener.FECC_STEP_ZOOM_OUT,
-                                                                                        null);
-                                                                                return true;
-                                                                            }
-                                                                        });
-        zoomInPlus.setOnTouchListener(new View.OnTouchListener()
-        {
+                    @Override
+                    public boolean onSingleTapConfirmed(
+                            MotionEvent e) {
+                        L.i(TAG,
+                                "createZoomOutGestureDetector onSingleTapConfirmed...");
+                        actionListener.onUserAction(
+                                UserActionListener.FECC_STEP_ZOOM_OUT,
+                                null);
+                        return true;
+                    }
+                });
+        zoomInPlus.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                if (zoomGestureDetector.onTouchEvent(event))
-                {
+            public boolean onTouch(View v, MotionEvent event) {
+                if (zoomGestureDetector.onTouchEvent(event)) {
                     return true;
                 }
-                switch (event.getAction() & MotionEvent.ACTION_MASK)
-                {
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
                     case MotionEvent.ACTION_UP:
                     case MotionEvent.ACTION_CANCEL:
                         L.i(TAG, "createZoomOutGestureDetector ACTION_UP...");
@@ -1667,16 +1407,12 @@ public class VideoFragment extends Fragment
 
     @SuppressLint("ClickableViewAccessibility")
     private void createFeccPanGestureDetector(final ImageView feccBigCircle,
-            final ImageView feccSmallCircle, final int actionTurn, final int actionStep)
-    {
+                                              final ImageView feccSmallCircle, final int actionTurn, final int actionStep) {
         feccBigCircle.setLongClickable(true);
-        feccBigCircle.setOnTouchListener(new View.OnTouchListener()
-        {
+        feccBigCircle.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
-                switch (event.getAction() & MotionEvent.ACTION_MASK)
-                {
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
                     case MotionEvent.ACTION_UP:
                     case MotionEvent.ACTION_POINTER_UP:
                     case MotionEvent.ACTION_CANCEL:
@@ -1685,23 +1421,19 @@ public class VideoFragment extends Fragment
                         sendFeccCommand(UserActionListener.USER_ACTION_FECC_STOP);
                         sendFeccCommand(UserActionListener.USER_ACTION_FECC_UP_DOWN_STOP);
                         if (actionTurn == UserActionListener.USER_ACTION_FECC_LEFT ||
-                            actionTurn == UserActionListener.USER_ACTION_FECC_RIGHT ||
-                            actionStep == UserActionListener.USER_ACTION_FECC_STEP_LEFT ||
-                            actionStep == UserActionListener.USER_ACTION_FECC_STEP_RIGHT)
-                        {
+                                actionTurn == UserActionListener.USER_ACTION_FECC_RIGHT ||
+                                actionStep == UserActionListener.USER_ACTION_FECC_STEP_LEFT ||
+                                actionStep == UserActionListener.USER_ACTION_FECC_STEP_RIGHT) {
                             sendFeccCommand(UserActionListener.USER_ACTION_FECC_STOP);
-                        }
-                        else if (actionTurn == UserActionListener.USER_ACTION_FECC_UP ||
-                                 actionTurn == UserActionListener.USER_ACTION_FECC_DOWN ||
-                                 actionStep == UserActionListener.USER_ACTION_FECC_STEP_UP ||
-                                 actionStep == UserActionListener.USER_ACTION_FECC_STEP_DOWN)
-                        {
+                        } else if (actionTurn == UserActionListener.USER_ACTION_FECC_UP ||
+                                actionTurn == UserActionListener.USER_ACTION_FECC_DOWN ||
+                                actionStep == UserActionListener.USER_ACTION_FECC_STEP_UP ||
+                                actionStep == UserActionListener.USER_ACTION_FECC_STEP_DOWN) {
                             sendFeccCommand(UserActionListener.USER_ACTION_FECC_UP_DOWN_STOP);
                         }
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        if (event.getPointerCount() >= 1)
-                        {
+                        if (event.getPointerCount() >= 1) {
                             mFeccPanView.setImageResource(R.drawable.fecc_middle_icon_press);
                             int bigR = feccBigCircle.getWidth() / 2;
                             int smallR = feccSmallCircle.getWidth() / 2;
@@ -1710,35 +1442,28 @@ public class VideoFragment extends Fragment
                             float eventy = event.getY(0);
                             float absRelX = Math.abs(eventx - bigR);
                             float absRelY = Math.abs(eventy - bigR);
-                            if (eventx > bigR && absRelX > absRelY && feccHorizontalControl)
-                            {
+                            if (eventx > bigR && absRelX > absRelY && feccHorizontalControl) {
                                 mFeccControlBg.setVisibility(View.VISIBLE);
                                 mFeccControlBgRight.setVisibility(View.VISIBLE);
                                 mFeccControlBgLeft.setVisibility(GONE);
                                 mFeccControlBgUp.setVisibility(GONE);
                                 mFeccControlBgDown.setVisibility(GONE);
                                 sendFeccCommand(UserActionListener.USER_ACTION_FECC_RIGHT);
-                            }
-                            else if (eventx < bigR && absRelX > absRelY && feccHorizontalControl)
-                            {
+                            } else if (eventx < bigR && absRelX > absRelY && feccHorizontalControl) {
                                 mFeccControlBg.setVisibility(View.VISIBLE);
                                 mFeccControlBgLeft.setVisibility(View.VISIBLE);
                                 mFeccControlBgRight.setVisibility(GONE);
                                 mFeccControlBgUp.setVisibility(GONE);
                                 mFeccControlBgDown.setVisibility(GONE);
                                 sendFeccCommand(UserActionListener.USER_ACTION_FECC_LEFT);
-                            }
-                            else if (eventy > bigR && absRelY > absRelX && feccVerticalControl)
-                            {
+                            } else if (eventy > bigR && absRelY > absRelX && feccVerticalControl) {
                                 mFeccControlBg.setVisibility(View.VISIBLE);
                                 mFeccControlBgLeft.setVisibility(GONE);
                                 mFeccControlBgRight.setVisibility(GONE);
                                 mFeccControlBgUp.setVisibility(GONE);
                                 mFeccControlBgDown.setVisibility(View.VISIBLE);
                                 sendFeccCommand(UserActionListener.USER_ACTION_FECC_DOWN);
-                            }
-                            else if (eventy < bigR && absRelY > absRelX && feccVerticalControl)
-                            {
+                            } else if (eventy < bigR && absRelY > absRelX && feccVerticalControl) {
                                 mFeccControlBg.setVisibility(View.VISIBLE);
                                 mFeccControlBgLeft.setVisibility(GONE);
                                 mFeccControlBgRight.setVisibility(GONE);
@@ -1747,32 +1472,27 @@ public class VideoFragment extends Fragment
                                 sendFeccCommand(UserActionListener.USER_ACTION_FECC_UP);
                             }
                             double d = Math.sqrt((eventx - bigR) * (eventx - bigR) +
-                                                 (eventy - bigR) * (eventy - bigR));
-                            r += 25; // critical pixel 包含小圆发光距离
-                            if (d > r)
-                            { // moving out of the big circle
-                                float fx = ((float)bigR +
-                                            ((float)r) * (eventx - (float)bigR) / (float)d);
-                                float fy = ((float)bigR +
-                                            ((float)r) * (eventy - (float)bigR) / (float)d);
-                                if (feccHorizontalControl)
-                                {
-                                    feccSmallCircle.setX(
-                                            fx - smallR + 15); // FIXME: 2017/10/18 temp fix
+                                    (eventy - bigR) * (eventy - bigR));
+                            // critical pixel 包含小圆发光距离
+                            r += 25;
+                            // moving out of the big circle
+                            if (d > r) {
+                                float fx = ((float) bigR +
+                                        ((float) r) * (eventx - (float) bigR) / (float) d);
+                                float fy = ((float) bigR +
+                                        ((float) r) * (eventy - (float) bigR) / (float) d);
+                                if (feccHorizontalControl) {
+                                    // FIXME: 2017/10/18 temp fix
+                                    feccSmallCircle.setX(fx - smallR + 15);
                                 }
-                                if (feccVerticalControl)
-                                {
+                                if (feccVerticalControl) {
                                     feccSmallCircle.setY(fy - smallR);
                                 }
-                            }
-                            else
-                            {  // moving inside of the big circle
-                                if (feccHorizontalControl)
-                                {
+                            } else {  // moving inside of the big circle
+                                if (feccHorizontalControl) {
                                     feccSmallCircle.setX(eventx - smallR);
                                 }
-                                if (feccVerticalControl)
-                                {
+                                if (feccVerticalControl) {
                                     feccSmallCircle.setY(eventy - smallR);
                                 }
                             }
@@ -1787,23 +1507,17 @@ public class VideoFragment extends Fragment
         });
     }
 
-    private void sendFeccCommand(int command)
-    {
+    private void sendFeccCommand(int command) {
         if (command == UserActionListener.USER_ACTION_FECC_LEFT ||
-            command == UserActionListener.USER_ACTION_FECC_RIGHT)
-        {
+                command == UserActionListener.USER_ACTION_FECC_RIGHT) {
             if (lastFeccCommand == UserActionListener.USER_ACTION_FECC_UP ||
-                lastFeccCommand == UserActionListener.USER_ACTION_FECC_DOWN)
-            {
+                    lastFeccCommand == UserActionListener.USER_ACTION_FECC_DOWN) {
                 actionListener.onUserAction(UserActionListener.USER_ACTION_FECC_UP_DOWN_STOP, null);
             }
-        }
-        else if (command == UserActionListener.USER_ACTION_FECC_UP ||
-                 command == UserActionListener.USER_ACTION_FECC_DOWN)
-        {
+        } else if (command == UserActionListener.USER_ACTION_FECC_UP ||
+                command == UserActionListener.USER_ACTION_FECC_DOWN) {
             if (lastFeccCommand == UserActionListener.USER_ACTION_FECC_LEFT ||
-                lastFeccCommand == UserActionListener.USER_ACTION_FECC_RIGHT)
-            {
+                    lastFeccCommand == UserActionListener.USER_ACTION_FECC_RIGHT) {
                 actionListener.onUserAction(UserActionListener.USER_ACTION_FECC_STOP, null);
             }
         }
@@ -1811,30 +1525,22 @@ public class VideoFragment extends Fragment
         actionListener.onUserAction(command, null);
     }
 
-    public void setFECCButtonVisible(final boolean visible)
-    {
+    public void setFECCButtonVisible(final boolean visible) {
         Log.i(TAG, " cslName kunkka setFECCButtonVisible==" + visible);
-        if (mFeccControl != null)
-        {
+        if (mFeccControl != null) {
             mFeccControl.setVisibility(visible ? VISIBLE : INVISIBLE);
         }
     }
 
-    public void setZoomInOutVisible(boolean visible)
-    {
-        if (zoomInAdd != null && zoomInPlus != null)
-        {
+    public void setZoomInOutVisible(boolean visible) {
+        if (zoomInAdd != null && zoomInPlus != null) {
             zoomInPlus.setVisibility(visible ? VISIBLE : INVISIBLE);
             zoomInAdd.setVisibility(visible ? VISIBLE : INVISIBLE);
-            if (mFeccUpBtn != null && mFeccDownBtn != null)
-            {
-                if (visible)
-                {
+            if (mFeccUpBtn != null && mFeccDownBtn != null) {
+                if (visible) {
                     mFeccUpBtn.setImageResource(R.drawable.fecc_up);
                     mFeccDownBtn.setImageResource(R.drawable.fecc_down);
-                }
-                else
-                {
+                } else {
                     mFeccUpBtn.setImageResource(R.drawable.fecc_up_disabled);
                     mFeccDownBtn.setImageResource(R.drawable.fecc_down_disabled);
                 }
@@ -1842,150 +1548,112 @@ public class VideoFragment extends Fragment
         }
     }
 
-    public void setFeccTiltControl(final boolean horizontalStatus, final boolean verticalStatus)
-    {
+    public void setFeccTiltControl(final boolean horizontalStatus, final boolean verticalStatus) {
         feccHorizontalControl = horizontalStatus;
         feccVerticalControl = verticalStatus;
-        if (mFeccControlBgLeft != null)
-        {
+        if (mFeccControlBgLeft != null) {
             mFeccControlBgLeft.setImageResource(R.drawable.fecc_left_bg);
         }
-        if (mFeccControlBgRight != null)
-        {
+        if (mFeccControlBgRight != null) {
             mFeccControlBgRight.setImageResource(R.drawable.fecc_right_bg);
         }
-        if (mFeccControlBgUp != null)
-        {
+        if (mFeccControlBgUp != null) {
             mFeccControlBgUp.setImageResource(R.drawable.fecc_up_bg);
         }
-        if (mFeccControlBgDown != null)
-        {
+        if (mFeccControlBgDown != null) {
             mFeccControlBgDown.setImageResource(R.drawable.fecc_down_bg);
         }
-        if (feccHorizontalControl && !feccVerticalControl)
-        {    // only support horizontal
-            if (mFeccUpBtn != null)
-            {
+        // only support horizontal
+        if (feccHorizontalControl && !feccVerticalControl) {
+            if (mFeccUpBtn != null) {
                 mFeccUpBtn.setImageResource(R.drawable.fecc_up_disabled);
             }
-            if (mFeccDownBtn != null)
-            {
+            if (mFeccDownBtn != null) {
                 mFeccDownBtn.setImageResource(R.drawable.fecc_down_disabled);
             }
-            if (mFeccControlBg != null)
-            {
+            if (mFeccControlBg != null) {
                 mFeccControlBg.setImageResource(R.drawable.bg_toolbar_fecc_pan);
             }
-        }
-        else
-        {
-            if (mFeccControlBg != null)
-            {
+        } else {
+            if (mFeccControlBg != null) {
                 mFeccControlBg.setImageResource(R.drawable.bg_toolbar_fecc_pan);
             }
-            if (mFeccDownBtn != null)
-            {
+            if (mFeccDownBtn != null) {
                 mFeccDownBtn.setImageResource(R.drawable.fecc_down);
             }
-            if (mFeccUpBtn != null)
-            {
+            if (mFeccUpBtn != null) {
                 mFeccUpBtn.setImageResource(R.drawable.fecc_up);
             }
         }
-        if (feccVerticalControl && !feccHorizontalControl)
-        {     // only support vertical
-            if (mFeccLeftBtn != null)
-            {
+        // only support vertical
+        if (feccVerticalControl && !feccHorizontalControl) {
+            if (mFeccLeftBtn != null) {
                 mFeccLeftBtn.setImageResource(R.drawable.fecc_left_disabled);
             }
-            if (mFeccRightBtn != null)
-            {
+            if (mFeccRightBtn != null) {
                 mFeccRightBtn.setImageResource(R.drawable.fecc_right_disabled);
             }
-        }
-        else
-        {
-            if (mFeccLeftBtn != null)
-            {
+        } else {
+            if (mFeccLeftBtn != null) {
                 mFeccLeftBtn.setImageResource(R.drawable.fecc_left);
             }
-            if (mFeccRightBtn != null)
-            {
+            if (mFeccRightBtn != null) {
                 mFeccRightBtn.setImageResource(R.drawable.fecc_right);
             }
         }
-        if (feccHorizontalControl)
-        {
-            if (mFeccLeftBtn != null)
-            {
+        if (feccHorizontalControl) {
+            if (mFeccLeftBtn != null) {
                 mFeccLeftBtn.setVisibility(View.VISIBLE);
             }
-            if (mFeccRightBtn != null)
-            {
+            if (mFeccRightBtn != null) {
                 mFeccRightBtn.setVisibility(View.VISIBLE);
             }
         }
-        if (feccVerticalControl)
-        {
-            if (mFeccUpBtn != null)
-            {
+        if (feccVerticalControl) {
+            if (mFeccUpBtn != null) {
                 mFeccUpBtn.setVisibility(View.VISIBLE);
             }
-            if (mFeccDownBtn != null)
-            {
+            if (mFeccDownBtn != null) {
                 mFeccDownBtn.setVisibility(View.VISIBLE);
             }
-        }
-        else
-        {
-            if (mFeccUpBtn != null)
-            {
+        } else {
+            if (mFeccUpBtn != null) {
                 mFeccUpBtn.setVisibility(View.VISIBLE);
             }
-            if (mFeccDownBtn != null)
-            {
+            if (mFeccDownBtn != null) {
                 mFeccDownBtn.setVisibility(View.VISIBLE);
             }
         }
     }
 
     @Override
-    public void setForceLayout(int participantId)
-    {
+    public void setForceLayout(int participantId) {
         NemoSDK.getInstance().forceLayout(participantId);
     }
 
     @Override
     public void notificationLockPeople(boolean isLockClick, boolean mLocalFullScreen,
-            boolean isMute)
-    {
+                                       boolean isMute) {
         this.mLocalFullScreen = mLocalFullScreen;
-        if (isLockClick)
-        {
+        if (isLockClick) {
             isLock = isLockClick;
             Log.i(TAG, "notificationLockPeople==::" + isLock);
-            if (!isWhiteBoardLock)
-            {
+            if (!isWhiteBoardLock) {
                 lockPeople.setVisibility(View.VISIBLE);
             }
         }
     }
 
     @Override
-    public void notificationMute(boolean isRemoteVideo, boolean isMute)
-    {
+    public void notificationMute(boolean isRemoteVideo, boolean isMute) {
     }
 
     //FECC
-    public void FECCListeners()
-    {
-        setActionListener(new UserActionListener()
-        {
+    public void FECCListeners() {
+        setActionListener(new UserActionListener() {
             @Override
-            public void onUserAction(int nAction, Bundle args)
-            {
-                switch (nAction)
-                {
+            public void onUserAction(int nAction, Bundle args) {
+                switch (nAction) {
                     case UserActionListener.USER_ACTION_FECC_LEFT:
                         handleFECCControl(FECCCommand.FECC_TURN_LEFT);
                         break;

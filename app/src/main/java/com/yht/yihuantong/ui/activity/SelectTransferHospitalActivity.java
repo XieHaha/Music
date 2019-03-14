@@ -8,7 +8,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yanzhenjie.nohttp.NoHttp;
@@ -30,9 +29,9 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CooperateHospitalBean;
+import custom.frame.http.data.BaseNetCode;
 import custom.frame.http.data.HttpConstants;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
@@ -133,11 +132,13 @@ public class SelectTransferHospitalActivity extends BaseActivity
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponseList(object,
                             CooperateHospitalBean.class);
-                    if (baseResponse != null && baseResponse.getCode() == 200) {
-                        ArrayList<CooperateHospitalBean> list = baseResponse.getData();
-                        selectHospitalAdapter.setList(list);
-                    } else {
-                        ToastUtil.toast(SelectTransferHospitalActivity.this, baseResponse.getMsg());
+                    if (baseResponse != null) {
+                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
+                            ArrayList<CooperateHospitalBean> list = baseResponse.getData();
+                            selectHospitalAdapter.setList(list);
+                        } else {
+                            ToastUtil.toast(SelectTransferHospitalActivity.this, baseResponse.getMsg());
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

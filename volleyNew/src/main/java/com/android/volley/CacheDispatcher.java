@@ -26,7 +26,7 @@ import java.util.concurrent.BlockingQueue;
 
 /**
  * Provides a thread for performing cache triage on a queue of requests.
- *
+ * <p>
  * Requests added to the specified cache queue are resolved from cache.
  * Any deliverable response is posted back to the caller via a
  * {@link ResponseDelivery}.  Cache misses and responses that require
@@ -37,32 +37,44 @@ public class CacheDispatcher extends Thread {
 
     private static final boolean DEBUG = VolleyLog.DEBUG;
 
-    /** The queue of requests coming in for triage. */
+    /**
+     * The queue of requests coming in for triage.
+     */
     private final BlockingQueue<Request<?>> mCacheQueue;
 
-    /** The queue of requests going out to the network. */
+    /**
+     * The queue of requests going out to the network.
+     */
     private final BlockingQueue<Request<?>> mNetworkQueue;
 
-    /** The cache to read from. */
+    /**
+     * The cache to read from.
+     */
     private final Cache mCache;
 
-    /** For posting responses. */
+    /**
+     * For posting responses.
+     */
     private final ResponseDelivery mDelivery;
 
-    /** Used for telling us to die. */
+    /**
+     * Used for telling us to die.
+     */
     private volatile boolean mQuit = false;
 
-    /** Manage list of waiting requests and de-duplicate requests with same cache key. */
+    /**
+     * Manage list of waiting requests and de-duplicate requests with same cache key.
+     */
     private final WaitingRequestManager mWaitingRequestManager;
 
     /**
      * Creates a new cache triage dispatcher thread.  You must call {@link #start()}
      * in order to begin processing.
      *
-     * @param cacheQueue Queue of incoming requests for triage
+     * @param cacheQueue   Queue of incoming requests for triage
      * @param networkQueue Queue to post requests that require network to
-     * @param cache Cache interface to use for resolution
-     * @param delivery Delivery interface to use for posting responses
+     * @param cache        Cache interface to use for resolution
+     * @param delivery     Delivery interface to use for posting responses
      */
     public CacheDispatcher(
             BlockingQueue<Request<?>> cacheQueue, BlockingQueue<Request<?>> networkQueue,
@@ -85,7 +97,9 @@ public class CacheDispatcher extends Thread {
 
     @Override
     public void run() {
-        if (DEBUG) VolleyLog.v("start new dispatcher");
+        if (DEBUG) {
+            VolleyLog.v("start new dispatcher");
+        }
         Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
 
         // Make a blocking call to initialize the cache.
@@ -186,10 +200,10 @@ public class CacheDispatcher extends Thread {
          * Staging area for requests that already have a duplicate request in flight.
          *
          * <ul>
-         *     <li>containsKey(cacheKey) indicates that there is a request in flight for the given cache
-         *          key.</li>
-         *     <li>get(cacheKey) returns waiting requests for the given cache key. The in flight request
-         *          is <em>not</em> contained in that list. Is null if no requests are staged.</li>
+         * <li>containsKey(cacheKey) indicates that there is a request in flight for the given cache
+         * key.</li>
+         * <li>get(cacheKey) returns waiting requests for the given cache key. The in flight request
+         * is <em>not</em> contained in that list. Is null if no requests are staged.</li>
          * </ul>
          */
         private final Map<String, List<Request<?>>> mWaitingRequests = new HashMap<>();
@@ -200,7 +214,9 @@ public class CacheDispatcher extends Thread {
             mCacheDispatcher = cacheDispatcher;
         }
 
-        /** Request received a valid response that can be used by other waiting requests. */
+        /**
+         * Request received a valid response that can be used by other waiting requests.
+         */
         @Override
         public void onResponseReceived(Request<?> request, Response<?> response) {
             if (response.cacheEntry == null || response.cacheEntry.isExpired()) {
@@ -224,7 +240,9 @@ public class CacheDispatcher extends Thread {
             }
         }
 
-        /** No valid response received from network, release waiting requests. */
+        /**
+         * No valid response received from network, release waiting requests.
+         */
         @Override
         public synchronized void onNoUsableResponseReceived(Request<?> request) {
             String cacheKey = request.getCacheKey();
@@ -252,6 +270,7 @@ public class CacheDispatcher extends Thread {
         /**
          * For cacheable requests, if a request for the same cache key is already in flight,
          * add it to a queue to wait for that in-flight request to finish.
+         *
          * @return whether the request was queued. If false, we should continue issuing the request
          * over the network. If true, we should put the request on hold to be processed when
          * the in-flight request finishes.

@@ -3,7 +3,7 @@ package custom.frame.bean;
 import android.graphics.Bitmap;
 
 /**
- * Created by luozi on 2016/5/31.
+ * @author dundun
  */
 public enum NormImgSize {
     /**
@@ -26,7 +26,7 @@ public enum NormImgSize {
     HEAD_MIDDLE {
         @Override
         public float getNormSize() {
-            return NORM_HEAD_BIG_SIZE / 2;
+            return NORM_HEAD_BIG_SIZE / 2f;
         }
 
         @Override
@@ -40,7 +40,7 @@ public enum NormImgSize {
     HEAD_SMALL {
         @Override
         public float getNormSize() {
-            return NORM_HEAD_BIG_SIZE / 4;
+            return NORM_HEAD_BIG_SIZE / 4f;
         }
 
         @Override
@@ -68,7 +68,7 @@ public enum NormImgSize {
     STATION_MIDDLE {
         @Override
         public float getNormSize() {
-            return NORM_STATION_BIG_SIZE / 2;
+            return NORM_STATION_BIG_SIZE / 2f;
         }
 
         @Override
@@ -83,7 +83,7 @@ public enum NormImgSize {
     STATION_SMALL {
         @Override
         public float getNormSize() {
-            return NORM_STATION_BIG_SIZE / 4;
+            return NORM_STATION_BIG_SIZE / 4f;
         }
 
         @Override
@@ -111,7 +111,7 @@ public enum NormImgSize {
     QUAN_MIDDLE {
         @Override
         public float getNormSize() {
-            return NORM_STATION_BIG_SIZE / 2;
+            return NORM_STATION_BIG_SIZE / 2f;
         }
 
         @Override
@@ -126,7 +126,7 @@ public enum NormImgSize {
     QUAN_SMALL {
         @Override
         public float getNormSize() {
-            return NORM_STATION_BIG_SIZE / 4;
+            return NORM_STATION_BIG_SIZE / 4f;
         }
 
         @Override
@@ -151,17 +151,25 @@ public enum NormImgSize {
     /**
      * 标准站点图片大小
      */
-    float NORM_STATION_BIG_SIZE = 1080f;
+    final float NORM_STATION_BIG_SIZE = 1080f;
 
     NormImgSize() {
 
     }
 
-    //计算图片的缩放值
+    /**
+     * 计算图片的缩放值
+     *
+     * @param bitmap
+     * @return
+     */
     public float getScaleSize(Bitmap bitmap) {
-        if (bitmap == null) {return 1f;}
+        if (bitmap == null) {
+            return 1f;
+        }
         float min = Math.min(bitmap.getWidth(), bitmap.getHeight());
-        float scaleSize = min > getNormSize() ? getNormSize() / min : 1f;//是否图片最小值都大于标准值的大小，如果有则
+        //是否图片最小值都大于标准值的大小，如果有则
+        float scaleSize = min > getNormSize() ? getNormSize() / min : 1f;
         return scaleSize;
     }
 

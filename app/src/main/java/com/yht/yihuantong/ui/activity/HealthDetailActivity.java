@@ -15,7 +15,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
@@ -28,7 +27,7 @@ import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
-import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
+import com.yht.yihuantong.api.notify.NotifyChangeListenerManager;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.dialog.ActionSheetDialog;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
@@ -45,6 +44,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,11 +54,11 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.NormImage;
 import custom.frame.bean.PatientCaseDetailBean;
 import custom.frame.http.Tasks;
+import custom.frame.http.data.BaseNetCode;
 import custom.frame.http.data.HttpConstants;
 import custom.frame.permission.Permission;
 import custom.frame.qiniu.QiniuUtils;
@@ -335,15 +335,17 @@ public class HealthDetailActivity extends BaseActivity
                 try {
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponse(object, String.class);
-                    if (baseResponse != null && baseResponse.getCode() == 200) {
-                        //保存最近联系人
-                        RecentContactUtils.save(patientId);
-                        NotifyChangeListenerServer.getInstance().notifyRecentContactChange("");
-                        ToastUtil.toast(HealthDetailActivity.this, baseResponse.getMsg());
-                        setResult(RESULT_OK);
-                        finish();
-                    } else {
-                        ToastUtil.toast(HealthDetailActivity.this, baseResponse.getMsg());
+                    if (baseResponse != null) {
+                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
+                            //保存最近联系人
+                            RecentContactUtils.save(patientId);
+                            NotifyChangeListenerManager.getInstance().notifyRecentContactChange("");
+                            ToastUtil.toast(HealthDetailActivity.this, baseResponse.getMsg());
+                            setResult(RESULT_OK);
+                            finish();
+                        } else {
+                            ToastUtil.toast(HealthDetailActivity.this, baseResponse.getMsg());
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -399,16 +401,19 @@ public class HealthDetailActivity extends BaseActivity
                 try {
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponse(object, String.class);
-                    if (baseResponse != null && baseResponse.getCode() == 200) {
-                        ToastUtil.toast(HealthDetailActivity.this, baseResponse.getMsg());
-                        ivTitlebBarMore.setVisibility(View.VISIBLE);
-                        tvTitleBarMore.setVisibility(View.GONE);
-                        //                        initWidght(false);
-                        setResult(RESULT_OK);
-                        finish();
-                    } else {
-                        ToastUtil.toast(HealthDetailActivity.this, baseResponse.getMsg());
+                    if (baseResponse != null) {
+                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
+                            ToastUtil.toast(HealthDetailActivity.this, baseResponse.getMsg());
+                            ivTitlebBarMore.setVisibility(View.VISIBLE);
+                            tvTitleBarMore.setVisibility(View.GONE);
+                            //                        initWidght(false);
+                            setResult(RESULT_OK);
+                            finish();
+                        } else {
+                            ToastUtil.toast(HealthDetailActivity.this, baseResponse.getMsg());
+                        }
                     }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                     ToastUtil.toast(HealthDetailActivity.this, e.getMessage());
@@ -485,6 +490,8 @@ public class HealthDetailActivity extends BaseActivity
                 intent.putExtra(KEY_PUBLIC_STRING, caseDealType);
                 startActivityForResult(intent, CODE_CASE_DEAL_WAY);
                 break;
+            default:
+                break;
         }
     }
 
@@ -507,6 +514,8 @@ public class HealthDetailActivity extends BaseActivity
                 intent.putExtra(KEY_PUBLIC_STRING, caseCheck);
                 startActivityForResult(intent, CODE_CASE_CHECK);
                 break;
+            default:
+                break;
         }
     }
 
@@ -516,9 +525,7 @@ public class HealthDetailActivity extends BaseActivity
     private void selectDate() {
         Calendar selectedDate = Calendar.getInstance();
         Calendar startDate = Calendar.getInstance();
-        //startDate.set(2013,1,1);
         Calendar endDate = Calendar.getInstance();
-        //endDate.set(2020,1,1);
         //正确设置方式 原因：注意事项有说明
         startDate.set(1900, 1, 1);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -629,7 +636,11 @@ public class HealthDetailActivity extends BaseActivity
         public void run() {
             super.run();
             for (Uri path : mSelectPath) {
-                imageList.add(QiniuUtils.initQuanBitmaps(path, HealthDetailActivity.this));
+                try {
+                    imageList.add(QiniuUtils.initQuanBitmaps(path, HealthDetailActivity.this));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             dealImgHandler.sendEmptyMessage(0);
         }
@@ -755,6 +766,8 @@ public class HealthDetailActivity extends BaseActivity
             case CODE_CASE_DEAL_WAY:
                 caseDealType = data.getStringExtra(KEY_PUBLIC);
                 tvCaseDealType.setText(caseDealType);
+                break;
+            default:
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);

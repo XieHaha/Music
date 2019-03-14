@@ -4,12 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
+import com.yht.yihuantong.api.notify.NotifyChangeListenerManager;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.LabelsView;
 import com.yht.yihuantong.utils.AllUtils;
@@ -17,7 +16,6 @@ import com.yht.yihuantong.utils.AllUtils;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CombineBean;
 import custom.frame.bean.CombineChildBean;
@@ -259,13 +257,13 @@ public class AddFriendsPatientActivity extends BaseActivity {
                 break;
             case REFUSE_PATIENT_APPLY:
                 ToastUtil.toast(this, response.getMsg());
-                NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("");
+                NotifyChangeListenerManager.getInstance().notifyPatientStatusChange("");
                 setResult(RESULT_OK);
                 finish();
                 break;
             case AGREE_PATIENT_APPLY:
                 ToastUtil.toast(this, response.getMsg());
-                NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("add");
+                NotifyChangeListenerManager.getInstance().notifyPatientStatusChange("add");
                 setResult(RESULT_OK);
                 finish();
                 break;

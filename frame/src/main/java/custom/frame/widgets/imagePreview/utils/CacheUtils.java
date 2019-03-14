@@ -23,7 +23,9 @@ public class CacheUtils {
 
     LruBitmapMemoryCache memoryCache;
     BitmapDiskLruCache bitmapDiskLruCache;
-    // -1 不请求； 0 只请求大图，缓存大图； 1 请求大图，缓存大图小图； 2 请求大小图，缓存大小图
+    /**
+     * -1 不请求； 0 只请求大图，缓存大图； 1 请求大图，缓存大图小图； 2 请求大小图，缓存大小图
+     */
     private int LOAD_STATE = -1;
 
     private CacheUtils(Context context) {
@@ -62,13 +64,8 @@ public class CacheUtils {
             }
         } else {
             if (bigBmp != null) {
-                if (smallBmp != null) {
-                    //URL不同，都不空,不请求
-                    LOAD_STATE = -1;
-                } else {
-                    //URL不同，大图不空小图空，不请求
-                    LOAD_STATE = -1;
-                }
+                //URL不同，都不空,不请求
+                LOAD_STATE = -1;
             } else {
                 if (smallBmp != null) {
                     //URL不同，小图不空大图为空，请求大图，不显示默认背景
@@ -122,8 +119,7 @@ public class CacheUtils {
     /**
      * 磁盘缓存管理
      */
-    public boolean addToDisk(String imageUri, Bitmap bitmap) throws IOException
-    {
+    public boolean addToDisk(String imageUri, Bitmap bitmap) throws IOException {
         return bitmapDiskLruCache.cacheImageFileToDisk(imageUri, bitmap);
     }
 

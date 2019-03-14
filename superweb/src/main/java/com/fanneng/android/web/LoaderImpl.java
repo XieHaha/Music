@@ -21,8 +21,9 @@ public class LoaderImpl implements ILoader {
 
     LoaderImpl(WebView webView, Map<String, String> map) {
         this.mWebView = webView;
-        if (this.mWebView == null)
-            new NullPointerException("webview is null");
+        if (this.mWebView == null) {
+            throw new NullPointerException("webview is null");
+        }
 
         this.headers = map;
         mHandler = new Handler(Looper.getMainLooper());
@@ -60,10 +61,11 @@ public class LoaderImpl implements ILoader {
         /*if (TextUtils.isEmpty(url))
             throw new UrlCommonException("url is null or '' or not startsWith http ,javascript , file , please check url format");*/
 
-        if (!SuperWebX5Utils.isEmptyMap(this.headers))
+        if (!SuperWebX5Utils.isEmptyMap(this.headers)) {
             this.mWebView.loadUrl(url, headers);
-        else
+        } else {
             this.mWebView.loadUrl(url);
+        }
     }
 
     @Override

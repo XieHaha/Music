@@ -136,8 +136,7 @@ public class CooperateDocFragment extends BaseFragment
         cooperateDocListAdapter.addHeaderView(headerView);
         cooperateDocListAdapter.addFooterView(footerView);
         page = 0;
-        iNotifyChangeListenerServer = ApiManager.getInstance()
-                .getServer(INotifyChangeListenerServer.class);
+        iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         //获取合作医生申请
         getApplyCooperateList();
         getCooperateList();

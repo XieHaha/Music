@@ -20,15 +20,16 @@ import custom.frame.utils.DirHelper;
 
 
 /**
- * Created by luozi on 2016/6/6.
+ * @author dundun
  */
 public class QiniuUtils {
 
     /**
      * 初始化桩友圈发布信息不同大小的bitmap
      */
-    public static NormImage initQuanBitmaps(Uri path, Activity context) {
+    public static NormImage initQuanBitmaps(Uri path, Activity context) throws IOException {
         Bitmap res = null;
+        FileOutputStream fOutBig = null, fOutMiddle = null, fOutSmall = null;
         try {
             res = getBitmapFormUri(context, path);
         } catch (IOException e) {
@@ -73,23 +74,23 @@ public class QiniuUtils {
             middleFile.createNewFile();
             smallFile.createNewFile();
 
-            FileOutputStream fOutBig = new FileOutputStream(bigFile);
-            FileOutputStream fOutMiddle = new FileOutputStream(middleFile);
-            FileOutputStream fOutSmall = new FileOutputStream(smallFile);
+            fOutBig = new FileOutputStream(bigFile);
+            fOutMiddle = new FileOutputStream(middleFile);
+            fOutSmall = new FileOutputStream(smallFile);
 
             bigBitmap.compress(Bitmap.CompressFormat.JPEG, 80, fOutBig);
             middleBitmap.compress(Bitmap.CompressFormat.JPEG, 80, fOutMiddle);
             smallBitmap.compress(Bitmap.CompressFormat.JPEG, 80, fOutSmall);
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
             fOutBig.flush();
             fOutBig.close();
             fOutMiddle.flush();
             fOutMiddle.close();
             fOutSmall.flush();
             fOutSmall.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return localImage;
     }
@@ -97,7 +98,8 @@ public class QiniuUtils {
     /**
      * 初始化用户头像不同大小的bitmap
      */
-    public static NormImage initHeadBitmaps(String path, Context context) {
+    public static NormImage initHeadBitmaps(String path, Context context) throws IOException {
+        FileOutputStream fOutBig = null, fOutMiddle = null, fOutSmall = null;
         Bitmap res = BitmapFactory.decodeFile(path);
         NormImage localImage = new NormImage();
         SoleKeyUtils soleKeyUtils = new SoleKeyUtils();
@@ -138,23 +140,24 @@ public class QiniuUtils {
             middleFile.createNewFile();
             smallFile.createNewFile();
 
-            FileOutputStream fOutBig = new FileOutputStream(bigFile);
-            FileOutputStream fOutMiddle = new FileOutputStream(middleFile);
-            FileOutputStream fOutSmall = new FileOutputStream(smallFile);
+            fOutBig = new FileOutputStream(bigFile);
+            fOutMiddle = new FileOutputStream(middleFile);
+            fOutSmall = new FileOutputStream(smallFile);
 
             bigBitmap.compress(Bitmap.CompressFormat.JPEG, 80, fOutBig);
             middleBitmap.compress(Bitmap.CompressFormat.JPEG, 80, fOutMiddle);
             smallBitmap.compress(Bitmap.CompressFormat.JPEG, 80, fOutSmall);
 
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
             fOutBig.flush();
             fOutBig.close();
             fOutMiddle.flush();
             fOutMiddle.close();
             fOutSmall.flush();
             fOutSmall.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return localImage;
     }
@@ -168,8 +171,10 @@ public class QiniuUtils {
         InputStream input = ac.getContentResolver().openInputStream(uri);
         BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
         onlyBoundsOptions.inJustDecodeBounds = true;
-        onlyBoundsOptions.inDither = true;//optional
-        onlyBoundsOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;//optional
+        //optional
+        onlyBoundsOptions.inDither = true;
+        //optional
+        onlyBoundsOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
         BitmapFactory.decodeStream(input, null, onlyBoundsOptions);
         input.close();
         int originalWidth = onlyBoundsOptions.outWidth;
@@ -178,13 +183,18 @@ public class QiniuUtils {
             return null;
         }
         //图片分辨率以480x800为标准
-        float hh = 800f;//这里设置高度为800f
-        float ww = 480f;//这里设置宽度为480f
+        //这里设置高度为800f
+        float hh = 800f;
+        //这里设置宽度为480f
+        float ww = 480f;
         //缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
-        int be = 1;//be=1表示不缩放
-        if (originalWidth > originalHeight && originalWidth > ww) {//如果宽度大的话根据宽度固定大小缩放
+        //be=1表示不缩放
+        int be = 1;
+        //如果宽度大的话根据宽度固定大小缩放
+        if (originalWidth > originalHeight && originalWidth > ww) {
             be = (int) (originalWidth / ww);
-        } else if (originalWidth < originalHeight && originalHeight > hh) {//如果高度高的话根据宽度固定大小缩放
+            //如果高度高的话根据宽度固定大小缩放
+        } else if (originalWidth < originalHeight && originalHeight > hh) {
             be = (int) (originalHeight / hh);
         }
         if (be <= 0) {
@@ -192,14 +202,18 @@ public class QiniuUtils {
         }
         //比例压缩
         BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-        bitmapOptions.inSampleSize = be;//设置缩放比例
-        bitmapOptions.inDither = true;//optional
-        bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;//optional
+        //设置缩放比例
+        bitmapOptions.inSampleSize = be;
+        //optional
+        bitmapOptions.inDither = true;
+        //optional
+        bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;
         input = ac.getContentResolver().openInputStream(uri);
         Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
         input.close();
 
-        return compressImage(bitmap);//再进行质量压缩
+        //再进行质量压缩
+        return compressImage(bitmap);
     }
 
     /**
@@ -211,16 +225,23 @@ public class QiniuUtils {
     public static Bitmap compressImage(Bitmap image) {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+        //质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         int options = 100;
-        while (baos.toByteArray().length / 1024 > 100) {  //循环判断如果压缩后图片是否大于100kb,大于继续压缩
-            baos.reset();//重置baos即清空baos
+        //循环判断如果压缩后图片是否大于100kb,大于继续压缩
+        while (baos.toByteArray().length / 1024 > 100) {
+            //重置baos即清空baos
+            baos.reset();
             //第一个参数 ：图片格式 ，第二个参数： 图片质量，100为最高，0为最差  ，第三个参数：保存压缩后的数据的流
-            image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
-            options -= 10;//每次都减少10
+            //这里压缩options%，把压缩后的数据存放到baos中
+            image.compress(Bitmap.CompressFormat.JPEG, options, baos);
+            //每次都减少10
+            options -= 10;
         }
-        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
-        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
+        //把压缩后的数据baos存放到ByteArrayInputStream中
+        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
+        //把ByteArrayInputStream数据生成图片
+        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);
         return bitmap;
     }
 

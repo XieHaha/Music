@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
+import com.yht.yihuantong.api.notify.NotifyChangeListenerManager;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.utils.RecentContactUtils;
@@ -124,7 +124,7 @@ public class ServiceInfoActivity extends BaseActivity
         {
             case DELETE_PATIENT:
                 RecentContactUtils.delete(patientBean.getPatientId());
-                NotifyChangeListenerServer.getInstance().notifyRecentContactChange("");
+                NotifyChangeListenerManager.getInstance().notifyRecentContactChange("");
                 ToastUtil.toast(this, response.getMsg());
                 setResult(RESULT_OK);
                 finish();

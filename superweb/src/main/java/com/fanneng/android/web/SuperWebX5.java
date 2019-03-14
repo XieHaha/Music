@@ -113,8 +113,9 @@ public class SuperWebX5 {
         this.mWebSettings = superBuilder.mWebSettings;
         this.mIEventHandler = superBuilder.mIEventHandler;
         TAG_TARGET = ACTIVITY_TAG;
-        if (superBuilder.mJavaObject != null && superBuilder.mJavaObject.isEmpty())
+        if (superBuilder.mJavaObject != null && superBuilder.mJavaObject.isEmpty()) {
             this.mJavaObjects.putAll((Map<? extends String, ?>) superBuilder.mJavaObject);
+        }
         this.mChromeClientCallbackManager = superBuilder.mChromeClientCallbackManager;
         this.mWebViewClientCallbackManager = superBuilder.mWebViewClientCallbackManager;
 
@@ -150,8 +151,9 @@ public class SuperWebX5 {
         this.mWebViewClient = superBuilderFragment.mWebViewClient;
         mSuperWebX5 = this;
         this.mWebSettings = superBuilderFragment.mWebSettings;
-        if (superBuilderFragment.mJavaObject != null && superBuilderFragment.mJavaObject.isEmpty())
+        if (superBuilderFragment.mJavaObject != null && superBuilderFragment.mJavaObject.isEmpty()) {
             this.mJavaObjects.putAll((Map<? extends String, ?>) superBuilderFragment.mJavaObject);
+        }
         this.mChromeClientCallbackManager = superBuilderFragment.mChromeClientCallbackManager;
         this.mWebViewClientCallbackManager = superBuilderFragment.mWebViewClientCallbackManager;
         this.mSecurityType = superBuilderFragment.mSecurityType;
@@ -174,8 +176,9 @@ public class SuperWebX5 {
     }
 
     private void init() {
-        if (this.mDownloadListener == null)
+        if (this.mDownloadListener == null) {
             mDefaultMsgConfig = new DefaultMsgConfig();
+        }
         doCompat();
         doSafeCheck();
     }
@@ -249,8 +252,9 @@ public class SuperWebX5 {
 
 
     public static SuperBuilder with(@NonNull Activity activity) {
-        if (activity == null)
+        if (activity == null) {
             throw new NullPointerException("activity can not null");
+        }
         return new SuperBuilder(activity);
     }
 
@@ -258,8 +262,9 @@ public class SuperWebX5 {
 
 
         Activity mActivity = null;
-        if ((mActivity = fragment.getActivity()) == null)
+        if ((mActivity = fragment.getActivity()) == null) {
             throw new NullPointerException("activity can not null");
+        }
         return new SuperBuilderFragment(mActivity, fragment);
     }
 
@@ -267,8 +272,9 @@ public class SuperWebX5 {
 
     private EventInterceptor getInterceptor() {
 
-        if (this.mEventInterceptor != null)
+        if (this.mEventInterceptor != null) {
             return this.mEventInterceptor;
+        }
 
         if (mIVideo instanceof VideoImpl) {
             return this.mEventInterceptor = (EventInterceptor) this.mIVideo;
@@ -328,12 +334,14 @@ public class SuperWebX5 {
         if (mJsInterfaceHolder == null) {
             mJsInterfaceHolder = JsInterfaceHolderImpl.getJsInterfaceHolder(mWebCreator.get(), this.mSecurityType);
         }
-        if (mJavaObjects != null && !mJavaObjects.isEmpty()) {
+        if (mJavaObjects != null && !mJavaObjects.isEmpty() && mJsInterfaceHolder != null) {
             mJsInterfaceHolder.addJavaObjects(mJavaObjects);
         }
-        mWebListenerManager.setDownLoader(mWebCreator.get(), getLoadListener());
-        mWebListenerManager.setWebChromeClient(mWebCreator.get(), getChromeClient());
-        mWebListenerManager.setWebViewClient(mWebCreator.get(), getClient());
+        if (mWebListenerManager != null) {
+            mWebListenerManager.setDownLoader(mWebCreator.get(), getLoadListener());
+            mWebListenerManager.setWebChromeClient(mWebCreator.get(), getChromeClient());
+            mWebListenerManager.setWebViewClient(mWebCreator.get(), getClient());
+        }
 
 
         return this;
@@ -344,11 +352,11 @@ public class SuperWebX5 {
         DownloadListener mDownloadListener = this.mDownloadListener;
         if (mDownloadListener == null) {
             this.mDownloadListener = mDownloadListener = new DefaultDownLoaderImpl.Builder().setActivity(mActivity)
-                    .setEnableIndicator(true)//
-                    .setForce(false)//
-                    .setDownLoadResultListeners(downLoadResultListeners)//
-                    .setDownLoadMsgConfig(mDefaultMsgConfig.getDownLoadMsgConfig())//
-                    .setParallelDownload(isParallelDl)//
+                    .setEnableIndicator(true)
+                    .setForce(false)
+                    .setDownLoadResultListeners(downLoadResultListeners)
+                    .setDownLoadMsgConfig(mDefaultMsgConfig.getDownLoadMsgConfig())
+                    .setParallelDownload(isParallelDl)
                     .setPermissionInterceptor(this.mPermissionInterceptor)
                     .setIcon(icon)
                     .create();
@@ -469,14 +477,17 @@ public class SuperWebX5 {
             mIFileUploadChooser = mDefaultChromeClient.pop();
         }
 
-        if (mIFileUploadChooser == null)
+        if (mIFileUploadChooser == null) {
             mIFileUploadChooser = mSuperWebJsInterfaceCompat.pop();
+        }
         Log.i("Info", "file upload:" + mIFileUploadChooser);
-        if (mIFileUploadChooser != null)
+        if (mIFileUploadChooser != null) {
             mIFileUploadChooser.fetchFilePathFromIntent(requestCode, resultCode, data);
+        }
 
-        if (mIFileUploadChooser != null)
+        if (mIFileUploadChooser != null) {
             mIFileUploadChooser = null;
+        }
     }
 
     public PermissionInterceptor getPermissionInterceptor() {
@@ -527,8 +538,9 @@ public class SuperWebX5 {
         private boolean isInterceptUnkownScheme;
 
         private void addJavaObject(String key, Object o) {
-            if (mJavaObject == null)
+            if (mJavaObject == null) {
                 mJavaObject = new ArrayMap<>();
+            }
             mJavaObject.put(key, o);
         }
 
@@ -579,8 +591,9 @@ public class SuperWebX5 {
 
 
         private void addHeader(String k, String v) {
-            if (headers == null)
+            if (headers == null) {
                 headers = new ArrayMap<>();
+            }
 
             headers.put(k, v);
 
@@ -881,21 +894,24 @@ public class SuperWebX5 {
         }
 
         private PreSuperWeb buildSuperWeb() {
-            if (this.mViewGroup == null)
+            if (this.mViewGroup == null) {
                 throw new NullPointerException("ViewGroup is null,please check you params");
+            }
             return new PreSuperWeb(HookManager.hookSuperWeb(new SuperWebX5(this), this));
         }
 
         private void addJavaObject(String key, Object o) {
-            if (mJavaObject == null)
+            if (mJavaObject == null) {
                 mJavaObject = new ArrayMap<>();
+            }
             mJavaObject.put(key, o);
         }
 
         private void addHeader(String k, String v) {
 
-            if (additionalHttpHeaders == null)
+            if (additionalHttpHeaders == null) {
                 additionalHttpHeaders = new ArrayMap<>();
+            }
             additionalHttpHeaders.put(k, v);
 
         }

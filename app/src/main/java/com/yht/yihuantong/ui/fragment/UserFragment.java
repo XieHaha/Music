@@ -212,7 +212,7 @@ public class UserFragment extends BaseFragment
         View mStateBarFixer = view.findViewById(R.id.status_bar_fix);
         mStateBarFixer.setLayoutParams(
                 new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        getStateBarHeight(getActivity())));//填充状态栏
+                        getStateBarHeight(getActivity())));
         view.findViewById(R.id.fragmrnt_user_info_setting_layout).setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_info_train_layout).setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_info_service_layout).setOnClickListener(this);
@@ -228,8 +228,7 @@ public class UserFragment extends BaseFragment
          * 权限管理类
          */
         permissionHelper = PermissionHelper.getInstance(getActivity(), onPermissionCallback);
-        iNotifyChangeListenerServer = ApiManager.getInstance()
-                .getServer(INotifyChangeListenerServer.class);
+        iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
     }
 
     @Override

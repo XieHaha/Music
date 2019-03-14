@@ -139,10 +139,7 @@ public class PatientsActivity extends BaseActivity
         patientsListAdapter = new PatientsListAdapter(this, patientBeanList);
         patientsListAdapter.addFooterView(footerView);
         patientsListAdapter.addHeaderView(headerView);
-        //只显示在个人页面
-        //        patientsListAdapter.addHeaderView(exHeaderView);
-        iNotifyChangeListenerServer = ApiManager.getInstance()
-                .getServer(INotifyChangeListenerServer.class);
+        iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         getPatientsData();
         getApplyPatientList();
     }

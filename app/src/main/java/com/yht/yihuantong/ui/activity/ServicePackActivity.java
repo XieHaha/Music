@@ -29,7 +29,7 @@ import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
+import com.yht.yihuantong.api.notify.NotifyChangeListenerManager;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.adapter.RegistrationAdapter;
 import com.yht.yihuantong.ui.adapter.RegistrationProductAdapter;
@@ -49,13 +49,14 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import custom.frame.bean.BaseResponse;
+import custom.frame.bean.CooperateHospitalBean;
 import custom.frame.bean.HospitalBean;
 import custom.frame.bean.HospitalProductBean;
 import custom.frame.bean.HospitalProductTypeBean;
 import custom.frame.bean.PatientBean;
 import custom.frame.http.Tasks;
+import custom.frame.http.data.BaseNetCode;
 import custom.frame.http.data.HttpConstants;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.GlideHelper;
@@ -423,17 +424,19 @@ public class ServicePackActivity<T> extends BaseActivity {
                 try {
                     //保存最近联系人
                     RecentContactUtils.save(patientBean.getPatientId());
-                    NotifyChangeListenerServer.getInstance().notifyRecentContactChange("");
+                    NotifyChangeListenerManager.getInstance().notifyRecentContactChange("");
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponse(object, String.class);
-                    if (baseResponse != null && baseResponse.getCode() == 200) {
-                        HintDialog hintDialog = new HintDialog(ServicePackActivity.this);
-                        hintDialog.isShowCancelBtn(false);
-                        hintDialog.setContentString("已发送给患者，请等待患者答复");
-                        hintDialog.setOnEnterClickListener(() -> finish());
-                        hintDialog.show();
-                    } else {
-                        ToastUtil.toast(ServicePackActivity.this, baseResponse.getMsg());
+                    if (baseResponse != null) {
+                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
+                            HintDialog hintDialog = new HintDialog(ServicePackActivity.this);
+                            hintDialog.isShowCancelBtn(false);
+                            hintDialog.setContentString("已发送给患者，请等待患者答复");
+                            hintDialog.setOnEnterClickListener(() -> finish());
+                            hintDialog.show();
+                        } else {
+                            ToastUtil.toast(ServicePackActivity.this, baseResponse.getMsg());
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

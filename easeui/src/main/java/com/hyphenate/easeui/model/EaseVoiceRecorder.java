@@ -1,19 +1,18 @@
 package com.hyphenate.easeui.model;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Date;
+import android.content.Context;
+import android.media.MediaRecorder;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.text.format.Time;
 
 import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.PathUtil;
 
-import android.content.Context;
-import android.media.MediaRecorder;
-import android.os.Handler;
-import android.os.SystemClock;
-import android.text.format.Time;
+import java.io.File;
+import java.io.IOException;
 
 public class EaseVoiceRecorder {
     MediaRecorder recorder;
@@ -48,8 +47,10 @@ public class EaseVoiceRecorder {
             recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-            recorder.setAudioChannels(1); // MONO
-            recorder.setAudioSamplingRate(8000); // 8000Hz
+            // MONO
+            recorder.setAudioChannels(1);
+            // 8000Hz
+            recorder.setAudioSamplingRate(8000);
             recorder.setAudioEncodingBitRate(64); // seems if change this to
                                                     // 128, still got same file
                                                     // size.
@@ -84,7 +85,7 @@ public class EaseVoiceRecorder {
                 }
             }
         }).start();
-        startTime = new Date().getTime();
+        startTime = System.currentTimeMillis();
         EMLog.d("voice", "start voice recording to file:" + file.getAbsolutePath());
         return file == null ? null : file.getAbsolutePath();
     }
@@ -124,13 +125,14 @@ public class EaseVoiceRecorder {
                 file.delete();
                 return EMError.FILE_INVALID;
             }
-            int seconds = (int) (new Date().getTime() - startTime) / 1000;
+            int seconds = (int) (System.currentTimeMillis() - startTime) / 1000;
             EMLog.d("voice", "voice recording finished. seconds:" + seconds + " file length:" + file.length());
             return seconds;
         }
         return 0;
     }
 
+    @Override
     protected void finalize() throws Throwable {
         super.finalize();
         if (recorder != null) {

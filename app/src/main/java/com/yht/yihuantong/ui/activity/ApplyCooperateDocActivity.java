@@ -8,11 +8,10 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
+import com.yht.yihuantong.api.notify.NotifyChangeListenerManager;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.adapter.ApplyCooperateAdapter;
 
@@ -20,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CooperateDocBean;
 import custom.frame.http.Tasks;
@@ -144,7 +142,7 @@ public class ApplyCooperateDocActivity extends BaseActivity
                 ToastUtil.toast(this, response.getMsg());
                 getApplyCooperateList();
                 //通知合作医生列表
-                NotifyChangeListenerServer.getInstance().notifyDoctorStatusChange("");
+                NotifyChangeListenerManager.getInstance().notifyDoctorStatusChange("");
                 break;
             default:
                 break;

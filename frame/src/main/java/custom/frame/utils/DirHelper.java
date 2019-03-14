@@ -15,16 +15,16 @@ import java.io.File;
 
 /**
  * 目录管理帮助类
+ *
+ * @author dundun
  */
-public final class DirHelper
-{
+public final class DirHelper {
     /**
      * 程序根目录
      */
     public static String PATH_APP_ROOT = "YHT";
 
-    public static void init(String appName)
-    {
+    public static void init(String appName) {
         PATH_APP_ROOT = appName;
     }
 
@@ -66,8 +66,7 @@ public final class DirHelper
      *
      * @return
      */
-    public static String getRootPath()
-    {
+    public static String getRootPath() {
         return getPath(PATH_APP_ROOT);
     }
 
@@ -76,8 +75,7 @@ public final class DirHelper
      *
      * @return
      */
-    public static String getPathCache()
-    {
+    public static String getPathCache() {
         return getPath(PATH_CACHE);
     }
 
@@ -86,8 +84,7 @@ public final class DirHelper
      *
      * @return
      */
-    public static String getPathFile()
-    {
+    public static String getPathFile() {
         return getPath(PATH_FILE);
     }
 
@@ -96,8 +93,7 @@ public final class DirHelper
      *
      * @return
      */
-    public static String getPathImage()
-    {
+    public static String getPathImage() {
         return getPath(PATH_IMAGE);
     }
 
@@ -106,8 +102,7 @@ public final class DirHelper
      *
      * @return
      */
-    public static String getPathTemp()
-    {
+    public static String getPathTemp() {
         return getPath(PATH_TEMP);
     }
 
@@ -116,8 +111,7 @@ public final class DirHelper
      *
      * @return
      */
-    public static String getPathThumb()
-    {
+    public static String getPathThumb() {
         return getPath(PATH_THUMB);
     }
 
@@ -126,8 +120,7 @@ public final class DirHelper
      *
      * @return
      */
-    public static String getPathLog()
-    {
+    public static String getPathLog() {
         return getPath(PATH_LOG);
     }
 
@@ -136,8 +129,7 @@ public final class DirHelper
      *
      * @return
      */
-    public static String getPathVideo()
-    {
+    public static String getPathVideo() {
         return getPath(PATH_VIDEO);
     }
 
@@ -146,8 +138,7 @@ public final class DirHelper
      *
      * @return
      */
-    public static String getPathVoice()
-    {
+    public static String getPathVoice() {
         return getPath(PATH_VOICE);
     }
 
@@ -157,32 +148,41 @@ public final class DirHelper
      * @param dir 目录名
      * @return 目录路径
      */
-    private static String getPath(String dir)
-    {
+    private static String getPath(String dir) {
         String root = addPath(Environment.getExternalStorageDirectory().getPath(), PATH_APP_ROOT);
-        if (PATH_APP_ROOT.equals(dir)) { return checkDir(root); }
-        else if (PATH_TEMP.equals(dir)) { return checkDir(addPath(root, PATH_TEMP)); }
-        else if (PATH_LOG.equals(dir)) { return checkDir(addPath(root, PATH_LOG)); }
-        else if (PATH_IMAGE.equals(dir)) { return checkDir(addPath(root, PATH_IMAGE)); }
-        else if (PATH_VOICE.equals(dir)) { return checkDir(addPath(root, PATH_VOICE)); }
-        else if (PATH_FILE.equals(dir)) { return checkDir(addPath(root, PATH_FILE)); }
-        else if (PATH_VIDEO.equals(dir)) { return checkDir(addPath(root, PATH_VIDEO)); }
-        else if (PATH_THUMB.equals(dir)) { return checkDir(addPath(root, PATH_THUMB)); }
-        else if (PATH_CACHE.equals(dir)) { return checkDir(addPath(root, PATH_CACHE)); }
+        if (PATH_APP_ROOT.equals(dir)) {
+            return checkDir(root);
+        } else if (PATH_TEMP.equals(dir)) {
+            return checkDir(addPath(root, PATH_TEMP));
+        } else if (PATH_LOG.equals(dir)) {
+            return checkDir(addPath(root, PATH_LOG));
+        } else if (PATH_IMAGE.equals(dir)) {
+            return checkDir(addPath(root, PATH_IMAGE));
+        } else if (PATH_VOICE.equals(dir)) {
+            return checkDir(addPath(root, PATH_VOICE));
+        } else if (PATH_FILE.equals(dir)) {
+            return checkDir(addPath(root, PATH_FILE));
+        } else if (PATH_VIDEO.equals(dir)) {
+            return checkDir(addPath(root, PATH_VIDEO));
+        } else if (PATH_THUMB.equals(dir)) {
+            return checkDir(addPath(root, PATH_THUMB));
+        } else if (PATH_CACHE.equals(dir)) {
+            return checkDir(addPath(root, PATH_CACHE));
+        }
         return checkDir(root);
     }
 
     //检查目录是否存在，如果不存在则创建，并返回目录路径
-    private static String checkDir(String path)
-    {
+    private static String checkDir(String path) {
         File file = new File(path);
-        if (!file.exists()) { file.mkdirs(); }
+        if (!file.exists()) {
+            file.mkdirs();
+        }
         return path;
     }
 
     //组装路径
-    private static String addPath(String parent, String child)
-    {
+    private static String addPath(String parent, String child) {
         return String.format("%s/%s", parent, child);
     }
 }

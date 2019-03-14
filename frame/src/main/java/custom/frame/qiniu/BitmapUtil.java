@@ -35,17 +35,20 @@ import custom.frame.bean.NormImgSize;
 
 /**
  * 加载大图片工具类：解决Android加载大图片时报OOM异常 解决原理：先设置缩放选项，再读取缩放的图片数据到内存，规避了内存引起的OOM
+ *
+ * @author dundun
  */
 public class BitmapUtil {
 
     public static final int UNCONSTRAINED = -1;
 
-    /*
+    /**
      * 获得设置信息
      */
     public static Options getOptions(String path) {
         Options options = new Options();
-        options.inJustDecodeBounds = true;// 只描边，不读取数据
+        // 只描边，不读取数据
+        options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(path, options);
         return options;
     }
@@ -72,7 +75,8 @@ public class BitmapUtil {
             int h = r.height();
             int maxSize = w > h ? w : h;
             int inSimpleSize = computeSampleSize(options, maxSize, w * h);
-            options.inSampleSize = inSimpleSize; // 设置缩放比例
+            // 设置缩放比例
+            options.inSampleSize = inSimpleSize;
             options.inJustDecodeBounds = false;
         }
         Bitmap b = BitmapFactory.decodeStream(in, null, options);
@@ -188,7 +192,7 @@ public class BitmapUtil {
         float roundPx;
         float left, top, right, bottom, dst_left, dst_top, dst_right, dst_bottom;
         if (width <= height) {
-            roundPx = width / 2;
+            roundPx = width / 2f;
             top = 0;
             bottom = width;
             left = 0;
@@ -199,8 +203,8 @@ public class BitmapUtil {
             dst_right = width;
             dst_bottom = width;
         } else {
-            roundPx = height / 2;
-            float clip = (width - height) / 2;
+            roundPx = height / 2f;
+            float clip = (width - height) / 2f;
             left = clip;
             right = width - clip;
             top = 0;
@@ -241,7 +245,7 @@ public class BitmapUtil {
         final Paint paint = new Paint();
         final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
         final RectF rectF = new RectF(rect);
-        final float roundPx = bitmap.getWidth() / 2;
+        final float roundPx = bitmap.getWidth() / 2f;
 
         paint.setAntiAlias(true);
         canvas.drawARGB(0, 0, 0, 0);
@@ -336,13 +340,16 @@ public class BitmapUtil {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         // 获取这个图片的宽和高
-        Bitmap bitmap = BitmapFactory.decodeFile(path, options); // 此时返回bm为空
+        // 此时返回bm为空
+        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
         options.inJustDecodeBounds = false;
         // 计算缩放比
         int be = (int) (options.outHeight / (float) 200);
-        if (be <= 0)
+        if (be <= 0) {
             be = 1;
-        options.inSampleSize = 2; // 图片长宽各缩小二分之一
+        }
+        // 图片长宽各缩小二分之一
+        options.inSampleSize = 2;
         // 重新读入图片，注意这次要把options.inJustDecodeBounds 设为 false哦
         bitmap = BitmapFactory.decodeFile(path, options);
         int w = bitmap.getWidth();
@@ -409,14 +416,18 @@ public class BitmapUtil {
         int ww = watermark.getWidth();
         int wh = watermark.getHeight();
         // create the new blank bitmap
-        Bitmap newb = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);// 创建一个新的和SRC长度宽度一样的位图
+        // 创建一个新的和SRC长度宽度一样的位图
+        Bitmap newb = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         Canvas cv = new Canvas(newb);
         // draw src into
-        cv.drawBitmap(src, 0, 0, null);// 在 0，0坐标开始画入src
+        // 在 0，0坐标开始画入src
+        cv.drawBitmap(src, 0, 0, null);
         // draw watermark into
-        cv.drawBitmap(watermark, w - ww + 5, h - wh + 5, null);// 在src的右下角画入水印
+        // 在src的右下角画入水印
+        cv.drawBitmap(watermark, w - ww + 5, h - wh + 5, null);
         // save all clip
-        cv.save(Canvas.ALL_SAVE_FLAG);// 保存
+        // 保存
+        cv.save(Canvas.ALL_SAVE_FLAG);
         // store
         cv.restore();// 存储
         return newb;
@@ -585,12 +596,16 @@ public class BitmapUtil {
      * 0 表示使用默认的缩放比例
      */
     public static Bitmap scale(Bitmap bitmap, float sx, float sy) {
-        if (bitmap == null) return null;
+        if (bitmap == null) {
+            return null;
+        }
         Matrix matrix = new Matrix();
         if (sx == 0 || sy == 0) {
-            matrix.postScale(1f, 1f); // 长和宽放大缩小的比例
+            // 长和宽放大缩小的比例
+            matrix.postScale(1f, 1f);
         } else {
-            matrix.postScale(sx, sy); // 长和宽放大缩小的比例
+            // 长和宽放大缩小的比例
+            matrix.postScale(sx, sy);
         }
         Bitmap resizeBmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
                 bitmap.getHeight(), matrix, true);

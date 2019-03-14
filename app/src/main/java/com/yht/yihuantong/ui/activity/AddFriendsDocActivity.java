@@ -8,11 +8,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.yht.yihuantong.R;
-import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
+import com.yht.yihuantong.api.notify.NotifyChangeListenerManager;
 import com.yht.yihuantong.data.CommonData;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CooperateDocBean;
 import custom.frame.http.Tasks;
@@ -176,7 +175,7 @@ public class AddFriendsDocActivity extends BaseActivity {
             case DEAL_DOC_APPLY:
                 ToastUtil.toast(this, response.getMsg());
                 //通知合作医生列表
-                NotifyChangeListenerServer.getInstance().notifyDoctorStatusChange("");
+                NotifyChangeListenerManager.getInstance().notifyDoctorStatusChange("");
                 setResult(RESULT_OK);
                 finish();
                 break;

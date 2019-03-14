@@ -22,7 +22,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -40,7 +39,7 @@ import com.hyphenate.util.NetUtils;
 import com.yht.shortcutbadge.ShortcutBadger;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
-import com.yht.yihuantong.api.notify.NotifyChangeListenerServer;
+import com.yht.yihuantong.api.notify.NotifyChangeListenerManager;
 import com.yht.yihuantong.chat.ChatActivity;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.receive.EaseMsgClickBroadCastReceiver;
@@ -57,7 +56,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import cn.jpush.android.api.JPushInterface;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.RegistrationTypeBean;
@@ -306,7 +304,7 @@ public class MainActivity extends BaseActivity
                     easeConversationListFragment.refresh();
                 }
                 //通知患者碎片刷新列表
-                NotifyChangeListenerServer.getInstance().notifyPatientStatusChange("");
+                NotifyChangeListenerManager.getInstance().notifyPatientStatusChange("");
             }
 
             @Override
@@ -461,7 +459,6 @@ public class MainActivity extends BaseActivity
     public void onListItemClicked(EMConversation conversation) {
         Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra(CommonData.KEY_CHAT_ID, conversation.conversationId());
-        //                intent.putExtra(CommonData.KEY_CHAT_NAME,conversation.());
         startActivity(intent);
     }
 
@@ -516,7 +513,8 @@ public class MainActivity extends BaseActivity
      */
     private void popOutShadow(PopupWindow popupWindow) {
         WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = 0.8f;//设置阴影透明度
+        //设置阴影透明度
+        lp.alpha = 0.8f;
         getWindow().setAttributes(lp);
         popupWindow.setOnDismissListener(() ->
         {
@@ -810,16 +808,15 @@ public class MainActivity extends BaseActivity
         public void onDisconnected(final int error) {
             runOnUiThread(() ->
             {
-                if (error == EMError.USER_REMOVED) {
-                    // 显示帐号已经被移除
-                } else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
-                    // 显示帐号在其他设备登录
-                } else {
-                    if (NetUtils.hasNetwork(MainActivity.this)) {
-                        //连接不到聊天服务器
-                    } else {
-                        //当前网络不可用，请检查网络设置
-                    }
+                switch (error) {
+                    case EMError.USER_REMOVED:
+                        // 显示帐号已经被移除
+                        break;
+                    case EMError.USER_LOGIN_ANOTHER_DEVICE:
+                        // 显示帐号在其他设备登录
+                        break;
+                    default:
+                        break;
                 }
             });
         }

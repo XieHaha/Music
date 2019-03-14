@@ -46,6 +46,7 @@ import custom.frame.bean.CooperateDocBean;
 import custom.frame.bean.CooperateHospitalBean;
 import custom.frame.bean.HospitalBean;
 import custom.frame.http.Tasks;
+import custom.frame.http.data.BaseNetCode;
 import custom.frame.http.data.HttpConstants;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
@@ -285,13 +286,14 @@ public class DoctorInfoActivity extends BaseActivity
                 String s = response.get();
                 try {
                     JSONObject object = new JSONObject(s);
-                    BaseResponse baseResponse = praseBaseResponseList(object,
-                            CooperateHospitalBean.class);
-                    if (baseResponse != null && baseResponse.getCode() == 200) {
-                        ArrayList<CooperateHospitalBean> list = baseResponse.getData();
-                        cooperationHospitalHAdapter.setList(list);
-                    } else {
-                        ToastUtil.toast(DoctorInfoActivity.this, baseResponse.getMsg());
+                    BaseResponse baseResponse = praseBaseResponseList(object, CooperateHospitalBean.class);
+                    if (baseResponse != null) {
+                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
+                            ArrayList<CooperateHospitalBean> list = baseResponse.getData();
+                            cooperationHospitalHAdapter.setList(list);
+                        } else {
+                            ToastUtil.toast(DoctorInfoActivity.this, baseResponse.getMsg());
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

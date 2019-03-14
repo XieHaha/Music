@@ -179,10 +179,12 @@ public abstract class BaseFragment<T> extends Fragment
                 MLog.d(getTag(), "移除task任务: " + task);
                 mIRequest.cancel(task, this);
             }
+            //清除所有缓存列表
+            requestList.clear();
+            if (whiteRequestList != null) {
+                whiteRequestList.clear();
+            }
         }
-        //清除所有缓存列表
-        requestList.clear();
-        whiteRequestList.clear();
         requestList = null;
         whiteRequestList = null;
     }

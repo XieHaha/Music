@@ -35,10 +35,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.HospitalBean;
 import custom.frame.bean.RegistrationBean;
+import custom.frame.http.data.BaseNetCode;
 import custom.frame.http.data.HttpConstants;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.GlideHelper;
@@ -143,8 +143,7 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
             registrationId = getIntent().getStringExtra(CommonData.KEY_REGISTRATION_ID);
         }
         tvTitle.setText("订单详情");
-        iNotifyChangeListenerServer = ApiManager.getInstance()
-                .getServer(INotifyChangeListenerServer.class);
+        iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         if (registrationBean == null) {
             getDetailById();
         } else {
@@ -238,11 +237,13 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
                 try {
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponse(object, RegistrationBean.class);
-                    if (baseResponse != null && baseResponse.getCode() == 200) {
-                        registrationBean = baseResponse.getData();
-                        initPageData();
-                    } else {
-                        ToastUtil.toast(RegistrationDetailActivity.this, baseResponse.getMsg());
+                    if (baseResponse != null) {
+                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
+                            registrationBean = baseResponse.getData();
+                            initPageData();
+                        } else {
+                            ToastUtil.toast(RegistrationDetailActivity.this, baseResponse.getMsg());
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

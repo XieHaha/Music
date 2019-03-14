@@ -8,7 +8,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yanzhenjie.nohttp.NoHttp;
@@ -30,9 +29,9 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.RegistrationBean;
+import custom.frame.http.data.BaseNetCode;
 import custom.frame.http.data.HttpConstants;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.ui.adapter.BaseRecyclerAdapter;
@@ -151,16 +150,18 @@ public class RegistrationListActivity extends BaseActivity
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponseList(object,
                             RegistrationBean.class);
-                    if (baseResponse.getCode() == 200) {
-                        registrationBeans = baseResponse.getData();
-                        if (page == 0) {
-                            registrationListAdapter.setList(registrationBeans);
+                    if (baseResponse != null) {
+                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
+                            registrationBeans = baseResponse.getData();
+                            if (page == 0) {
+                                registrationListAdapter.setList(registrationBeans);
+                            } else {
+                                registrationListAdapter.addList(registrationBeans);
+                            }
+                            registrationListAdapter.notifyDataSetChanged();
                         } else {
-                            registrationListAdapter.addList(registrationBeans);
+                            ToastUtil.toast(RegistrationListActivity.this, baseResponse.getMsg());
                         }
-                        registrationListAdapter.notifyDataSetChanged();
-                    } else {
-                        ToastUtil.toast(RegistrationListActivity.this, baseResponse.getMsg());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

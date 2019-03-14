@@ -106,8 +106,7 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        iNotifyChangeListenerServer = ApiManager.getInstance()
-                .getServer(INotifyChangeListenerServer.class);
+        iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         tvName.setText(
                 String.format(getString(R.string.txt_doc_auth_name), loginSuccessBean.getName()));
         initPageData();

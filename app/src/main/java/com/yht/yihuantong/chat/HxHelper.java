@@ -23,23 +23,28 @@ import custom.frame.http.listener.ResponseListener;
 /**
  * Created by dundun on 18/4/16.
  */
-public class HxHelper
-{
-    //扩展消息-昵称
+public class HxHelper {
+    /**
+     * 扩展消息-昵称
+     */
     public static final String MSG_EXT_NICKNAME = "hx_nickname";
-    //扩展消息-头像
+    /**
+     * 扩展消息-头像
+     */
     public static final String MSG_EXT_AVATAR = "hx_avatar";
-    private volatile static HxHelper instance;
+    private static HxHelper instance;
     public Application app;
     public Opts mOpts;
     private IRequest iRequest;
-    //所有的会话集合
+    /**
+     * 所有的会话集合
+     */
     private Map<String, EMConversation> mConvMap;
 
-    private HxHelper()
-    {
-        if (null != instance)
-        { throw new IllegalStateException("Can not instantiate singleton class."); }
+    private HxHelper() {
+        if (null != instance) {
+            throw new IllegalStateException("Can not instantiate singleton class.");
+        }
     }
 
     /**
@@ -49,8 +54,7 @@ public class HxHelper
      * @param opts        配置项
      * @param mIRequest
      */
-    public void init(Application application, Opts opts, IRequest mIRequest)
-    {
+    public void init(Application application, Opts opts, IRequest mIRequest) {
         app = application;
         mOpts = opts;
         iRequest = mIRequest;
@@ -61,14 +65,10 @@ public class HxHelper
      *
      * @return 单例实例
      */
-    public static HxHelper getInstance()
-    {
-        if (null == instance)
-        {
-            synchronized (HxHelper.class)
-            {
-                if (null == instance)
-                {
+    public static HxHelper getInstance() {
+        if (null == instance) {
+            synchronized (HxHelper.class) {
+                if (null == instance) {
                     instance = new HxHelper();
                 }
             }
@@ -76,44 +76,32 @@ public class HxHelper
         return instance;
     }
 
-    public EaseUser getUser(String username, UserInfoCallback callback)
-    {
+    public EaseUser getUser(String username, UserInfoCallback callback) {
         EaseUser user = new EaseUser(username);
-        if (username.contains("p"))
-        {
+        if (username.contains("p")) {
             List<PatientBean> list = DataSupport.where("patientId = ?", username)
-                                                .find(PatientBean.class);
-            if (list != null && list.size() > 0)
-            {
+                    .find(PatientBean.class);
+            if (list != null && list.size() > 0) {
                 PatientBean bean = list.get(0);
                 if (!TextUtils.isEmpty(bean.getNickname()) &&
-                    bean.getNickname().length() < 20)
-                {
+                        bean.getNickname().length() < 20) {
                     user.setNickname(bean.getNickname());
-                }
-                else
-                {
+                } else {
                     user.setNickname(bean.getName());
                 }
                 user.setAvatar(bean.getPatientImgUrl());
                 callback.onSuccess(user);
                 return user;
             }
-            iRequest.getPatientInfo(username, new ResponseListener<BaseResponse>()
-            {
+            iRequest.getPatientInfo(username, new ResponseListener<BaseResponse>() {
                 @Override
-                public void onResponseSuccess(Tasks task, BaseResponse response)
-                {
+                public void onResponseSuccess(Tasks task, BaseResponse response) {
                     PatientBean patientBean = response.getData();
-                    if (patientBean != null)
-                    {
+                    if (patientBean != null) {
                         if (!TextUtils.isEmpty(patientBean.getNickname()) &&
-                            patientBean.getNickname().length() < 20)
-                        {
+                                patientBean.getNickname().length() < 20) {
                             user.setNickname(patientBean.getNickname());
-                        }
-                        else
-                        {
+                        } else {
                             user.setNickname(patientBean.getName());
                         }
                         user.setAvatar(patientBean.getPatientImgUrl());
@@ -122,77 +110,58 @@ public class HxHelper
                 }
 
                 @Override
-                public void onResponseError(Tasks task, Exception e)
-                {
+                public void onResponseError(Tasks task, Exception e) {
                 }
 
                 @Override
-                public void onResponseCodeError(Tasks task, BaseResponse response)
-                {
+                public void onResponseCodeError(Tasks task, BaseResponse response) {
                 }
 
                 @Override
-                public void onResponseStart(Tasks task)
-                {
+                public void onResponseStart(Tasks task) {
                 }
 
                 @Override
-                public void onResponseEnd(Tasks task)
-                {
+                public void onResponseEnd(Tasks task) {
                 }
 
                 @Override
-                public void onResponseFile(Tasks task, File file)
-                {
+                public void onResponseFile(Tasks task, File file) {
                 }
 
                 @Override
                 public void onResponseLoading(Tasks task, boolean isUpload, long total,
-                        long current)
-                {
+                                              long current) {
                 }
 
                 @Override
-                public void onResponseCancel(Tasks task)
-                {
+                public void onResponseCancel(Tasks task) {
                 }
             });
-        }
-        else
-        {
+        } else {
             List<CooperateDocBean> list = DataSupport.where("doctorId = ?", username)
-                                                     .find(CooperateDocBean.class);
-            if (list != null && list.size() > 0)
-            {
+                    .find(CooperateDocBean.class);
+            if (list != null && list.size() > 0) {
                 CooperateDocBean bean = list.get(0);
                 if (!TextUtils.isEmpty(bean.getNickname()) &&
-                    bean.getNickname().length() < 20)
-                {
+                        bean.getNickname().length() < 20) {
                     user.setNickname(bean.getNickname());
-                }
-                else
-                {
+                } else {
                     user.setNickname(bean.getName());
                 }
                 user.setAvatar(bean.getPortraitUrl());
                 callback.onSuccess(user);
                 return user;
             }
-            iRequest.getDocInfo(username, new ResponseListener<BaseResponse>()
-            {
+            iRequest.getDocInfo(username, new ResponseListener<BaseResponse>() {
                 @Override
-                public void onResponseSuccess(Tasks task, BaseResponse response)
-                {
+                public void onResponseSuccess(Tasks task, BaseResponse response) {
                     CooperateDocBean bean = response.getData();
-                    if (bean != null)
-                    {
+                    if (bean != null) {
                         if (!TextUtils.isEmpty(bean.getNickname()) &&
-                            bean.getNickname().length() < 20)
-                        {
+                                bean.getNickname().length() < 20) {
                             user.setNickname(bean.getNickname());
-                        }
-                        else
-                        {
+                        } else {
                             user.setNickname(bean.getName());
                         }
                         user.setAvatar(bean.getPortraitUrl());
@@ -201,39 +170,32 @@ public class HxHelper
                 }
 
                 @Override
-                public void onResponseError(Tasks task, Exception e)
-                {
+                public void onResponseError(Tasks task, Exception e) {
                 }
 
                 @Override
-                public void onResponseCodeError(Tasks task, BaseResponse response)
-                {
+                public void onResponseCodeError(Tasks task, BaseResponse response) {
                 }
 
                 @Override
-                public void onResponseStart(Tasks task)
-                {
+                public void onResponseStart(Tasks task) {
                 }
 
                 @Override
-                public void onResponseEnd(Tasks task)
-                {
+                public void onResponseEnd(Tasks task) {
                 }
 
                 @Override
-                public void onResponseFile(Tasks task, File file)
-                {
+                public void onResponseFile(Tasks task, File file) {
                 }
 
                 @Override
                 public void onResponseLoading(Tasks task, boolean isUpload, long total,
-                        long current)
-                {
+                                              long current) {
                 }
 
                 @Override
-                public void onResponseCancel(Tasks task)
-                {
+                public void onResponseCancel(Tasks task) {
                 }
             });
         }
@@ -243,8 +205,7 @@ public class HxHelper
     /**
      * 配置项
      */
-    public static class Opts
-    {
+    public static class Opts {
         public boolean showChatTitle;
     }
 }

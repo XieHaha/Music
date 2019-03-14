@@ -54,7 +54,9 @@ public class EaseChatRowVoicePlayer {
     }
 
     public void play(final EMMessage msg, final MediaPlayer.OnCompletionListener listener) {
-        if (!(msg.getBody() instanceof EMVoiceMessageBody)) return;
+        if (!(msg.getBody() instanceof EMVoiceMessageBody)) {
+            return;
+        }
 
         if (mediaPlayer.isPlaying()) {
             stop();

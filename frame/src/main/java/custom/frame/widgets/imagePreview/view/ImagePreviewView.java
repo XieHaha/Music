@@ -43,8 +43,7 @@ import custom.frame.widgets.imagePreview.utils.CacheUtils;
 /**
  * Created by Kyle on 2015/10/20.
  */
-public class ImagePreviewView extends ImageView
-{
+public class ImagePreviewView extends ImageView {
 
     private static final String DEBUG = "DEBUG";
     //
@@ -148,8 +147,7 @@ public class ImagePreviewView extends ImageView
 
     public void loadingImageAsync(final String imgPath, final String smallUrl, final String bigUrl, final int position) {
         if (!isBreak) {
-            if(TextUtils.isEmpty(imgPath))
-            {
+            if (TextUtils.isEmpty(imgPath)) {
                 LOAD_STATE = CacheUtils.getInstance(getContext()).getCacheState(smallUrl, bigUrl);
                 switch (LOAD_STATE) {
                     case 0:
@@ -177,15 +175,13 @@ public class ImagePreviewView extends ImageView
                         Drawable drawable = new BitmapDrawable(getResources(), CacheUtils.getInstance(getContext()).getBitmapFromCache(bigUrl));
                         loadImgAsync(bigUrl, drawable);
                 }
-            }
-            else {
+            } else {
                 loadImaLocal(imgPath);
             }
         }
     }
 
-    private void loadImaLocal(final String imgPth)
-    {
+    private void loadImaLocal(final String imgPth) {
         Glide.with(context).load(imgPth).apply(GlideHelper.getOptionsPic()).into(this);
     }
 
@@ -519,7 +515,7 @@ public class ImagePreviewView extends ImageView
             setScaleType(scaleType);
         }
         resetZoom();
-        scaleImage(scale, viewWidth / 2, viewHeight / 2, true);
+        scaleImage(scale, viewWidth / 2f, viewHeight / 2f, true);
         matrix.getValues(m);
         m[Matrix.MTRANS_X] = -((focusX * getImageWidth()) - (viewWidth * 0.5f));
         m[Matrix.MTRANS_Y] = -((focusY * getImageHeight()) - (viewHeight * 0.5f));
@@ -557,7 +553,7 @@ public class ImagePreviewView extends ImageView
         int drawableWidth = drawable.getIntrinsicWidth();
         int drawableHeight = drawable.getIntrinsicHeight();
 
-        PointF point = transformCoordTouchToBitmap(viewWidth / 2, viewHeight / 2, true);
+        PointF point = transformCoordTouchToBitmap(viewWidth / 2f, viewHeight / 2f, true);
         point.x /= drawableWidth;
         point.y /= drawableHeight;
         return point;
@@ -623,10 +619,12 @@ public class ImagePreviewView extends ImageView
             maxTrans = 0;
         }
 
-        if (trans < minTrans)
+        if (trans < minTrans) {
             return -trans + minTrans;
-        if (trans > maxTrans)
+        }
+        if (trans > maxTrans) {
             return -trans + maxTrans;
+        }
         return 0;
     }
 
@@ -948,8 +946,7 @@ public class ImagePreviewView extends ImageView
      *
      * @author Ortiz
      */
-    private class PrivateOnTouchListener implements OnTouchListener
-    {
+    private class PrivateOnTouchListener implements OnTouchListener {
 
         //
         // Remember last point position for dragging
@@ -966,8 +963,9 @@ public class ImagePreviewView extends ImageView
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         last.set(curr);
-                        if (fling != null)
+                        if (fling != null) {
                             fling.cancelFling();
+                        }
                         setState(State.DRAG);
                         break;
 
@@ -1061,8 +1059,8 @@ public class ImagePreviewView extends ImageView
         }
     }
 
-    private class PrivateOnclickListener implements OnClickListener
-    {
+    private class PrivateOnclickListener implements OnClickListener {
+        @Override
         public void onClick(View view) {
             clickFinish();
         }
@@ -1100,8 +1098,7 @@ public class ImagePreviewView extends ImageView
      *
      * @author Ortiz
      */
-    private class DoubleTapZoom implements Runnable
-    {
+    private class DoubleTapZoom implements Runnable {
 
         private long startTime;
         private static final float ZOOM_TIME = 500;
@@ -1252,8 +1249,7 @@ public class ImagePreviewView extends ImageView
      *
      * @author Ortiz
      */
-    private class Fling implements Runnable
-    {
+    private class Fling implements Runnable {
 
         CompatScroller scroller;
         int currX, currY;

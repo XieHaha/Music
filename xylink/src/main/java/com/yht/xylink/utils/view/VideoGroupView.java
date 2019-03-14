@@ -22,8 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class VideoGroupView extends ViewGroup
-{
+public class VideoGroupView extends ViewGroup {
     private static final String TAG = "VideoGroupView";
 
     // video
@@ -170,7 +169,6 @@ public class VideoGroupView extends ViewGroup
 //        mContentCell = new ContentCell(mContext, new SimpleContentCellEventListener());
 //        addView(mContentCell.getCellLayout());
 //        mContentCell.getCellLayout().setVisibility(View.GONE);
-
 
 
         mGestureDetector = new GestureDetector(mContext, mGestureListener);
@@ -349,18 +347,14 @@ public class VideoGroupView extends ViewGroup
 
     private void relayout(boolean hideMainView) {
         L.i("relayout:hide=" + hideMainView + " localFullScreen="
-            + mLocalFullScreen);
+                + mLocalFullScreen);
         mReceiveContent = hideMainView;
     }
-
-
 
 
     private boolean showContent() {
         return mShowContent && mReceiveContent;
     }
-
-
 
 
     private boolean checkOnlyAddOther(List<VideoInfo> layoutInfos) {
@@ -427,7 +421,6 @@ public class VideoGroupView extends ViewGroup
                 }
             }
             if (!MediaSourceID.SOURCE_ID_LOCAL_PREVIEW.equals(cell.getLayoutInfo().getDataSourceID())
-                    && cell.getLayoutInfo().getLayoutVideoState() != Enums.LAYOUT_STATE_ADDOTHER_FAILED
                     && cell.getLayoutInfo().getLayoutVideoState() != Enums.LAYOUT_STATE_ADDOTHER_FAILED) {
                 toDel.add(cell);
             }
@@ -448,15 +441,16 @@ public class VideoGroupView extends ViewGroup
 
         for (int i = 0; i < mCachedLayoutInfos.size(); i++) {
             VideoInfo info = mCachedLayoutInfos.get(i);
-            if (i < mThumbCells.size()) { // 这个位置是否有cell
+            // 这个位置是否有cell
+            if (i < mThumbCells.size()) {
                 if (mThumbCells.get(i).getLayoutInfo().getParticipantId() == info.getParticipantId()) {
                     Log.i(TAG, "getLayoutVideoState mThumbCells=" + info);
                     mThumbCells.get(i).setLayoutInfo(info);
                     continue; // 位置不变
                 } else {
                     // 找到这个cell，挪到当前位置，如果找不到，创建一个
-                    int position = - 1;
-                    VideoCell  cell = null;
+                    int position = -1;
+                    VideoCell cell = null;
                     for (int j = 0; j < mThumbCells.size(); j++) {
                         VideoCell jv = mThumbCells.get(j);
                         if (jv.getLayoutInfo().getParticipantId() == info.getParticipantId()) {
@@ -472,10 +466,10 @@ public class VideoGroupView extends ViewGroup
                         mThumbCells.add(i, cell);
                     } else {
                         Log.i(TAG, "getLayoutVideoState info=" + info);
-                        cell. setLayoutInfo(info);
+                        cell.setLayoutInfo(info);
                         Log.i(TAG, "setLayoutInfo cell=" + cell.getLeft() + " " + cell.getTop() + " " + cell.getRight() + " " + cell.getBottom());
                         Log.i(TAG, "setLayoutInfo cell=" + mThumbCells.get(0).getLeft() + " " + mThumbCells.get(0).getTop()
-                                   + " " + mThumbCells.get(0).getRight() + " " + mThumbCells.get(0).getBottom());
+                                + " " + mThumbCells.get(0).getRight() + " " + mThumbCells.get(0).getBottom());
 
                         int poindex = mThumbCells.indexOf(cell);
 
@@ -486,10 +480,10 @@ public class VideoGroupView extends ViewGroup
                             Log.i(TAG, "setLayoutInfo cell= poindex:" + poindex);
                             Log.i(TAG, "setLayoutInfo cell=  swfcell" + cell.getLeft() + " " + cell.getTop() + " " + cell.getRight() + " " + cell.getBottom());
                             Log.i(TAG, "setLayoutInfo cell=  swf0" + mThumbCells.get(0).getLeft() + " " + mThumbCells.get(0).getTop()
-                                       + " " + mThumbCells.get(0).getRight() + " " + mThumbCells.get(0).getBottom());
+                                    + " " + mThumbCells.get(0).getRight() + " " + mThumbCells.get(0).getBottom());
 
                             Log.i(TAG, "setLayoutInfo cell=  swf poindex=" + poindex + "  " + mThumbCells.get(poindex).getLeft() + " " + mThumbCells.get(poindex).getTop()
-                                       + " " + mThumbCells.get(poindex).getRight() + " " + mThumbCells.get(poindex).getBottom());
+                                    + " " + mThumbCells.get(poindex).getRight() + " " + mThumbCells.get(poindex).getBottom());
                         } else if (!mLocalFullScreen && i == 0 && ((showContent && !mContenInCorner) || (mShowWhiteBoard && !mWhiteBoardInCorner))) {  // 位置互换
                             VideoCell index0 = mThumbCells.get(0);
                             mThumbCells.set(0, cell);
@@ -585,7 +579,6 @@ public class VideoGroupView extends ViewGroup
     }
 
 
-
     public void setFrameCellClickListener(OnClickListener listener) {
         this.mFrameCellClickListener = listener;
     }
@@ -650,7 +643,6 @@ public class VideoGroupView extends ViewGroup
     }
 
 
-
     private VideoCell createRemoteCell(VideoInfo layoutInfo, boolean playCreateAnimation) {
         VideoCell cell = new VideoCell(playCreateAnimation, getContext(), new SimpleCellEventListener());
         cell.setLayoutInfo(layoutInfo);
@@ -661,7 +653,7 @@ public class VideoGroupView extends ViewGroup
     }
 
     private void createLocalCell(boolean isUvc) {
-        mLocalVideoCell = new VideoCell(isUvc,false, getContext(), new SimpleCellEventListener());
+        mLocalVideoCell = new VideoCell(isUvc, false, getContext(), new SimpleCellEventListener());
         mLocalVideoCell.setId(VideoCell.LOCAL_VIEW_ID);
         mLocalVideoCell.bringToFront();
         mLocalVideoCell.setLayoutInfo(mLocalCellLayoutInfo);
@@ -740,8 +732,8 @@ public class VideoGroupView extends ViewGroup
             return;
         }
         L.i(TAG, "kunkka ResizeMoveAnimation swapToMainCell 走着。。。"
-                 + System.currentTimeMillis() + "==thumbView==" + thumbView.toString() +
-                 "==mainView==" + mainView.toString() + "==forceLayout==" + forceLayout);
+                + System.currentTimeMillis() + "==thumbView==" + thumbView.toString() +
+                "==mainView==" + mainView.toString() + "==forceLayout==" + forceLayout);
 
         updateAnimatingState(true);
         updateAnimatingState(false);
@@ -766,7 +758,7 @@ public class VideoGroupView extends ViewGroup
         mThumbCellTop = (b - t) - mCellHeight - mCellPadding;
 
         if (mLocalFullScreen) {
-              layoutFullScreenVideoCell(mLocalVideoCell, l, t, r, b);
+            layoutFullScreenVideoCell(mLocalVideoCell, l, t, r, b);
 
             int mThumbCellLeft = mCellPadding;
             if (mThumbCells.size() > 0) {
@@ -780,11 +772,11 @@ public class VideoGroupView extends ViewGroup
 
                     if (firstHalfView) {
                         layoutThumbVideoCell(cell, mThumbCellLeft, mThumbCellTop);
-                        mThumbCellLeft += (mCellWidth / 2 + mCellPadding)/26;
+                        mThumbCellLeft += (mCellWidth / 2 + mCellPadding) / 26;
                         firstHalfView = false;
                     } else {
                         layoutThumbVideoCell(cell, mThumbCellLeft, mThumbCellTop);
-                        mThumbCellLeft += (mCellWidth / 2 + mCellPadding)/26;
+                        mThumbCellLeft += (mCellWidth / 2 + mCellPadding) / 26;
                     }
                     layoutThumbVideoCell(cell, mThumbCellLeft, mThumbCellTop);
                     mThumbCellLeft += (mCellWidth + mCellPadding);
@@ -811,11 +803,11 @@ public class VideoGroupView extends ViewGroup
 
                     cell.bringToFront();
                     if (firstHalfView) {
-                        mThumbCellLeft += (mCellWidth + mCellPadding)/28;
+                        mThumbCellLeft += (mCellWidth + mCellPadding) / 28;
                         layoutThumbVideoCell(cell, mThumbCellLeft, mThumbCellTop);
                         firstHalfView = false;
                     } else {
-                        mThumbCellLeft += (mCellWidth / 2 + mCellPadding)/26;
+                        mThumbCellLeft += (mCellWidth / 2 + mCellPadding) / 26;
                         layoutThumbVideoCell(cell, mThumbCellLeft, mThumbCellTop);
                     }
                     mThumbCellLeft += (mCellWidth + mCellPadding);
@@ -866,8 +858,8 @@ public class VideoGroupView extends ViewGroup
             cachedThembCell1Rect.set(cell.getLeft(), cell.getTop(), cell.getRight(), cell.getBottom());
         } else {
             if (cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_ADDOTHER ||
-                cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_ADDOTHER_FAILED ||
-                cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_OBSERVING) {
+                    cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_ADDOTHER_FAILED ||
+                    cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_OBSERVING) {
                 cell.layout(left, top, left + mCellWidth / 2, top + mCellHeight);
             } else {
                 if (cachedThembCell1Rect.width() > 0) { // 获取缓存的小窗口位置
@@ -889,8 +881,8 @@ public class VideoGroupView extends ViewGroup
         } else {
 
             if (cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_ADDOTHER ||
-                cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_ADDOTHER_FAILED ||
-                cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_OBSERVING) {
+                    cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_ADDOTHER_FAILED ||
+                    cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_OBSERVING) {
 
                 cell.layout(left, top, left + mCellWidth / 2, top + mCellHeight);
             } else {
@@ -909,8 +901,8 @@ public class VideoGroupView extends ViewGroup
         } else {
 
             if (cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_ADDOTHER ||
-                cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_ADDOTHER_FAILED ||
-                cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_OBSERVING) {
+                    cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_ADDOTHER_FAILED ||
+                    cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_OBSERVING) {
 
                 cell.layout(left, top, left + mCellWidth / 2, top + mCellHeight);
             } else {
@@ -927,8 +919,8 @@ public class VideoGroupView extends ViewGroup
         cell.layout(left, top, left + mCellWidth / 2, top + mCellHeight);
         cell.layout(left, top, left + mCellWidth, top + mCellHeight);
         if (cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_ADDOTHER ||
-            cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_ADDOTHER_FAILED ||
-            cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_OBSERVING) {
+                cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_ADDOTHER_FAILED ||
+                cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_OBSERVING) {
             cell.layout(left, top, left + mCellWidth / 2, top + mCellHeight);
         } else {
             cell.layout(left, top, left + mCellWidth, top + mCellHeight);
@@ -974,7 +966,7 @@ public class VideoGroupView extends ViewGroup
                 }
             } else {
                 if (cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_OBSERVING ||
-                    cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_ADDOTHER_FAILED) {
+                        cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_ADDOTHER_FAILED) {
                     return false;
                 }
 
@@ -1030,8 +1022,8 @@ public class VideoGroupView extends ViewGroup
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY, VideoCell cell) {
             if (cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_ADDOTHER ||
-                cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_ADDOTHER_FAILED ||
-                cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_OBSERVING) {
+                    cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_ADDOTHER_FAILED ||
+                    cell.getLayoutInfo().getLayoutVideoState() == Enums.LAYOUT_STATE_OBSERVING) {
                 return true;
             }
             if (cell.isFullScreen()) {
@@ -1086,7 +1078,6 @@ public class VideoGroupView extends ViewGroup
     }
 
 
-
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (!mShowWhiteBoard) {  // 目前只有白板使用，为防止事件重复，不是白板直接return
@@ -1111,9 +1102,8 @@ public class VideoGroupView extends ViewGroup
         return mLocalVideoCell;
     }
 
-    public void updateCamera(boolean isUvc)
-    {
-        if(mLocalVideoCell!=null){
+    public void updateCamera(boolean isUvc) {
+        if (mLocalVideoCell != null) {
             mLocalVideoCell.updateCamrea(isUvc);
         }
     }

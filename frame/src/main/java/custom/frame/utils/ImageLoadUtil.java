@@ -17,10 +17,9 @@ import custom.frame.bean.Global;
 import custom.frame.bean.Mode;
 
 /**
- * Created by luozi on 2016/1/13.
+ * @author dundun
  */
-public class ImageLoadUtil
-{
+public class ImageLoadUtil {
     /**
      * 磁盘最大缓存,50M
      */
@@ -38,34 +37,30 @@ public class ImageLoadUtil
      */
     private static ImageLoadUtil instance = null;
 
-    public ImageLoader getImageLoader()
-    {
-        if (imageLoader == null)
-        {
-            synchronized (ImageLoadUtil.class)
-            {
+    public ImageLoader getImageLoader() {
+        if (imageLoader == null) {
+            synchronized (ImageLoadUtil.class) {
                 imageLoader = ImageLoader.getInstance();
             }
         }
         return imageLoader;
     }
 
-    public static ImageLoadUtil getInstance()
-    {
-        if (instance == null) {instance = new ImageLoadUtil();}
+    public static ImageLoadUtil getInstance() {
+        if (instance == null) {
+            instance = new ImageLoadUtil();
+        }
         return instance;
     }
 
-    public void initImageLoader(Context context)
-    {
+    public void initImageLoader(Context context) {
         ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context);
         config.threadPriority(Thread.NORM_PRIORITY - 2);
         config.denyCacheImageMultipleSizesInMemory();
         config.diskCacheFileNameGenerator(new Md5FileNameGenerator());
         config.memoryCacheSize(MAX_MEMORY_CACHE);
         config.tasksProcessingOrder(QueueProcessingType.LIFO);
-        if (Global.getInstance().launchMode == Mode.Launch.RELEASE)
-        {
+        if (Global.getInstance().launchMode == Mode.Launch.RELEASE) {
             config.writeDebugLogs(); // Remove for release app
         }
         // Initialize ImageLoader with configuration.
@@ -78,8 +73,7 @@ public class ImageLoadUtil
      * @param url
      * @param target
      */
-    public void displayPortraitImage(String url, ImageView target)
-    {
+    public void displayPortraitImage(String url, ImageView target) {
         imageLoader.displayImage(url, target, getOptionsForPortrait());
     }
 
@@ -89,8 +83,7 @@ public class ImageLoadUtil
      * @param url
      * @param target
      */
-    public void displayImage(String url, ImageView target, @DrawableRes int defaultResourceId)
-    {
+    public void displayImage(String url, ImageView target, @DrawableRes int defaultResourceId) {
         imageLoader.displayImage(url, target, getOptionsForPictureList(defaultResourceId));
     }
 
@@ -99,15 +92,14 @@ public class ImageLoadUtil
      *
      * @return
      */
-    public DisplayImageOptions getOptionForExactlyType()
-    {
+    public DisplayImageOptions getOptionForExactlyType() {
         return new DisplayImageOptions.Builder().cacheInMemory(true)
-                                                .cacheOnDisk(true)
-                                                .bitmapConfig(Bitmap.Config.RGB_565)
-                                                //                .resetViewBeforeLoading(true)
-                                                .considerExifParams(true)
-                                                .imageScaleType(ImageScaleType.EXACTLY)
-                                                .build();
+                .cacheOnDisk(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                //                .resetViewBeforeLoading(true)
+                .considerExifParams(true)
+                .imageScaleType(ImageScaleType.EXACTLY)
+                .build();
     }
 
     /**
@@ -115,16 +107,15 @@ public class ImageLoadUtil
      *
      * @return
      */
-    public DisplayImageOptions getOptionsForPortrait()
-    {
+    public DisplayImageOptions getOptionsForPortrait() {
         return new DisplayImageOptions.Builder().cacheInMemory(true)
-                                                .cacheOnDisk(true)
-                                                //                .bitmapConfig(Bitmap.Config.RGB_565)
-                                                .showImageForEmptyUri(R.mipmap.icon_default_imgs)
-                                                .showImageOnFail(R.mipmap.icon_default_imgs)
-                                                .showImageOnLoading(R.mipmap.icon_default_imgs)
-                                                //                .displayer(new CircleBitmapDisplayer(Color.WHITE, 5))
-                                                .build();
+                .cacheOnDisk(true)
+                //                .bitmapConfig(Bitmap.Config.RGB_565)
+                .showImageForEmptyUri(R.mipmap.icon_default_imgs)
+                .showImageOnFail(R.mipmap.icon_default_imgs)
+                .showImageOnLoading(R.mipmap.icon_default_imgs)
+                //                .displayer(new CircleBitmapDisplayer(Color.WHITE, 5))
+                .build();
     }
 
     /**
@@ -134,16 +125,15 @@ public class ImageLoadUtil
      * @param loadingResource
      * @return
      */
-    public DisplayImageOptions getOptionsForPictureList(@DrawableRes int loadingResource)
-    {
+    public DisplayImageOptions getOptionsForPictureList(@DrawableRes int loadingResource) {
         return new DisplayImageOptions.Builder().cacheInMemory(true)
-                                                .cacheOnDisk(true)
-                                                .bitmapConfig(Bitmap.Config.RGB_565)
-                                                .showImageOnLoading(loadingResource)
-                                                .considerExifParams(true)
-                                                //                .resetViewBeforeLoading(true)
-                                                .showImageForEmptyUri(loadingResource)
-                                                .showImageOnFail(loadingResource)
-                                                .build();
+                .cacheOnDisk(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .showImageOnLoading(loadingResource)
+                .considerExifParams(true)
+                //                .resetViewBeforeLoading(true)
+                .showImageForEmptyUri(loadingResource)
+                .showImageOnFail(loadingResource)
+                .build();
     }
 }
