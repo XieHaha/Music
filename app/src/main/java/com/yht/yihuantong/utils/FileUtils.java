@@ -33,31 +33,20 @@ public final class FileUtils {
      * @param newPath 文件新地址
      * @return true为复制成功，false为复制失败
      */
-    public static boolean copyFile(String oldPath, String newPath) throws IOException {
-        FileInputStream fileInputStream = null;
-        FileOutputStream fileOutputStream = null;
-        try {
-            java.io.File fileIn = new java.io.File(oldPath);
-            java.io.File fileOut = new java.io.File(newPath);
-            fileInputStream = new FileInputStream(fileIn);
-            fileOutputStream = new FileOutputStream(fileOut);
+    public static boolean copyFile(String oldPath, String newPath) {
+        try (FileInputStream fileInputStream = new FileInputStream(new File(oldPath))) {
             byte[] bytes = new byte[1024];
             int c;
-            while ((c = fileInputStream.read(bytes)) != -1) {
-                fileOutputStream.write(bytes, 0, c);
+            try (FileOutputStream fileOutputStream = new FileOutputStream(new File(newPath))) {
+                while ((c = fileInputStream.read(bytes)) != -1) {
+                    fileOutputStream.write(bytes, 0, c);
+                }
+                return true;
+            } catch (IOException e) {
+                throw new RuntimeException(e.getMessage(), e);
             }
-            return true;
-        } catch (Exception e) {
-            return false;
-        } finally {
-            if (fileOutputStream != null) {
-
-                fileInputStream.close();
-            }
-            if (fileOutputStream != null) {
-
-                fileOutputStream.close();
-            }
+        } catch (IOException e) {
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 

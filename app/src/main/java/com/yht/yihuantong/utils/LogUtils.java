@@ -49,14 +49,6 @@ public class LogUtils {
      * 本类输出的日志文件名称
      */
     private static String LOG_FILENAME = "Log.txt";
-    /**
-     * 日志的输出格式
-     */
-    private static final SimpleDateFormat mLogSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
-    /**
-     * 日志文件格式
-     */
-    private static final SimpleDateFormat logfile = new SimpleDateFormat("yyyy-MM-dd");
 
     public static void w(String tag, String text) {
         log(tag, text, 'w', null);
@@ -155,9 +147,9 @@ public class LogUtils {
             return;
         }
         Date nowtime = new Date();
-        String needWriteFile = logfile.format(nowtime);
-        String needWriteMessage = mLogSdf.format(nowtime) + "    " + mylogtype + "    " + tag +
-                "    " + text;
+        String needWriteFile = new SimpleDateFormat("yyyy-MM-dd").format(nowtime);
+        String needWriteMessage =
+                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS").format(nowtime) + "    " + mylogtype + "    " + tag + "    " + text;
         String pathLog = DirHelper.getPathLog();
         File file = new File(pathLog);
         if (!file.exists() && !file.mkdirs()) {

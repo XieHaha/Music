@@ -82,9 +82,8 @@ public final class ScalingUtils {
      * @param bitmap
      * @param picPath
      */
-    public static void saveBitmapPic(Bitmap bitmap, String picPath) throws IOException {
+    public static void saveBitmapPic(Bitmap bitmap, String picPath) {
         int maxSize = 400;
-        FileOutputStream out = null;
         if (bitmap == null || picPath == null) {
             return;
         }
@@ -104,19 +103,12 @@ public final class ScalingUtils {
                 }
             }
             if (isCompressed) {
-                File file = new File(picPath);
-                out = new FileOutputStream(file);
-                out.write(baos.toByteArray());
+                try (FileOutputStream out = new FileOutputStream(new File(picPath))) {
+                    out.write(baos.toByteArray());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (out != null) {
-                out.flush();
-                out.close();
             }
         }
     }
