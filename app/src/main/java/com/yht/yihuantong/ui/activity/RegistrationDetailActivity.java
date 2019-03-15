@@ -123,7 +123,6 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
             registrationId = data;
             handler.sendEmptyMessage(0);
         } catch (NumberFormatException e) {
-            e.printStackTrace();
             LogUtils.w(TAG, "Exception error!", e);
         }
     };
@@ -249,7 +248,6 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
                         }
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
                     LogUtils.w(TAG, "Exception error!", e);
                 }
             }

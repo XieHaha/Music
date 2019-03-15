@@ -151,7 +151,6 @@ public class AllUtils {
             }
             return String.valueOf(age);
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
             LogUtils.w(TAG,"IllegalArgumentException error",e);
             return "0";
         }
@@ -254,11 +253,11 @@ public class AllUtils {
             //跳转
             context.startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            e.printStackTrace();
             ToastUtil.toast(context, "无法打开文件");
+            LogUtils.w(TAG, "Exception error!", e);
         } catch (Exception ex) {
-            ex.printStackTrace();
             ToastUtil.toast(context, "无法打开文件");
+            LogUtils.w(TAG, "Exception error!", ex);
         }
     }
 }

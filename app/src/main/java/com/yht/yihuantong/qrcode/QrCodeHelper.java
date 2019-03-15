@@ -62,7 +62,6 @@ public class QrCodeHelper {
             }
             return bitmap;
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.w(TAG, "createQRImage error", e);
         }
         return null;
@@ -101,7 +100,6 @@ public class QrCodeHelper {
             canvas.restore();
         } catch (Exception e) {
             bitmap = null;
-            e.getStackTrace();
             LogUtils.w(TAG, "Exception error!", e);
         }
         return bitmap;

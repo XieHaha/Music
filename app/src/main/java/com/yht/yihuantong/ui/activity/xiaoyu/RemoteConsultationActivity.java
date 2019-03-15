@@ -24,6 +24,7 @@ import com.yanzhenjie.nohttp.rest.Response;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.activity.xiaoyu.link.CallActivity;
+import com.yht.yihuantong.utils.LogUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,9 +39,10 @@ import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.ToastUtil;
 
 /**
- * Created by dundun on 18/9/2.
+ * @author dundun
  */
 public class RemoteConsultationActivity extends BaseActivity {
+    private static final String TAG = "RemoteConsultationActiv";
     private NemoSDK nemoSDK;
 
     @Override
@@ -123,7 +125,6 @@ public class RemoteConsultationActivity extends BaseActivity {
                         }
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
                     ToastUtil.toast(RemoteConsultationActivity.this, e.getMessage());
                 }
             }
@@ -165,7 +166,7 @@ public class RemoteConsultationActivity extends BaseActivity {
                 }
             });
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtils.w(TAG, "Exception error!", e);
         }
     }
 

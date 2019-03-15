@@ -124,7 +124,6 @@ public class AddCaseInfoActivity extends BaseActivity implements CommonData {
                     Context.INPUT_METHOD_SERVICE);
             inputmanger.hideSoftInputFromWindow(actAddHealthInfoEdit.getWindowToken(), 0);
         } catch (NullPointerException e) {
-            e.printStackTrace();
             LogUtils.w(TAG, "Exception error!", e);
         }
     }

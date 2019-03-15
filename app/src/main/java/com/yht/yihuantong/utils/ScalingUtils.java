@@ -64,7 +64,6 @@ public final class ScalingUtils {
             out = new FileOutputStream(file);
             bitmap.compress(format, 50, out);
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.w(TAG, "Exception error!", e);
         } finally {
             if (out != null) {
@@ -72,7 +71,6 @@ public final class ScalingUtils {
                     out.flush();
                     out.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
                     LogUtils.w(TAG, "Exception error!", e);
                 }
             }
@@ -109,13 +107,11 @@ public final class ScalingUtils {
                 try (FileOutputStream out = new FileOutputStream(new File(picPath))) {
                     out.write(baos.toByteArray());
                 } catch (Exception e) {
-                    e.printStackTrace();
                     LogUtils.w(TAG, "Exception error!", e);
                 }
 
             }
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.w(TAG, "Exception error!", e);
         }
     }
@@ -436,10 +432,8 @@ public final class ScalingUtils {
             bm.recycle();
             bm = null;
         } catch (OutOfMemoryError e) {
-            e.printStackTrace();
             LogUtils.w(TAG, "Exception error!", e);
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.w(TAG, "Exception error!", e);
         }
     }

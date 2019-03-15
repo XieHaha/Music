@@ -180,9 +180,9 @@ public class ActionSheetDialog
 
             if (color == null) {
                 textView.setTextColor(Color.parseColor(SheetItemColor.Blue
-                        .getName()));
+                        .getValue()));
             } else {
-                textView.setTextColor(Color.parseColor(color.getName()));
+                textView.setTextColor(Color.parseColor(color.getValue()));
             }
 
             float scale = context.getResources().getDisplayMetrics().density;
@@ -234,20 +234,28 @@ public class ActionSheetDialog
     }
 
     public enum SheetItemColor {
-        Blue("#037BFF"), Red("#FD4A2E");
+        /**
+         * blue
+         */
+        Blue("#037BFF"),
 
-        private String name;
+        /**
+         * red
+         */
+        Red("#FD4A2E");
 
-        private SheetItemColor(String name) {
-            this.name = name;
+        private String value;
+
+        private SheetItemColor(String value) {
+            this.value = value;
         }
 
-        public String getName() {
-            return name;
+        public String getValue() {
+            return value;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void setValue(String value) {
+            this.value = value;
         }
     }
 }

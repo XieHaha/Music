@@ -164,7 +164,6 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu {
             String name = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
             mIRequest.getSplash("doctor", "android", name, this);
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
             LogUtils.w(TAG, "Exception error!", e);
         }
     }

@@ -99,7 +99,6 @@ public class SettingActivity extends BaseActivity
                 tvVersion.setText("V" + name);
             }
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
             LogUtils.w(TAG, "Exception error!", e);
         }
     }

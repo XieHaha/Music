@@ -290,7 +290,6 @@ public class VersionPresenter implements ConstantsVersionMode
         }
         catch (NameNotFoundException e)
         {
-            e.printStackTrace();
             LogUtils.w(TAG, "Exception error!", e);
         }
         return null;

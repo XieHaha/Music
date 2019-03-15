@@ -348,7 +348,6 @@ public class HealthDetailActivity extends BaseActivity
                         }
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
                     ToastUtil.toast(HealthDetailActivity.this, e.getMessage());
                     LogUtils.w(TAG, "Exception error!", e);
                 }
@@ -416,7 +415,6 @@ public class HealthDetailActivity extends BaseActivity
                     }
 
                 } catch (JSONException e) {
-                    e.printStackTrace();
                     ToastUtil.toast(HealthDetailActivity.this, e.getMessage());
                     LogUtils.w(TAG, "Exception error!", e);
                 }
@@ -641,7 +639,6 @@ public class HealthDetailActivity extends BaseActivity
                 try {
                     imageList.add(QiniuUtils.initQuanBitmaps(path, HealthDetailActivity.this));
                 } catch (IOException e) {
-                    e.printStackTrace();
                     LogUtils.w(TAG, "Exception error!", e);
                 }
             }

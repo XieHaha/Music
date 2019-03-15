@@ -67,7 +67,6 @@ public final class FileUtils {
                 return filepath.substring(start + 1, end);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.w(TAG, "Exception error!", e);
         }
         return "";

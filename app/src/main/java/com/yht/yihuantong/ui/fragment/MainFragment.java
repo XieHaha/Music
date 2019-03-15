@@ -249,7 +249,6 @@ public class MainFragment extends BaseFragment
         try {
             handler.sendEmptyMessage(ORDER_STATUS_CODE);
         } catch (NumberFormatException e) {
-            e.printStackTrace();
             LogUtils.w(TAG,"NumberFormatException error",e);
         }
     };
@@ -514,7 +513,6 @@ public class MainFragment extends BaseFragment
                         }
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
                     LogUtils.w(TAG,"JSONException error",e);
                 }
             }
@@ -565,7 +563,6 @@ public class MainFragment extends BaseFragment
                         }
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
                     LogUtils.w(TAG,"JSONException error",e);
                 }
             }

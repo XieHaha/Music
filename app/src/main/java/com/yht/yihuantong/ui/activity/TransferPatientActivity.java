@@ -153,7 +153,6 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
             transferId = Integer.valueOf(data);
             handler.sendEmptyMessage(0);
         } catch (NumberFormatException e) {
-            e.printStackTrace();
             LogUtils.w(TAG, "Exception error!", e);
         }
     };
@@ -433,7 +432,6 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                         ToastUtil.toast(TransferPatientActivity.this, baseResponse.getMsg());
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
                     LogUtils.w(TAG, "Exception error!", e);
                 }
             }
@@ -507,7 +505,6 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                         }
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
                     LogUtils.w(TAG, "Exception error!", e);
                 }
             }
@@ -560,7 +557,6 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                         ToastUtil.toast(TransferPatientActivity.this, baseResponse.getMsg());
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
                     LogUtils.w(TAG, "Exception error!", e);
                 }
             }
@@ -616,7 +612,6 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                         ToastUtil.toast(TransferPatientActivity.this, baseResponse.getMsg());
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
                     LogUtils.w(TAG, "Exception error!", e);
                 }
             }
@@ -674,7 +669,6 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                         ToastUtil.toast(TransferPatientActivity.this, baseResponse.getMsg());
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
                     LogUtils.w(TAG, "Exception error!", e);
                 }
             }

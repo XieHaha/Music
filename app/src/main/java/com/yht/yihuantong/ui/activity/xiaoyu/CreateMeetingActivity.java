@@ -148,7 +148,6 @@ public class CreateMeetingActivity extends BaseActivity {
                         }
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
                     ToastUtil.toast(CreateMeetingActivity.this, e.getMessage());
                 }
             }

@@ -166,7 +166,6 @@ public class LogUtils {
             bufWriter.write(needWriteMessage);
             bufWriter.newLine();
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.w(TAG, "Exception error!", e);
         } finally {
             try {
@@ -177,7 +176,6 @@ public class LogUtils {
                     filerWriter.close();
                 }
             } catch (IOException ioe) {
-                ioe.printStackTrace();
                 LogUtils.w(TAG, "Exception error!", ioe);
             }
         }

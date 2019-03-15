@@ -694,7 +694,6 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
                 rlMsgPointLayout3.setVisibility(View.GONE);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.w(TAG, "Exception error!", e);
         }
     }
@@ -713,7 +712,6 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
                 rlMsgPointLayout4.setVisibility(View.GONE);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.w(TAG, "Exception error!", e);
         }
     }
@@ -733,7 +731,6 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
                 rlMsgPointLayout.setVisibility(View.GONE);
             }
         } catch (Exception e) {
-            e.printStackTrace();
             LogUtils.w(TAG, "Exception error!", e);
         }
     }

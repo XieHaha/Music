@@ -210,7 +210,6 @@ public class AuthDocActivity extends BaseActivity {
                         docCardFrontTempFile = target2.get();
                         docCardBackTempFile = target3.get();
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
                         /**在代码中永远不应该忽略InterruptedExceptions，并且在这种情况下简单地记录异常计数为“忽略”。
                          *  抛出InterruptedException会清除Thread的中断状态，因此如果未正确处理异常，
                          *  则线程被中断的事实将会丢失。 相反，InterruptedExceptions应该被重新抛出
@@ -220,7 +219,6 @@ public class AuthDocActivity extends BaseActivity {
                         Thread.currentThread().interrupt();
                         LogUtils.w(TAG, "Exception error!", e);
                     } catch (ExecutionException e) {
-                        e.printStackTrace();
                         LogUtils.w(TAG, "Exception error!", e);
                     }
                 }

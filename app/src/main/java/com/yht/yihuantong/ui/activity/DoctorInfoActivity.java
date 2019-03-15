@@ -298,7 +298,6 @@ public class DoctorInfoActivity extends BaseActivity
                         }
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
                     LogUtils.w(TAG, "Exception error!", e);
                 }
             }
