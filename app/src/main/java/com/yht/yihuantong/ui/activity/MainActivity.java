@@ -47,6 +47,7 @@ import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.ui.fragment.CooperateDocFragment;
 import com.yht.yihuantong.ui.fragment.MainFragment;
 import com.yht.yihuantong.ui.fragment.UserFragment;
+import com.yht.yihuantong.utils.LogUtils;
 import com.yht.yihuantong.version.presenter.VersionPresenter;
 import com.yht.yihuantong.version.view.VersionUpdateDialog;
 
@@ -70,13 +71,10 @@ import custom.frame.widgets.ripples.RippleLinearLayout;
 import static android.support.v4.app.NotificationCompat.DEFAULT_SOUND;
 import static android.support.v4.app.NotificationCompat.DEFAULT_VIBRATE;
 
-public class MainActivity extends BaseActivity
-        implements EaseConversationListFragment.EaseConversationListItemClickListener,
-        VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener,
-        EaseConversationListFragment.EaseConversationListItemLongClickListener,
-        UserFragment.OnTransferCallbackListener,
-        CooperateDocFragment.OnDocApplyCallbackListener,
-        MainFragment.OnPatientApplyCallbackListener {
+/**
+ * @author dundun
+ */
+public class MainActivity extends BaseActivity implements EaseConversationListFragment.EaseConversationListItemClickListener, VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener, EaseConversationListFragment.EaseConversationListItemLongClickListener, UserFragment.OnTransferCallbackListener, CooperateDocFragment.OnDocApplyCallbackListener, MainFragment.OnPatientApplyCallbackListener {
     @BindView(R.id.item_msg_num)
     TextView tvUnReadMsgCount;
     @BindView(R.id.message_red_point)
@@ -313,27 +311,18 @@ public class MainActivity extends BaseActivity
             }
         };
         EMClient.getInstance().contactManager().setContactListener(contactListener);
-        tvDelete.setOnClickListener(v ->
-        {
+        tvDelete.setOnClickListener(v -> {
             popupWindow.dismiss();
-            new SimpleDialog(this, "删除后，将清空该聊天的消息记录?",
-                    (dialog, which) ->
-                    {
-                        if (curConversation != null) {
-                            //删除和某个user会话，如果需要保留聊天记录，传false
-                            EMClient.getInstance()
-                                    .chatManager()
-                                    .deleteConversation(
-                                            curConversation.conversationId(),
-                                            true);
-                            //收到消息
-                            if (easeConversationListFragment !=
-                                    null) {
-                                easeConversationListFragment.refresh();
-                            }
-                        }
-                    },
-                    (dialog, which) -> dialog.dismiss()).show();
+            new SimpleDialog(this, "删除后，将清空该聊天的消息记录?", (dialog, which) -> {
+                if (curConversation != null) {
+                    //删除和某个user会话，如果需要保留聊天记录，传false
+                    EMClient.getInstance().chatManager().deleteConversation(curConversation.conversationId(), true);
+                    //收到消息
+                    if (easeConversationListFragment != null) {
+                        easeConversationListFragment.refresh();
+                    }
+                }
+            }, (dialog, which) -> dialog.dismiss()).show();
         });
     }
 
@@ -410,27 +399,11 @@ public class MainActivity extends BaseActivity
         Intent intent = new Intent(MainActivity.this, EaseMsgClickBroadCastReceiver.class);
         intent.putExtra(CommonData.KEY_CHAT_ID, message.getFrom());
         intent.setAction("ease.msg.android.intent.CLICK");
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, pending_count,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, pending_count
+                , intent, PendingIntent.FLAG_UPDATE_CURRENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Notification notification = new NotificationCompat.Builder(this,
-                    CHANNEL_CHAT).setContentText(
-                    "收到新的消息")
-                    .setWhen(
-                            System.currentTimeMillis())
-                    .setSmallIcon(
-                            R.mipmap.ic_launcher)
-                    .setLargeIcon(
-                            largeIcon)
-                    .setDefaults(
-                            DEFAULT_VIBRATE |
-                                    DEFAULT_SOUND)
-                    .setAutoCancel(
-                            true)
-                    .setContentIntent(
-                            pendingIntent)
-                    .build();
+            Notification notification =
+                    new NotificationCompat.Builder(this, CHANNEL_CHAT).setContentText("收到新的消息").setWhen(System.currentTimeMillis()).setSmallIcon(R.mipmap.ic_launcher).setLargeIcon(largeIcon).setDefaults(DEFAULT_VIBRATE | DEFAULT_SOUND).setAutoCancel(true).setContentIntent(pendingIntent).build();
             mNotificationManager.notify(message.getFrom(), 1, notification);
         } else {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this);
@@ -450,8 +423,8 @@ public class MainActivity extends BaseActivity
     @TargetApi(Build.VERSION_CODES.O)
     private void createNotificationChannel(String channelId, String channelName, int importance) {
         NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
-        NotificationManager notificationManager = (NotificationManager) getSystemService(
-                NOTIFICATION_SERVICE);
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.createNotificationChannel(channel);
     }
 
@@ -467,6 +440,7 @@ public class MainActivity extends BaseActivity
         curConversation = conversation;
         initPopwindow(view, popupLocation(view));
     }
+
 
     /**
      * @param contentTv 弹框依赖view
@@ -516,8 +490,7 @@ public class MainActivity extends BaseActivity
         //设置阴影透明度
         lp.alpha = 0.8f;
         getWindow().setAttributes(lp);
-        popupWindow.setOnDismissListener(() ->
-        {
+        popupWindow.setOnDismissListener(() -> {
             WindowManager.LayoutParams lp1 = getWindow().getAttributes();
             lp1.alpha = 1f;
             getWindow().setAttributes(lp1);
@@ -701,35 +674,6 @@ public class MainActivity extends BaseActivity
         mVersionPresenter.getNewAPK(isMustUpdate);
         ToastUtil.toast(this, "开始下载");
     }
-    //    /**
-    //     * 患者、申请回调
-    //     */
-    //    @Override
-    //    public void onApplyCallback()
-    //    {
-    //        try
-    //        {
-    //            String pNum = sharePreferenceUtil.getString(CommonData.KEY_PATIENT_APPLY_NUM);
-    //            if (TextUtils.isEmpty(pNum))
-    //            {
-    //                return;
-    //            }
-    //            int num = Integer.valueOf(pNum);
-    //            if (num > 0)
-    //            {
-    //                rlMsgPointLayout2.setVisibility(View.VISIBLE);
-    //                tvUnReadMsgCount2.setText(num > 99 ? "99+" : num + "");
-    //            }
-    //            else
-    //            {
-    //                rlMsgPointLayout2.setVisibility(View.GONE);
-    //            }
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            e.printStackTrace();
-    //        }
-    //    }
 
     /**
      * 合作医生申请
@@ -806,17 +750,12 @@ public class MainActivity extends BaseActivity
 
         @Override
         public void onDisconnected(final int error) {
-            runOnUiThread(() ->
-            {
-                switch (error) {
-                    case EMError.USER_REMOVED:
-                        // 显示帐号已经被移除
-                        break;
-                    case EMError.USER_LOGIN_ANOTHER_DEVICE:
-                        // 显示帐号在其他设备登录
-                        break;
-                    default:
-                        break;
+            runOnUiThread(() -> {
+
+                if (error == EMError.USER_REMOVED) {
+                    LogUtils.e("test", "账号被删除");
+                } else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
+                    ToastUtil.toast(MainActivity.this, "账号在其他设备登录");
                 }
             });
         }

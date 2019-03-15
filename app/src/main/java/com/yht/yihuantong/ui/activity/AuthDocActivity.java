@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,7 +23,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
-import com.yht.yihuantong.qrcode.QrCodeHelper;
 import com.yht.yihuantong.tools.ThreadPoolHelper;
 import com.yht.yihuantong.ui.dialog.ActionSheetDialog;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
@@ -87,7 +84,8 @@ public class AuthDocActivity extends BaseActivity {
     @BindView(R.id.act_auth_doc_apply_layout)
     RelativeLayout rlApplyLayout;
 
-    private File tempFile, idCardFrontTempFile, idCardBackTempFile, docCardFrontTempFile, docCardBackTempFile;
+    private File tempFile, idCardFrontTempFile, idCardBackTempFile, docCardFrontTempFile,
+            docCardBackTempFile;
     private String txtName, txtCardNum, txtHospital, txtTitle, txtDepart;
     private CooperateDocBean cooperateDocBean;
     /**
@@ -170,8 +168,7 @@ public class AuthDocActivity extends BaseActivity {
             findViewById(R.id.act_auth_doc_doccard_back_layout).setOnClickListener(this);
         }
         findViewById(R.id.act_auth_doc_apply).setOnClickListener(this);
-        etDepart.setOnEditorActionListener((v, actionId, event) ->
-        {
+        etDepart.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 qualifiyDoc();
             }
@@ -198,22 +195,14 @@ public class AuthDocActivity extends BaseActivity {
             }
             ThreadPoolHelper.getInstance().execInSingle(() -> {
                 if (checkUrl != null) {
-                    FutureTarget<File> target = Glide.with(AuthDocActivity.this)
-                            .asFile()
-                            .load(checkUrl.getIdFront())
-                            .submit();
-                    FutureTarget<File> target1 = Glide.with(AuthDocActivity.this)
-                            .asFile()
-                            .load(checkUrl.getIdEnd())
-                            .submit();
-                    FutureTarget<File> target2 = Glide.with(AuthDocActivity.this)
-                            .asFile()
-                            .load(checkUrl.getQualifiedFront())
-                            .submit();
-                    FutureTarget<File> target3 = Glide.with(AuthDocActivity.this)
-                            .asFile()
-                            .load(checkUrl.getQualifiedEnd())
-                            .submit();
+                    FutureTarget<File> target =
+                            Glide.with(AuthDocActivity.this).asFile().load(checkUrl.getIdFront()).submit();
+                    FutureTarget<File> target1 =
+                            Glide.with(AuthDocActivity.this).asFile().load(checkUrl.getIdEnd()).submit();
+                    FutureTarget<File> target2 =
+                            Glide.with(AuthDocActivity.this).asFile().load(checkUrl.getQualifiedFront()).submit();
+                    FutureTarget<File> target3 =
+                            Glide.with(AuthDocActivity.this).asFile().load(checkUrl.getQualifiedEnd()).submit();
                     try {
                         idCardFrontTempFile = target.get();
                         idCardBackTempFile = target1.get();
@@ -227,7 +216,7 @@ public class AuthDocActivity extends BaseActivity {
                          *  - 立即或在清理方法的状态之后 - 或者应该通过调用Thread.interrupt（）重新中断线程，
                          *  即使这应该是单线程应用程序。 任何其他行动方案都有可能延迟线程关闭并丢失线程被中断的信息 -
                          *  可能没有完成任务。**/
-                        ThreadPoolHelper.clearup();
+                        Thread.currentThread().interrupt();
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     }
@@ -293,14 +282,11 @@ public class AuthDocActivity extends BaseActivity {
             ToastUtil.toast(this, R.string.toast_upload_card_hint);
             return;
         }
-        if (TextUtils.isEmpty(txtName) || TextUtils.isEmpty(txtCardNum) ||
-                idCardFrontTempFile == null || idCardBackTempFile == null) {
+        if (TextUtils.isEmpty(txtName) || TextUtils.isEmpty(txtCardNum) || idCardFrontTempFile == null || idCardBackTempFile == null) {
             ToastUtil.toast(this, "请完善您的身份信息");
             return;
         }
-        if (TextUtils.isEmpty(txtHospital) || TextUtils.isEmpty(txtTitle) ||
-                TextUtils.isEmpty(txtDepart) || docCardFrontTempFile == null ||
-                docCardBackTempFile == null) {
+        if (TextUtils.isEmpty(txtHospital) || TextUtils.isEmpty(txtTitle) || TextUtils.isEmpty(txtDepart) || docCardFrontTempFile == null || docCardBackTempFile == null) {
             ToastUtil.toast(this, "请完善您的资质信息");
             return;
         }
@@ -312,25 +298,13 @@ public class AuthDocActivity extends BaseActivity {
 
     private void uploadImg(int type) {
         this.type = type;
-        new ActionSheetDialog(this).builder()
-                .setCancelable(true)
-                .setCanceledOnTouchOutside(true)
-                .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Blue,
-                        which ->
-                        {
-                            //动态申请权限
-                            permissionHelper.request(new String[]{
-                                    Permission.STORAGE_WRITE});
-                        })
-                .addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue,
-                        which ->
-                        {
-                            //动态申请权限
-                            permissionHelper.request(new String[]{
-                                    Permission.CAMERA,
-                                    Permission.STORAGE_WRITE});
-                        })
-                .show();
+        new ActionSheetDialog(this).builder().setCancelable(true).setCanceledOnTouchOutside(true).addSheetItem("相册", ActionSheetDialog.SheetItemColor.Blue, which -> {
+            //动态申请权限
+            permissionHelper.request(new String[]{Permission.STORAGE_WRITE});
+        }).addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue, which -> {
+            //动态申请权限
+            permissionHelper.request(new String[]{Permission.CAMERA, Permission.STORAGE_WRITE});
+        }).show();
     }
 
     @Override
@@ -422,14 +396,14 @@ public class AuthDocActivity extends BaseActivity {
                 .countable(true)
                 //                //相机
                 //               .capture(true)
-//                              .captureStrategy(new CaptureStrategy(true, YihtApplication.getInstance().getPackageName()+ ".fileprovider"))
+                //                              .captureStrategy(new CaptureStrategy(true,
+                // YihtApplication.getInstance().getPackageName()+ ".fileprovider"))
                 // 黑色背景
                 .theme(R.style.Matisse_Dracula)
                 // 图片选择的最多数量
                 .maxSelectable(1)
                 // 列表中显示的图片大小
-                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.app_picture_size))
-                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.app_picture_size)).restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                 // 缩略图的比例
                 .thumbnailScale(0.85f)
                 // 使用的图片加载引擎
@@ -450,7 +424,8 @@ public class AuthDocActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            uri = FileProvider.getUriForFile(this, YihtApplication.getInstance().getPackageName() + ".fileprovider", tempFile);
+            uri = FileProvider.getUriForFile(this,
+                    YihtApplication.getInstance().getPackageName() + ".fileprovider", tempFile);
         } else {
             uri = Uri.fromFile(tempFile);
         }
@@ -458,8 +433,8 @@ public class AuthDocActivity extends BaseActivity {
                 PackageManager.MATCH_DEFAULT_ONLY);
         for (ResolveInfo resolveInfo : resInfoList) {
             String packageName = resolveInfo.activityInfo.packageName;
-            grantUriPermission(packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            grantUriPermission(packageName, uri,
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
         // 指定调用相机拍照后照片的储存路径
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
@@ -510,7 +485,8 @@ public class AuthDocActivity extends BaseActivity {
             case RC_PICK_CAMERA_IMG:
                 Uri imageUri;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    imageUri = FileProvider.getUriForFile(this, YihtApplication.getInstance().getPackageName() + ".fileprovider",
+                    imageUri = FileProvider.getUriForFile(this,
+                            YihtApplication.getInstance().getPackageName() + ".fileprovider",
                             tempFile);
                 } else {
                     imageUri = Uri.fromFile(tempFile);

@@ -42,7 +42,8 @@ public final class ScalingUtils {
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
         // 创建新的图片
-        Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+                bitmap.getHeight(), matrix, true);
         return resizedBitmap;
     }
 
@@ -113,8 +114,10 @@ public final class ScalingUtils {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            out.flush();
-            out.close();
+            if (out != null) {
+                out.flush();
+                out.close();
+            }
         }
     }
 
@@ -164,7 +167,8 @@ public final class ScalingUtils {
      * @return
      */
     public static Bitmap getRoundedCornerBitmap(Bitmap bitmap, float roundPixels) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Config.ARGB_8888);
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),
+                Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
         final int color = 0xff424242;
         final Paint paint = new Paint();
@@ -235,7 +239,8 @@ public final class ScalingUtils {
      * @param screenHeight 屏幕高度
      * @return 缩放后BitmapDrawable
      */
-    public static BitmapDrawable loadImage(Resources res, String path, int screenWidth, int screenHeight) {
+    public static BitmapDrawable loadImage(Resources res, String path, int screenWidth,
+                                           int screenHeight) {
         return new BitmapDrawable(res, loadImage(path, screenWidth, screenHeight));
     }
 
@@ -257,8 +262,8 @@ public final class ScalingUtils {
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeResource(res, resId, options);
         options.inJustDecodeBounds = false;
-        options.inSampleSize = calculateSampleSize(options.outWidth, options.outHeight, dstWidth, dstHeight,
-                scalingLogic);
+        options.inSampleSize = calculateSampleSize(options.outWidth, options.outHeight, dstWidth,
+                dstHeight, scalingLogic);
         return BitmapFactory.decodeResource(res, resId, options);
     }
 
@@ -273,13 +278,14 @@ public final class ScalingUtils {
      * @param scalingLogic Logic to use to avoid image stretching
      * @return Decoded bitmap
      */
-    public static Bitmap decodeFile(String pathName, int dstWidth, int dstHeight, ScalingLogic scalingLogic) {
+    public static Bitmap decodeFile(String pathName, int dstWidth, int dstHeight,
+                                    ScalingLogic scalingLogic) {
         Options options = new Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(pathName, options);
         options.inJustDecodeBounds = false;
-        options.inSampleSize = calculateSampleSize(options.outWidth, options.outHeight, dstWidth, dstHeight,
-                scalingLogic);
+        options.inSampleSize = calculateSampleSize(options.outWidth, options.outHeight, dstWidth,
+                dstHeight, scalingLogic);
         return BitmapFactory.decodeFile(pathName, options);
     }
 
@@ -294,11 +300,12 @@ public final class ScalingUtils {
      */
     public static Bitmap createScaledBitmap(Bitmap unscaledBitmap, int dstWidth, int dstHeight,
                                             ScalingLogic scalingLogic) {
-        Rect srcRect = calculateSrcRect(unscaledBitmap.getWidth(), unscaledBitmap.getHeight(), dstWidth, dstHeight,
-                scalingLogic);
-        Rect dstRect = calculateDstRect(unscaledBitmap.getWidth(), unscaledBitmap.getHeight(), dstWidth, dstHeight,
-                scalingLogic);
-        Bitmap scaledBitmap = Bitmap.createBitmap(dstRect.width(), dstRect.height(), Config.ARGB_8888);
+        Rect srcRect = calculateSrcRect(unscaledBitmap.getWidth(), unscaledBitmap.getHeight(),
+                dstWidth, dstHeight, scalingLogic);
+        Rect dstRect = calculateDstRect(unscaledBitmap.getWidth(), unscaledBitmap.getHeight(),
+                dstWidth, dstHeight, scalingLogic);
+        Bitmap scaledBitmap = Bitmap.createBitmap(dstRect.width(), dstRect.height(),
+                Config.ARGB_8888);
         Canvas canvas = new Canvas(scaledBitmap);
         canvas.drawBitmap(unscaledBitmap, srcRect, dstRect, new Paint(Paint.FILTER_BITMAP_FLAG));
         return scaledBitmap;
@@ -315,8 +322,8 @@ public final class ScalingUtils {
      * @param scalingLogic Logic to use to avoid image stretching
      * @return Optimal down scaling sample size for decoding
      */
-    public static int calculateSampleSize(int srcWidth, int srcHeight, int dstWidth, int dstHeight,
-                                          ScalingLogic scalingLogic) {
+    public static int calculateSampleSize(int srcWidth, int srcHeight, int dstWidth,
+                                          int dstHeight, ScalingLogic scalingLogic) {
         if (scalingLogic == ScalingLogic.FIT) {
             final float srcAspect = (float) srcWidth / (float) srcHeight;
             final float dstAspect = (float) dstWidth / (float) dstHeight;

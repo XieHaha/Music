@@ -50,8 +50,14 @@ public final class FileUtils {
         } catch (Exception e) {
             return false;
         } finally {
-            fileInputStream.close();
-            fileOutputStream.close();
+            if (fileOutputStream != null) {
+
+                fileInputStream.close();
+            }
+            if (fileOutputStream != null) {
+
+                fileOutputStream.close();
+            }
         }
     }
 
@@ -151,14 +157,11 @@ public final class FileUtils {
                 path = Uri.decode(path);
                 ContentResolver cr = context.getContentResolver();
                 StringBuffer buff = new StringBuffer();
-                buff.append("(")
-                        .append(MediaStore.Images.ImageColumns.DATA)
-                        .append("=")
-                        .append("'" + path + "'")
-                        .append(")");
-                Cursor cur = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, new String[]{
-                                MediaStore.Images.ImageColumns._ID, MediaStore.Images.ImageColumns.DATA},
-                        buff.toString(), null, null);
+                buff.append("(").append(MediaStore.Images.ImageColumns.DATA).append("=").append(
+                        "'" + path + "'").append(")");
+                Cursor cur = cr.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        new String[]{MediaStore.Images.ImageColumns._ID,
+                                MediaStore.Images.ImageColumns.DATA}, buff.toString(), null, null);
                 int index = 0;
                 int dataIdx = 0;
                 for (cur.moveToFirst(); !cur.isAfterLast(); cur.moveToNext()) {

@@ -52,11 +52,11 @@ public class LogUtils {
     /**
      * 日志的输出格式
      */
-    private static SimpleDateFormat mLogSdf;
+    private static final SimpleDateFormat mLogSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
     /**
      * 日志文件格式
      */
-    private static SimpleDateFormat logfile;
+    private static final SimpleDateFormat logfile = new SimpleDateFormat("yyyy-MM-dd");
 
     public static void w(String tag, String text) {
         log(tag, text, 'w', null);
@@ -154,11 +154,10 @@ public class LogUtils {
         if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             return;
         }
-        mLogSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
-        logfile = new SimpleDateFormat("yyyy-MM-dd");
         Date nowtime = new Date();
         String needWriteFile = logfile.format(nowtime);
-        String needWriteMessage = mLogSdf.format(nowtime) + "    " + mylogtype + "    " + tag + "    " + text;
+        String needWriteMessage = mLogSdf.format(nowtime) + "    " + mylogtype + "    " + tag +
+                "    " + text;
         String pathLog = DirHelper.getPathLog();
         File file = new File(pathLog);
         if (!file.exists() && !file.mkdirs()) {

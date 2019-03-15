@@ -54,8 +54,8 @@ public class ChatActivity extends BaseActivity
             chatName = getIntent().getStringExtra(CommonData.KEY_CHAT_NAME);
         }
         YihtApplication.getInstance().setChatId(chatId);
-        //        ((TextView)findViewById(R.id.public_title_bar_title)).setText(chatName);
-        easeChatFragment = new EaseChatFragment();  //环信聊天界面
+        //环信聊天界面
+        easeChatFragment = new EaseChatFragment();
         easeChatFragment.setChatFragmentHelper(new ChatHelper());
         easeChatFragment.setOnRightTitleBarClickListener(this);
         //传入参数

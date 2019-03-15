@@ -45,7 +45,6 @@ import com.google.gson.reflect.TypeToken;
 import com.yht.xylink.utils.AlertUtil;
 import com.yht.xylink.utils.CommonTime;
 import com.yht.xylink.utils.VolumeManager;
-import com.yht.xylink.utils.view.CallRosterView;
 import com.yht.xylink.utils.view.CallStatisticsView;
 import com.yht.xylink.utils.view.Dtmf;
 import com.yht.xylink.utils.view.StatisticsRender;
@@ -68,9 +67,9 @@ import static android.view.View.VISIBLE;
  * 通话界面
  */
 @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-public class VideoFragment extends Fragment
-        implements CallActivity.CallListener, View.OnClickListener,
-        VideoGroupView.ForceLayoutListener, VideoGroupView.BGCellLayoutInfoListener {
+public class VideoFragment extends Fragment implements CallActivity.CallListener,
+        View.OnClickListener, VideoGroupView.ForceLayoutListener,
+        VideoGroupView.BGCellLayoutInfoListener {
     private AtomicBoolean audioMuteStatus = new AtomicBoolean(false);
     private static final String TAG = "VideoFragment";
     private final static int REFRESH_STATISTICS_INFO_DELAYED = 2000;
@@ -107,11 +106,25 @@ public class VideoFragment extends Fragment
     private TextView mHandupLabel;
     private boolean isHandupNow;    // 本地状态
     private boolean isMuteDisable; // 会控强制静音
-    //录制
-    private String callNumber;//用户信息
-    private ImageButton mRecordVideoBtn;//录制按钮
-    private TextView mRecordVideoTxt;//录制文字显示
-    private TextView mTimer;//录制计时
+    /**
+     * 录制
+     */
+    /**
+     * 用户信息
+     */
+    private String callNumber;
+    /**
+     * 录制按钮
+     */
+    private ImageButton mRecordVideoBtn;
+    /**
+     * 录制文字显示
+     */
+    private TextView mRecordVideoTxt;
+    /**
+     * 录制计时
+     */
+    private TextView mTimer;
     private boolean isControlEnable = true;
     private LinearLayout mTimeLayout;
     private ImageView mFlashView;
@@ -119,14 +132,15 @@ public class VideoFragment extends Fragment
     private final static int FLASH_ICON_DELAYED = 500;
     long recordingDuration = 0;
     private boolean isMicphoneMuted = true;
-    //语音模式
+    /**
+     * 语音模式
+     */
     private ImageButton mAudioOnlyBtn;
     private TextView mAudioOnlyText;
     private ImageView mNetworkState;
     private TextView networkStateTimer;
     private TextView tvCallNumber;
     private String mDisplayName;
-    private CallRosterView callRosterView;
     private CallStatisticsView callStatisticsView;
     private Button mSaveDump;
     private Button mRoster;
@@ -138,20 +152,26 @@ public class VideoFragment extends Fragment
     private String timeStr = "";
     private List<VideoInfo> layoutInfos = new ArrayList<>();
     private StatisticsRender mStatisticsRender;
-    //更多
+    /**
+     * 更多
+     */
     private ImageButton mMeetingMore;
     private LinearLayout moreDialog;
     private TextView keyboard;
     private RelativeLayout dtmfLayout;
     private Dtmf dtmf;
     private LinearLayout dtmfLay;
-    //会控
+    /**
+     * 会控
+     */
     private final static String JS_PARTICIPANTID_ROSTER = "xylink:forcelayout?pid=";
     Random random = new Random();
-    private int r = random.nextInt(1000);
-    final String url = "https://devcdn.xylink.com/custom-host/index.html?cloudNo=918201507520&" +
-            "extId=40260e9046bae2da238ac0b0c572326b91726a83&host=https://dev.xylink.com";
-    //FECC
+    final String url =
+            "https://devcdn.xylink.com/custom-host/index.html?cloudNo=918201507520&" + "extId" +
+                    "=40260e9046bae2da238ac0b0c572326b91726a83&host=https://dev.xylink.com";
+    /**
+     * FECC
+     */
     private ImageButton mFeccLeftBtn;
     private ImageButton mFeccRightBtn;
     private ImageButton mFeccUpBtn;
@@ -284,7 +304,6 @@ public class VideoFragment extends Fragment
             }
         });
         mVideoView.init();
-        callRosterView = (CallRosterView) view.findViewById(R.id.conversation_roster);
         callStatisticsView = (CallStatisticsView) view.findViewById(R.id.conversation_statics);
         mSaveDump = (Button) view.findViewById(R.id.save_dump);
         mRoster = (Button) view.findViewById(R.id.roster_btn);
@@ -304,11 +323,11 @@ public class VideoFragment extends Fragment
         ViewStub stub = (ViewStub) view.findViewById(R.id.view_statistics_info);
         mStatisticsRender = new StatisticsRender(stub,
                 new StatisticsRender.StatisticsOperationListener() {
-                    @Override
-                    public void stopStatisticsInfo() {
-                        stopRefreshStatisticsInfo();
-                    }
-                });
+            @Override
+            public void stopStatisticsInfo() {
+                stopRefreshStatisticsInfo();
+            }
+        });
         mVideoView.setLocalFullScreen(false, false);
         mVideoView.setOnHoldMode(false);
         TimeHide();
@@ -316,7 +335,8 @@ public class VideoFragment extends Fragment
         mFeccLeftBtn = (ImageButton) view.findViewById(R.id.fecc_left);
         mFeccRightBtn = (ImageButton) view.findViewById(R.id.fecc_right);
         mFeccUpBtn = (ImageButton) view.findViewById(R.id.fecc_up);
-        mFeccDownBtn = (ImageButton) view.findViewById(R.id.fecc_down);//圆盘指令
+        //圆盘指令
+        mFeccDownBtn = (ImageButton) view.findViewById(R.id.fecc_down);
         mFeccControl = (LinearLayout) view.findViewById(R.id.fecc_control);
         mFeccControlBg = (ImageView) view.findViewById(R.id.fecc_control_bg);
         mFeccControlBgLeft = (ImageView) view.findViewById(R.id.fecc_control_bg_left);
@@ -426,8 +446,7 @@ public class VideoFragment extends Fragment
         @Override
         public void run() {
             recordingDuration += 1000;
-            mTimer.setText(getResources().getString(R.string.recording_text) + " " +
-                    CommonTime.formatDuration(recordingDuration));
+            mTimer.setText(getResources().getString(R.string.recording_text) + " " + CommonTime.formatDuration(recordingDuration));
             mTimer.postDelayed(timerRunnable, TIMER_DELAYED);
         }
     };
@@ -495,8 +514,7 @@ public class VideoFragment extends Fragment
     };
 
     private void TimeHide() {
-        if (videoContainer.getVisibility() == VISIBLE && toolbottom.getVisibility() == VISIBLE &&
-                switchCameraLayout.getVisibility() == VISIBLE) {
+        if (videoContainer.getVisibility() == VISIBLE && toolbottom.getVisibility() == VISIBLE && switchCameraLayout.getVisibility() == VISIBLE) {
             StartToolbarVisibleTimer();
             setFECCButtonVisible(false);
         } else {
@@ -504,11 +522,7 @@ public class VideoFragment extends Fragment
             toolbottom.setVisibility(VISIBLE);
             switchCameraLayout.setVisibility(VISIBLE);
             StopToolbarVisibleTimer();
-            setFECCButtonVisible(
-                    videoInfo != null && !feccDisable && audioMode != videoInfo.isAudioMute() &&
-                            !videoInfo.isVideoMute() && (isSupportHorizontalFECC(videoInfo.getFeccOri()) ||
-                            isSupportVerticalFECC(
-                                    videoInfo.getFeccOri()))); // 左右或上下至少支持一种才行，否则不显示。
+            setFECCButtonVisible(videoInfo != null && !feccDisable && audioMode != videoInfo.isAudioMute() && !videoInfo.isVideoMute() && (isSupportHorizontalFECC(videoInfo.getFeccOri()) || isSupportVerticalFECC(videoInfo.getFeccOri()))); // 左右或上下至少支持一种才行，否则不显示。
         }
     }
 
@@ -516,9 +530,7 @@ public class VideoFragment extends Fragment
         @Override
         public void onClick(View v) {
             Log.i(TAG, "videoFrameCellClickListener==::" + mVisible);
-            if (videoContainer.getVisibility() == VISIBLE &&
-                    toolbottom.getVisibility() == VISIBLE &&
-                    switchCameraLayout.getVisibility() == VISIBLE) {
+            if (videoContainer.getVisibility() == VISIBLE && toolbottom.getVisibility() == VISIBLE && switchCameraLayout.getVisibility() == VISIBLE) {
                 videoContainer.setVisibility(INVISIBLE);
                 toolbottom.setVisibility(INVISIBLE);
                 switchCameraLayout.setVisibility(INVISIBLE);
@@ -809,8 +821,7 @@ public class VideoFragment extends Fragment
                                        boolean isMuteDisable) {
         this.isMuteDisable = isMuteDisable;
         L.i(TAG,
-                "onConfMgmtStateChanged called, callIndex=" + callIndex + ", opearation=" + opearation +
-                        ", isMuteDisable=" + isMuteDisable);
+                "onConfMgmtStateChanged called, callIndex=" + callIndex + ", opearation=" + opearation + ", isMuteDisable=" + isMuteDisable);
         if (opearation.equalsIgnoreCase("mute")) {
             NemoSDK.getInstance().enableMic(true, false);
             if (mVideoView != null) {
@@ -828,8 +839,7 @@ public class VideoFragment extends Fragment
     }
 
     public void showOutgoingContainer() {
-        if (outgoingContainer != null && videoHideShowContainer != null &&
-                videoFunctionHideShow != null) {
+        if (outgoingContainer != null && videoHideShowContainer != null && videoFunctionHideShow != null) {
             outgoingContainer.setVisibility(VISIBLE);
             videoHideShowContainer.setVisibility(GONE);
             videoFunctionHideShow.setVisibility(GONE);
@@ -837,8 +847,7 @@ public class VideoFragment extends Fragment
     }
 
     public void showVideContainer() {
-        if (outgoingContainer != null && videoHideShowContainer != null &&
-                videoFunctionHideShow != null) {
+        if (outgoingContainer != null && videoHideShowContainer != null && videoFunctionHideShow != null) {
             outgoingContainer.setVisibility(GONE);
             videoHideShowContainer.setVisibility(VISIBLE);
             videoFunctionHideShow.setVisibility(VISIBLE);
@@ -962,8 +971,9 @@ public class VideoFragment extends Fragment
     private void handleFECCControl(FECCCommand command) {
         if (videoInfo != null) {
             NemoSDK.getInstance().farEndHardwareControl(videoInfo.getParticipantId(), command, 10);
-            Log.i(TAG, "user Fragment farEndHardwareControl22==" + videoInfo.getParticipantId() +
-                    "==command==" + command);
+            Log.i(TAG,
+                    "user Fragment farEndHardwareControl22==" + videoInfo.getParticipantId() +
+                            "==command==" + command);
         }
     }
 
@@ -1030,13 +1040,11 @@ public class VideoFragment extends Fragment
                             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                                 if (url != null) {
                                     if (url.contains(JS_PARTICIPANTID_ROSTER)) {
-                                        String participantId = url.substring(
-                                                url.indexOf(JS_PARTICIPANTID_ROSTER) +
-                                                        JS_PARTICIPANTID_ROSTER.length(), url.length());
+                                        String participantId =
+                                                url.substring(url.indexOf(JS_PARTICIPANTID_ROSTER) + JS_PARTICIPANTID_ROSTER.length(), url.length());
                                         Log.i("participantId", "拦截的ID===2==" + participantId);
                                         //传给下层
-                                        NemoSDK.getInstance()
-                                                .forceLayout(Integer.parseInt(participantId));
+                                        NemoSDK.getInstance().forceLayout(Integer.parseInt(participantId));
                                     } else {
                                         view.loadUrl(url);
                                     }
@@ -1055,11 +1063,9 @@ public class VideoFragment extends Fragment
             case R.id.switch_speaker_mode:
                 speakerMode = !speakerMode;
                 if (speakerMode) {
-                    mSwitchSpeakerText.setText(
-                            getResources().getString(R.string.close_switch_speaker_mode));
+                    mSwitchSpeakerText.setText(getResources().getString(R.string.close_switch_speaker_mode));
                 } else {
-                    mSwitchSpeakerText.setText(
-                            getResources().getString(R.string.switch_speaker_mode));
+                    mSwitchSpeakerText.setText(getResources().getString(R.string.switch_speaker_mode));
                 }
                 NemoSDK.getInstance().switchSpeakerOnModle(speakerMode);
                 break;
@@ -1076,7 +1082,8 @@ public class VideoFragment extends Fragment
                 break;
             case R.id.remote_video_view:
                 break;
-            case R.id.audio_only_btn://语音模式
+            //语音模式
+            case R.id.audio_only_btn:
                 audioMode = !audioMode;
                 Log.i(TAG, "audio_only_btn==" + audioMode);
                 setSwitchCallState(audioMode);
@@ -1101,6 +1108,8 @@ public class VideoFragment extends Fragment
                 startRefreshMediaStatistics();
                 callStatisticsView.setVisibility(VISIBLE);
                 break;
+            default:
+                break;
         }
     }
 
@@ -1112,13 +1121,10 @@ public class VideoFragment extends Fragment
                     "main cell " + layoutInfo.getRemoteName() + ":layoutInfo:" + layoutInfo.toString());
         }
         // 左右或上下至少支持一种才行，否则不显示。
-        setFECCButtonVisible(
-                videoInfo != null && !feccDisable && audioMode != videoInfo.isAudioMute() &&
-                        !videoInfo.isVideoMute() && (isSupportHorizontalFECC(videoInfo.getFeccOri()) ||
-                        isSupportVerticalFECC(videoInfo.getFeccOri())));
+        setFECCButtonVisible(videoInfo != null && !feccDisable && audioMode != videoInfo.isAudioMute() && !videoInfo.isVideoMute() && (isSupportHorizontalFECC(videoInfo.getFeccOri()) || isSupportVerticalFECC(videoInfo.getFeccOri())));
         setZoomInOutVisible(videoInfo != null && isSupportZoomInOut(videoInfo.getFeccOri()));
         setFeccTiltControl(videoInfo != null && isSupportHorizontalFECC(videoInfo.getFeccOri()),
-                layoutInfos != null && isSupportVerticalFECC(videoInfo.getFeccOri()));
+                layoutInfos != null && videoInfo != null && isSupportVerticalFECC(videoInfo.getFeccOri()));
     }
 
     private float GetFeccBtnPositon(ImageButton feccButton) {
@@ -1274,25 +1280,19 @@ public class VideoFragment extends Fragment
                                               final int actionStep) {
         final GestureDetector mGestureDetector = new GestureDetector(feccButton.getContext(),
                 new GestureDetector.SimpleOnGestureListener() {
-                    @Override
-                    public void onLongPress(
-                            MotionEvent e) {
-                        sendFeccCommand(
-                                actionTurn);
-                        FeccPanTurnSide(
-                                feccButton);
-                    }
+            @Override
+            public void onLongPress(MotionEvent e) {
+                sendFeccCommand(actionTurn);
+                FeccPanTurnSide(feccButton);
+            }
 
-                    @Override
-                    public boolean onSingleTapConfirmed(
-                            MotionEvent e) {
-                        sendFeccCommand(
-                                actionStep);
-                        FeccPanTurnPingPong(
-                                feccButton);
-                        return true;
-                    }
-                });
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                sendFeccCommand(actionStep);
+                FeccPanTurnPingPong(feccButton);
+                return true;
+            }
+        });
         feccButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -1303,15 +1303,9 @@ public class VideoFragment extends Fragment
                     case MotionEvent.ACTION_UP:
                     case MotionEvent.ACTION_CANCEL:
                         FeccPanTurnOrigin();
-                        if (actionTurn == UserActionListener.USER_ACTION_FECC_LEFT ||
-                                actionTurn == UserActionListener.USER_ACTION_FECC_RIGHT ||
-                                actionStep == UserActionListener.USER_ACTION_FECC_STEP_LEFT ||
-                                actionStep == UserActionListener.USER_ACTION_FECC_STEP_RIGHT) {
+                        if (actionTurn == UserActionListener.USER_ACTION_FECC_LEFT || actionTurn == UserActionListener.USER_ACTION_FECC_RIGHT || actionStep == UserActionListener.USER_ACTION_FECC_STEP_LEFT || actionStep == UserActionListener.USER_ACTION_FECC_STEP_RIGHT) {
                             sendFeccCommand(UserActionListener.USER_ACTION_FECC_STOP);
-                        } else if (actionTurn == UserActionListener.USER_ACTION_FECC_UP ||
-                                actionTurn == UserActionListener.USER_ACTION_FECC_DOWN ||
-                                actionStep == UserActionListener.USER_ACTION_FECC_STEP_UP ||
-                                actionStep == UserActionListener.USER_ACTION_FECC_STEP_DOWN) {
+                        } else if (actionTurn == UserActionListener.USER_ACTION_FECC_UP || actionTurn == UserActionListener.USER_ACTION_FECC_DOWN || actionStep == UserActionListener.USER_ACTION_FECC_STEP_UP || actionStep == UserActionListener.USER_ACTION_FECC_STEP_DOWN) {
                             sendFeccCommand(UserActionListener.USER_ACTION_FECC_UP_DOWN_STOP);
                         }
                         return true;
@@ -1324,27 +1318,19 @@ public class VideoFragment extends Fragment
     private void createZoomInGestureDetector(ImageView zoomInAdd) {
         final GestureDetector zoomGestureDetector = new GestureDetector(zoomInAdd.getContext(),
                 new GestureDetector.SimpleOnGestureListener() {
-                    @Override
-                    public void onLongPress(
-                            MotionEvent e) {
-                        L.i(TAG,
-                                "createZoomInGestureDetector onLongPress...");
-                        actionListener.onUserAction(
-                                UserActionListener.FECC_ZOOM_IN,
-                                null);
-                    }
+            @Override
+            public void onLongPress(MotionEvent e) {
+                L.i(TAG, "createZoomInGestureDetector onLongPress...");
+                actionListener.onUserAction(UserActionListener.FECC_ZOOM_IN, null);
+            }
 
-                    @Override
-                    public boolean onSingleTapConfirmed(
-                            MotionEvent e) {
-                        L.i(TAG,
-                                "createZoomInGestureDetector onSingleTapConfirmed...");
-                        actionListener.onUserAction(
-                                UserActionListener.FECC_STEP_ZOOM_IN,
-                                null);
-                        return true;
-                    }
-                });
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                L.i(TAG, "createZoomInGestureDetector onSingleTapConfirmed...");
+                actionListener.onUserAction(UserActionListener.FECC_STEP_ZOOM_IN, null);
+                return true;
+            }
+        });
         zoomInAdd.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -1366,27 +1352,19 @@ public class VideoFragment extends Fragment
     private void createZoomOutGestureDetector(ImageView zoomInPlus) {
         final GestureDetector zoomGestureDetector = new GestureDetector(zoomInPlus.getContext(),
                 new GestureDetector.SimpleOnGestureListener() {
-                    @Override
-                    public void onLongPress(
-                            MotionEvent e) {
-                        L.i(TAG,
-                                "createZoomOutGestureDetector onLongPress...");
-                        actionListener.onUserAction(
-                                UserActionListener.FECC_ZOOM_OUT,
-                                null);
-                    }
+            @Override
+            public void onLongPress(MotionEvent e) {
+                L.i(TAG, "createZoomOutGestureDetector onLongPress...");
+                actionListener.onUserAction(UserActionListener.FECC_ZOOM_OUT, null);
+            }
 
-                    @Override
-                    public boolean onSingleTapConfirmed(
-                            MotionEvent e) {
-                        L.i(TAG,
-                                "createZoomOutGestureDetector onSingleTapConfirmed...");
-                        actionListener.onUserAction(
-                                UserActionListener.FECC_STEP_ZOOM_OUT,
-                                null);
-                        return true;
-                    }
-                });
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                L.i(TAG, "createZoomOutGestureDetector onSingleTapConfirmed...");
+                actionListener.onUserAction(UserActionListener.FECC_STEP_ZOOM_OUT, null);
+                return true;
+            }
+        });
         zoomInPlus.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -1407,7 +1385,8 @@ public class VideoFragment extends Fragment
 
     @SuppressLint("ClickableViewAccessibility")
     private void createFeccPanGestureDetector(final ImageView feccBigCircle,
-                                              final ImageView feccSmallCircle, final int actionTurn, final int actionStep) {
+                                              final ImageView feccSmallCircle,
+                                              final int actionTurn, final int actionStep) {
         feccBigCircle.setLongClickable(true);
         feccBigCircle.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -1420,15 +1399,9 @@ public class VideoFragment extends Fragment
                         FeccPanTurnOrigin();
                         sendFeccCommand(UserActionListener.USER_ACTION_FECC_STOP);
                         sendFeccCommand(UserActionListener.USER_ACTION_FECC_UP_DOWN_STOP);
-                        if (actionTurn == UserActionListener.USER_ACTION_FECC_LEFT ||
-                                actionTurn == UserActionListener.USER_ACTION_FECC_RIGHT ||
-                                actionStep == UserActionListener.USER_ACTION_FECC_STEP_LEFT ||
-                                actionStep == UserActionListener.USER_ACTION_FECC_STEP_RIGHT) {
+                        if (actionTurn == UserActionListener.USER_ACTION_FECC_LEFT || actionTurn == UserActionListener.USER_ACTION_FECC_RIGHT || actionStep == UserActionListener.USER_ACTION_FECC_STEP_LEFT || actionStep == UserActionListener.USER_ACTION_FECC_STEP_RIGHT) {
                             sendFeccCommand(UserActionListener.USER_ACTION_FECC_STOP);
-                        } else if (actionTurn == UserActionListener.USER_ACTION_FECC_UP ||
-                                actionTurn == UserActionListener.USER_ACTION_FECC_DOWN ||
-                                actionStep == UserActionListener.USER_ACTION_FECC_STEP_UP ||
-                                actionStep == UserActionListener.USER_ACTION_FECC_STEP_DOWN) {
+                        } else if (actionTurn == UserActionListener.USER_ACTION_FECC_UP || actionTurn == UserActionListener.USER_ACTION_FECC_DOWN || actionStep == UserActionListener.USER_ACTION_FECC_STEP_UP || actionStep == UserActionListener.USER_ACTION_FECC_STEP_DOWN) {
                             sendFeccCommand(UserActionListener.USER_ACTION_FECC_UP_DOWN_STOP);
                         }
                         break;
@@ -1471,16 +1444,16 @@ public class VideoFragment extends Fragment
                                 mFeccControlBgUp.setVisibility(View.VISIBLE);
                                 sendFeccCommand(UserActionListener.USER_ACTION_FECC_UP);
                             }
-                            double d = Math.sqrt((eventx - bigR) * (eventx - bigR) +
-                                    (eventy - bigR) * (eventy - bigR));
+                            double d =
+                                    Math.sqrt((eventx - bigR) * (eventx - bigR) + (eventy - bigR) * (eventy - bigR));
                             // critical pixel 包含小圆发光距离
                             r += 25;
                             // moving out of the big circle
                             if (d > r) {
-                                float fx = ((float) bigR +
-                                        ((float) r) * (eventx - (float) bigR) / (float) d);
-                                float fy = ((float) bigR +
-                                        ((float) r) * (eventy - (float) bigR) / (float) d);
+                                float fx =
+                                        ((float) bigR + ((float) r) * (eventx - (float) bigR) / (float) d);
+                                float fy =
+                                        ((float) bigR + ((float) r) * (eventy - (float) bigR) / (float) d);
                                 if (feccHorizontalControl) {
                                     // FIXME: 2017/10/18 temp fix
                                     feccSmallCircle.setX(fx - smallR + 15);
@@ -1508,16 +1481,12 @@ public class VideoFragment extends Fragment
     }
 
     private void sendFeccCommand(int command) {
-        if (command == UserActionListener.USER_ACTION_FECC_LEFT ||
-                command == UserActionListener.USER_ACTION_FECC_RIGHT) {
-            if (lastFeccCommand == UserActionListener.USER_ACTION_FECC_UP ||
-                    lastFeccCommand == UserActionListener.USER_ACTION_FECC_DOWN) {
+        if (command == UserActionListener.USER_ACTION_FECC_LEFT || command == UserActionListener.USER_ACTION_FECC_RIGHT) {
+            if (lastFeccCommand == UserActionListener.USER_ACTION_FECC_UP || lastFeccCommand == UserActionListener.USER_ACTION_FECC_DOWN) {
                 actionListener.onUserAction(UserActionListener.USER_ACTION_FECC_UP_DOWN_STOP, null);
             }
-        } else if (command == UserActionListener.USER_ACTION_FECC_UP ||
-                command == UserActionListener.USER_ACTION_FECC_DOWN) {
-            if (lastFeccCommand == UserActionListener.USER_ACTION_FECC_LEFT ||
-                    lastFeccCommand == UserActionListener.USER_ACTION_FECC_RIGHT) {
+        } else if (command == UserActionListener.USER_ACTION_FECC_UP || command == UserActionListener.USER_ACTION_FECC_DOWN) {
+            if (lastFeccCommand == UserActionListener.USER_ACTION_FECC_LEFT || lastFeccCommand == UserActionListener.USER_ACTION_FECC_RIGHT) {
                 actionListener.onUserAction(UserActionListener.USER_ACTION_FECC_STOP, null);
             }
         }
@@ -1585,13 +1554,30 @@ public class VideoFragment extends Fragment
                 mFeccUpBtn.setImageResource(R.drawable.fecc_up);
             }
         }
-        // only support vertical
-        if (feccVerticalControl && !feccHorizontalControl) {
-            if (mFeccLeftBtn != null) {
-                mFeccLeftBtn.setImageResource(R.drawable.fecc_left_disabled);
-            }
-            if (mFeccRightBtn != null) {
-                mFeccRightBtn.setImageResource(R.drawable.fecc_right_disabled);
+
+        if (mFeccUpBtn != null) {
+            mFeccUpBtn.setVisibility(View.VISIBLE);
+        }
+        if (mFeccDownBtn != null) {
+            mFeccDownBtn.setVisibility(View.VISIBLE);
+        }
+        if (feccVerticalControl) {
+            if (feccHorizontalControl) {
+                if (mFeccLeftBtn != null) {
+                    mFeccLeftBtn.setVisibility(View.VISIBLE);
+                    mFeccLeftBtn.setImageResource(R.drawable.fecc_left);
+                }
+                if (mFeccRightBtn != null) {
+                    mFeccRightBtn.setVisibility(View.VISIBLE);
+                    mFeccRightBtn.setImageResource(R.drawable.fecc_right);
+                }
+            } else {
+                if (mFeccLeftBtn != null) {
+                    mFeccLeftBtn.setImageResource(R.drawable.fecc_left_disabled);
+                }
+                if (mFeccRightBtn != null) {
+                    mFeccRightBtn.setImageResource(R.drawable.fecc_right_disabled);
+                }
             }
         } else {
             if (mFeccLeftBtn != null) {
@@ -1599,29 +1585,6 @@ public class VideoFragment extends Fragment
             }
             if (mFeccRightBtn != null) {
                 mFeccRightBtn.setImageResource(R.drawable.fecc_right);
-            }
-        }
-        if (feccHorizontalControl) {
-            if (mFeccLeftBtn != null) {
-                mFeccLeftBtn.setVisibility(View.VISIBLE);
-            }
-            if (mFeccRightBtn != null) {
-                mFeccRightBtn.setVisibility(View.VISIBLE);
-            }
-        }
-        if (feccVerticalControl) {
-            if (mFeccUpBtn != null) {
-                mFeccUpBtn.setVisibility(View.VISIBLE);
-            }
-            if (mFeccDownBtn != null) {
-                mFeccDownBtn.setVisibility(View.VISIBLE);
-            }
-        } else {
-            if (mFeccUpBtn != null) {
-                mFeccUpBtn.setVisibility(View.VISIBLE);
-            }
-            if (mFeccDownBtn != null) {
-                mFeccDownBtn.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -1648,7 +1611,9 @@ public class VideoFragment extends Fragment
     public void notificationMute(boolean isRemoteVideo, boolean isMute) {
     }
 
-    //FECC
+    /**
+     * FECC
+     */
     public void FECCListeners() {
         setActionListener(new UserActionListener() {
             @Override
@@ -1698,6 +1663,8 @@ public class VideoFragment extends Fragment
                         break;
                     case FECC_ZOOM_TURN_STOP:
                         handleFECCControl(FECCCommand.FECC_ZOOM_TURN_STOP);
+                        break;
+                    default:
                         break;
                 }
             }

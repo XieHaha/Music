@@ -42,8 +42,7 @@ import me.jessyan.autosize.unit.Subunits;
  *
  * @author DUNDUN
  */
-public class YihtApplication extends LitePalApplication
-{
+public class YihtApplication extends LitePalApplication {
     private static YihtApplication sApplication;
     private LoginSuccessBean loginSuccessBean;
     /**
@@ -72,8 +71,7 @@ public class YihtApplication extends LitePalApplication
     private boolean versionRemind = false;
 
     @Override
-    public void onCreate()
-    {
+    public void onCreate() {
         MultiDex.install(this);
         super.onCreate();
         initContext();
@@ -96,40 +94,35 @@ public class YihtApplication extends LitePalApplication
     }
 
     @Override
-    protected void attachBaseContext(Context base)
-    {
+    protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
     }
 
-    private void initContext()
-    {
+    private void initContext() {
         sApplication = this;
     }
 
-    private void initAndroidAutoSize()
-    {
+    private void initAndroidAutoSize() {
         //当 App 中出现多进程, 并且您需要适配所有的进程, 就需要在 App 初始化时调用 initCompatMultiProcess()
-        //在 Demo 中跳转的三方库中的 DefaultErrorActivity 就是在另外一个进程中, 所以要想适配这个 Activity 就需要调用 initCompatMultiProcess()
+        //在 Demo 中跳转的三方库中的 DefaultErrorActivity 就是在另外一个进程中, 所以要想适配这个 Activity 就需要调用
+        // initCompatMultiProcess()
         AutoSize.initCompatMultiProcess(this);
-        AutoSizeConfig.getInstance().getUnitsManager()
-                      .setSupportSP(false)
-                      .setSupportSubunits(Subunits.MM);
+        AutoSizeConfig.getInstance().getUnitsManager().setSupportSP(false).setSupportSubunits(Subunits.MM);
         AutoSizeConfig.getInstance()
-                      //是否让框架支持自定义 Fragment 的适配参数, 由于这个需求是比较少见的, 所以须要使用者手动开启
-                      //如果没有这个需求建议不开启
-                      .setCustomFragment(true)
-                      //是否屏蔽系统字体大小对 AndroidAutoSize 的影响, 如果为 true, App 内的字体的大小将不会跟随系统设置中字体大小的改变
-                      //如果为 false, 则会跟随系统设置中字体大小的改变, 默认为 false
-                      .setExcludeFontScale(true);
+                //是否让框架支持自定义 Fragment 的适配参数, 由于这个需求是比较少见的, 所以须要使用者手动开启
+                //如果没有这个需求建议不开启
+                .setCustomFragment(true)
+                //是否屏蔽系统字体大小对 AndroidAutoSize 的影响, 如果为 true, App 内的字体的大小将不会跟随系统设置中字体大小的改变
+                //如果为 false, 则会跟随系统设置中字体大小的改变, 默认为 false
+                .setExcludeFontScale(true);
     }
 
 
     /**
      * 环信初始化
      */
-    private void initEase()
-    {
+    private void initEase() {
         //最近联系人
         RecentContactUtils.init(this);
         //环信初始化
@@ -142,38 +135,29 @@ public class YihtApplication extends LitePalApplication
         //0：默认，1：圆形，2：矩形
         avatarOpts.setAvatarShape(1);
         EaseUI.getInstance().setAvatarOptions(avatarOpts);
-        //        //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
-        //        EMClient.getInstance().setDebugMode(true);
-        //设置有关环信自定义的相关配置
-        //titlebar、头像、名字处理
-        HxHelper.Opts opts = new HxHelper.Opts();
+        //设置有关环信自定义的相关配置  titlebar、头像、名字处理
+        HxHelper.Resource.Opts opts = new HxHelper.Resource.Opts();
         opts.showChatTitle = false;
         HxHelper.getInstance().init(this, opts, mIRequest);
-        EaseUI.getInstance().setUserProfileProvider((username, callback) ->
-                                                    {
-                                                        LoginSuccessBean bean = getLoginSuccessBean();
-                                                        //如果是当前用户，就设置自己的昵称和头像
-                                                        if (null != bean &&
-                                                            TextUtils.equals(bean.getDoctorId(),
-                                                                             username))
-                                                        {
-                                                            EaseUser eu = new EaseUser(username);
-                                                            eu.setNickname(bean.getName());
-                                                            eu.setAvatar(bean.getPortraitUrl());
-                                                            callback.onSuccess(eu);
-                                                            return eu;
-                                                        }
-                                                        //否则交给HxHelper处理，从消息中获取昵称和头像
-                                                        return HxHelper.getInstance()
-                                                                       .getUser(username, callback);
-                                                    });
+        EaseUI.getInstance().setUserProfileProvider((username, callback) -> {
+            LoginSuccessBean bean = getLoginSuccessBean();
+            //如果是当前用户，就设置自己的昵称和头像
+            if (null != bean && TextUtils.equals(bean.getDoctorId(), username)) {
+                EaseUser eu = new EaseUser(username);
+                eu.setNickname(bean.getName());
+                eu.setAvatar(bean.getPortraitUrl());
+                callback.onSuccess(eu);
+                return eu;
+            }
+            //否则交给HxHelper处理，从消息中获取昵称和头像
+            return HxHelper.getInstance().getUser(username, callback);
+        });
     }
 
     /**
      * 极光推送 初始化
      */
-    private void initJPush()
-    {
+    private void initJPush() {
         //极光推送
         JPushInterface.setDebugMode(false);
         JPushInterface.init(this);
@@ -182,33 +166,28 @@ public class YihtApplication extends LitePalApplication
     /**
      * ImageLoader 参数化配置
      */
-    private void initImageLoader()
-    {
+    private void initImageLoader() {
         ImageLoadUtil.getInstance().initImageLoader(getApplicationContext());
     }
 
     /**
      * 小鱼sdk
      */
-    private void initXYSDk()
-    {
+    private void initXYSDk() {
         Settings settings = new Settings("23a05bc3dcdaa4ec9936a5c01aa0804757f99a66");   //测试环境
         int pId = Process.myPid();
         String processName = "";
-        ActivityManager am = (ActivityManager)getApplicationContext().getSystemService(
-                ACTIVITY_SERVICE);
+        ActivityManager am =
+                (ActivityManager) getApplicationContext().getSystemService(ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> ps = am.getRunningAppProcesses();
-        for (ActivityManager.RunningAppProcessInfo p : ps)
-        {
-            if (p.pid == pId)
-            {
+        for (ActivityManager.RunningAppProcessInfo p : ps) {
+            if (p.pid == pId) {
                 processName = p.processName;
                 break;
             }
         }
         // 避免被初始化多次
-        if (processName.equals(getPackageName()))
-        {
+        if (processName.equals(getPackageName())) {
             NemoSDK nemoSDK = NemoSDK.getInstance();
             nemoSDK.init(this, settings);
             // 被叫服务，不使用被叫功能的请忽略
@@ -217,25 +196,20 @@ public class YihtApplication extends LitePalApplication
         }
     }
 
-    public static YihtApplication getInstance()
-    {
+    public static YihtApplication getInstance() {
         return sApplication;
     }
 
-    public LoginSuccessBean getLoginSuccessBean()
-    {
-        String userStr = (String)SharePreferenceUtil.getObject(this,
-                                                               CommonData.KEY_LOGIN_SUCCESS_BEAN,
-                                                               "");
-        if (!TextUtils.isEmpty(userStr))
-        {
+    public LoginSuccessBean getLoginSuccessBean() {
+        String userStr = (String) SharePreferenceUtil.getObject(this,
+                CommonData.KEY_LOGIN_SUCCESS_BEAN, "");
+        if (!TextUtils.isEmpty(userStr)) {
             loginSuccessBean = JSON.parseObject(userStr, LoginSuccessBean.class);
         }
         return loginSuccessBean;
     }
 
-    public void setLoginSuccessBean(LoginSuccessBean loginSuccessBean)
-    {
+    public void setLoginSuccessBean(LoginSuccessBean loginSuccessBean) {
         this.loginSuccessBean = loginSuccessBean;
         SharePreferenceUtil.putObject(this, CommonData.KEY_LOGIN_SUCCESS_BEAN, loginSuccessBean);
     }
@@ -243,58 +217,47 @@ public class YihtApplication extends LitePalApplication
     /**
      * 清楚登录数据
      */
-    public void clearLoginSuccessBean()
-    {
+    public void clearLoginSuccessBean() {
         SharePreferenceUtil.remove(this, CommonData.KEY_LOGIN_SUCCESS_BEAN);
     }
 
-    public String getHeadImgUrl()
-    {
+    public String getHeadImgUrl() {
         return headImgUrl;
     }
 
-    public void setHeadImgUrl(String headImgUrl)
-    {
+    public void setHeadImgUrl(String headImgUrl) {
         this.headImgUrl = headImgUrl;
     }
 
-    public String getEaseHeadImgUrl()
-    {
+    public String getEaseHeadImgUrl() {
         return easeHeadImgUrl;
     }
 
-    public void setEaseHeadImgUrl(String easeHeadImgUrl)
-    {
+    public void setEaseHeadImgUrl(String easeHeadImgUrl) {
         this.easeHeadImgUrl = easeHeadImgUrl;
     }
 
-    public String getEaseName()
-    {
+    public String getEaseName() {
         return easeName;
     }
 
-    public void setEaseName(String easeName)
-    {
+    public void setEaseName(String easeName) {
         this.easeName = easeName;
     }
 
-    public String getChatId()
-    {
+    public String getChatId() {
         return chatId;
     }
 
-    public void setChatId(String chatId)
-    {
+    public void setChatId(String chatId) {
         this.chatId = chatId;
     }
 
-    public boolean isVersionRemind()
-    {
+    public boolean isVersionRemind() {
         return versionRemind;
     }
 
-    public void setVersionRemind(boolean versionRemind)
-    {
+    public void setVersionRemind(boolean versionRemind) {
         this.versionRemind = versionRemind;
     }
 
@@ -304,8 +267,7 @@ public class YihtApplication extends LitePalApplication
      * @return
      */
     @Override
-    public Resources getResources()
-    {
+    public Resources getResources() {
         Resources resources = super.getResources();
         Configuration configuration = resources.getConfiguration();
         configuration.fontScale = 1;

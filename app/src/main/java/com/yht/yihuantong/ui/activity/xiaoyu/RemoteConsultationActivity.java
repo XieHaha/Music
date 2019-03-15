@@ -40,34 +40,29 @@ import custom.frame.utils.ToastUtil;
 /**
  * Created by dundun on 18/9/2.
  */
-public class RemoteConsultationActivity extends BaseActivity
-{
+public class RemoteConsultationActivity extends BaseActivity {
     private NemoSDK nemoSDK;
 
     @Override
-    protected boolean isInitBackBtn()
-    {
+    protected boolean isInitBackBtn() {
         return true;
     }
 
     @Override
-    public int getLayoutID()
-    {
+    public int getLayoutID() {
         return R.layout.act_remote_consultation;
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState)
-    {
+    public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("远程会诊");
+        ((TextView) findViewById(R.id.public_title_bar_title)).setText("远程会诊");
         findViewById(R.id.act_remote_consultation_create_layout).setOnClickListener(this);
         findViewById(R.id.act_remote_consultation_add_layout).setOnClickListener(this);
     }
 
     @Override
-    public void initData(@NonNull Bundle savedInstanceState)
-    {
+    public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         nemoSDK = NemoSDK.getInstance();
         checkPermission();
@@ -75,10 +70,8 @@ public class RemoteConsultationActivity extends BaseActivity
     }
 
     @Override
-    public void onClick(View v)
-    {
-        switch (v.getId())
-        {
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.act_remote_consultation_create_layout:
                 findVideoInfo();
                 break;
@@ -86,79 +79,63 @@ public class RemoteConsultationActivity extends BaseActivity
                 Intent intent = new Intent(RemoteConsultationActivity.this, CallActivity.class);
                 startActivity(intent);
                 break;
+            default:
+                break;
         }
     }
 
     /**
      * 查询会议是否存在
      */
-    private void findVideoInfo()
-    {
+    private void findVideoInfo() {
         RequestQueue queue = NoHttp.getRequestQueueInstance();
-        final Request<String> request = NoHttp.createStringRequest(
-                HttpConstants.BASE_BASIC_URL + "/xiaoyu/video/info", RequestMethod.POST);
+        final Request<String> request =
+                NoHttp.createStringRequest(HttpConstants.BASE_BASIC_URL + "/xiaoyu/video/info",
+                        RequestMethod.POST);
         Map<String, Object> params = new HashMap<>();
         params.put("meetingCreatorId", loginSuccessBean.getDoctorId());
         JSONObject jsonObject = new JSONObject(params);
         request.setDefineRequestBodyForJson(jsonObject.toString());
-        queue.add(1, request, new OnResponseListener<String>()
-        {
+        queue.add(1, request, new OnResponseListener<String>() {
             @Override
-            public void onStart(int what)
-            {
+            public void onStart(int what) {
                 showProgressDialog("查询中...");
             }
 
             @Override
-            public void onSucceed(int what, Response<String> response)
-            {
+            public void onSucceed(int what, Response<String> response) {
                 String s = response.get();
-                try
-                {
+                try {
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponse(object, MeetingBean.class);
-                    if (baseResponse != null)
-                    {
+                    if (baseResponse != null) {
                         Intent intent;
                         MeetingBean bean = baseResponse.getData();
-                        if (TextUtils.isEmpty(bean.getCreatorId()))
-                        {
+                        if (TextUtils.isEmpty(bean.getCreatorId())) {
                             intent = new Intent(RemoteConsultationActivity.this,
-                                                CreateMeetingActivity.class);
+                                    CreateMeetingActivity.class);
                             startActivity(intent);
-                        }
-                        else
-                        {
-                            //                            intent = new Intent(RemoteConsultationActivity.this,
-                            //                                                MeetingDetailActivity.class);
+                        } else {
                             intent = new Intent(RemoteConsultationActivity.this,
-                                                CallActivity.class);
+                                    CallActivity.class);
                             intent.putExtra(CommonData.KEY_MEETING_BEAN, bean);
                             startActivity(intent);
                         }
                     }
-                    else
-                    {
-                        ToastUtil.toast(RemoteConsultationActivity.this, baseResponse.getMsg());
-                    }
-                }
-                catch (JSONException e)
-                {
+                } catch (JSONException e) {
                     e.printStackTrace();
                     ToastUtil.toast(RemoteConsultationActivity.this, e.getMessage());
                 }
             }
 
             @Override
-            public void onFailed(int what, Response<String> response)
-            {
+            public void onFailed(int what, Response<String> response) {
                 ToastUtil.toast(RemoteConsultationActivity.this,
-                                response.getException().getMessage());
+                        response.getException().getMessage());
             }
 
             @Override
-            public void onFinish(int what)
-            {
+            public void onFinish(int what) {
                 closeProgressDialog();
             }
         });
@@ -167,77 +144,48 @@ public class RemoteConsultationActivity extends BaseActivity
     /**
      * 小鱼匿名登录
      */
-    private void loginExternalAccount()
-    {
-        try
-        {
+    private void loginExternalAccount() {
+        try {
             nemoSDK.loginExternalAccount("111", loginSuccessBean.getDoctorId(),
-                                         new ConnectNemoCallback()
-                                         {
-                                             @Override
-                                             public void onFailed(final int errorCode)
-                                             {
-                                                 Log.e("test", "匿名登录失败，错误码：" + errorCode);
-                                             }
+                    new ConnectNemoCallback() {
+                @Override
+                public void onFailed(final int errorCode) {
+                    Log.e("test", "匿名登录失败，错误码：" + errorCode);
+                }
 
-                                             @Override
-                                             public void onSuccess(LoginResponseData data,
-                                                     boolean isDetectingNetworkTopology)
-                                             {
-                                                 Log.e("test", "匿名登录成功，号码为：" + data);
-                                                 ToastUtil.toast(RemoteConsultationActivity.this,
-                                                                 "登陆成功");
-                                             }
+                @Override
+                public void onSuccess(LoginResponseData data, boolean isDetectingNetworkTopology) {
+                    Log.e("test", "匿名登录成功，号码为：" + data);
+                    ToastUtil.toast(RemoteConsultationActivity.this, "登陆成功");
+                }
 
-                                             @Override
-                                             public void onNetworkTopologyDetectionFinished(
-                                                     LoginResponseData resp)
-                                             {
-                                                 Log.e("test",
-                                                       "net detect onNetworkTopologyDetectionFinished 1");
-                                             }
-                                         });
-        }
-        catch (Exception e)
-        {
+                @Override
+                public void onNetworkTopologyDetectionFinished(LoginResponseData resp) {
+                    Log.e("test", "net detect onNetworkTopologyDetectionFinished 1");
+                }
+            });
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void checkPermission()
-    {
-        if (!(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) ==
-              PackageManager.PERMISSION_GRANTED) &&
-            !(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) ==
-              PackageManager.PERMISSION_GRANTED))
-        {
-            ActivityCompat.requestPermissions(this, new String[] {
-                    Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO }, 0);
-        }
-        else if (!(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) ==
-                   PackageManager.PERMISSION_GRANTED))
-        {
+    private void checkPermission() {
+        if (!(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) && !(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED)) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA,
+                    Manifest.permission.RECORD_AUDIO}, 0);
+        } else if (!(ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED)) {
             ActivityCompat.requestPermissions(this,
-                                              new String[] { Manifest.permission.RECORD_AUDIO }, 0);
-        }
-        else if (!(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) ==
-                   PackageManager.PERMISSION_GRANTED))
-        {
-            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.CAMERA }, 0);
-        }
-        else if (!(ContextCompat.checkSelfPermission(this,
-                                                     Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
-                   PackageManager.PERMISSION_GRANTED))
-        {
-            ActivityCompat.requestPermissions(this, new String[] {
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
-        }
-        else if (!(
-                ContextCompat.checkSelfPermission(this, Manifest.permission.SYSTEM_ALERT_WINDOW) ==
-                PackageManager.PERMISSION_GRANTED))
-        {
-            ActivityCompat.requestPermissions(this, new String[] {
-                    Manifest.permission.SYSTEM_ALERT_WINDOW }, 0);
+                    new String[]{Manifest.permission.RECORD_AUDIO}, 0);
+        } else if (!(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 0);
+        } else if (!(ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+        } else if (!(ContextCompat.checkSelfPermission(this,
+                Manifest.permission.SYSTEM_ALERT_WINDOW) == PackageManager.PERMISSION_GRANTED)) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, 0);
         }
     }
 }
