@@ -56,6 +56,7 @@ import com.yht.yihuantong.ui.adapter.OrderInfoLimitAdapter;
 import com.yht.yihuantong.ui.adapter.RecentContactAdapter;
 import com.yht.yihuantong.ui.adapter.TransferInfoLimitAdapter;
 import com.yht.yihuantong.utils.AllUtils;
+import com.yht.yihuantong.utils.LogUtils;
 import com.yht.yihuantong.utils.RecentContactUtils;
 
 import org.json.JSONException;
@@ -89,6 +90,7 @@ import static android.app.Activity.RESULT_OK;
  */
 public class MainFragment extends BaseFragment
         implements OrderStatus, SwipeRefreshLayout.OnRefreshListener {
+    private static final String TAG = "MainFragment";
     @BindView(R.id.public_title_bar_more_two)
     ImageView ivTitleBarMore;
     @BindView(R.id.fragment_main_my_recent_contacts_none)
@@ -248,6 +250,7 @@ public class MainFragment extends BaseFragment
             handler.sendEmptyMessage(ORDER_STATUS_CODE);
         } catch (NumberFormatException e) {
             e.printStackTrace();
+            LogUtils.w(TAG,"NumberFormatException error",e);
         }
     };
 
@@ -512,6 +515,7 @@ public class MainFragment extends BaseFragment
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    LogUtils.w(TAG,"JSONException error",e);
                 }
             }
 
@@ -562,6 +566,7 @@ public class MainFragment extends BaseFragment
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    LogUtils.w(TAG,"JSONException error",e);
                 }
             }
 

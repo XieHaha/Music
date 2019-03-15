@@ -137,7 +137,7 @@ public class YihtApplication extends LitePalApplication {
         EaseUI.getInstance().setAvatarOptions(avatarOpts);
         //设置有关环信自定义的相关配置  titlebar、头像、名字处理
         HxHelper.Resource.Opts opts = new HxHelper.Resource.Opts();
-        opts.showChatTitle = false;
+        opts.setShowChatTitle(false);
         HxHelper.getInstance().init(this, opts, mIRequest);
         EaseUI.getInstance().setUserProfileProvider((username, callback) -> {
             LoginSuccessBean bean = getLoginSuccessBean();

@@ -26,8 +26,10 @@ import custom.frame.utils.DirHelper;
 
 /**
  * log日志打印类
+ * @author dundun
  */
 public class LogUtils {
+    private static final String TAG = "LogUtils";
     private static boolean isEnableLog = false;
 
     public static void setIsEnableLog(boolean isEnableLog) {
@@ -165,6 +167,7 @@ public class LogUtils {
             bufWriter.newLine();
         } catch (Exception e) {
             e.printStackTrace();
+            LogUtils.w(TAG, "Exception error!", e);
         } finally {
             try {
                 if (bufWriter != null) {
@@ -175,6 +178,7 @@ public class LogUtils {
                 }
             } catch (IOException ioe) {
                 ioe.printStackTrace();
+                LogUtils.w(TAG, "Exception error!", ioe);
             }
         }
     }

@@ -31,6 +31,7 @@ import com.yht.yihuantong.ui.adapter.CooperationDocHAdapter;
 import com.yht.yihuantong.ui.adapter.CooperationHospitalHAdapter;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.utils.AllUtils;
+import com.yht.yihuantong.utils.LogUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,6 +63,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class DoctorInfoActivity extends BaseActivity
         implements BaseRecyclerAdapter.OnItemClickListener<CooperateDocBean> {
+    private static final String TAG = "DoctorInfoActivity";
     @BindView(R.id.public_title_bar_more_two)
     ImageView ivMore;
     @BindView(R.id.act_user_info_headimg)
@@ -297,6 +299,7 @@ public class DoctorInfoActivity extends BaseActivity
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    LogUtils.w(TAG, "Exception error!", e);
                 }
             }
 

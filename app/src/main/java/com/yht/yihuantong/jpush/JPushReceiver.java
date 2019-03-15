@@ -17,6 +17,7 @@ import com.yht.yihuantong.ui.activity.MainActivity;
 import com.yht.yihuantong.ui.activity.PatientsActivity;
 import com.yht.yihuantong.ui.activity.RegistrationDetailActivity;
 import com.yht.yihuantong.ui.activity.TransferPatientActivity;
+import com.yht.yihuantong.utils.LogUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -108,6 +109,7 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
         }
         catch (Exception e)
         {
+            LogUtils.w(TAG, "Exception error", e);
         }
     }
 
@@ -288,7 +290,7 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData
                 }
                 catch (JSONException e)
                 {
-                    Log.e(TAG, "Get message extra JSON error!");
+                    LogUtils.w(TAG, "Get message extra JSON error!", e);
                 }
             }
             else

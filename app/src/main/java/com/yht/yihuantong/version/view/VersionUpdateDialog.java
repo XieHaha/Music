@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
+import com.yht.yihuantong.utils.LogUtils;
 import com.yht.yihuantong.version.ConstantsVersionMode;
 
 import java.io.File;
@@ -26,18 +27,29 @@ import custom.frame.ui.activity.AppManager;
 import custom.frame.utils.DirHelper;
 
 /**
- * Created by dundun on 16/6/8.
+ * @author dundun
  */
-public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode, View.OnClickListener {
+public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode,
+        View.OnClickListener {
+    private static final String TAG = "VersionUpdateDialog";
     private TextView tvTitle, tvCancel, tvUpdate, tvPercent, tvContent;
     private LinearLayout llUpdateContentLayout;
     private RelativeLayout rlDownloadLayout;
 
     private Context context;
 
-    private int upDateMode;//更新模式   （强制更新还是选择更新）
-    private boolean isDownNewAPK = true;//是否需要下载apk (检查本地是否有已下载好的最新的apk)
-    private List<String> list;//更新内容概要
+    /**
+     * 更新模式   （强制更新还是选择更新）
+     */
+    private int upDateMode;
+    /**
+     * 是否需要下载apk (检查本地是否有已下载好的最新的apk)
+     */
+    private boolean isDownNewAPK = true;
+    /**
+     * 更新内容概要
+     */
+    private List<String> list;
     private String[] contentArray;
 
     public VersionUpdateDialog(Context context) {
@@ -70,7 +82,8 @@ public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode,
         tvUpdate.setOnClickListener(this);
 
         llUpdateContentLayout = (LinearLayout) findViewById(R.id.act_update_version_content_layout);
-        rlDownloadLayout = (RelativeLayout) findViewById(R.id.act_update_version_content_down_layout);
+        rlDownloadLayout =
+                (RelativeLayout) findViewById(R.id.act_update_version_content_down_layout);
     }
 
     /**
@@ -144,6 +157,7 @@ public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode,
             try {
                 contentArray = content.split("##");
             } catch (PatternSyntaxException e) {
+                LogUtils.w(TAG, "Exception error!", e);
                 return this;
             }
         }
@@ -204,17 +218,15 @@ public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode,
                             break;
                     }
                 } else {
-                    File file = new File(DirHelper.getPathFile(),"YHT.apk");
+                    File file = new File(DirHelper.getPathFile(), "YHT.apk");
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     Uri uri = null;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-                    {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        uri = FileProvider.getUriForFile(context, YihtApplication.getInstance().getPackageName() + ".fileprovider",
-                                                         file);
-                    }
-                    else
-                    {
+                        uri = FileProvider.getUriForFile(context,
+                                YihtApplication.getInstance().getPackageName() + ".fileprovider",
+                                file);
+                    } else {
                         uri = Uri.fromFile(file);
                     }
                     intent.setDataAndType(uri, "application/vnd.android.package-archive");

@@ -16,19 +16,20 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.util.DisplayMetrics;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
  * 图片处理工具类
+ *
+ * @author dundun
  */
 public final class ScalingUtils {
+    private static final String TAG = "ScalingUtils";
 
     /**
      * 旋转图片
@@ -64,6 +65,7 @@ public final class ScalingUtils {
             bitmap.compress(format, 50, out);
         } catch (Exception e) {
             e.printStackTrace();
+            LogUtils.w(TAG, "Exception error!", e);
         } finally {
             if (out != null) {
                 try {
@@ -71,6 +73,7 @@ public final class ScalingUtils {
                     out.close();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    LogUtils.w(TAG, "Exception error!", e);
                 }
             }
         }
@@ -107,9 +110,13 @@ public final class ScalingUtils {
                     out.write(baos.toByteArray());
                 } catch (Exception e) {
                     e.printStackTrace();
+                    LogUtils.w(TAG, "Exception error!", e);
                 }
 
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.w(TAG, "Exception error!", e);
         }
     }
 
@@ -124,22 +131,6 @@ public final class ScalingUtils {
             System.gc();
             bitmap = null;
         }
-    }
-
-    /**
-     * 返回图片的像素宽*高大小
-     *
-     * @param bitmap
-     * @return
-     */
-    public static long getBitmapSize(Bitmap bitmap) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {    //API 19
-            return bitmap.getAllocationByteCount();
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {//API 12
-            return bitmap.getByteCount();
-        }
-        return bitmap.getRowBytes() * bitmap.getHeight();                //earlier version
     }
 
     /**
@@ -193,7 +184,6 @@ public final class ScalingUtils {
         ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
         paint.setColorFilter(f);
         c.drawBitmap(bmpOriginal, 0, 0, paint);
-        //        bmpOriginal.recycle();
         return bmpGrayscale;
     }
 
@@ -447,8 +437,10 @@ public final class ScalingUtils {
             bm = null;
         } catch (OutOfMemoryError e) {
             e.printStackTrace();
+            LogUtils.w(TAG, "Exception error!", e);
         } catch (Exception e) {
             e.printStackTrace();
+            LogUtils.w(TAG, "Exception error!", e);
         }
     }
 }

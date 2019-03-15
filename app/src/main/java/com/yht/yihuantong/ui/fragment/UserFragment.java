@@ -700,7 +700,7 @@ public class UserFragment extends BaseFragment
                 doctorTransferPatientListener, RegisterType.UNREGISTER);
     }
 
-    public OnTransferCallbackListener onTransferCallbackListener;
+    private OnTransferCallbackListener onTransferCallbackListener;
 
     public void setOnTransferCallbackListener(OnTransferCallbackListener onTransferCallbackListener) {
         this.onTransferCallbackListener = onTransferCallbackListener;

@@ -21,6 +21,7 @@ import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.data.DocAuthStatu;
 import com.yht.yihuantong.tools.FileTransferServer;
+import com.yht.yihuantong.utils.LogUtils;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
@@ -42,6 +43,7 @@ import custom.frame.utils.DirHelper;
  * @author DUNDUN
  */
 public class SplashActivity extends BaseActivity implements DocAuthStatu {
+    private static final String TAG = "SplashActivity";
     @BindView(R.id.iv_start)
     ImageView ivBg;
     @BindView(R.id.act_splash_time_hint)
@@ -163,6 +165,7 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu {
             mIRequest.getSplash("doctor", "android", name, this);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
+            LogUtils.w(TAG, "Exception error!", e);
         }
     }
 

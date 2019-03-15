@@ -14,6 +14,7 @@ import com.hyphenate.chat.EMClient;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
+import com.yht.yihuantong.utils.LogUtils;
 import com.yht.yihuantong.version.presenter.VersionPresenter;
 import com.yht.yihuantong.version.view.VersionUpdateDialog;
 
@@ -30,10 +31,11 @@ import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.ToastUtil;
 
 /**
- * Created by dundun on 18/9/2.
+ * @author dundun
  */
 public class SettingActivity extends BaseActivity
         implements VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener {
+    private static final String TAG = "SettingActivity";
     @BindView(R.id.act_setting_version)
     TextView tvVersion;
     @BindView(R.id.act_setting_version_remind)
@@ -98,6 +100,7 @@ public class SettingActivity extends BaseActivity
             }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
+            LogUtils.w(TAG, "Exception error!", e);
         }
     }
 

@@ -17,6 +17,7 @@ import java.text.DecimalFormat;
  * 文件处理工具类
  */
 public final class FileUtils {
+    private static final String TAG = "FileUtils";
     /**
      * 是否有SD Card
      *
@@ -43,9 +44,11 @@ public final class FileUtils {
                 }
                 return true;
             } catch (IOException e) {
+                LogUtils.w(TAG, "Exception error!", e);
                 throw new RuntimeException(e.getMessage(), e);
             }
         } catch (IOException e) {
+            LogUtils.w(TAG, "Exception error!", e);
             throw new RuntimeException(e.getMessage(), e);
         }
     }
@@ -65,6 +68,7 @@ public final class FileUtils {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            LogUtils.w(TAG, "Exception error!", e);
         }
         return "";
     }

@@ -8,6 +8,7 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.yht.yihuantong.utils.LogUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +19,8 @@ import java.util.Map;
  * @author DUNDUN
  */
 public class QrCodeHelper {
+    private static final String TAG = "QrCodeHelper";
+
     /**
      * 生成二维码Bitmap
      *
@@ -39,7 +42,8 @@ public class QrCodeHelper {
             hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
             //去白边
             hints.put(EncodeHintType.MARGIN, 0);
-            BitMatrix bitMatrix = new QRCodeWriter().encode(content, BarcodeFormat.QR_CODE, widthPix, heightPix, hints);
+            BitMatrix bitMatrix = new QRCodeWriter().encode(content, BarcodeFormat.QR_CODE,
+                    widthPix, heightPix, hints);
             int[] pixels = new int[widthPix * heightPix];
             for (int y = 0; y < heightPix; y++) {
                 for (int x = 0; x < widthPix; x++) {
@@ -59,6 +63,7 @@ public class QrCodeHelper {
             return bitmap;
         } catch (Exception e) {
             e.printStackTrace();
+            LogUtils.w(TAG, "createQRImage error", e);
         }
         return null;
     }
@@ -90,14 +95,14 @@ public class QrCodeHelper {
         try {
             Canvas canvas = new Canvas(bitmap);
             canvas.drawBitmap(src, 0, 0, null);
-            canvas.scale(scaleFactor, scaleFactor, srcWidth / 2, srcHeight / 2);
-            canvas.drawBitmap(logo, (srcWidth - logoWidth) / 2, (srcHeight - logoHeight) / 2, null);
-            //            canvas.save(Canvas.ALL_SAVE_FLAG);
+            canvas.scale(scaleFactor, scaleFactor, srcWidth / 2f, srcHeight / 2f);
+            canvas.drawBitmap(logo, (srcWidth - logoWidth) / 2f, (srcHeight - logoHeight) / 2f, null);
             canvas.save();
             canvas.restore();
         } catch (Exception e) {
             bitmap = null;
             e.getStackTrace();
+            LogUtils.w(TAG, "Exception error!", e);
         }
         return bitmap;
     }

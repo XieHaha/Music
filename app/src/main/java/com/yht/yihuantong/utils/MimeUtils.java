@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MimeUtils {
-    public static final String regDoc = "(^doc$)|(^docx$)";
-    public static final String regXls = "(^xls$)|(^xlsx$)";
-    public static final String regPpt = "(^ppt$)|(^pptx$)";
-    public static final String regZip = "(^7z$)|(^gtar$)|(^gz$)|(^tar$)|(^tgz$)|(^z$)|(^zip$)|(^rar$)";
-    public static final String regPdf = "^pdf$";
-    public static final String regMedia = "(^3gp$)|(^avi$)|(^mp3$)|(^mp4$)|(^rmvb$)|(^wav$)|(^wma$)|(^wmv$)";
-    public static Map<String, String> imageMime = new HashMap<String, String>();
+    private static final String regDoc = "(^doc$)|(^docx$)";
+    private static final String regXls = "(^xls$)|(^xlsx$)";
+    private static final String regPpt = "(^ppt$)|(^pptx$)";
+    private static final String regZip = "(^7z$)|(^gtar$)|(^gz$)|(^tar$)|(^tgz$)|(^z$)|(^zip$)|(^rar$)";
+    private static final String regPdf = "^pdf$";
+    private static final String regMedia = "(^3gp$)|(^avi$)|(^mp3$)|(^mp4$)|(^rmvb$)|(^wav$)|(^wma$)|(^wmv$)";
+    private static Map<String, String> imageMime = new HashMap<String, String>();
 
     static {
         imageMime.put("bmp", "image/bmp");
@@ -20,7 +20,7 @@ public class MimeUtils {
         imageMime.put("png", "image/png");
     }
 
-    public static Map<String, String> mediaMime = new HashMap<String, String>();
+    private static Map<String, String> mediaMime = new HashMap<String, String>();
 
     static {
         mediaMime.put("3gp", "video/3gpp");
@@ -32,7 +32,7 @@ public class MimeUtils {
         mediaMime.put("wmv", "audio/x-ms-wmv");
     }
 
-    public static Map<String, String> otherMime = new HashMap<String, String>();
+    private static Map<String, String> otherMime = new HashMap<String, String>();
 
     static {
         otherMime.put("3gp", "video/3gpp");

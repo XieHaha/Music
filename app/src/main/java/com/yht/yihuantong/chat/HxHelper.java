@@ -199,7 +199,15 @@ public class HxHelper {
          * 配置项
          */
         public static class Opts {
-            public boolean showChatTitle;
+            private boolean showChatTitle;
+
+            public boolean isShowChatTitle() {
+                return showChatTitle;
+            }
+
+            public void setShowChatTitle(boolean showChatTitle) {
+                this.showChatTitle = showChatTitle;
+            }
         }
     }
 

@@ -37,6 +37,7 @@ import com.yht.yihuantong.ui.adapter.RegistrationProductTypeAdapter;
 import com.yht.yihuantong.ui.dialog.HintDialog;
 import com.yht.yihuantong.ui.dialog.listener.OnEnterClickListener;
 import com.yht.yihuantong.utils.AllUtils;
+import com.yht.yihuantong.utils.LogUtils;
 import com.yht.yihuantong.utils.RecentContactUtils;
 
 import org.json.JSONException;
@@ -64,9 +65,10 @@ import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 
 /**
- * Created by dundun on 18/9/13.
+ * @author dundun
  */
 public class ServicePackActivity<T> extends BaseActivity {
+    private static final String TAG = "ServicePackActivity";
     @BindView(R.id.public_title_bar_title)
     TextView tvTitle;
     @BindView(R.id.act_cooperate_doc_search)
@@ -440,6 +442,7 @@ public class ServicePackActivity<T> extends BaseActivity {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    LogUtils.w(TAG, "Exception error!", e);
                 }
             }
 

@@ -68,6 +68,7 @@ public class ThreadPoolHelper {
                 if (e instanceof RejectedExecutionException) {
                     execInSingle(r);
                 }
+                LogUtils.w(TAG, "Exception error!", e);
             }
         }
 
@@ -81,6 +82,7 @@ public class ThreadPoolHelper {
                 if (e instanceof RejectedExecutionException) {
                     execInCached(r);
                 }
+                LogUtils.w(TAG, "Exception error!", e);
             }
         }
 
@@ -106,6 +108,7 @@ public class ThreadPoolHelper {
                 if (e instanceof RejectedExecutionException) {
                     execInFixed(r);
                 }
+                LogUtils.w(TAG, "Exception error!", e);
             }
         }
     }

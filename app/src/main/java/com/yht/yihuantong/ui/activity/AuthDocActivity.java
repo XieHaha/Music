@@ -53,6 +53,7 @@ import custom.frame.utils.ToastUtil;
  * 医生认证
  */
 public class AuthDocActivity extends BaseActivity {
+    private static final String TAG = "AuthDocActivity";
     @BindView(R.id.public_title_bar_more_txt)
     TextView tvTitleMore;
     @BindView(R.id.act_auth_doc_name)
@@ -217,8 +218,10 @@ public class AuthDocActivity extends BaseActivity {
                          *  即使这应该是单线程应用程序。 任何其他行动方案都有可能延迟线程关闭并丢失线程被中断的信息 -
                          *  可能没有完成任务。**/
                         Thread.currentThread().interrupt();
+                        LogUtils.w(TAG, "Exception error!", e);
                     } catch (ExecutionException e) {
                         e.printStackTrace();
+                        LogUtils.w(TAG, "Exception error!", e);
                     }
                 }
             });

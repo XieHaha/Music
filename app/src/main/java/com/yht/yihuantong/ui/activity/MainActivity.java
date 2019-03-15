@@ -75,6 +75,7 @@ import static android.support.v4.app.NotificationCompat.DEFAULT_VIBRATE;
  * @author dundun
  */
 public class MainActivity extends BaseActivity implements EaseConversationListFragment.EaseConversationListItemClickListener, VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener, EaseConversationListFragment.EaseConversationListItemLongClickListener, UserFragment.OnTransferCallbackListener, CooperateDocFragment.OnDocApplyCallbackListener, MainFragment.OnPatientApplyCallbackListener {
+    private static final String TAG = "MainActivity";
     @BindView(R.id.item_msg_num)
     TextView tvUnReadMsgCount;
     @BindView(R.id.message_red_point)
@@ -694,6 +695,7 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
             }
         } catch (Exception e) {
             e.printStackTrace();
+            LogUtils.w(TAG, "Exception error!", e);
         }
     }
 
@@ -712,6 +714,7 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
             }
         } catch (Exception e) {
             e.printStackTrace();
+            LogUtils.w(TAG, "Exception error!", e);
         }
     }
 
@@ -731,6 +734,7 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
             }
         } catch (Exception e) {
             e.printStackTrace();
+            LogUtils.w(TAG, "Exception error!", e);
         }
     }
 

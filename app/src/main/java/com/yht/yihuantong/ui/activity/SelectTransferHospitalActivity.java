@@ -19,6 +19,7 @@ import com.yanzhenjie.nohttp.rest.Response;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.adapter.SelectHospitalAdapter;
+import com.yht.yihuantong.utils.LogUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,6 +48,7 @@ import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 public class SelectTransferHospitalActivity extends BaseActivity
         implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener,
         BaseRecyclerAdapter.OnItemClickListener<CooperateHospitalBean> {
+    private static final String TAG = "SelectTransferHospitalA";
     @BindView(R.id.act_apply_cooperate_recycler_view)
     AutoLoadRecyclerView autoLoadRecyclerView;
     @BindView(R.id.act_apply_cooperate_swipe_layout)
@@ -142,6 +144,7 @@ public class SelectTransferHospitalActivity extends BaseActivity
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    LogUtils.w(TAG, "Exception error!", e);
                 }
             }
 

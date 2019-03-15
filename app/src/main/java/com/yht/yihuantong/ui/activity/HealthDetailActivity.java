@@ -76,7 +76,7 @@ import custom.frame.widgets.textview.ExspandTextView;
 public class HealthDetailActivity extends BaseActivity
         implements AdapterView.OnItemClickListener, ExspandTextView.OnContentClickLinsener,
         CommonData {
-
+    private static final String TAG = "HealthDetailActivity";
     @BindView(R.id.public_title_bar_more)
     ImageView ivTitlebBarMore;
     @BindView(R.id.public_title_bar_more_txt)
@@ -350,6 +350,7 @@ public class HealthDetailActivity extends BaseActivity
                 } catch (JSONException e) {
                     e.printStackTrace();
                     ToastUtil.toast(HealthDetailActivity.this, e.getMessage());
+                    LogUtils.w(TAG, "Exception error!", e);
                 }
             }
 
@@ -417,6 +418,7 @@ public class HealthDetailActivity extends BaseActivity
                 } catch (JSONException e) {
                     e.printStackTrace();
                     ToastUtil.toast(HealthDetailActivity.this, e.getMessage());
+                    LogUtils.w(TAG, "Exception error!", e);
                 }
             }
 
@@ -640,6 +642,7 @@ public class HealthDetailActivity extends BaseActivity
                     imageList.add(QiniuUtils.initQuanBitmaps(path, HealthDetailActivity.this));
                 } catch (IOException e) {
                     e.printStackTrace();
+                    LogUtils.w(TAG, "Exception error!", e);
                 }
             }
             dealImgHandler.sendEmptyMessage(0);

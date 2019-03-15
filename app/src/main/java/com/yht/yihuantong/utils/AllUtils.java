@@ -152,6 +152,7 @@ public class AllUtils {
             return String.valueOf(age);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
+            LogUtils.w(TAG,"IllegalArgumentException error",e);
             return "0";
         }
     }

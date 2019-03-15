@@ -31,6 +31,7 @@ import com.yht.yihuantong.data.TransferStatu;
 import com.yht.yihuantong.ui.dialog.HintDialog;
 import com.yht.yihuantong.ui.dialog.SimpleDialog;
 import com.yht.yihuantong.utils.AllUtils;
+import com.yht.yihuantong.utils.LogUtils;
 import com.yht.yihuantong.utils.RecentContactUtils;
 
 import org.json.JSONException;
@@ -54,9 +55,10 @@ import custom.frame.widgets.FilterEmojiEditText;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by dundun on 18/10/9.
+ * @author dundun
  */
 public class TransferPatientActivity extends BaseActivity implements TransferStatu {
+    private static final String TAG = "TransferPatientActivity";
     @BindView(R.id.act_transfer_patient_img)
     CircleImageView ivHeadImg;
     @BindView(R.id.act_transfer_patient_name)
@@ -152,6 +154,7 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
             handler.sendEmptyMessage(0);
         } catch (NumberFormatException e) {
             e.printStackTrace();
+            LogUtils.w(TAG, "Exception error!", e);
         }
     };
 
@@ -431,6 +434,7 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    LogUtils.w(TAG, "Exception error!", e);
                 }
             }
 
@@ -504,6 +508,7 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    LogUtils.w(TAG, "Exception error!", e);
                 }
             }
 
@@ -556,6 +561,7 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    LogUtils.w(TAG, "Exception error!", e);
                 }
             }
 
@@ -611,6 +617,7 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    LogUtils.w(TAG, "Exception error!", e);
                 }
             }
 
@@ -668,6 +675,7 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    LogUtils.w(TAG, "Exception error!", e);
                 }
             }
 

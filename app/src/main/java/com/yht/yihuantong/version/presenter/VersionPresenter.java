@@ -21,6 +21,7 @@ import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
+import com.yht.yihuantong.utils.LogUtils;
 import com.yht.yihuantong.utils.NetWorkUtils;
 import com.yht.yihuantong.version.ConstantsVersionMode;
 import com.yht.yihuantong.version.model.VersionModel;
@@ -33,8 +34,12 @@ import custom.frame.http.IRequest;
 import custom.frame.utils.DirHelper;
 import custom.frame.utils.ToastUtil;
 
+/**
+ * @author dundun
+ */
 public class VersionPresenter implements ConstantsVersionMode
 {
+    private static final String TAG = "VersionPresenter";
     private Context context;
     private IRequest request;
     private VersionModel versionModel;
@@ -42,7 +47,7 @@ public class VersionPresenter implements ConstantsVersionMode
     private NotificationCompat.Builder builder;
     private NotificationManager manager;
     private PendingIntent pendingIntent;
-    private String url = null;//apk下载地址
+    private String url = null;
     /**
      * 文件大小
      */
@@ -286,6 +291,7 @@ public class VersionPresenter implements ConstantsVersionMode
         catch (NameNotFoundException e)
         {
             e.printStackTrace();
+            LogUtils.w(TAG, "Exception error!", e);
         }
         return null;
     }
@@ -339,6 +345,7 @@ public class VersionPresenter implements ConstantsVersionMode
             catch (Exception x)
             {
                 i1 = Integer.MAX_VALUE;
+                LogUtils.w(TAG, "Exception error!", x);
             }
             try
             {
@@ -347,6 +354,7 @@ public class VersionPresenter implements ConstantsVersionMode
             catch (Exception x)
             {
                 i2 = Integer.MAX_VALUE;
+                LogUtils.w(TAG, "Exception error!", x);
             }
             if (i1 != i2)
             {

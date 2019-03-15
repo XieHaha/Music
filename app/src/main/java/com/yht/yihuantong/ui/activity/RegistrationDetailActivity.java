@@ -27,6 +27,7 @@ import com.yht.yihuantong.api.notify.INotifyChangeListenerServer;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.data.OrderStatus;
 import com.yht.yihuantong.utils.AllUtils;
+import com.yht.yihuantong.utils.LogUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,9 +46,10 @@ import custom.frame.utils.GlideHelper;
 import custom.frame.utils.ToastUtil;
 
 /**
- * Created by dundun on 18/8/10.
+ * @author dundun
  */
 public class RegistrationDetailActivity extends BaseActivity implements OrderStatus {
+    private static final String TAG = "RegistrationDetailActiv";
     @BindView(R.id.public_title_bar_title)
     TextView tvTitle;
     @BindView(R.id.act_service_pack_hint_hospital_img)
@@ -122,6 +124,7 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
             handler.sendEmptyMessage(0);
         } catch (NumberFormatException e) {
             e.printStackTrace();
+            LogUtils.w(TAG, "Exception error!", e);
         }
     };
 
@@ -247,6 +250,7 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    LogUtils.w(TAG, "Exception error!", e);
                 }
             }
 

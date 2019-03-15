@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
+import com.yht.yihuantong.utils.LogUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,9 +21,10 @@ import custom.frame.ui.activity.BaseActivity;
 import custom.frame.utils.ToastUtil;
 
 /**
- * Created by dundun on 18/4/24.
+ * @author dundun
  */
 public class AddCaseInfoActivity extends BaseActivity implements CommonData {
+    private static final String TAG = "AddCaseInfoActivity";
     @BindView(R.id.public_title_bar_title)
     TextView publicTitleBarTitle;
     @BindView(R.id.act_add_health_info_edit)
@@ -123,6 +125,7 @@ public class AddCaseInfoActivity extends BaseActivity implements CommonData {
             inputmanger.hideSoftInputFromWindow(actAddHealthInfoEdit.getWindowToken(), 0);
         } catch (NullPointerException e) {
             e.printStackTrace();
+            LogUtils.w(TAG, "Exception error!", e);
         }
     }
 }

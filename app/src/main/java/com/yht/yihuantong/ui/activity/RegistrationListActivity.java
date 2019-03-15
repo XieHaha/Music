@@ -19,6 +19,7 @@ import com.yanzhenjie.nohttp.rest.Response;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.adapter.RegistrationListAdapter;
+import com.yht.yihuantong.utils.LogUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,6 +48,7 @@ import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 public class RegistrationListActivity extends BaseActivity
         implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener,
         BaseRecyclerAdapter.OnItemClickListener<RegistrationBean> {
+    private static final String TAG = "RegistrationListActivit";
     @BindView(R.id.fragment_patients_recycler_view)
     AutoLoadRecyclerView autoLoadRecyclerView;
     @BindView(R.id.fragment_patients_swipe_layout)
@@ -165,6 +167,7 @@ public class RegistrationListActivity extends BaseActivity
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    LogUtils.w(TAG, "Exception error!", e);
                 }
             }
 
