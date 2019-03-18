@@ -42,8 +42,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CooperateDocBean;
 import custom.frame.http.Tasks;
@@ -59,8 +57,7 @@ import static android.app.Activity.RESULT_OK;
  *
  * @author DUNDUN
  */
-public class CooperateDocFragment extends BaseFragment
-        implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener {
+public class CooperateDocFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener {
     @BindView(R.id.public_title_bar_more_three)
     ImageView ivTitleBarMore;
     @BindView(R.id.fragment_cooperate_recycler_view)
@@ -96,8 +93,7 @@ public class CooperateDocFragment extends BaseFragment
     /**
      * 推送回调监听
      */
-    private IChange<String> doctorStatusChangeListener = data ->
-    {
+    private IChange<String> doctorStatusChangeListener = data -> {
         getCooperateList();
         getApplyCooperateList();
     };
@@ -112,27 +108,25 @@ public class CooperateDocFragment extends BaseFragment
         super.initView(view, savedInstanceState);
         //获取状态栏高度，填充 //填充状态栏
         View mStateBarFixer = view.findViewById(R.id.status_bar_fix);
-        mStateBarFixer.setLayoutParams(
-                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        getStateBarHeight(getActivity())));
+        mStateBarFixer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));
         ((TextView) view.findViewById(R.id.public_title_bar_title)).setText("合作医生");
         ivTitleBarMore.setVisibility(View.VISIBLE);
-        headerView = LayoutInflater.from(getContext())
-                .inflate(R.layout.view_cooperate_doc_header, null);
+        headerView =
+                LayoutInflater.from(getActivity()).inflate(R.layout.view_cooperate_doc_header,
+                        null);
         rlMsgHint = headerView.findViewById(R.id.message_red_point);
         tvNum = headerView.findViewById(R.id.item_msg_num);
-        footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_list_footerr, null);
+        footerView = LayoutInflater.from(getActivity()).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                android.R.color.holo_red_light,
-                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light, android.R.color.holo_orange_light,
                 android.R.color.holo_green_light);
     }
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        cooperateDocListAdapter = new CooperateDocListAdapter(getContext(), cooperateDocBeanList);
+        cooperateDocListAdapter = new CooperateDocListAdapter(getActivity(), cooperateDocBeanList);
         cooperateDocListAdapter.addHeaderView(headerView);
         cooperateDocListAdapter.addFooterView(footerView);
         page = 0;
@@ -148,31 +142,20 @@ public class CooperateDocFragment extends BaseFragment
         headerView.setOnClickListener(this);
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
-        autoLoadRecyclerView.setLayoutManager(
-                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        autoLoadRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(cooperateDocListAdapter);
-        cooperateDocListAdapter.setOnItemClickListener((v, position, item) ->
-        {
-            Intent intent = new Intent(getContext(),
-                    DoctorInfoActivity.class);
-            intent.putExtra(
-                    CommonData.KEY_DOCTOR_BEAN,
-                    item);
-            intent.putExtra(
-                    CommonData.KEY_IS_DEAL_DOC,
-                    true);
-            startActivityForResult(intent,
-                    REQUEST_CODE_CANCEL_DOC);
+        cooperateDocListAdapter.setOnItemClickListener((v, position, item) -> {
+            Intent intent = new Intent(getActivity(), DoctorInfoActivity.class);
+            intent.putExtra(CommonData.KEY_DOCTOR_BEAN, item);
+            intent.putExtra(CommonData.KEY_IS_DEAL_DOC, true);
+            startActivityForResult(intent, REQUEST_CODE_CANCEL_DOC);
         });
-        cooperateDocListAdapter.setOnItemLongClickListener(
-                (v, position, item) -> new SimpleDialog(getActivity(), "确定取消关注?",
-                        (dialog, which) -> cancelCooperateDoc(
-                                item.getDoctorId()),
-                        (dialog, which) -> dialog.dismiss()).show());
+        cooperateDocListAdapter.setOnItemLongClickListener((v, position, item) -> new SimpleDialog(getActivity(), "确定取消关注?", (dialog, which) -> cancelCooperateDoc(item.getDoctorId()), (dialog, which) -> dialog.dismiss()).show());
         //注册患者状态监听
-        iNotifyChangeListenerServer.registerDoctorStatusChangeListener(doctorStatusChangeListener,
-                RegisterType.REGISTER);
+        iNotifyChangeListenerServer.registerDoctorStatusChangeListener(doctorStatusChangeListener
+                , RegisterType.REGISTER);
     }
 
     /**
@@ -207,7 +190,7 @@ public class CooperateDocFragment extends BaseFragment
      * 显示pop
      */
     private void showPop() {
-        view_pop = LayoutInflater.from(getContext()).inflate(R.layout.health_pop_menu, null);
+        view_pop = LayoutInflater.from(getActivity()).inflate(R.layout.health_pop_menu, null);
         tvOne = view_pop.findViewById(R.id.txt_one);
         tvTwo = view_pop.findViewById(R.id.txt_two);
         tvOne.setText("扫一扫");
@@ -223,7 +206,7 @@ public class CooperateDocFragment extends BaseFragment
         mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mPopupwinow.setOutsideTouchable(true);
         mPopupwinow.showAtLocation(view_pop, Gravity.TOP | Gravity.RIGHT, 0,
-                (int) AllUtils.dipToPx(getContext(), 55));
+                (int) AllUtils.dipToPx(getActivity(), 55));
     }
 
     @Override
@@ -232,7 +215,7 @@ public class CooperateDocFragment extends BaseFragment
         super.onClick(v);
         switch (v.getId()) {
             case R.id.fragment_cooperate_apply_layout:
-                intent = new Intent(getContext(), ApplyCooperateDocActivity.class);
+                intent = new Intent(getActivity(), ApplyCooperateDocActivity.class);
                 startActivity(intent);
                 break;
             case R.id.public_title_bar_more_three:
@@ -242,17 +225,16 @@ public class CooperateDocFragment extends BaseFragment
                 if (mPopupwinow != null) {
                     mPopupwinow.dismiss();
                 }
-                IntentIntegrator.forSupportFragment(this)
-                        .setBarcodeImageEnabled(false)
-                        .setPrompt(getString(R.string.txt_camera_hint))
-                        .initiateScan();
+                IntentIntegrator.forFragment(this).setBarcodeImageEnabled(false).setPrompt(getString(R.string.txt_camera_hint)).initiateScan();
                 break;
             case R.id.txt_two:
                 if (mPopupwinow != null) {
                     mPopupwinow.dismiss();
                 }
-                intent = new Intent(getContext(), CooperateHospitalActivity.class);
+                intent = new Intent(getActivity(), CooperateHospitalActivity.class);
                 startActivity(intent);
+                break;
+            default:
                 break;
         }
     }
@@ -265,8 +247,8 @@ public class CooperateDocFragment extends BaseFragment
         }
         switch (requestCode) {
             case REQUEST_CODE:
-                IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode,
-                        data);
+                IntentResult result = IntentIntegrator.parseActivityResult(requestCode,
+                        resultCode, data);
                 if (result != null) {
                     if (result.getContents() == null) {
                     } else {
@@ -274,12 +256,12 @@ public class CooperateDocFragment extends BaseFragment
                         String doctorId = Uri.parse(url).getQueryParameter("doctorId");
                         String patientId = Uri.parse(url).getQueryParameter("patientId");
                         if (!TextUtils.isEmpty(doctorId)) {
-                            Intent intent = new Intent(getContext(), AddFriendsDocActivity.class);
+                            Intent intent = new Intent(getActivity(), AddFriendsDocActivity.class);
                             intent.putExtra(CommonData.KEY_DOCTOR_ID, doctorId);
                             intent.putExtra(CommonData.KEY_PUBLIC, true);
                             startActivity(intent);
                         } else {
-                            Intent intent = new Intent(getContext(),
+                            Intent intent = new Intent(getActivity(),
                                     AddFriendsPatientActivity.class);
                             intent.putExtra(CommonData.KEY_PATIENT_ID, patientId);
                             intent.putExtra(CommonData.KEY_PUBLIC, true);
@@ -340,10 +322,10 @@ public class CooperateDocFragment extends BaseFragment
                         String.valueOf(cooperateDocBeanList.size()));
                 break;
             case APPLY_COOPERATE_DOC:
-                ToastUtil.toast(getContext(), response.getMsg());
+                ToastUtil.toast(getActivity(), response.getMsg());
                 break;
             case CANCEL_COOPERATE_DOC:
-                ToastUtil.toast(getContext(), response.getMsg());
+                ToastUtil.toast(getActivity(), response.getMsg());
                 getCooperateList();
                 break;
             case GET_APPLY_COOPERATE_DOC_LIST:
@@ -359,6 +341,8 @@ public class CooperateDocFragment extends BaseFragment
                 if (onDocApplyCallbackListener != null) {
                     onDocApplyCallbackListener.onDocApplyCallback();
                 }
+                break;
+            default:
                 break;
         }
     }
@@ -403,7 +387,7 @@ public class CooperateDocFragment extends BaseFragment
     public void onDestroy() {
         super.onDestroy();
         //注册患者状态监听
-        iNotifyChangeListenerServer.registerDoctorStatusChangeListener(doctorStatusChangeListener,
-                RegisterType.UNREGISTER);
+        iNotifyChangeListenerServer.registerDoctorStatusChangeListener(doctorStatusChangeListener
+                , RegisterType.UNREGISTER);
     }
 }

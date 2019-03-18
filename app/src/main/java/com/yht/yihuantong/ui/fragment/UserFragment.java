@@ -17,7 +17,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -57,8 +56,6 @@ import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.CooperateDocBean;
 import custom.frame.bean.LoginSuccessBean;
@@ -78,8 +75,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * 我的页面
  */
-public class UserFragment extends BaseFragment
-        implements CustomListenScrollView.OnScrollChangeListener, CommonData {
+public class UserFragment extends BaseFragment implements CustomListenScrollView.OnScrollChangeListener, CommonData {
     @BindView(R.id.fragmrnt_user_info_headimg)
     CircleImageView headImg;
     @BindView(R.id.fragmrnt_user_info_auth)
@@ -180,8 +176,7 @@ public class UserFragment extends BaseFragment
     /**
      * 推送回调监听  转诊申请
      */
-    private IChange<String> doctorTransferPatientListener = data ->
-    {
+    private IChange<String> doctorTransferPatientListener = data -> {
         //        if ("from".equals(data))
         //        {
         //            handler.sendEmptyMessage(10);
@@ -190,8 +185,7 @@ public class UserFragment extends BaseFragment
     /**
      * 医生认证状态
      */
-    private IChange<Integer> doctorAuthStatusChangeListener = data ->
-    {
+    private IChange<Integer> doctorAuthStatusChangeListener = data -> {
         handler.sendEmptyMessage(data);
     };
 
@@ -211,9 +205,7 @@ public class UserFragment extends BaseFragment
         super.initView(view, savedInstanceState);
         //获取状态栏高度，填充
         View mStateBarFixer = view.findViewById(R.id.status_bar_fix);
-        mStateBarFixer.setLayoutParams(
-                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        getStateBarHeight(getActivity())));
+        mStateBarFixer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));
         view.findViewById(R.id.fragmrnt_user_info_setting_layout).setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_info_train_layout).setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_info_service_layout).setOnClickListener(this);
@@ -240,18 +232,16 @@ public class UserFragment extends BaseFragment
         scrollView.setOnScrollChangeListener(this);
         rlAuthLayout.setOnClickListener(this);
         //注册患者状态监听
-        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(
-                doctorAuthStatusChangeListener, RegisterType.REGISTER);
+        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(doctorAuthStatusChangeListener, RegisterType.REGISTER);
         //注册转诊申请监听
-        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(
-                doctorTransferPatientListener, RegisterType.REGISTER);
+        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(doctorTransferPatientListener, RegisterType.REGISTER);
     }
 
     /**
      * 上传头像
      */
     private void uploadHeadImg(Uri uri) {
-        File file = FileUtils.getFileByUri(uri, getContext());
+        File file = FileUtils.getFileByUri(uri, getActivity());
         mIRequest.uploadHeadImg(file, "jpg", this);
     }
 
@@ -274,15 +264,13 @@ public class UserFragment extends BaseFragment
      */
     private void initPageData() {
         tvPatientNum.setText(String.format(getString(R.string.txt_user_info_num),
-                sharePreferenceUtil.getString(
-                        CommonData.KEY_PATIENT_NUM)));
+                sharePreferenceUtil.getString(CommonData.KEY_PATIENT_NUM)));
         tvDocNum.setText(String.format(getString(R.string.txt_user_info_num),
                 sharePreferenceUtil.getString(CommonData.KEY_DOCTOR_NUM)));
         loginSuccessBean = YihtApplication.getInstance().getLoginSuccessBean();
         if (loginSuccessBean != null) {
-            barCodeImageView = new BarCodeImageView(getContext(),
-                    HttpConstants.BASE_BASIC_DOWNLOAD_URL +
-                            loginSuccessBean.getDoctorId());
+            barCodeImageView = new BarCodeImageView(getActivity(),
+                    HttpConstants.BASE_BASIC_DOWNLOAD_URL + loginSuccessBean.getDoctorId());
             if (!TextUtils.isEmpty(loginSuccessBean.getPortraitUrl())) {
                 headImgUrl = loginSuccessBean.getPortraitUrl();
             } else if (!TextUtils.isEmpty(YihtApplication.getInstance().getHeadImgUrl())) {
@@ -316,8 +304,8 @@ public class UserFragment extends BaseFragment
             //未认证
             case 0:
                 tvAuth.setText("去认证");
-                tvAuthStatus.setTextColor(
-                        ContextCompat.getColor(getContext(), R.color.app_auth_faild));
+                tvAuthStatus.setTextColor(ContextCompat.getColor(getActivity(),
+                        R.color.app_auth_faild));
                 Glide.with(this).load(R.mipmap.icon_uncertified).into(authImg);
                 ivEditInfo.setVisibility(View.VISIBLE);
                 break;
@@ -325,16 +313,16 @@ public class UserFragment extends BaseFragment
             case 1:
                 tvAuthStatus.setText("审核中");
                 tvAuth.setText("查看");
-                tvAuthStatus.setTextColor(
-                        ContextCompat.getColor(getContext(), R.color.app_auth_faild));
+                tvAuthStatus.setTextColor(ContextCompat.getColor(getActivity(),
+                        R.color.app_auth_faild));
                 Glide.with(this).load(R.mipmap.icon_uncertified).into(authImg);
                 break;
             //审核未通过
             case 2:
                 tvAuthStatus.setText("审核未通过");
                 tvAuth.setText("查看");
-                tvAuthStatus.setTextColor(
-                        ContextCompat.getColor(getContext(), R.color.app_auth_faild));
+                tvAuthStatus.setTextColor(ContextCompat.getColor(getActivity(),
+                        R.color.app_auth_faild));
                 Glide.with(this).load(R.mipmap.icon_uncertified).into(authImg);
                 ivEditInfo.setVisibility(View.VISIBLE);
                 break;
@@ -342,8 +330,8 @@ public class UserFragment extends BaseFragment
             case 6:
                 tvAuthStatus.setText("已认证");
                 tvAuth.setText("查看");
-                tvAuthStatus.setTextColor(
-                        ContextCompat.getColor(getContext(), R.color.app_auth_success));
+                tvAuthStatus.setTextColor(ContextCompat.getColor(getActivity(),
+                        R.color.app_auth_success));
                 Glide.with(this).load(R.mipmap.icon_certified).into(authImg);
                 ivEditInfo.setVisibility(View.GONE);
                 break;
@@ -357,27 +345,27 @@ public class UserFragment extends BaseFragment
         Intent intent;
         switch (v.getId()) {
             case R.id.public_title_bar_back:
-                intent = new Intent(getContext(), EditInfoActivity.class);
+                intent = new Intent(getActivity(), EditInfoActivity.class);
                 startActivity(intent);
                 break;
             case R.id.fragmrnt_user_info_qrcode_layout:
-                DialogPersonalBarCode dialogPersonalBarCode = new DialogPersonalBarCode(
-                        getActivity());
+                DialogPersonalBarCode dialogPersonalBarCode =
+                        new DialogPersonalBarCode(getActivity());
                 dialogPersonalBarCode.setQRImageViewSrc(barCodeImageView);
                 dialogPersonalBarCode.show();
                 break;
             case R.id.fragment_my_auth_layout:
-                intent = new Intent(getContext(), AuthDocActivity.class);
+                intent = new Intent(getActivity(), AuthDocActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_DOC_AUTH);
                 break;
             case R.id.fragmrnt_user_info_headimg:
                 editHeadImg();
                 break;
             case R.id.fragmrnt_user_info_setting_layout:
-                startActivity(new Intent(getContext(), SettingActivity.class));
+                startActivity(new Intent(getActivity(), SettingActivity.class));
                 break;
             case R.id.fragmrnt_user_transfer_to_layout:
-                intent = new Intent(getContext(), TransferPatientToActivity.class);
+                intent = new Intent(getActivity(), TransferPatientToActivity.class);
                 startActivity(intent);
                 break;
             case R.id.fragmrnt_user_transfer_from_layout:
@@ -386,12 +374,12 @@ public class UserFragment extends BaseFragment
                 if (onTransferCallbackListener != null) {
                     onTransferCallbackListener.onTransferCallback();
                 }
-                intent = new Intent(getContext(), TransferPatientFromActivity.class);
+                intent = new Intent(getActivity(), TransferPatientFromActivity.class);
                 startActivity(intent);
                 break;
             case R.id.fragmrnt_user_info_train_layout:
             case R.id.fragmrnt_user_info_service_layout:
-                ToastUtil.toast(getContext(), "敬请期待");
+                ToastUtil.toast(getActivity(), "敬请期待");
                 break;
             default:
                 break;
@@ -402,27 +390,13 @@ public class UserFragment extends BaseFragment
      * 更换头像
      */
     private void editHeadImg() {
-        new ActionSheetDialog(getContext()).builder()
-                .setCancelable(true)
-                .setCanceledOnTouchOutside(true)
-                .addSheetItem("相册",
-                        ActionSheetDialog.SheetItemColor.Blue,
-                        which ->
-                        {
-                            //动态申请权限
-                            permissionHelper.request(new String[]{
-                                    Permission.STORAGE_WRITE});
-                        })
-                .addSheetItem("拍照",
-                        ActionSheetDialog.SheetItemColor.Blue,
-                        which ->
-                        {
-                            //动态申请权限
-                            permissionHelper.request(new String[]{
-                                    Permission.CAMERA,
-                                    Permission.STORAGE_WRITE});
-                        })
-                .show();
+        new ActionSheetDialog(getActivity()).builder().setCancelable(true).setCanceledOnTouchOutside(true).addSheetItem("相册", ActionSheetDialog.SheetItemColor.Blue, which -> {
+            //动态申请权限
+            permissionHelper.request(new String[]{Permission.STORAGE_WRITE});
+        }).addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue, which -> {
+            //动态申请权限
+            permissionHelper.request(new String[]{Permission.CAMERA, Permission.STORAGE_WRITE});
+        }).show();
     }
 
     @Override
@@ -435,7 +409,7 @@ public class UserFragment extends BaseFragment
                 updateBasicInfo();
                 break;
             case UPDATE_USER_INFO:
-                ToastUtil.toast(getContext(), "上传成功");
+                ToastUtil.toast(getActivity(), "上传成功");
                 Glide.with(this).load(headImgUrl).apply(GlideHelper.getOptions()).into(headImg);
                 loginSuccessBean.setPortraitUrl(headImgUrl);
                 YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
@@ -455,28 +429,29 @@ public class UserFragment extends BaseFragment
      * @param oldt
      */
     @Override
-    public void onScrollChanged(CustomListenScrollView scrollView, int l, int t, int oldl, int oldt) {
+    public void onScrollChanged(CustomListenScrollView scrollView, int l, int t, int oldl,
+                                int oldt) {
     }
 
     /**
      * 打开图片库
      */
     private void openPhoto() {
-        Matisse.from(this)
+        Matisse.from(getActivity())
                 // 选择 mime 的类型
                 .choose(MimeType.allOf())
                 // 显示选择的数量
                 .countable(true)
                 //                //相机
                 //               .capture(true)
-                //               .captureStrategy(new CaptureStrategy(true, YihtApplication.getInstance().getPackageName() +".fileprovider"))
+                //               .captureStrategy(new CaptureStrategy(true, YihtApplication
+                // .getInstance().getPackageName() +".fileprovider"))
                 // 黑色背景
                 .theme(R.style.Matisse_Dracula)
                 // 图片选择的最多数量
                 .maxSelectable(1)
                 // 列表中显示的图片大小
-                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.app_picture_size))
-                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.app_picture_size)).restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                 // 缩略图的比例
                 .thumbnailScale(0.85f)
                 // 使用的图片加载引擎
@@ -497,20 +472,19 @@ public class UserFragment extends BaseFragment
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            uri = FileProvider.getUriForFile(getContext(),
-                    YihtApplication.getInstance().getPackageName() +
-                            ".fileprovider", cameraTempFile);
+            uri = FileProvider.getUriForFile(getActivity(),
+                    YihtApplication.getInstance().getPackageName() + ".fileprovider",
+                    cameraTempFile);
         } else {
             uri = Uri.fromFile(cameraTempFile);
         }
-        List<ResolveInfo> resInfoList = getActivity().getPackageManager()
-                .queryIntentActivities(intent,
+        List<ResolveInfo> resInfoList =
+                getActivity().getPackageManager().queryIntentActivities(intent,
                         PackageManager.MATCH_DEFAULT_ONLY);
         for (ResolveInfo resolveInfo : resInfoList) {
             String packageName = resolveInfo.activityInfo.packageName;
             getActivity().grantUriPermission(packageName, uri,
-                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
-                            Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
         // 指定调用相机拍照后照片的储存路径
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
@@ -528,15 +502,14 @@ public class UserFragment extends BaseFragment
         Intent intent = new Intent("com.android.camera.action.CROP");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             //添加这一句表示对目标应用临时授权该Uri所代表的文件
-            intent.addFlags(
-                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
         // 在Android N中，为了安全起见，您必须获得“写入或读取Uri文件”的权限。如果您希望系统照片裁剪您的“uri文件”，那么您 必须允许系统照片。
         intent.setDataAndType(originUri, "image/*");
         intent.putExtra("crop", "true");
         // aspectX aspectY 是宽高的比例
-        if (Build.BRAND.toUpperCase().contains("HONOR") ||
-                Build.BRAND.toUpperCase().contains("HUAWEI")) {
+        if (Build.BRAND.toUpperCase().contains("HONOR") || Build.BRAND.toUpperCase().contains(
+                "HUAWEI")) {
             //华为特殊处理 不然会显示圆
             intent.putExtra("aspectX", 9998);
             intent.putExtra("aspectY", 9999);
@@ -563,7 +536,7 @@ public class UserFragment extends BaseFragment
             case RC_PICK_IMG:
                 List<Uri> paths = Matisse.obtainResult(data);
                 if (null != paths && 0 != paths.size()) {
-                    cameraTempFile = FileUtils.getFileByUri(paths.get(0), getContext());
+                    cameraTempFile = FileUtils.getFileByUri(paths.get(0), getActivity());
                     String fileName = "corp" + System.currentTimeMillis() + ".jpg";
                     File file = new File(DirHelper.getPathCache(), fileName);
                     startCutImg(paths.get(0), Uri.fromFile(file));
@@ -576,10 +549,9 @@ public class UserFragment extends BaseFragment
                     Uri imageUri;
                     Uri cropUri;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        imageUri = FileProvider.getUriForFile(getContext(),
-                                YihtApplication.getInstance()
-                                        .getPackageName() +
-                                        ".fileprovider", cameraTempFile);
+                        imageUri = FileProvider.getUriForFile(getActivity(),
+                                YihtApplication.getInstance().getPackageName() + ".fileprovider",
+                                cameraTempFile);
                     } else {
                         imageUri = Uri.fromFile(cameraTempFile);
                     }
@@ -589,10 +561,10 @@ public class UserFragment extends BaseFragment
                 break;
             case RC_CROP_IMG:
                 //裁剪完成，上传图片
-                if (AllUtils.isNetworkAvaliable(getContext())) {
+                if (AllUtils.isNetworkAvaliable(getActivity())) {
                     uploadHeadImg(cutFileUri);
                 } else {
-                    ToastUtil.toast(getContext(), R.string.toast_public_current_no_network);
+                    ToastUtil.toast(getActivity(), R.string.toast_public_current_no_network);
                 }
                 //上传完成，替换本地图片
                 Glide.with(this).load(cutFileUri).into(headImg);
@@ -601,7 +573,7 @@ public class UserFragment extends BaseFragment
                 //清除数据库数据
                 DataSupport.deleteAll(PatientBean.class);
                 DataSupport.deleteAll(CooperateDocBean.class);
-                startActivity(new Intent(getContext(), AuthDocStatuActivity.class));
+                startActivity(new Intent(getActivity(), AuthDocStatuActivity.class));
                 getActivity().finish();
                 break;
             default:
@@ -650,12 +622,12 @@ public class UserFragment extends BaseFragment
             }
             for (String permission : permissionName) {
                 if (Permission.STORAGE_WRITE.equals(permission)) {
-                    ToastUtil.toast(getContext(),
+                    ToastUtil.toast(getActivity(),
                             custom.frame.R.string.dialog_no_storage_permission_tip);
                     break;
                 }
                 if (Permission.CAMERA.equals(permission)) {
-                    ToastUtil.toast(getContext(),
+                    ToastUtil.toast(getActivity(),
                             custom.frame.R.string.dialog_no_camera_permission_tip);
                     break;
                 }
@@ -693,11 +665,9 @@ public class UserFragment extends BaseFragment
     public void onDestroy() {
         super.onDestroy();
         //注销患者状态监听
-        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(
-                doctorAuthStatusChangeListener, RegisterType.UNREGISTER);
+        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(doctorAuthStatusChangeListener, RegisterType.UNREGISTER);
         //注销转诊申请监听
-        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(
-                doctorTransferPatientListener, RegisterType.UNREGISTER);
+        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(doctorTransferPatientListener, RegisterType.UNREGISTER);
     }
 
     private OnTransferCallbackListener onTransferCallbackListener;

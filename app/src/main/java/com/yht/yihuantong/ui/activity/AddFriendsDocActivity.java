@@ -21,7 +21,9 @@ import custom.frame.utils.ToastUtil;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by dundun on 18/11/12.
+ *
+ * @author dundun
+ * @date 18/11/12
  * 好友验证界面
  */
 public class AddFriendsDocActivity extends BaseActivity {

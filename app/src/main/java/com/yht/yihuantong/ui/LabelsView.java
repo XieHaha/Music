@@ -23,8 +23,7 @@ import java.util.List;
 /**
  * Created by dundun on 18/11/12.
  */
-public class LabelsView extends ViewGroup implements View.OnClickListener
-{
+public class LabelsView extends ViewGroup implements View.OnClickListener {
     private Context mContext;
     private ColorStateList mTextColor;
     private float mTextSize;
@@ -37,14 +36,22 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
     private int mLineMargin;
     private SelectType mSelectType;
     private int mMaxSelect;
-    //用于保存label数据的key
+    /**
+     * 用于保存label数据的key
+     */
     private static final int KEY_DATA = R.id.tag_key_data;
-    //用于保存label位置的key
+    /**
+     * 用于保存label位置的key
+     */
     private static final int KEY_POSITION = R.id.tag_key_position;
     private ArrayList<Object> mLabels = new ArrayList<>();
-    //保存选中的label的位置
+    /**
+     * 保存选中的label的位置
+     */
     private ArrayList<Integer> mSelectLabels = new ArrayList<>();
-    //保存必选项。在多选模式下，可以设置必选项，必选项默认选中，不能反选
+    /**
+     * 保存必选项。在多选模式下，可以设置必选项，必选项默认选中，不能反选
+     */
     private ArrayList<Integer> mCompulsorys = new ArrayList<>();
     private OnLabelClickListener mLabelClickListener;
     private OnLabelSelectChangeListener mLabelSelectChangeListener;
@@ -52,24 +59,31 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
     /**
      * Label的选择类型
      */
-    public enum SelectType
-    {
-        //不可选中，也不响应选中事件回调。（默认）
-        NONE(1), //单选,可以反选。
-        SINGLE(2), //单选,不可以反选。这种模式下，至少有一个是选中的，默认是第一个
-        SINGLE_IRREVOCABLY(3), //多选
+    public enum SelectType {
+        /**
+         * 不可选中，也不响应选中事件回调。（默认）
+         */
+        NONE(1),
+        /**
+         * 单选,可以反选。
+         */
+        SINGLE(2),
+        /**
+         * 单选,不可以反选。这种模式下，至少有一个是选中的，默认是第一个
+         */
+        SINGLE_IRREVOCABLY(3),
+        /**
+         * 多选
+         */
         MULTI(4);
         int value;
 
-        SelectType(int value)
-        {
+        SelectType(int value) {
             this.value = value;
         }
 
-        static SelectType get(int value)
-        {
-            switch (value)
-            {
+        static SelectType get(int value) {
+            switch (value) {
                 case 1:
                     return NONE;
                 case 2:
@@ -83,59 +97,51 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
         }
     }
 
-    public LabelsView(Context context)
-    {
+    public LabelsView(Context context) {
         super(context);
         mContext = context;
     }
 
-    public LabelsView(Context context, AttributeSet attrs)
-    {
+    public LabelsView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
         getAttrs(context, attrs);
     }
 
-    public LabelsView(Context context, AttributeSet attrs, int defStyleAttr)
-    {
+    public LabelsView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContext = context;
         getAttrs(context, attrs);
     }
 
-    private void getAttrs(Context context, AttributeSet attrs)
-    {
-        if (attrs != null)
-        {
+    private void getAttrs(Context context, AttributeSet attrs) {
+        if (attrs != null) {
             TypedArray mTypedArray = context.obtainStyledAttributes(attrs, R.styleable.labels_view);
             int type = mTypedArray.getInt(R.styleable.labels_view_selectType, 1);
             mSelectType = SelectType.get(type);
             mMaxSelect = mTypedArray.getInteger(R.styleable.labels_view_maxSelect, 0);
             mTextColor = mTypedArray.getColorStateList(R.styleable.labels_view_labelTextColor);
             mTextSize = mTypedArray.getDimension(R.styleable.labels_view_labelTextSize,
-                                                 sp2px(context, 14));
-            mTextPaddingLeft = mTypedArray.getDimensionPixelOffset(
-                    R.styleable.labels_view_labelTextPaddingLeft, 0);
-            mTextPaddingTop = mTypedArray.getDimensionPixelOffset(
-                    R.styleable.labels_view_labelTextPaddingTop, 0);
-            mTextPaddingRight = mTypedArray.getDimensionPixelOffset(
-                    R.styleable.labels_view_labelTextPaddingRight, 0);
-            mTextPaddingBottom = mTypedArray.getDimensionPixelOffset(
-                    R.styleable.labels_view_labelTextPaddingBottom, 0);
+                    sp2px(context, 14));
+            mTextPaddingLeft =
+                    mTypedArray.getDimensionPixelOffset(R.styleable.labels_view_labelTextPaddingLeft, 0);
+            mTextPaddingTop =
+                    mTypedArray.getDimensionPixelOffset(R.styleable.labels_view_labelTextPaddingTop, 0);
+            mTextPaddingRight =
+                    mTypedArray.getDimensionPixelOffset(R.styleable.labels_view_labelTextPaddingRight, 0);
+            mTextPaddingBottom =
+                    mTypedArray.getDimensionPixelOffset(R.styleable.labels_view_labelTextPaddingBottom, 0);
             mLineMargin = mTypedArray.getDimensionPixelOffset(R.styleable.labels_view_lineMargin,
-                                                              0);
+                    0);
             mWordMargin = mTypedArray.getDimensionPixelOffset(R.styleable.labels_view_wordMargin,
-                                                              0);
+                    0);
             int labelBgResId = mTypedArray.getResourceId(R.styleable.labels_view_labelBackground,
-                                                         0);
-            if (labelBgResId != 0)
-            {
+                    0);
+            if (labelBgResId != 0) {
                 mLabelBg = getResources().getDrawable(labelBgResId);
-            }
-            else
-            {
+            } else {
                 int labelBgColor = mTypedArray.getColor(R.styleable.labels_view_labelBackground,
-                                                        Color.TRANSPARENT);
+                        Color.TRANSPARENT);
                 mLabelBg = new ColorDrawable(labelBgColor);
             }
             mTypedArray.recycle();
@@ -143,29 +149,28 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
-    {
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int count = getChildCount();
         int maxWidth = MeasureSpec.getSize(widthMeasureSpec) - getPaddingLeft() - getPaddingRight();
-        int contentHeight = 0; //记录内容的高度
-        int lineWidth = 0; //记录行的宽度
-        int maxLineWidth = 0; //记录最宽的行宽
-        int maxItemHeight = 0; //记录一行中item高度最大的高度
-        boolean begin = true; //是否是行的开头
-        for (int i = 0; i < count; i++)
-        {
+        //记录内容的高度
+        int contentHeight = 0;
+        //记录行的宽度
+        int lineWidth = 0;
+        //记录最宽的行宽
+        int maxLineWidth = 0;
+        //记录一行中item高度最大的高度
+        int maxItemHeight = 0;
+        //是否是行的开头
+        boolean begin = true;
+        for (int i = 0; i < count; i++) {
             View view = getChildAt(i);
             measureChild(view, widthMeasureSpec, heightMeasureSpec);
-            if (!begin)
-            {
+            if (!begin) {
                 lineWidth += mWordMargin;
-            }
-            else
-            {
+            } else {
                 begin = false;
             }
-            if (maxWidth <= lineWidth + view.getMeasuredWidth())
-            {
+            if (maxWidth <= lineWidth + view.getMeasuredWidth()) {
                 contentHeight += mLineMargin;
                 contentHeight += maxItemHeight;
                 maxItemHeight = 0;
@@ -179,23 +184,18 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
         contentHeight += maxItemHeight;
         maxLineWidth = Math.max(maxLineWidth, lineWidth);
         setMeasuredDimension(measureWidth(widthMeasureSpec, maxLineWidth),
-                             measureHeight(heightMeasureSpec, contentHeight));
+                measureHeight(heightMeasureSpec, contentHeight));
     }
 
-    private int measureWidth(int measureSpec, int contentWidth)
-    {
+    private int measureWidth(int measureSpec, int contentWidth) {
         int result = 0;
         int specMode = MeasureSpec.getMode(measureSpec);
         int specSize = MeasureSpec.getSize(measureSpec);
-        if (specMode == MeasureSpec.EXACTLY)
-        {
+        if (specMode == MeasureSpec.EXACTLY) {
             result = specSize;
-        }
-        else
-        {
+        } else {
             result = contentWidth + getPaddingLeft() + getPaddingRight();
-            if (specMode == MeasureSpec.AT_MOST)
-            {
+            if (specMode == MeasureSpec.AT_MOST) {
                 result = Math.min(result, specSize);
             }
         }
@@ -203,20 +203,15 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
         return result;
     }
 
-    private int measureHeight(int measureSpec, int contentHeight)
-    {
+    private int measureHeight(int measureSpec, int contentHeight) {
         int result = 0;
         int specMode = MeasureSpec.getMode(measureSpec);
         int specSize = MeasureSpec.getSize(measureSpec);
-        if (specMode == MeasureSpec.EXACTLY)
-        {
+        if (specMode == MeasureSpec.EXACTLY) {
             result = specSize;
-        }
-        else
-        {
+        } else {
             result = contentHeight + getPaddingTop() + getPaddingBottom();
-            if (specMode == MeasureSpec.AT_MOST)
-            {
+            if (specMode == MeasureSpec.AT_MOST) {
                 result = Math.min(result, specSize);
             }
         }
@@ -225,18 +220,15 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
     }
 
     @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom)
-    {
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         int x = getPaddingLeft();
         int y = getPaddingTop();
         int contentWidth = right - left;
         int maxItemHeight = 0;
         int count = getChildCount();
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             View view = getChildAt(i);
-            if (contentWidth < x + view.getMeasuredWidth() + getPaddingRight())
-            {
+            if (contentWidth < x + view.getMeasuredWidth() + getPaddingRight()) {
                 x = getPaddingLeft();
                 y += mLineMargin;
                 y += maxItemHeight;
@@ -267,14 +259,12 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
     private static final String KEY_COMPULSORY_LABELS_STATE = "key_select_compulsory_state";
 
     @Override
-    protected Parcelable onSaveInstanceState()
-    {
+    protected Parcelable onSaveInstanceState() {
         Bundle bundle = new Bundle();
         //保存父类的信息
         bundle.putParcelable(KEY_SUPER_STATE, super.onSaveInstanceState());
         //保存标签文字颜色
-        if (mTextColor != null)
-        {
+        if (mTextColor != null) {
             bundle.putParcelable(KEY_TEXT_COLOR_STATE, mTextColor);
         }
         //保存标签文字大小
@@ -282,8 +272,8 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
         //保存标签背景 (由于背景改用Drawable,所以不能自动保存和恢复)
         //        bundle.putInt(KEY_BG_RES_ID_STATE, mLabelBgResId);
         //保存标签内边距
-        bundle.putIntArray(KEY_PADDING_STATE, new int[] {
-                mTextPaddingLeft, mTextPaddingTop, mTextPaddingRight, mTextPaddingBottom });
+        bundle.putIntArray(KEY_PADDING_STATE, new int[]{mTextPaddingLeft, mTextPaddingTop,
+                mTextPaddingRight, mTextPaddingBottom});
         //保存标签间隔
         bundle.putInt(KEY_WORD_MARGIN_STATE, mWordMargin);
         //保存行间隔
@@ -297,30 +287,25 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
         //            bundle.putStringArrayList(KEY_LABELS_STATE, mLabels);
         //        }
         //保存已选择的标签列表
-        if (!mSelectLabels.isEmpty())
-        {
+        if (!mSelectLabels.isEmpty()) {
             bundle.putIntegerArrayList(KEY_SELECT_LABELS_STATE, mSelectLabels);
         }
         //保存必选项列表
-        if (!mCompulsorys.isEmpty())
-        {
+        if (!mCompulsorys.isEmpty()) {
             bundle.putIntegerArrayList(KEY_COMPULSORY_LABELS_STATE, mCompulsorys);
         }
         return bundle;
     }
 
     @Override
-    protected void onRestoreInstanceState(Parcelable state)
-    {
-        if (state instanceof Bundle)
-        {
-            Bundle bundle = (Bundle)state;
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (state instanceof Bundle) {
+            Bundle bundle = (Bundle) state;
             //恢复父类信息
             super.onRestoreInstanceState(bundle.getParcelable(KEY_SUPER_STATE));
             //恢复标签文字颜色
             ColorStateList color = bundle.getParcelable(KEY_TEXT_COLOR_STATE);
-            if (color != null)
-            {
+            if (color != null) {
                 setLabelTextColor(color);
             }
             //恢复标签文字大小
@@ -332,8 +317,7 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
             //            }
             //恢复标签内边距
             int[] padding = bundle.getIntArray(KEY_PADDING_STATE);
-            if (padding != null && padding.length == 4)
-            {
+            if (padding != null && padding.length == 4) {
                 setLabelTextPadding(padding[0], padding[1], padding[2], padding[3]);
             }
             //恢复标签间隔
@@ -351,18 +335,15 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
             //            }
             //恢复必选项列表
             ArrayList<Integer> compulsory = bundle.getIntegerArrayList(KEY_COMPULSORY_LABELS_STATE);
-            if (compulsory != null && !compulsory.isEmpty())
-            {
+            if (compulsory != null && !compulsory.isEmpty()) {
                 setCompulsorys(compulsory);
             }
             //恢复已选择的标签列表
             ArrayList<Integer> selectLabel = bundle.getIntegerArrayList(KEY_SELECT_LABELS_STATE);
-            if (selectLabel != null && !selectLabel.isEmpty())
-            {
+            if (selectLabel != null && !selectLabel.isEmpty()) {
                 int size = selectLabel.size();
                 int[] positions = new int[size];
-                for (int i = 0; i < size; i++)
-                {
+                for (int i = 0; i < size; i++) {
                     positions[i] = selectLabel.get(i);
                 }
                 setSelects(positions);
@@ -377,13 +358,10 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      *
      * @param labels
      */
-    public void setLabels(List<String> labels)
-    {
-        setLabels(labels, new LabelTextProvider<String>()
-        {
+    public void setLabels(List<String> labels) {
+        setLabels(labels, new LabelTextProvider<String>() {
             @Override
-            public CharSequence getLabelText(TextView label, int position, String data)
-            {
+            public CharSequence getLabelText(TextView label, int position, String data) {
                 return data.trim();
             }
         });
@@ -396,24 +374,20 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      * @param provider
      * @param <T>
      */
-    public <T> void setLabels(List<T> labels, LabelTextProvider<T> provider)
-    {
+    public <T> void setLabels(List<T> labels, LabelTextProvider<T> provider) {
         //清空原有的标签
         innerClearAllSelect();
         removeAllViews();
         mLabels.clear();
-        if (labels != null)
-        {
+        if (labels != null) {
             mLabels.addAll(labels);
             int size = labels.size();
-            for (int i = 0; i < size; i++)
-            {
+            for (int i = 0; i < size; i++) {
                 addLabel(labels.get(i), i, provider);
             }
             ensureLabelClickable();
         }
-        if (mSelectType == SelectType.SINGLE_IRREVOCABLY)
-        {
+        if (mSelectType == SelectType.SINGLE_IRREVOCABLY) {
             setSelects(0);
         }
     }
@@ -423,17 +397,17 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      *
      * @return
      */
-    public <T> List<T> getLabels()
-    {
-        return (List<T>)mLabels;
+    public <T> List<T> getLabels() {
+        return (List<T>) mLabels;
     }
 
-    private <T> void addLabel(T data, int position, LabelTextProvider<T> provider)
-    {
+    private <T> void addLabel(T data, int position, LabelTextProvider<T> provider) {
         //        final TextView label = new TextView(mContext);
-        //        label.setPadding(mTextPaddingLeft, mTextPaddingTop, mTextPaddingRight, mTextPaddingBottom);
+        //        label.setPadding(mTextPaddingLeft, mTextPaddingTop, mTextPaddingRight,
+        // mTextPaddingBottom);
         //        label.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
-        //        label.setTextColor(mTextColor != null ? mTextColor : ColorStateList.valueOf(0xFF000000));
+        //        label.setTextColor(mTextColor != null ? mTextColor : ColorStateList.valueOf
+        // (0xFF000000));
         //        //设置给label的背景(Drawable)是一个Drawable对象的拷贝，
         //        // 因为如果所有的标签都共用一个Drawable对象，会引起背景错乱。
         //        label.setBackgroundDrawable(mLabelBg.getConstantState().newDrawable());
@@ -452,70 +426,50 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
     /**
      * 确保标签是否能响应事件，如果标签可选或者标签设置了点击事件监听，则响应事件。
      */
-    private void ensureLabelClickable()
-    {
+    private void ensureLabelClickable() {
         //        int count = getChildCount();
         //        for (int i = 0; i < count; i++)
         //        {
         //            TextView label = (TextView)getChildAt(i);
-        //            label.setClickable(mLabelClickListener != null || mSelectType != SelectType.NONE);
+        //            label.setClickable(mLabelClickListener != null || mSelectType != SelectType
+        // .NONE);
         //        }
     }
 
     @Override
-    public void onClick(View v)
-    {
-        if (v instanceof TextView)
-        {
-            TextView label = (TextView)v;
-            if (mSelectType != SelectType.NONE)
-            {
-                if (label.isSelected())
-                {
-                    if (mSelectType != SelectType.SINGLE_IRREVOCABLY &&
-                        !mCompulsorys.contains((Integer)label.getTag(KEY_POSITION)))
-                    {
+    public void onClick(View v) {
+        if (v instanceof TextView) {
+            TextView label = (TextView) v;
+            if (mSelectType != SelectType.NONE) {
+                if (label.isSelected()) {
+                    if (mSelectType != SelectType.SINGLE_IRREVOCABLY && !mCompulsorys.contains((Integer) label.getTag(KEY_POSITION))) {
                         setLabelSelect(label, false);
                     }
-                }
-                else if (mSelectType == SelectType.SINGLE ||
-                         mSelectType == SelectType.SINGLE_IRREVOCABLY)
-                {
+                } else if (mSelectType == SelectType.SINGLE || mSelectType == SelectType.SINGLE_IRREVOCABLY) {
                     innerClearAllSelect();
                     setLabelSelect(label, true);
-                }
-                else if (mSelectType == SelectType.MULTI &&
-                         (mMaxSelect <= 0 || mMaxSelect > mSelectLabels.size()))
-                {
+                } else if (mSelectType == SelectType.MULTI && (mMaxSelect <= 0 || mMaxSelect > mSelectLabels.size())) {
                     setLabelSelect(label, true);
                 }
             }
-            if (mLabelClickListener != null)
-            {
+            if (mLabelClickListener != null) {
                 mLabelClickListener.onLabelClick(label, label.getTag(KEY_DATA),
-                                                 (int)label.getTag(KEY_POSITION));
+                        (int) label.getTag(KEY_POSITION));
             }
         }
     }
 
-    private void setLabelSelect(TextView label, boolean isSelect)
-    {
-        if (label.isSelected() != isSelect)
-        {
+    private void setLabelSelect(TextView label, boolean isSelect) {
+        if (label.isSelected() != isSelect) {
             label.setSelected(isSelect);
-            if (isSelect)
-            {
-                mSelectLabels.add((Integer)label.getTag(KEY_POSITION));
+            if (isSelect) {
+                mSelectLabels.add((Integer) label.getTag(KEY_POSITION));
+            } else {
+                mSelectLabels.remove((Integer) label.getTag(KEY_POSITION));
             }
-            else
-            {
-                mSelectLabels.remove((Integer)label.getTag(KEY_POSITION));
-            }
-            if (mLabelSelectChangeListener != null)
-            {
+            if (mLabelSelectChangeListener != null) {
                 mLabelSelectChangeListener.onLabelSelectChange(label, label.getTag(KEY_DATA),
-                                                               isSelect,
-                                                               (int)label.getTag(KEY_POSITION));
+                        isSelect, (int) label.getTag(KEY_POSITION));
             }
         }
     }
@@ -523,40 +477,30 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
     /**
      * 取消所有选中的label
      */
-    public void clearAllSelect()
-    {
-        if (mSelectType != SelectType.SINGLE_IRREVOCABLY)
-        {
-            if (mSelectType == SelectType.MULTI && !mCompulsorys.isEmpty())
-            {
+    public void clearAllSelect() {
+        if (mSelectType != SelectType.SINGLE_IRREVOCABLY) {
+            if (mSelectType == SelectType.MULTI && !mCompulsorys.isEmpty()) {
                 clearNotCompulsorySelect();
-            }
-            else
-            {
+            } else {
                 innerClearAllSelect();
             }
         }
     }
 
-    private void innerClearAllSelect()
-    {
+    private void innerClearAllSelect() {
         int count = getChildCount();
-        for (int i = 0; i < count; i++)
-        {
-            setLabelSelect((TextView)getChildAt(i), false);
+        for (int i = 0; i < count; i++) {
+            setLabelSelect((TextView) getChildAt(i), false);
         }
         mSelectLabels.clear();
     }
 
-    private void clearNotCompulsorySelect()
-    {
+    private void clearNotCompulsorySelect() {
         int count = getChildCount();
         List<Integer> temps = new ArrayList<>();
-        for (int i = 0; i < count; i++)
-        {
-            if (!mCompulsorys.contains(i))
-            {
-                setLabelSelect((TextView)getChildAt(i), false);
+        for (int i = 0; i < count; i++) {
+            if (!mCompulsorys.contains(i)) {
+                setLabelSelect((TextView) getChildAt(i), false);
                 temps.add(i);
             }
         }
@@ -568,14 +512,11 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      *
      * @param positions
      */
-    public void setSelects(List<Integer> positions)
-    {
-        if (positions != null)
-        {
+    public void setSelects(List<Integer> positions) {
+        if (positions != null) {
             int size = positions.size();
             int[] ps = new int[size];
-            for (int i = 0; i < size; i++)
-            {
+            for (int i = 0; i < size; i++) {
                 ps[i] = positions.get(i);
             }
             setSelects(ps);
@@ -587,37 +528,27 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      *
      * @param positions
      */
-    public void setSelects(int... positions)
-    {
-        if (mSelectType != SelectType.NONE)
-        {
+    public void setSelects(int... positions) {
+        if (mSelectType != SelectType.NONE) {
             ArrayList<TextView> selectLabels = new ArrayList<>();
             int count = getChildCount();
             int size =
-                    mSelectType == SelectType.SINGLE || mSelectType == SelectType.SINGLE_IRREVOCABLY
-                    ? 1
-                    : mMaxSelect;
-            for (int p : positions)
-            {
-                if (p < count)
-                {
-                    TextView label = (TextView)getChildAt(p);
-                    if (!selectLabels.contains(label))
-                    {
+                    mSelectType == SelectType.SINGLE || mSelectType == SelectType.SINGLE_IRREVOCABLY ? 1 : mMaxSelect;
+            for (int p : positions) {
+                if (p < count) {
+                    TextView label = (TextView) getChildAt(p);
+                    if (!selectLabels.contains(label)) {
                         setLabelSelect(label, true);
                         selectLabels.add(label);
                     }
-                    if (size > 0 && selectLabels.size() == size)
-                    {
+                    if (size > 0 && selectLabels.size() == size) {
                         break;
                     }
                 }
             }
-            for (int i = 0; i < count; i++)
-            {
-                TextView label = (TextView)getChildAt(i);
-                if (!selectLabels.contains(label))
-                {
+            for (int i = 0; i < count; i++) {
+                TextView label = (TextView) getChildAt(i);
+                if (!selectLabels.contains(label)) {
                     setLabelSelect(label, false);
                 }
             }
@@ -629,10 +560,8 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      *
      * @param positions
      */
-    public void setCompulsorys(List<Integer> positions)
-    {
-        if (mSelectType == SelectType.MULTI && positions != null)
-        {
+    public void setCompulsorys(List<Integer> positions) {
+        if (mSelectType == SelectType.MULTI && positions != null) {
             mCompulsorys.clear();
             mCompulsorys.addAll(positions);
             //必选项发生改变，就要恢复到初始状态。
@@ -646,13 +575,10 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      *
      * @param positions
      */
-    public void setCompulsorys(int... positions)
-    {
-        if (mSelectType == SelectType.MULTI && positions != null)
-        {
+    public void setCompulsorys(int... positions) {
+        if (mSelectType == SelectType.MULTI && positions != null) {
             List<Integer> ps = new ArrayList<>(positions.length);
-            for (int i : positions)
-            {
+            for (int i : positions) {
                 ps.add(i);
             }
             setCompulsorys(ps);
@@ -664,18 +590,15 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      *
      * @return
      */
-    public List<Integer> getCompulsorys()
-    {
+    public List<Integer> getCompulsorys() {
         return mCompulsorys;
     }
 
     /**
      * 清空必选项，只有在多项模式下，这个方法才有效
      */
-    public void clearCompulsorys()
-    {
-        if (mSelectType == SelectType.MULTI && !mCompulsorys.isEmpty())
-        {
+    public void clearCompulsorys() {
+        if (mSelectType == SelectType.MULTI && !mCompulsorys.isEmpty()) {
             mCompulsorys.clear();
             //必选项发生改变，就要恢复到初始状态。
             innerClearAllSelect();
@@ -687,8 +610,7 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      *
      * @return
      */
-    public List<Integer> getSelectLabels()
-    {
+    public List<Integer> getSelectLabels() {
         return mSelectLabels;
     }
 
@@ -698,17 +620,14 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      * @param <T>
      * @return
      */
-    public <T> List<T> getSelectLabelDatas()
-    {
+    public <T> List<T> getSelectLabelDatas() {
         List<T> list = new ArrayList<>();
         int size = mSelectLabels.size();
-        for (int i = 0; i < size; i++)
-        {
+        for (int i = 0; i < size; i++) {
             View label = getChildAt(mSelectLabels.get(i));
             Object data = label.getTag(KEY_DATA);
-            if (data != null)
-            {
-                list.add((T)data);
+            if (data != null) {
+                list.add((T) data);
             }
         }
         return list;
@@ -719,8 +638,7 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      *
      * @param resId
      */
-    public void setLabelBackgroundResource(int resId)
-    {
+    public void setLabelBackgroundResource(int resId) {
         setLabelBackgroundDrawable(getResources().getDrawable(resId));
     }
 
@@ -729,8 +647,7 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      *
      * @param color
      */
-    public void setLabelBackgroundColor(int color)
-    {
+    public void setLabelBackgroundColor(int color) {
         setLabelBackgroundDrawable(new ColorDrawable(color));
     }
 
@@ -739,13 +656,11 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      *
      * @param drawable
      */
-    public void setLabelBackgroundDrawable(Drawable drawable)
-    {
+    public void setLabelBackgroundDrawable(Drawable drawable) {
         mLabelBg = drawable;
         int count = getChildCount();
-        for (int i = 0; i < count; i++)
-        {
-            TextView label = (TextView)getChildAt(i);
+        for (int i = 0; i < count; i++) {
+            TextView label = (TextView) getChildAt(i);
             label.setBackgroundDrawable(mLabelBg.getConstantState().newDrawable());
         }
     }
@@ -758,41 +673,33 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      * @param right
      * @param bottom
      */
-    public void setLabelTextPadding(int left, int top, int right, int bottom)
-    {
-        if (mTextPaddingLeft != left || mTextPaddingTop != top || mTextPaddingRight != right ||
-            mTextPaddingBottom != bottom)
-        {
+    public void setLabelTextPadding(int left, int top, int right, int bottom) {
+        if (mTextPaddingLeft != left || mTextPaddingTop != top || mTextPaddingRight != right || mTextPaddingBottom != bottom) {
             mTextPaddingLeft = left;
             mTextPaddingTop = top;
             mTextPaddingRight = right;
             mTextPaddingBottom = bottom;
             int count = getChildCount();
-            for (int i = 0; i < count; i++)
-            {
-                TextView label = (TextView)getChildAt(i);
+            for (int i = 0; i < count; i++) {
+                TextView label = (TextView) getChildAt(i);
                 label.setPadding(left, top, right, bottom);
             }
         }
     }
 
-    public int getTextPaddingLeft()
-    {
+    public int getTextPaddingLeft() {
         return mTextPaddingLeft;
     }
 
-    public int getTextPaddingTop()
-    {
+    public int getTextPaddingTop() {
         return mTextPaddingTop;
     }
 
-    public int getTextPaddingRight()
-    {
+    public int getTextPaddingRight() {
         return mTextPaddingRight;
     }
 
-    public int getTextPaddingBottom()
-    {
+    public int getTextPaddingBottom() {
         return mTextPaddingBottom;
     }
 
@@ -801,22 +708,18 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      *
      * @param size
      */
-    public void setLabelTextSize(float size)
-    {
-        if (mTextSize != size)
-        {
+    public void setLabelTextSize(float size) {
+        if (mTextSize != size) {
             mTextSize = size;
             int count = getChildCount();
-            for (int i = 0; i < count; i++)
-            {
-                TextView label = (TextView)getChildAt(i);
+            for (int i = 0; i < count; i++) {
+                TextView label = (TextView) getChildAt(i);
                 label.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
             }
         }
     }
 
-    public float getLabelTextSize()
-    {
+    public float getLabelTextSize() {
         return mTextSize;
     }
 
@@ -825,8 +728,7 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      *
      * @param color
      */
-    public void setLabelTextColor(int color)
-    {
+    public void setLabelTextColor(int color) {
         setLabelTextColor(ColorStateList.valueOf(color));
     }
 
@@ -835,54 +737,45 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      *
      * @param color
      */
-    public void setLabelTextColor(ColorStateList color)
-    {
+    public void setLabelTextColor(ColorStateList color) {
         mTextColor = color;
         int count = getChildCount();
-        for (int i = 0; i < count; i++)
-        {
-            TextView label = (TextView)getChildAt(i);
-            label.setTextColor(
-                    mTextColor != null ? mTextColor : ColorStateList.valueOf(0xFF000000));
+        for (int i = 0; i < count; i++) {
+            TextView label = (TextView) getChildAt(i);
+            label.setTextColor(mTextColor != null ? mTextColor :
+                    ColorStateList.valueOf(0xFF000000));
         }
     }
 
-    public ColorStateList getLabelTextColor()
-    {
+    public ColorStateList getLabelTextColor() {
         return mTextColor;
     }
 
     /**
      * 设置行间隔
      */
-    public void setLineMargin(int margin)
-    {
-        if (mLineMargin != margin)
-        {
+    public void setLineMargin(int margin) {
+        if (mLineMargin != margin) {
             mLineMargin = margin;
             requestLayout();
         }
     }
 
-    public int getLineMargin()
-    {
+    public int getLineMargin() {
         return mLineMargin;
     }
 
     /**
      * 设置标签的间隔
      */
-    public void setWordMargin(int margin)
-    {
-        if (mWordMargin != margin)
-        {
+    public void setWordMargin(int margin) {
+        if (mWordMargin != margin) {
             mWordMargin = margin;
             requestLayout();
         }
     }
 
-    public int getWordMargin()
-    {
+    public int getWordMargin() {
         return mWordMargin;
     }
 
@@ -891,27 +784,22 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      *
      * @param selectType
      */
-    public void setSelectType(SelectType selectType)
-    {
-        if (mSelectType != selectType)
-        {
+    public void setSelectType(SelectType selectType) {
+        if (mSelectType != selectType) {
             mSelectType = selectType;
             //选择类型发生改变，就要恢复到初始状态。
             innerClearAllSelect();
-            if (mSelectType == SelectType.SINGLE_IRREVOCABLY)
-            {
+            if (mSelectType == SelectType.SINGLE_IRREVOCABLY) {
                 setSelects(0);
             }
-            if (mSelectType != SelectType.MULTI)
-            {
+            if (mSelectType != SelectType.MULTI) {
                 mCompulsorys.clear();
             }
             ensureLabelClickable();
         }
     }
 
-    public SelectType getSelectType()
-    {
+    public SelectType getSelectType() {
         return mSelectType;
     }
 
@@ -920,21 +808,17 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      *
      * @param maxSelect
      */
-    public void setMaxSelect(int maxSelect)
-    {
-        if (mMaxSelect != maxSelect)
-        {
+    public void setMaxSelect(int maxSelect) {
+        if (mMaxSelect != maxSelect) {
             mMaxSelect = maxSelect;
-            if (mSelectType == SelectType.MULTI)
-            {
+            if (mSelectType == SelectType.MULTI) {
                 //最大选择数量发生改变，就要恢复到初始状态。
                 innerClearAllSelect();
             }
         }
     }
 
-    public int getMaxSelect()
-    {
+    public int getMaxSelect() {
         return mMaxSelect;
     }
 
@@ -943,8 +827,7 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      *
      * @param l
      */
-    public void setOnLabelClickListener(OnLabelClickListener l)
-    {
+    public void setOnLabelClickListener(OnLabelClickListener l) {
         mLabelClickListener = l;
         ensureLabelClickable();
     }
@@ -954,22 +837,19 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      *
      * @param l
      */
-    public void setOnLabelSelectChangeListener(OnLabelSelectChangeListener l)
-    {
+    public void setOnLabelSelectChangeListener(OnLabelSelectChangeListener l) {
         mLabelSelectChangeListener = l;
     }
 
     /**
      * sp转px
      */
-    public static int sp2px(Context context, float spVal)
-    {
-        return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spVal,
-                                              context.getResources().getDisplayMetrics());
+    public static int sp2px(Context context, float spVal) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, spVal,
+                context.getResources().getDisplayMetrics());
     }
 
-    public interface OnLabelClickListener
-    {
+    public interface OnLabelClickListener {
         /**
          * @param label    标签
          * @param data     标签对应的数据
@@ -978,8 +858,7 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
         void onLabelClick(TextView label, Object data, int position);
     }
 
-    public interface OnLabelSelectChangeListener
-    {
+    public interface OnLabelSelectChangeListener {
         /**
          * @param label    标签
          * @param data     标签对应的数据
@@ -996,8 +875,7 @@ public class LabelsView extends ViewGroup implements View.OnClickListener
      *
      * @param <T>
      */
-    public interface LabelTextProvider<T>
-    {
+    public interface LabelTextProvider<T> {
         /**
          * 根据data和position返回label需要需要显示的数据。
          *

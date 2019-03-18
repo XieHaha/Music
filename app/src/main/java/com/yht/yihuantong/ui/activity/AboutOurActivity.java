@@ -9,26 +9,23 @@ import com.yht.yihuantong.R;
 import custom.frame.ui.activity.BaseActivity;
 
 /**
- * Created by dundun on 18/9/2.
+ * @author dundun
+ * @date 18/9/2
  */
-public class AboutOurActivity extends BaseActivity
-{
+public class AboutOurActivity extends BaseActivity {
     @Override
-    protected boolean isInitBackBtn()
-    {
+    protected boolean isInitBackBtn() {
         return true;
     }
 
     @Override
-    public int getLayoutID()
-    {
+    public int getLayoutID() {
         return R.layout.act_about_our;
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState)
-    {
+    public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("关于我们");
+        ((TextView) findViewById(R.id.public_title_bar_title)).setText("关于我们");
     }
 }

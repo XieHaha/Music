@@ -1,8 +1,8 @@
 package com.hyphenate.easeui.ui;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -10,7 +10,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.widget.EaseTitleBar;
 
-public abstract class EaseBaseFragment extends Fragment{
+public abstract class EaseBaseFragment extends Fragment {
     protected EaseTitleBar titleBar;
     protected InputMethodManager inputMethodManager;
 
@@ -39,9 +39,10 @@ public abstract class EaseBaseFragment extends Fragment{
 
     protected void hideSoftKeyboard() {
         if (getActivity().getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
-            if (getActivity().getCurrentFocus() != null)
+            if (getActivity().getCurrentFocus() != null) {
                 inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
+            }
         }
     }
 

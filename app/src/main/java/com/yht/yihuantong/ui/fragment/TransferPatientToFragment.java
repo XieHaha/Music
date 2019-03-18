@@ -30,11 +30,12 @@ import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
- * Created by dundun on 18/10/11.
+ * @author dundun
+ * @date 18/10/11
  * 我转给合作医生的
  */
-public class TransferPatientToFragment extends BaseFragment
-        implements LoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
+public class TransferPatientToFragment extends BaseFragment implements LoadMoreListener,
+        SwipeRefreshLayout.OnRefreshListener,
         BaseRecyclerAdapter.OnItemClickListener<TransPatientBean> {
     @BindView(R.id.act_patients_recycler_view)
     AutoLoadRecyclerView autoLoadRecyclerView;
@@ -72,11 +73,10 @@ public class TransferPatientToFragment extends BaseFragment
     @Override
     public void initView(@NonNull View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
-        footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_list_footerr, null);
+        footerView = LayoutInflater.from(getActivity()).inflate(R.layout.view_list_footerr, null);
         tvFooterHintTxt = footerView.findViewById(R.id.footer_hint_txt);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                android.R.color.holo_red_light,
-                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light, android.R.color.holo_orange_light,
                 android.R.color.holo_green_light);
     }
 
@@ -84,10 +84,10 @@ public class TransferPatientToFragment extends BaseFragment
     public void initListener() {
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
-        autoLoadRecyclerView.setLayoutManager(
-                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        autoLoadRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        transPatientsListAdapter = new TransPatientsListAdapter(getContext(), new ArrayList<>());
+        transPatientsListAdapter = new TransPatientsListAdapter(getActivity(), new ArrayList<>());
         transPatientsListAdapter.addFooterView(footerView);
         autoLoadRecyclerView.setAdapter(transPatientsListAdapter);
         transPatientsListAdapter.setOnItemClickListener(this);
@@ -102,15 +102,17 @@ public class TransferPatientToFragment extends BaseFragment
         super.onClick(v);
         switch (v.getId()) {
             case R.id.fragment_cooperate_apply_layout:
-                Intent intent = new Intent(getContext(), ApplyPatientActivity.class);
+                Intent intent = new Intent(getActivity(), ApplyPatientActivity.class);
                 startActivity(intent);
+                break;
+            default:
                 break;
         }
     }
 
     @Override
     public void onItemClick(View v, int position, TransPatientBean item) {
-        Intent intent = new Intent(getContext(), TransferPatientActivity.class);
+        Intent intent = new Intent(getActivity(), TransferPatientActivity.class);
         intent.putExtra(CommonData.KEY_PUBLIC, false);
         intent.putExtra(CommonData.KEY_TRANSFER_BEAN, item);
         startActivityForResult(intent, REQUEST_CODE_STATUS_CHANGE);
@@ -188,6 +190,8 @@ public class TransferPatientToFragment extends BaseFragment
         switch (requestCode) {
             case REQUEST_CODE_STATUS_CHANGE:
                 getPatientToList();
+                break;
+            default:
                 break;
         }
     }

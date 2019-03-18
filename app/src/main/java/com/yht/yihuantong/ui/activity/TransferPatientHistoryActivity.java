@@ -1,14 +1,12 @@
 package com.yht.yihuantong.ui.activity;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.yht.yihuantong.R;
@@ -20,12 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import custom.frame.ui.activity.BaseActivity;
 import custom.frame.widgets.view.ViewPrepared;
 
 /**
- * Created by dundun on 18/10/11.
+ * @author dundun
+ * @date 18/10/11
  * 转诊历史
  */
 public class TransferPatientHistoryActivity extends BaseActivity {
@@ -68,8 +66,7 @@ public class TransferPatientHistoryActivity extends BaseActivity {
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        new ViewPrepared().asyncPrepare(to, (w, h) ->
-        {
+        new ViewPrepared().asyncPrepare(to, (w, h) -> {
             ViewGroup.LayoutParams params = viewIndicator.getLayoutParams();
             params.width = w;
             viewIndicator.setLayoutParams(params);
@@ -78,7 +75,7 @@ public class TransferPatientHistoryActivity extends BaseActivity {
         transferPatientToFragment = new TransferPatientToFragment();
         fragmentList.add(transferPatientToFragment);
         fragmentList.add(transferPatientFromFragment);
-        fragmentVpAdapter = new FragmentVpAdapter(getSupportFragmentManager(), fragmentList);
+        fragmentVpAdapter = new FragmentVpAdapter(getFragmentManager(), fragmentList);
         viewPager.setAdapter(fragmentVpAdapter);
         viewPager.setCurrentItem(0);
     }
@@ -90,7 +87,8 @@ public class TransferPatientHistoryActivity extends BaseActivity {
         from.setOnClickListener(this);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPixels) {
                 int tabWidth = to.getWidth();
                 viewIndicator.setTranslationX((position * tabWidth) + (positionOffset * tabWidth));
             }
@@ -116,6 +114,8 @@ public class TransferPatientHistoryActivity extends BaseActivity {
                 viewPager.setCurrentItem(1);
                 break;
             case R.id.fragment_cooperate_apply_layout:
+                break;
+            default:
                 break;
         }
     }

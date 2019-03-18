@@ -9,7 +9,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,8 +20,6 @@ import com.yht.yihuantong.ui.adapter.TransferInfoAdapter;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.PatientBean;
 import custom.frame.bean.TransPatientBean;
@@ -39,8 +36,8 @@ import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
  *
  * @author DUNDUN
  */
-public class TransferInfoFragment extends BaseFragment
-        implements LoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
+public class TransferInfoFragment extends BaseFragment implements LoadMoreListener,
+        SwipeRefreshLayout.OnRefreshListener,
         BaseRecyclerAdapter.OnItemClickListener<TransPatientBean> {
     @BindView(R.id.fragment_health_record_recycler)
     AutoLoadRecyclerView autoLoadRecyclerView;
@@ -96,18 +93,17 @@ public class TransferInfoFragment extends BaseFragment
     @Override
     public void initView(@NonNull View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
-        footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_list_footerr, null);
+        footerView = LayoutInflater.from(getActivity()).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                android.R.color.holo_red_light,
-                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light, android.R.color.holo_orange_light,
                 android.R.color.holo_green_light);
     }
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        transferInfoAdapter = new TransferInfoAdapter(getContext(), transferPatientBeanList);
+        transferInfoAdapter = new TransferInfoAdapter(getActivity(), transferPatientBeanList);
         transferInfoAdapter.addFooterView(footerView);
         if (patientBean != null) {
             patientId = patientBean.getPatientId();
@@ -118,8 +114,8 @@ public class TransferInfoFragment extends BaseFragment
     public void initListener() {
         super.initListener();
         swipeRefreshLayout.setOnRefreshListener(this);
-        autoLoadRecyclerView.setLayoutManager(
-                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        autoLoadRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(transferInfoAdapter);
         transferInfoAdapter.setOnItemClickListener(this);
@@ -137,15 +133,14 @@ public class TransferInfoFragment extends BaseFragment
      * 获取我的转诊记录
      */
     private void getTransferInfoList() {
-        mIRequest.getTransferByPatient(loginSuccessBean.getDoctorId(), patientId, page, PAGE_SIZE,
-                DAYS_DATA, this);
+        mIRequest.getTransferByPatient(loginSuccessBean.getDoctorId(), patientId, page, PAGE_SIZE
+                , DAYS_DATA, this);
     }
 
     @Override
     public void onItemClick(View v, int position, TransPatientBean item) {
-        Intent intent = new Intent(getContext(), TransferPatientActivity.class);
+        Intent intent = new Intent(getActivity(), TransferPatientActivity.class);
         intent.putExtra(CommonData.KEY_PUBLIC, false);
-        //        intent.putExtra("limit", true);
         intent.putExtra(CommonData.KEY_TRANSFER_BEAN, item);
         startActivityForResult(intent, REQUEST_CODE_STATUS_CHANGE);
     }
@@ -165,6 +160,8 @@ public class TransferInfoFragment extends BaseFragment
                 transferInfoAdapter.setList(transferPatientBeanList);
                 transferInfoAdapter.notifyDataSetChanged();
                 break;
+            default:
+                break;
         }
     }
 
@@ -174,8 +171,10 @@ public class TransferInfoFragment extends BaseFragment
         switch (task) {
             case DELETE_PATIENT_CASE:
                 if (BaseNetCode.CODE_MODIFY_CASE_RECORD == response.getCode()) {
-                    ToastUtil.toast(getContext(), response.getMsg());
+                    ToastUtil.toast(getActivity(), response.getMsg());
                 }
+                break;
+            default:
                 break;
         }
     }
@@ -217,6 +216,8 @@ public class TransferInfoFragment extends BaseFragment
         switch (requestCode) {
             case REQUEST_CODE_STATUS_CHANGE:
                 getTransferInfoList();
+                break;
+            default:
                 break;
         }
     }

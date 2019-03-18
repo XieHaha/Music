@@ -41,8 +41,8 @@ import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
  *
  * @author DUNDUN
  */
-public class HealthInfoFragment extends BaseFragment
-        implements LoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
+public class HealthInfoFragment extends BaseFragment implements LoadMoreListener,
+        SwipeRefreshLayout.OnRefreshListener,
         BaseRecyclerAdapter.OnItemClickListener<PatientCaseDetailBean>,
         BaseRecyclerAdapter.OnItemLongClickListener<PatientCaseDetailBean> {
     @BindView(R.id.fragment_health_record_recycler)
@@ -89,11 +89,10 @@ public class HealthInfoFragment extends BaseFragment
     @Override
     public void initView(@NonNull View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
-        footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_list_footerr, null);
+        footerView = LayoutInflater.from(getActivity()).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                android.R.color.holo_red_light,
-                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light, android.R.color.holo_orange_light,
                 android.R.color.holo_green_light);
     }
 
@@ -103,7 +102,7 @@ public class HealthInfoFragment extends BaseFragment
         if (patientBean != null) {
             patientId = patientBean.getPatientId();
         }
-        healthInfoAdapter = new HealthInfoAdapter(getContext(), caseRecordList);
+        healthInfoAdapter = new HealthInfoAdapter(getActivity(), caseRecordList);
         healthInfoAdapter.setPatientId(patientId);
         healthInfoAdapter.addFooterView(footerView);
     }
@@ -113,8 +112,8 @@ public class HealthInfoFragment extends BaseFragment
         super.initListener();
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
-        autoLoadRecyclerView.setLayoutManager(
-                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        autoLoadRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(healthInfoAdapter);
         healthInfoAdapter.setOnItemClickListener(this);
@@ -146,7 +145,7 @@ public class HealthInfoFragment extends BaseFragment
 
     @Override
     public void onItemClick(View v, int position, PatientCaseDetailBean item) {
-        Intent intent = new Intent(getContext(), HealthDetailActivity.class);
+        Intent intent = new Intent(getActivity(), HealthDetailActivity.class);
         intent.putExtra(CommonData.KEY_ADD_NEW_HEALTH, false);
         intent.putExtra(CommonData.KEY_PATIENT_ID, item.getPatientId());
         intent.putExtra(CommonData.PATIENT_CASE_DETAIL_BEAN, item);
@@ -155,8 +154,7 @@ public class HealthInfoFragment extends BaseFragment
 
     @Override
     public void onItemLongClick(View v, int position, PatientCaseDetailBean item) {
-        new SimpleDialog(getActivity(), "删除当前病例", (dialog, which) ->
-        {
+        new SimpleDialog(getActivity(), "删除当前病例", (dialog, which) -> {
             deletePatientCaseList(caseRecordList.get(position));
         }, (dialog, which) -> dialog.dismiss()).show();
     }
@@ -187,7 +185,7 @@ public class HealthInfoFragment extends BaseFragment
                 }
                 break;
             case DELETE_PATIENT_CASE:
-                ToastUtil.toast(getContext(), response.getMsg());
+                ToastUtil.toast(getActivity(), response.getMsg());
                 getPatientLimitCaseList();
                 break;
             default:
@@ -208,8 +206,10 @@ public class HealthInfoFragment extends BaseFragment
                 break;
             case DELETE_PATIENT_CASE:
                 if (BaseNetCode.CODE_MODIFY_CASE_RECORD == response.getCode()) {
-                    ToastUtil.toast(getContext(), response.getMsg());
+                    ToastUtil.toast(getActivity(), response.getMsg());
                 }
+                break;
+            default:
                 break;
         }
     }

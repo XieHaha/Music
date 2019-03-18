@@ -1,12 +1,12 @@
 package com.yht.yihuantong.chat;
 
+import android.app.FragmentTransaction;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,16 +24,16 @@ import com.yht.yihuantong.data.CommonData;
 import com.yht.yihuantong.ui.activity.DoctorInfoActivity;
 import com.yht.yihuantong.ui.activity.PatientInfoActivity;
 import com.yht.yihuantong.ui.activity.ServicePackActivity;
-import com.yht.yihuantong.ui.activity.UserInfoActivity;
 import com.yht.yihuantong.utils.AllUtils;
 
 import custom.frame.ui.activity.BaseActivity;
 
 /**
- * Created by dundun on 18/4/16.
+ * @author dundun
+ * @date 18/4/16
  */
-public class ChatActivity extends BaseActivity
-        implements OnPermissionCallback, EaseChatFragment.OnRightTitleBarClickListener {
+public class ChatActivity extends BaseActivity implements OnPermissionCallback,
+        EaseChatFragment.OnRightTitleBarClickListener {
     private String chatId, chatName;
     private EaseChatFragment easeChatFragment;
     private PopupWindow mPopupwinow;
@@ -83,9 +83,8 @@ public class ChatActivity extends BaseActivity
      */
     public void replaceFragment(final int containerResId, final EaseChatFragment fragment,
                                 final String tag) {
-        runOnUiThread(() ->
-        {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        runOnUiThread(() -> {
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             if (TextUtils.isEmpty(tag)) {
                 fragmentTransaction.replace(containerResId, fragment);
             } else {

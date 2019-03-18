@@ -49,7 +49,9 @@ import custom.frame.utils.DirHelper;
 import custom.frame.utils.ToastUtil;
 
 /**
- * Created by dundun on 18/5/7.
+ *
+ * @author dundun
+ * @date 18/5/7
  * 医生认证
  */
 public class AuthDocActivity extends BaseActivity {

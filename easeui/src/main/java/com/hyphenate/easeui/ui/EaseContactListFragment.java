@@ -116,6 +116,7 @@ public class EaseContactListFragment extends EaseBaseFragment {
         }
         
         query.addTextChangedListener(new TextWatcher() {
+            @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 contactListLayout.filter(s);
                 if (s.length() > 0) {
@@ -126,9 +127,11 @@ public class EaseContactListFragment extends EaseBaseFragment {
                 }
             }
 
+            @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
+            @Override
             public void afterTextChanged(Editable s) {
             }
         });

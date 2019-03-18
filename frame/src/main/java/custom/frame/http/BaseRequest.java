@@ -140,7 +140,6 @@ public class BaseRequest<T> extends HttpProxy {
             listener.onResponseStart(task);
         }
         StringBuilder url = new StringBuilder(appendUrl(moduleName));
-//        Log.i("YHT_D", "Task:" +task+"  params:" + params.toString());
         int method = Request.Method.POST;
         switch (metoh) {
             case GET:

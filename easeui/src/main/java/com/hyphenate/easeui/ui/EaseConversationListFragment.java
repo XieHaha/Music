@@ -125,29 +125,6 @@ public class EaseConversationListFragment extends EaseBaseFragment
             }
         }
         EMClient.getInstance().addConnectionListener(connectionListener);
-        //        query.addTextChangedListener(new TextWatcher() {
-        //            public void onTextChanged(CharSequence s, int start, int before, int count) {
-        //                conversationListView.filter(s);
-        //                if (s.length() > 0) {
-        //                    clearSearch.setVisibility(View.VISIBLE);
-        //                } else {
-        //                    clearSearch.setVisibility(View.INVISIBLE);
-        //                }
-        //            }
-        //
-        //            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        //            }
-        //
-        //            public void afterTextChanged(Editable s) {
-        //            }
-        //        });
-        //        clearSearch.setOnClickListener(new OnClickListener() {
-        //            @Override
-        //            public void onClick(View v) {
-        //                query.getText().clear();
-        //                hideSoftKeyboard();
-        //            }
-        //        });
         conversationListView.setOnTouchListener(new OnTouchListener()
         {
             @Override
@@ -335,6 +312,7 @@ public class EaseConversationListFragment extends EaseBaseFragment
         });
     }
 
+    @Override
     protected void hideSoftKeyboard()
     {
         if (getActivity().getWindow().getAttributes().softInputMode !=

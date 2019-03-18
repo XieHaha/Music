@@ -35,7 +35,9 @@ import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
- * Created by dundun on 18/10/11.
+ *
+ * @author dundun
+ * @date 18/10/11
  * 合作医生转给我的
  */
 public class TransferPatientFromFragment extends BaseFragment

@@ -1,10 +1,10 @@
 package custom.frame.ui.fragment;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,10 +100,10 @@ public abstract class BaseFragment<T> extends Fragment
     private void init() {
         requestList = new ArrayList<>();
         whiteRequestList = new ArrayList<>();
-        mIRequest = IRequest.getInstance(getContext());
+        mIRequest = IRequest.getInstance(getActivity());
         loginSuccessBean = getLoginSuccessBean();
 
-        sharePreferenceUtil = new SharePreferenceUtil(getContext());
+        sharePreferenceUtil = new SharePreferenceUtil(getActivity());
     }
 
     /**
@@ -149,7 +149,7 @@ public abstract class BaseFragment<T> extends Fragment
      * @return
      */
     public LoginSuccessBean getLoginSuccessBean() {
-        String userStr = (String) SharePreferenceUtil.getObject(getContext(),
+        String userStr = (String) SharePreferenceUtil.getObject(getActivity(),
                 "key_login_success_bean", "");
         if (!TextUtils.isEmpty(userStr)) {
             loginSuccessBean = JSON.parseObject(userStr, LoginSuccessBean.class);
@@ -247,14 +247,13 @@ public abstract class BaseFragment<T> extends Fragment
         return getResources().getString(R.string.app_debug_flag) + "#" + getClass().getSimpleName();
     }
 
-    //============================================网络回调
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
     }
 
     @Override
     public void onResponseError(Tasks task, Exception e) {
-        ToastUtil.toast(getContext(), e.getMessage());
+        ToastUtil.toast(getActivity(), e.getMessage());
     }
 
     @Override
@@ -343,7 +342,7 @@ public abstract class BaseFragment<T> extends Fragment
         return baseResponse;
     }
 
-    //=============================================请求辅助方法==============================
+    /**=============================================请求辅助方法==============================*/
     protected static final String EntityData = "data";
     protected static final String EntityCode = "code";
     protected static final String EntityMsg = "msg";

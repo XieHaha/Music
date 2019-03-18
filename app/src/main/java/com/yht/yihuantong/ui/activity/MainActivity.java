@@ -1,6 +1,8 @@
 package com.yht.yihuantong.ui.activity;
 
 import android.annotation.TargetApi;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -13,8 +15,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -35,7 +35,6 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.ui.EaseConversationListFragment;
-import com.hyphenate.util.NetUtils;
 import com.yht.shortcutbadge.ShortcutBadger;
 import com.yht.yihuantong.R;
 import com.yht.yihuantong.YihtApplication;
@@ -177,7 +176,7 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
      * 初始化tabs
      */
     private void initTab() {
-        fragmentManager = getSupportFragmentManager();
+        fragmentManager = getFragmentManager();
         transaction = fragmentManager.beginTransaction();
         tabMainView();
         setAlias();

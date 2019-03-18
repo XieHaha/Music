@@ -1,15 +1,17 @@
 package custom.frame.http.data;
 
-public interface HttpConstants
-{
+/**
+ * @author dundun
+ */
+public interface HttpConstants {
     /**
      * 测试服务器
      */
-    String BASE_BASIC_URL = "http://gray.zychealth.com";
+    //    String BASE_BASIC_URL = "http://gray.zychealth.com";
     /**
      * 内测服务器
      */
-    //    String BASE_BASIC_URL = "http://test.zychealth.com";
+    String BASE_BASIC_URL = "http://test.zychealth.com";
     /**
      * 正式服务器
      */
@@ -30,8 +32,7 @@ public interface HttpConstants
     /**
      * 枚举网络请求类型
      */
-    enum Method
-    {
+    enum Method {
         POST, GET, PUT, DELETE
     }
 

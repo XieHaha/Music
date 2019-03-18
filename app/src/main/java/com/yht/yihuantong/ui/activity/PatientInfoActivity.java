@@ -1,10 +1,10 @@
 package com.yht.yihuantong.ui.activity;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -50,9 +50,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 我的页面
+ *
+ * @author dundun
  */
-public class PatientInfoActivity extends BaseActivity
-        implements SatelliteMenu.OnMenuItemClickListener {
+public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.OnMenuItemClickListener {
     @BindView(R.id.public_title_bar_more_two)
     ImageView ivTitleMore;
     @BindView(R.id.act_patient_info_headImg)
@@ -83,7 +84,7 @@ public class PatientInfoActivity extends BaseActivity
     SatelliteMenu mSatelliteMenuRightBottom;
 
     private FragmentVpAdapter fragmentVpAdapter;
-    private View view_pop;
+    private View viewPop;
     private PopupWindow mPopupwinow;
     private TextView tvOne, tvTwo;
     /**
@@ -143,12 +144,11 @@ public class PatientInfoActivity extends BaseActivity
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
-            patientBean = (PatientBean) getIntent().getSerializableExtra(
-                    CommonData.KEY_PATIENT_BEAN);
+            patientBean =
+                    (PatientBean) getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
             patientId = getIntent().getStringExtra(CommonData.KEY_PATIENT_ID);
         }
-        new ViewPrepared().asyncPrepare(btnHealthInfo, (w, h) ->
-        {
+        new ViewPrepared().asyncPrepare(btnHealthInfo, (w, h) -> {
             ViewGroup.LayoutParams params = viewIndicator.getLayoutParams();
             params.width = w;
             viewIndicator.setLayoutParams(params);
@@ -174,7 +174,7 @@ public class PatientInfoActivity extends BaseActivity
         fragmentList.add(healthInfoFragment);
         fragmentList.add(orderInfoFragment);
         fragmentList.add(transferInfoFragment);
-        fragmentVpAdapter = new FragmentVpAdapter(getSupportFragmentManager(), fragmentList);
+        fragmentVpAdapter = new FragmentVpAdapter(getFragmentManager(), fragmentList);
         viewPager.setAdapter(fragmentVpAdapter);
         viewPager.setCurrentItem(0);
         initMenu();
@@ -188,24 +188,19 @@ public class PatientInfoActivity extends BaseActivity
     }
 
     private void initMenu() {
-        mSatelliteMenuRightBottom = (SatelliteMenu) findViewById(R.id.mSatelliteMenuRightBottom);
-        List<String> nameMenuItem = new ArrayList<>();//菜单图片,可根据需要设置子菜单个数
+        //菜单图片,可根据需要设置子菜单个数
+        List<String> nameMenuItem = new ArrayList<>();
         nameMenuItem.add("对话");
         nameMenuItem.add("转诊");
         nameMenuItem.add("服务包");
         nameMenuItem.add("病历");
-        List<Integer> imageResourceRightBottom = new ArrayList<>();//菜单图片,可根据需要设置子菜单个数
+        //菜单图片,可根据需要设置子菜单个数
+        List<Integer> imageResourceRightBottom = new ArrayList<>();
         imageResourceRightBottom.add(R.mipmap.icon_info_chat);
         imageResourceRightBottom.add(R.mipmap.icon_info_transfer);
         imageResourceRightBottom.add(R.mipmap.icon_info_service);
         imageResourceRightBottom.add(R.mipmap.icon_info_health_history);
-        mSatelliteMenuRightBottom.getmBuilder()
-                .setMenuItemNameTexts(nameMenuItem)
-                .setMenuImage(R.mipmap.icon_info_more,
-                        R.mipmap.icon_info_more_close)
-                .setMenuItemImageResource(imageResourceRightBottom)
-                .setOnMenuItemClickListener(this)
-                .creat();
+        mSatelliteMenuRightBottom.getmBuilder().setMenuItemNameTexts(nameMenuItem).setMenuImage(R.mipmap.icon_info_more, R.mipmap.icon_info_more_close).setMenuItemImageResource(imageResourceRightBottom).setOnMenuItemClickListener(this).creat();
     }
 
     @Override
@@ -217,7 +212,8 @@ public class PatientInfoActivity extends BaseActivity
         btnTransferInfo.setOnClickListener(this);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPixels) {
                 int tabWidth = btnHealthInfo.getWidth();
                 viewIndicator.setTranslationX((position * tabWidth) + (positionOffset * tabWidth));
             }
@@ -240,6 +236,8 @@ public class PatientInfoActivity extends BaseActivity
                         btnOrderInfo.setSelected(false);
                         btnTransferInfo.setSelected(true);
                         break;
+                    default:
+                        break;
                 }
             }
 
@@ -254,8 +252,7 @@ public class PatientInfoActivity extends BaseActivity
      */
     private void initPageData() {
         if (patientBean != null) {
-            if (!TextUtils.isEmpty(patientBean.getNickname()) &&
-                    patientBean.getNickname().length() < 20) {
+            if (!TextUtils.isEmpty(patientBean.getNickname()) && patientBean.getNickname().length() < 20) {
                 tvName.setText(patientBean.getNickname() + "(" + patientBean.getName() + ")");
             } else {
                 tvName.setText(patientBean.getName());
@@ -273,10 +270,7 @@ public class PatientInfoActivity extends BaseActivity
                 tvAddress.setText("未填写地址");
             }
             if (!TextUtils.isEmpty(patientBean.getPatientImgUrl())) {
-                Glide.with(this)
-                        .load(patientBean.getPatientImgUrl())
-                        .apply(GlideHelper.getOptionsP())
-                        .into(ivHeadImg);
+                Glide.with(this).load(patientBean.getPatientImgUrl()).apply(GlideHelper.getOptionsP()).into(ivHeadImg);
             }
         }
     }
@@ -378,8 +372,10 @@ public class PatientInfoActivity extends BaseActivity
                 if (mPopupwinow != null) {
                     mPopupwinow.dismiss();
                 }
-                new SimpleDialog(this, "确定删除当前患者?", (dialog, which) -> deletePatient(),
-                        (dialog, which) -> dialog.dismiss()).show();
+                new SimpleDialog(this, "确定删除当前患者?", (dialog, which) -> deletePatient(), (dialog,
+                                                                                         which) -> dialog.dismiss()).show();
+                break;
+            default:
                 break;
         }
     }
@@ -388,7 +384,8 @@ public class PatientInfoActivity extends BaseActivity
     public void onMenuClick(View view, int postion) {
         Intent intent;
         switch (postion) {
-            case 0://对话
+            //对话
+            case 0:
                 if (patientBean != null) {
                     intent = new Intent(PatientInfoActivity.this, ChatActivity.class);
                     intent.putExtra(CommonData.KEY_CHAT_ID, patientBean.getPatientId());
@@ -401,23 +398,28 @@ public class PatientInfoActivity extends BaseActivity
                     startActivity(intent);
                 }
                 break;
-            case 1://转诊
+            //转诊
+            case 1:
                 intent = new Intent(PatientInfoActivity.this, TransferPatientActivity.class);
                 intent.putExtra(CommonData.KEY_PATIENT_BEAN, patientBean);
                 intent.putExtra(CommonData.KEY_PUBLIC, true);
                 startActivity(intent);
                 break;
-            case 2://服务包
+            //服务包
+            case 2:
                 intent = new Intent(PatientInfoActivity.this, ServicePackActivity.class);
                 intent.putExtra(CommonData.KEY_PATIENT_ID, patientBean.getPatientId());
                 intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "服务");
                 startActivity(intent);
                 break;
-            case 3://病例
+            //病例
+            case 3:
                 intent = new Intent(PatientInfoActivity.this, HealthDetailActivity.class);
                 intent.putExtra(CommonData.KEY_ADD_NEW_HEALTH, true);
                 intent.putExtra(CommonData.KEY_PATIENT_ID, patientBean.getPatientId());
                 startActivity(intent);
+                break;
+            default:
                 break;
         }
     }
@@ -446,6 +448,8 @@ public class PatientInfoActivity extends BaseActivity
                 setResult(RESULT_OK);
                 finish();
                 break;
+            default:
+                break;
         }
     }
 
@@ -469,6 +473,8 @@ public class PatientInfoActivity extends BaseActivity
                     }
                 }
                 break;
+            default:
+                break;
         }
     }
 
@@ -476,21 +482,21 @@ public class PatientInfoActivity extends BaseActivity
      * 显示pop
      */
     private void showPop() {
-        view_pop = LayoutInflater.from(this).inflate(R.layout.health_pop_menu, null);
-        tvOne = view_pop.findViewById(R.id.txt_one);
-        tvTwo = view_pop.findViewById(R.id.txt_two);
+        viewPop = LayoutInflater.from(this).inflate(R.layout.health_pop_menu, null);
+        tvOne = viewPop.findViewById(R.id.txt_one);
+        tvTwo = viewPop.findViewById(R.id.txt_two);
         tvTwo.setText("删除好友");
         tvOne.setOnClickListener(this);
         tvTwo.setOnClickListener(this);
         if (mPopupwinow == null) {
             //新建一个popwindow
-            mPopupwinow = new PopupWindow(view_pop, LinearLayout.LayoutParams.WRAP_CONTENT,
+            mPopupwinow = new PopupWindow(viewPop, LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT, true);
         }
         mPopupwinow.setFocusable(true);
         mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mPopupwinow.setOutsideTouchable(true);
-        mPopupwinow.showAtLocation(view_pop, Gravity.TOP | Gravity.RIGHT, 0,
+        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0,
                 (int) AllUtils.dipToPx(this, 55));
     }
 

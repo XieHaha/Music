@@ -78,7 +78,7 @@ public class OrderInfoFragment extends BaseFragment
     public void initView(@NonNull View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
 
-        footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_list_footerr, null);
+        footerView = LayoutInflater.from(getActivity()).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
                 android.R.color.holo_red_light,
@@ -92,7 +92,7 @@ public class OrderInfoFragment extends BaseFragment
         if (patientBean != null) {
             patientId = patientBean.getPatientId();
         }
-        orderInfoAdapter = new OrderInfoAdapter(getContext(), registrationBeans);
+        orderInfoAdapter = new OrderInfoAdapter(getActivity(), registrationBeans);
         orderInfoAdapter.addFooterView(footerView);
         getPatientAllOrders();
     }
@@ -103,7 +103,7 @@ public class OrderInfoFragment extends BaseFragment
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
         autoLoadRecyclerView.setLayoutManager(
-                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+                new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(orderInfoAdapter);
         orderInfoAdapter.setOnItemClickListener(this);
@@ -126,7 +126,7 @@ public class OrderInfoFragment extends BaseFragment
 
     @Override
     public void onItemClick(View v, int position, RegistrationBean item) {
-        Intent intent = new Intent(getContext(), RegistrationDetailActivity.class);
+        Intent intent = new Intent(getActivity(), RegistrationDetailActivity.class);
         intent.putExtra(CommonData.KEY_REGISTRATION_BEAN, item);
         startActivity(intent);
     }

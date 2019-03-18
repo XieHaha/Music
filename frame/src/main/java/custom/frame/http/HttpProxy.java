@@ -22,7 +22,6 @@ public class HttpProxy implements HttpConstants, BaseNetCode
      */
     public String getAPPUrl()
     {
-        //        return BASE_BASIC_URL + "/DPView";
         return BASE_BASIC_URL;
     }
 }

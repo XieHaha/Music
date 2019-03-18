@@ -68,8 +68,6 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import custom.frame.bean.BaseResponse;
 import custom.frame.bean.PatientBean;
 import custom.frame.bean.RegistrationBean;
@@ -88,8 +86,8 @@ import static android.app.Activity.RESULT_OK;
 /**
  * 我的页面
  */
-public class MainFragment extends BaseFragment
-        implements OrderStatus, SwipeRefreshLayout.OnRefreshListener {
+public class MainFragment extends BaseFragment implements OrderStatus,
+        SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = "MainFragment";
     @BindView(R.id.public_title_bar_more_two)
     ImageView ivTitleBarMore;
@@ -150,13 +148,13 @@ public class MainFragment extends BaseFragment
      */
     private ArrayList<RegistrationBean> registrationBeans = new ArrayList<>();
     private List<PatientBean> recentContacts = new ArrayList<>();
-    private int[] optionsTxt = {
-            R.string.fragment_main_service, R.string.fragment_main_telemedicine,
-            R.string.fragment_main_train, R.string.fragment_main_doctor_group,
-            R.string.fragment_main_hospital, R.string.fragment_main_integral};
-    private int[] optionsIcon = {
-            R.mipmap.icon_service, R.mipmap.icon_telemedicine, R.mipmap.icon_train,
-            R.mipmap.icon_doctor_group, R.mipmap.icon_main_hospital, R.mipmap.icon_integral};
+    private int[] optionsTxt = {R.string.fragment_main_service,
+            R.string.fragment_main_telemedicine, R.string.fragment_main_train,
+            R.string.fragment_main_doctor_group, R.string.fragment_main_hospital,
+            R.string.fragment_main_integral};
+    private int[] optionsIcon = {R.mipmap.icon_service, R.mipmap.icon_telemedicine,
+            R.mipmap.icon_train, R.mipmap.icon_doctor_group, R.mipmap.icon_main_hospital,
+            R.mipmap.icon_integral};
     public static final int SERVICE_PACKAGE = 0,//服务包
             REMOTE_CONSULTATION = 1,//远程会诊
             CULTIVATE = 2,//培训
@@ -217,8 +215,7 @@ public class MainFragment extends BaseFragment
     /**
      * 推送回调监听  转诊申请
      */
-    private IChange<String> doctorTransferPatientListener = data ->
-    {
+    private IChange<String> doctorTransferPatientListener = data -> {
         //        if ("from".equals(data))
         //        {
         handler.sendEmptyMessage(TRANSFER_CODE);
@@ -227,8 +224,7 @@ public class MainFragment extends BaseFragment
     /**
      * 推送回调监听  患者申请
      */
-    private IChange<String> patientStatusChangeListener = data ->
-    {
+    private IChange<String> patientStatusChangeListener = data -> {
         if ("add".equals(data)) {
             getPatientsData();
         }
@@ -237,19 +233,17 @@ public class MainFragment extends BaseFragment
     /**
      * 推送回调监听  最近联系人
      */
-    private IChange<String> mRecentContactChangeListener = data ->
-    {
+    private IChange<String> mRecentContactChangeListener = data -> {
         handler.sendEmptyMessage(RECENT_PEOPLE_CODE);
     };
     /**
      * 推送回调监听  订单状态
      */
-    private IChange<String> orderStatusChangeListener = data ->
-    {
+    private IChange<String> orderStatusChangeListener = data -> {
         try {
             handler.sendEmptyMessage(ORDER_STATUS_CODE);
         } catch (NumberFormatException e) {
-            LogUtils.w(TAG,"NumberFormatException error",e);
+            LogUtils.w(TAG, "NumberFormatException error", e);
         }
     };
 
@@ -263,15 +257,12 @@ public class MainFragment extends BaseFragment
         super.initView(view, savedInstanceState);
         //获取状态栏高度，填充
         View mStateBarFixer = view.findViewById(R.id.status_bar_fix);
-        mStateBarFixer.setLayoutParams(
-                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        getStateBarHeight(getActivity())));
+        mStateBarFixer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));
         ((TextView) view.findViewById(R.id.public_title_bar_title)).setText("首页");
         view.findViewById(R.id.fragment_main_my_patient_layout).setOnClickListener(this);
         ivTitleBarMore.setVisibility(View.VISIBLE);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                android.R.color.holo_red_light,
-                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light, android.R.color.holo_orange_light,
                 android.R.color.holo_green_light);
     }
 
@@ -279,16 +270,15 @@ public class MainFragment extends BaseFragment
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
-        transferInfoLimitAdapter = new TransferInfoLimitAdapter(getContext());
+        transferInfoLimitAdapter = new TransferInfoLimitAdapter(getActivity());
         transferInfoLimitAdapter.setList(transPatientBeans);
         transferInfoListView.setAdapter(transferInfoLimitAdapter);
-        orderInfoAdapter = new OrderInfoLimitAdapter(getContext());
+        orderInfoAdapter = new OrderInfoLimitAdapter(getActivity());
         orderInfoAdapter.setList(registrationBeans);
         orderInfoListView.setAdapter(orderInfoAdapter);
-        barCodeImageView = new BarCodeImageView(getContext(),
-                HttpConstants.BASE_BASIC_DOWNLOAD_URL +
-                        loginSuccessBean.getDoctorId());
-        mainOptionsAdapter = new MainOptionsAdapter(getContext());
+        barCodeImageView = new BarCodeImageView(getActivity(),
+                HttpConstants.BASE_BASIC_DOWNLOAD_URL + loginSuccessBean.getDoctorId());
+        mainOptionsAdapter = new MainOptionsAdapter(getActivity());
         mainOptionsAdapter.setOptionsIcon(optionsIcon);
         mainOptionsAdapter.setOptionsTxt(optionsTxt);
         customGridView.setAdapter(mainOptionsAdapter);
@@ -299,9 +289,9 @@ public class MainFragment extends BaseFragment
         } else {
             llNoneRecentContactLayout.setVisibility(View.VISIBLE);
         }
-        recentContactAdapter = new RecentContactAdapter(getContext(), recentContacts);
-        recyclerView.setLayoutManager(
-                new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recentContactAdapter = new RecentContactAdapter(getActivity(), recentContacts);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(recentContactAdapter);
         getTransferList();
@@ -317,14 +307,11 @@ public class MainFragment extends BaseFragment
         tvTransferMore.setOnClickListener(this);
         tvOrderMore.setOnClickListener(this);
         //注册患者状态监听
-        iNotifyChangeListenerServer.registerPatientStatusChangeListener(patientStatusChangeListener,
-                RegisterType.REGISTER);
+        iNotifyChangeListenerServer.registerPatientStatusChangeListener(patientStatusChangeListener, RegisterType.REGISTER);
         //注册转诊申请监听
-        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(
-                doctorTransferPatientListener, RegisterType.REGISTER);
+        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(doctorTransferPatientListener, RegisterType.REGISTER);
         //最近联系人
-        iNotifyChangeListenerServer.registerRecentContactChangeListener(
-                mRecentContactChangeListener, RegisterType.REGISTER);
+        iNotifyChangeListenerServer.registerRecentContactChangeListener(mRecentContactChangeListener, RegisterType.REGISTER);
         //注册订单状态监听
         iNotifyChangeListenerServer.registerOrderStatusChangeListener(orderStatusChangeListener,
                 RegisterType.REGISTER);
@@ -348,7 +335,7 @@ public class MainFragment extends BaseFragment
                     sharePreferenceUtil.putString(CommonData.KEY_NEW_MESSAGE_REMIND,
                             stringBuilder.toString());
                 }
-                Intent intent = new Intent(getContext(), TransferPatientActivity.class);
+                Intent intent = new Intent(getActivity(), TransferPatientActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC, false);
                 intent.putExtra(CommonData.KEY_TRANSFER_BEAN, transPatientBean);
                 startActivityForResult(intent, REQUEST_CODE_STATUS_CHANGE);
@@ -375,7 +362,7 @@ public class MainFragment extends BaseFragment
                     sharePreferenceUtil.putString(CommonData.KEY_NEW_MESSAGE_REMIND,
                             stringBuilder.toString());
                 }
-                Intent intent = new Intent(getContext(), RegistrationDetailActivity.class);
+                Intent intent = new Intent(getActivity(), RegistrationDetailActivity.class);
                 intent.putExtra(CommonData.KEY_REGISTRATION_BEAN, registrationBean);
                 startActivity(intent);
                 orderInfoAdapter.notifyDataSetChanged();
@@ -387,38 +374,38 @@ public class MainFragment extends BaseFragment
                 Intent intent;
                 switch (position) {
                     case SERVICE_PACKAGE:
-                        intent = new Intent(getContext(), ServicePackActivity.class);
+                        intent = new Intent(getActivity(), ServicePackActivity.class);
                         intent.putExtra("limit", true);
                         intent.putExtra(CommonData.KEY_REGISTRATION_TYPE, "服务");
                         startActivity(intent);
                         break;
                     case REMOTE_CONSULTATION:
-                        //                        intent = new Intent(getContext(), RemoteConsultationActivity.class);
+                        //                        intent = new Intent(getActivity(),
+                        // RemoteConsultationActivity.class);
                         //                        startActivity(intent);
-                        ToastUtil.toast(getContext(), "敬请期待");
+                        ToastUtil.toast(getActivity(), "敬请期待");
                         break;
                     case HOSPITAL_GROUP:
-                        intent = new Intent(getContext(), CooperateHospitalActivity.class);
+                        intent = new Intent(getActivity(), CooperateHospitalActivity.class);
                         startActivity(intent);
                         break;
                     case CULTIVATE:
                     case DOCTOR_GROUP:
                     case INTEGRAL:
                     default:
-                        ToastUtil.toast(getContext(), "敬请期待");
+                        ToastUtil.toast(getActivity(), "敬请期待");
                         break;
                 }
             }
         });
-        recentContactAdapter.setOnItemClickListener(
-                new BaseRecyclerAdapter.OnItemClickListener<PatientBean>() {
-                    @Override
-                    public void onItemClick(View v, int position, PatientBean item) {
-                        Intent intent = new Intent(getContext(), PatientInfoActivity.class);
-                        intent.putExtra(CommonData.KEY_PATIENT_BEAN, item);
-                        startActivity(intent);
-                    }
-                });
+        recentContactAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener<PatientBean>() {
+            @Override
+            public void onItemClick(View v, int position, PatientBean item) {
+                Intent intent = new Intent(getActivity(), PatientInfoActivity.class);
+                intent.putExtra(CommonData.KEY_PATIENT_BEAN, item);
+                startActivity(intent);
+            }
+        });
     }
 
     /**
@@ -432,10 +419,8 @@ public class MainFragment extends BaseFragment
             transferInfoLimitAdapter.setList(transPatientBeans);
             transferInfoLimitAdapter.notifyDataSetChanged();
             setListViewHeightBasedOnChildren(transferInfoListView, transferInfoLimitAdapter,
-                    transPatientBeans.size() >
-                            CommonData.DATA_LIST_BASE_NUM
-                            ? CommonData.DATA_LIST_BASE_NUM
-                            : transPatientBeans.size());
+                    transPatientBeans.size() > CommonData.DATA_LIST_BASE_NUM ?
+                            CommonData.DATA_LIST_BASE_NUM : transPatientBeans.size());
         } else {
             transferInfoListView.setVisibility(View.GONE);
             llTransferNoneLayout.setVisibility(View.VISIBLE);
@@ -454,10 +439,8 @@ public class MainFragment extends BaseFragment
             orderInfoAdapter.setList(registrationBeans);
             orderInfoAdapter.notifyDataSetChanged();
             setListViewHeightBasedOnChildren(orderInfoListView, orderInfoAdapter,
-                    registrationBeans.size() >
-                            CommonData.DATA_LIST_BASE_NUM
-                            ? CommonData.DATA_LIST_BASE_NUM
-                            : registrationBeans.size());
+                    registrationBeans.size() > CommonData.DATA_LIST_BASE_NUM ?
+                            CommonData.DATA_LIST_BASE_NUM : registrationBeans.size());
         } else {
             llOrderNoneLayout.setVisibility(View.VISIBLE);
             orderInfoListView.setVisibility(View.GONE);
@@ -484,8 +467,9 @@ public class MainFragment extends BaseFragment
      */
     private void getTransferList() {
         RequestQueue queue = NoHttp.getRequestQueueInstance();
-        final Request<String> request = NoHttp.createStringRequest(
-                HttpConstants.BASE_BASIC_URL + "/trans/all/doctor/notes", RequestMethod.POST);
+        final Request<String> request =
+                NoHttp.createStringRequest(HttpConstants.BASE_BASIC_URL + "/trans/all/doctor" +
+                        "/notes", RequestMethod.POST);
         Map<String, Object> params = new HashMap<>();
         params.put("doctorId", loginSuccessBean.getDoctorId());
         params.put("pageNo", 0);
@@ -509,17 +493,17 @@ public class MainFragment extends BaseFragment
                             transPatientBeans = baseResponse.getData();
                             initTransferData();
                         } else {
-                            ToastUtil.toast(getContext(), baseResponse.getMsg());
+                            ToastUtil.toast(getActivity(), baseResponse.getMsg());
                         }
                     }
                 } catch (JSONException e) {
-                    LogUtils.w(TAG,"JSONException error",e);
+                    LogUtils.w(TAG, "JSONException error", e);
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                ToastUtil.toast(getContext(), response.getException().getMessage());
+                ToastUtil.toast(getActivity(), response.getException().getMessage());
             }
 
             @Override
@@ -534,8 +518,8 @@ public class MainFragment extends BaseFragment
      */
     private void getOrderList() {
         RequestQueue queue = NoHttp.getRequestQueueInstance();
-        final Request<String> request = NoHttp.createStringRequest(
-                HttpConstants.BASE_BASIC_URL + "/order/doctor/orders/list", RequestMethod.POST);
+        final Request<String> request =
+                NoHttp.createStringRequest(HttpConstants.BASE_BASIC_URL + "/order/doctor/orders" + "/list", RequestMethod.POST);
         Map<String, Object> params = new HashMap<>();
         params.put("doctorId", loginSuccessBean.getDoctorId());
         params.put("pageNo", 0);
@@ -559,17 +543,17 @@ public class MainFragment extends BaseFragment
                             registrationBeans = baseResponse.getData();
                             initOrderData();
                         } else {
-                            ToastUtil.toast(getContext(), baseResponse.getMsg());
+                            ToastUtil.toast(getActivity(), baseResponse.getMsg());
                         }
                     }
                 } catch (JSONException e) {
-                    LogUtils.w(TAG,"JSONException error",e);
+                    LogUtils.w(TAG, "JSONException error", e);
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                ToastUtil.toast(getContext(), response.getException().getMessage());
+                ToastUtil.toast(getActivity(), response.getException().getMessage());
             }
 
             @Override
@@ -584,15 +568,15 @@ public class MainFragment extends BaseFragment
         Intent intent;
         switch (v.getId()) {
             case R.id.fragment_main_my_patient_layout:
-                intent = new Intent(getContext(), PatientsActivity.class);
+                intent = new Intent(getActivity(), PatientsActivity.class);
                 startActivity(intent);
                 break;
             case R.id.fragment_main_transfer_info_more:
-                intent = new Intent(getContext(), TransferPatientHistoryActivity.class);
+                intent = new Intent(getActivity(), TransferPatientHistoryActivity.class);
                 startActivity(intent);
                 break;
             case R.id.fragment_main_order_info_more:
-                intent = new Intent(getContext(), RegistrationListActivity.class);
+                intent = new Intent(getActivity(), RegistrationListActivity.class);
                 intent.putExtra(CommonData.KEY_REGISTRATION_LIST, registrationBeans);
                 startActivity(intent);
                 break;
@@ -603,17 +587,14 @@ public class MainFragment extends BaseFragment
                 if (mPopupwinow != null) {
                     mPopupwinow.dismiss();
                 }
-                IntentIntegrator.forSupportFragment(this)
-                        .setBarcodeImageEnabled(false)
-                        .setPrompt(getString(R.string.txt_camera_hint))
-                        .initiateScan();
+                IntentIntegrator.forFragment(this).setBarcodeImageEnabled(false).setPrompt(getString(R.string.txt_camera_hint)).initiateScan();
                 break;
             case R.id.txt_two:
                 if (mPopupwinow != null) {
                     mPopupwinow.dismiss();
                 }
-                DialogPersonalBarCode dialogPersonalBarCode = new DialogPersonalBarCode(
-                        getActivity());
+                DialogPersonalBarCode dialogPersonalBarCode =
+                        new DialogPersonalBarCode(getActivity());
                 dialogPersonalBarCode.setQRImageViewSrc(barCodeImageView);
                 dialogPersonalBarCode.show();
                 break;
@@ -666,8 +647,8 @@ public class MainFragment extends BaseFragment
         }
         switch (requestCode) {
             case REQUEST_CODE:
-                IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode,
-                        data);
+                IntentResult result = IntentIntegrator.parseActivityResult(requestCode,
+                        resultCode, data);
                 if (result != null) {
                     if (result.getContents() == null) {
                     } else {
@@ -675,12 +656,12 @@ public class MainFragment extends BaseFragment
                         String doctorId = Uri.parse(url).getQueryParameter("doctorId");
                         String patientId = Uri.parse(url).getQueryParameter("patientId");
                         if (!TextUtils.isEmpty(doctorId)) {
-                            Intent intent = new Intent(getContext(), AddFriendsDocActivity.class);
+                            Intent intent = new Intent(getActivity(), AddFriendsDocActivity.class);
                             intent.putExtra(CommonData.KEY_DOCTOR_ID, doctorId);
                             intent.putExtra(CommonData.KEY_PUBLIC, true);
                             startActivity(intent);
                         } else {
-                            Intent intent = new Intent(getContext(),
+                            Intent intent = new Intent(getActivity(),
                                     AddFriendsPatientActivity.class);
                             intent.putExtra(CommonData.KEY_PATIENT_ID, patientId);
                             intent.putExtra(CommonData.KEY_PUBLIC, true);
@@ -711,7 +692,7 @@ public class MainFragment extends BaseFragment
      * 显示pop
      */
     private void showPop() {
-        view_pop = LayoutInflater.from(getContext()).inflate(R.layout.health_pop_menu, null);
+        view_pop = LayoutInflater.from(getActivity()).inflate(R.layout.health_pop_menu, null);
         tvOne = view_pop.findViewById(R.id.txt_one);
         tvTwo = view_pop.findViewById(R.id.txt_two);
         tvOne.setText("扫一扫");
@@ -727,7 +708,7 @@ public class MainFragment extends BaseFragment
         mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mPopupwinow.setOutsideTouchable(true);
         mPopupwinow.showAtLocation(view_pop, Gravity.TOP | Gravity.RIGHT, 0,
-                (int) AllUtils.dipToPx(getContext(), 55));
+                (int) AllUtils.dipToPx(getActivity(), 55));
     }
 
     /**
@@ -757,8 +738,7 @@ public class MainFragment extends BaseFragment
 
     private OnPatientApplyCallbackListener onPatientApplyCallbackListener;
 
-    public void setOnPatientApplyCallbackListener(
-            OnPatientApplyCallbackListener onPatientApplyCallbackListener) {
+    public void setOnPatientApplyCallbackListener(OnPatientApplyCallbackListener onPatientApplyCallbackListener) {
         this.onPatientApplyCallbackListener = onPatientApplyCallbackListener;
     }
 
@@ -770,14 +750,11 @@ public class MainFragment extends BaseFragment
     public void onDestroy() {
         super.onDestroy();
         //注销患者状态监听
-        iNotifyChangeListenerServer.registerPatientStatusChangeListener(patientStatusChangeListener,
-                RegisterType.UNREGISTER);
+        iNotifyChangeListenerServer.registerPatientStatusChangeListener(patientStatusChangeListener, RegisterType.UNREGISTER);
         //注销患者状态监听
-        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(
-                doctorTransferPatientListener, RegisterType.UNREGISTER);
+        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(doctorTransferPatientListener, RegisterType.UNREGISTER);
         //最近联系人
-        iNotifyChangeListenerServer.registerRecentContactChangeListener(
-                mRecentContactChangeListener, RegisterType.UNREGISTER);
+        iNotifyChangeListenerServer.registerRecentContactChangeListener(mRecentContactChangeListener, RegisterType.UNREGISTER);
         //注销订单状态监听
         iNotifyChangeListenerServer.registerOrderStatusChangeListener(orderStatusChangeListener,
                 RegisterType.UNREGISTER);
