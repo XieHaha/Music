@@ -1,10 +1,3 @@
-/*
- * 版权信息：嘉赛信息技术有限公司
- * Copyright (C) JustSafe Information Technology Co., Ltd. All Rights Reserved
- *
- * Description:
- *   <author> - <version> - <date> - <desc>
- */
 package com.yht.yihuantong.utils;
 
 import android.content.ActivityNotFoundException;
@@ -33,6 +26,7 @@ import custom.frame.utils.ToastUtil;
 
 /**
  * 工具类
+ * @author dundun
  */
 public class AllUtils {
     private static final String TAG = AllUtils.class.getSimpleName();

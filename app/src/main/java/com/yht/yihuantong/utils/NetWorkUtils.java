@@ -6,10 +6,10 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 
 /**
- * Created by dundun on 16/4/14.
+ * @author dundun
+ * @date 16/4/14
  */
-public class NetWorkUtils
-{
+public class NetWorkUtils {
     private ConnectivityManager connectivityManager;
     private WifiManager wifiManager;
     private NetworkInfo info;
@@ -25,7 +25,8 @@ public class NetWorkUtils
      * 网络状态处理
      */
     private void init() {
-        connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        connectivityManager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
     }
 
@@ -53,7 +54,8 @@ public class NetWorkUtils
             case WifiManager.WIFI_STATE_ENABLED:
             case WifiManager.WIFI_STATE_ENABLING:
                 return true;
+            default:
+                return false;
         }
-        return false;
     }
 }

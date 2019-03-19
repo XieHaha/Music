@@ -3,13 +3,18 @@ package com.yht.yihuantong.utils;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author dundun
+ */
 public class MimeUtils {
     private static final String regDoc = "(^doc$)|(^docx$)";
     private static final String regXls = "(^xls$)|(^xlsx$)";
     private static final String regPpt = "(^ppt$)|(^pptx$)";
-    private static final String regZip = "(^7z$)|(^gtar$)|(^gz$)|(^tar$)|(^tgz$)|(^z$)|(^zip$)|(^rar$)";
+    private static final String regZip = "(^7z$)|(^gtar$)|(^gz$)|(^tar$)|(^tgz$)|(^z$)|(^zip$)|" +
+            "(^rar$)";
     private static final String regPdf = "^pdf$";
-    private static final String regMedia = "(^3gp$)|(^avi$)|(^mp3$)|(^mp4$)|(^rmvb$)|(^wav$)|(^wma$)|(^wmv$)";
+    private static final String regMedia = "(^3gp$)|(^avi$)|(^mp3$)|(^mp4$)|(^rmvb$)|(^wav$)|" +
+            "(^wma$)|(^wmv$)";
     private static Map<String, String> imageMime = new HashMap<String, String>();
 
     static {
@@ -51,8 +56,8 @@ public class MimeUtils {
         otherMime.put("conf", "text/plain");
         otherMime.put("cpp", "text/plain");
         otherMime.put("doc", "application/msword");
-        otherMime.put("docx",
-                "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        otherMime.put("docx", "application/vnd.openxmlformats-officedocument.wordprocessingml" +
+                ".document");
         otherMime.put("xls", "application/vnd.ms-excel");
         otherMime.put("xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         otherMime.put("exe", "application/octet-stream");
@@ -84,8 +89,8 @@ public class MimeUtils {
         otherMime.put("pdf", "application/pdf");
         otherMime.put("pps", "application/vnd.ms-powerpoint");
         otherMime.put("ppt", "application/vnd.ms-powerpoint");
-        otherMime.put("pptx",
-                "application/vnd.openxmlformats-officedocument.presentationml.presentation");
+        otherMime.put("pptx", "application/vnd.openxmlformats-officedocument.presentationml" +
+                ".presentation");
         otherMime.put("prop", "text/plain");
         otherMime.put("rc", "text/plain");
         otherMime.put("rtf", "application/rtf");

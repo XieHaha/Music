@@ -26,6 +26,7 @@ import custom.frame.utils.DirHelper;
 
 /**
  * log日志打印类
+ *
  * @author dundun
  */
 public class LogUtils {
@@ -96,26 +97,26 @@ public class LogUtils {
         if (!canLog()) {
             return;
         }
-        if ('e' == level && ('e' == LOG_TYPE || 'v' == LOG_TYPE)) {
+        if ('e' == level) {
             //输出错误信息
             if (tr == null) {
                 Log.e(tag, msg);
             } else {
                 Log.e(tag, msg, tr);
             }
-        } else if ('w' == level && ('w' == LOG_TYPE || 'v' == LOG_TYPE)) {
+        } else if ('w' == level) {
             if (tr == null) {
                 Log.w(tag, msg);
             } else {
                 Log.w(tag, msg, tr);
             }
-        } else if ('d' == level && ('d' == LOG_TYPE || 'v' == LOG_TYPE)) {
+        } else if ('d' == level) {
             if (tr == null) {
                 Log.d(tag, msg);
             } else {
                 Log.d(tag, msg, tr);
             }
-        } else if ('i' == level && ('i' == LOG_TYPE || 'v' == LOG_TYPE)) {
+        } else if ('i' == level) {
             if (tr == null) {
                 Log.i(tag, msg);
             } else {
