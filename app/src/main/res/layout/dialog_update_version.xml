@@ -83,7 +83,7 @@
             android:layout_weight="1"
             android:visibility="gone">
 
-            <com.yht.yihuantong.version.view.CircularProgress
+            <com.zyc.doctor.version.view.CircularProgress
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_centerInParent="true"

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.yht.xylink.utils.view.VideoGroupView
+    <com.zyc.xylink.utils.view.VideoGroupView
         android:id="@+id/remote_video_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -739,7 +739,7 @@
     </RelativeLayout>
 
 
-    <com.yht.xylink.utils.view.CallStatisticsView
+    <com.zyc.xylink.utils.view.CallStatisticsView
         android:id="@+id/conversation_statics"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -799,7 +799,7 @@
         android:layout_height="match_parent"
         android:layout="@layout/view_statistics_info" />
 
-    <com.yht.xylink.utils.view.CallRosterView
+    <com.zyc.xylink.utils.view.CallRosterView
         android:id="@+id/conversation_roster"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
