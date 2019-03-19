@@ -9,7 +9,6 @@ import com.hyphenate.easeui.domain.EaseUser;
 
 import org.litepal.crud.DataSupport;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -18,14 +17,21 @@ import custom.frame.bean.CooperateDocBean;
 import custom.frame.bean.PatientBean;
 import custom.frame.http.IRequest;
 import custom.frame.http.Tasks;
-import custom.frame.http.listener.ResponseListener;
+import custom.frame.http.listener.ResponseAdapter;
 
 /**
  * @author dundun
  */
 public class HxHelper {
 
-
+    /**
+     * 扩展消息-昵称
+     */
+    public static final String MSG_EXT_NICKNAME = "hx_nickname";
+    /**
+     * 扩展消息-头像
+     */
+    public static final String MSG_EXT_AVATAR = "hx_avatar";
     private static Resource resource;
 
     public synchronized static Resource getInstance() {
@@ -37,14 +43,7 @@ public class HxHelper {
 
     public static class Resource {
 
-        /**
-         * 扩展消息-昵称
-         */
-        public static final String MSG_EXT_NICKNAME = "hx_nickname";
-        /**
-         * 扩展消息-头像
-         */
-        public static final String MSG_EXT_AVATAR = "hx_avatar";
+
         private Application app;
         private Opts mOpts;
         private IRequest iRequest;
@@ -89,7 +88,7 @@ public class HxHelper {
                     callback.onSuccess(user);
                     return user;
                 }
-                iRequest.getPatientInfo(username, new ResponseListener<BaseResponse>() {
+                iRequest.getPatientInfo(username, new ResponseAdapter<BaseResponse>() {
                     @Override
                     public void onResponseSuccess(Tasks task, BaseResponse response) {
                         PatientBean patientBean = response.getData();
@@ -104,34 +103,6 @@ public class HxHelper {
                         callback.onSuccess(user);
                     }
 
-                    @Override
-                    public void onResponseError(Tasks task, Exception e) {
-                    }
-
-                    @Override
-                    public void onResponseCodeError(Tasks task, BaseResponse response) {
-                    }
-
-                    @Override
-                    public void onResponseStart(Tasks task) {
-                    }
-
-                    @Override
-                    public void onResponseEnd(Tasks task) {
-                    }
-
-                    @Override
-                    public void onResponseFile(Tasks task, File file) {
-                    }
-
-                    @Override
-                    public void onResponseLoading(Tasks task, boolean isUpload, long total,
-                                                  long current) {
-                    }
-
-                    @Override
-                    public void onResponseCancel(Tasks task) {
-                    }
                 });
             } else {
                 List<CooperateDocBean> list =
@@ -147,7 +118,7 @@ public class HxHelper {
                     callback.onSuccess(user);
                     return user;
                 }
-                iRequest.getDocInfo(username, new ResponseListener<BaseResponse>() {
+                iRequest.getDocInfo(username, new ResponseAdapter<BaseResponse>() {
                     @Override
                     public void onResponseSuccess(Tasks task, BaseResponse response) {
                         CooperateDocBean bean = response.getData();
@@ -162,54 +133,26 @@ public class HxHelper {
                         callback.onSuccess(user);
                     }
 
-                    @Override
-                    public void onResponseError(Tasks task, Exception e) {
-                    }
-
-                    @Override
-                    public void onResponseCodeError(Tasks task, BaseResponse response) {
-                    }
-
-                    @Override
-                    public void onResponseStart(Tasks task) {
-                    }
-
-                    @Override
-                    public void onResponseEnd(Tasks task) {
-                    }
-
-                    @Override
-                    public void onResponseFile(Tasks task, File file) {
-                    }
-
-                    @Override
-                    public void onResponseLoading(Tasks task, boolean isUpload, long total,
-                                                  long current) {
-                    }
-
-                    @Override
-                    public void onResponseCancel(Tasks task) {
-                    }
                 });
             }
             return user;
         }
 
-        /**
-         * 配置项
-         */
-        public static class Opts {
-            private boolean showChatTitle;
 
-            public boolean isShowChatTitle() {
-                return showChatTitle;
-            }
-
-            public void setShowChatTitle(boolean showChatTitle) {
-                this.showChatTitle = showChatTitle;
-            }
-        }
     }
 
+    /**
+     * 配置项
+     */
+    public static class Opts {
+        private boolean showChatTitle;
 
+        public boolean isShowChatTitle() {
+            return showChatTitle;
+        }
+
+        public void setShowChatTitle(boolean showChatTitle) {
+            this.showChatTitle = showChatTitle;
+        }
+    }
 }

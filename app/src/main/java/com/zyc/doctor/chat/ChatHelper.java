@@ -20,8 +20,8 @@ public class ChatHelper implements EaseChatFragment.EaseChatFragmentHelper {
             return;
         }
         //设置自己的头像和昵称到消息扩展中
-        message.setAttribute(HxHelper.Resource.MSG_EXT_NICKNAME, bean.getName());
-        message.setAttribute(HxHelper.Resource.MSG_EXT_AVATAR, bean.getPortraitUrl());
+        message.setAttribute(HxHelper.MSG_EXT_NICKNAME, bean.getName());
+        message.setAttribute(HxHelper.MSG_EXT_AVATAR, bean.getPortraitUrl());
     }
 
     @Override

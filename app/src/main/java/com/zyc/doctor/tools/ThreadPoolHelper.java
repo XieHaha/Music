@@ -14,7 +14,7 @@ import java.util.concurrent.RejectedExecutionException;
  * @author dundun
  */
 public class ThreadPoolHelper {
-
+    private static final String TAG = "ThreadPoolHelper";
     private static Resource resource;
 
     public synchronized static Resource getInstance() {
@@ -26,7 +26,6 @@ public class ThreadPoolHelper {
 
     public static class Resource {
 
-        private static final String TAG = "ThreadPoolHelper";
         private static final int threadNum = 5;
         private ExecutorService executorSingle;
         private ExecutorService executorCached;
