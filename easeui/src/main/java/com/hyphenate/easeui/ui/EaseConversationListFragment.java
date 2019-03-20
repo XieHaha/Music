@@ -36,6 +36,7 @@ import java.util.Map;
 
 /**
  * conversation list fragment
+ * @author dundun
  */
 public class EaseConversationListFragment extends EaseBaseFragment
 {

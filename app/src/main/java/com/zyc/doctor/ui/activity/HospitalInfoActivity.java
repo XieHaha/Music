@@ -12,7 +12,8 @@ import custom.frame.bean.HospitalBean;
 import custom.frame.ui.activity.BaseActivity;
 
 /**
- * Created by dundun on 18/10/9.
+ * @author dundun
+ * @date 18/10/9
  */
 public class HospitalInfoActivity extends BaseActivity {
     @BindView(R.id.act_hospital_info_name)
@@ -49,8 +50,8 @@ public class HospitalInfoActivity extends BaseActivity {
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
-            hospitalBean = (HospitalBean) getIntent().getSerializableExtra(
-                    CommonData.KEY_HOSPITAL_BEAN);
+            hospitalBean =
+                    (HospitalBean) getIntent().getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
         }
         initPage();
     }

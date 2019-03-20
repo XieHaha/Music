@@ -1,8 +1,8 @@
 package com.zyc.doctor.ui.adapter;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.support.v4.view.PagerAdapter;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -13,23 +13,28 @@ import java.util.List;
  *
  * @author DUNDUN
  */
-public class FragmentVpAdapter extends PagerAdapter {
+public class FragmentVpAdapter extends FragmentPagerAdapter {
 
 
     private List<Fragment> fragmentList;
     private Fragment currentFragment;
 
     public FragmentVpAdapter(FragmentManager fm, List<Fragment> fragmentList) {
+        super(fm);
         this.fragmentList = fragmentList;
     }
 
     @Override
     public int getCount() {
         if (fragmentList != null) {
-
             return fragmentList.size();
         }
         return 0;
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+        return fragmentList.get(position);
     }
 
     @Override
@@ -41,11 +46,6 @@ public class FragmentVpAdapter extends PagerAdapter {
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
         super.setPrimaryItem(container, position, object);
         currentFragment = (Fragment) object;
-    }
-
-    @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return false;
     }
 
     /**

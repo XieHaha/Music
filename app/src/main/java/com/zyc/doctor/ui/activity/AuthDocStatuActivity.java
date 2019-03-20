@@ -27,7 +27,9 @@ import custom.frame.utils.StatusBarUtil;
 import me.jessyan.autosize.internal.CustomAdapt;
 
 /**
- * Created by dundun on 19/2/19.
+ *
+ * @author dundun
+ * @date 19/2/19
  */
 public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, CommonData, CustomAdapt {
     @BindView(R.id.public_title_bar_back)

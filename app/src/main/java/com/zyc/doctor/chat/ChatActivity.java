@@ -1,12 +1,12 @@
 package com.zyc.doctor.chat;
 
-import android.app.FragmentTransaction;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -84,7 +84,7 @@ public class ChatActivity extends BaseActivity implements OnPermissionCallback,
     public void replaceFragment(final int containerResId, final EaseChatFragment fragment,
                                 final String tag) {
         runOnUiThread(() -> {
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             if (TextUtils.isEmpty(tag)) {
                 fragmentTransaction.replace(containerResId, fragment);
             } else {

@@ -1,8 +1,8 @@
 package com.zyc.doctor.ui.activity;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,7 +75,7 @@ public class TransferPatientHistoryActivity extends BaseActivity {
         transferPatientToFragment = new TransferPatientToFragment();
         fragmentList.add(transferPatientToFragment);
         fragmentList.add(transferPatientFromFragment);
-        fragmentVpAdapter = new FragmentVpAdapter(getFragmentManager(), fragmentList);
+        fragmentVpAdapter = new FragmentVpAdapter(getSupportFragmentManager(), fragmentList);
         viewPager.setAdapter(fragmentVpAdapter);
         viewPager.setCurrentItem(0);
     }

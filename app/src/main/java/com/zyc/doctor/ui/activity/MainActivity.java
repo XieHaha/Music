@@ -1,8 +1,6 @@
 package com.zyc.doctor.ui.activity;
 
 import android.annotation.TargetApi;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -15,6 +13,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -33,11 +33,11 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.ui.EaseConversationListFragment;
-import com.zyc.doctor.chat.AbstractEMContactListener;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
-import com.zyc.doctor.chat.AbstractEMMessageListener;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
+import com.zyc.doctor.chat.AbstractEMContactListener;
+import com.zyc.doctor.chat.AbstractEMMessageListener;
 import com.zyc.doctor.chat.ChatActivity;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.receive.EaseMsgClickBroadCastReceiver;
@@ -176,7 +176,7 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
      * 初始化tabs
      */
     private void initTab() {
-        fragmentManager = getFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         transaction = fragmentManager.beginTransaction();
         tabMainView();
         setAlias();

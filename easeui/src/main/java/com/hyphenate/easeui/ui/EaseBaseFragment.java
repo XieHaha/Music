@@ -1,8 +1,8 @@
 package com.hyphenate.easeui.ui;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -10,6 +10,9 @@ import android.view.inputmethod.InputMethodManager;
 import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.widget.EaseTitleBar;
 
+/**
+ * @author dundun
+ */
 public abstract class EaseBaseFragment extends Fragment {
     protected EaseTitleBar titleBar;
     protected InputMethodManager inputMethodManager;

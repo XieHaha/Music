@@ -1,10 +1,10 @@
 package com.zyc.doctor.ui.activity;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -174,7 +174,7 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
         fragmentList.add(healthInfoFragment);
         fragmentList.add(orderInfoFragment);
         fragmentList.add(transferInfoFragment);
-        fragmentVpAdapter = new FragmentVpAdapter(getFragmentManager(), fragmentList);
+        fragmentVpAdapter = new FragmentVpAdapter(getSupportFragmentManager(), fragmentList);
         viewPager.setAdapter(fragmentVpAdapter);
         viewPager.setCurrentItem(0);
         initMenu();

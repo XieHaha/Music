@@ -24,7 +24,8 @@ import custom.frame.utils.ToastUtil;
 import custom.frame.widgets.FilterEmojiEditText;
 
 /**
- * Created by dundun on 18/7/2.
+ * @author dundun
+ * @date 18/7/2
  */
 public class EditRemarkActivity extends BaseActivity {
     @BindView(R.id.act_edit_remark_nickname)
@@ -112,8 +113,7 @@ public class EditRemarkActivity extends BaseActivity {
             public void afterTextChanged(Editable s) {
             }
         });
-        actEditRemarkNickname.setOnEditorActionListener((v, actionId, event) ->
-        {
+        actEditRemarkNickname.setOnEditorActionListener((v, actionId, event) -> {
             //屏蔽换行符
             if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                 return true;
@@ -185,8 +185,8 @@ public class EditRemarkActivity extends BaseActivity {
      * 隐藏软键盘
      */
     private void hideSoftInputFromWindow() {
-        InputMethodManager inputmanger = (InputMethodManager) getSystemService(
-                Context.INPUT_METHOD_SERVICE);
+        InputMethodManager inputmanger =
+                (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inputmanger.hideSoftInputFromWindow(actEditRemarkNickname.getWindowToken(), 0);
     }
 }

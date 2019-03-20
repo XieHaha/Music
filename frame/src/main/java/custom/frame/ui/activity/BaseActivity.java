@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
@@ -43,7 +44,7 @@ import custom.frame.utils.ToastUtil;
  *
  * @author DUNDUN
  */
-public abstract class BaseActivity<T> extends Activity
+public abstract class BaseActivity<T> extends FragmentActivity
         implements ActivityInterface, ResponseListener<BaseResponse>, View.OnClickListener,
         OnPermissionCallback, ConstantsCommon {
     private ProgressDialog mProgressDialog;

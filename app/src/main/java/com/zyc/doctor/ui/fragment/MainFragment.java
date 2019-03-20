@@ -587,7 +587,7 @@ public class MainFragment extends BaseFragment implements OrderStatus,
                 if (mPopupwinow != null) {
                     mPopupwinow.dismiss();
                 }
-                IntentIntegrator.forFragment(this).setBarcodeImageEnabled(false).setPrompt(getString(R.string.txt_camera_hint)).initiateScan();
+                IntentIntegrator.forSupportFragment(this).setBarcodeImageEnabled(false).setPrompt(getString(R.string.txt_camera_hint)).initiateScan();
                 break;
             case R.id.txt_two:
                 if (mPopupwinow != null) {

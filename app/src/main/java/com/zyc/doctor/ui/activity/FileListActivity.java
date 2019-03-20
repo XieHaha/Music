@@ -24,7 +24,9 @@ import custom.frame.ui.activity.BaseActivity;
 import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
 
 /**
- * Created by dundun on 18/8/24.
+ *
+ * @author dundun
+ * @date 18/8/24
  */
 public class FileListActivity extends BaseActivity implements FileListAdapter.OpenFileListener {
     @BindView(R.id.act_file_recycler_view)
