@@ -21,7 +21,9 @@ import custom.frame.bean.TransPatientBean;
 import custom.frame.utils.SharePreferenceUtil;
 
 /**
- * Created by dundun on 18/7/14.
+ *
+ * @author dundun
+ * @date 18/7/14
  */
 public class TransferInfoLimitAdapter extends BaseAdapter implements OrderStatus, CommonData
 {

@@ -72,6 +72,17 @@
                         android:gravity="center_vertical"></RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/message_red_point_small"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:layout_alignParentRight="true"
+                        android:visibility="gone"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/bg_red_point"
+                        android:gravity="center_vertical">
+
+                    </RelativeLayout>
+                    <RelativeLayout
                         android:id="@+id/message_red_point"
                         android:layout_width="18dp"
                         android:layout_height="18dp"

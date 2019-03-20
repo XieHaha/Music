@@ -73,10 +73,12 @@ import static android.support.v4.app.NotificationCompat.DEFAULT_VIBRATE;
 /**
  * @author dundun
  */
-public class MainActivity extends BaseActivity implements EaseConversationListFragment.EaseConversationListItemClickListener, VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener, EaseConversationListFragment.EaseConversationListItemLongClickListener, UserFragment.OnTransferCallbackListener, CooperateDocFragment.OnDocApplyCallbackListener, MainFragment.OnPatientApplyCallbackListener {
+public class MainActivity extends BaseActivity implements EaseConversationListFragment.EaseConversationListItemClickListener, VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener, EaseConversationListFragment.EaseConversationListItemLongClickListener, UserFragment.OnTransferCallbackListener, CooperateDocFragment.OnDocApplyCallbackListener, MainFragment.OnMainFragmentCallbackListener {
     private static final String TAG = "MainActivity";
     @BindView(R.id.item_msg_num)
     TextView tvUnReadMsgCount;
+    @BindView(R.id.message_red_point_small)
+    RelativeLayout rlMsgPointSmallLayout;
     @BindView(R.id.message_red_point)
     RelativeLayout rlMsgPointLayout;
     @BindView(R.id.act_main_tab1)
@@ -485,7 +487,7 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
         hideAll(transaction);
         if (mainFragment == null) {
             mainFragment = new MainFragment();
-            mainFragment.setOnPatientApplyCallbackListener(this);
+            mainFragment.setOnMainFragmentCallbackListener(this);
             transaction.add(R.id.act_main_tab_frameLayout, mainFragment);
         } else {
             transaction.show(mainFragment);
@@ -689,6 +691,20 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
                 tvUnReadMsgCount.setText(num > 99 ? "99+" : num + "");
             } else {
                 rlMsgPointLayout.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            LogUtils.w(TAG, "Exception error!", e);
+        }
+    }
+
+    @Override
+    public void onOrderStatusCallback() {
+        try {
+            String pNum = sharePreferenceUtil.getString(CommonData.KEY_NEW_MESSAGE_REMIND);
+            if (TextUtils.isEmpty(pNum)) {
+                rlMsgPointSmallLayout.setVisibility(View.GONE);
+            } else {
+                rlMsgPointSmallLayout.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
             LogUtils.w(TAG, "Exception error!", e);

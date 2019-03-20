@@ -119,7 +119,7 @@ public class MainFragment extends BaseFragment implements OrderStatus,
     SwipeRefreshLayout swipeRefreshLayout;
 
     private MainOptionsAdapter mainOptionsAdapter;
-    private View view_pop;
+    private View viewPop;
     private PopupWindow mPopupwinow;
     private TextView tvOne, tvTwo;
     /**
@@ -340,6 +340,9 @@ public class MainFragment extends BaseFragment implements OrderStatus,
                 intent.putExtra(CommonData.KEY_TRANSFER_BEAN, transPatientBean);
                 startActivityForResult(intent, REQUEST_CODE_STATUS_CHANGE);
                 transferInfoLimitAdapter.notifyDataSetChanged();
+                if (mainFragmentCallbackListener != null) {
+                    mainFragmentCallbackListener.onOrderStatusCallback();
+                }
             }
         });
         orderInfoListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -366,6 +369,9 @@ public class MainFragment extends BaseFragment implements OrderStatus,
                 intent.putExtra(CommonData.KEY_REGISTRATION_BEAN, registrationBean);
                 startActivity(intent);
                 orderInfoAdapter.notifyDataSetChanged();
+                if (mainFragmentCallbackListener != null) {
+                    mainFragmentCallbackListener.onOrderStatusCallback();
+                }
             }
         });
         customGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -380,9 +386,6 @@ public class MainFragment extends BaseFragment implements OrderStatus,
                         startActivity(intent);
                         break;
                     case REMOTE_CONSULTATION:
-                        //                        intent = new Intent(getActivity(),
-                        // RemoteConsultationActivity.class);
-                        //                        startActivity(intent);
                         ToastUtil.toast(getActivity(), "敬请期待");
                         break;
                     case HOSPITAL_GROUP:
@@ -426,6 +429,9 @@ public class MainFragment extends BaseFragment implements OrderStatus,
             llTransferNoneLayout.setVisibility(View.VISIBLE);
             tvTransferMore.setVisibility(View.GONE);
         }
+        if (mainFragmentCallbackListener != null) {
+            mainFragmentCallbackListener.onOrderStatusCallback();
+        }
     }
 
     /**
@@ -445,6 +451,9 @@ public class MainFragment extends BaseFragment implements OrderStatus,
             llOrderNoneLayout.setVisibility(View.VISIBLE);
             orderInfoListView.setVisibility(View.GONE);
             tvOrderMore.setVisibility(View.GONE);
+        }
+        if (mainFragmentCallbackListener != null) {
+            mainFragmentCallbackListener.onOrderStatusCallback();
         }
     }
 
@@ -624,8 +633,8 @@ public class MainFragment extends BaseFragment implements OrderStatus,
                     rlApplyPatientNumLayout.setVisibility(View.GONE);
                 }
 
-                if (onPatientApplyCallbackListener != null) {
-                    onPatientApplyCallbackListener.onPatientApplyCallback();
+                if (mainFragmentCallbackListener != null) {
+                    mainFragmentCallbackListener.onPatientApplyCallback();
                 }
                 break;
             default:
@@ -692,22 +701,22 @@ public class MainFragment extends BaseFragment implements OrderStatus,
      * 显示pop
      */
     private void showPop() {
-        view_pop = LayoutInflater.from(getActivity()).inflate(R.layout.health_pop_menu, null);
-        tvOne = view_pop.findViewById(R.id.txt_one);
-        tvTwo = view_pop.findViewById(R.id.txt_two);
+        viewPop = LayoutInflater.from(getActivity()).inflate(R.layout.health_pop_menu, null);
+        tvOne = viewPop.findViewById(R.id.txt_one);
+        tvTwo = viewPop.findViewById(R.id.txt_two);
         tvOne.setText("扫一扫");
         tvTwo.setText("二维码");
         tvOne.setOnClickListener(this);
         tvTwo.setOnClickListener(this);
         if (mPopupwinow == null) {
             //新建一个popwindow
-            mPopupwinow = new PopupWindow(view_pop, LinearLayout.LayoutParams.WRAP_CONTENT,
+            mPopupwinow = new PopupWindow(viewPop, LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT, true);
         }
         mPopupwinow.setFocusable(true);
         mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mPopupwinow.setOutsideTouchable(true);
-        mPopupwinow.showAtLocation(view_pop, Gravity.TOP | Gravity.RIGHT, 0,
+        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0,
                 (int) AllUtils.dipToPx(getActivity(), 55));
     }
 
@@ -730,20 +739,23 @@ public class MainFragment extends BaseFragment implements OrderStatus,
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (count - 1));
         listView.setLayoutParams(params);
-        //        if (scrollView != null)
-        //        {
-        //            scrollView.scrollTo(0, 0);
-        //        }
     }
 
-    private OnPatientApplyCallbackListener onPatientApplyCallbackListener;
+    private OnMainFragmentCallbackListener mainFragmentCallbackListener;
 
-    public void setOnPatientApplyCallbackListener(OnPatientApplyCallbackListener onPatientApplyCallbackListener) {
-        this.onPatientApplyCallbackListener = onPatientApplyCallbackListener;
+    public void setOnMainFragmentCallbackListener(OnMainFragmentCallbackListener onMainFragmentCallbackListener) {
+        this.mainFragmentCallbackListener = onMainFragmentCallbackListener;
     }
 
-    public interface OnPatientApplyCallbackListener {
+    public interface OnMainFragmentCallbackListener {
+        /**
+         * 患者申请回调
+         */
         void onPatientApplyCallback();
+        /**
+         * 首页就诊信息  转诊信息更改
+         */
+        void onOrderStatusCallback();
     }
 
     @Override
