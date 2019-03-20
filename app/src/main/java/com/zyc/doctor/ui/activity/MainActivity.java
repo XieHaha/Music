@@ -28,16 +28,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hyphenate.EMConnectionListener;
-import com.hyphenate.EMContactListener;
 import com.hyphenate.EMError;
-import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.ui.EaseConversationListFragment;
-import com.zyc.shortcutbadge.ShortcutBadger;
+import com.zyc.doctor.chat.AbstractEMContactListener;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
+import com.zyc.doctor.chat.AbstractEMMessageListener;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
 import com.zyc.doctor.chat.ChatActivity;
 import com.zyc.doctor.data.CommonData;
@@ -49,6 +48,7 @@ import com.zyc.doctor.ui.fragment.UserFragment;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.version.presenter.VersionPresenter;
 import com.zyc.doctor.version.view.VersionUpdateDialog;
+import com.zyc.shortcutbadge.ShortcutBadger;
 
 import org.litepal.crud.DataSupport;
 
@@ -134,11 +134,11 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
     /**
      * 消息监听
      */
-    private EMMessageListener msgListener;
+    private AbstractEMMessageListener msgListener;
     /**
      * 联系人变化监听
      */
-    private EMContactListener contactListener;
+    private AbstractEMContactListener contactListener;
     /**
      * 版本检测
      */
@@ -241,7 +241,7 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
         //注册一个监听连接状态的listener
         connectionListener = new MyConnectionListener();
         EMClient.getInstance().addConnectionListener(connectionListener);
-        msgListener = new EMMessageListener() {
+        msgListener = new AbstractEMMessageListener() {
             @Override
             public void onMessageReceived(List<EMMessage> messages) {
                 //收到消息
@@ -253,46 +253,10 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
                 sendChatMsg(messages.get(0));
             }
 
-            @Override
-            public void onCmdMessageReceived(List<EMMessage> messages) {
-                //收到透传消息
-            }
 
-            @Override
-            public void onMessageRead(List<EMMessage> messages) {
-                //收到已读回执
-            }
-
-            @Override
-            public void onMessageDelivered(List<EMMessage> message) {
-                //收到已送达回执
-            }
-
-            @Override
-            public void onMessageRecalled(List<EMMessage> messages) {
-                //消息被撤回
-            }
-
-            @Override
-            public void onMessageChanged(EMMessage message, Object change) {
-                //消息状态变动
-            }
         };
         EMClient.getInstance().chatManager().addMessageListener(msgListener);
-        contactListener = new EMContactListener() {
-            @Override
-            public void onContactInvited(String username, String reason) {
-                //收到好友邀请
-            }
-
-            @Override
-            public void onFriendRequestAccepted(String s) {
-            }
-
-            @Override
-            public void onFriendRequestDeclined(String s) {
-            }
-
+        contactListener = new AbstractEMContactListener() {
             @Override
             public void onContactDeleted(String username) {
                 //被删除时回调此方法
@@ -303,11 +267,6 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
                 }
                 //通知患者碎片刷新列表
                 NotifyChangeListenerManager.getInstance().notifyPatientStatusChange("");
-            }
-
-            @Override
-            public void onContactAdded(String username) {
-                //增加了联系人时回调此方法
             }
         };
         EMClient.getInstance().contactManager().setContactListener(contactListener);
@@ -350,6 +309,8 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
                 //数据存储
                 DataSupport.deleteAll(RegistrationTypeBean.class);
                 DataSupport.saveAll(registrationTypeBeans);
+                break;
+            default:
                 break;
         }
     }

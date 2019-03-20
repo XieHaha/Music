@@ -25,8 +25,7 @@ import java.util.List;
  *
  * @author USER
  */
-public class ActionSheetDialog
-{
+public class ActionSheetDialog {
     private Context context;
     private Dialog dialog;
     private TextView txt_title;
@@ -45,20 +44,18 @@ public class ActionSheetDialog
 
     public ActionSheetDialog(Context context) {
         this.context = context;
-        WindowManager windowManager = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager =
+                (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         display = windowManager.getDefaultDisplay();
     }
 
     public ActionSheetDialog builder() {
-        View view = LayoutInflater.from(context).inflate(
-                R.layout.view_actionsheet, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.view_actionsheet, null);
 
         view.setMinimumWidth(display.getWidth());
 
         sLayout_content = (ScrollView) view.findViewById(R.id.sLayout_content);
-        lLayout_content = (LinearLayout) view
-                .findViewById(R.id.lLayout_content);
+        lLayout_content = (LinearLayout) view.findViewById(R.id.lLayout_content);
         txt_title = (TextView) view.findViewById(R.id.txt_title);
         txt_cancel = (TextView) view.findViewById(R.id.txt_cancel);
         txt_cancel.setOnClickListener(new OnClickListener() {
@@ -91,11 +88,10 @@ public class ActionSheetDialog
     }
 
     public ActionSheetDialog hideCancelText(boolean bool) {
-        if (bool){
+        if (bool) {
 
             txt_cancel.setVisibility(View.GONE);
-        }
-        else{
+        } else {
 
             txt_cancel.setVisibility(View.VISIBLE);
         }
@@ -136,8 +132,7 @@ public class ActionSheetDialog
         int size = sheetItemList.size();
 
         if (size >= 7) {
-            LayoutParams params = (LayoutParams) sLayout_content
-                    .getLayoutParams();
+            LayoutParams params = (LayoutParams) sLayout_content.getLayoutParams();
             params.height = display.getHeight() / 2;
             sLayout_content.setLayoutParams(params);
         }
@@ -147,7 +142,8 @@ public class ActionSheetDialog
             SheetItem sheetItem = sheetItemList.get(i - 1);
             String strItem = sheetItem.name;
             SheetItemColor color = sheetItem.color;
-            final OnSheetItemClickListener listener = (OnSheetItemClickListener) sheetItem.itemClickListener;
+            final OnSheetItemClickListener listener =
+                    (OnSheetItemClickListener) sheetItem.itemClickListener;
 
             TextView textView = new TextView(context);
             textView.setText(strItem);
@@ -179,16 +175,14 @@ public class ActionSheetDialog
             }
 
             if (color == null) {
-                textView.setTextColor(Color.parseColor(SheetItemColor.Blue
-                        .getValue()));
+                textView.setTextColor(Color.parseColor(SheetItemColor.Blue.getValue()));
             } else {
                 textView.setTextColor(Color.parseColor(color.getValue()));
             }
 
             float scale = context.getResources().getDisplayMetrics().density;
             int height = (int) (45 * scale + 0.5f);
-            textView.setLayoutParams(new LayoutParams(
-                    LayoutParams.MATCH_PARENT, height));
+            textView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, height));
 
             textView.setOnClickListener(new OnClickListener() {
                 @Override
@@ -246,7 +240,7 @@ public class ActionSheetDialog
 
         private String value;
 
-        private SheetItemColor(String value) {
+        SheetItemColor(String value) {
             this.value = value;
         }
 
@@ -254,8 +248,5 @@ public class ActionSheetDialog
             return value;
         }
 
-        public void setValue(String value) {
-            this.value = value;
-        }
     }
 }
