@@ -1,16 +1,11 @@
 package com.zyc.doctor;
 
-import android.app.ActivityManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.os.Process;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 
-import com.ainemo.sdk.otf.NemoSDK;
-import com.ainemo.sdk.otf.Settings;
 import com.alibaba.fastjson.JSON;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.EaseUI;
@@ -20,13 +15,10 @@ import com.yanzhenjie.nohttp.NoHttp;
 import com.zyc.doctor.api.ApiHelper;
 import com.zyc.doctor.chat.HxHelper;
 import com.zyc.doctor.data.CommonData;
-import com.zyc.doctor.ui.activity.xiaoyu.IncomingCallService;
 import com.zyc.doctor.utils.RecentContactUtils;
 
 import org.litepal.LitePal;
 import org.litepal.LitePalApplication;
-
-import java.util.List;
 
 import cn.jpush.android.api.JPushInterface;
 import custom.frame.bean.LoginSuccessBean;
@@ -77,7 +69,7 @@ public class YihtApplication extends LitePalApplication {
         initContext();
         initAndroidAutoSize();
         //小鱼
-        initXYSDk();
+        //        initXYSDk();
         mIRequest = IRequest.getInstance(this);
         //监听类初始化
         ApiHelper.init(this);
@@ -170,31 +162,31 @@ public class YihtApplication extends LitePalApplication {
         ImageLoadUtil.getInstance().initImageLoader(getApplicationContext());
     }
 
-    /**
-     * 小鱼sdk
-     */
-    private void initXYSDk() {
-        Settings settings = new Settings("23a05bc3dcdaa4ec9936a5c01aa0804757f99a66");   //测试环境
-        int pId = Process.myPid();
-        String processName = "";
-        ActivityManager am =
-                (ActivityManager) getApplicationContext().getSystemService(ACTIVITY_SERVICE);
-        List<ActivityManager.RunningAppProcessInfo> ps = am.getRunningAppProcesses();
-        for (ActivityManager.RunningAppProcessInfo p : ps) {
-            if (p.pid == pId) {
-                processName = p.processName;
-                break;
-            }
-        }
-        // 避免被初始化多次
-        if (processName.equals(getPackageName())) {
-            NemoSDK nemoSDK = NemoSDK.getInstance();
-            nemoSDK.init(this, settings);
-            // 被叫服务，不使用被叫功能的请忽略
-            Intent incomingCallService = new Intent(this, IncomingCallService.class);
-            startService(incomingCallService);
-        }
-    }
+    //    /**
+    //     * 小鱼sdk
+    //     */
+    //    private void initXYSDk() {
+    //        Settings settings = new Settings("23a05bc3dcdaa4ec9936a5c01aa0804757f99a66");   //测试环境
+    //        int pId = Process.myPid();
+    //        String processName = "";
+    //        ActivityManager am =
+    //                (ActivityManager) getApplicationContext().getSystemService(ACTIVITY_SERVICE);
+    //        List<ActivityManager.RunningAppProcessInfo> ps = am.getRunningAppProcesses();
+    //        for (ActivityManager.RunningAppProcessInfo p : ps) {
+    //            if (p.pid == pId) {
+    //                processName = p.processName;
+    //                break;
+    //            }
+    //        }
+    //        // 避免被初始化多次
+    //        if (processName.equals(getPackageName())) {
+    //            NemoSDK nemoSDK = NemoSDK.getInstance();
+    //            nemoSDK.init(this, settings);
+    //            // 被叫服务，不使用被叫功能的请忽略
+    //            Intent incomingCallService = new Intent(this, IncomingCallService.class);
+    //            startService(incomingCallService);
+    //        }
+    //    }
 
     public static YihtApplication getInstance() {
         return sApplication;

@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author dundun
+ */
 public abstract class BaseRecyclerAdapter<T>
         extends RecyclerView.Adapter<BaseViewHolder> implements RecyclerAdapterInterface<T> {
 
