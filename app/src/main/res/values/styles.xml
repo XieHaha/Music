@@ -53,7 +53,7 @@
         <!-- 半透明 -->
         <item name="android:windowNoTitle">true</item>
         <!-- 无标题 -->
-        <item name="android:windowBackground">@color/app_translucent</item>
+        <item name="android:windowBackground">@color/app_white_color</item>
         <!-- 背景透明 -->
         <item name="android:backgroundDimEnabled">false</item>
         <!-- 模糊 -->
@@ -95,11 +95,6 @@
         <item name="rv_centered">true</item>
         <item name="rv_holdBgInPressing">true</item>
         <item name="rv_pressBgType">circleFitMax</item>
-    </style>
-
-    <style name="line_inner">
-        <item name="android:layout_height">1px</item>
-        <item name="android:background">@color/cebebeb</item>
     </style>
 
     <!-- 自定义仿IOS的ActionSheet底部Dialog的样式 ，有模糊效果 -->

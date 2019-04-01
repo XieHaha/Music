@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-    <!--环信appkey-->
-    <string name="ease_app_key">1110180330253249#dpappproject</string>
-    <string name="ease_app_key_test">1105190122042534#dp-test-app</string>
-    <!--环信聊天地图key-->
-    <string name="ease_app_baidu_map_key">SU2qor7P14g8RhgfiuNWctt2Xa7MBNx4</string>
-</resources>

@@ -4,32 +4,27 @@
     <color name="colorPrimaryDark">#1491fc</color>
     <color name="colorAccent">#1491fc</color>
     <!-- app 标准色值-->
-    <color name="app_translucent">#ffffffff</color>
     <color name="app_much_transparent">#10000000</color>
-    <color name="app_black_bg">#ff000000</color>
     <color name="app_alpha_bg">#00000000</color>
     <color name="app_half_translucent">#50000000</color>
     <color name="app_half_more_translucent">#90000000</color>
 
     <!-- app主题色 (38,140,250)-->
-    <color name="app_main_color">#1491fc</color>
+    <color name="app_main_color">#1491FC</color>
     <!--app按钮按下-->
-    <color name="app_main_color_press">#1491fc</color>
+    <color name="app_main_color_press">#1491FC</color>
     <!-- 次要按钮文本色，入tab按钮颜色等 (102,102,102)-->
     <color name="app_main_txt_color">#333333</color>
     <color name="app_minor_color">#666666</color>
     <color name="app_hint_color">#999999</color>
 
     <!-- 次要分割线背景色 (231,231,231)-->
-    <color name="app_parting_minor_bg">#e7e7e7</color>
+    <color name="app_parting_minor_bg">#E7E7E7</color>
     <!-- 次要背景色 (239,239,244)-->
-    <color name="app_minor_bg">#efeff4</color>
-    <!-- 医生认证背景色-->
-    <color name="app_auth_bg">#fff4f8</color>
+    <color name="app_minor_bg">#EFEFF4</color>
 
-    <color name="cebebeb">#ebebeb</color>
-    <color name="app_auth_success">#00cc66</color>
-    <color name="app_auth_faild">#f96666</color>
+    <color name="app_auth_success">#00CC66</color>
+    <color name="app_auth_faild">#F96666</color>
 
     <!--2018年10月11日16:33:29-->
 
@@ -40,17 +35,15 @@
     <!--2019年2月20日17:32:22-->
     <!--转诊-->
     <color name="_FF6417">#FF6417</color>
-    <color name="_EA5F5F">#EA5F5F</color>
     <color name="_FB8B30">#FB8B30</color>
     <color name="_E40505">#E40505</color>
 
-    <color name="rippelColor">#cccccc</color>
-    <color name="pressColor">#cccccc</color>
+    <color name="rippelColor">#CCCCCC</color>
+    <color name="pressColor">#CCCCCC</color>
 
-    <color name="app_black_color">#000000</color>
-    <color name="app_white_color">#ffffffff</color>
-    <color name="app_red_color">#ff0000</color>
+    <color name="app_white_color">#FFFFFFFF</color>
+    <color name="app_red_color">#FFFF0000</color>
 
-    <color name="app_main_divide_line">#d9dbdc</color>      <!-- DivideLine-->
+    <color name="app_main_divide_line">#D9DBDC</color>      <!-- DivideLine-->
 
 </resources>
