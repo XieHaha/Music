@@ -21,7 +21,7 @@ import com.zyc.doctor.http.data.PatientBean;
 import com.zyc.doctor.http.data.PatientCaseDetailBean;
 import com.zyc.doctor.ui.activity.HealthDetailActivity;
 import com.zyc.doctor.ui.adapter.HealthInfoAdapter;
-import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.base.fragment.BaseFragment;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.utils.ToastUtil;

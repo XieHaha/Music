@@ -237,7 +237,7 @@ public class SharePreferenceUtil {
      * 创建一个解决SharedPreferencesCompat.apply方法的一个兼容类
      */
     private static class SharedPreferencesCompat {
-        private static final Method sApplyMethod = findApplyMethod();
+        private static final Method S_APPLY_METHOD = findApplyMethod();
 
         /**
          * 反射查找apply的方法
@@ -261,8 +261,8 @@ public class SharePreferenceUtil {
          */
         public static void apply(Editor editor) {
             try {
-                if (sApplyMethod != null) {
-                    sApplyMethod.invoke(editor);
+                if (S_APPLY_METHOD != null) {
+                    S_APPLY_METHOD.invoke(editor);
                     return;
                 }
             } catch (IllegalArgumentException e) {

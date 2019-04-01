@@ -69,7 +69,7 @@ public class CooperateDocFragment extends BaseFragment
     private TextView tvNum;
     private RelativeLayout rlMsgHint;
     private View headerView, footerView;
-    private View view_pop;
+    private View viewPop;
     private PopupWindow mPopupwinow;
     private TextView tvOne, tvTwo;
     private CooperateDocListAdapter cooperateDocListAdapter;
@@ -192,22 +192,22 @@ public class CooperateDocFragment extends BaseFragment
      * 显示pop
      */
     private void showPop() {
-        view_pop = LayoutInflater.from(getActivity()).inflate(R.layout.health_pop_menu, null);
-        tvOne = view_pop.findViewById(R.id.txt_one);
-        tvTwo = view_pop.findViewById(R.id.txt_two);
+        viewPop = LayoutInflater.from(getActivity()).inflate(R.layout.health_pop_menu, null);
+        tvOne = viewPop.findViewById(R.id.txt_one);
+        tvTwo = viewPop.findViewById(R.id.txt_two);
         tvOne.setText("扫一扫");
         tvTwo.setText("合作医院医生");
         tvOne.setOnClickListener(this);
         tvTwo.setOnClickListener(this);
         if (mPopupwinow == null) {
             //新建一个popwindow
-            mPopupwinow = new PopupWindow(view_pop, LinearLayout.LayoutParams.WRAP_CONTENT,
+            mPopupwinow = new PopupWindow(viewPop, LinearLayout.LayoutParams.WRAP_CONTENT,
                                           LinearLayout.LayoutParams.WRAP_CONTENT, true);
         }
         mPopupwinow.setFocusable(true);
         mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mPopupwinow.setOutsideTouchable(true);
-        mPopupwinow.showAtLocation(view_pop, Gravity.TOP | Gravity.RIGHT, 0, (int)AllUtils.dipToPx(getActivity(), 55));
+        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0, (int)AllUtils.dipToPx(getActivity(), 55));
     }
 
     @Override

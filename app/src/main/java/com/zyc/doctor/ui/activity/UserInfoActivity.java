@@ -18,20 +18,20 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.chat.ChatActivity;
 import com.zyc.doctor.data.CommonData;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.data.CooperateDocBean;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.GlideHelper;
+import com.zyc.doctor.utils.ToastUtil;
 
 import org.litepal.crud.DataSupport;
 
 import java.util.List;
 
 import butterknife.BindView;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.CooperateDocBean;
-import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.utils.GlideHelper;
-import com.zyc.doctor.utils.ToastUtil;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -60,7 +60,7 @@ public class UserInfoActivity extends BaseActivity {
     LinearLayout llHospitalLayout;
     @BindView(R.id.act_user_info_chat)
     TextView tvChat;
-    private View view_pop;
+    private View viewPop;
     private PopupWindow mPopupwinow;
     private TextView tvOne, tvTwo;
     private CooperateDocBean cooperateDocBean;
@@ -93,32 +93,33 @@ public class UserInfoActivity extends BaseActivity {
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         if (getIntent() != null) {
-            cooperateDocBean = (CooperateDocBean) getIntent().getSerializableExtra(
-                    CommonData.KEY_DOCTOR_BEAN);
+            cooperateDocBean = (CooperateDocBean)getIntent().getSerializableExtra(CommonData.KEY_DOCTOR_BEAN);
             doctorId = getIntent().getStringExtra(CommonData.KEY_DOCTOR_ID);
             isDealDoc = getIntent().getBooleanExtra(CommonData.KEY_IS_DEAL_DOC, false);
             isForbidChat = getIntent().getBooleanExtra(CommonData.KEY_IS_FORBID_CHAT, false);
         }
         if (isDealDoc) {
             ivTitleMore.setVisibility(View.VISIBLE);
-        } else {
+        }
+        else {
             ivTitleMore.setVisibility(View.GONE);
         }
         if (isForbidChat) {
             tvChat.setVisibility(View.GONE);
-        } else {
+        }
+        else {
             tvChat.setVisibility(View.VISIBLE);
         }
         if (!TextUtils.isEmpty(doctorId)) {
-            List<CooperateDocBean> list = DataSupport.where("doctorId = ?", doctorId)
-                    .find(CooperateDocBean.class);
+            List<CooperateDocBean> list = DataSupport.where("doctorId = ?", doctorId).find(CooperateDocBean.class);
             if (list != null && list.size() > 0) {
                 cooperateDocBean = list.get(0);
             }
         }
         if (cooperateDocBean == null) {
             getDocInfo();
-        } else {
+        }
+        else {
             initPageData();
         }
     }
@@ -141,14 +142,14 @@ public class UserInfoActivity extends BaseActivity {
             }
             if (6 == cooperateDocBean.getChecked()) {
                 Glide.with(this).load(R.mipmap.icon_certified).into(imgAuth);
-            } else {
+            }
+            else {
                 Glide.with(this).load(R.mipmap.icon_uncertified).into(imgAuth);
             }
-            if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) &&
-                    cooperateDocBean.getNickname().length() < 20) {
-                tvName.setText(
-                        cooperateDocBean.getNickname() + "(" + cooperateDocBean.getName() + ")");
-            } else {
+            if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) && cooperateDocBean.getNickname().length() < 20) {
+                tvName.setText(cooperateDocBean.getNickname() + "(" + cooperateDocBean.getName() + ")");
+            }
+            else {
                 tvName.setText(cooperateDocBean.getName());
             }
             tvHospital.setText(cooperateDocBean.getHospital());
@@ -169,8 +170,7 @@ public class UserInfoActivity extends BaseActivity {
      * 取消关注 合作医生
      */
     private void cancelCooperateDoc() {
-        mIRequest.cancelCooperateDoc(loginSuccessBean.getDoctorId(), cooperateDocBean.getDoctorId(),
-                this);
+        mIRequest.cancelCooperateDoc(loginSuccessBean.getDoctorId(), cooperateDocBean.getDoctorId(), this);
     }
 
     @Override
@@ -185,16 +185,16 @@ public class UserInfoActivity extends BaseActivity {
                     Intent intent = new Intent(this, ChatActivity.class);
                     intent.putExtra(CommonData.KEY_CHAT_ID, cooperateDocBean.getDoctorId());
                     if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) &&
-                            cooperateDocBean.getNickname().length() < 20) {
+                        cooperateDocBean.getNickname().length() < 20) {
                         intent.putExtra(CommonData.KEY_CHAT_NAME, cooperateDocBean.getNickname());
                         YihtApplication.getInstance().setEaseName(cooperateDocBean.getNickname());
-                    } else {
+                    }
+                    else {
                         intent.putExtra(CommonData.KEY_CHAT_NAME, cooperateDocBean.getName());
                         //存储临时数据
                         YihtApplication.getInstance().setEaseName(cooperateDocBean.getName());
                     }
-                    YihtApplication.getInstance()
-                            .setEaseHeadImgUrl(cooperateDocBean.getPortraitUrl());
+                    YihtApplication.getInstance().setEaseHeadImgUrl(cooperateDocBean.getPortraitUrl());
                     startActivity(intent);
                 }
                 break;
@@ -216,7 +216,7 @@ public class UserInfoActivity extends BaseActivity {
                     mPopupwinow.dismiss();
                 }
                 new SimpleDialog(this, "确定删除?", (dialog, which) -> cancelCooperateDoc(),
-                        (dialog, which) -> dialog.dismiss()).show();
+                                 (dialog, which) -> dialog.dismiss()).show();
                 break;
             case R.id.act_user_info_hospital_layout:
                 //                startActivity(new Intent(this, HospitalInfoActivity.class));
@@ -261,7 +261,8 @@ public class UserInfoActivity extends BaseActivity {
                     if (!TextUtils.isEmpty(remark)) {
                         tvName.setText(remark + "(" + cooperateDocBean.getName() + ")");
                         cooperateDocBean.setNickname(remark);
-                    } else {
+                    }
+                    else {
                         tvName.setText(cooperateDocBean.getName());
                         cooperateDocBean.setNickname(remark);
                     }
@@ -276,22 +277,21 @@ public class UserInfoActivity extends BaseActivity {
      * 显示pop
      */
     private void showPop() {
-        view_pop = LayoutInflater.from(this).inflate(R.layout.main_pop_menu, null);
-        tvOne = (TextView) view_pop.findViewById(R.id.txt_one);
-        tvTwo = (TextView) view_pop.findViewById(R.id.txt_two);
+        viewPop = LayoutInflater.from(this).inflate(R.layout.main_pop_menu, null);
+        tvOne = (TextView)viewPop.findViewById(R.id.txt_one);
+        tvTwo = (TextView)viewPop.findViewById(R.id.txt_two);
         tvOne.setText("设置备注");
         tvTwo.setText("删除");
         tvOne.setOnClickListener(this);
         tvTwo.setOnClickListener(this);
         if (mPopupwinow == null) {
             //新建一个popwindow
-            mPopupwinow = new PopupWindow(view_pop, LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT, true);
+            mPopupwinow = new PopupWindow(viewPop, LinearLayout.LayoutParams.WRAP_CONTENT,
+                                          LinearLayout.LayoutParams.WRAP_CONTENT, true);
         }
         mPopupwinow.setFocusable(true);
         mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mPopupwinow.setOutsideTouchable(true);
-        mPopupwinow.showAtLocation(view_pop, Gravity.TOP | Gravity.RIGHT, 0,
-                (int) AllUtils.dipToPx(this, 55));
+        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0, (int)AllUtils.dipToPx(this, 55));
     }
 }

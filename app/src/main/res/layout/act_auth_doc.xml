@@ -33,7 +33,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:background="@color/app_main_divideline"
+                android:background="@color/app_main_divide_line"
                 android:layout_height="1px" />
 
             <LinearLayout
@@ -125,7 +125,7 @@
                         <RelativeLayout
                             android:id="@+id/act_auth_doc_idcard_front_layout"
                             android:layout_width="125dp"
-                            android:background="@drawable/coner_small_gray_bg"
+                            android:background="@drawable/corner_small_gray_bg"
                             android:layout_centerVertical="true"
                             android:layout_height="85dp">
 
@@ -181,7 +181,7 @@
                         <RelativeLayout
                             android:id="@+id/act_auth_doc_idcard_back_layout"
                             android:layout_width="125dp"
-                            android:background="@drawable/coner_small_gray_bg"
+                            android:background="@drawable/corner_small_gray_bg"
                             android:layout_centerVertical="true"
                             android:layout_height="85dp">
 
@@ -242,7 +242,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:background="@color/app_main_divideline"
+                android:background="@color/app_main_divide_line"
                 android:layout_height="1px" />
 
             <LinearLayout
@@ -363,7 +363,7 @@
                         <RelativeLayout
                             android:id="@+id/act_auth_doc_doccard_front_layout"
                             android:layout_width="125dp"
-                            android:background="@drawable/coner_small_gray_bg"
+                            android:background="@drawable/corner_small_gray_bg"
                             android:layout_centerVertical="true"
                             android:layout_height="85dp">
 
@@ -419,7 +419,7 @@
                         <RelativeLayout
                             android:id="@+id/act_auth_doc_doccard_back_layout"
                             android:layout_width="125dp"
-                            android:background="@drawable/coner_small_gray_bg"
+                            android:background="@drawable/corner_small_gray_bg"
                             android:layout_centerVertical="true"
                             android:layout_height="85dp">
 

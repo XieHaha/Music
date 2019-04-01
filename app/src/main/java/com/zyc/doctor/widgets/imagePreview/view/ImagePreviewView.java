@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatImageView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
@@ -25,7 +26,6 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.ImageView;
 import android.widget.OverScroller;
 import android.widget.Scroller;
 
@@ -40,12 +40,10 @@ import com.zyc.doctor.utils.GlideHelper;
 import com.zyc.doctor.widgets.imagePreview.utils.CacheUtils;
 
 /**
- *
  * @author Kyle
  * @date 2015/10/20
  */
-public class ImagePreviewView extends ImageView {
-
+public class ImagePreviewView extends AppCompatImageView {
     private static final String DEBUG = "DEBUG";
     //
     // SuperMin and SuperMax multipliers. Determine how much the image can be
@@ -109,16 +107,14 @@ public class ImagePreviewView extends ImageView {
      */
     boolean isOpenLoadingAnimation = true;
     //------------  加载动画相关 END  ------------//
-
     //
     //-------------  图片加载缓存 BEGIN -------------//
     //
     /**
      * -1 不请求； 0 只请求大图，缓存大图； 1 请求大图，缓存大图小图； 2 请求大小图，缓存大小图
      */
-    private int LOAD_STATE = -1;
+    private int loadState = -1;
     //-------------  图片加载缓存 ENG -------------//
-
 
     /**
      * Constructors
@@ -143,20 +139,12 @@ public class ImagePreviewView extends ImageView {
         isBreak = false;
     }
 
-    public static boolean getIsBreak() {
-        return ImagePreviewView.isBreak;
-    }
-
-    public static void setIsBreak(boolean isBreak) {
-        ImagePreviewView.isBreak = isBreak;
-    }
-
-
-    public void loadingImageAsync(final String imgPath, final String smallUrl, final String bigUrl, final int position) {
+    public void loadingImageAsync(final String imgPath, final String smallUrl, final String bigUrl,
+            final int position) {
         if (!isBreak) {
             if (TextUtils.isEmpty(imgPath)) {
-                LOAD_STATE = CacheUtils.getInstance(getContext()).getCacheState(smallUrl, bigUrl);
-                switch (LOAD_STATE) {
+                loadState = CacheUtils.getInstance(getContext()).getCacheState(smallUrl, bigUrl);
+                switch (loadState) {
                     case 0:
                     case 2:
                         //URL相同，都为空，请求大图，显示默认背景
@@ -171,7 +159,8 @@ public class ImagePreviewView extends ImageView {
                         //URL不同，小图不空大图为空，请求大图，不显示默认背景
                         if (!isBigLoaded) {
                             setScaleType(ScaleType.CENTER_INSIDE);
-                            Bitmap bitmap = CacheUtils.getInstance(getContext()).getBitmapFromImageLoaderCache(smallUrl);
+                            Bitmap bitmap = CacheUtils.getInstance(getContext())
+                                                      .getBitmapFromImageLoaderCache(smallUrl);
                             Drawable smallDrawable = new BitmapDrawable(getResources(), bitmap);
                             setImageBitmap(bitmap);
                             loadImgAsync(bigUrl, smallDrawable);
@@ -179,10 +168,12 @@ public class ImagePreviewView extends ImageView {
                         break;
                     default://有大图缓存
                         setScaleType(ScaleType.FIT_CENTER);
-                        Drawable drawable = new BitmapDrawable(getResources(), CacheUtils.getInstance(getContext()).getBitmapFromCache(bigUrl));
+                        Drawable drawable = new BitmapDrawable(getResources(), CacheUtils.getInstance(getContext())
+                                                                                         .getBitmapFromCache(bigUrl));
                         loadImgAsync(bigUrl, drawable);
                 }
-            } else {
+            }
+            else {
                 loadImaLocal(imgPath);
             }
         }
@@ -197,38 +188,38 @@ public class ImagePreviewView extends ImageView {
      */
     private void loadImgAsync(final String bigUrl, Drawable drawable) {
         Drawable faildImg = ContextCompat.getDrawable(getContext(), R.mipmap.icon_load_faild_img);
-        options = new DisplayImageOptions.Builder()
-                .cacheOnDisk(true)
-                .cacheInMemory(true)
-                .showImageForEmptyUri(drawable)
-                .showImageOnFail(faildImg)
-                .showImageOnLoading(drawable)
-                .imageScaleType(ImageScaleType.EXACTLY)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .considerExifParams(true)
-                .build();
-
+        options = new DisplayImageOptions.Builder().cacheOnDisk(true)
+                                                   .cacheInMemory(true)
+                                                   .showImageForEmptyUri(drawable)
+                                                   .showImageOnFail(faildImg)
+                                                   .showImageOnLoading(drawable)
+                                                   .imageScaleType(ImageScaleType.EXACTLY)
+                                                   .bitmapConfig(Bitmap.Config.RGB_565)
+                                                   .considerExifParams(true)
+                                                   .build();
         ImageLoader.getInstance().displayImage(bigUrl, this, options, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
-                mHandler.sendEmptyMessage(0);//图片开始加载
+                //图片开始加载
+                mHandler.sendEmptyMessage(0);
             }
 
             @Override
             public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                mHandler.sendEmptyMessage(100);//图片加载失败
+                //图片加载失败
+                mHandler.sendEmptyMessage(100);
             }
 
             @Override
             public void onLoadingComplete(String imageUri, View view, final Bitmap loadedImage) {
-                mHandler.sendEmptyMessage(200);//图片加载成功
+                //图片加载成功
+                mHandler.sendEmptyMessage(200);
                 setScaleType(ScaleType.FIT_CENTER);
                 isBigLoaded = true;
             }
 
             @Override
             public void onLoadingCancelled(String imageUri, View view) {
-
             }
         });
     }
@@ -305,8 +296,8 @@ public class ImagePreviewView extends ImageView {
         }
         if (type == ScaleType.MATRIX) {
             super.setScaleType(ScaleType.MATRIX);
-
-        } else {
+        }
+        else {
             mScaleType = type;
             if (onDrawReady) {
                 //
@@ -343,7 +334,6 @@ public class ImagePreviewView extends ImageView {
         }
         PointF topLeft = transformCoordTouchToBitmap(0, 0, true);
         PointF bottomRight = transformCoordTouchToBitmap(viewWidth, viewHeight, true);
-
         float w = getDrawable().getIntrinsicWidth();
         float h = getDrawable().getIntrinsicHeight();
         return new RectF(topLeft.x / w, topLeft.y / h, bottomRight.x / w, bottomRight.y / h);
@@ -382,7 +372,7 @@ public class ImagePreviewView extends ImageView {
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         if (state instanceof Bundle) {
-            Bundle bundle = (Bundle) state;
+            Bundle bundle = (Bundle)state;
             normalizedScale = bundle.getFloat("saveScale");
             m = bundle.getFloatArray("matrix");
             prevMatrix.setValues(m);
@@ -394,7 +384,6 @@ public class ImagePreviewView extends ImageView {
             super.onRestoreInstanceState(bundle.getParcelable("instanceState"));
             return;
         }
-
         super.onRestoreInstanceState(state);
     }
 
@@ -404,7 +393,8 @@ public class ImagePreviewView extends ImageView {
         if (isBigLoaded) {
             imageRenderedAtLeastOnce = true;
             if (delayedZoomVariables != null) {
-                setZoom(delayedZoomVariables.scale, delayedZoomVariables.focusX, delayedZoomVariables.focusY, delayedZoomVariables.scaleType);
+                setZoom(delayedZoomVariables.scale, delayedZoomVariables.focusX, delayedZoomVariables.focusY,
+                        delayedZoomVariables.scaleType);
                 delayedZoomVariables = null;
             }
         }
@@ -517,7 +507,6 @@ public class ImagePreviewView extends ImageView {
             delayedZoomVariables = new ZoomVariables(scale, focusX, focusY, scaleType);
             return;
         }
-
         if (scaleType != mScaleType) {
             setScaleType(scaleType);
         }
@@ -559,7 +548,6 @@ public class ImagePreviewView extends ImageView {
         }
         int drawableWidth = drawable.getIntrinsicWidth();
         int drawableHeight = drawable.getIntrinsicHeight();
-
         PointF point = transformCoordTouchToBitmap(viewWidth / 2f, viewHeight / 2f, true);
         point.x /= drawableWidth;
         point.y /= drawableHeight;
@@ -585,10 +573,8 @@ public class ImagePreviewView extends ImageView {
         matrix.getValues(m);
         float transX = m[Matrix.MTRANS_X];
         float transY = m[Matrix.MTRANS_Y];
-
         float fixTransX = getFixTrans(transX, viewWidth, getImageWidth());
         float fixTransY = getFixTrans(transY, viewHeight, getImageHeight());
-
         if (fixTransX != 0 || fixTransY != 0) {
             matrix.postTranslate(fixTransX, fixTransY);
         }
@@ -607,7 +593,6 @@ public class ImagePreviewView extends ImageView {
         if (getImageWidth() < viewWidth) {
             m[Matrix.MTRANS_X] = (viewWidth - getImageWidth()) / 2;
         }
-
         if (getImageHeight() < viewHeight) {
             m[Matrix.MTRANS_Y] = (viewHeight - getImageHeight()) / 2;
         }
@@ -616,16 +601,14 @@ public class ImagePreviewView extends ImageView {
 
     private float getFixTrans(float trans, float viewSize, float contentSize) {
         float minTrans, maxTrans;
-
         if (contentSize <= viewSize) {
             minTrans = 0;
             maxTrans = viewSize - contentSize;
-
-        } else {
+        }
+        else {
             minTrans = viewSize - contentSize;
             maxTrans = 0;
         }
-
         if (trans < minTrans) {
             return -trans + minTrans;
         }
@@ -657,7 +640,6 @@ public class ImagePreviewView extends ImageView {
             setMeasuredDimension(0, 0);
             return;
         }
-
         int drawableWidth = drawable.getIntrinsicWidth();
         int drawableHeight = drawable.getIntrinsicHeight();
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
@@ -666,12 +648,10 @@ public class ImagePreviewView extends ImageView {
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         viewWidth = setViewSize(widthMode, widthSize, drawableWidth);
         viewHeight = setViewSize(heightMode, heightSize, drawableHeight);
-
         //
         // Set view dimensions
         //
         setMeasuredDimension(viewWidth, viewHeight);
-
         //
         // Fit content within view
         //
@@ -691,43 +671,33 @@ public class ImagePreviewView extends ImageView {
         if (matrix == null || prevMatrix == null) {
             return;
         }
-
         int drawableWidth = drawable.getIntrinsicWidth();
         int drawableHeight = drawable.getIntrinsicHeight();
-
         //
         // Scale image for view
         //
-        float scaleX = (float) viewWidth / drawableWidth;
-        float scaleY = (float) viewHeight / drawableHeight;
-
+        float scaleX = (float)viewWidth / drawableWidth;
+        float scaleY = (float)viewHeight / drawableHeight;
         switch (mScaleType) {
             case CENTER:
                 scaleX = scaleY = 1;
                 break;
-
             case CENTER_CROP:
                 scaleX = scaleY = Math.max(scaleX, scaleY);
                 break;
-
             case CENTER_INSIDE:
                 scaleX = scaleY = Math.min(1, Math.min(scaleX, scaleY));
-
             case FIT_CENTER:
                 scaleX = scaleY = Math.min(scaleX, scaleY);
                 break;
-
             case FIT_XY:
                 break;
-
             default:
                 //
                 // FIT_START and FIT_END not supported
                 //
                 throw new UnsupportedOperationException("TouchImageView does not support FIT_START or FIT_END");
-
         }
-
         //
         // Center the image
         //
@@ -742,8 +712,8 @@ public class ImagePreviewView extends ImageView {
             matrix.setScale(scaleX, scaleY);
             matrix.postTranslate(redundantXSpace / 2, redundantYSpace / 2);
             normalizedScale = 1;
-
-        } else {
+        }
+        else {
             //
             // These values should never be 0 or we will set viewWidth and viewHeight
             // to NaN in translateMatrixAfterRotate. To avoid this, call savePreviousImageValues
@@ -752,35 +722,31 @@ public class ImagePreviewView extends ImageView {
             if (prevMatchViewWidth == 0 || prevMatchViewHeight == 0) {
                 savePreviousImageValues();
             }
-
             prevMatrix.getValues(m);
-
             //
             // Rescale Matrix after rotation
             //
             m[Matrix.MSCALE_X] = matchViewWidth / drawableWidth * normalizedScale;
             m[Matrix.MSCALE_Y] = matchViewHeight / drawableHeight * normalizedScale;
-
             //
             // TransX and TransY from previous matrix
             //
             float transX = m[Matrix.MTRANS_X];
             float transY = m[Matrix.MTRANS_Y];
-
             //
             // Width
             //
             float prevActualWidth = prevMatchViewWidth * normalizedScale;
             float actualWidth = getImageWidth();
-            translateMatrixAfterRotate(Matrix.MTRANS_X, transX, prevActualWidth, actualWidth, prevViewWidth, viewWidth, drawableWidth);
-
+            translateMatrixAfterRotate(Matrix.MTRANS_X, transX, prevActualWidth, actualWidth, prevViewWidth, viewWidth,
+                                       drawableWidth);
             //
             // Height
             //
             float prevActualHeight = prevMatchViewHeight * normalizedScale;
             float actualHeight = getImageHeight();
-            translateMatrixAfterRotate(Matrix.MTRANS_Y, transY, prevActualHeight, actualHeight, prevViewHeight, viewHeight, drawableHeight);
-
+            translateMatrixAfterRotate(Matrix.MTRANS_Y, transY, prevActualHeight, actualHeight, prevViewHeight,
+                                       viewHeight, drawableHeight);
             //
             // Set the matrix to the adjusted scale and translate values.
             //
@@ -804,15 +770,12 @@ public class ImagePreviewView extends ImageView {
             case MeasureSpec.EXACTLY:
                 viewSize = size;
                 break;
-
             case MeasureSpec.AT_MOST:
                 viewSize = Math.min(drawableWidth, size);
                 break;
-
             case MeasureSpec.UNSPECIFIED:
                 viewSize = drawableWidth;
                 break;
-
             default:
                 viewSize = size;
                 break;
@@ -832,20 +795,21 @@ public class ImagePreviewView extends ImageView {
      * @param viewSize      width/height of view after rotation
      * @param drawableSize  width/height of drawable
      */
-    private void translateMatrixAfterRotate(int axis, float trans, float prevImageSize, float imageSize, int prevViewSize, int viewSize, int drawableSize) {
+    private void translateMatrixAfterRotate(int axis, float trans, float prevImageSize, float imageSize,
+            int prevViewSize, int viewSize, int drawableSize) {
         if (imageSize < viewSize) {
             //
             // The width/height of image is less than the view's width/height. Center it.
             //
             m[axis] = (viewSize - (drawableSize * m[Matrix.MSCALE_X])) * 0.5f;
-
-        } else if (trans > 0) {
+        }
+        else if (trans > 0) {
             //
             // The image is larger than the view, but was not before rotation. Center it.
             //
             m[axis] = -((imageSize - viewSize) * 0.5f);
-
-        } else {
+        }
+        else {
             //
             // Find the area of the image which was previously centered in the view. Determine its distance
             // from the left/top side of the view as a fraction of the entire image's width/height. Use that percentage
@@ -868,17 +832,15 @@ public class ImagePreviewView extends ImageView {
     public boolean canScrollHorizontally(int direction) {
         matrix.getValues(m);
         float x = m[Matrix.MTRANS_X];
-
         if (getImageWidth() < viewWidth) {
             return false;
-
-        } else if (x >= -1 && direction < 0) {
-            return false;
-
-        } else if (Math.abs(x) + viewWidth + 1 >= getImageWidth() && direction > 0) {
+        }
+        else if (x >= -1 && direction < 0) {
             return false;
         }
-
+        else if (Math.abs(x) + viewWidth + 1 >= getImageWidth() && direction > 0) {
+            return false;
+        }
         return true;
     }
 
@@ -889,7 +851,6 @@ public class ImagePreviewView extends ImageView {
      * @author Ortiz
      */
     private class GestureListener extends GestureDetector.SimpleOnGestureListener {
-
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
             if (doubleTapListener != null) {
@@ -912,7 +873,7 @@ public class ImagePreviewView extends ImageView {
                 //
                 fling.cancelFling();
             }
-            fling = new Fling((int) velocityX, (int) velocityY);
+            fling = new Fling((int)velocityX, (int)velocityY);
             compatPostOnAnimation(fling);
             return super.onFling(e1, e2, velocityX, velocityY);
         }
@@ -954,7 +915,6 @@ public class ImagePreviewView extends ImageView {
      * @author Ortiz
      */
     private class PrivateOnTouchListener implements OnTouchListener {
-
         //
         // Remember last point position for dragging
         //
@@ -965,7 +925,6 @@ public class ImagePreviewView extends ImageView {
             mScaleDetector.onTouchEvent(event);
             mGestureDetector.onTouchEvent(event);
             PointF curr = new PointF(event.getX(), event.getY());
-
             if (state == State.NONE || state == State.DRAG || state == State.FLING) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
@@ -975,7 +934,6 @@ public class ImagePreviewView extends ImageView {
                         }
                         setState(State.DRAG);
                         break;
-
                     case MotionEvent.ACTION_MOVE:
                         if (state == State.DRAG) {
                             float deltaX = curr.x - last.x;
@@ -987,30 +945,27 @@ public class ImagePreviewView extends ImageView {
                             last.set(curr.x, curr.y);
                         }
                         break;
-
                     case MotionEvent.ACTION_UP:
                     case MotionEvent.ACTION_POINTER_UP:
                         setState(State.NONE);
                         break;
+                    default:
+                        break;
                 }
             }
-
             setImageMatrix(matrix);
-
             //
             // User-defined OnTouchListener
             //
             if (userTouchListener != null) {
                 userTouchListener.onTouch(v, event);
             }
-
             //
             // OnTouchImageViewListener is set: TouchImageView dragged by user.
             //
             if (touchImageViewListener != null) {
                 touchImageViewListener.onMove();
             }
-
             //
             // indicate event was handled
             //
@@ -1053,12 +1008,11 @@ public class ImagePreviewView extends ImageView {
             if (normalizedScale > maxScale) {
                 targetZoom = maxScale;
                 animateToZoomBoundary = true;
-
-            } else if (normalizedScale < minScale) {
+            }
+            else if (normalizedScale < minScale) {
                 targetZoom = minScale;
                 animateToZoomBoundary = true;
             }
-
             if (animateToZoomBoundary) {
                 DoubleTapZoom doubleTap = new DoubleTapZoom(targetZoom, viewWidth / 2, viewHeight / 2, true);
                 compatPostOnAnimation(doubleTap);
@@ -1074,28 +1028,26 @@ public class ImagePreviewView extends ImageView {
     }
 
     private void scaleImage(double deltaScale, float focusX, float focusY, boolean stretchImageToSuper) {
-
         float lowerScale, upperScale;
         if (stretchImageToSuper) {
             lowerScale = superMinScale;
             upperScale = superMaxScale;
-
-        } else {
+        }
+        else {
             lowerScale = minScale;
             upperScale = maxScale;
         }
-
         float origScale = normalizedScale;
         normalizedScale *= deltaScale;
         if (normalizedScale > upperScale) {
             normalizedScale = upperScale;
             deltaScale = upperScale / origScale;
-        } else if (normalizedScale < lowerScale) {
+        }
+        else if (normalizedScale < lowerScale) {
             normalizedScale = lowerScale;
             deltaScale = lowerScale / origScale;
         }
-
-        matrix.postScale((float) deltaScale, (float) deltaScale, focusX, focusY);
+        matrix.postScale((float)deltaScale, (float)deltaScale, focusX, focusY);
         fixScaleTrans();
     }
 
@@ -1106,7 +1058,6 @@ public class ImagePreviewView extends ImageView {
      * @author Ortiz
      */
     private class DoubleTapZoom implements Runnable {
-
         private long startTime;
         private static final float ZOOM_TIME = 500;
         private float startZoom, targetZoom;
@@ -1125,7 +1076,6 @@ public class ImagePreviewView extends ImageView {
             PointF bitmapPoint = transformCoordTouchToBitmap(focusX, focusY, false);
             this.bitmapX = bitmapPoint.x;
             this.bitmapY = bitmapPoint.y;
-
             //
             // Used for translating image during scaling
             //
@@ -1141,7 +1091,6 @@ public class ImagePreviewView extends ImageView {
             translateImageToCenterTouchPosition(t);
             fixScaleTrans();
             setImageMatrix(matrix);
-
             //
             // OnTouchImageViewListener is set: double tap runnable updates listener
             // with every frame.
@@ -1149,14 +1098,13 @@ public class ImagePreviewView extends ImageView {
             if (touchImageViewListener != null) {
                 touchImageViewListener.onMove();
             }
-
             if (t < 1f) {
                 //
                 // We haven't finished zooming
                 //
                 compatPostOnAnimation(this);
-
-            } else {
+            }
+            else {
                 //
                 // Finished zooming
                 //
@@ -1169,7 +1117,7 @@ public class ImagePreviewView extends ImageView {
          * the image so that the point that is touched is what ends up centered at the end
          * of the zoom.
          *
-         * @param t
+         * @param t a
          */
         private void translateImageToCenterTouchPosition(float t) {
             float targetX = startTouch.x + t * (endTouch.x - startTouch.x);
@@ -1181,7 +1129,7 @@ public class ImagePreviewView extends ImageView {
         /**
          * Use interpolator to getObject t
          *
-         * @return
+         * @return a
          */
         private float interpolate() {
             long currTime = System.currentTimeMillis();
@@ -1194,8 +1142,8 @@ public class ImagePreviewView extends ImageView {
          * Interpolate the current targeted zoom and getObject the delta
          * from the current zoom.
          *
-         * @param t
-         * @return
+         * @param t a
+         * @return a
          */
         private double calculateDeltaScale(float t) {
             double zoom = startZoom + t * (targetZoom - startZoom);
@@ -1221,12 +1169,10 @@ public class ImagePreviewView extends ImageView {
         float transY = m[Matrix.MTRANS_Y];
         float finalX = ((x - transX) * origW) / getImageWidth();
         float finalY = ((y - transY) * origH) / getImageHeight();
-
         if (clipToBitmap) {
             finalX = Math.min(Math.max(finalX, 0), origW);
             finalY = Math.min(Math.max(finalY, 0), origH);
         }
-
         return new PointF(finalX, finalY);
     }
 
@@ -1257,7 +1203,6 @@ public class ImagePreviewView extends ImageView {
      * @author Ortiz
      */
     private class Fling implements Runnable {
-
         CompatScroller scroller;
         int currX, currY;
 
@@ -1265,43 +1210,37 @@ public class ImagePreviewView extends ImageView {
             setState(State.FLING);
             scroller = new CompatScroller(context);
             matrix.getValues(m);
-
-            int startX = (int) m[Matrix.MTRANS_X];
-            int startY = (int) m[Matrix.MTRANS_Y];
+            int startX = (int)m[Matrix.MTRANS_X];
+            int startY = (int)m[Matrix.MTRANS_Y];
             int minX, maxX, minY, maxY;
-
             if (getImageWidth() > viewWidth) {
-                minX = viewWidth - (int) getImageWidth();
+                minX = viewWidth - (int)getImageWidth();
                 maxX = 0;
-
-            } else {
+            }
+            else {
                 minX = maxX = startX;
             }
-
             if (getImageHeight() > viewHeight) {
-                minY = viewHeight - (int) getImageHeight();
+                minY = viewHeight - (int)getImageHeight();
                 maxY = 0;
-
-            } else {
+            }
+            else {
                 minY = maxY = startY;
             }
-
-            scroller.fling(startX, startY, (int) velocityX, (int) velocityY, minX,
-                    maxX, minY, maxY);
+            scroller.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY);
             currX = startX;
             currY = startY;
         }
 
-        public void cancelFling() {
+        private void cancelFling() {
             if (scroller != null) {
                 setState(State.NONE);
-                scroller.forceFinished(true);
+                scroller.forceFinished();
             }
         }
 
         @Override
         public void run() {
-
             //
             // OnTouchImageViewListener is set: TouchImageView listener has been flung by user.
             // Listener runnable updated with each frame of fling animation.
@@ -1309,12 +1248,10 @@ public class ImagePreviewView extends ImageView {
             if (touchImageViewListener != null) {
                 touchImageViewListener.onMove();
             }
-
             if (scroller.isFinished()) {
                 scroller = null;
                 return;
             }
-
             if (scroller.computeScrollOffset()) {
                 int newX = scroller.getCurrX();
                 int newY = scroller.getCurrY();
@@ -1336,62 +1273,63 @@ public class ImagePreviewView extends ImageView {
         OverScroller overScroller;
         boolean isPreGingerbread;
 
-        public CompatScroller(Context context) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) {
-                isPreGingerbread = true;
-                scroller = new Scroller(context);
-
-            } else {
-                isPreGingerbread = false;
-                overScroller = new OverScroller(context);
-            }
+        private CompatScroller(Context context) {
+            isPreGingerbread = false;
+            overScroller = new OverScroller(context);
         }
 
-        public void fling(int startX, int startY, int velocityX, int velocityY, int minX, int maxX, int minY, int maxY) {
+        private void fling(int startX, int startY, int velocityX, int velocityY, int minX, int maxX, int minY,
+                int maxY) {
             if (isPreGingerbread) {
                 scroller.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY);
-            } else {
+            }
+            else {
                 overScroller.fling(startX, startY, velocityX, velocityY, minX, maxX, minY, maxY);
             }
         }
 
-        public void forceFinished(boolean finished) {
+        private void forceFinished() {
             if (isPreGingerbread) {
-                scroller.forceFinished(finished);
-            } else {
-                overScroller.forceFinished(finished);
+                scroller.forceFinished(true);
+            }
+            else {
+                overScroller.forceFinished(true);
             }
         }
 
-        public boolean isFinished() {
+        private boolean isFinished() {
             if (isPreGingerbread) {
                 return scroller.isFinished();
-            } else {
+            }
+            else {
                 return overScroller.isFinished();
             }
         }
 
-        public boolean computeScrollOffset() {
+        private boolean computeScrollOffset() {
             if (isPreGingerbread) {
                 return scroller.computeScrollOffset();
-            } else {
+            }
+            else {
                 overScroller.computeScrollOffset();
                 return overScroller.computeScrollOffset();
             }
         }
 
-        public int getCurrX() {
+        private int getCurrX() {
             if (isPreGingerbread) {
                 return scroller.getCurrX();
-            } else {
+            }
+            else {
                 return overScroller.getCurrX();
             }
         }
 
-        public int getCurrY() {
+        private int getCurrY() {
             if (isPreGingerbread) {
                 return scroller.getCurrY();
-            } else {
+            }
+            else {
                 return overScroller.getCurrY();
             }
         }
@@ -1401,19 +1339,19 @@ public class ImagePreviewView extends ImageView {
     private void compatPostOnAnimation(Runnable runnable) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             postOnAnimation(runnable);
-
-        } else {
+        }
+        else {
             postDelayed(runnable, 1000 / 60);
         }
     }
 
     private class ZoomVariables {
-        public float scale;
-        public float focusX;
-        public float focusY;
-        public ScaleType scaleType;
+        private float scale;
+        private float focusX;
+        private float focusY;
+        private ScaleType scaleType;
 
-        public ZoomVariables(float scale, float focusX, float focusY, ScaleType scaleType) {
+        private ZoomVariables(float scale, float focusX, float focusY, ScaleType scaleType) {
             this.scale = scale;
             this.focusX = focusX;
             this.focusY = focusY;
@@ -1423,12 +1361,7 @@ public class ImagePreviewView extends ImageView {
 
     public void clickFinish() {
         isBreak = true;
-        ((Activity) getContext()).finish();
-        ((Activity) getContext()).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-    }
-
-    private void printMatrixInfo() {
-        float[] n = new float[9];
-        matrix.getValues(n);
+        ((Activity)getContext()).finish();
+        ((Activity)getContext()).overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 }

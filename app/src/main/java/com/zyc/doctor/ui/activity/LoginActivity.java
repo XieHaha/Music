@@ -71,7 +71,7 @@ public class LoginActivity extends BaseActivity
     /**
      * 是否获取过验证码
      */
-    private boolean IS_SEND_VERIFY_CODE = false;
+    private boolean isSendVerifyCode = false;
     private static final int MAX_RESEND_TIME = 60;
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
@@ -202,7 +202,7 @@ public class LoginActivity extends BaseActivity
      * 登录 注册
      */
     private void loginAndRegister() {
-        //                if (!IS_SEND_VERIFY_CODE) {
+        //                if (!isSendVerifyCode) {
         //                    ToastUtil.toast(this, R.string.toast_txt_get_verifycoder_error);
         //                    return;
         //                }
@@ -273,7 +273,7 @@ public class LoginActivity extends BaseActivity
         super.onResponseSuccess(task, response);
         switch (task) {
             case GET_VERIFY_CODE:
-                IS_SEND_VERIFY_CODE = true;
+                isSendVerifyCode = true;
                 ToastUtil.toast(this, R.string.toast_txt_verifycode_success);
                 time = MAX_RESEND_TIME;
                 //org.apache.commons.lang3.concurrent.BasicThreadFactory

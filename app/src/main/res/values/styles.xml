@@ -36,17 +36,10 @@
         <item name="android:windowActionBar">false</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowAnimationStyle">@style/activitystyle</item>
-        <!--添加此属性 会导致activity转场动画执行时看到桌面背景-->
-        <!--<item name="android:windowIsTranslucent">true</item>-->
     </style>
 
     <style name="AppFullScreenTheme" parent="BaseAppTheme">
         <item name="android:windowNoTitle">true</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <!--windowTranslucentNavigation这个属性设置成true，则navigationBarColor设置会失效-->
-        <!--<item name="android:windowTranslucentNavigation">true</item>-->
-        <!--<item name="android:windowTranslucentStatus">true</item>-->
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowBackground">@mipmap/img_splash</item>
     </style>
@@ -88,7 +81,7 @@
     <style name="LineHorizontalStyle_Main">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/app_hei_line</item>
-        <item name="android:background">@color/app_main_divideline</item>
+        <item name="android:background">@color/app_main_divide_line</item>
     </style>
 
     <!---次要分割线->横 -->

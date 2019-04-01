@@ -21,7 +21,7 @@ import com.zyc.doctor.http.data.TransPatientBean;
 import com.zyc.doctor.ui.activity.ApplyPatientActivity;
 import com.zyc.doctor.ui.activity.TransferPatientActivity;
 import com.zyc.doctor.ui.adapter.TransPatientsListAdapter;
-import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.base.fragment.BaseFragment;
 import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
 import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
@@ -32,14 +32,13 @@ import java.util.List;
 import butterknife.BindView;
 
 /**
- *
  * @author dundun
  * @date 18/10/11
  * 合作医生转给我的
  */
 public class TransferPatientFromFragment extends BaseFragment
         implements LoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
-        BaseRecyclerAdapter.OnItemClickListener<TransPatientBean> {
+                   BaseRecyclerAdapter.OnItemClickListener<TransPatientBean> {
     @BindView(R.id.act_patients_recycler_view)
     AutoLoadRecyclerView autoLoadRecyclerView;
     @BindView(R.id.act_patients_swipe_layout)
@@ -79,10 +78,8 @@ public class TransferPatientFromFragment extends BaseFragment
         super.initView(view, savedInstanceState);
         footerView = LayoutInflater.from(getContext()).inflate(R.layout.view_list_footerr, null);
         tvFooterHintTxt = footerView.findViewById(R.id.footer_hint_txt);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                android.R.color.holo_red_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_green_light);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
+                                                   android.R.color.holo_orange_light, android.R.color.holo_green_light);
     }
 
     @Override
@@ -146,17 +143,21 @@ public class TransferPatientFromFragment extends BaseFragment
                 patientBeanList = response.getData();
                 if (page == 0) {
                     patientsListAdapter.setList(patientBeanList);
-                } else {
+                }
+                else {
                     patientsListAdapter.addList(patientBeanList);
                 }
                 patientsListAdapter.notifyDataSetChanged();
                 if (patientBeanList.size() < PAGE_SIZE) {
                     tvFooterHintTxt.setText("暂无更多数据");
                     autoLoadRecyclerView.loadFinish(false);
-                } else {
+                }
+                else {
                     tvFooterHintTxt.setText("上拉加载更多");
                     autoLoadRecyclerView.loadFinish(true);
                 }
+                break;
+            default:
                 break;
         }
     }
@@ -197,7 +198,8 @@ public class TransferPatientFromFragment extends BaseFragment
             case REQUEST_CODE_STATUS_CHANGE:
                 getPatientFromList();
                 break;
+            default:
+                break;
         }
     }
-
 }

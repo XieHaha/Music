@@ -28,9 +28,8 @@ public class ScreenUtils {
      * @return
      */
     public static int getScreenWidth(Context context) {
-        if (context == null) return 0;
-        WindowManager wm = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
+        if (context == null) { return 0; }
+        WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics outMetrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(outMetrics);
         return outMetrics.widthPixels;
@@ -43,9 +42,8 @@ public class ScreenUtils {
      * @return
      */
     public static int getScreenHeight(Context context) {
-        if (context == null) return 0;
-        WindowManager wm = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
+        if (context == null) { return 0; }
+        WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics outMetrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(outMetrics);
         return outMetrics.heightPixels;
@@ -58,9 +56,8 @@ public class ScreenUtils {
      * @return
      */
     public static float getScreenDensity(Context context) {
-        if (context == null) return 0;
-        WindowManager wm = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
+        if (context == null) { return 0; }
+        WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics outMetrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(outMetrics);
         return outMetrics.density;
@@ -71,17 +68,16 @@ public class ScreenUtils {
      */
     public static int getVirtualBarHeigh(Context context) {
         int vh = 0;
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
         Display display = windowManager.getDefaultDisplay();
         DisplayMetrics dm = new DisplayMetrics();
         try {
-            @SuppressWarnings("rawtypes")
-            Class c = Class.forName("android.view.Display");
-            @SuppressWarnings("unchecked")
-            Method method = c.getMethod("getRealMetrics", DisplayMetrics.class);
+            @SuppressWarnings("rawtypes") Class c = Class.forName("android.view.Display");
+            @SuppressWarnings("unchecked") Method method = c.getMethod("getRealMetrics", DisplayMetrics.class);
             method.invoke(display, dm);
             vh = dm.heightPixels - getScreenHeight(context);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
         return vh;
@@ -100,7 +96,6 @@ public class ScreenUtils {
                 //获取root在窗体的可视区域
                 root.getWindowVisibleDisplayFrame(rect);
                 //获取root在窗体的不可视区域高度(被其他View遮挡的区域高度)
-
                 int rootInvisibleHeight = root.getRootView().getHeight() - rect.bottom - getVirtualBarHeigh(context);
                 //若不可视区域高度大于100，则键盘显示
                 if (rootInvisibleHeight > 100) {
@@ -112,7 +107,8 @@ public class ScreenUtils {
                     if (rootInvisibleHeight > root.getRootView().getHeight() - loc[1] - loc[3]) {
                         root.scrollTo(0, srollHeight);
                     }
-                } else {
+                }
+                else {
                     //键盘隐藏
                     root.scrollTo(0, 0);
                 }
@@ -136,6 +132,4 @@ public class ScreenUtils {
         loc[3] = v.getHeight();
         return loc;
     }
-
-
 }

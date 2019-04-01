@@ -135,9 +135,9 @@ public class LogUtils {
      */
     private static void writeLogToFile(String mylogtype, String tag, String text) {
         if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) { return; }
-        Date nowtime = new Date();
-        String needWriteFile = logfile.format(nowtime);
-        String needWriteMessage = mLogSdf.format(nowtime) + "    " + mylogtype + "    " + tag + "    " + text;
+        Date nowTime = new Date();
+        String needWriteFile = logfile.format(nowTime);
+        String needWriteMessage = mLogSdf.format(nowTime) + "    " + mylogtype + "    " + tag + "    " + text;
         String pathLog = DirHelper.getPathLog();
         File file = new File(pathLog);
         if (!file.exists() && !file.mkdirs()) { return; }

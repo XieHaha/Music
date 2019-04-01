@@ -23,14 +23,14 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
 
+import com.zyc.doctor.http.data.NormImgSize;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import com.zyc.doctor.http.data.NormImgSize;
 
 
 /**
@@ -167,9 +167,9 @@ public class BitmapUtil {
             } else {
                 String[] projection = {MediaStore.Images.Media.DATA};
                 Cursor cursor = context.getContentResolver().query(contentURI, projection, null, null, null);
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 cursor.moveToFirst();
-                result = cursor.getString(column_index);
+                result = cursor.getString(columnIndex);
             }
         }
         return result;
@@ -190,7 +190,7 @@ public class BitmapUtil {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
         float roundPx;
-        float left, top, right, bottom, dst_left, dst_top, dst_right, dst_bottom;
+        float left, top, right, bottom, dstLeft, dstTop, dstRight, dstBottom;
         if (width <= height) {
             roundPx = width / 2f;
             top = 0;
@@ -198,10 +198,10 @@ public class BitmapUtil {
             left = 0;
             right = width;
             height = width;
-            dst_left = 0;
-            dst_top = 0;
-            dst_right = width;
-            dst_bottom = width;
+            dstLeft = 0;
+            dstTop = 0;
+            dstRight = width;
+            dstBottom = width;
         } else {
             roundPx = height / 2f;
             float clip = (width - height) / 2f;
@@ -210,10 +210,10 @@ public class BitmapUtil {
             top = 0;
             bottom = height;
             width = height;
-            dst_left = 0;
-            dst_top = 0;
-            dst_right = height;
-            dst_bottom = height;
+            dstLeft = 0;
+            dstTop = 0;
+            dstRight = height;
+            dstBottom = height;
         }
         Bitmap output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
@@ -221,8 +221,8 @@ public class BitmapUtil {
         final Paint paint = new Paint();
         final Rect src = new Rect((int) left, (int) top, (int) right,
                 (int) bottom);
-        final Rect dst = new Rect((int) dst_left, (int) dst_top,
-                (int) dst_right, (int) dst_bottom);
+        final Rect dst = new Rect((int) dstLeft, (int) dstTop,
+                (int) dstRight, (int) dstBottom);
         final RectF rectF = new RectF(dst);
         paint.setAntiAlias(true);
         canvas.drawARGB(0, 0, 0, 0);
@@ -355,8 +355,8 @@ public class BitmapUtil {
         int w = bitmap.getWidth();
         int h = bitmap.getHeight();
         System.out.println(w + " " + h);
-        // savePNG_After(bitmap,path);
-        saveJPGE_After(bitmap, path);
+        // savePngAfter(bitmap,path);
+        saveJpegAfter(bitmap, path);
     }
 
     /**
@@ -365,7 +365,7 @@ public class BitmapUtil {
      * @param bitmap
      * @param name
      */
-    public static void savePNG_After(Bitmap bitmap, String name) {
+    public static void savePngAfter(Bitmap bitmap, String name) {
         File file = new File(name);
         try {
             FileOutputStream out = new FileOutputStream(file);
@@ -386,7 +386,7 @@ public class BitmapUtil {
      * @param bitmap
      * @param path
      */
-    public static void saveJPGE_After(Bitmap bitmap, String path) {
+    public static void saveJpegAfter(Bitmap bitmap, String path) {
         File file = new File(path);
         try {
             FileOutputStream out = new FileOutputStream(file);

@@ -18,8 +18,17 @@ import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
+import com.zyc.doctor.http.data.BaseNetCode;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.data.HttpConstants;
+import com.zyc.doctor.http.data.RegistrationBean;
 import com.zyc.doctor.ui.adapter.RegistrationListAdapter;
+import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.LogUtils;
+import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
+import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,15 +39,6 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.RegistrationBean;
-import com.zyc.doctor.http.data.BaseNetCode;
-import com.zyc.doctor.http.data.HttpConstants;
-import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
-import com.zyc.doctor.utils.ToastUtil;
-import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
-import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
  * 已完成的报告

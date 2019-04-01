@@ -11,44 +11,44 @@ public final class GlideHelper {
     /**
      * 医生
      */
-    public static final RequestOptions options = new RequestOptions();
+    public static final RequestOptions OPTIONS = new RequestOptions();
     /**
      * 患者
      */
-    public static final RequestOptions optionsP = new RequestOptions();
+    public static final RequestOptions OPTIONS_P = new RequestOptions();
     /**
      * 图片
      */
-    public static final RequestOptions optionsPic = new RequestOptions();
+    public static final RequestOptions OPTIONS_PIC = new RequestOptions();
     /**
      * 图片
      */
-    public static final RequestOptions optionsHospitalPic = new RequestOptions();
+    public static final RequestOptions OPTIONS_HOSPITAL_PIC = new RequestOptions();
 
     public static RequestOptions getOptions() {
-        return options.centerCrop()
-                      .placeholder(R.mipmap.icon_default_imgs)
-                      .error(R.mipmap.icon_default_imgs)
+        return OPTIONS.centerCrop()
+                      .placeholder(R.mipmap.icon_default_img)
+                      .error(R.mipmap.icon_default_img)
                       .priority(Priority.NORMAL);
     }
 
     public static RequestOptions getOptionsP() {
-        return optionsP.centerCrop()
-                       .placeholder(R.mipmap.icon_patient_default_imgs)
-                       .error(R.mipmap.icon_patient_default_imgs)
-                       .priority(Priority.NORMAL);
+        return OPTIONS_P.centerCrop()
+                        .placeholder(R.mipmap.icon_patient_default_img)
+                        .error(R.mipmap.icon_patient_default_img)
+                        .priority(Priority.NORMAL);
     }
 
     public static RequestOptions getOptionsPic() {
-        return optionsPic.placeholder(R.mipmap.icon_loading_img)
-                         .error(R.mipmap.icon_load_faild_img)
-                         .priority(Priority.NORMAL);
+        return OPTIONS_PIC.placeholder(R.mipmap.icon_loading_img)
+                          .error(R.mipmap.icon_load_faild_img)
+                          .priority(Priority.NORMAL);
     }
 
     public static RequestOptions getOptionsHospitalPic() {
-        return optionsHospitalPic.centerCrop()
-                                 .placeholder(R.mipmap.icon_hospital_default)
-                                 .error(R.mipmap.icon_hospital_default)
-                                 .priority(Priority.NORMAL);
+        return OPTIONS_HOSPITAL_PIC.centerCrop()
+                                   .placeholder(R.mipmap.icon_hospital_default)
+                                   .error(R.mipmap.icon_hospital_default)
+                                   .priority(Priority.NORMAL);
     }
 }

@@ -9,16 +9,17 @@ import android.widget.TextView;
 
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.TransferStatu;
+import com.zyc.doctor.http.data.TransPatientBean;
+import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
 import com.zyc.doctor.utils.AllUtils;
 
 import java.util.List;
 
-import com.zyc.doctor.http.data.TransPatientBean;
-import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
-import com.zyc.doctor.ui.base.adapter.BaseViewHolder;
-
 /**
- * Created by dundun on 18/7/14.
+ *
+ * @author dundun
+ * @date 18/7/14
  * 患者开单记录适配器
  */
 public class TransferInfoAdapter extends BaseRecyclerAdapter<TransPatientBean>

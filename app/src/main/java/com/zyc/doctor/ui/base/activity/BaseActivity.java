@@ -434,11 +434,11 @@ public abstract class BaseActivity<T> extends FragmentActivity
      * 把json转换成基础响应对象列表类
      */
     public final BaseResponse praseBaseResponseList(JSONObject jsonObject, Class<T> classOfT) throws JSONException {
-        BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(EntityCode))
-                                                      .setMsg(jsonObject.optString(EntityMsg));
+        BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(ENTITY_CODE))
+                                                      .setMsg(jsonObject.optString(ENTITY_MSG));
         List<T> list = new ArrayList<>();
-        if (jsonObject.opt(EntityData) != null) {
-            JSONArray jsonArray = jsonObject.optJSONArray(EntityData);
+        if (jsonObject.opt(ENTITY_DATA) != null) {
+            JSONArray jsonArray = jsonObject.optJSONArray(ENTITY_DATA);
             if (jsonArray != null) {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     try {
@@ -463,28 +463,28 @@ public abstract class BaseActivity<T> extends FragmentActivity
         Object data = null;
         if (classOfT != null) {
             if (classOfT == String.class) {
-                data = jsonObject.optString(EntityData);
+                data = jsonObject.optString(ENTITY_DATA);
             }
             else {
-                if (jsonObject.opt(EntityData) != null) {
+                if (jsonObject.opt(ENTITY_DATA) != null) {
                     try {
-                        data = JSON.parseObject(jsonObject.optString(EntityData), classOfT);
+                        data = JSON.parseObject(jsonObject.optString(ENTITY_DATA), classOfT);
                     }
                     catch (Exception e) {
                     }
                 }
             }
         }
-        BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(EntityCode))
-                                                      .setMsg(jsonObject.optString(EntityMsg))
+        BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(ENTITY_CODE))
+                                                      .setMsg(jsonObject.optString(ENTITY_MSG))
                                                       .setData(data);
         return baseResponse;
     }
 
     //=============================================请求辅助方法==============================
-    protected static final String EntityData = "data";
-    protected static final String EntityCode = "code";
-    protected static final String EntityMsg = "msg";
+    protected static final String ENTITY_DATA = "data";
+    protected static final String ENTITY_CODE = "code";
+    protected static final String ENTITY_MSG = "msg";
 
     //    --------------------------------权限申请--------------------------//
     @Override

@@ -12,27 +12,28 @@ import android.widget.TextView;
 
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.data.TransPatientBean;
 import com.zyc.doctor.ui.adapter.TransPatientsListAdapter;
+import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
+import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.TransPatientBean;
-import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
-import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
-import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
- * Created by dundun on 18/10/11.
+ * @author dundun
+ * @date 18/10/11
  * 合作医生转给我的
  */
 public class TransferPatientFromActivity extends BaseActivity
         implements LoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
-        BaseRecyclerAdapter.OnItemClickListener<TransPatientBean> {
+                   BaseRecyclerAdapter.OnItemClickListener<TransPatientBean> {
     @BindView(R.id.act_patients_recycler_view)
     AutoLoadRecyclerView autoLoadRecyclerView;
     @BindView(R.id.act_patients_swipe_layout)
@@ -70,13 +71,11 @@ public class TransferPatientFromActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("转给我的患者");
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("转给我的患者");
         footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
         tvFooterHintTxt = footerView.findViewById(R.id.footer_hint_txt);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                android.R.color.holo_red_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_green_light);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
+                                                   android.R.color.holo_orange_light, android.R.color.holo_green_light);
     }
 
     @Override
@@ -88,8 +87,7 @@ public class TransferPatientFromActivity extends BaseActivity
     public void initListener() {
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
-        autoLoadRecyclerView.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        autoLoadRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         patientsListAdapter = new TransPatientsListAdapter(this, new ArrayList<>());
         patientsListAdapter.addFooterView(footerView);
@@ -145,14 +143,16 @@ public class TransferPatientFromActivity extends BaseActivity
                 patientBeanList = response.getData();
                 if (page == 0) {
                     patientsListAdapter.setList(patientBeanList);
-                } else {
+                }
+                else {
                     patientsListAdapter.addList(patientBeanList);
                 }
                 patientsListAdapter.notifyDataSetChanged();
                 if (patientBeanList.size() < PAGE_SIZE) {
                     tvFooterHintTxt.setText("暂无更多数据");
                     autoLoadRecyclerView.loadFinish(false);
-                } else {
+                }
+                else {
                     tvFooterHintTxt.setText("上拉加载更多");
                     autoLoadRecyclerView.loadFinish(true);
                 }
@@ -185,5 +185,4 @@ public class TransferPatientFromActivity extends BaseActivity
         super.onResponseEnd(task);
         swipeRefreshLayout.setRefreshing(false);
     }
-
 }

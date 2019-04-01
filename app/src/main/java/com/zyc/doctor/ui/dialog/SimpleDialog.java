@@ -58,11 +58,11 @@ public class SimpleDialog extends MessageBuilder
         dialog.setCanceledOnTouchOutside(false);
     }
 
-    public SimpleDialog(final Activity activity, String Msg)
+    public SimpleDialog(final Activity activity, String msg)
     {
         super(activity);
         setTitle(R.string.dialog_public_title);
-        setMessage(Msg);
+        setMessage(msg);
         setPositiveButton(R.string.dialog_txt_confirm, (dialog, which) ->
         {
             dialog.dismiss();
@@ -73,11 +73,11 @@ public class SimpleDialog extends MessageBuilder
         dialog.setCanceledOnTouchOutside(false);
     }
 
-    public SimpleDialog(final Activity activity, String Msg, final boolean isNeedFinish)
+    public SimpleDialog(final Activity activity, String msg, final boolean isNeedFinish)
     {
         super(activity);
         setTitle(R.string.dialog_public_title);
-        setMessage(Msg);
+        setMessage(msg);
         setPositiveButton(R.string.dialog_txt_confirm, (dialog, which) ->
         {
             dialog.dismiss();
@@ -102,10 +102,10 @@ public class SimpleDialog extends MessageBuilder
         dialog.setCanceledOnTouchOutside(false);
     }
 
-    public SimpleDialog(final Activity activity, String Msg, DialogInterface.OnClickListener onClickListener, DialogInterface.OnClickListener onCancelListener)
+    public SimpleDialog(final Activity activity, String msg, DialogInterface.OnClickListener onClickListener, DialogInterface.OnClickListener onCancelListener)
     {
         super(activity);
-        setMessage(Msg);
+        setMessage(msg);
         setPositiveButton(R.string.dialog_txt_confirm, onClickListener);
         setNegativeButton(R.string.txt_cancel,onCancelListener);
 //        setOnKeyListener(new DialogInterface.OnKeyListener()

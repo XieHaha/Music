@@ -11,13 +11,13 @@ import com.bumptech.glide.Glide;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.data.TransferStatu;
+import com.zyc.doctor.http.data.TransPatientBean;
+import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
+import com.zyc.doctor.utils.GlideHelper;
 
 import java.util.List;
 
-import com.zyc.doctor.http.data.TransPatientBean;
-import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
-import com.zyc.doctor.ui.base.adapter.BaseViewHolder;
-import com.zyc.doctor.utils.GlideHelper;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -26,39 +26,31 @@ import de.hdodenhof.circleimageview.CircleImageView;
  *
  * @author DUNDUN
  */
-public class TransPatientsListAdapter extends BaseRecyclerAdapter<TransPatientBean>
-        implements TransferStatu
-{
+public class TransPatientsListAdapter extends BaseRecyclerAdapter<TransPatientBean> implements TransferStatu {
     private Context context;
 
-    public TransPatientsListAdapter(Context context, List<TransPatientBean> list)
-    {
+    public TransPatientsListAdapter(Context context, List<TransPatientBean> list) {
         super(list);
         this.context = context;
     }
 
     @Override
-    public BaseViewHolder onCreateViewHolder(ViewGroup parent)
-    {
-        View view = LayoutInflater.from(parent.getContext())
-                                  .inflate(R.layout.item_trans_patient_list, parent, false);
+    public BaseViewHolder onCreateViewHolder(ViewGroup parent) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_trans_patient_list, parent, false);
         return new PatientsHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position, TransPatientBean item)
-    {
+    public void onBindViewHolder(BaseViewHolder holder, int position, TransPatientBean item) {
         super.onBindViewHolder(holder, position, item);
         holder.showView(position, item);
     }
 
-    public class PatientsHolder extends BaseViewHolder<TransPatientBean>
-    {
+    public class PatientsHolder extends BaseViewHolder<TransPatientBean> {
         private CircleImageView ivPatHeadImg;
         private TextView tvDocName, tvDocHospital, tvPatName, tvStatus;
 
-        public PatientsHolder(View itemView)
-        {
+        public PatientsHolder(View itemView) {
             super(itemView);
             ivPatHeadImg = itemView.findViewById(R.id.item_trans_patient_list_patient_img);
             tvStatus = itemView.findViewById(R.id.item_trans_patient_list_status);
@@ -68,28 +60,18 @@ public class TransPatientsListAdapter extends BaseRecyclerAdapter<TransPatientBe
         }
 
         @Override
-        public void showView(final int position, final TransPatientBean item)
-        {
-            Glide.with(context)
-                 .load(item.getPatientImage())
-                 .apply(GlideHelper.getOptions())
-                 .into(ivPatHeadImg);
+        public void showView(final int position, final TransPatientBean item) {
+            Glide.with(context).load(item.getPatientImage()).apply(GlideHelper.getOptions()).into(ivPatHeadImg);
             tvPatName.setText(item.getPatientName());
-            if (!YihtApplication.getInstance()
-                                .getLoginSuccessBean()
-                                .getDoctorId()
-                                .equals(item.getFromDoctorId()))
-            {
+            if (!YihtApplication.getInstance().getLoginSuccessBean().getDoctorId().equals(item.getFromDoctorId())) {
                 tvDocHospital.setText(item.getFromDoctorHospitalName());
                 tvDocName.setText("来自：" + item.getFromDoctorName());
             }
-            else
-            {
+            else {
                 tvDocName.setText("转给：" + item.getToDoctorName());
                 tvDocHospital.setText(item.getToDoctorHospitalName());
             }
-            switch (item.getAcceptState())
-            {
+            switch (item.getAcceptState()) {
                 case TRANSFER_NONE:
                     tvStatus.setText("(待接受)");
                     tvStatus.setTextColor(ContextCompat.getColor(context, R.color._F16798));
@@ -110,6 +92,8 @@ public class TransPatientsListAdapter extends BaseRecyclerAdapter<TransPatientBe
                 case TRANSFER_REFUSE:
                     tvStatus.setText("(已拒绝)");
                     tvStatus.setTextColor(ContextCompat.getColor(context, R.color._E40505));
+                    break;
+                default:
                     break;
             }
         }

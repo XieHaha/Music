@@ -57,6 +57,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
+
 import com.zyc.doctor.http.data.BaseResponse;
 import com.zyc.doctor.http.data.RegistrationTypeBean;
 import com.zyc.doctor.http.data.Version;
@@ -172,7 +173,7 @@ public class MainActivity extends BaseActivity
     public static final String CHANNEL_CHAT = "channel_chat";
     private Bitmap largeIcon = null;
     private NotificationManager mNotificationManager;
-    private int pending_count = 1;
+    private int pendingCount = 1;
     /**
      * 扫码结果  添加好友
      */
@@ -371,14 +372,14 @@ public class MainActivity extends BaseActivity
         if (message.getFrom().equals(YihtApplication.getInstance().getChatId())) {
             return;
         }
-        if (pending_count > 10000) {
-            pending_count = 1;
+        if (pendingCount > 10000) {
+            pendingCount = 1;
         }
-        pending_count++;
+        pendingCount++;
         Intent intent = new Intent(MainActivity.this, EaseMsgClickBroadCastReceiver.class);
         intent.putExtra(CommonData.KEY_CHAT_ID, message.getFrom());
         intent.setAction("ease.msg.android.intent.CLICK");
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, pending_count, intent,
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, pendingCount, intent,
                                                                  PendingIntent.FLAG_UPDATE_CURRENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Notification notification = new NotificationCompat.Builder(this, CHANNEL_CHAT).setContentText("收到新的消息")

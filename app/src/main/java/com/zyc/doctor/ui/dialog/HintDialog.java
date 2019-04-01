@@ -13,9 +13,7 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.ui.dialog.listener.OnCancelClickListener;
 import com.zyc.doctor.ui.dialog.listener.OnEnterClickListener;
 
-public class HintDialog extends Dialog implements OnClickListener
-{
-
+public class HintDialog extends Dialog implements OnClickListener {
     private Context context;
     private Button enter, cancel;
     private View lineView;
@@ -25,7 +23,6 @@ public class HintDialog extends Dialog implements OnClickListener
     private int enterColor = 0;
     private String cancleString = "取消";
     private boolean isShowCancelBtn = true;
-
     private boolean isShow = false;
 
     public HintDialog(Context context) {
@@ -43,11 +40,10 @@ public class HintDialog extends Dialog implements OnClickListener
     }
 
     private void initWidget() {
-        enter = (Button) findViewById(R.id.dialog_simple_hint_enter);
-        cancel = (Button) findViewById(R.id.dialog_simple_hint_cancel);
-        content = (TextView) findViewById(R.id.dialog_simple_hint_content);
+        enter = (Button)findViewById(R.id.dialog_simple_hint_enter);
+        cancel = (Button)findViewById(R.id.dialog_simple_hint_cancel);
+        content = (TextView)findViewById(R.id.dialog_simple_hint_content);
         lineView = findViewById(R.id.dialog_simple_hint_line);
-
         setCanceledOnTouchOutside(true);
         cancel.setOnClickListener(this);
         enter.setOnClickListener(this);
@@ -64,13 +60,13 @@ public class HintDialog extends Dialog implements OnClickListener
                 onEnterClickListener.onEnter();
             }
             dismiss();
-        } else if (v == cancel) {
+        }
+        else if (v == cancel) {
             if (onCancelClickListener != null) {
                 onCancelClickListener.onCancel();
             }
             dismiss();
         }
-
     }
 
     /**
@@ -80,7 +76,6 @@ public class HintDialog extends Dialog implements OnClickListener
      */
     public HintDialog setContentString(String contentString) {
         this.contentString = contentString;
-
         return this;
     }
 
@@ -123,12 +118,12 @@ public class HintDialog extends Dialog implements OnClickListener
             super.show();
             content.setText(contentString);
             enter.setText(enterString);
-            if (enterColor != 0)
-                enter.setTextColor(content.getResources().getColor(enterColor));
+            if (enterColor != 0) { enter.setTextColor(content.getResources().getColor(enterColor)); }
             if (!isShowCancelBtn) {
                 cancel.setVisibility(View.GONE);
                 lineView.setVisibility(View.GONE);
-            } else {
+            }
+            else {
                 cancel.setText(cancleString);
             }
             isShow = true;
@@ -138,18 +133,13 @@ public class HintDialog extends Dialog implements OnClickListener
     private OnEnterClickListener onEnterClickListener = null;
     private OnCancelClickListener onCancelClickListener = null;
 
-    public HintDialog setOnEnterClickListener(
-            OnEnterClickListener onEnterClickListener) {
+    public HintDialog setOnEnterClickListener(OnEnterClickListener onEnterClickListener) {
         this.onEnterClickListener = onEnterClickListener;
-
         return this;
     }
 
-    public HintDialog setOnCancelClickListener(
-            OnCancelClickListener onCancelClickListener) {
+    public HintDialog setOnCancelClickListener(OnCancelClickListener onCancelClickListener) {
         this.onCancelClickListener = onCancelClickListener;
-
         return this;
     }
-
 }

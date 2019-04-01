@@ -24,7 +24,7 @@ public class CacheUtils {
     /**
      * -1 不请求； 0 只请求大图，缓存大图； 1 请求大图，缓存大图小图； 2 请求大小图，缓存大小图
      */
-    private int LOAD_STATE = -1;
+    private int loadState = -1;
 
     private CacheUtils(Context context) {
         this.context = context;
@@ -55,30 +55,30 @@ public class CacheUtils {
         //////////
         if (smallUrl.equals(bigUrl)) {
             if (bigBmp != null) {
-                LOAD_STATE = -1;
+                loadState = -1;
             }
             else {
                 //URL相同，都为空，请求大图，显示默认背景
-                LOAD_STATE = 0;
+                loadState = 0;
             }
         }
         else {
             if (bigBmp != null) {
                 //URL不同，都不空,不请求
-                LOAD_STATE = -1;
+                loadState = -1;
             }
             else {
                 if (smallBmp != null) {
                     //URL不同，小图不空大图为空，请求大图，不显示默认背景
-                    LOAD_STATE = 1;
+                    loadState = 1;
                 }
                 else {
                     //URL不同，都为空，请求大图小图，显示默认背景
-                    LOAD_STATE = 2;
+                    loadState = 2;
                 }
             }
         }
-        return LOAD_STATE;
+        return loadState;
     }
 
     /**

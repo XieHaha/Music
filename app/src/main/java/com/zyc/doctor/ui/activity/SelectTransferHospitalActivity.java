@@ -18,8 +18,17 @@ import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
+import com.zyc.doctor.http.data.BaseNetCode;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.data.CooperateHospitalBean;
+import com.zyc.doctor.http.data.HttpConstants;
 import com.zyc.doctor.ui.adapter.SelectHospitalAdapter;
+import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.LogUtils;
+import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
+import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,15 +39,6 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.CooperateHospitalBean;
-import com.zyc.doctor.http.data.BaseNetCode;
-import com.zyc.doctor.http.data.HttpConstants;
-import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
-import com.zyc.doctor.utils.ToastUtil;
-import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
-import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
  * 选择接诊医院
@@ -47,13 +47,12 @@ import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
  */
 public class SelectTransferHospitalActivity extends BaseActivity
         implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener,
-        BaseRecyclerAdapter.OnItemClickListener<CooperateHospitalBean> {
+                   BaseRecyclerAdapter.OnItemClickListener<CooperateHospitalBean> {
     private static final String TAG = "SelectTransferHospitalA";
     @BindView(R.id.act_apply_cooperate_recycler_view)
     AutoLoadRecyclerView autoLoadRecyclerView;
     @BindView(R.id.act_apply_cooperate_swipe_layout)
     SwipeRefreshLayout swipeRefreshLayout;
-
     private View footerView;
     private TextView tvHintTxt;
     private SelectHospitalAdapter selectHospitalAdapter;
@@ -80,11 +79,9 @@ public class SelectTransferHospitalActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("合作医院");
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                android.R.color.holo_red_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_green_light);
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("合作医院");
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
+                                                   android.R.color.holo_orange_light, android.R.color.holo_green_light);
         footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
     }
@@ -103,8 +100,7 @@ public class SelectTransferHospitalActivity extends BaseActivity
         super.initListener();
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
-        autoLoadRecyclerView.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        autoLoadRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(selectHospitalAdapter);
         selectHospitalAdapter.setOnItemClickListener(this);
@@ -116,8 +112,7 @@ public class SelectTransferHospitalActivity extends BaseActivity
     private void getCooperateHospitalList() {
         RequestQueue queue = NoHttp.getRequestQueueInstance();
         final Request<String> request = NoHttp.createStringRequest(
-                HttpConstants.BASE_BASIC_URL + "/hospital/doctor/relation/list",
-                RequestMethod.POST);
+                HttpConstants.BASE_BASIC_URL + "/hospital/doctor/relation/list", RequestMethod.POST);
         Map<String, Object> params = new HashMap<>();
         params.put("doctorId", loginSuccessBean.getDoctorId());
         JSONObject jsonObject = new JSONObject(params);
@@ -132,25 +127,25 @@ public class SelectTransferHospitalActivity extends BaseActivity
                 String s = response.get();
                 try {
                     JSONObject object = new JSONObject(s);
-                    BaseResponse baseResponse = praseBaseResponseList(object,
-                            CooperateHospitalBean.class);
+                    BaseResponse baseResponse = praseBaseResponseList(object, CooperateHospitalBean.class);
                     if (baseResponse != null) {
                         if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
                             ArrayList<CooperateHospitalBean> list = baseResponse.getData();
                             selectHospitalAdapter.setList(list);
-                        } else {
+                        }
+                        else {
                             ToastUtil.toast(SelectTransferHospitalActivity.this, baseResponse.getMsg());
                         }
                     }
-                } catch (JSONException e) {
+                }
+                catch (JSONException e) {
                     LogUtils.w(TAG, "Exception error!", e);
                 }
             }
 
             @Override
             public void onFailed(int what, Response<String> response) {
-                ToastUtil.toast(SelectTransferHospitalActivity.this,
-                        response.getException().getMessage());
+                ToastUtil.toast(SelectTransferHospitalActivity.this, response.getException().getMessage());
             }
 
             @Override
@@ -179,5 +174,4 @@ public class SelectTransferHospitalActivity extends BaseActivity
         page++;
         getCooperateHospitalList();
     }
-
 }

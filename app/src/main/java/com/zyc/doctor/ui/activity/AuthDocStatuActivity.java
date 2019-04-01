@@ -100,7 +100,7 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
         super.initView(savedInstanceState);
         //状态栏透明
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        StatusBarUtil.StatusBarLightMode(this);
+        StatusBarUtil.statuBarLightMode(this);
     }
 
     @Override

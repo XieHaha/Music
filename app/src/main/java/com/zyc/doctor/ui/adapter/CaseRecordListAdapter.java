@@ -7,13 +7,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zyc.doctor.R;
+import com.zyc.doctor.http.data.PatientCaseDetailBean;
+import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
 import com.zyc.doctor.utils.AllUtils;
 
 import java.util.List;
-
-import com.zyc.doctor.http.data.PatientCaseDetailBean;
-import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
-import com.zyc.doctor.ui.base.adapter.BaseViewHolder;
 
 /**
  * 患者病例列表适配器
@@ -30,8 +29,7 @@ public class CaseRecordListAdapter extends BaseRecyclerAdapter<PatientCaseDetail
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_case_record, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_case_record, parent, false);
         return new PatientCaseHolder(view);
     }
 
@@ -43,7 +41,6 @@ public class CaseRecordListAdapter extends BaseRecyclerAdapter<PatientCaseDetail
 
     public class PatientCaseHolder extends BaseViewHolder<PatientCaseDetailBean> {
         private TextView tvContent, tvTime;
-
 
         public PatientCaseHolder(View itemView) {
             super(itemView);

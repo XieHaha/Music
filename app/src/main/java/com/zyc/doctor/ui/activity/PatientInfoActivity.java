@@ -82,7 +82,6 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
     ViewPager viewPager;
     @BindView(R.id.mSatelliteMenuRightBottom)
     SatelliteMenu mSatelliteMenuRightBottom;
-
     private FragmentVpAdapter fragmentVpAdapter;
     private View viewPop;
     private PopupWindow mPopupwinow;
@@ -136,7 +135,7 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("患者信息");
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("患者信息");
         ivTitleMore.setVisibility(View.VISIBLE);
     }
 
@@ -144,8 +143,7 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
-            patientBean =
-                    (PatientBean) getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
+            patientBean = (PatientBean)getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
             patientId = getIntent().getStringExtra(CommonData.KEY_PATIENT_ID);
         }
         new ViewPrepared().asyncPrepare(btnHealthInfo, (w, h) -> {
@@ -156,19 +154,22 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
         healthInfoFragment = new HealthInfoFragment();
         if (patientBean == null) {
             healthInfoFragment.setPatientId(patientId);
-        } else {
+        }
+        else {
             healthInfoFragment.setPatientBean(patientBean);
         }
         orderInfoFragment = new OrderInfoFragment();
         if (patientBean == null) {
             orderInfoFragment.setPatientId(patientId);
-        } else {
+        }
+        else {
             orderInfoFragment.setPatientBean(patientBean);
         }
         transferInfoFragment = new TransferInfoFragment();
         if (patientBean == null) {
             transferInfoFragment.setPatientId(patientId);
-        } else {
+        }
+        else {
             transferInfoFragment.setPatientBean(patientBean);
         }
         fragmentList.add(healthInfoFragment);
@@ -180,7 +181,8 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
         initMenu();
         if (patientBean == null) {
             getPatientInfo();
-        } else {
+        }
+        else {
             patientId = patientBean.getPatientId();
             initPageData();
         }
@@ -200,7 +202,12 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
         imageResourceRightBottom.add(R.mipmap.icon_info_transfer);
         imageResourceRightBottom.add(R.mipmap.icon_info_service);
         imageResourceRightBottom.add(R.mipmap.icon_info_health_history);
-        mSatelliteMenuRightBottom.getmBuilder().setMenuItemNameTexts(nameMenuItem).setMenuImage(R.mipmap.icon_info_more, R.mipmap.icon_info_more_close).setMenuItemImageResource(imageResourceRightBottom).setOnMenuItemClickListener(this).creat();
+        mSatelliteMenuRightBottom.getmBuilder()
+                                 .setMenuItemNameTexts(nameMenuItem)
+                                 .setMenuImage(R.mipmap.icon_info_more, R.mipmap.icon_info_more_close)
+                                 .setMenuItemImageResource(imageResourceRightBottom)
+                                 .setOnMenuItemClickListener(this)
+                                 .creat();
     }
 
     @Override
@@ -212,8 +219,7 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
         btnTransferInfo.setOnClickListener(this);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset,
-                                       int positionOffsetPixels) {
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 int tabWidth = btnHealthInfo.getWidth();
                 viewIndicator.setTranslationX((position * tabWidth) + (positionOffset * tabWidth));
             }
@@ -254,19 +260,22 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
         if (patientBean != null) {
             if (!TextUtils.isEmpty(patientBean.getNickname()) && patientBean.getNickname().length() < 20) {
                 tvName.setText(patientBean.getNickname() + "(" + patientBean.getName() + ")");
-            } else {
+            }
+            else {
                 tvName.setText(patientBean.getName());
             }
             tvSex.setText(patientBean.getSex());
             tvAge.setText(AllUtils.getAge(patientBean.getBirthDate()) + "岁");
             if (!TextUtils.isEmpty(patientBean.getUnitName())) {
                 tvCompany.setText(patientBean.getUnitName());
-            } else {
+            }
+            else {
                 tvCompany.setText("未填写单位");
             }
             if (!TextUtils.isEmpty(patientBean.getAddress())) {
                 tvAddress.setText(patientBean.getAddress());
-            } else {
+            }
+            else {
                 tvAddress.setText("未填写地址");
             }
             if (!TextUtils.isEmpty(patientBean.getPatientImgUrl())) {
@@ -372,8 +381,8 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
                 if (mPopupwinow != null) {
                     mPopupwinow.dismiss();
                 }
-                new SimpleDialog(this, "确定删除当前患者?", (dialog, which) -> deletePatient(), (dialog,
-                                                                                         which) -> dialog.dismiss()).show();
+                new SimpleDialog(this, "确定删除当前患者?", (dialog, which) -> deletePatient(),
+                                 (dialog, which) -> dialog.dismiss()).show();
                 break;
             default:
                 break;
@@ -467,7 +476,8 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
                     if (!TextUtils.isEmpty(remark)) {
                         tvName.setText(remark + "(" + patientBean.getName() + ")");
                         patientBean.setNickname(remark);
-                    } else {
+                    }
+                    else {
                         tvName.setText(patientBean.getName());
                         patientBean.setNickname(remark);
                     }
@@ -491,13 +501,11 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
         if (mPopupwinow == null) {
             //新建一个popwindow
             mPopupwinow = new PopupWindow(viewPop, LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT, true);
+                                          LinearLayout.LayoutParams.WRAP_CONTENT, true);
         }
         mPopupwinow.setFocusable(true);
         mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mPopupwinow.setOutsideTouchable(true);
-        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0,
-                (int) AllUtils.dipToPx(this, 55));
+        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0, (int)AllUtils.dipToPx(this, 55));
     }
-
 }

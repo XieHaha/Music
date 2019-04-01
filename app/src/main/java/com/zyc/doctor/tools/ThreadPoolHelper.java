@@ -25,8 +25,7 @@ public class ThreadPoolHelper {
     }
 
     public static class Resource {
-
-        private static final int threadNum = 5;
+        private static final int THREAD_NUM = 5;
         private ExecutorService executorSingle;
         private ExecutorService executorCached;
         private ExecutorService executorFixed;
@@ -45,7 +44,7 @@ public class ThreadPoolHelper {
         private void initThreadPool() {
             executorSingle = Executors.newSingleThreadExecutor();
             executorCached = Executors.newCachedThreadPool();
-            executorFixed = Executors.newFixedThreadPool(threadNum);
+            executorFixed = Executors.newFixedThreadPool(THREAD_NUM);
         }
 
         /**
@@ -63,7 +62,8 @@ public class ThreadPoolHelper {
             }
             try {
                 executorSingle.execute(r);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 if (e instanceof RejectedExecutionException) {
                     execInSingle(r);
                 }
@@ -77,7 +77,8 @@ public class ThreadPoolHelper {
             }
             try {
                 executorCached.execute(r);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 if (e instanceof RejectedExecutionException) {
                     execInCached(r);
                 }
@@ -91,7 +92,8 @@ public class ThreadPoolHelper {
             }
             try {
                 return executorCached.submit(c);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 LogUtils.e(TAG, "ThreadPoolHelper submitInCached Exception", e);
             }
             return null;
@@ -99,11 +101,12 @@ public class ThreadPoolHelper {
 
         public void execInFixed(Runnable r) {
             if (executorFixed == null || executorFixed.isShutdown() || executorFixed.isTerminated()) {
-                executorFixed = Executors.newFixedThreadPool(threadNum);
+                executorFixed = Executors.newFixedThreadPool(THREAD_NUM);
             }
             try {
                 executorFixed.execute(r);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 if (e instanceof RejectedExecutionException) {
                     execInFixed(r);
                 }

@@ -37,7 +37,7 @@ public class ChatActivity extends BaseActivity implements OnPermissionCallback,
     private String chatId, chatName;
     private EaseChatFragment easeChatFragment;
     private PopupWindow mPopupwinow;
-    private View view_pop;
+    private View viewPop;
     private RelativeLayout rlInfoLayout, rlServiceLayout;
     private NotificationManager manager;
 
@@ -131,9 +131,9 @@ public class ChatActivity extends BaseActivity implements OnPermissionCallback,
      * 显示pop
      */
     private void showPop() {
-        view_pop = LayoutInflater.from(this).inflate(R.layout.main_pop_msg, null);
-        rlInfoLayout = (RelativeLayout) view_pop.findViewById(R.id.info_layout);
-        rlServiceLayout = (RelativeLayout) view_pop.findViewById(R.id.service_layout);
+        viewPop = LayoutInflater.from(this).inflate(R.layout.main_pop_msg, null);
+        rlInfoLayout = (RelativeLayout) viewPop.findViewById(R.id.info_layout);
+        rlServiceLayout = (RelativeLayout) viewPop.findViewById(R.id.service_layout);
         rlInfoLayout.setOnClickListener(this);
         if (chatId.contains("d")) {
             rlServiceLayout.setVisibility(View.GONE);
@@ -142,14 +142,14 @@ public class ChatActivity extends BaseActivity implements OnPermissionCallback,
         }
         if (mPopupwinow == null) {
             //新建一个popwindow
-            mPopupwinow = new PopupWindow(view_pop, LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT, true);
+            mPopupwinow = new PopupWindow(viewPop, LinearLayout.LayoutParams.WRAP_CONTENT,
+                                          LinearLayout.LayoutParams.WRAP_CONTENT, true);
         }
         mPopupwinow.setFocusable(true);
         mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mPopupwinow.setOutsideTouchable(true);
-        mPopupwinow.showAtLocation(view_pop, Gravity.TOP | Gravity.RIGHT, 0,
-                (int) AllUtils.dipToPx(this, 65));
+        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0,
+                                   (int) AllUtils.dipToPx(this, 65));
     }
 
     @Override

@@ -50,9 +50,8 @@ public class BaseRequest<T> extends HttpProxy {
      * @param listener 请求回调
      * @param headers  请求头
      */
-    public final Tasks requestString(final Method metoh, String moduleName, String metohName,
-                                     final Tasks task, final RequestParams params, final Map<String, String> headers,
-                                     final ResponseListener<String> listener) {
+    public final Tasks requestString(final Method metoh, String moduleName, String metohName, final Tasks task,
+            final RequestParams params, final Map<String, String> headers, final ResponseListener<String> listener) {
         StringRequest stringRequest;
         if (listener != null) {
             listener.onResponseStart(task);
@@ -64,7 +63,7 @@ public class BaseRequest<T> extends HttpProxy {
                 method = Request.Method.GET;
                 if (params != null) {
                     //参数url
-                    url.append(MapToGetUrl(params.getStringsParams()));
+                    url.append(mapToGetUrl(params.getStringsParams()));
                 }
                 break;
             case POST:
@@ -77,7 +76,7 @@ public class BaseRequest<T> extends HttpProxy {
                 method = Request.Method.DELETE;
                 if (params != null) {
                     //参数url
-                    url.append(MapToGetUrl(params.getStringsParams()));
+                    url.append(mapToGetUrl(params.getStringsParams()));
                 }
                 break;
             default:
@@ -115,7 +114,7 @@ public class BaseRequest<T> extends HttpProxy {
             }
         };
         /**复写重试方针*/
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(TIMEOUT_MS, RETRIES, BACKOFF_MULTIPLIER));
         stringRequest.setTag(task);
         mQueue.add(stringRequest);
         return task;
@@ -130,9 +129,8 @@ public class BaseRequest<T> extends HttpProxy {
      * @param classOfT 需转换的类型
      * @param listener 请求回调
      */
-    public final Tasks requestBaseResponse(final Method metoh, String moduleName,
-                                           final Tasks task, final Class<T> classOfT, final RequestParams params,
-                                           final ResponseListener<BaseResponse> listener) {
+    public final Tasks requestBaseResponse(final Method metoh, String moduleName, final Tasks task,
+            final Class<T> classOfT, final RequestParams params, final ResponseListener<BaseResponse> listener) {
         StringRequest objectRequest;
         if (listener != null) {
             listener.onResponseStart(task);
@@ -144,7 +142,7 @@ public class BaseRequest<T> extends HttpProxy {
                 method = Request.Method.GET;
                 if (params != null) {
                     //参数url
-                    url.append(MapToGetUrlNoKey(params.getStringsParams()));
+                    url.append(mapToGetUrlNoKey(params.getStringsParams()));
                 }
                 break;
             case POST:
@@ -157,7 +155,7 @@ public class BaseRequest<T> extends HttpProxy {
                 method = Request.Method.DELETE;
                 if (params != null) {
                     //参数url
-                    url.append(MapToGetUrl(params.getStringsParams()));
+                    url.append(mapToGetUrl(params.getStringsParams()));
                 }
                 break;
             default:
@@ -180,7 +178,8 @@ public class BaseRequest<T> extends HttpProxy {
                             listener.onResponseSuccess(task, baseResponse);
                             listener.onResponseEnd(task);
                         }
-                    } else {
+                    }
+                    else {
                         /**
                          * 调用请求码异常
                          * */
@@ -189,7 +188,8 @@ public class BaseRequest<T> extends HttpProxy {
                             listener.onResponseEnd(task);
                         }
                     }
-                } catch (JSONException je) {
+                }
+                catch (JSONException je) {
                     //打印错误日志
                     printfErrorLog(task, je.getMessage());
                     if (listener != null) {
@@ -215,11 +215,9 @@ public class BaseRequest<T> extends HttpProxy {
                 return hashMap;
             }
         };
-
         System.setProperty("sun.net.http.retryPost", "false");
         /**复写重试方针*/
-        objectRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
-
+        objectRequest.setRetryPolicy(new DefaultRetryPolicy(TIMEOUT_MS, RETRIES, BACKOFF_MULTIPLIER));
         objectRequest.setTag(task);
         mQueue.add(objectRequest);
         return task;
@@ -234,23 +232,22 @@ public class BaseRequest<T> extends HttpProxy {
      * @param classOfT 需转换的类型
      * @param listener 请求回调
      */
-    public final Tasks requestBaseResponseList(final Method metoh, String moduleName,
-                                               final Tasks task, final Class<T> classOfT, final RequestParams params,
-                                               final ResponseListener<BaseResponse> listener) {
+    public final Tasks requestBaseResponseList(final Method metoh, String moduleName, final Tasks task,
+            final Class<T> classOfT, final RequestParams params, final ResponseListener<BaseResponse> listener) {
         StringRequest objectRequest;
         if (listener != null) {
             listener.onResponseStart(task);
         }
         StringBuilder url = new StringBuilder(appendUrl(moduleName));
-//        Log.i("YHT_D", "Task:" +task+"  params:" + params.toString());
+        //        Log.i("YHT_D", "Task:" +task+"  params:" + params.toString());
         int method = Request.Method.POST;
         switch (metoh) {
             case GET:
                 method = Request.Method.GET;
                 if (params != null) {
                     //参数url
-//                    url.append(MapToGetUrl(params.getStringsParams()));
-                    url.append(MapToGetUrlNoKey(params.getStringsParams()));
+                    //                    url.append(mapToGetUrl(params.getStringsParams()));
+                    url.append(mapToGetUrlNoKey(params.getStringsParams()));
                 }
                 break;
             case POST:
@@ -263,7 +260,7 @@ public class BaseRequest<T> extends HttpProxy {
                 method = Request.Method.DELETE;
                 if (params != null) {
                     //参数url
-                    url.append(MapToGetUrl(params.getStringsParams()));
+                    url.append(mapToGetUrl(params.getStringsParams()));
                 }
                 break;
             default:
@@ -286,7 +283,8 @@ public class BaseRequest<T> extends HttpProxy {
                             listener.onResponseSuccess(task, baseResponse);
                             listener.onResponseEnd(task);
                         }
-                    } else {
+                    }
+                    else {
                         /**
                          * 调用请求码异常
                          * */
@@ -295,7 +293,8 @@ public class BaseRequest<T> extends HttpProxy {
                             listener.onResponseEnd(task);
                         }
                     }
-                } catch (JSONException je) {
+                }
+                catch (JSONException je) {
                     //打印错误日志
                     printfErrorLog(task, je.getMessage());
                     if (listener != null) {
@@ -321,11 +320,9 @@ public class BaseRequest<T> extends HttpProxy {
                 return hashMap;
             }
         };
-
         System.setProperty("sun.net.http.retryPost", "false");
         /**复写重试方针*/
-        objectRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
-
+        objectRequest.setRetryPolicy(new DefaultRetryPolicy(TIMEOUT_MS, RETRIES, BACKOFF_MULTIPLIER));
         objectRequest.setTag(task);
         mQueue.add(objectRequest);
         return task;
@@ -339,9 +336,8 @@ public class BaseRequest<T> extends HttpProxy {
      * @param classOfT 需转换的类型
      * @param listener 请求回调
      */
-    public final Tasks requestBaseResponseByJson(String moduleName, final Tasks task, final Class<T> classOfT, final Map<String, Object> merchant,
-                                                 final ResponseListener<BaseResponse> listener) {
-
+    public final Tasks requestBaseResponseByJson(String moduleName, final Tasks task, final Class<T> classOfT,
+            final Map<String, Object> merchant, final ResponseListener<BaseResponse> listener) {
         JsonRequest<JSONObject> jsonRequest;
         if (listener != null) {
             listener.onResponseStart(task);
@@ -364,7 +360,8 @@ public class BaseRequest<T> extends HttpProxy {
                             listener.onResponseSuccess(task, baseResponse);
                             listener.onResponseEnd(task);
                         }
-                    } else {
+                    }
+                    else {
                         /**
                          * 调用请求码异常
                          * */
@@ -373,7 +370,8 @@ public class BaseRequest<T> extends HttpProxy {
                             listener.onResponseEnd(task);
                         }
                     }
-                } catch (JSONException je) {
+                }
+                catch (JSONException je) {
                     if (listener != null) {
                         listener.onResponseError(task, je);
                         listener.onResponseEnd(task);
@@ -389,13 +387,11 @@ public class BaseRequest<T> extends HttpProxy {
                 }
             }
         }) {
-
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>(16);
                 headers.put("Accept", "application/json");
                 headers.put("Content-Type", "application/json; charset=UTF-8");
-
                 return headers;
             }
 
@@ -403,13 +399,14 @@ public class BaseRequest<T> extends HttpProxy {
             public byte[] getBody() {
                 try {
                     return jsonObject.toString().getBytes("UTF-8");
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                 }
                 return null;
             }
         };
         /**复写重试方针*/
-        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
+        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(TIMEOUT_MS, RETRIES, BACKOFF_MULTIPLIER));
         System.setProperty("sun.net.http.retryPost", "false");
         //设置tag
         jsonRequest.setTag(task);
@@ -424,9 +421,8 @@ public class BaseRequest<T> extends HttpProxy {
      * @param classOfT 需转换的类型
      * @param listener 请求回调
      */
-    public final Tasks requestBaseResponseListByJson(String moduleName, final Tasks task, final Class<T> classOfT, final Map<String, Object> merchant,
-                                                     final ResponseListener<BaseResponse> listener) {
-
+    public final Tasks requestBaseResponseListByJson(String moduleName, final Tasks task, final Class<T> classOfT,
+            final Map<String, Object> merchant, final ResponseListener<BaseResponse> listener) {
         JsonRequest<JSONObject> jsonRequest;
         if (listener != null) {
             listener.onResponseStart(task);
@@ -449,7 +445,8 @@ public class BaseRequest<T> extends HttpProxy {
                             listener.onResponseSuccess(task, baseResponse);
                             listener.onResponseEnd(task);
                         }
-                    } else {
+                    }
+                    else {
                         /**
                          * 调用请求码异常
                          * */
@@ -458,7 +455,8 @@ public class BaseRequest<T> extends HttpProxy {
                             listener.onResponseEnd(task);
                         }
                     }
-                } catch (JSONException je) {
+                }
+                catch (JSONException je) {
                     if (listener != null) {
                         listener.onResponseError(task, je);
                         listener.onResponseEnd(task);
@@ -474,13 +472,11 @@ public class BaseRequest<T> extends HttpProxy {
                 }
             }
         }) {
-
             @Override
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<>(16);
                 headers.put("Accept", "application/json");
                 headers.put("Content-Type", "application/json; charset=UTF-8");
-
                 return headers;
             }
 
@@ -488,16 +484,15 @@ public class BaseRequest<T> extends HttpProxy {
             public byte[] getBody() {
                 try {
                     return jsonObject.toString().getBytes("UTF-8");
-
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                 }
                 return null;
             }
         };
-
         System.setProperty("sun.net.http.retryPost", "false");
         /**复写重试方针*/
-        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(timeoutMS, retries, backoffMultiplier));
+        jsonRequest.setRetryPolicy(new DefaultRetryPolicy(TIMEOUT_MS, RETRIES, BACKOFF_MULTIPLIER));
         //设置tag
         jsonRequest.setTag(task);
         //加入请求队列
@@ -516,8 +511,7 @@ public class BaseRequest<T> extends HttpProxy {
      * @return
      */
     public final Tasks uploadFile(String moduleName, final Tasks task, final File file, final String type,
-                                  final Class<T> classOfT, final ResponseListener<BaseResponse> listener) {
-
+            final Class<T> classOfT, final ResponseListener<BaseResponse> listener) {
         MultipartRequest multipartRequest;
         if (listener != null) {
             listener.onResponseStart(task);
@@ -538,7 +532,8 @@ public class BaseRequest<T> extends HttpProxy {
                             listener.onResponseSuccess(task, baseResponse);
                             listener.onResponseEnd(task);
                         }
-                    } else {
+                    }
+                    else {
                         /**
                          * 调用请求码异常
                          * */
@@ -547,7 +542,8 @@ public class BaseRequest<T> extends HttpProxy {
                             listener.onResponseEnd(task);
                         }
                     }
-                } catch (JSONException je) {
+                }
+                catch (JSONException je) {
                     if (listener != null) {
                         listener.onResponseError(task, je);
                         listener.onResponseEnd(task);
@@ -563,25 +559,23 @@ public class BaseRequest<T> extends HttpProxy {
                 }
             }
         }) {
-
-//            @Override
-//            public Map<String, String> getHeaders() {
-//                HashMap<String, String> headers = new HashMap<>(16);
-//                headers.putObject("Content-Type", "application/x-www-form-urlencoded");
-//                return headers;
-//            }
+            //            @Override
+            //            public Map<String, String> getHeaders() {
+            //                HashMap<String, String> headers = new HashMap<>(16);
+            //                headers.putObject("Content-Type", "application/x-www-form-urlencoded");
+            //                return headers;
+            //            }
         };
-//        // 添加header
-//        multipartRequest.addHeader("header-name", "value");
+        //        // 添加header
+        //        multipartRequest.addHeader("header-name", "value");
         // 通过MultipartEntity来设置参数
         MultipartEntity multi = multipartRequest.getMultiPartEntity();
         //传参数
         multi.addStringPart("type", type);
-//        //传二进制byte[]
-//        multi.addBinaryPart("logo", bytes);
+        //        //传二进制byte[]
+        //        multi.addBinaryPart("logo", bytes);
         //传文件(以图片为例)
         multi.addFilePart("file", file, "image/jpg");
-
         multipartRequest.setTag(task);
         mQueue.add(multipartRequest);
         return task;
@@ -596,9 +590,8 @@ public class BaseRequest<T> extends HttpProxy {
      * @param listener
      * @return
      */
-    public final Tasks qualityDoc(String moduleName, final Tasks task, final Map<String, File> files, final Map<String, String> params,
-                                  final Class<T> classOfT, final ResponseListener<BaseResponse> listener) {
-
+    public final Tasks qualityDoc(String moduleName, final Tasks task, final Map<String, File> files,
+            final Map<String, String> params, final Class<T> classOfT, final ResponseListener<BaseResponse> listener) {
         MultipartRequest multipartRequest;
         if (listener != null) {
             listener.onResponseStart(task);
@@ -619,7 +612,8 @@ public class BaseRequest<T> extends HttpProxy {
                             listener.onResponseSuccess(task, baseResponse);
                             listener.onResponseEnd(task);
                         }
-                    } else {
+                    }
+                    else {
                         /**
                          * 调用请求码异常
                          * */
@@ -628,7 +622,8 @@ public class BaseRequest<T> extends HttpProxy {
                             listener.onResponseEnd(task);
                         }
                     }
-                } catch (JSONException je) {
+                }
+                catch (JSONException je) {
                     if (listener != null) {
                         listener.onResponseError(task, je);
                         listener.onResponseEnd(task);
@@ -652,14 +647,12 @@ public class BaseRequest<T> extends HttpProxy {
         for (Map.Entry<String, String> entry : params.entrySet()) {
             multi.addStringPart(entry.getKey(), entry.getValue());
         }
-
         //        //传二进制byte[]
         //        multi.addBinaryPart("logo", bytes);
         //传文件(以图片为例)
         for (Map.Entry<String, File> entry : files.entrySet()) {
             multi.addFilePart(entry.getKey(), entry.getValue(), "image/png");
         }
-
         multipartRequest.setTag(task);
         mQueue.add(multipartRequest);
         return task;
@@ -682,9 +675,9 @@ public class BaseRequest<T> extends HttpProxy {
     }
 
     //=============================================请求辅助方法==============================
-    private static final String EntityData = "data";
-    private static final String EntityCode = "code";
-    private static final String EntityMsg = "msg";
+    protected static final String ENTITY_DATA = "data";
+    protected static final String ENTITY_CODE = "code";
+    protected static final String ENTITY_MSG = "msg";
 
     /**
      * 把json转换成基础响应对象类
@@ -692,44 +685,43 @@ public class BaseRequest<T> extends HttpProxy {
      * @param jsonObject jsonobject对象
      * @param classOfT   待转换的实体类,为空则data为空
      */
-    public final BaseResponse praseBaseResponse(JSONObject jsonObject, Class<T> classOfT)
-            throws JSONException {
+    public final BaseResponse praseBaseResponse(JSONObject jsonObject, Class<T> classOfT) throws JSONException {
         Object data = null;
         if (classOfT != null) {
             if (classOfT == String.class) {
-                data = jsonObject.optString(EntityData);
-            } else {
-                if (jsonObject.opt(EntityData) != null) {
+                data = jsonObject.optString(ENTITY_DATA);
+            }
+            else {
+                if (jsonObject.opt(ENTITY_DATA) != null) {
                     try {
-                        data = JSON.parseObject(jsonObject.optString(EntityData), classOfT);
-                    } catch (Exception e) {
+                        data = JSON.parseObject(jsonObject.optString(ENTITY_DATA), classOfT);
+                    }
+                    catch (Exception e) {
                     }
                 }
             }
         }
-        BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(
-                EntityCode))
-                .setMsg(jsonObject.optString(EntityMsg))
-                .setData(data);
+        BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(ENTITY_CODE))
+                                                      .setMsg(jsonObject.optString(ENTITY_MSG))
+                                                      .setData(data);
         return baseResponse;
     }
 
     /**
      * 把json转换成基础响应对象列表类
      */
-    public final BaseResponse praseBaseResponseList(JSONObject jsonObject, Class<T> classOfT)
-            throws JSONException {
-        BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(
-                EntityCode))
-                .setMsg(jsonObject.optString(EntityMsg));
+    public final BaseResponse praseBaseResponseList(JSONObject jsonObject, Class<T> classOfT) throws JSONException {
+        BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(ENTITY_CODE))
+                                                      .setMsg(jsonObject.optString(ENTITY_MSG));
         List<T> list = new ArrayList<>();
-        if (jsonObject.opt(EntityData) != null) {
-            JSONArray jsonArray = jsonObject.optJSONArray(EntityData);
+        if (jsonObject.opt(ENTITY_DATA) != null) {
+            JSONArray jsonArray = jsonObject.optJSONArray(ENTITY_DATA);
             if (jsonArray != null) {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     try {
                         list.add(JSON.parseObject(jsonArray.get(i).toString(), classOfT));
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                     }
                 }
             }
@@ -745,11 +737,10 @@ public class BaseRequest<T> extends HttpProxy {
      */
     private final void printfRequestLog(Tasks task, String url) {
         if (url != null) {
-            Log.d(Global.getInstance().getAPP_DEBUG_HEADER() + "#" + HttpTag,
-                    task + " Request url:" + url.toString());
-        } else {
-            Log.d(Global.getInstance().getAPP_DEBUG_HEADER() + "#" + HttpTag,
-                    " Request url:" + getAPPUrl());
+            Log.d(Global.getInstance().getAppDebugHeader() + "#" + HTTP_TAG, task + " Request url:" + url.toString());
+        }
+        else {
+            Log.d(Global.getInstance().getAppDebugHeader() + "#" + HTTP_TAG, " Request url:" + getAPPUrl());
         }
     }
 
@@ -761,8 +752,8 @@ public class BaseRequest<T> extends HttpProxy {
      * @param o    响应结果
      */
     private final void printfReponseLog(Tasks task, Object o) {
-        Log.d(Global.getInstance().getAPP_DEBUG_HEADER() + "#" + HttpTag,
-                task + " Reponse Success = " + (o == null ? NULLTag : o.toString()));
+        Log.d(Global.getInstance().getAppDebugHeader() + "#" + HTTP_TAG,
+              task + " Reponse Success = " + (o == null ? NULL_TAG : o.toString()));
     }
 
     /**
@@ -772,8 +763,8 @@ public class BaseRequest<T> extends HttpProxy {
      * @param o    响应结果
      */
     private final void printfErrorLog(Tasks task, Object o) {
-        Log.e(Global.getInstance().getAPP_DEBUG_HEADER() + "#" + HttpTag,
-                task + " Reponse Error = " + (o == null ? NULLTag : o.toString()));
+        Log.e(Global.getInstance().getAppDebugHeader() + "#" + HTTP_TAG,
+              task + " Reponse Error = " + (o == null ? NULL_TAG : o.toString()));
     }
 
     /**
@@ -782,8 +773,8 @@ public class BaseRequest<T> extends HttpProxy {
      * @param task 任务名
      */
     private final void printfCancelLog(Tasks task) {
-        Log.d(Global.getInstance().getAPP_DEBUG_HEADER() + "#" + HttpTag,
-                "Reponse Cancel = " + (task == null ? NULLTag : task));
+        Log.d(Global.getInstance().getAppDebugHeader() + "#" + HTTP_TAG,
+              "Reponse Cancel = " + (task == null ? NULL_TAG : task));
     }
 
     /**
@@ -791,12 +782,12 @@ public class BaseRequest<T> extends HttpProxy {
      *
      * @return 转换后的结果String
      */
-    private final static String MapToGetUrl(Map<String, RequestParams.StringContent> map) {
+    private final static String mapToGetUrl(Map<String, RequestParams.StringContent> map) {
         StringBuilder url = new StringBuilder("");
         if (map != null) {
             for (int i = 0; i < map.size(); i++) {
                 url.append((map.keySet().toArray()[i].toString()) + "=" +
-                        ((RequestParams.StringContent) map.values().toArray()[i]).getValue());
+                           ((RequestParams.StringContent)map.values().toArray()[i]).getValue());
                 if (i != (map.size() - 1)) {
                     url.append("&");
                 }
@@ -810,11 +801,11 @@ public class BaseRequest<T> extends HttpProxy {
      *
      * @return 转换后的结果String
      */
-    private final static String MapToGetUrlNoKey(Map<String, RequestParams.StringContent> map) {
+    private final static String mapToGetUrlNoKey(Map<String, RequestParams.StringContent> map) {
         StringBuilder url = new StringBuilder("");
         if (map != null) {
             for (int i = 0; i < map.size(); i++) {
-                url.append(((RequestParams.StringContent) map.values().toArray()[i]).getValue());
+                url.append(((RequestParams.StringContent)map.values().toArray()[i]).getValue());
                 if (i != map.size() - 1) {
                     url.append("/");
                 }
@@ -828,7 +819,7 @@ public class BaseRequest<T> extends HttpProxy {
      *
      * @param map
      */
-    private final static Map<String, String> ObjectToStringMap(Map<String, Object> map) {
+    private final static Map<String, String> objectToStringMap(Map<String, Object> map) {
         if (map != null) {
             Map<String, String> tmp = new HashMap<>();
             for (int i = 0; i < map.size(); i++) {
@@ -843,8 +834,8 @@ public class BaseRequest<T> extends HttpProxy {
      * 连接方法名
      */
     private final String appendUrl(String moduleName, String metohName) {
-        StringBuilder url = new StringBuilder(getAPPUrl() + (moduleName == null ? "" : moduleName) +
-                (TextUtils.isEmpty(moduleName) ? "" : "/") +
+        StringBuilder url = new StringBuilder(
+                getAPPUrl() + (moduleName == null ? "" : moduleName) + (TextUtils.isEmpty(moduleName) ? "" : "/") +
                 metohName + "?");
         return url.toString();
     }

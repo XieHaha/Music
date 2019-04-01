@@ -10,16 +10,15 @@ import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.OnEventTriggerListener;
+import com.zyc.doctor.http.data.FileBean;
 import com.zyc.doctor.tools.FileTransferServer;
+import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
+import com.zyc.doctor.utils.DirHelper;
+import com.zyc.doctor.widgets.view.CircleProgressBar;
 
 import java.io.File;
 import java.util.List;
-
-import com.zyc.doctor.http.data.FileBean;
-import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
-import com.zyc.doctor.ui.base.adapter.BaseViewHolder;
-import com.zyc.doctor.utils.DirHelper;
-import com.zyc.doctor.widgets.view.CircleProgressBar;
 
 /**
  * 申请合作医生列表适配器

@@ -116,7 +116,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_alignParentBottom="true"
-            android:background="@color/app_main_divideline"
+            android:background="@color/app_main_divide_line"
             android:layout_height="1px" />
     </RelativeLayout>
 
@@ -124,7 +124,7 @@
         android:id="@+id/title_line"
         android:layout_width="match_parent"
         android:layout_below="@id/act_service_pack_hint_txt"
-        android:background="@color/app_main_divideline"
+        android:background="@color/app_main_divide_line"
         android:layout_height="1px" />
 
     <com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView
@@ -195,7 +195,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline" />
+                    android:background="@color/app_main_divide_line" />
 
             </RelativeLayout>
 
@@ -231,7 +231,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline" />
+                    android:background="@color/app_main_divide_line" />
 
             </RelativeLayout>
 
@@ -267,7 +267,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline" />
+                    android:background="@color/app_main_divide_line" />
 
             </RelativeLayout>
 
@@ -326,7 +326,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:background="@color/app_main_divideline"
+                    android:background="@color/app_main_divide_line"
                     android:layout_height="1px" />
 
                 <LinearLayout
@@ -357,7 +357,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:background="@color/app_main_divideline"
+                    android:background="@color/app_main_divide_line"
                     android:layout_height="1px" />
 
                 <LinearLayout
@@ -403,7 +403,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:background="@color/app_main_divideline"
+                    android:background="@color/app_main_divide_line"
                     android:layout_height="1px" />
 
 
@@ -440,7 +440,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:background="@color/app_main_divideline"
+                    android:background="@color/app_main_divide_line"
                     android:layout_height="1px" />
 
 

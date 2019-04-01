@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_marginTop="30dp"
-            android:background="@color/app_main_divideline" />
+            android:background="@color/app_main_divide_line" />
     </LinearLayout>
 
     <RelativeLayout
@@ -71,7 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_alignParentBottom="true"
-            android:background="@color/app_main_divideline" />
+            android:background="@color/app_main_divide_line" />
 
     </RelativeLayout>
 
@@ -106,7 +106,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_alignParentBottom="true"
-            android:background="@color/app_main_divideline" />
+            android:background="@color/app_main_divide_line" />
 
     </RelativeLayout>
 

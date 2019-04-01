@@ -7,60 +7,50 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zyc.doctor.R;
+import com.zyc.doctor.http.data.CooperateHospitalBean;
+import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
 
 import java.util.List;
-
-import com.zyc.doctor.http.data.CooperateHospitalBean;
-import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
-import com.zyc.doctor.ui.base.adapter.BaseViewHolder;
 
 /**
  * 合作医院列表适配器
  *
  * @author DUNDUN
  */
-public class SelectHospitalAdapter extends BaseRecyclerAdapter<CooperateHospitalBean>
-{
+public class SelectHospitalAdapter extends BaseRecyclerAdapter<CooperateHospitalBean> {
     private Context context;
 
-    public SelectHospitalAdapter(Context context, List<CooperateHospitalBean> list)
-    {
+    public SelectHospitalAdapter(Context context, List<CooperateHospitalBean> list) {
         super(list);
         this.context = context;
     }
 
     @Override
-    public BaseViewHolder onCreateViewHolder(ViewGroup parent)
-    {
-        View view = LayoutInflater.from(parent.getContext())
-                                  .inflate(R.layout.item_select_hospital, parent, false);
+    public BaseViewHolder onCreateViewHolder(ViewGroup parent) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_select_hospital, parent, false);
         return new ApplyCooperateHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position, CooperateHospitalBean item)
-    {
+    public void onBindViewHolder(BaseViewHolder holder, int position, CooperateHospitalBean item) {
         super.onBindViewHolder(holder, position, item);
         holder.showView(position, item);
     }
 
-    public class ApplyCooperateHolder extends BaseViewHolder<CooperateHospitalBean>
-    {
+    public class ApplyCooperateHolder extends BaseViewHolder<CooperateHospitalBean> {
         private TextView tvHospitalName, tvHospitalType;
 
-        public ApplyCooperateHolder(View itemView)
-        {
+        public ApplyCooperateHolder(View itemView) {
             super(itemView);
             tvHospitalName = itemView.findViewById(R.id.item_registration_name);
             tvHospitalType = itemView.findViewById(R.id.item_registration_type);
         }
 
         @Override
-        public void showView(final int position, final CooperateHospitalBean item)
-        {
+        public void showView(final int position, final CooperateHospitalBean item) {
             tvHospitalName.setText(item.getHospitalName());
-            switch (item.getRelationshipId())
-            {
+            switch (item.getRelationshipId()) {
                 case 1://执业医院
                     tvHospitalType.setText("执业医院");
                     break;

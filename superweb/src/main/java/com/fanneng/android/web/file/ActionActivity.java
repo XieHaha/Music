@@ -23,6 +23,7 @@ import static com.fanneng.android.web.file.FileUpLoadChooserImpl.REQUEST_CODE;
 
 /**
  * 启动准备：获取权限操作
+ * @author dundun
  */
 public final class ActionActivity extends Activity {
 
@@ -160,8 +161,9 @@ public final class ActionActivity extends Activity {
 	private void realOpenCamera() {
 
 		try {
-			if (mFileDataListener == null)
+			if (mFileDataListener == null) {
 				finish();
+			}
 			File mFile = SuperWebX5Utils.createImageFile(this);
 			if (mFile == null) {
 				mFileDataListener.onFileDataResult(REQUEST_CODE, Activity.RESULT_CANCELED, null);

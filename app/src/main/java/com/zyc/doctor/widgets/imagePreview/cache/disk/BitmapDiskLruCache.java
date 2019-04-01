@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 
+import com.zyc.doctor.widgets.imagePreview.options.PreviewOptions;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,21 +20,20 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import com.zyc.doctor.widgets.imagePreview.options.PreviewOptions;
-
 /**
  * Created by Kyle on 2015/12/14.
  */
 public class BitmapDiskLruCache {
-
     private static DiskLruCache mDiskLruCache;
     private Context context;
 
     public BitmapDiskLruCache(Context context) {
         this.context = context;
         try {
-            mDiskLruCache = DiskLruCache.open(context.getCacheDir(), getAppVersion(), 1, PreviewOptions.DiskCacheOptions.CACHE_SIZE);
-        } catch (IOException e) {
+            mDiskLruCache = DiskLruCache.open(context.getCacheDir(), getAppVersion(), 1,
+                                              PreviewOptions.DiskCacheOptions.CACHE_SIZE);
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -41,7 +42,8 @@ public class BitmapDiskLruCache {
         try {
             PackageInfo info = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             return info.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
+        }
+        catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
         return 1;
@@ -69,7 +71,8 @@ public class BitmapDiskLruCache {
                 }
                 return bitmap;
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
         return null;
@@ -85,16 +88,19 @@ public class BitmapDiskLruCache {
                 DiskLruCache.Editor editor = mDiskLruCache.edit(key);
                 if (editor != null) {
                     OutputStream outputStream = editor.newOutputStream(0);
-                    if (bitmap.compress(Bitmap.CompressFormat.WEBP, PreviewOptions.DiskCacheOptions.IMAGE_QUALITY, outputStream)) {
+                    if (bitmap.compress(Bitmap.CompressFormat.WEBP, PreviewOptions.DiskCacheOptions.IMAGE_QUALITY,
+                                        outputStream)) {
                         editor.commit();
-                    } else {
+                    }
+                    else {
                         editor.abort();
                     }
                 }
                 mDiskLruCache.flush();
                 return true;
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
         return false;
@@ -105,7 +111,7 @@ public class BitmapDiskLruCache {
      */
     public boolean saveImageFileToDisk(String imageUri, Bitmap bitmap) {
         String fileName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-        String path = PreviewOptions.ImageDownloadOptions.Image_SAVE_ABS_DIR;
+        String path = PreviewOptions.ImageDownloadOptions.IMAGE_SAVE_ABS_DIR;
         File dirFile = new File(path);
         if (!dirFile.exists()) {
             dirFile.mkdirs();
@@ -115,14 +121,16 @@ public class BitmapDiskLruCache {
         try {
             bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
             bitmap.compress(Bitmap.CompressFormat.PNG, PreviewOptions.DiskCacheOptions.IMAGE_QUALITY, bos);
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e) {
             e.printStackTrace();
-        } finally {
+        }
+        finally {
             try {
                 bos.flush();
                 bos.close();
-                return true;
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -139,7 +147,8 @@ public class BitmapDiskLruCache {
             MessageDigest digest = MessageDigest.getInstance("MD5");
             digest.update(key.getBytes());
             hash = digest.digest();
-        } catch (NoSuchAlgorithmException e) {
+        }
+        catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         BigInteger bi = new BigInteger(hash).abs();
@@ -165,9 +174,9 @@ public class BitmapDiskLruCache {
         try {
             String key = hashKeyForDisk(imageUri);
             mDiskLruCache.remove(key);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }

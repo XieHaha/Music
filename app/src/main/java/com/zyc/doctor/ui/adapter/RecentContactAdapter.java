@@ -8,13 +8,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zyc.doctor.R;
+import com.zyc.doctor.http.data.PatientBean;
+import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
+import com.zyc.doctor.utils.GlideHelper;
 
 import java.util.List;
 
-import com.zyc.doctor.http.data.PatientBean;
-import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
-import com.zyc.doctor.ui.base.adapter.BaseViewHolder;
-import com.zyc.doctor.utils.GlideHelper;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**

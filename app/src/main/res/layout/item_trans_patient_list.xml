@@ -16,7 +16,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_centerVertical="true"
-            android:src="@mipmap/icon_patient_default_imgs" />
+            android:src="@mipmap/icon_patient_default_img" />
 
         <TextView
             android:id="@+id/item_trans_patient_list_patient_name"
@@ -82,7 +82,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:background="@color/app_main_divideline"
+        android:background="@color/app_main_divide_line"
         android:layout_alignParentBottom="true"
         android:layout_height="1px" />
 

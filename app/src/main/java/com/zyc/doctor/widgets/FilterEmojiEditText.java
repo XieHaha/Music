@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
  */
 public class FilterEmojiEditText extends AppCompatEditText {
     private int maxTextLength = 100;
-    private String filterImoji = "[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]";
+    private String filterImoji = "[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\ud83e\udc00-\ud83e\udfff]||[\u2600-\u27ff]";
     private InputFilter[] emojiFilters;
     private Context context;
 

@@ -203,18 +203,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.xiaoyu.RemoteConsultationActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name="com.zyc.doctor.ui.activity.xiaoyu.CreateMeetingActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.activity.xiaoyu.MeetingDetailActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
             android:name="com.zyc.doctor.ui.activity.AuthDocStatuActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
@@ -239,11 +227,6 @@
             android:label="@string/act_capture"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name="com.zyc.doctor.ui.activity.xiaoyu.link.CallActivity"
-            android:configChanges="screenSize|orientation"
-            android:launchMode="singleTask"
-            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
         <activity
             android:name="com.zyc.doctor.chat.ChatActivity"
             android:launchMode="singleTask"
@@ -271,15 +254,6 @@
                 <action android:name="ease.msg.android.intent.CLICK" />
             </intent-filter>
         </receiver>
-
-        <!--小鱼配置-->
-        <!-- 注意： 此处需设置 APP_ID -->
-        <meta-data
-            android:name="AINEMO_APP_ID"
-            android:value="BMVNGNNNNMNNT" />
-        <!-- 被叫功能 -->
-        <service android:name="com.zyc.doctor.ui.activity.xiaoyu.IncomingCallService" />
-        <!--小鱼配置 结束-->
 
         <!--环信配置-->
         <!-- 设置环信应用的AppKey -->

@@ -14,8 +14,6 @@ import java.util.List;
  * @author DUNDUN
  */
 public class FragmentVpAdapter extends FragmentPagerAdapter {
-
-
     private List<Fragment> fragmentList;
     private Fragment currentFragment;
 
@@ -45,7 +43,7 @@ public class FragmentVpAdapter extends FragmentPagerAdapter {
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
         super.setPrimaryItem(container, position, object);
-        currentFragment = (Fragment) object;
+        currentFragment = (Fragment)object;
     }
 
     /**

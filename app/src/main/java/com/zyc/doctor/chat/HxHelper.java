@@ -17,7 +17,7 @@ import com.zyc.doctor.http.data.CooperateDocBean;
 import com.zyc.doctor.http.data.PatientBean;
 import com.zyc.doctor.http.IRequest;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.listener.ResponseAdapter;
+import com.zyc.doctor.http.listener.AbstractResponseAdapter;
 
 /**
  * @author dundun
@@ -88,7 +88,7 @@ public class HxHelper {
                     callback.onSuccess(user);
                     return user;
                 }
-                iRequest.getPatientInfo(username, new ResponseAdapter<BaseResponse>() {
+                iRequest.getPatientInfo(username, new AbstractResponseAdapter<BaseResponse>() {
                     @Override
                     public void onResponseSuccess(Tasks task, BaseResponse response) {
                         PatientBean patientBean = response.getData();
@@ -118,7 +118,7 @@ public class HxHelper {
                     callback.onSuccess(user);
                     return user;
                 }
-                iRequest.getDocInfo(username, new ResponseAdapter<BaseResponse>() {
+                iRequest.getDocInfo(username, new AbstractResponseAdapter<BaseResponse>() {
                     @Override
                     public void onResponseSuccess(Tasks task, BaseResponse response) {
                         CooperateDocBean bean = response.getData();

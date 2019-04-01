@@ -35,7 +35,6 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build;
-import android.support.annotation.ColorRes;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -57,8 +56,8 @@ import com.zyc.doctor.widgets.ripples.listener.OnRippleCompleteListener;
  * @version 2016.0303
  */
 public class RippleLinearLayout extends LinearLayout {
-    private int WIDTH;
-    private int HEIGHT;
+    private int width;
+    private int height;
     private int rippleDuration = 500;
     private int pressBgDuration = 200;
     private int rippleAlpha = 90;
@@ -201,7 +200,7 @@ public class RippleLinearLayout extends LinearLayout {
                 /**
                  * draw circle
                  * */
-                RectF vRect = new RectF(0, 0, WIDTH, HEIGHT);
+                RectF vRect = new RectF(0, 0, width, height);
                 pressPaint.setAlpha(currAlpha);
                 canvas.drawRect(vRect, pressPaint);
                 break;
@@ -216,7 +215,7 @@ public class RippleLinearLayout extends LinearLayout {
                  * draw circle
                  * */
                 pressPaint.setAlpha(currAlpha);
-                canvas.drawCircle(WIDTH / 2, HEIGHT / 2, radiusMin / 2, pressPaint);
+                canvas.drawCircle(width / 2, height / 2, radiusMin / 2, pressPaint);
                 break;
             //circle fit max
             case 2:
@@ -229,7 +228,9 @@ public class RippleLinearLayout extends LinearLayout {
                  * draw circle
                  * */
                 pressPaint.setAlpha(currAlpha);
-                canvas.drawCircle(WIDTH / 2, HEIGHT / 2, radiusMax / 2, pressPaint);
+                canvas.drawCircle(width / 2, height / 2, radiusMax / 2, pressPaint);
+                break;
+            default:
                 break;
         }
     }
@@ -237,22 +238,22 @@ public class RippleLinearLayout extends LinearLayout {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        WIDTH = w;
-        HEIGHT = h;
+        width = w;
+        height = h;
         scaleAnimation = new ScaleAnimation(1.0f, zoomScale, 1.0f, zoomScale, w / 2, h / 2);
         scaleAnimation.setDuration(zoomDuration);
         scaleAnimation.setRepeatMode(Animation.REVERSE);
         scaleAnimation.setRepeatCount(1);
     }
 
-    private boolean ACTION_CANCEL = false;
+    private boolean actionCancel = false;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 startBgAnim();
-                ACTION_CANCEL = false;
+                actionCancel = false;
                 break;
             case MotionEvent.ACTION_UP:
                 if (!holdBgInPressing) { stopBgAnim(); }
@@ -260,8 +261,10 @@ public class RippleLinearLayout extends LinearLayout {
             case MotionEvent.ACTION_MOVE:
                 break;
             case MotionEvent.ACTION_CANCEL:
-                ACTION_CANCEL = true;
+                actionCancel = true;
                 stopBgAnim();
+                break;
+            default:
                 break;
         }
         gestureDetector.onTouchEvent(event);
@@ -273,7 +276,7 @@ public class RippleLinearLayout extends LinearLayout {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 startBgAnim();
-                ACTION_CANCEL = false;
+                actionCancel = false;
                 break;
             case MotionEvent.ACTION_UP:
                 if (!holdBgInPressing) {
@@ -283,8 +286,10 @@ public class RippleLinearLayout extends LinearLayout {
             case MotionEvent.ACTION_MOVE:
                 break;
             case MotionEvent.ACTION_CANCEL:
-                ACTION_CANCEL = true;
+                actionCancel = true;
                 stopBgAnim();
+                break;
+            default:
                 break;
         }
         gestureDetector.onTouchEvent(event);
@@ -324,8 +329,8 @@ public class RippleLinearLayout extends LinearLayout {
             /**
              * getObject max radius
              * */
-            radiusMax = Math.max(WIDTH, HEIGHT);
-            radiusMin = Math.min(WIDTH, HEIGHT);
+            radiusMax = Math.max(width, height);
+            radiusMin = Math.min(width, height);
             radiusMax -= ripplePadding;
             radiusMin -= ripplePadding;
             if (isCentered) {
@@ -353,7 +358,7 @@ public class RippleLinearLayout extends LinearLayout {
             bgAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    if (ACTION_CANCEL) {
+                    if (actionCancel) {
                         return;
                     }
                     currAlpha = (int)Double.parseDouble(animation.getAnimatedValue().toString());
@@ -476,7 +481,6 @@ public class RippleLinearLayout extends LinearLayout {
      *
      * @param rippleColor New color resource
      */
-    @ColorRes
     public void setRippleColor(int rippleColor) {
         this.rippleColor = getResources().getColor(rippleColor);
     }

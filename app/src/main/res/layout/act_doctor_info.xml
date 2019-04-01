@@ -44,7 +44,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_centerVertical="true"
-                    android:src="@mipmap/icon_default_imgs"
+                    android:src="@mipmap/icon_default_img"
                     app:civ_border_width="2dp"
                     app:civ_border_color="#50ffffff" />
 
@@ -188,7 +188,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_below="@id/act_user_info_cooperate_doc_info_txt_layout"
-                    android:background="@color/app_main_divideline"
+                    android:background="@color/app_main_divide_line"
                     android:layout_height="1px" />
 
                 <TextView
@@ -242,7 +242,7 @@
                     android:id="@+id/line"
                     android:layout_width="match_parent"
                     android:layout_below="@id/act_user_info_cooperate_doc_txt_layout"
-                    android:background="@color/app_main_divideline"
+                    android:background="@color/app_main_divide_line"
                     android:layout_height="1px" />
 
                 <com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView
@@ -301,7 +301,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:background="@color/app_main_divideline"
+                    android:background="@color/app_main_divide_line"
                     android:layout_height="1px" />
 
                 <com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView

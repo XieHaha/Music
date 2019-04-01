@@ -31,7 +31,7 @@
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_centerInParent="true"
-                android:src="@mipmap/icon_default_imgs"
+                android:src="@mipmap/icon_default_img"
                 app:civ_border_color="#50ffffff"
                 app:civ_border_width="2dp" />
 
@@ -159,7 +159,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/app_main_divideline" />
+                    android:background="@color/app_main_divide_line" />
 
             </RelativeLayout>
 
@@ -202,7 +202,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_alignParentBottom="true"
-                        android:background="@color/app_main_divideline" />
+                        android:background="@color/app_main_divide_line" />
 
                 </RelativeLayout>
 
@@ -236,7 +236,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_alignParentBottom="true"
-                        android:background="@color/app_main_divideline" />
+                        android:background="@color/app_main_divide_line" />
 
                 </RelativeLayout>
 
@@ -270,7 +270,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_alignParentBottom="true"
-                        android:background="@color/app_main_divideline" />
+                        android:background="@color/app_main_divide_line" />
 
                 </RelativeLayout>
 
@@ -332,7 +332,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_alignParentBottom="true"
-                        android:background="@color/app_main_divideline" />
+                        android:background="@color/app_main_divide_line" />
 
                 </RelativeLayout>
 
@@ -363,7 +363,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_alignParentBottom="true"
-                        android:background="@color/app_main_divideline" />
+                        android:background="@color/app_main_divide_line" />
 
                 </RelativeLayout>
 
@@ -399,7 +399,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_alignParentBottom="true"
-                        android:background="@color/app_main_divideline" />
+                        android:background="@color/app_main_divide_line" />
 
                 </RelativeLayout>
 
@@ -431,7 +431,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_alignParentBottom="true"
-                        android:background="@color/app_main_divideline" />
+                        android:background="@color/app_main_divide_line" />
                     <RelativeLayout
                         android:id="@+id/message_red_point"
                         android:layout_width="18dp"
@@ -483,7 +483,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_alignParentBottom="true"
-                        android:background="@color/app_main_divideline" />
+                        android:background="@color/app_main_divide_line" />
 
                 </RelativeLayout>
 
@@ -516,7 +516,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_alignParentBottom="true"
-                        android:background="@color/app_main_divideline" />
+                        android:background="@color/app_main_divide_line" />
 
                 </RelativeLayout>
 
@@ -553,7 +553,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="1px"
                         android:layout_alignParentBottom="true"
-                        android:background="@color/app_main_divideline" />
+                        android:background="@color/app_main_divide_line" />
 
                 </RelativeLayout>
 

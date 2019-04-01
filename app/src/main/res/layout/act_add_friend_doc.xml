@@ -21,7 +21,7 @@
             android:id="@+id/act_add_friend_img"
             android:layout_width="55dp"
             android:layout_centerVertical="true"
-            android:src="@mipmap/icon_default_imgs"
+            android:src="@mipmap/icon_default_img"
             android:layout_height="55dp" />
 
         <LinearLayout
@@ -90,7 +90,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:background="@color/app_main_divideline"
+        android:background="@color/app_main_divide_line"
         android:layout_height="1px" />
 
 

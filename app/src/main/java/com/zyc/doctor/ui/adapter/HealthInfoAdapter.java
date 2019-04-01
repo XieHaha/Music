@@ -8,13 +8,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zyc.doctor.R;
+import com.zyc.doctor.http.data.PatientCaseDetailBean;
+import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
 import com.zyc.doctor.utils.AllUtils;
 
 import java.util.List;
-
-import com.zyc.doctor.http.data.PatientCaseDetailBean;
-import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
-import com.zyc.doctor.ui.base.adapter.BaseViewHolder;
 
 /**
  * 患者病例列表适配器

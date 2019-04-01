@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
+import com.zyc.doctor.ui.base.activity.AppManager;
+import com.zyc.doctor.utils.DirHelper;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.version.ConstantsVersionMode;
 
@@ -23,21 +25,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.PatternSyntaxException;
 
-import com.zyc.doctor.ui.base.activity.AppManager;
-import com.zyc.doctor.utils.DirHelper;
-
 /**
  * @author dundun
  */
-public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode,
-        View.OnClickListener {
+public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode, View.OnClickListener {
     private static final String TAG = "VersionUpdateDialog";
     private TextView tvTitle, tvCancel, tvUpdate, tvPercent, tvContent;
     private LinearLayout llUpdateContentLayout;
     private RelativeLayout rlDownloadLayout;
-
     private Context context;
-
     /**
      * 更新模式   （强制更新还是选择更新）
      */
@@ -65,25 +61,20 @@ public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_update_version);
-
         initView();
-
         initUpdateData();
     }
 
     private void initView() {
-        tvTitle = (TextView) findViewById(R.id.act_update_version_title);
-        tvCancel = (TextView) findViewById(R.id.act_update_version_content_cancel);
-        tvUpdate = (TextView) findViewById(R.id.act_update_version_content_update);
-        tvPercent = (TextView) findViewById(R.id.act_update_version_content_percent);
-        tvContent = (TextView) findViewById(R.id.act_update_version_content);
-
+        tvTitle = (TextView)findViewById(R.id.act_update_version_title);
+        tvCancel = (TextView)findViewById(R.id.act_update_version_content_cancel);
+        tvUpdate = (TextView)findViewById(R.id.act_update_version_content_update);
+        tvPercent = (TextView)findViewById(R.id.act_update_version_content_percent);
+        tvContent = (TextView)findViewById(R.id.act_update_version_content);
         tvCancel.setOnClickListener(this);
         tvUpdate.setOnClickListener(this);
-
-        llUpdateContentLayout = (LinearLayout) findViewById(R.id.act_update_version_content_layout);
-        rlDownloadLayout =
-                (RelativeLayout) findViewById(R.id.act_update_version_content_down_layout);
+        llUpdateContentLayout = (LinearLayout)findViewById(R.id.act_update_version_content_layout);
+        rlDownloadLayout = (RelativeLayout)findViewById(R.id.act_update_version_content_down_layout);
     }
 
     /**
@@ -98,8 +89,9 @@ public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode,
             case UPDATE_MUST:
                 tvCancel.setText("退出");
                 break;
+            default:
+                break;
         }
-
         if (list != null && list.size() > 0) {
             llUpdateContentLayout.setVisibility(View.VISIBLE);
             tvContent.setVisibility(View.VISIBLE);
@@ -111,17 +103,17 @@ public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode,
                 textView.setPadding(0, 0, 0, 10);
                 llUpdateContentLayout.addView(textView);
             }
-        } else {
+        }
+        else {
             llUpdateContentLayout.setVisibility(View.GONE);
             tvContent.setVisibility(View.GONE);
         }
-
         if (isDownNewAPK) {
             tvUpdate.setText("马上更新");
-        } else {
+        }
+        else {
             tvUpdate.setText("立即安装");
         }
-
     }
 
     /**
@@ -156,7 +148,8 @@ public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode,
         if (!TextUtils.isEmpty(content)) {
             try {
                 contentArray = content.split("##");
-            } catch (PatternSyntaxException e) {
+            }
+            catch (PatternSyntaxException e) {
                 LogUtils.w(TAG, "Exception error!", e);
                 return this;
             }
@@ -166,7 +159,6 @@ public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode,
                 list.add(contentArray[i]);
             }
         }
-
         return this;
     }
 
@@ -178,13 +170,13 @@ public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode,
     public void setProgressValue(long total, long current) {
         if (total == current) {
             isDownNewAPK = false;
-
             tvCancel.setEnabled(true);
             tvUpdate.setVisibility(View.VISIBLE);
             tvUpdate.setText("立即安装");
             rlDownloadLayout.setVisibility(View.GONE);
-        } else {
-            tvPercent.setText((int) (current / (float) total * 100) + "%");
+        }
+        else {
+            tvPercent.setText((int)(current / (float)total * 100) + "%");
         }
     }
 
@@ -201,37 +193,46 @@ public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode,
                         dismiss();
                         AppManager.getInstance().finishAllActivity();
                         break;
+                    default:
+                        break;
                 }
                 break;
             case R.id.act_update_version_content_update:
                 if (isDownNewAPK && onEnterClickListener != null) {
                     switch (upDateMode) {
-                        case UPDATE_CHOICE://选择更新
+                        //选择更新
+                        case UPDATE_CHOICE:
                             onEnterClickListener.onEnter(false);
                             dismiss();
                             break;
-                        case UPDATE_MUST://强制更新 不让用户操作
+                        //强制更新 不让用户操作
+                        case UPDATE_MUST:
                             tvCancel.setEnabled(false);
                             tvUpdate.setVisibility(View.GONE);
                             rlDownloadLayout.setVisibility(View.VISIBLE);
                             onEnterClickListener.onEnter(true);
                             break;
+                        default:
+                            break;
                     }
-                } else {
+                }
+                else {
                     File file = new File(DirHelper.getPathFile(), "YHT.apk");
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     Uri uri = null;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        uri = FileProvider.getUriForFile(context,
-                                YihtApplication.getInstance().getPackageName() + ".fileprovider",
-                                file);
-                    } else {
+                        uri = FileProvider.getUriForFile(context, YihtApplication.getInstance().getPackageName() +
+                                                                  ".fileprovider", file);
+                    }
+                    else {
                         uri = Uri.fromFile(file);
                     }
                     intent.setDataAndType(uri, "application/vnd.android.package-archive");
                     context.startActivity(intent);
                 }
+                break;
+            default:
                 break;
         }
     }

@@ -16,60 +16,49 @@ import com.zyc.doctor.R;
  *
  * @author DUNDUN
  */
-public class MainOptionsAdapter extends BaseAdapter
-{
+public class MainOptionsAdapter extends BaseAdapter {
     private Context context;
     private int[] optionsTxt;
     private int[] optionsIcon;
 
-    public MainOptionsAdapter(Context context)
-    {
+    public MainOptionsAdapter(Context context) {
         this.context = context;
     }
 
-    public void setOptionsTxt(int[] optionsTxt)
-    {
+    public void setOptionsTxt(int[] optionsTxt) {
         this.optionsTxt = optionsTxt;
     }
 
-    public void setOptionsIcon(int[] optionsIcon)
-    {
+    public void setOptionsIcon(int[] optionsIcon) {
         this.optionsIcon = optionsIcon;
     }
 
     @Override
-    public int getCount()
-    {
+    public int getCount() {
         return optionsTxt.length;
     }
 
     @Override
-    public Object getItem(int position)
-    {
+    public Object getItem(int position) {
         return null;
     }
 
     @Override
-    public long getItemId(int position)
-    {
+    public long getItemId(int position) {
         return position;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
-    {
+    public View getView(int position, View convertView, ViewGroup parent) {
         MainOptionsHolder holder;
-        if (convertView == null)
-        {
+        if (convertView == null) {
             holder = new MainOptionsHolder();
-            convertView = LayoutInflater.from(parent.getContext())
-                                        .inflate(R.layout.item_main_options, parent, false);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_main_options, parent, false);
             holder.ivIcon = convertView.findViewById(R.id.item_main_options_icon);
             holder.tvTitle = convertView.findViewById(R.id.item_main_options_title);
             convertView.setTag(holder);
         }
-        else
-        {
+        else {
             holder = (MainOptionsHolder)convertView.getTag();
         }
         holder.ivIcon.setImageResource(optionsIcon[position]);
@@ -77,8 +66,7 @@ public class MainOptionsAdapter extends BaseAdapter
         return convertView;
     }
 
-    public class MainOptionsHolder
-    {
+    public class MainOptionsHolder {
         private ImageView ivIcon;
         private TextView tvTitle;
     }

@@ -51,6 +51,6 @@
     <color name="app_white_color">#ffffffff</color>
     <color name="app_red_color">#ff0000</color>
 
-    <color name="app_main_divideline">#d9dbdc</color>      <!-- DivideLine-->
+    <color name="app_main_divide_line">#d9dbdc</color>      <!-- DivideLine-->
 
 </resources>

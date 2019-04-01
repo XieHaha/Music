@@ -58,7 +58,9 @@ public class ExspandTextView extends AppCompatTextView {
     private int mToExpandHintColorBgPressed = TO_EXPAND_HINT_COLOR_BG_PRESSED;
     private int mToShrinkHintColorBgPressed = TO_SHRINK_HINT_COLOR_BG_PRESSED;
     private int mCurrState = STATE_SHRINK;
-    //  used to add to the tail of modified text, the "shrink" and "expand" text
+    /**
+     * used to add to the tail of modified text, the "shrink" and "expand" text
+     */
     private TouchableSpan mTouchableSpan;
     private BufferType mBufferType = BufferType.NORMAL;
     private TextPaint mTextPaint;
@@ -66,15 +68,19 @@ public class ExspandTextView extends AppCompatTextView {
     private int mTextLineCount = -1;
     private int mLayoutWidth = 0;
     private int mFutureTextViewWidth = 0;
-    //  the original text of this view
+    /**
+     * the original text of this view
+     */
     private CharSequence mOrigText;
-    //  used to judge if the listener of corresponding to the onclick event of ExspandTextView
-    //  is specifically for inner toggle
+    /**
+     * //  used to judge if the listener of corresponding to the onclick event of ExspandTextView
+     * //  is specifically for inner toggle
+     */
     private ExpandableClickListener mExpandableClickListener;
     /**
      * 编辑模式
      */
-    private boolean EDIT_MODE = false;
+    private boolean editMode = false;
 
     public ExspandTextView(Context context) {
         super(context);
@@ -289,6 +295,8 @@ public class ExspandTextView extends AppCompatTextView {
                                   ssbExpand.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 return ssbExpand;
             }
+            default:
+                break;
         }
         return mOrigText;
     }
@@ -312,6 +320,8 @@ public class ExspandTextView extends AppCompatTextView {
                 break;
             case STATE_EXPAND:
                 mCurrState = STATE_SHRINK;
+                break;
+            default:
                 break;
         }
         setTextInternal(getNewTextByConfig(), mBufferType);
@@ -344,14 +354,22 @@ public class ExspandTextView extends AppCompatTextView {
         this.onContentClickLinsener = onContentClickLinsener;
     }
 
+    /**
+     * 内容点击
+     */
     public interface OnContentClickLinsener {
+        /**
+         * 内容点击
+         *
+         * @param v
+         */
         void onContentClick(View v);
     }
 
     private class ExpandableClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            if (tag && !EDIT_MODE) {
+            if (tag && !editMode) {
                 tag = false;
             }
             else {
@@ -441,6 +459,8 @@ public class ExspandTextView extends AppCompatTextView {
                 case STATE_EXPAND:
                     ds.setColor(mToShrinkHintColor);
                     ds.bgColor = mIsPressed ? mToShrinkHintColorBgPressed : 0;
+                    break;
+                default:
                     break;
             }
             ds.setUnderlineText(false);

@@ -10,20 +10,20 @@ import com.bumptech.glide.Glide;
 import com.zyc.doctor.R;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
 import com.zyc.doctor.data.CommonData;
-import com.zyc.doctor.ui.LabelsView;
-import com.zyc.doctor.utils.AllUtils;
-
-import java.util.ArrayList;
-
-import butterknife.BindView;
+import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.data.BaseResponse;
 import com.zyc.doctor.http.data.CombineBean;
 import com.zyc.doctor.http.data.CombineChildBean;
 import com.zyc.doctor.http.data.PatientBean;
-import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.ui.LabelsView;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.utils.AllUtils;
 import com.zyc.doctor.utils.GlideHelper;
 import com.zyc.doctor.utils.ToastUtil;
+
+import java.util.ArrayList;
+
+import butterknife.BindView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -170,7 +170,8 @@ public class AddFriendsPatientActivity extends BaseActivity {
                 values.add(patientSurgeryList.get(i).getSurgeryName());
             }
         }
-        if (values.size() == 0)//缺省值
+        //缺省值
+        if (values.size() == 0)
         {
             labelsView.setVisibility(View.GONE);
             tvHint.setVisibility(View.VISIBLE);

@@ -19,15 +19,15 @@ public interface HttpConstants {
     /**
      * 超时时间
      */
-    int timeoutMS = 30 * 1000;
+    int TIMEOUT_MS = 30 * 1000;
     /**
      * 重试请求次数
      */
-    int retries = 0;
+    int RETRIES = 0;
     /**
      * 补偿方针
      */
-    float backoffMultiplier = 0f;
+    float BACKOFF_MULTIPLIER = 0f;
 
     /**
      * 枚举网络请求类型
@@ -39,11 +39,11 @@ public interface HttpConstants {
     /**
      * HTTP TAG
      */
-    String HttpTag = "HttpRequest";
+    String HTTP_TAG = "HttpRequest";
     /**
      * HTTP TAG
      */
-    String NULLTag = "  null";
+    String NULL_TAG = "  null";
     /**
      * 登录协议
      */

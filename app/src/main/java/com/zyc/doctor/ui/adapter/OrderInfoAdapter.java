@@ -9,16 +9,15 @@ import android.widget.TextView;
 
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.OrderStatus;
+import com.zyc.doctor.http.data.RegistrationBean;
+import com.zyc.doctor.http.data.RegistrationTypeBean;
+import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
 import com.zyc.doctor.utils.AllUtils;
 
 import org.litepal.crud.DataSupport;
 
 import java.util.List;
-
-import com.zyc.doctor.http.data.RegistrationBean;
-import com.zyc.doctor.http.data.RegistrationTypeBean;
-import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
-import com.zyc.doctor.ui.base.adapter.BaseViewHolder;
 
 /**
  * Created by dundun on 18/7/14.

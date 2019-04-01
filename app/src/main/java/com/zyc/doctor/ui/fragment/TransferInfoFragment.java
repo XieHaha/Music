@@ -21,7 +21,7 @@ import com.zyc.doctor.http.data.PatientBean;
 import com.zyc.doctor.http.data.TransPatientBean;
 import com.zyc.doctor.ui.activity.TransferPatientActivity;
 import com.zyc.doctor.ui.adapter.TransferInfoAdapter;
-import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.base.fragment.BaseFragment;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;

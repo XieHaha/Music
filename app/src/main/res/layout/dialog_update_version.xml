@@ -65,7 +65,7 @@
         <View
             android:layout_width="@dimen/app_hei_line"
             android:layout_height="match_parent"
-            android:background="@color/app_main_divideline" />
+            android:background="@color/app_main_divide_line" />
 
         <TextView
             android:id="@+id/act_update_version_content_update"

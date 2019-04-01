@@ -17,7 +17,7 @@
             android:layout_height="50dp"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
-            android:src="@mipmap/icon_patient_default_imgs" />
+            android:src="@mipmap/icon_patient_default_img" />
 
         <RelativeLayout
             android:id="@+id/message_red_point"

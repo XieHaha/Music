@@ -9,13 +9,12 @@ import android.widget.TextView;
 
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.OrderStatus;
+import com.zyc.doctor.http.data.RegistrationBean;
+import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
 import com.zyc.doctor.utils.AllUtils;
 
 import java.util.List;
-
-import com.zyc.doctor.http.data.RegistrationBean;
-import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
-import com.zyc.doctor.ui.base.adapter.BaseViewHolder;
 
 /**
  * Created by dundun on 2018-4-8.
@@ -23,38 +22,30 @@ import com.zyc.doctor.ui.base.adapter.BaseViewHolder;
  *
  * @author DUNDUN
  */
-public class RegistrationListAdapter extends BaseRecyclerAdapter<RegistrationBean>
-        implements OrderStatus
-{
+public class RegistrationListAdapter extends BaseRecyclerAdapter<RegistrationBean> implements OrderStatus {
     private Context context;
 
-    public RegistrationListAdapter(Context context, List<RegistrationBean> list)
-    {
+    public RegistrationListAdapter(Context context, List<RegistrationBean> list) {
         super(list);
         this.context = context;
     }
 
     @Override
-    public BaseViewHolder onCreateViewHolder(ViewGroup parent)
-    {
-        View view = LayoutInflater.from(parent.getContext())
-                                  .inflate(R.layout.item_order, parent, false);
+    public BaseViewHolder onCreateViewHolder(ViewGroup parent) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order, parent, false);
         return new PatientsHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position, RegistrationBean item)
-    {
+    public void onBindViewHolder(BaseViewHolder holder, int position, RegistrationBean item) {
         super.onBindViewHolder(holder, position, item);
         holder.showView(position, item);
     }
 
-    public class PatientsHolder extends BaseViewHolder<RegistrationBean>
-    {
+    public class PatientsHolder extends BaseViewHolder<RegistrationBean> {
         private TextView tvOrderType, tvOrderPrice, tvOrderStatus, tvOrderPatientName, tvOrderPatientSex, tvOrderPatientAge, tvOrderDetail, tvOrderHospital;
 
-        public PatientsHolder(View view)
-        {
+        public PatientsHolder(View view) {
             super(view);
             tvOrderType = view.findViewById(R.id.item_order_type);
             tvOrderPrice = view.findViewById(R.id.item_order_price);
@@ -67,26 +58,21 @@ public class RegistrationListAdapter extends BaseRecyclerAdapter<RegistrationBea
         }
 
         @Override
-        public void showView(final int position, final RegistrationBean item)
-        {
+        public void showView(final int position, final RegistrationBean item) {
             tvOrderType.setText(item.getProductName());
             tvOrderPrice.setText(item.getProductPrice() + item.getProductPriceUnit());
-            switch (item.getOrderState())
-            {
+            switch (item.getOrderState()) {
                 case STATUS_SUBSCRIBE_NONE:
                     tvOrderStatus.setText("未确认");
-                    tvOrderStatus.setTextColor(
-                            ContextCompat.getColor(context, R.color.app_main_txt_color));
+                    tvOrderStatus.setTextColor(ContextCompat.getColor(context, R.color.app_main_txt_color));
                     break;
                 case STATUS_SUBSCRIBE:
                     tvOrderStatus.setText("待检查");
-                    tvOrderStatus.setTextColor(
-                            ContextCompat.getColor(context, R.color.app_main_color));
+                    tvOrderStatus.setTextColor(ContextCompat.getColor(context, R.color.app_main_color));
                     break;
                 case STATUS_COMPLETE:
                     tvOrderStatus.setText("已检查");
-                    tvOrderStatus.setTextColor(
-                            ContextCompat.getColor(context, R.color.app_main_txt_color));
+                    tvOrderStatus.setTextColor(ContextCompat.getColor(context, R.color.app_main_txt_color));
                     break;
                 case STATUS_SEND_REPORT:
                     tvOrderStatus.setText("报告已发送");
@@ -94,16 +80,14 @@ public class RegistrationListAdapter extends BaseRecyclerAdapter<RegistrationBea
                     break;
                 case STATUS_REFUSE:
                     tvOrderStatus.setText("已拒绝");
-                    tvOrderStatus.setTextColor(
-                            ContextCompat.getColor(context, R.color.app_red_color));
+                    tvOrderStatus.setTextColor(ContextCompat.getColor(context, R.color.app_red_color));
                     break;
             }
             tvOrderPatientName.setText(item.getPatientName());
             tvOrderPatientSex.setText(item.getPatientSex());
             tvOrderPatientAge.setText(AllUtils.getAge(item.getPatientBirthDate()) + "岁");
             tvOrderDetail.setText(item.getHospitalName());
-            tvOrderHospital.setText(
-                    AllUtils.formatDate(item.getOrderDate(), AllUtils.YYYY_MM_DD_HH_MM));
+            tvOrderHospital.setText(AllUtils.formatDate(item.getOrderDate(), AllUtils.YYYY_MM_DD_HH_MM));
         }
     }
 }

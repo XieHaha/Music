@@ -65,7 +65,7 @@ import com.zyc.doctor.ui.adapter.MainOptionsAdapter;
 import com.zyc.doctor.ui.adapter.OrderInfoLimitAdapter;
 import com.zyc.doctor.ui.adapter.RecentContactAdapter;
 import com.zyc.doctor.ui.adapter.TransferInfoLimitAdapter;
-import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.base.fragment.BaseFragment;
 import com.zyc.doctor.utils.AllUtils;
 import com.zyc.doctor.utils.LogUtils;
@@ -88,6 +88,7 @@ import static android.app.Activity.RESULT_OK;
 
 /**
  * 我的页面
+ *
  * @author dundun
  */
 public class MainFragment extends BaseFragment implements OrderStatus, SwipeRefreshLayout.OnRefreshListener {
@@ -702,7 +703,7 @@ public class MainFragment extends BaseFragment implements OrderStatus, SwipeRefr
                 break;
             case REQUEST_CODE_LOGIN:
                 String contents = data.getStringExtra(Intents.Scan.RESULT);
-                Log.e("test","111--contents:" +contents);
+                Log.e("test", "111--contents:" + contents);
                 break;
             case REQUEST_CODE_STATUS_CHANGE:
                 getTransferList();

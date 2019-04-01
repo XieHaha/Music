@@ -26,11 +26,23 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.chat.ChatActivity;
 import com.zyc.doctor.data.CommonData;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.data.BaseNetCode;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.data.CooperateDocBean;
+import com.zyc.doctor.http.data.CooperateHospitalBean;
+import com.zyc.doctor.http.data.HospitalBean;
+import com.zyc.doctor.http.data.HttpConstants;
 import com.zyc.doctor.ui.adapter.CooperationDocHAdapter;
 import com.zyc.doctor.ui.adapter.CooperationHospitalHAdapter;
+import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.GlideHelper;
 import com.zyc.doctor.utils.LogUtils;
+import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,18 +52,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.CooperateDocBean;
-import com.zyc.doctor.http.data.CooperateHospitalBean;
-import com.zyc.doctor.http.data.HospitalBean;
-import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.data.BaseNetCode;
-import com.zyc.doctor.http.data.HttpConstants;
-import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
-import com.zyc.doctor.utils.GlideHelper;
-import com.zyc.doctor.utils.ToastUtil;
-import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -96,7 +96,7 @@ public class DoctorInfoActivity extends BaseActivity
     private CooperationHospitalHAdapter cooperationHospitalHAdapter;
     private String doctorId, doctorNickName;
     private String headImgUrl;
-    private View view_pop;
+    private View viewPop;
     /**
      * 合作医生列表
      */
@@ -388,21 +388,21 @@ public class DoctorInfoActivity extends BaseActivity
      * 显示pop
      */
     private void showPop() {
-        view_pop = LayoutInflater.from(this).inflate(R.layout.main_pop_menu_p_dianjiu, null);
-        tvChange = (TextView) view_pop.findViewById(R.id.remark);
+        viewPop = LayoutInflater.from(this).inflate(R.layout.main_pop_menu_p_dianjiu, null);
+        tvChange = (TextView) viewPop.findViewById(R.id.remark);
         tvChange.setOnClickListener(this);
-        tvDelete = (TextView) view_pop.findViewById(R.id.change);
+        tvDelete = (TextView) viewPop.findViewById(R.id.change);
         tvDelete.setOnClickListener(this);
         if (mPopupwinow == null) {
             //新建一个popwindow
-            mPopupwinow = new PopupWindow(view_pop, LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT, true);
+            mPopupwinow = new PopupWindow(viewPop, LinearLayout.LayoutParams.WRAP_CONTENT,
+                                          LinearLayout.LayoutParams.WRAP_CONTENT, true);
         }
         mPopupwinow.setFocusable(true);
         mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mPopupwinow.setOutsideTouchable(true);
-        mPopupwinow.showAtLocation(view_pop, Gravity.TOP | Gravity.RIGHT, 0,
-                (int) AllUtils.dipToPx(this, 55));
+        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0,
+                                   (int) AllUtils.dipToPx(this, 55));
     }
 
     @Override

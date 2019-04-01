@@ -36,8 +36,8 @@ import butterknife.Unbinder;
 /**
  * @author dundun
  */
-public abstract class BaseFragment<T> extends Fragment implements FragmentInterface,
-        ResponseListener<BaseResponse>, View.OnClickListener {
+public abstract class BaseFragment<T> extends Fragment
+        implements FragmentInterface, ResponseListener<BaseResponse>, View.OnClickListener {
     /**
      * 任务队列列表
      */
@@ -58,7 +58,6 @@ public abstract class BaseFragment<T> extends Fragment implements FragmentInterf
      * 网络请求单例
      */
     protected IRequest mIRequest = null;
-
     /**
      * 注解
      */
@@ -72,13 +71,13 @@ public abstract class BaseFragment<T> extends Fragment implements FragmentInterf
 
     @Nullable
     @Override
-    public final View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                   Bundle savedInstanceState) {
+    public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view;
         int layoutID = getLayoutID();
         if (layoutID != 0) {
             view = inflater.inflate(getLayoutID(), null);
-        } else {
+        }
+        else {
             view = getLayoutView();
         }
         unbinder = ButterKnife.bind(this, view);
@@ -100,7 +99,6 @@ public abstract class BaseFragment<T> extends Fragment implements FragmentInterf
         whiteRequestList = new ArrayList<>();
         mIRequest = IRequest.getInstance(getActivity());
         loginSuccessBean = getLoginSuccessBean();
-
         sharePreferenceUtil = new SharePreferenceUtil(getActivity());
     }
 
@@ -147,8 +145,7 @@ public abstract class BaseFragment<T> extends Fragment implements FragmentInterf
      * @return
      */
     public LoginSuccessBean getLoginSuccessBean() {
-        String userStr = (String) SharePreferenceUtil.getObject(getActivity(),
-                "key_login_success_bean", "");
+        String userStr = (String)SharePreferenceUtil.getObject(getActivity(), "key_login_success_bean", "");
         if (!TextUtils.isEmpty(userStr)) {
             loginSuccessBean = JSON.parseObject(userStr, LoginSuccessBean.class);
         }
@@ -294,16 +291,17 @@ public abstract class BaseFragment<T> extends Fragment implements FragmentInterf
      * 把json转换成基础响应对象列表类
      */
     public final BaseResponse praseBaseResponseList(JSONObject jsonObject, Class<T> classOfT) throws JSONException {
-        BaseResponse baseResponse =
-                new BaseResponse().setCode(jsonObject.optInt(EntityCode)).setMsg(jsonObject.optString(EntityMsg));
+        BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(ENTITY_CODE))
+                                                      .setMsg(jsonObject.optString(ENTITY_MSG));
         List<T> list = new ArrayList<>();
-        if (jsonObject.opt(EntityData) != null) {
-            JSONArray jsonArray = jsonObject.optJSONArray(EntityData);
+        if (jsonObject.opt(ENTITY_DATA) != null) {
+            JSONArray jsonArray = jsonObject.optJSONArray(ENTITY_DATA);
             if (jsonArray != null) {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     try {
                         list.add(JSON.parseObject(jsonArray.get(i).toString(), classOfT));
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                     }
                 }
             }
@@ -322,25 +320,28 @@ public abstract class BaseFragment<T> extends Fragment implements FragmentInterf
         Object data = null;
         if (classOfT != null) {
             if (classOfT == String.class) {
-                data = jsonObject.optString(EntityData);
-            } else {
-                if (jsonObject.opt(EntityData) != null) {
+                data = jsonObject.optString(ENTITY_DATA);
+            }
+            else {
+                if (jsonObject.opt(ENTITY_DATA) != null) {
                     try {
-                        data = JSON.parseObject(jsonObject.optString(EntityData), classOfT);
-                    } catch (Exception e) {
+                        data = JSON.parseObject(jsonObject.optString(ENTITY_DATA), classOfT);
+                    }
+                    catch (Exception e) {
                     }
                 }
             }
         }
-        BaseResponse baseResponse =
-                new BaseResponse().setCode(jsonObject.optInt(EntityCode)).setMsg(jsonObject.optString(EntityMsg)).setData(data);
+        BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(ENTITY_CODE))
+                                                      .setMsg(jsonObject.optString(ENTITY_MSG))
+                                                      .setData(data);
         return baseResponse;
     }
 
     /**
      * =============================================请求辅助方法==============================
      */
-    protected static final String EntityData = "data";
-    protected static final String EntityCode = "code";
-    protected static final String EntityMsg = "msg";
+    protected static final String ENTITY_DATA = "data";
+    protected static final String ENTITY_CODE = "code";
+    protected static final String ENTITY_MSG = "msg";
 }

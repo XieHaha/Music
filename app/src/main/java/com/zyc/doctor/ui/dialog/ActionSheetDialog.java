@@ -28,15 +28,14 @@ import java.util.List;
 public class ActionSheetDialog {
     private Context context;
     private Dialog dialog;
-    private TextView txt_title;
-    private TextView txt_cancel;
-    private LinearLayout lLayout_content;
-    private ScrollView sLayout_content;
+    private TextView txtTitle;
+    private TextView txtCancel;
+    private LinearLayout lLayoutContent;
+    private ScrollView sLayoutContent;
     private boolean showTitle = false;
     private List<SheetItem> sheetItemList;
     private Display display;
     private OnCancelBtnClicked onCancelBtnClicked;
-
 
     public void setOnCancelBtnClicked(OnCancelBtnClicked onCancelBtnClicked) {
         this.onCancelBtnClicked = onCancelBtnClicked;
@@ -44,21 +43,18 @@ public class ActionSheetDialog {
 
     public ActionSheetDialog(Context context) {
         this.context = context;
-        WindowManager windowManager =
-                (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
         display = windowManager.getDefaultDisplay();
     }
 
     public ActionSheetDialog builder() {
         View view = LayoutInflater.from(context).inflate(R.layout.view_actionsheet, null);
-
         view.setMinimumWidth(display.getWidth());
-
-        sLayout_content = (ScrollView) view.findViewById(R.id.sLayout_content);
-        lLayout_content = (LinearLayout) view.findViewById(R.id.lLayout_content);
-        txt_title = (TextView) view.findViewById(R.id.txt_title);
-        txt_cancel = (TextView) view.findViewById(R.id.txt_cancel);
-        txt_cancel.setOnClickListener(new OnClickListener() {
+        sLayoutContent = (ScrollView)view.findViewById(R.id.sLayout_content);
+        lLayoutContent = (LinearLayout)view.findViewById(R.id.lLayout_content);
+        txtTitle = (TextView)view.findViewById(R.id.txt_title);
+        txtCancel = (TextView)view.findViewById(R.id.txt_cancel);
+        txtCancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (onCancelBtnClicked != null) {
@@ -67,7 +63,6 @@ public class ActionSheetDialog {
                 dialog.dismiss();
             }
         });
-
         dialog = new Dialog(context, R.style.ActionSheetDialogStyle);
         dialog.setContentView(view);
         Window dialogWindow = dialog.getWindow();
@@ -76,24 +71,22 @@ public class ActionSheetDialog {
         lp.x = 0;
         lp.y = 0;
         dialogWindow.setAttributes(lp);
-
         return this;
     }
 
     public ActionSheetDialog setTitle(String title) {
         showTitle = true;
-        txt_title.setVisibility(View.VISIBLE);
-        txt_title.setText(title);
+        txtTitle.setVisibility(View.VISIBLE);
+        txtTitle.setText(title);
         return this;
     }
 
     public ActionSheetDialog hideCancelText(boolean bool) {
         if (bool) {
-
-            txt_cancel.setVisibility(View.GONE);
-        } else {
-
-            txt_cancel.setVisibility(View.VISIBLE);
+            txtCancel.setVisibility(View.GONE);
+        }
+        else {
+            txtCancel.setVisibility(View.VISIBLE);
         }
         return this;
     }
@@ -103,7 +96,6 @@ public class ActionSheetDialog {
             dialog.dismiss();
         }
     }
-
 
     public ActionSheetDialog setCancelable(boolean cancel) {
         dialog.setCancelable(cancel);
@@ -115,8 +107,7 @@ public class ActionSheetDialog {
         return this;
     }
 
-    public ActionSheetDialog addSheetItem(String strItem, SheetItemColor color,
-                                          OnSheetItemClickListener listener) {
+    public ActionSheetDialog addSheetItem(String strItem, SheetItemColor color, OnSheetItemClickListener listener) {
         if (sheetItemList == null) {
             sheetItemList = new ArrayList<SheetItem>();
         }
@@ -128,62 +119,60 @@ public class ActionSheetDialog {
         if (sheetItemList == null || sheetItemList.size() <= 0) {
             return;
         }
-
         int size = sheetItemList.size();
-
         if (size >= 7) {
-            LayoutParams params = (LayoutParams) sLayout_content.getLayoutParams();
+            LayoutParams params = (LayoutParams)sLayoutContent.getLayoutParams();
             params.height = display.getHeight() / 2;
-            sLayout_content.setLayoutParams(params);
+            sLayoutContent.setLayoutParams(params);
         }
-
         for (int i = 1; i <= size; i++) {
             final int index = i;
             SheetItem sheetItem = sheetItemList.get(i - 1);
             String strItem = sheetItem.name;
             SheetItemColor color = sheetItem.color;
-            final OnSheetItemClickListener listener =
-                    (OnSheetItemClickListener) sheetItem.itemClickListener;
-
+            final OnSheetItemClickListener listener = (OnSheetItemClickListener)sheetItem.itemClickListener;
             TextView textView = new TextView(context);
             textView.setText(strItem);
             textView.setTextSize(18);
             textView.setGravity(Gravity.CENTER);
-
             if (size == 1) {
                 if (showTitle) {
                     textView.setBackgroundResource(R.drawable.actionsheet_bottom_selector);
-                } else {
+                }
+                else {
                     textView.setBackgroundResource(R.drawable.actionsheet_single_selector);
                 }
-            } else {
+            }
+            else {
                 if (showTitle) {
                     if (i >= 1 && i < size) {
                         textView.setBackgroundResource(R.drawable.actionsheet_middle_selector);
-                    } else {
+                    }
+                    else {
                         textView.setBackgroundResource(R.drawable.actionsheet_bottom_selector);
                     }
-                } else {
+                }
+                else {
                     if (i == 1) {
                         textView.setBackgroundResource(R.drawable.actionsheet_top_selector);
-                    } else if (i < size) {
+                    }
+                    else if (i < size) {
                         textView.setBackgroundResource(R.drawable.actionsheet_middle_selector);
-                    } else {
+                    }
+                    else {
                         textView.setBackgroundResource(R.drawable.actionsheet_bottom_selector);
                     }
                 }
             }
-
             if (color == null) {
                 textView.setTextColor(Color.parseColor(SheetItemColor.Blue.getValue()));
-            } else {
+            }
+            else {
                 textView.setTextColor(Color.parseColor(color.getValue()));
             }
-
             float scale = context.getResources().getDisplayMetrics().density;
-            int height = (int) (45 * scale + 0.5f);
+            int height = (int)(45 * scale + 0.5f);
             textView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, height));
-
             textView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -191,8 +180,7 @@ public class ActionSheetDialog {
                     dialog.dismiss();
                 }
             });
-
-            lLayout_content.addView(textView);
+            lLayoutContent.addView(textView);
         }
     }
 
@@ -219,8 +207,7 @@ public class ActionSheetDialog {
         OnSheetItemClickListener itemClickListener;
         SheetItemColor color;
 
-        public SheetItem(String name, SheetItemColor color,
-                         OnSheetItemClickListener itemClickListener) {
+        public SheetItem(String name, SheetItemColor color, OnSheetItemClickListener itemClickListener) {
             this.name = name;
             this.color = color;
             this.itemClickListener = itemClickListener;
@@ -232,12 +219,10 @@ public class ActionSheetDialog {
          * blue
          */
         Blue("#037BFF"),
-
         /**
          * red
          */
         Red("#FD4A2E");
-
         private String value;
 
         SheetItemColor(String value) {
@@ -247,6 +232,5 @@ public class ActionSheetDialog {
         public String getValue() {
             return value;
         }
-
     }
 }

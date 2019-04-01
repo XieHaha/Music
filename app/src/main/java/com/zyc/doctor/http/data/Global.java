@@ -1,14 +1,14 @@
 package com.zyc.doctor.http.data;
 
 /**
- * Created by luozi on 2015/12/29.
+ * @author luozi
+ * @date 2015/12/29
  */
 public class Global implements Mode {
     /**
      * 单例模式
      */
     private static Global instance = null;
-
     /**
      * 开发模式，此模式影响后台的输出，及前台显示
      */
@@ -20,16 +20,14 @@ public class Global implements Mode {
     /**
      * app 调试标记头
      */
-    private String APP_DEBUG_HEADER = "ZYC";
-
+    private String appDebugHeader = "ZYC";
 
     /**
      * 单例模式
      */
     public static Global getInstance() {
         synchronized (Global.class) {
-            if (instance == null)
-                instance = new Global();
+            if (instance == null) { instance = new Global(); }
             return instance;
         }
     }
@@ -55,7 +53,6 @@ public class Global implements Mode {
         return launchMode == Launch.RELEASE;
     }
 
-
     /**
      * 设置当前的运行模式
      */
@@ -77,11 +74,11 @@ public class Global implements Mode {
         this.controlMode = conrolMode;
     }
 
-    public String getAPP_DEBUG_HEADER() {
-        return APP_DEBUG_HEADER;
+    public String getAppDebugHeader() {
+        return appDebugHeader;
     }
 
-    public void setAPP_DEBUG_HEADER(String APP_DEBUG_HEADER) {
-        this.APP_DEBUG_HEADER = APP_DEBUG_HEADER;
+    public void setAppDebugHeader(String appDebugHeader) {
+        this.appDebugHeader = appDebugHeader;
     }
 }

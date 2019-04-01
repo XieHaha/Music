@@ -47,7 +47,7 @@
 
                         <View
                             android:layout_width="match_parent"
-                            android:background="@color/app_main_divideline"
+                            android:background="@color/app_main_divide_line"
                             android:layout_height="1px" />
 
                         <TextView
@@ -222,7 +222,7 @@
                     <View
                         android:id="@+id/fragment_main_transfer_title_line"
                         android:layout_width="match_parent"
-                        android:background="@color/app_main_divideline"
+                        android:background="@color/app_main_divide_line"
                         android:layout_below="@id/fragment_main_transfer_title_layout"
                         android:layout_height="1px" />
 
@@ -320,7 +320,7 @@
                         android:id="@+id/fragment_main_order_title_line"
                         android:layout_width="match_parent"
                         android:layout_below="@id/fragment_main_order_title_layout"
-                        android:background="@color/app_main_divideline"
+                        android:background="@color/app_main_divide_line"
                         android:layout_height="1px" />
 
                     <RelativeLayout

@@ -20,10 +20,22 @@ public class AnnularMenu extends ViewGroup implements View.OnClickListener
     private static final String TAG = "AnnulardMenu";
     private static final int DEFAULT_TOGGLE_DURATION = 500;
     private int mToggleDuration = DEFAULT_TOGGLE_DURATION;
-    private Position mPosition = Position.RIGHT_BOTTOM;//菜单位置
-    private int mRadius = 360;//菜单的 尺寸
-    private Status mCurrentStatus = Status.CLOSE;//菜单默认的状态是关闭
-    private View mCButton;//菜单的主按钮
+    /**
+     * //菜单位置
+     */
+    private Position mPosition = Position.RIGHT_BOTTOM;
+    /**
+     * //菜单的 尺寸
+     */
+    private int mRadius = 360;
+    /**
+     * //菜单默认的状态是关闭
+     */
+    private Status mCurrentStatus = Status.CLOSE;
+    /**
+     * //菜单的主按钮
+     */
+    private View mCButton;
     private OnMenuItemClickListener mOnMenuItemClickListener;
 
     /**
@@ -69,12 +81,21 @@ public class AnnularMenu extends ViewGroup implements View.OnClickListener
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-    @Override     //父元素确定子元素位置的方法
+    /**
+     * 父元素确定子元素位置的方法
+     * @param changed
+     * @param l
+     * @param t
+     * @param r
+     * @param b
+     */
+    @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b)
     {
         if (changed)
         {
-            layoutCButton();   //定位主菜单
+            //定位主菜单
+            layoutCButton();
             //定位item
             int count = getChildCount();
             for (int i = 0; i < count - 1; i++)

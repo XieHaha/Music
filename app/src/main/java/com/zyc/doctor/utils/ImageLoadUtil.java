@@ -110,9 +110,9 @@ public class ImageLoadUtil {
         return new DisplayImageOptions.Builder().cacheInMemory(true)
                 .cacheOnDisk(true)
                 //                .bitmapConfig(Bitmap.Config.RGB_565)
-                .showImageForEmptyUri(R.mipmap.icon_default_imgs)
-                .showImageOnFail(R.mipmap.icon_default_imgs)
-                .showImageOnLoading(R.mipmap.icon_default_imgs)
+                .showImageForEmptyUri(R.mipmap.icon_default_img)
+                .showImageOnFail(R.mipmap.icon_default_img)
+                .showImageOnLoading(R.mipmap.icon_default_img)
                 //                .displayer(new CircleBitmapDisplayer(Color.WHITE, 5))
                 .build();
     }

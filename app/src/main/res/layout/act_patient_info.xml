@@ -26,7 +26,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginLeft="10dp"
-                android:src="@mipmap/icon_patient_default_imgs"
+                android:src="@mipmap/icon_patient_default_img"
                 android:layout_marginTop="18dp" />
 
             <TextView

@@ -44,7 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_marginTop="10dp"
-                    android:background="@color/app_main_divideline" />
+                    android:background="@color/app_main_divide_line" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
                         android:layout_width="63dp"
                         android:layout_height="63dp"
                         android:layout_gravity="center"
-                        android:src="@mipmap/icon_patient_default_imgs" />
+                        android:src="@mipmap/icon_patient_default_img" />
 
                     <TextView
                         android:id="@+id/act_transfer_patient_name"
@@ -191,7 +191,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:background="@color/app_main_divideline" />
+                    android:background="@color/app_main_divide_line" />
 
                 <LinearLayout
                     android:id="@+id/act_transfer_patient_doc_layout"
@@ -230,7 +230,7 @@
                         android:layout_width="53dp"
                         android:layout_height="53dp"
                         android:layout_gravity="center"
-                        android:src="@mipmap/icon_patient_default_imgs" />
+                        android:src="@mipmap/icon_patient_default_img" />
 
                     <TextView
                         android:id="@+id/act_transfer_patient_doc_name"
@@ -264,7 +264,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:background="@color/app_main_divideline" />
+                    android:background="@color/app_main_divide_line" />
 
                 <LinearLayout
                     android:id="@+id/act_transfer_patient_status_layout"
@@ -320,7 +320,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
-                    android:background="@color/app_main_divideline" />
+                    android:background="@color/app_main_divide_line" />
 
                 <LinearLayout
                     android:id="@+id/act_transfer_patient_select_hospital"

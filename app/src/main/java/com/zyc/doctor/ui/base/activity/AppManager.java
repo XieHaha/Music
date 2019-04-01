@@ -82,7 +82,9 @@ public class AppManager {
      * 得到当前的activity
      */
     public Activity getCurrentActivity() {
-        if (activityList == null) return null;
+        if (activityList == null) {
+            return null;
+        }
         return activityList.get(activityList.size() - 1);
     }
 
@@ -113,8 +115,9 @@ public class AppManager {
     public void finishAllActivityExcept(Activity eActivity) {
 
         for (Activity activity : activityList) {
-            if (!activity.equals(eActivity))
+            if (!activity.equals(eActivity)) {
                 activity.finish();
+            }
         }
     }
 
@@ -123,8 +126,9 @@ public class AppManager {
      */
     public boolean activityExists(Class<?> clazz) {
         for (Activity activity : activityList) {
-            if (activity.getClass().getName().equals(clazz.getName()))
+            if (activity.getClass().getName().equals(clazz.getName())) {
                 return true;
+            }
         }
         return false;
     }
