@@ -32,11 +32,11 @@
 //import java.util.HashMap;
 //import java.util.Map;
 //
-//import custom.frame.bean.BaseResponse;
-//import custom.frame.bean.MeetingBean;
-//import custom.frame.http.data.HttpConstants;
-//import custom.frame.ui.activity.BaseActivity;
-//import custom.frame.utils.ToastUtil;
+//import com.zyc.doctor.http.data.BaseResponse;
+//import com.zyc.doctor.http.data.MeetingBean;
+//import com.zyc.doctor.http.data.HttpConstants;
+//import com.zyc.doctor.ui.base.activity.BaseActivity;
+//import com.zyc.doctor.utils.ToastUtil;
 //
 ///**
 // * @author dundun

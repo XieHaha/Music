@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import custom.frame.ui.adapter.BaseViewHolder;
-import custom.frame.ui.adapter.HFViewHolder;
-import custom.frame.ui.adapter.RecyclerAdapterInterface;
+import com.zyc.doctor.ui.base.adapter.BaseViewHolder;
+import com.zyc.doctor.ui.base.adapter.HFViewHolder;
+import com.zyc.doctor.ui.base.adapter.RecyclerAdapterInterface;
 
 public abstract class BaseRecyclerAdapter<T>
         extends RecyclerView.Adapter<BaseViewHolder> implements RecyclerAdapterInterface<T>

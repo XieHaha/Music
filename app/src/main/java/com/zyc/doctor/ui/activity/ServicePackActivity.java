@@ -50,18 +50,18 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import custom.frame.bean.BaseResponse;
-import custom.frame.bean.HospitalBean;
-import custom.frame.bean.HospitalProductBean;
-import custom.frame.bean.HospitalProductTypeBean;
-import custom.frame.bean.PatientBean;
-import custom.frame.http.Tasks;
-import custom.frame.http.data.BaseNetCode;
-import custom.frame.http.data.HttpConstants;
-import custom.frame.ui.activity.BaseActivity;
-import custom.frame.utils.GlideHelper;
-import custom.frame.utils.ToastUtil;
-import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.data.HospitalBean;
+import com.zyc.doctor.http.data.HospitalProductBean;
+import com.zyc.doctor.http.data.HospitalProductTypeBean;
+import com.zyc.doctor.http.data.PatientBean;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.data.BaseNetCode;
+import com.zyc.doctor.http.data.HttpConstants;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.utils.GlideHelper;
+import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
 
 /**
  * @author dundun

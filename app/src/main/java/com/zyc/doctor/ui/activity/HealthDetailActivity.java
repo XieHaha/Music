@@ -54,19 +54,19 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import custom.frame.bean.BaseResponse;
-import custom.frame.bean.NormImage;
-import custom.frame.bean.PatientCaseDetailBean;
-import custom.frame.http.Tasks;
-import custom.frame.http.data.BaseNetCode;
-import custom.frame.http.data.HttpConstants;
-import custom.frame.permission.Permission;
-import custom.frame.qiniu.QiniuUtils;
-import custom.frame.ui.activity.BaseActivity;
-import custom.frame.utils.DirHelper;
-import custom.frame.utils.ToastUtil;
-import custom.frame.widgets.gridview.AutoGridView;
-import custom.frame.widgets.textview.ExspandTextView;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.data.NormImage;
+import com.zyc.doctor.http.data.PatientCaseDetailBean;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.data.BaseNetCode;
+import com.zyc.doctor.http.data.HttpConstants;
+import com.zyc.doctor.permission.Permission;
+import com.zyc.doctor.qiniu.QiniuUtils;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.utils.DirHelper;
+import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.widgets.gridview.AutoGridView;
+import com.zyc.doctor.widgets.textview.ExspandTextView;
 
 /**
  * 病例详情（编辑）

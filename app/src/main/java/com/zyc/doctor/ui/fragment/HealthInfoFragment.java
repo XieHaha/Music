@@ -13,25 +13,25 @@ import android.widget.TextView;
 
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.data.BaseNetCode;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.data.CooperateDocBean;
+import com.zyc.doctor.http.data.PatientBean;
+import com.zyc.doctor.http.data.PatientCaseDetailBean;
 import com.zyc.doctor.ui.activity.HealthDetailActivity;
 import com.zyc.doctor.ui.adapter.HealthInfoAdapter;
+import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.base.fragment.BaseFragment;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
+import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
+import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import custom.frame.bean.BaseResponse;
-import custom.frame.bean.CooperateDocBean;
-import custom.frame.bean.PatientBean;
-import custom.frame.bean.PatientCaseDetailBean;
-import custom.frame.http.Tasks;
-import custom.frame.http.data.BaseNetCode;
-import custom.frame.ui.adapter.BaseRecyclerAdapter;
-import custom.frame.ui.fragment.BaseFragment;
-import custom.frame.utils.ToastUtil;
-import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
-import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
  * 患者病例

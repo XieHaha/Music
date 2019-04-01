@@ -20,12 +20,12 @@ import org.litepal.crud.DataSupport;
 
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
-import custom.frame.bean.CooperateDocBean;
-import custom.frame.bean.PatientBean;
-import custom.frame.bean.Version;
-import custom.frame.ui.activity.AppManager;
-import custom.frame.ui.activity.BaseActivity;
-import custom.frame.utils.ToastUtil;
+import com.zyc.doctor.http.data.CooperateDocBean;
+import com.zyc.doctor.http.data.PatientBean;
+import com.zyc.doctor.http.data.Version;
+import com.zyc.doctor.ui.base.activity.AppManager;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.utils.ToastUtil;
 
 /**
  * @author dundun

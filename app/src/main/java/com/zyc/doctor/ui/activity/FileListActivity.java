@@ -18,10 +18,10 @@ import com.zyc.doctor.utils.MimeUtils;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import custom.frame.bean.FileBean;
-import custom.frame.bean.NormImage;
-import custom.frame.ui.activity.BaseActivity;
-import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
+import com.zyc.doctor.http.data.FileBean;
+import com.zyc.doctor.http.data.NormImage;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
 
 /**
  *

@@ -10,9 +10,9 @@ import com.zyc.doctor.R;
 
 import java.util.List;
 
-import custom.frame.bean.HospitalProductTypeBean;
-import custom.frame.ui.adapter.BaseRecyclerAdapter;
-import custom.frame.ui.adapter.BaseViewHolder;
+import com.zyc.doctor.http.data.HospitalProductTypeBean;
+import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.base.adapter.BaseViewHolder;
 
 /**
  * 商品类型列表

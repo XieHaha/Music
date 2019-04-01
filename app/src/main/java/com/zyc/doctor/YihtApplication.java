@@ -21,10 +21,10 @@ import org.litepal.LitePal;
 import org.litepal.LitePalApplication;
 
 import cn.jpush.android.api.JPushInterface;
-import custom.frame.bean.LoginSuccessBean;
-import custom.frame.http.IRequest;
-import custom.frame.utils.ImageLoadUtil;
-import custom.frame.utils.SharePreferenceUtil;
+import com.zyc.doctor.http.data.LoginSuccessBean;
+import com.zyc.doctor.http.IRequest;
+import com.zyc.doctor.utils.ImageLoadUtil;
+import com.zyc.doctor.utils.SharePreferenceUtil;
 import me.jessyan.autosize.AutoSize;
 import me.jessyan.autosize.AutoSizeConfig;
 import me.jessyan.autosize.unit.Subunits;

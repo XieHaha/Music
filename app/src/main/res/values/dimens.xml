@@ -11,4 +11,10 @@
     <dimen name="app_main_title">18sp</dimen>
     <!-- 次要信息文本大小-->
     <dimen name="app_txt_minor">14sp</dimen>
+
+    <dimen name="gap_around">16dp</dimen>
+
+    <dimen name="img_width">64dp</dimen>
+    <dimen name="img_space">8dp</dimen>
+    <dimen name="image_space">10dp</dimen>
 </resources>

@@ -15,11 +15,11 @@ import com.zyc.doctor.tools.FileTransferServer;
 import java.io.File;
 import java.util.List;
 
-import custom.frame.bean.FileBean;
-import custom.frame.ui.adapter.BaseRecyclerAdapter;
-import custom.frame.ui.adapter.BaseViewHolder;
-import custom.frame.utils.DirHelper;
-import custom.frame.widgets.view.CircleProgressBar;
+import com.zyc.doctor.http.data.FileBean;
+import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.base.adapter.BaseViewHolder;
+import com.zyc.doctor.utils.DirHelper;
+import com.zyc.doctor.widgets.view.CircleProgressBar;
 
 /**
  * 申请合作医生列表适配器

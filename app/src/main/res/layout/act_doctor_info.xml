@@ -245,7 +245,7 @@
                     android:background="@color/app_main_divideline"
                     android:layout_height="1px" />
 
-                <custom.frame.widgets.recyclerview.AutoLoadRecyclerView
+                <com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView
                     android:id="@+id/act_user_info_recycler"
                     android:layout_width="match_parent"
                     android:layout_below="@id/line"
@@ -253,7 +253,7 @@
                     android:padding="10dp"
                     android:layout_height="wrap_content">
 
-                </custom.frame.widgets.recyclerview.AutoLoadRecyclerView>
+                </com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView>
             </LinearLayout>
 
             <View
@@ -304,7 +304,7 @@
                     android:background="@color/app_main_divideline"
                     android:layout_height="1px" />
 
-                <custom.frame.widgets.recyclerview.AutoLoadRecyclerView
+                <com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView
                     android:id="@+id/act_user_info_hospital_recycler"
                     android:layout_width="match_parent"
                     android:layout_below="@id/line"
@@ -312,7 +312,7 @@
                     android:padding="10dp"
                     android:layout_height="wrap_content">
 
-                </custom.frame.widgets.recyclerview.AutoLoadRecyclerView>
+                </com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView>
 
                 <View
                     android:layout_width="match_parent"

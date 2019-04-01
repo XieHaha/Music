@@ -26,7 +26,7 @@ import com.zyc.doctor.ui.activity.PatientInfoActivity;
 import com.zyc.doctor.ui.activity.ServicePackActivity;
 import com.zyc.doctor.utils.AllUtils;
 
-import custom.frame.ui.activity.BaseActivity;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
 
 /**
  * @author dundun

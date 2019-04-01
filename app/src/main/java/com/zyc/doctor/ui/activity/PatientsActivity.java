@@ -30,28 +30,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import custom.frame.bean.BaseResponse;
-import custom.frame.bean.PatientBean;
-import custom.frame.http.Tasks;
-import custom.frame.ui.activity.BaseActivity;
-import custom.frame.utils.ToastUtil;
-import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
-import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.data.PatientBean;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
+import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
  * 患者列表
  *
  * @author DUNDUN
  */
-public class PatientsActivity extends BaseActivity
-        implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener {
+public class PatientsActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener {
     @BindView(R.id.public_title_bar_more_three)
     ImageView ivTitleBarMore;
     @BindView(R.id.fragment_patients_recycler_view)
     AutoLoadRecyclerView autoLoadRecyclerView;
     @BindView(R.id.fragment_patients_swipe_layout)
     SwipeRefreshLayout swipeRefreshLayout;
-
     private PatientsListAdapter patientsListAdapter;
     private RelativeLayout rlMsgHint, rlMsgHint2;
     private TextView tvNum, tvExNum;
@@ -94,8 +92,7 @@ public class PatientsActivity extends BaseActivity
     /**
      * 推送回调监听  患者申请
      */
-    private IChange<String> patientStatusChangeListener = data ->
-    {
+    private IChange<String> patientStatusChangeListener = data -> {
         if ("add".equals(data)) {
             getPatientsData();
         }
@@ -115,7 +112,7 @@ public class PatientsActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("我的患者");
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("我的患者");
         ivTitleBarMore.setVisibility(View.VISIBLE);
         headerView = LayoutInflater.from(this).inflate(R.layout.view_cooperate_doc_header, null);
         exHeaderView = LayoutInflater.from(this).inflate(R.layout.view_change_patient_header, null);
@@ -127,10 +124,8 @@ public class PatientsActivity extends BaseActivity
         rlMsgHint2 = exHeaderView.findViewById(R.id.message_red_point2);
         tvFooterHintTxt = footerView.findViewById(R.id.footer_hint_txt);
         tvHeanderHintTxt.setText("我的患者申请");
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                android.R.color.holo_red_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_green_light);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
+                                                   android.R.color.holo_orange_light, android.R.color.holo_green_light);
     }
 
     @Override
@@ -150,22 +145,17 @@ public class PatientsActivity extends BaseActivity
         exHeaderView.setOnClickListener(this);
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
-        autoLoadRecyclerView.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        autoLoadRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(patientsListAdapter);
-        patientsListAdapter.setOnItemClickListener((v, position, item) ->
-        {
-            Intent intent = new Intent(this,
-                    PatientInfoActivity.class);
-            intent.putExtra(CommonData.KEY_PATIENT_BEAN,
-                    item);
-            startActivityForResult(intent,
-                    REQUEST_CODE_DELETE);
+        patientsListAdapter.setOnItemClickListener((v, position, item) -> {
+            Intent intent = new Intent(this, PatientInfoActivity.class);
+            intent.putExtra(CommonData.KEY_PATIENT_BEAN, item);
+            startActivityForResult(intent, REQUEST_CODE_DELETE);
         });
         //注册患者状态监听
         iNotifyChangeListenerServer.registerPatientStatusChangeListener(patientStatusChangeListener,
-                RegisterType.REGISTER);
+                                                                        RegisterType.REGISTER);
     }
 
     /**
@@ -191,9 +181,7 @@ public class PatientsActivity extends BaseActivity
                 startActivityForResult(intent, REQUEST_CODE_PATIENT_APPLY);
                 break;
             case R.id.public_title_bar_more_three:
-                new IntentIntegrator(this).setBarcodeImageEnabled(false)
-                        .setPrompt("将二维码放入框内，即可自动识别")
-                        .initiateScan();
+                new IntentIntegrator(this).setBarcodeImageEnabled(false).setPrompt("将二维码放入框内，即可自动识别").initiateScan();
                 break;
             default:
                 break;
@@ -207,36 +195,41 @@ public class PatientsActivity extends BaseActivity
             return;
         }
         switch (requestCode) {
-            case REQUEST_CODE_DELETE://删除患者
+            //删除患者
+            case REQUEST_CODE_DELETE:
                 getPatientsData();
                 break;
-            case REQUEST_CODE_PATIENT_APPLY://患者申请操作
+            //患者申请操作
+            case REQUEST_CODE_PATIENT_APPLY:
                 getApplyPatientList();
                 break;
             case REQUEST_CODE:
-                IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode,
-                        data);
-                if (result != null) {
-                    if (result.getContents() == null) {
-                    } else {
-                        String url = result.getContents();
-                        String doctorId = Uri.parse(url).getQueryParameter("doctorId");
-                        String patientId = Uri.parse(url).getQueryParameter("patientId");
-                        if (!TextUtils.isEmpty(doctorId)) {
-                            Intent intent = new Intent(this, AddFriendsDocActivity.class);
-                            intent.putExtra(CommonData.KEY_DOCTOR_ID, doctorId);
-                            intent.putExtra(CommonData.KEY_PUBLIC, true);
-                            startActivity(intent);
-                        } else {
-                            Intent intent = new Intent(this, AddFriendsPatientActivity.class);
-                            intent.putExtra(CommonData.KEY_PATIENT_ID, patientId);
-                            intent.putExtra(CommonData.KEY_PUBLIC, true);
-                            startActivity(intent);
-                        }
+                IntentResult result = IntentIntegrator.parseActivityResult(resultCode, data);
+                if (result != null && !TextUtils.isEmpty(result.getContents())) {
+                    String url = result.getContents();
+                    String doctorId = Uri.parse(url).getQueryParameter("doctorId");
+                    String patientId = Uri.parse(url).getQueryParameter("patientId");
+                    if (!TextUtils.isEmpty(doctorId)) {
+                        Intent intent = new Intent(PatientsActivity.this, AddFriendsDocActivity.class);
+                        intent.putExtra(CommonData.KEY_DOCTOR_ID, doctorId);
+                        intent.putExtra(CommonData.KEY_PUBLIC, true);
+                        startActivity(intent);
                     }
-                } else {
+                    else if (!TextUtils.isEmpty(patientId)) {
+                        Intent intent = new Intent(PatientsActivity.this, AddFriendsPatientActivity.class);
+                        intent.putExtra(CommonData.KEY_PATIENT_ID, patientId);
+                        intent.putExtra(CommonData.KEY_PUBLIC, true);
+                        startActivity(intent);
+                    }
+                    else {
+                        ToastUtil.toast(PatientsActivity.this, R.string.txt_camera_error);
+                    }
+                }
+                else {
                     super.onActivityResult(requestCode, resultCode, data);
                 }
+                break;
+            default:
                 break;
         }
     }
@@ -263,14 +256,16 @@ public class PatientsActivity extends BaseActivity
                     patientBeanList = response.getData();
                     if (page == 0) {
                         patientsListAdapter.setList(patientBeanList);
-                    } else {
+                    }
+                    else {
                         patientsListAdapter.addList(patientBeanList);
                     }
                     patientsListAdapter.notifyDataSetChanged();
                     if (patientBeanList.size() < PAGE_SIZE) {
                         tvFooterHintTxt.setText("暂无更多数据");
                         autoLoadRecyclerView.loadFinish(false);
-                    } else {
+                    }
+                    else {
                         tvFooterHintTxt.setText("上拉加载更多");
                         autoLoadRecyclerView.loadFinish(true);
                     }
@@ -278,25 +273,27 @@ public class PatientsActivity extends BaseActivity
                     DataSupport.deleteAll(PatientBean.class);
                     DataSupport.saveAll(patientBeanList);
                 }
-                sharePreferenceUtil.putString(CommonData.KEY_PATIENT_NUM,
-                        String.valueOf(patientBeanList.size()));
+                sharePreferenceUtil.putString(CommonData.KEY_PATIENT_NUM, String.valueOf(patientBeanList.size()));
                 break;
             case ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT:
                 ToastUtil.toast(this, response.getMsg());
                 break;
-            case GET_APPLY_PATIENT_LIST://患者申请
+            //患者申请
+            case GET_APPLY_PATIENT_LIST:
                 ArrayList<PatientBean> list = response.getData();
                 if (list.size() > 0) {
                     rlMsgHint.setVisibility(View.VISIBLE);
                     tvNum.setText(String.valueOf(list.size()));
-                } else {
+                }
+                else {
                     rlMsgHint.setVisibility(View.GONE);
                 }
-                sharePreferenceUtil.putString(CommonData.KEY_PATIENT_APPLY_NUM,
-                        String.valueOf(list.size()));
+                sharePreferenceUtil.putString(CommonData.KEY_PATIENT_APPLY_NUM, String.valueOf(list.size()));
                 if (onApplyCallbackListener != null) {
                     onApplyCallbackListener.onApplyCallback();
                 }
+                break;
+            default:
                 break;
         }
     }
@@ -342,6 +339,6 @@ public class PatientsActivity extends BaseActivity
         super.onDestroy();
         //注销患者状态监听
         iNotifyChangeListenerServer.registerPatientStatusChangeListener(patientStatusChangeListener,
-                RegisterType.UNREGISTER);
+                                                                        RegisterType.UNREGISTER);
     }
 }

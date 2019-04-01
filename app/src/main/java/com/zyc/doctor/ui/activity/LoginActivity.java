@@ -23,11 +23,16 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.DocAuthStatu;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.data.HttpConstants;
+import com.zyc.doctor.http.data.Version;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.version.presenter.VersionPresenter;
 import com.zyc.doctor.version.view.VersionUpdateDialog;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
 import java.util.concurrent.ScheduledExecutorService;
@@ -35,12 +40,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import custom.frame.bean.BaseResponse;
-import custom.frame.bean.Version;
-import custom.frame.http.Tasks;
-import custom.frame.http.data.HttpConstants;
-import custom.frame.ui.activity.BaseActivity;
-import custom.frame.utils.ToastUtil;
 import me.jessyan.autosize.internal.CustomAdapt;
 
 /**
@@ -221,7 +220,7 @@ public class LoginActivity extends BaseActivity
             ToastUtil.toast(this, R.string.toast_txt_phone_error);
             return;
         }
-        if (StringUtils.isEmpty(verifyCode)) {
+        if (TextUtils.isEmpty(verifyCode)) {
             ToastUtil.toast(this, R.string.toast_txt_verify_hint);
             return;
         }

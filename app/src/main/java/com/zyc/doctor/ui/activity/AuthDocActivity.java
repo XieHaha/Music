@@ -39,14 +39,14 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
-import custom.frame.bean.BaseResponse;
-import custom.frame.bean.CheckUrl;
-import custom.frame.bean.CooperateDocBean;
-import custom.frame.http.Tasks;
-import custom.frame.permission.Permission;
-import custom.frame.ui.activity.BaseActivity;
-import custom.frame.utils.DirHelper;
-import custom.frame.utils.ToastUtil;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.data.CheckUrl;
+import com.zyc.doctor.http.data.CooperateDocBean;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.permission.Permission;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.utils.DirHelper;
+import com.zyc.doctor.utils.ToastUtil;
 
 /**
  *

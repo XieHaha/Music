@@ -18,7 +18,11 @@ import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.DocAuthStatu;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.data.BaseResponse;
 import com.zyc.doctor.tools.FileTransferServer;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.utils.DirHelper;
 import com.zyc.doctor.utils.LogUtils;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
@@ -29,10 +33,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import custom.frame.bean.BaseResponse;
-import custom.frame.http.Tasks;
-import custom.frame.ui.activity.BaseActivity;
-import custom.frame.utils.DirHelper;
 
 /**
  * 启动界面
@@ -47,7 +47,6 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu {
     TextView tvTimeHint;
     @BindView(R.id.act_splash_btn)
     TextView tvStart;
-
     private ScheduledExecutorService executorService;
     private final String filePath = DirHelper.getPathImage() + "/splash.png";
     private int time = 0;
@@ -76,7 +75,8 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu {
         hideBottomUIMenu();
         if (isExist()) {
             initSplashImg();
-        } else {
+        }
+        else {
             initScheduledThread();
         }
         getSplash();
@@ -129,25 +129,23 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu {
                     overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_fade_out);
                     break;
             }
-        } else {
+        }
+        else {
             startLoginPage();
         }
     }
 
     private void initScheduledThread() {
         time = MAX_WAIT_TIME;
-        executorService = new ScheduledThreadPoolExecutor(1,
-                new BasicThreadFactory.Builder().namingPattern(
-                        "yht-thread-pool-%d")
-                        .daemon(true)
-                        .build());
-        executorService.scheduleAtFixedRate(() ->
-        {
+        executorService = new ScheduledThreadPoolExecutor(1, new BasicThreadFactory.Builder().namingPattern(
+                "yht-thread-pool-%d").daemon(true).build());
+        executorService.scheduleAtFixedRate(() -> {
             time--;
             if (time < 0) {
                 time = 0;
                 executorService.shutdownNow();
-            } else {
+            }
+            else {
                 handler.sendEmptyMessage(0);
             }
         }, 0, 1, TimeUnit.SECONDS);
@@ -160,7 +158,8 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu {
         try {
             String name = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
             mIRequest.getSplash("doctor", "android", name, this);
-        } catch (PackageManager.NameNotFoundException e) {
+        }
+        catch (PackageManager.NameNotFoundException e) {
             LogUtils.w(TAG, "Exception error!", e);
         }
     }
@@ -194,37 +193,35 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu {
                     downloadImg(url);
                 }
                 break;
+            default:
+                break;
         }
     }
 
     private void downloadImg(String url) {
         FileTransferServer.getInstance(this)
-                .downloadFile(0, url, DirHelper.getPathImage(), "splash.png",
-                        new DownloadListener() {
-                            @Override
-                            public void onDownloadError(int what,
-                                                        Exception exception) {
-                            }
+                          .downloadFile(0, url, DirHelper.getPathImage(), "splash.png", new DownloadListener() {
+                              @Override
+                              public void onDownloadError(int what, Exception exception) {
+                              }
 
-                            @Override
-                            public void onStart(int what, boolean isResume,
-                                                long rangeSize, Headers responseHeaders,
-                                                long allCount) {
-                            }
+                              @Override
+                              public void onStart(int what, boolean isResume, long rangeSize, Headers responseHeaders,
+                                      long allCount) {
+                              }
 
-                            @Override
-                            public void onProgress(int what, int progress,
-                                                   long fileCount, long speed) {
-                            }
+                              @Override
+                              public void onProgress(int what, int progress, long fileCount, long speed) {
+                              }
 
-                            @Override
-                            public void onFinish(int what, String filePath) {
-                            }
+                              @Override
+                              public void onFinish(int what, String filePath) {
+                              }
 
-                            @Override
-                            public void onCancel(int what) {
-                            }
-                        });
+                              @Override
+                              public void onCancel(int what) {
+                              }
+                          });
     }
 
     /**
@@ -236,7 +233,8 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu {
         File file = new File(filePath);
         if (file != null && file.exists()) {
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }

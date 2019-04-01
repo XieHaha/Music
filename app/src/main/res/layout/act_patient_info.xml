@@ -87,7 +87,7 @@
                 android:textColor="@color/app_white_color"
                 android:layout_height="wrap_content" />
 
-            <custom.frame.widgets.view.SearchLabelLayout
+            <com.zyc.doctor.widgets.view.SearchLabelLayout
                 android:id="@+id/act_patient_info_searchLabelLayout"
                 android:layout_width="match_parent"
                 android:layout_marginTop="10dp"
@@ -96,7 +96,7 @@
                 android:layout_below="@id/act_patient_info_headImg"
                 android:layout_height="110dp">
 
-            </custom.frame.widgets.view.SearchLabelLayout>
+            </com.zyc.doctor.widgets.view.SearchLabelLayout>
 
         </RelativeLayout>
 
@@ -155,7 +155,7 @@
     </LinearLayout>
 
     <!--右下-->
-    <custom.frame.widgets.menu.SatelliteMenu
+    <com.zyc.doctor.widgets.menu.SatelliteMenu
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="20dp"

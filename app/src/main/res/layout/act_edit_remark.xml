@@ -9,7 +9,7 @@
         android:id="@+id/top_bar"
         layout="@layout/public_title_bar" />
 
-    <custom.frame.widgets.FilterEmojiEditText
+    <com.zyc.doctor.widgets.FilterEmojiEditText
         android:id="@+id/act_edit_remark_nickname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

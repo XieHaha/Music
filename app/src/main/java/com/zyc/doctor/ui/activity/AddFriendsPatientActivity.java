@@ -16,14 +16,14 @@ import com.zyc.doctor.utils.AllUtils;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import custom.frame.bean.BaseResponse;
-import custom.frame.bean.CombineBean;
-import custom.frame.bean.CombineChildBean;
-import custom.frame.bean.PatientBean;
-import custom.frame.http.Tasks;
-import custom.frame.ui.activity.BaseActivity;
-import custom.frame.utils.GlideHelper;
-import custom.frame.utils.ToastUtil;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.data.CombineBean;
+import com.zyc.doctor.http.data.CombineChildBean;
+import com.zyc.doctor.http.data.PatientBean;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.utils.GlideHelper;
+import com.zyc.doctor.utils.ToastUtil;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**

@@ -15,10 +15,10 @@ import org.litepal.crud.DataSupport;
 
 import java.util.List;
 
-import custom.frame.bean.RegistrationBean;
-import custom.frame.bean.RegistrationTypeBean;
-import custom.frame.ui.adapter.BaseRecyclerAdapter;
-import custom.frame.ui.adapter.BaseViewHolder;
+import com.zyc.doctor.http.data.RegistrationBean;
+import com.zyc.doctor.http.data.RegistrationTypeBean;
+import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.base.adapter.BaseViewHolder;
 
 /**
  * Created by dundun on 18/7/14.

@@ -18,9 +18,9 @@
 //import com.yht.yihuantong.data.CommonData;
 //import com.yht.yihuantong.utils.AllUtils;
 //
-//import custom.frame.bean.MeetingBean;
-//import custom.frame.ui.activity.BaseActivity;
-//import custom.frame.utils.ToastUtil;
+//import com.zyc.doctor.http.data.MeetingBean;
+//import com.zyc.doctor.ui.base.activity.BaseActivity;
+//import com.zyc.doctor.utils.ToastUtil;
 //
 ///**
 // * 创建会议

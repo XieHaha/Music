@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import custom.frame.ui.activity.BaseActivity;
-import custom.frame.widgets.view.ViewPrepared;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.widgets.view.ViewPrepared;
 
 /**
  * @author dundun

@@ -14,22 +14,22 @@ import android.widget.TextView;
 
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.data.PatientBean;
+import com.zyc.doctor.http.data.TransPatientBean;
 import com.zyc.doctor.ui.activity.ApplyPatientActivity;
 import com.zyc.doctor.ui.activity.TransferPatientActivity;
 import com.zyc.doctor.ui.adapter.TransPatientsListAdapter;
+import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.base.fragment.BaseFragment;
+import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
+import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import custom.frame.bean.BaseResponse;
-import custom.frame.bean.PatientBean;
-import custom.frame.bean.TransPatientBean;
-import custom.frame.http.Tasks;
-import custom.frame.ui.adapter.BaseRecyclerAdapter;
-import custom.frame.ui.fragment.BaseFragment;
-import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
-import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
  *

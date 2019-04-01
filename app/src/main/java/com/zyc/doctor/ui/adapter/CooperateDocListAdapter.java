@@ -9,14 +9,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zyc.doctor.R;
-import custom.frame.utils.GlideHelper;
+import com.zyc.doctor.utils.GlideHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import custom.frame.bean.CooperateDocBean;
-import custom.frame.ui.adapter.BaseRecyclerAdapter;
-import custom.frame.ui.adapter.BaseViewHolder;
+import com.zyc.doctor.http.data.CooperateDocBean;
+import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.base.adapter.BaseViewHolder;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**

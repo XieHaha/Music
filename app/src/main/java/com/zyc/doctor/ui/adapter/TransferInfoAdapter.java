@@ -13,9 +13,9 @@ import com.zyc.doctor.utils.AllUtils;
 
 import java.util.List;
 
-import custom.frame.bean.TransPatientBean;
-import custom.frame.ui.adapter.BaseRecyclerAdapter;
-import custom.frame.ui.adapter.BaseViewHolder;
+import com.zyc.doctor.http.data.TransPatientBean;
+import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.base.adapter.BaseViewHolder;
 
 /**
  * Created by dundun on 18/7/14.

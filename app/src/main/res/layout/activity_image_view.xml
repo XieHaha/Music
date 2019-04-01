@@ -23,7 +23,7 @@
         android:layout_margin="@dimen/image_space"
         android:visibility="visible"/>
 
-    <custom.frame.widgets.imagePreview.view.ImageLoadingView
+    <com.zyc.doctor.widgets.imagePreview.view.ImageLoadingView
         android:id="@+id/act_image_view_loading"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -33,7 +33,7 @@
         app:pointColor="#ffffff"
         app:pointRadius="3dp"/>
 
-    <custom.frame.widgets.imagePreview.utils.NavigaterPageIndex
+    <com.zyc.doctor.widgets.imagePreview.utils.NavigaterPageIndex
         android:id="@+id/act_image_view_page_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

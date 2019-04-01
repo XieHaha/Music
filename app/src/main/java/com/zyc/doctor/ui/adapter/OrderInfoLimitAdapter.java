@@ -17,8 +17,8 @@ import com.zyc.doctor.utils.AllUtils;
 
 import java.util.ArrayList;
 
-import custom.frame.bean.RegistrationBean;
-import custom.frame.utils.SharePreferenceUtil;
+import com.zyc.doctor.http.data.RegistrationBean;
+import com.zyc.doctor.utils.SharePreferenceUtil;
 
 /**
  * Created by dundun on 18/7/14.

@@ -11,7 +11,7 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
 
 import butterknife.BindView;
-import custom.frame.ui.activity.BaseActivity;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
 
 /**
  * describe：文件阅读类

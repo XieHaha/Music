@@ -21,15 +21,15 @@ import com.zyc.doctor.tools.FileTransferServer;
 
 import java.util.ArrayList;
 
-import custom.frame.bean.NormImage;
-import custom.frame.utils.DirHelper;
-import custom.frame.utils.ToastUtil;
-import custom.frame.widgets.imagePreview.options.PreviewOptions;
-import custom.frame.widgets.imagePreview.transformer.CustomTransformer;
-import custom.frame.widgets.imagePreview.utils.CacheUtils;
-import custom.frame.widgets.imagePreview.utils.NavigaterPageIndex;
-import custom.frame.widgets.imagePreview.view.ImageLoadingView;
-import custom.frame.widgets.imagePreview.view.ImagePreviewView;
+import com.zyc.doctor.http.data.NormImage;
+import com.zyc.doctor.utils.DirHelper;
+import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.widgets.imagePreview.options.PreviewOptions;
+import com.zyc.doctor.widgets.imagePreview.transformer.CustomTransformer;
+import com.zyc.doctor.widgets.imagePreview.utils.CacheUtils;
+import com.zyc.doctor.widgets.imagePreview.utils.NavigaterPageIndex;
+import com.zyc.doctor.widgets.imagePreview.view.ImageLoadingView;
+import com.zyc.doctor.widgets.imagePreview.view.ImagePreviewView;
 
 public class ImagePreviewActivity extends Activity implements ViewPager.OnPageChangeListener {
     public static final String INTENT_URLS = "intent_urls";

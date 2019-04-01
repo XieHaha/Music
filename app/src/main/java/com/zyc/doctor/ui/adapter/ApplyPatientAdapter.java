@@ -12,10 +12,10 @@ import com.zyc.doctor.R;
 
 import java.util.List;
 
-import custom.frame.bean.PatientBean;
-import custom.frame.ui.adapter.BaseRecyclerAdapter;
-import custom.frame.ui.adapter.BaseViewHolder;
-import custom.frame.utils.GlideHelper;
+import com.zyc.doctor.http.data.PatientBean;
+import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.base.adapter.BaseViewHolder;
+import com.zyc.doctor.utils.GlideHelper;
 
 /**
  * 申请合作医生列表适配器

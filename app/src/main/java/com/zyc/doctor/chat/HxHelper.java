@@ -12,12 +12,12 @@ import org.litepal.crud.DataSupport;
 import java.util.List;
 import java.util.Map;
 
-import custom.frame.bean.BaseResponse;
-import custom.frame.bean.CooperateDocBean;
-import custom.frame.bean.PatientBean;
-import custom.frame.http.IRequest;
-import custom.frame.http.Tasks;
-import custom.frame.http.listener.ResponseAdapter;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.data.CooperateDocBean;
+import com.zyc.doctor.http.data.PatientBean;
+import com.zyc.doctor.http.IRequest;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.listener.ResponseAdapter;
 
 /**
  * @author dundun

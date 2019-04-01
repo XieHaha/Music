@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.PatternSyntaxException;
 
-import custom.frame.ui.activity.AppManager;
-import custom.frame.utils.DirHelper;
+import com.zyc.doctor.ui.base.activity.AppManager;
+import com.zyc.doctor.utils.DirHelper;
 
 /**
  * @author dundun

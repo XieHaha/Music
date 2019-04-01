@@ -28,7 +28,7 @@
 //
 //import java.util.List;
 //
-//import custom.frame.bean.MeetingBean;
+//import com.zyc.doctor.http.data.MeetingBean;
 //import io.reactivex.Observable;
 //import io.reactivex.android.schedulers.AndroidSchedulers;
 //import io.reactivex.functions.Consumer;

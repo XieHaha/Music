@@ -132,7 +132,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_height="wrap_content" />
 
-                    <custom.frame.widgets.FilterEmojiEditText
+                    <com.zyc.doctor.widgets.FilterEmojiEditText
                         android:id="@+id/act_transfer_patient_intro"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

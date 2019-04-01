@@ -14,8 +14,8 @@ import com.bumptech.glide.Glide;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 
-import custom.frame.bean.LoginSuccessBean;
-import custom.frame.utils.GlideHelper;
+import com.zyc.doctor.http.data.LoginSuccessBean;
+import com.zyc.doctor.utils.GlideHelper;
 
 /**
  * Created by zhangrj on 2017/4/10.

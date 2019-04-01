@@ -1,5 +1,26 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">@string/APP_NAME</string>
+    <string name="app_debug_flag">ZYC</string>
+
+    <!--title-->
+    <string name="act_complete_info">个人信息</string>
+    <string name="act_health_detail">健康详情</string>
+    <string name="act_apply_doctor">医生申请</string>
+    <string name="act_user_info">个人详情</string>
+    <string name="act_editUser_info">编辑信息</string>
+    <string name="act_editRemark">设置备注</string>
+    <string name="act_registration_detail">订单详情</string>
+    <string name="act_file_list">报告列表</string>
+    <string name="act_setting">设置</string>
+    <string name="act_hospital_info">医院信息</string>
+    <string name="act_transfer_patient_history">转诊记录</string>
+    <string name="act_transfer_patient">转诊信息</string>
+    <string name="act_base_info">我的基础信息</string>
+    <string name="act_case_record">我的健康档案</string>
+    <string name="act_editHealth_info">基础信息</string>
+    <string name="act_add_address">地址</string>
+    <string name="act_about_our">关于我们</string>
+    <string name="act_capture">扫描</string>
 
 
     <!--启动页 引导页-->
@@ -65,6 +86,7 @@
 
     <!--相机-->
     <string name="txt_camera_hint">将二维码放入框内，即可自动识别</string>
+    <string name="txt_camera_error">二维码有误</string>
 
     <!--聊天界面-->
     <string name="txt_registration_type">开%s</string>
@@ -119,4 +141,12 @@
     <string name="dialog_no_permission_tip">，请检查是否打开相关权限</string>
     <string name="dialog_no_record_tip">无法录像，请检查是否打开相机和录音权限</string>
     <string name="dialog_discard_before_vedio">确认将丢弃之前已拍摄的视频</string>
+
+    <string name="title_activity_main">ExspandTextView</string>
+    <string name="title_activity_listview">ExspandTextView in ListView</string>
+    <string name="to_expand_hint">展开&#62;&#62;</string>
+    <string name="to_shrink_hint">&#60;&#60;收起</string>
+
+    <item name="tag_key_data" type="id" />
+    <item name="tag_key_position" type="id" />
 </resources>

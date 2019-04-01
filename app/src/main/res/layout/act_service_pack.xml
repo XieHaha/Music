@@ -127,20 +127,20 @@
         android:background="@color/app_main_divideline"
         android:layout_height="1px" />
 
-    <custom.frame.widgets.recyclerview.AutoLoadRecyclerView
+    <com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView
         android:id="@+id/act_service_pack_hospital_list"
         android:layout_width="match_parent"
         android:layout_below="@id/title_line"
         android:layout_height="match_parent" />
 
-    <custom.frame.widgets.recyclerview.AutoLoadRecyclerView
+    <com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView
         android:id="@+id/act_service_pack_hospital_product_type_list"
         android:layout_width="match_parent"
         android:visibility="gone"
         android:layout_height="match_parent" />
 
 
-    <custom.frame.widgets.recyclerview.AutoLoadRecyclerView
+    <com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView
         android:id="@+id/act_service_pack_hospital_product_list"
         android:layout_width="match_parent"
         android:visibility="gone"

@@ -13,10 +13,10 @@ import com.zyc.doctor.R;
 
 import java.util.List;
 
-import custom.frame.bean.CooperateHospitalBean;
-import custom.frame.ui.adapter.BaseRecyclerAdapter;
-import custom.frame.ui.adapter.BaseViewHolder;
-import custom.frame.utils.GlideHelper;
+import com.zyc.doctor.http.data.CooperateHospitalBean;
+import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
+import com.zyc.doctor.ui.base.adapter.BaseViewHolder;
+import com.zyc.doctor.utils.GlideHelper;
 
 /**
  * Created by dundun on 2018-4-8.

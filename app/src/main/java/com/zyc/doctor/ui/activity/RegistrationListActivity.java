@@ -30,15 +30,15 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import custom.frame.bean.BaseResponse;
-import custom.frame.bean.RegistrationBean;
-import custom.frame.http.data.BaseNetCode;
-import custom.frame.http.data.HttpConstants;
-import custom.frame.ui.activity.BaseActivity;
-import custom.frame.ui.adapter.BaseRecyclerAdapter;
-import custom.frame.utils.ToastUtil;
-import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
-import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.data.RegistrationBean;
+import com.zyc.doctor.http.data.BaseNetCode;
+import com.zyc.doctor.http.data.HttpConstants;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
+import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
+import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
  * 已完成的报告

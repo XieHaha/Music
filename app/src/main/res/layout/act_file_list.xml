@@ -8,7 +8,7 @@
         layout="@layout/public_title_bar"
         android:id="@+id/top_bar" />
 
-    <custom.frame.widgets.recyclerview.AutoLoadRecyclerView
+    <com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView
         android:id="@+id/act_file_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

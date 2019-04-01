@@ -29,10 +29,10 @@ import com.zyc.doctor.version.model.VersionModelListener;
 
 import java.io.File;
 
-import custom.frame.bean.Version;
-import custom.frame.http.IRequest;
-import custom.frame.utils.DirHelper;
-import custom.frame.utils.ToastUtil;
+import com.zyc.doctor.http.data.Version;
+import com.zyc.doctor.http.IRequest;
+import com.zyc.doctor.utils.DirHelper;
+import com.zyc.doctor.utils.ToastUtil;
 
 /**
  * @author dundun

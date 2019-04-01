@@ -36,11 +36,21 @@
     <color name="_1F6BAC">#1F6BAC</color>
     <color name="_F16798">#F16798</color>
     <color name="_000000">#000000</color>
-    
+
     <!--2019年2月20日17:32:22-->
     <!--转诊-->
     <color name="_FF6417">#FF6417</color>
     <color name="_EA5F5F">#EA5F5F</color>
     <color name="_FB8B30">#FB8B30</color>
     <color name="_E40505">#E40505</color>
+
+    <color name="rippelColor">#cccccc</color>
+    <color name="pressColor">#cccccc</color>
+
+    <color name="app_black_color">#000000</color>
+    <color name="app_white_color">#ffffffff</color>
+    <color name="app_red_color">#ff0000</color>
+
+    <color name="app_main_divideline">#d9dbdc</color>      <!-- DivideLine-->
+
 </resources>

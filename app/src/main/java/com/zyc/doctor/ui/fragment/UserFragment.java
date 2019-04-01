@@ -26,6 +26,9 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.PicassoEngine;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.api.ApiManager;
@@ -33,6 +36,15 @@ import com.zyc.doctor.api.IChange;
 import com.zyc.doctor.api.RegisterType;
 import com.zyc.doctor.api.notify.INotifyChangeListenerServer;
 import com.zyc.doctor.data.CommonData;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.data.CooperateDocBean;
+import com.zyc.doctor.http.data.HttpConstants;
+import com.zyc.doctor.http.data.LoginSuccessBean;
+import com.zyc.doctor.http.data.PatientBean;
+import com.zyc.doctor.permission.OnPermissionCallback;
+import com.zyc.doctor.permission.Permission;
+import com.zyc.doctor.permission.PermissionHelper;
 import com.zyc.doctor.qrcode.BarCodeImageView;
 import com.zyc.doctor.qrcode.DialogPersonalBarCode;
 import com.zyc.doctor.ui.activity.AuthDocActivity;
@@ -41,14 +53,16 @@ import com.zyc.doctor.ui.activity.EditInfoActivity;
 import com.zyc.doctor.ui.activity.SettingActivity;
 import com.zyc.doctor.ui.activity.TransferPatientFromActivity;
 import com.zyc.doctor.ui.activity.TransferPatientToActivity;
+import com.zyc.doctor.ui.base.fragment.BaseFragment;
 import com.zyc.doctor.ui.dialog.ActionSheetDialog;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.DirHelper;
 import com.zyc.doctor.utils.FileUtils;
+import com.zyc.doctor.utils.GlideHelper;
 import com.zyc.doctor.utils.LogUtils;
-import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.PicassoEngine;
+import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.widgets.scrollview.CustomListenScrollView;
 
 import org.litepal.crud.DataSupport;
 
@@ -56,24 +70,12 @@ import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
-import custom.frame.bean.BaseResponse;
-import custom.frame.bean.CooperateDocBean;
-import custom.frame.bean.LoginSuccessBean;
-import custom.frame.bean.PatientBean;
-import custom.frame.http.Tasks;
-import custom.frame.http.data.HttpConstants;
-import custom.frame.permission.OnPermissionCallback;
-import custom.frame.permission.Permission;
-import custom.frame.permission.PermissionHelper;
-import custom.frame.ui.fragment.BaseFragment;
-import custom.frame.utils.DirHelper;
-import custom.frame.utils.GlideHelper;
-import custom.frame.utils.ToastUtil;
-import custom.frame.widgets.scrollview.CustomListenScrollView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 我的页面
+ *
+ * @author dundun
  */
 public class UserFragment extends BaseFragment implements CustomListenScrollView.OnScrollChangeListener, CommonData {
     @BindView(R.id.fragmrnt_user_info_headimg)
@@ -108,7 +110,6 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
     TextView tvRemind;
     @BindView(R.id.fragment_my_scrollview)
     CustomListenScrollView scrollView;
-
     private LoginSuccessBean loginSuccessBean;
     private INotifyChangeListenerServer iNotifyChangeListenerServer;
     private Uri originUri, cutFileUri;
@@ -205,7 +206,8 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
         super.initView(view, savedInstanceState);
         //获取状态栏高度，填充
         View mStateBarFixer = view.findViewById(R.id.status_bar_fix);
-        mStateBarFixer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));
+        mStateBarFixer.setLayoutParams(
+                new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getStateBarHeight(getActivity())));
         view.findViewById(R.id.fragmrnt_user_info_setting_layout).setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_info_train_layout).setOnClickListener(this);
         view.findViewById(R.id.fragmrnt_user_info_service_layout).setOnClickListener(this);
@@ -232,9 +234,11 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
         scrollView.setOnScrollChangeListener(this);
         rlAuthLayout.setOnClickListener(this);
         //注册患者状态监听
-        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(doctorAuthStatusChangeListener, RegisterType.REGISTER);
+        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(doctorAuthStatusChangeListener,
+                                                                           RegisterType.REGISTER);
         //注册转诊申请监听
-        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(doctorTransferPatientListener, RegisterType.REGISTER);
+        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(doctorTransferPatientListener,
+                                                                          RegisterType.REGISTER);
     }
 
     /**
@@ -255,8 +259,7 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
         JSONObject merchant = new JSONObject();
         //        Map<String, Object> merchant = new HashMap<>();
         merchant.put("portraitUrl", headImgUrl);
-        mIRequest.updateUserInfo(loginSuccessBean.getDoctorId(), loginSuccessBean.getFieldId(),
-                merchant, this);
+        mIRequest.updateUserInfo(loginSuccessBean.getDoctorId(), loginSuccessBean.getFieldId(), merchant, this);
     }
 
     /**
@@ -264,16 +267,17 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
      */
     private void initPageData() {
         tvPatientNum.setText(String.format(getString(R.string.txt_user_info_num),
-                sharePreferenceUtil.getString(CommonData.KEY_PATIENT_NUM)));
+                                           sharePreferenceUtil.getString(CommonData.KEY_PATIENT_NUM)));
         tvDocNum.setText(String.format(getString(R.string.txt_user_info_num),
-                sharePreferenceUtil.getString(CommonData.KEY_DOCTOR_NUM)));
+                                       sharePreferenceUtil.getString(CommonData.KEY_DOCTOR_NUM)));
         loginSuccessBean = YihtApplication.getInstance().getLoginSuccessBean();
         if (loginSuccessBean != null) {
-            barCodeImageView = new BarCodeImageView(getActivity(),
-                    HttpConstants.BASE_BASIC_DOWNLOAD_URL + loginSuccessBean.getDoctorId());
+            barCodeImageView = new BarCodeImageView(getActivity(), HttpConstants.BASE_BASIC_DOWNLOAD_URL +
+                                                                   loginSuccessBean.getDoctorId());
             if (!TextUtils.isEmpty(loginSuccessBean.getPortraitUrl())) {
                 headImgUrl = loginSuccessBean.getPortraitUrl();
-            } else if (!TextUtils.isEmpty(YihtApplication.getInstance().getHeadImgUrl())) {
+            }
+            else if (!TextUtils.isEmpty(YihtApplication.getInstance().getHeadImgUrl())) {
                 headImgUrl = YihtApplication.getInstance().getHeadImgUrl();
             }
             if (!TextUtils.isEmpty(headImgUrl)) {
@@ -289,7 +293,8 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
         }
         if (YihtApplication.getInstance().isVersionRemind()) {
             tvRemind.setVisibility(View.VISIBLE);
-        } else {
+        }
+        else {
             tvRemind.setVisibility(View.GONE);
         }
     }
@@ -304,8 +309,7 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
             //未认证
             case 0:
                 tvAuth.setText("去认证");
-                tvAuthStatus.setTextColor(ContextCompat.getColor(getActivity(),
-                        R.color.app_auth_faild));
+                tvAuthStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.app_auth_faild));
                 Glide.with(this).load(R.mipmap.icon_uncertified).into(authImg);
                 ivEditInfo.setVisibility(View.VISIBLE);
                 break;
@@ -313,16 +317,14 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
             case 1:
                 tvAuthStatus.setText("审核中");
                 tvAuth.setText("查看");
-                tvAuthStatus.setTextColor(ContextCompat.getColor(getActivity(),
-                        R.color.app_auth_faild));
+                tvAuthStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.app_auth_faild));
                 Glide.with(this).load(R.mipmap.icon_uncertified).into(authImg);
                 break;
             //审核未通过
             case 2:
                 tvAuthStatus.setText("审核未通过");
                 tvAuth.setText("查看");
-                tvAuthStatus.setTextColor(ContextCompat.getColor(getActivity(),
-                        R.color.app_auth_faild));
+                tvAuthStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.app_auth_faild));
                 Glide.with(this).load(R.mipmap.icon_uncertified).into(authImg);
                 ivEditInfo.setVisibility(View.VISIBLE);
                 break;
@@ -330,8 +332,7 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
             case 6:
                 tvAuthStatus.setText("已认证");
                 tvAuth.setText("查看");
-                tvAuthStatus.setTextColor(ContextCompat.getColor(getActivity(),
-                        R.color.app_auth_success));
+                tvAuthStatus.setTextColor(ContextCompat.getColor(getActivity(), R.color.app_auth_success));
                 Glide.with(this).load(R.mipmap.icon_certified).into(authImg);
                 ivEditInfo.setVisibility(View.GONE);
                 break;
@@ -349,8 +350,7 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
                 startActivity(intent);
                 break;
             case R.id.fragmrnt_user_info_qrcode_layout:
-                DialogPersonalBarCode dialogPersonalBarCode =
-                        new DialogPersonalBarCode(getActivity());
+                DialogPersonalBarCode dialogPersonalBarCode = new DialogPersonalBarCode(getActivity());
                 dialogPersonalBarCode.setQRImageViewSrc(barCodeImageView);
                 dialogPersonalBarCode.show();
                 break;
@@ -390,13 +390,19 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
      * 更换头像
      */
     private void editHeadImg() {
-        new ActionSheetDialog(getActivity()).builder().setCancelable(true).setCanceledOnTouchOutside(true).addSheetItem("相册", ActionSheetDialog.SheetItemColor.Blue, which -> {
-            //动态申请权限
-            permissionHelper.request(new String[]{Permission.STORAGE_WRITE});
-        }).addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue, which -> {
-            //动态申请权限
-            permissionHelper.request(new String[]{Permission.CAMERA, Permission.STORAGE_WRITE});
-        }).show();
+        new ActionSheetDialog(getActivity()).builder()
+                                            .setCancelable(true)
+                                            .setCanceledOnTouchOutside(true)
+                                            .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Blue, which -> {
+                                                //动态申请权限
+                                                permissionHelper.request(new String[] { Permission.STORAGE_WRITE });
+                                            })
+                                            .addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue, which -> {
+                                                //动态申请权限
+                                                permissionHelper.request(
+                                                        new String[] { Permission.CAMERA, Permission.STORAGE_WRITE });
+                                            })
+                                            .show();
     }
 
     @Override
@@ -429,8 +435,7 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
      * @param oldt
      */
     @Override
-    public void onScrollChanged(CustomListenScrollView scrollView, int l, int t, int oldl,
-                                int oldt) {
+    public void onScrollChanged(CustomListenScrollView scrollView, int l, int t, int oldl, int oldt) {
     }
 
     /**
@@ -438,26 +443,27 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
      */
     private void openPhoto() {
         Matisse.from(getActivity())
-                // 选择 mime 的类型
-                .choose(MimeType.allOf())
-                // 显示选择的数量
-                .countable(true)
-                //                //相机
-                //               .capture(true)
-                //               .captureStrategy(new CaptureStrategy(true, YihtApplication
-                // .getInstance().getPackageName() +".fileprovider"))
-                // 黑色背景
-                .theme(R.style.Matisse_Dracula)
-                // 图片选择的最多数量
-                .maxSelectable(1)
-                // 列表中显示的图片大小
-                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.app_picture_size)).restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                // 缩略图的比例
-                .thumbnailScale(0.85f)
-                // 使用的图片加载引擎
-                .imageEngine(new PicassoEngine())
-                // 设置作为标记的请求码，返回图片时使用
-                .forResult(RC_PICK_IMG);
+               // 选择 mime 的类型
+               .choose(MimeType.allOf())
+               // 显示选择的数量
+               .countable(true)
+               //                //相机
+               //               .capture(true)
+               //               .captureStrategy(new CaptureStrategy(true, YihtApplication
+               // .getInstance().getPackageName() +".fileprovider"))
+               // 黑色背景
+               .theme(R.style.Matisse_Dracula)
+               // 图片选择的最多数量
+               .maxSelectable(1)
+               // 列表中显示的图片大小
+               .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.app_picture_size))
+               .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+               // 缩略图的比例
+               .thumbnailScale(0.85f)
+               // 使用的图片加载引擎
+               .imageEngine(new PicassoEngine())
+               // 设置作为标记的请求码，返回图片时使用
+               .forResult(RC_PICK_IMG);
     }
 
     /**
@@ -473,18 +479,18 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             uri = FileProvider.getUriForFile(getActivity(),
-                    YihtApplication.getInstance().getPackageName() + ".fileprovider",
-                    cameraTempFile);
-        } else {
+                                             YihtApplication.getInstance().getPackageName() + ".fileprovider",
+                                             cameraTempFile);
+        }
+        else {
             uri = Uri.fromFile(cameraTempFile);
         }
-        List<ResolveInfo> resInfoList =
-                getActivity().getPackageManager().queryIntentActivities(intent,
-                        PackageManager.MATCH_DEFAULT_ONLY);
+        List<ResolveInfo> resInfoList = getActivity().getPackageManager()
+                                                     .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
         for (ResolveInfo resolveInfo : resInfoList) {
             String packageName = resolveInfo.activityInfo.packageName;
-            getActivity().grantUriPermission(packageName, uri,
-                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            getActivity().grantUriPermission(packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
+                                                               Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
         // 指定调用相机拍照后照片的储存路径
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
@@ -508,12 +514,12 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
         intent.setDataAndType(originUri, "image/*");
         intent.putExtra("crop", "true");
         // aspectX aspectY 是宽高的比例
-        if (Build.BRAND.toUpperCase().contains("HONOR") || Build.BRAND.toUpperCase().contains(
-                "HUAWEI")) {
+        if (Build.BRAND.toUpperCase().contains("HONOR") || Build.BRAND.toUpperCase().contains("HUAWEI")) {
             //华为特殊处理 不然会显示圆
             intent.putExtra("aspectX", 9998);
             intent.putExtra("aspectY", 9999);
-        } else {
+        }
+        else {
             intent.putExtra("aspectX", 1);
             intent.putExtra("aspectY", 1);
         }
@@ -550,9 +556,10 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
                     Uri cropUri;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         imageUri = FileProvider.getUriForFile(getActivity(),
-                                YihtApplication.getInstance().getPackageName() + ".fileprovider",
-                                cameraTempFile);
-                    } else {
+                                                              YihtApplication.getInstance().getPackageName() +
+                                                              ".fileprovider", cameraTempFile);
+                    }
+                    else {
                         imageUri = Uri.fromFile(cameraTempFile);
                     }
                     cropUri = Uri.fromFile(file);
@@ -563,7 +570,8 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
                 //裁剪完成，上传图片
                 if (AllUtils.isNetworkAvaliable(getActivity())) {
                     uploadHeadImg(cutFileUri);
-                } else {
+                }
+                else {
                     ToastUtil.toast(getActivity(), R.string.toast_public_current_no_network);
                 }
                 //上传完成，替换本地图片
@@ -595,7 +603,7 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+            @NonNull int[] grantResults) {
         if (permissions == null) {
             return;
         }
@@ -610,7 +618,8 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
             }
             if (isSamePermission(Permission.CAMERA, permissionName[0])) {
                 openCamera();
-            } else if (isSamePermission(Permission.STORAGE_WRITE, permissionName[0])) {
+            }
+            else if (isSamePermission(Permission.STORAGE_WRITE, permissionName[0])) {
                 openPhoto();
             }
         }
@@ -622,13 +631,11 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
             }
             for (String permission : permissionName) {
                 if (Permission.STORAGE_WRITE.equals(permission)) {
-                    ToastUtil.toast(getActivity(),
-                            custom.frame.R.string.dialog_no_storage_permission_tip);
+                    ToastUtil.toast(getActivity(), R.string.dialog_no_storage_permission_tip);
                     break;
                 }
                 if (Permission.CAMERA.equals(permission)) {
-                    ToastUtil.toast(getActivity(),
-                            custom.frame.R.string.dialog_no_camera_permission_tip);
+                    ToastUtil.toast(getActivity(), R.string.dialog_no_camera_permission_tip);
                     break;
                 }
             }
@@ -652,9 +659,10 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
         @Override
         public void onNoPermissionNeeded(@NonNull Object permissionName) {
             if (permissionName instanceof String[]) {
-                if (isSamePermission(Permission.STORAGE_WRITE, ((String[]) permissionName)[0])) {
+                if (isSamePermission(Permission.STORAGE_WRITE, ((String[])permissionName)[0])) {
                     openPhoto();
-                } else if (isSamePermission(Permission.CAMERA, ((String[]) permissionName)[0])) {
+                }
+                else if (isSamePermission(Permission.CAMERA, ((String[])permissionName)[0])) {
                     openCamera();
                 }
             }
@@ -665,9 +673,11 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
     public void onDestroy() {
         super.onDestroy();
         //注销患者状态监听
-        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(doctorAuthStatusChangeListener, RegisterType.UNREGISTER);
+        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(doctorAuthStatusChangeListener,
+                                                                           RegisterType.UNREGISTER);
         //注销转诊申请监听
-        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(doctorTransferPatientListener, RegisterType.UNREGISTER);
+        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(doctorTransferPatientListener,
+                                                                          RegisterType.UNREGISTER);
     }
 
     private OnTransferCallbackListener onTransferCallbackListener;
@@ -675,7 +685,6 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
     public void setOnTransferCallbackListener(OnTransferCallbackListener onTransferCallbackListener) {
         this.onTransferCallbackListener = onTransferCallbackListener;
     }
-
 
     public interface OnTransferCallbackListener {
         void onTransferCallback();

@@ -17,8 +17,8 @@ import com.zyc.doctor.utils.AllUtils;
 
 import java.util.ArrayList;
 
-import custom.frame.bean.TransPatientBean;
-import custom.frame.utils.SharePreferenceUtil;
+import com.zyc.doctor.http.data.TransPatientBean;
+import com.zyc.doctor.utils.SharePreferenceUtil;
 
 /**
  *

@@ -22,8 +22,8 @@ import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.DocAuthStatu;
 
 import butterknife.BindView;
-import custom.frame.ui.activity.BaseActivity;
-import custom.frame.utils.StatusBarUtil;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.utils.StatusBarUtil;
 import me.jessyan.autosize.internal.CustomAdapt;
 
 /**

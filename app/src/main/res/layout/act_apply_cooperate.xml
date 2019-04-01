@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <custom.frame.widgets.recyclerview.AutoLoadRecyclerView
+        <com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView
             android:id="@+id/act_apply_cooperate_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

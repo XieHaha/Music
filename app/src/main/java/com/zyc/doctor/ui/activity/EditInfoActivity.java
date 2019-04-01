@@ -36,14 +36,14 @@ import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
-import custom.frame.bean.BaseResponse;
-import custom.frame.http.Tasks;
-import custom.frame.permission.Permission;
-import custom.frame.ui.activity.BaseActivity;
-import custom.frame.utils.DirHelper;
-import custom.frame.utils.GlideHelper;
-import custom.frame.utils.ToastUtil;
-import custom.frame.widgets.FilterEmojiEditText;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.permission.Permission;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.utils.DirHelper;
+import com.zyc.doctor.utils.GlideHelper;
+import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.widgets.FilterEmojiEditText;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**

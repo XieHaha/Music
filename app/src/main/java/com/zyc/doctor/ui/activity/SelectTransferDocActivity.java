@@ -18,12 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import custom.frame.bean.BaseResponse;
-import custom.frame.bean.CooperateDocBean;
-import custom.frame.http.Tasks;
-import custom.frame.ui.activity.BaseActivity;
-import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
-import custom.frame.widgets.recyclerview.callback.LoadMoreListener;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.data.CooperateDocBean;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
+import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
  * 转诊医生

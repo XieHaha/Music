@@ -140,11 +140,4 @@
         <item name="android:minHeight">5dip</item>
         <item name="android:maxHeight">5dip</item>
     </style>
-
-    <!-- progress bar-->
-    <declare-styleable name="CircularProgress">
-        <attr name="borderWidth" format="dimension" />
-        <attr name="borderColor" format="color" />
-    </declare-styleable>
-
 </resources>

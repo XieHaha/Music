@@ -40,18 +40,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
-import custom.frame.bean.BaseResponse;
-import custom.frame.bean.CooperateDocBean;
-import custom.frame.bean.CooperateHospitalBean;
-import custom.frame.bean.HospitalBean;
-import custom.frame.http.Tasks;
-import custom.frame.http.data.BaseNetCode;
-import custom.frame.http.data.HttpConstants;
-import custom.frame.ui.activity.BaseActivity;
-import custom.frame.ui.adapter.BaseRecyclerAdapter;
-import custom.frame.utils.GlideHelper;
-import custom.frame.utils.ToastUtil;
-import custom.frame.widgets.recyclerview.AutoLoadRecyclerView;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.data.CooperateDocBean;
+import com.zyc.doctor.http.data.CooperateHospitalBean;
+import com.zyc.doctor.http.data.HospitalBean;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.data.BaseNetCode;
+import com.zyc.doctor.http.data.HttpConstants;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.ui.base.adapter.BaseRecyclerAdapter;
+import com.zyc.doctor.utils.GlideHelper;
+import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**

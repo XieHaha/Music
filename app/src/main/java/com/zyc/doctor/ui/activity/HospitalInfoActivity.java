@@ -8,8 +8,8 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
 
 import butterknife.BindView;
-import custom.frame.bean.HospitalBean;
-import custom.frame.ui.activity.BaseActivity;
+import com.zyc.doctor.http.data.HospitalBean;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
 
 /**
  * @author dundun

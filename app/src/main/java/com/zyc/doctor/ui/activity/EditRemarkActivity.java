@@ -17,11 +17,11 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
 
 import butterknife.BindView;
-import custom.frame.bean.BaseResponse;
-import custom.frame.http.Tasks;
-import custom.frame.ui.activity.BaseActivity;
-import custom.frame.utils.ToastUtil;
-import custom.frame.widgets.FilterEmojiEditText;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.widgets.FilterEmojiEditText;
 
 /**
  * @author dundun

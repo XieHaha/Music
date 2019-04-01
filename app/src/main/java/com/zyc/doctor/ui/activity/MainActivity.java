@@ -57,15 +57,15 @@ import java.util.List;
 
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
-import custom.frame.bean.BaseResponse;
-import custom.frame.bean.RegistrationTypeBean;
-import custom.frame.bean.Version;
-import custom.frame.http.Tasks;
-import custom.frame.ui.activity.BaseActivity;
-import custom.frame.utils.DensityUtil;
-import custom.frame.utils.ScreenUtils;
-import custom.frame.utils.ToastUtil;
-import custom.frame.widgets.ripples.RippleLinearLayout;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.data.RegistrationTypeBean;
+import com.zyc.doctor.http.data.Version;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.utils.DensityUtil;
+import com.zyc.doctor.utils.ScreenUtils;
+import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.widgets.ripples.RippleLinearLayout;
 
 import static android.support.v4.app.NotificationCompat.DEFAULT_SOUND;
 import static android.support.v4.app.NotificationCompat.DEFAULT_VIBRATE;
@@ -73,7 +73,12 @@ import static android.support.v4.app.NotificationCompat.DEFAULT_VIBRATE;
 /**
  * @author dundun
  */
-public class MainActivity extends BaseActivity implements EaseConversationListFragment.EaseConversationListItemClickListener, VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener, EaseConversationListFragment.EaseConversationListItemLongClickListener, UserFragment.OnTransferCallbackListener, CooperateDocFragment.OnDocApplyCallbackListener, MainFragment.OnMainFragmentCallbackListener {
+public class MainActivity extends BaseActivity
+        implements EaseConversationListFragment.EaseConversationListItemClickListener,
+                   VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener,
+                   EaseConversationListFragment.EaseConversationListItemLongClickListener,
+                   UserFragment.OnTransferCallbackListener, CooperateDocFragment.OnDocApplyCallbackListener,
+                   MainFragment.OnMainFragmentCallbackListener {
     private static final String TAG = "MainActivity";
     @BindView(R.id.item_msg_num)
     TextView tvUnReadMsgCount;
@@ -168,6 +173,14 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
     private Bitmap largeIcon = null;
     private NotificationManager mNotificationManager;
     private int pending_count = 1;
+    /**
+     * 扫码结果  添加好友
+     */
+    public static final int REQUEST_CODE = 0x0000c0de;
+    /**
+     * 扫码结果  扫码登录
+     */
+    public static final int REQUEST_CODE_LOGIN = 200;
 
     @Override
     public int getLayoutID() {
@@ -192,11 +205,14 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
         }
         if (type == -1) {
             tabMainView();
-        } else if (type == 1) {
+        }
+        else if (type == 1) {
             tabEaseMsgView();
-        } else if (type == 2) {
+        }
+        else if (type == 2) {
             tabCooperateDocView();
-        } else if (type == 3) {
+        }
+        else if (type == 3) {
             tabMyView();
         }
         super.onNewIntent(intent);
@@ -215,8 +231,8 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
         messagePop = LayoutInflater.from(this).inflate(R.layout.message_pop_menu, null);
         tvDelete = messagePop.findViewById(R.id.message_pop_menu_play);
         initTab();
-        largeIcon = ((BitmapDrawable) getResources().getDrawable(R.mipmap.ic_launcher)).getBitmap();
-        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        largeIcon = ((BitmapDrawable)getResources().getDrawable(R.mipmap.ic_launcher)).getBitmap();
+        mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         initNotify();
     }
 
@@ -254,8 +270,6 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
                 initNotify();
                 sendChatMsg(messages.get(0));
             }
-
-
         };
         EMClient.getInstance().chatManager().addMessageListener(msgListener);
         contactListener = new AbstractEMContactListener() {
@@ -327,10 +341,12 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
             tvUnReadMsgCount2.setText(msgUnReadCount > 99 ? "99+" : msgUnReadCount + "");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 //                sendSubscribeMsg(msgUnReadCount);
-            } else {
+            }
+            else {
                 setShortcutBadge(msgUnReadCount);
             }
-        } else {
+        }
+        else {
             rlMsgPointLayout2.setVisibility(View.GONE);
             removeShortcutBadge();
         }
@@ -362,13 +378,24 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
         Intent intent = new Intent(MainActivity.this, EaseMsgClickBroadCastReceiver.class);
         intent.putExtra(CommonData.KEY_CHAT_ID, message.getFrom());
         intent.setAction("ease.msg.android.intent.CLICK");
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, pending_count
-                , intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, pending_count, intent,
+                                                                 PendingIntent.FLAG_UPDATE_CURRENT);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Notification notification =
-                    new NotificationCompat.Builder(this, CHANNEL_CHAT).setContentText("收到新的消息").setWhen(System.currentTimeMillis()).setSmallIcon(R.mipmap.ic_launcher).setLargeIcon(largeIcon).setDefaults(DEFAULT_VIBRATE | DEFAULT_SOUND).setAutoCancel(true).setContentIntent(pendingIntent).build();
+            Notification notification = new NotificationCompat.Builder(this, CHANNEL_CHAT).setContentText("收到新的消息")
+                                                                                          .setWhen(
+                                                                                                  System.currentTimeMillis())
+                                                                                          .setSmallIcon(
+                                                                                                  R.mipmap.ic_launcher)
+                                                                                          .setLargeIcon(largeIcon)
+                                                                                          .setDefaults(DEFAULT_VIBRATE |
+                                                                                                       DEFAULT_SOUND)
+                                                                                          .setAutoCancel(true)
+                                                                                          .setContentIntent(
+                                                                                                  pendingIntent)
+                                                                                          .build();
             mNotificationManager.notify(message.getFrom(), 1, notification);
-        } else {
+        }
+        else {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this);
             builder.setSmallIcon(R.mipmap.ic_launcher);
             builder.setAutoCancel(true);
@@ -386,8 +413,7 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
     @TargetApi(Build.VERSION_CODES.O)
     private void createNotificationChannel(String channelId, String channelName, int importance) {
         NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         notificationManager.createNotificationChannel(channel);
     }
 
@@ -404,7 +430,6 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
         initPopwindow(view, popupLocation(view));
     }
 
-
     /**
      * @param contentTv 弹框依赖view
      * @param location  弹框坐标
@@ -412,15 +437,14 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
     public void initPopwindow(View contentTv, int[] location) {
         if (popupWindow == null) {
             popupWindow = new PopupWindow(LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
+                                          LinearLayout.LayoutParams.WRAP_CONTENT);
         }
         popupWindow.setFocusable(true);
         popupWindow.setContentView(messagePop);
         popupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         popupWindow.setOutsideTouchable(true);
         popOutShadow(popupWindow);
-        popupWindow.showAtLocation(contentTv, Gravity.NO_GRAVITY, location[0],
-                location[1] + contentTv.getHeight());
+        popupWindow.showAtLocation(contentTv, Gravity.NO_GRAVITY, location[0], location[1] + contentTv.getHeight());
     }
 
     /**
@@ -436,7 +460,8 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
         if (screenHeight - location[1] > (popupHeight + popupHeight / 2)) {
             location[0] = location[0] + viewWidth / 2;
             location[1] = location[1] - viewHeight / 2;
-        } else {
+        }
+        else {
             location[0] = location[0] + viewWidth / 2;
             location[1] = location[1] - popupHeight - viewHeight / 2;
         }
@@ -489,7 +514,8 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
             mainFragment = new MainFragment();
             mainFragment.setOnMainFragmentCallbackListener(this);
             transaction.add(R.id.act_main_tab_frameLayout, mainFragment);
-        } else {
+        }
+        else {
             transaction.show(mainFragment);
             mainFragment.onResume();
         }
@@ -506,7 +532,8 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
         if (easeConversationListFragment == null) {
             easeConversationListFragment = new EaseConversationListFragment();
             transaction.add(R.id.act_main_tab_frameLayout, easeConversationListFragment);
-        } else {
+        }
+        else {
             transaction.show(easeConversationListFragment);
             easeConversationListFragment.onResume();
         }
@@ -523,7 +550,8 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
             cooperateDocFragment = new CooperateDocFragment();
             cooperateDocFragment.setOnDocApplyCallbackListener(this);
             transaction.add(R.id.act_main_tab_frameLayout, cooperateDocFragment);
-        } else {
+        }
+        else {
             transaction.show(cooperateDocFragment);
             cooperateDocFragment.onResume();
         }
@@ -538,7 +566,8 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
             userFragment = new UserFragment();
             userFragment.setOnTransferCallbackListener(this);
             transaction.add(R.id.act_main_tab_frameLayout, userFragment);
-        } else {
+        }
+        else {
             transaction.show(userFragment);
             userFragment.onResume();
         }
@@ -652,10 +681,12 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
             if (num > 0) {
                 rlMsgPointLayout3.setVisibility(View.VISIBLE);
                 tvUnReadMsgCount3.setText(num > 99 ? "99+" : num + "");
-            } else {
+            }
+            else {
                 rlMsgPointLayout3.setVisibility(View.GONE);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LogUtils.w(TAG, "Exception error!", e);
         }
     }
@@ -670,10 +701,12 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
             if (transfer) {
                 rlMsgPointLayout4.setVisibility(View.VISIBLE);
                 tvUnReadMsgCount4.setText("1");
-            } else {
+            }
+            else {
                 rlMsgPointLayout4.setVisibility(View.GONE);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LogUtils.w(TAG, "Exception error!", e);
         }
     }
@@ -689,10 +722,12 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
             if (num > 0) {
                 rlMsgPointLayout.setVisibility(View.VISIBLE);
                 tvUnReadMsgCount.setText(num > 99 ? "99+" : num + "");
-            } else {
+            }
+            else {
                 rlMsgPointLayout.setVisibility(View.GONE);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LogUtils.w(TAG, "Exception error!", e);
         }
     }
@@ -703,10 +738,12 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
             String pNum = sharePreferenceUtil.getString(CommonData.KEY_NEW_MESSAGE_REMIND);
             if (TextUtils.isEmpty(pNum)) {
                 rlMsgPointSmallLayout.setVisibility(View.GONE);
-            } else {
+            }
+            else {
                 rlMsgPointSmallLayout.setVisibility(View.VISIBLE);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LogUtils.w(TAG, "Exception error!", e);
         }
     }
@@ -728,10 +765,10 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
         @Override
         public void onDisconnected(final int error) {
             runOnUiThread(() -> {
-
                 if (error == EMError.USER_REMOVED) {
                     LogUtils.e("test", "账号被删除");
-                } else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
+                }
+                else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
                     ToastUtil.toast(MainActivity.this, "账号在其他设备登录");
                 }
             });
@@ -743,6 +780,24 @@ public class MainActivity extends BaseActivity implements EaseConversationListFr
      */
     private void setAlias() {
         JPushInterface.setAlias(this, 100, loginSuccessBean.getDoctorId());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+        switch (requestCode) {
+            case REQUEST_CODE:
+            case REQUEST_CODE_LOGIN:
+                if (mainFragment != null) {
+                    mainFragment.onActivityResult(requestCode, resultCode, data);
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     /**

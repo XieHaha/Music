@@ -18,7 +18,7 @@
 //import com.zyc.doctor.R;
 //import com.zyc.doctor.utils.AllUtils;
 //
-//import custom.frame.bean.MeetingBean;
+//import com.zyc.doctor.http.data.MeetingBean;
 //
 ///**
 // * 拨号界面

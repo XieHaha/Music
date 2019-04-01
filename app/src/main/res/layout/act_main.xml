@@ -24,7 +24,7 @@
             android:background="@color/app_white_color"
             android:orientation="horizontal">
 
-            <custom.frame.widgets.ripples.RippleLinearLayout
+            <com.zyc.doctor.widgets.ripples.RippleLinearLayout
                 android:id="@+id/act_main_tab1"
                 style="@style/RippleBtnMaxCircleStyle"
                 android:layout_width="match_parent"
@@ -104,9 +104,9 @@
 
                 </RelativeLayout>
 
-            </custom.frame.widgets.ripples.RippleLinearLayout>
+            </com.zyc.doctor.widgets.ripples.RippleLinearLayout>
 
-            <custom.frame.widgets.ripples.RippleLinearLayout
+            <com.zyc.doctor.widgets.ripples.RippleLinearLayout
                 android:id="@+id/act_main_tab2"
                 style="@style/RippleBtnMaxCircleStyle"
                 android:layout_width="match_parent"
@@ -162,9 +162,9 @@
                     </RelativeLayout>
 
                 </RelativeLayout>
-            </custom.frame.widgets.ripples.RippleLinearLayout>
+            </com.zyc.doctor.widgets.ripples.RippleLinearLayout>
 
-            <custom.frame.widgets.ripples.RippleLinearLayout
+            <com.zyc.doctor.widgets.ripples.RippleLinearLayout
                 android:id="@+id/act_main_tab3"
                 style="@style/RippleBtnMaxCircleStyle"
                 android:layout_width="match_parent"
@@ -220,9 +220,9 @@
                     </RelativeLayout>
 
                 </RelativeLayout>
-            </custom.frame.widgets.ripples.RippleLinearLayout>
+            </com.zyc.doctor.widgets.ripples.RippleLinearLayout>
 
-            <custom.frame.widgets.ripples.RippleLinearLayout
+            <com.zyc.doctor.widgets.ripples.RippleLinearLayout
                 android:id="@+id/act_main_tab4"
                 style="@style/RippleBtnMaxCircleStyle"
                 android:layout_width="match_parent"
@@ -278,7 +278,7 @@
                     </RelativeLayout>
 
                 </RelativeLayout>
-            </custom.frame.widgets.ripples.RippleLinearLayout>
+            </com.zyc.doctor.widgets.ripples.RippleLinearLayout>
 
         </LinearLayout>
 

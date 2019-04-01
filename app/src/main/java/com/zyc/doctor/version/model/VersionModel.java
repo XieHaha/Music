@@ -9,12 +9,12 @@ import com.zyc.doctor.utils.LogUtils;
 import java.io.File;
 import java.util.ArrayList;
 
-import custom.frame.bean.BaseResponse;
-import custom.frame.bean.Version;
-import custom.frame.http.IRequest;
-import custom.frame.http.Tasks;
-import custom.frame.http.listener.ResponseListener;
-import custom.frame.utils.DirHelper;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.data.Version;
+import com.zyc.doctor.http.IRequest;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.listener.ResponseListener;
+import com.zyc.doctor.utils.DirHelper;
 
 /**
  * Created by dundun on 16/6/6.

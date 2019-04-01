@@ -25,7 +25,7 @@ import org.json.JSONObject;
 import java.util.Iterator;
 
 import cn.jpush.android.api.JPushInterface;
-import custom.frame.utils.SharePreferenceUtil;
+import com.zyc.doctor.utils.SharePreferenceUtil;
 
 /**
  * 自定义接收器

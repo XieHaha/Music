@@ -20,7 +20,9 @@ import android.view.animation.LinearInterpolator;
 import com.zyc.doctor.R;
 
 /**
- * Created by luozi on 2016/1/13.
+ *
+ * @author luozi
+ * @date 2016/1/13
  */
 public class CircularProgress extends View
 {
@@ -57,9 +59,9 @@ public class CircularProgress extends View
 
         float density = context.getResources().getDisplayMetrics().density;
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircularProgress, defStyleAttr, 0);
-        mBorderWidth = a.getDimension(R.styleable.CircularProgress_borderWidth,
+        mBorderWidth = a.getDimension(R.styleable.CircularProgress_progress_border_width,
                 DEFAULT_BORDER_WIDTH * density);
-        mColor = a.getColor(R.styleable.CircularProgress_borderColor, 0x268cfa);
+        mColor = a.getColor(R.styleable.CircularProgress_progress_border_color, 0x268cfa);
         a.recycle();
 
 

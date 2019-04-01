@@ -105,17 +105,37 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation project(':frame')
+    api fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':shortcutbadge')
+    implementation project(':volleyNew')
+    implementation project(':easeui')
+    implementation project(':superweb')
+    implementation 'com.klinkerapps:link_builder:1.3.1@aar'
+    implementation 'cn.bingoogolapple:bga-badgeview:1.0.6@aar'
+    implementation 'com.bigkoo:convenientbanner:2.0.5'
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    implementation 'com.alibaba:fastjson:1.2.8'
+    implementation 'org.mod4j.org.apache.commons:lang:2.1.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.contrarywind:Android-PickerView:4.1.3'
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
+    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
+//    implementation files('libs/commons-lang3-3.1.jar')
+    implementation 'com.yanzhenjie.nohttp:nohttp:1.1.10'
+    implementation 'org.litepal.android:core:1.6.1'
+    //适配界面
+    implementation 'me.jessyan:autosize:1.1.2'
+    //注解
+    implementation 'com.jakewharton:butterknife:8.8.0'
+
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.zhihu.android:matisse:0.4.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation files('libs/jcore-android-1.2.0.jar')
-    implementation files('libs/jpush-android-3.1.2.jar')
+//    implementation files('libs/jcore-android-1.2.0.jar')
+//    implementation files('libs/jpush-android-3.1.2.jar')
     implementation 'com.android.support:multidex:1.0.3'
     //butterknife
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.0'

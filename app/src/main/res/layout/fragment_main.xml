@@ -82,13 +82,13 @@
 
                         </LinearLayout>
 
-                        <custom.frame.widgets.recyclerview.AutoLoadRecyclerView
+                        <com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView
                             android:id="@+id/fragment_main_my_recent_contacts"
                             android:layout_width="match_parent"
                             android:paddingBottom="10dp"
                             android:layout_height="wrap_content">
 
-                        </custom.frame.widgets.recyclerview.AutoLoadRecyclerView>
+                        </com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView>
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -106,13 +106,13 @@
                     android:layout_marginRight="10dp"
                     android:layout_height="wrap_content">
 
-                    <custom.frame.widgets.gridview.CustomGridView
+                    <com.zyc.doctor.widgets.gridview.CustomGridView
                         android:id="@+id/fragment_main_options"
                         android:layout_width="match_parent"
                         android:numColumns="3"
                         android:layout_height="wrap_content">
 
-                    </custom.frame.widgets.gridview.CustomGridView>
+                    </com.zyc.doctor.widgets.gridview.CustomGridView>
 
                 </RelativeLayout>
 

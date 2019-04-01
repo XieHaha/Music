@@ -102,7 +102,7 @@
 
     </RelativeLayout>
 
-    <custom.frame.widgets.scrollview.CustomListenScrollView
+    <com.zyc.doctor.widgets.scrollview.CustomListenScrollView
         android:id="@+id/fragment_my_scrollview"
         android:layout_width="match_parent"
         android:scrollbars="none"
@@ -598,5 +598,5 @@
                     android:background="@color/app_minor_bg" />
             </LinearLayout>
         </RelativeLayout>
-    </custom.frame.widgets.scrollview.CustomListenScrollView>
+    </com.zyc.doctor.widgets.scrollview.CustomListenScrollView>
 </LinearLayout>

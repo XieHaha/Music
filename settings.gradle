@@ -1,1 +1,1 @@
-include ':app', ':frame', ':volleyNew', ':shortcutbadge', 'easeui', 'superweb'
+include ':app',  ':volleyNew', ':shortcutbadge', 'easeui', 'superweb'

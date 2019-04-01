@@ -22,15 +22,11 @@ import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import custom.frame.utils.DirHelper;
-
 /**
  * log日志打印类
- *
  * @author dundun
  */
 public class LogUtils {
-    private static final String TAG = "LogUtils";
     private static boolean isEnableLog = false;
 
     public static void setIsEnableLog(boolean isEnableLog) {
@@ -40,7 +36,7 @@ public class LogUtils {
     /**
      * @return True if the settings manager is set and debug logs are enabled, False otherwise
      */
-    private static boolean canLog() {
+    public static boolean canLog() {
         return isEnableLog;
     }
 
@@ -52,6 +48,14 @@ public class LogUtils {
      * 本类输出的日志文件名称
      */
     private static String LOG_FILENAME = "Log.txt";
+    /**
+     * 日志的输出格式
+     */
+    private static SimpleDateFormat mLogSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
+    /**
+     * 日志文件格式
+     */
+    private static SimpleDateFormat logfile = new SimpleDateFormat("yyyy-MM-dd");
 
     public static void w(String tag, String text) {
         log(tag, text, 'w', null);
@@ -94,47 +98,31 @@ public class LogUtils {
     }
 
     private static void log(String tag, String msg, char level, Throwable tr) {
-        if (!canLog()) {
-            return;
-        }
-        if ('e' == level) {
+        if (!canLog()) { return; }
+        if ('e' == level && ('e' == LOG_TYPE || 'v' == LOG_TYPE)) {
             //输出错误信息
-            if (tr == null) {
-                Log.e(tag, msg);
-            } else {
-                Log.e(tag, msg, tr);
-            }
-        } else if ('w' == level) {
-            if (tr == null) {
-                Log.w(tag, msg);
-            } else {
-                Log.w(tag, msg, tr);
-            }
-        } else if ('d' == level) {
-            if (tr == null) {
-                Log.d(tag, msg);
-            } else {
-                Log.d(tag, msg, tr);
-            }
-        } else if ('i' == level) {
-            if (tr == null) {
-                Log.i(tag, msg);
-            } else {
-                Log.i(tag, msg, tr);
-            }
-        } else {
-            if (tr == null) {
-                Log.v(tag, msg);
-            } else {
-                Log.v(tag, msg, tr);
-            }
+            if (tr == null) { Log.e(tag, msg); }
+            else { Log.e(tag, msg, tr); }
+        }
+        else if ('w' == level && ('w' == LOG_TYPE || 'v' == LOG_TYPE)) {
+            if (tr == null) { Log.w(tag, msg); }
+            else { Log.w(tag, msg, tr); }
+        }
+        else if ('d' == level && ('d' == LOG_TYPE || 'v' == LOG_TYPE)) {
+            if (tr == null) { Log.d(tag, msg); }
+            else { Log.d(tag, msg, tr); }
+        }
+        else if ('i' == level && ('i' == LOG_TYPE || 'v' == LOG_TYPE)) {
+            if (tr == null) { Log.i(tag, msg); }
+            else { Log.i(tag, msg, tr); }
+        }
+        else {
+            if (tr == null) { Log.v(tag, msg); }
+            else { Log.v(tag, msg, tr); }
         }
         if (('d' == level) || 'e' == level) {
-            if (tr == null) {
-                writeLogToFile(String.valueOf(level), tag, msg);
-            } else {
-                writeLogToFile(String.valueOf(level), tag + " " + msg, tr);
-            }
+            if (tr == null) { writeLogToFile(String.valueOf(level), tag, msg); }
+            else { writeLogToFile(String.valueOf(level), tag + " " + msg, tr); }
         }
     }
 
@@ -146,18 +134,13 @@ public class LogUtils {
      * @param text
      */
     private static void writeLogToFile(String mylogtype, String tag, String text) {
-        if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-            return;
-        }
+        if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) { return; }
         Date nowtime = new Date();
-        String needWriteFile = new SimpleDateFormat("yyyy-MM-dd").format(nowtime);
-        String needWriteMessage =
-                new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS").format(nowtime) + "    " + mylogtype + "    " + tag + "    " + text;
+        String needWriteFile = logfile.format(nowtime);
+        String needWriteMessage = mLogSdf.format(nowtime) + "    " + mylogtype + "    " + tag + "    " + text;
         String pathLog = DirHelper.getPathLog();
         File file = new File(pathLog);
-        if (!file.exists() && !file.mkdirs()) {
-            return;
-        }
+        if (!file.exists() && !file.mkdirs()) { return; }
         file = new File(pathLog, needWriteFile + "-" + LOG_FILENAME);
         FileWriter filerWriter = null;
         BufferedWriter bufWriter = null;
@@ -166,18 +149,17 @@ public class LogUtils {
             bufWriter = new BufferedWriter(filerWriter);
             bufWriter.write(needWriteMessage);
             bufWriter.newLine();
-        } catch (Exception e) {
-            LogUtils.w(TAG, "Exception error!", e);
-        } finally {
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
             try {
-                if (bufWriter != null) {
-                    bufWriter.close();
-                }
-                if (filerWriter != null) {
-                    filerWriter.close();
-                }
-            } catch (IOException ioe) {
-                LogUtils.w(TAG, "Exception error!", ioe);
+                if (bufWriter != null) { bufWriter.close(); }
+                if (filerWriter != null) { filerWriter.close(); }
+            }
+            catch (IOException ioe) {
+                ioe.printStackTrace();
             }
         }
     }

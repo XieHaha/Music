@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.zyc.doctor.R;
 
-import custom.frame.ui.activity.BaseActivity;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
 
 /**
  * @author dundun

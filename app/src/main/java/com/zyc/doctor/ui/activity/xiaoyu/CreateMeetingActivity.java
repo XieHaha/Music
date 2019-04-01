@@ -33,10 +33,10 @@
 //import java.util.Map;
 //
 //import butterknife.BindView;
-//import custom.frame.bean.BaseResponse;
-//import custom.frame.http.data.HttpConstants;
-//import custom.frame.ui.activity.BaseActivity;
-//import custom.frame.utils.ToastUtil;
+//import com.zyc.doctor.http.data.BaseResponse;
+//import com.zyc.doctor.http.data.HttpConstants;
+//import com.zyc.doctor.ui.base.activity.BaseActivity;
+//import com.zyc.doctor.utils.ToastUtil;
 //
 ///**
 // * 创建会议

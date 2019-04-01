@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="statusBg" format="reference" />
+    <attr name="titleBg" format="reference" />
+
+    <declare-styleable name="CircleImageView">
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+    </declare-styleable>
+
+    <!-- 状态栏-->
+    <declare-styleable name="CustomActionBar">
+        <attr name="statusColor" format="color" />
+    </declare-styleable>
+
+    <!-- progress bar-->
+    <declare-styleable name="CircularProgress">
+        <attr name="progress_border_width" format="dimension" />
+        <attr name="progress_border_color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="RippleView">
+        <attr name="rv_alpha" format="integer" />
+        <attr name="rv_rippleDuration" format="integer" />
+        <attr name="rv_zoomDuration" format="integer" />
+        <attr name="rv_rippleColor" format="color" />
+        <attr name="rv_pressColor" format="color" />
+        <attr name="rv_centered" format="boolean" />
+        <attr name="rv_pressBgType" format="enum">
+            <enum name="rect" value="0" />
+            <enum name="circleFitMin" value="1" />
+            <enum name="circleFitMax" value="2" />
+        </attr>
+        <attr name="rv_ripplePadding" format="dimension" />
+        <attr name="rv_zoom" format="boolean" />
+        <attr name="rv_zoomScale" format="float" />
+        <attr name="rv_pressBgEnable" format="boolean" />
+        <attr name="rv_holdBgInPressing" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="RollView">
+        <attr name="contentLayout" format="reference" />
+        <attr name="floatLayout" format="reference" />
+        <attr name="startHeight" format="dimension" />
+        <attr name="releaseTouch" format="boolean" />
+        <attr name="stickyBackground" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="CustomRatingBar">
+        <attr name="starImagePadding" format="dimension" />
+        <attr name="starCount" format="integer" />
+        <attr name="starNum" format="integer" />
+        <attr name="starEmpty" format="reference" />
+        <attr name="starFill" format="reference" />
+        <attr name="clickable" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="SubsamplingScaleImageView">
+        <attr name="src" format="reference" />
+        <attr name="assetName" format="string" />
+        <attr name="panEnabled" format="boolean" />
+        <attr name="zoomEnabled" format="boolean" />
+        <attr name="quickScaleEnabled" format="boolean" />
+        <attr name="tileBackgroundColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="NavigaterPageIndex">
+        <attr name="paddingBottom" format="dimension" />
+        <attr name="indexPadding" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="ImageLoadingView">
+        <attr name="pointRadius" format="dimension" />
+        <attr name="pointColor" format="color" />
+        <attr name="loadingVIewRadius" format="dimension" />
+        <attr name="loadingSpeed" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="CircleProgressBar">
+        <attr name="cpb_background" format="color" />
+        <attr name="txtColor" format="color" />
+        <attr name="progressColorBackground" format="color" />
+        <attr name="progressColor" format="color" />
+        <attr name="progressStrokeWidth" format="integer" />
+        <attr name="max" format="integer" />
+        <attr name="progress" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="FilterEmojiEditText">
+        <attr name="textLength" format="integer"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="ExspandTextView">
+        <attr name="etv_MaxLinesOnShrink" format="reference|integer" />
+        <attr name="etv_EllipsisHint" format="reference|string" /><!--default is ..-->
+        <attr name="etv_ToExpandHint" format="reference|string" /><!--"to expand" hint string, default is "Expand"-->
+        <attr name="etv_ToShrinkHint" format="reference|string" /><!--"to shrink" hint string, default is "Shrink"-->
+        <attr name="etv_GapToExpandHint" format="reference|string" /><!--gap between "toExpandHint" and "trimmed text"-->
+        <attr name="etv_GapToShrinkHint" format="reference|string" /><!--gap between "toShrinkHint" and "trimmed text"-->
+        <attr name="etv_EnableToggle" format="reference|boolean" /><!--if toggle the state when click ExpandTextView-->
+        <attr name="etv_ToExpandHintShow" format="reference|boolean" /><!--if show "toExpandHint"-->
+        <attr name="etv_ToShrinkHintShow" format="reference|boolean" /><!--if show "toShrinkHint"-->
+        <attr name="etv_ToExpandHintColor" format="reference|color" /><!--text color of "toExpandHint"-->
+        <attr name="etv_ToShrinkHintColor" format="reference|color" /><!--text color of "toShrinkHint"-->
+        <attr name="etv_ToExpandHintColorBgPressed" format="reference|color" /><!--background color if "toExpandHint" pressed-->
+        <attr name="etv_ToShrinkHintColorBgPressed" format="reference|color" /><!--background color if "toShrinkHint" pressed-->
+        <attr name="etv_InitState" format="enum"><!--init state, default is shrink-->
+            <enum name="shrink" value="0" />
+            <enum name="expand" value="1" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="labels_view">
+        <attr name="selectType" format="enum">
+            <enum name="NONE" value="1" />
+            <enum name="SINGLE" value="2" />
+            <enum name="SINGLE_IRREVOCABLY" value="3" />
+            <enum name="MULTI" value="4" />
+        </attr>
+        <attr name="maxSelect" format="integer" />
+        <attr name="labelTextColor" format="reference|color" />
+        <attr name="labelTextSize" format="dimension" />
+        <attr name="labelTextPaddingLeft" format="dimension" />
+        <attr name="labelTextPaddingTop" format="dimension" />
+        <attr name="labelTextPaddingRight" format="dimension" />
+        <attr name="labelTextPaddingBottom" format="dimension" />
+        <attr name="lineMargin" format="dimension" />
+        <attr name="wordMargin" format="dimension" />
+        <attr name="labelBackground" format="reference|color" />
+    </declare-styleable>
+
+    <declare-styleable name="SatelliteMenu">
+        <attr name="radius" format="dimension"></attr>
+        <attr name="menu_image_width" format="dimension"></attr>
+        <attr name="menu_item_image_width" format="dimension"></attr>
+        <attr name="menu_item_text_size" format="dimension"></attr>
+        <attr name="menu_item_text_color" format="color"></attr>
+
+        <attr name="menu_postion" format="integer">
+            <enum name="left_top" value="0"></enum>
+            <enum name="right_top" value="1"></enum>
+            <enum name="left_bottom" value="2"></enum>
+            <enum name="right_bottom" value="3"></enum>
+        </attr>
+    </declare-styleable>
+</resources>

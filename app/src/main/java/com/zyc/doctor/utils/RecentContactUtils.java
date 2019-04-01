@@ -10,8 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import custom.frame.bean.PatientBean;
-import custom.frame.utils.SharePreferenceUtil;
+import com.zyc.doctor.http.data.PatientBean;
 
 /**
  * @author dundun

@@ -16,8 +16,8 @@ import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.utils.LogUtils;
 
 import butterknife.BindView;
-import custom.frame.ui.activity.BaseActivity;
-import custom.frame.utils.ToastUtil;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.utils.ToastUtil;
 
 /**
  * @author dundun

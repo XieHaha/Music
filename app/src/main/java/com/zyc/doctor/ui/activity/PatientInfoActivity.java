@@ -23,29 +23,29 @@ import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
 import com.zyc.doctor.chat.ChatActivity;
 import com.zyc.doctor.data.CommonData;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.data.BaseResponse;
+import com.zyc.doctor.http.data.CombineBean;
+import com.zyc.doctor.http.data.CombineChildBean;
+import com.zyc.doctor.http.data.PatientBean;
 import com.zyc.doctor.ui.adapter.FragmentVpAdapter;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.ui.fragment.HealthInfoFragment;
 import com.zyc.doctor.ui.fragment.OrderInfoFragment;
 import com.zyc.doctor.ui.fragment.TransferInfoFragment;
 import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.GlideHelper;
 import com.zyc.doctor.utils.RecentContactUtils;
+import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.widgets.menu.SatelliteMenu;
+import com.zyc.doctor.widgets.view.SearchLabelLayout;
+import com.zyc.doctor.widgets.view.ViewPrepared;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import custom.frame.bean.BaseResponse;
-import custom.frame.bean.CombineBean;
-import custom.frame.bean.CombineChildBean;
-import custom.frame.bean.PatientBean;
-import custom.frame.http.Tasks;
-import custom.frame.ui.activity.BaseActivity;
-import custom.frame.utils.GlideHelper;
-import custom.frame.utils.ToastUtil;
-import custom.frame.widgets.menu.SatelliteMenu;
-import custom.frame.widgets.view.SearchLabelLayout;
-import custom.frame.widgets.view.ViewPrepared;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
