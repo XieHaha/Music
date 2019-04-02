@@ -13,11 +13,11 @@ import android.widget.TextView;
 
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.LogUtils;
+import com.zyc.doctor.utils.ToastUtil;
 
 import butterknife.BindView;
-import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.utils.ToastUtil;
 
 /**
  * @author dundun
@@ -88,8 +88,7 @@ public class AddCaseInfoActivity extends BaseActivity implements CommonData {
     public void initListener() {
         actAddHealthInfoEdit.setOnEditorActionListener(
                 (v, actionId, event) -> (event.getKeyCode() == KeyEvent.KEYCODE_ENTER));
-        backBtn.setOnClickListener(v ->
-        {
+        backBtn.setOnClickListener(v -> {
             hideSoftInputFromWindow();
             finish();
         });
@@ -119,10 +118,10 @@ public class AddCaseInfoActivity extends BaseActivity implements CommonData {
      */
     private void hideSoftInputFromWindow() {
         try {
-            InputMethodManager inputmanger = (InputMethodManager) getSystemService(
-                    Context.INPUT_METHOD_SERVICE);
+            InputMethodManager inputmanger = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
             inputmanger.hideSoftInputFromWindow(actAddHealthInfoEdit.getWindowToken(), 0);
-        } catch (NullPointerException e) {
+        }
+        catch (NullPointerException e) {
             LogUtils.w(TAG, "Exception error!", e);
         }
     }

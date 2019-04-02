@@ -30,6 +30,7 @@ import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.CooperateDocBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.activity.AddFriendsDocActivity;
 import com.zyc.doctor.ui.activity.AddFriendsPatientActivity;
 import com.zyc.doctor.ui.activity.ApplyCooperateDocActivity;
@@ -164,28 +165,21 @@ public class CooperateDocFragment extends BaseFragment
      * 获取合作医生列表数据
      */
     private void getCooperateList() {
-        mIRequest.getCooperateList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
-    }
-
-    /**
-     * 合作医生申请
-     */
-    private void applyCooperateDoc(String doctorId, int requestCode) {
-        mIRequest.applyCooperateDoc(loginSuccessBean.getDoctorId(), doctorId, requestCode, this);
+        RequestUtils.getCooperateList(getContext(), loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
     }
 
     /**
      * 合作医生申请 取消
      */
     private void cancelCooperateDoc(String doctorId) {
-        mIRequest.cancelCooperateDoc(loginSuccessBean.getDoctorId(), doctorId, this);
+        RequestUtils.cancelCooperateDoc(getContext(), loginSuccessBean.getDoctorId(), doctorId, this);
     }
 
     /**
      * 获取申请合作医生列表数据
      */
     private void getApplyCooperateList() {
-        mIRequest.getApplyCooperateList(loginSuccessBean.getDoctorId(), 0, PAGE_SIZE, this);
+        RequestUtils.getApplyCooperateList(getContext(), loginSuccessBean.getDoctorId(), 0, PAGE_SIZE, this);
     }
 
     /**

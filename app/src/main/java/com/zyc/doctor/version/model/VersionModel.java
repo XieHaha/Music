@@ -8,6 +8,7 @@ import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.Version;
 import com.zyc.doctor.http.listener.ResponseListener;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.utils.DirHelper;
 import com.zyc.doctor.utils.FileTransferServer;
 import com.zyc.doctor.utils.LogUtils;
@@ -35,7 +36,7 @@ public class VersionModel implements ResponseListener<BaseResponse>, VersionMode
     public void getNewestVersion(NewestVersionCallBack callBack) {
         this.callBack = callBack;
         //获取最新版本
-        request.getNewVersion(this);
+        RequestUtils.getNewVersion(context, this);
     }
 
     @Override

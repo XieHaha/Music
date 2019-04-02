@@ -1,7 +1,6 @@
 package com.zyc.doctor.ui.activity;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,7 +21,6 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
-import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.DocAuthStatu;
 import com.zyc.doctor.http.Tasks;
@@ -30,6 +28,7 @@ import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.HttpConstants;
 import com.zyc.doctor.http.bean.LoginSuccessBean;
 import com.zyc.doctor.http.bean.Version;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.AllUtils;
 import com.zyc.doctor.utils.ToastUtil;
@@ -229,13 +228,7 @@ public class LoginActivity extends BaseActivity
             ToastUtil.toast(this, R.string.toast_txt_read_protol);
             return;
         }
-        String name = null;
-        try {
-            name = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-        }
-        catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        showProgressDialog("加载中...");
         RequestUtils.login(this, phone, verifyCode, "d", this);
     }
 
@@ -373,7 +366,7 @@ public class LoginActivity extends BaseActivity
         }
     }
 
-    //===================================屏幕适配
+    /*************************屏幕适配*/
     @Override
     public boolean isBaseOnWidth() {
         return false;
@@ -383,5 +376,4 @@ public class LoginActivity extends BaseActivity
     public float getSizeInDp() {
         return 667;
     }
-    //===================================屏幕适配
 }

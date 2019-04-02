@@ -189,7 +189,8 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu {
             case GET_SPLASH:
                 String url = (String)response.getData();
                 String oldUrl = sharePreferenceUtil.getString(CommonData.KEY_SPLASH_IMG_URL);
-                if (!TextUtils.isEmpty(url) && !url.equals(oldUrl) || !isExist()) {
+                boolean bool = !TextUtils.isEmpty(url) && !url.equals(oldUrl) || !isExist();
+                if (bool) {
                     sharePreferenceUtil.putString(CommonData.KEY_SPLASH_IMG_URL, url);
                     downloadImg(url);
                 }
@@ -228,16 +229,11 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu {
     /**
      * 判断本地文件是否存在
      *
-     * @return
+     * @return bool
      */
     private boolean isExist() {
         File file = new File(filePath);
-        if (file != null && file.exists()) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return file.exists();
     }
 
     /**

@@ -51,6 +51,14 @@ public enum Tasks {
      */
     GET_PATIENTS_FROM_LIST,
     /**
+     * 转诊记录（转入转出）
+     */
+    GET_TRANSFER_LIST,
+    /**
+     * 开单记录
+     */
+    GET_ORDER_LIST,
+    /**
      * 医生转诊患者
      */
     ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT,
@@ -94,18 +102,6 @@ public enum Tasks {
      * 删除患者（取消关注）
      */
     DELETE_PATIENT,
-    //    /**
-    //     * 获取患者手术信息
-    //     */
-    //    GET_PATIENT_SURGERY_INFO,
-    //    /**
-    //     * 获取患者诊断信息
-    //     */
-    //    GET_PATIENT_DIAGNOSIS_INFO,
-    //    /**
-    //     * 获取患者过敏信息
-    //     */
-    //    GET_PATIENT_ALLERGY_INFO,
     /**
      * 拒绝患者申请
      */

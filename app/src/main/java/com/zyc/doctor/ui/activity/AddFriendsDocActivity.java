@@ -21,7 +21,6 @@ import butterknife.BindView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- *
  * @author dundun
  * @date 18/11/12
  * 好友验证界面
@@ -45,7 +44,6 @@ public class AddFriendsDocActivity extends BaseActivity {
     TextView tvAgree;
     @BindView(R.id.act_add_friend_refuse)
     TextView tvRefuse;
-
     private String doctorId;
     private int requestSource;
     /**
@@ -75,14 +73,16 @@ public class AddFriendsDocActivity extends BaseActivity {
             publicTitleBarTitle.setText("添加好友");
             tvAgree.setText("加为好友");
             tvRefuse.setVisibility(View.GONE);
-        } else {
+        }
+        else {
             publicTitleBarTitle.setText("好友申请");
             tvAgree.setText("通过验证");
             tvRefuse.setVisibility(View.VISIBLE);
         }
         if (loginSuccessBean.getDoctorId().equals(doctorId)) {
             tvAgree.setVisibility(View.GONE);
-        } else {
+        }
+        else {
             tvAgree.setVisibility(View.VISIBLE);
         }
         getDocInfo();
@@ -104,11 +104,10 @@ public class AddFriendsDocActivity extends BaseActivity {
             if (!TextUtils.isEmpty(headImgUrl)) {
                 Glide.with(this).load(headImgUrl).apply(GlideHelper.getOptions()).into(actAddFriendImg);
             }
-            if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) &&
-                    cooperateDocBean.getNickname().length() < 20) {
-                tvName.setText(
-                        cooperateDocBean.getNickname() + "(" + cooperateDocBean.getName() + ")");
-            } else {
+            if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) && cooperateDocBean.getNickname().length() < 20) {
+                tvName.setText(cooperateDocBean.getNickname() + "(" + cooperateDocBean.getName() + ")");
+            }
+            else {
                 tvName.setText(cooperateDocBean.getName());
             }
             tvDepart.setText(cooperateDocBean.getDepartment());
@@ -116,7 +115,8 @@ public class AddFriendsDocActivity extends BaseActivity {
             tvType.setText(cooperateDocBean.getTitle());
             if (!TextUtils.isEmpty(cooperateDocBean.getDoctorDescription())) {
                 tvIntroduce.setText(cooperateDocBean.getDoctorDescription());
-            } else {
+            }
+            else {
                 tvIntroduce.setText("暂无个人简介");
             }
         }
@@ -150,7 +150,8 @@ public class AddFriendsDocActivity extends BaseActivity {
             case R.id.act_add_friend_next:
                 if (isAdd) {
                     applyCooperateDoc();
-                } else {
+                }
+                else {
                     dealDocApply(1);
                 }
                 break;
@@ -185,5 +186,4 @@ public class AddFriendsDocActivity extends BaseActivity {
                 break;
         }
     }
-
 }

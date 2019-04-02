@@ -45,6 +45,7 @@ import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.RegistrationTypeBean;
 import com.zyc.doctor.http.bean.Version;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.ui.fragment.CooperateDocFragment;
@@ -314,7 +315,7 @@ public class MainActivity extends BaseActivity
      * 获取所有商品
      */
     private void getAllProduct() {
-        mIRequest.getAllProduct(this);
+        RequestUtils.getAllProduct(this, this);
     }
 
     @Override

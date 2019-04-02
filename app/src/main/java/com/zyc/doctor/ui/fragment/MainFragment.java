@@ -28,26 +28,20 @@ import android.widget.TextView;
 import com.google.zxing.client.android.Intents;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.rest.OnResponseListener;
-import com.yanzhenjie.nohttp.rest.Request;
-import com.yanzhenjie.nohttp.rest.RequestQueue;
-import com.yanzhenjie.nohttp.rest.Response;
 import com.zyc.doctor.R;
 import com.zyc.doctor.api.ApiManager;
 import com.zyc.doctor.api.notify.IChange;
-import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.api.notify.INotifyChangeListenerServer;
+import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.OrderStatus;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.bean.BaseNetConfig;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.HttpConstants;
 import com.zyc.doctor.http.bean.PatientBean;
 import com.zyc.doctor.http.bean.RegistrationBean;
 import com.zyc.doctor.http.bean.TransPatientBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.qrcode.BarCodeImageView;
 import com.zyc.doctor.qrcode.CaptureQrCodeActivity;
 import com.zyc.doctor.qrcode.DialogPersonalBarCode;
@@ -74,13 +68,8 @@ import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.widgets.gridview.CustomGridView;
 import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 
@@ -223,10 +212,7 @@ public class MainFragment extends BaseFragment implements OrderStatus, SwipeRefr
      * 推送回调监听  转诊申请
      */
     private IChange<String> doctorTransferPatientListener = data -> {
-        //        if ("from".equals(data))
-        //        {
         handler.sendEmptyMessage(TRANSFER_CODE);
-        //        }
     };
     /**
      * 推送回调监听  患者申请
@@ -477,116 +463,28 @@ public class MainFragment extends BaseFragment implements OrderStatus, SwipeRefr
      * 获取患者申请列表
      */
     private void getApplyPatientList() {
-        mIRequest.getApplyPatientList(loginSuccessBean.getDoctorId(), 0, PAGE_SIZE, this);
+        RequestUtils.getApplyPatientList(getContext(), loginSuccessBean.getDoctorId(), 0, PAGE_SIZE, this);
     }
 
     /**
      * 获取患者列表数据
      */
     private void getPatientsData() {
-        mIRequest.getPatientList(loginSuccessBean.getDoctorId(), 0, PAGE_SIZE, this);
+        RequestUtils.getPatientList(getContext(), loginSuccessBean.getDoctorId(), 0, PAGE_SIZE, this);
     }
 
     /**
      * 转诊记录   包括转入转出
      */
     private void getTransferList() {
-        RequestQueue queue = NoHttp.getRequestQueueInstance();
-        final Request<String> request = NoHttp.createStringRequest(
-                HttpConstants.BASE_BASIC_URL + "/trans/all/doctor" + "/notes", RequestMethod.POST);
-        Map<String, Object> params = new HashMap<>();
-        params.put("doctorId", loginSuccessBean.getDoctorId());
-        params.put("pageNo", 0);
-        params.put("pageSize", PAGE_SIZE);
-        JSONObject jsonObject = new JSONObject(params);
-        request.setDefineRequestBodyForJson(jsonObject.toString());
-        queue.add(1, request, new OnResponseListener<String>() {
-            @Override
-            public void onStart(int what) {
-            }
-
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                String s = response.get();
-                try {
-                    JSONObject object = new JSONObject(s);
-                    BaseResponse baseResponse = praseBaseResponseList(object, TransPatientBean.class);
-                    if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
-                            transPatientBeans = (ArrayList<TransPatientBean>)baseResponse.getData();
-                            initTransferData();
-                        }
-                        else {
-                            ToastUtil.toast(getActivity(), baseResponse.getMsg());
-                        }
-                    }
-                }
-                catch (JSONException e) {
-                    LogUtils.w(TAG, "JSONException error", e);
-                }
-            }
-
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                ToastUtil.toast(getActivity(), response.getException().getMessage());
-            }
-
-            @Override
-            public void onFinish(int what) {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
+        RequestUtils.getTransferList(getContext(), loginSuccessBean.getDoctorId(), 0, PAGE_SIZE, this);
     }
 
     /**
      * 开单记录
      */
     private void getOrderList() {
-        RequestQueue queue = NoHttp.getRequestQueueInstance();
-        final Request<String> request = NoHttp.createStringRequest(
-                HttpConstants.BASE_BASIC_URL + "/order/doctor/orders" + "/list", RequestMethod.POST);
-        Map<String, Object> params = new HashMap<>();
-        params.put("doctorId", loginSuccessBean.getDoctorId());
-        params.put("pageNo", 0);
-        params.put("pageSize", PAGE_SIZE);
-        JSONObject jsonObject = new JSONObject(params);
-        request.setDefineRequestBodyForJson(jsonObject.toString());
-        queue.add(1, request, new OnResponseListener<String>() {
-            @Override
-            public void onStart(int what) {
-            }
-
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                String s = response.get();
-                try {
-                    JSONObject object = new JSONObject(s);
-                    BaseResponse baseResponse = praseBaseResponseList(object, RegistrationBean.class);
-                    if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
-                            registrationBeans = (ArrayList<RegistrationBean>)baseResponse.getData();
-                            initOrderData();
-                        }
-                        else {
-                            ToastUtil.toast(getActivity(), baseResponse.getMsg());
-                        }
-                    }
-                }
-                catch (JSONException e) {
-                    LogUtils.w(TAG, "JSONException error", e);
-                }
-            }
-
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                ToastUtil.toast(getActivity(), response.getException().getMessage());
-            }
-
-            @Override
-            public void onFinish(int what) {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
+        RequestUtils.getOrderList(getContext(), loginSuccessBean.getDoctorId(), 0, PAGE_SIZE, this);
     }
 
     @Override
@@ -655,6 +553,14 @@ public class MainFragment extends BaseFragment implements OrderStatus, SwipeRefr
                 if (mainFragmentCallbackListener != null) {
                     mainFragmentCallbackListener.onPatientApplyCallback();
                 }
+                break;
+            case GET_TRANSFER_LIST:
+                transPatientBeans = (ArrayList<TransPatientBean>)response.getData();
+                initTransferData();
+                break;
+            case GET_ORDER_LIST:
+                registrationBeans = (ArrayList<RegistrationBean>)response.getData();
+                initOrderData();
                 break;
             default:
                 break;
