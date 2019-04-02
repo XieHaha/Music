@@ -27,12 +27,12 @@ import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.chat.ChatActivity;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.data.BaseNetCode;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.CooperateDocBean;
-import com.zyc.doctor.http.data.CooperateHospitalBean;
-import com.zyc.doctor.http.data.HospitalBean;
-import com.zyc.doctor.http.data.HttpConstants;
+import com.zyc.doctor.http.bean.BaseNetConfig;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.CooperateDocBean;
+import com.zyc.doctor.http.bean.CooperateHospitalBean;
+import com.zyc.doctor.http.bean.HospitalBean;
+import com.zyc.doctor.http.bean.HttpConstants;
 import com.zyc.doctor.ui.adapter.CooperationDocHAdapter;
 import com.zyc.doctor.ui.adapter.CooperationHospitalHAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
@@ -288,8 +288,8 @@ public class DoctorInfoActivity extends BaseActivity
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponseList(object, CooperateHospitalBean.class);
                     if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
-                            ArrayList<CooperateHospitalBean> list = baseResponse.getData();
+                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
+                            ArrayList<CooperateHospitalBean> list = (ArrayList<CooperateHospitalBean>)baseResponse.getData();
                             cooperationHospitalHAdapter.setList(list);
                         } else {
                             ToastUtil.toast(DoctorInfoActivity.this, baseResponse.getMsg());
@@ -411,7 +411,7 @@ public class DoctorInfoActivity extends BaseActivity
         switch (task) {
             case UPLOAD_FILE:
                 ToastUtil.toast(this, response.getMsg());
-                headImgUrl = response.getData();
+                headImgUrl = (String)response.getData();
                 break;
             case CANCEL_COOPERATE_DOC:
                 ToastUtil.toast(this, response.getMsg());
@@ -419,7 +419,7 @@ public class DoctorInfoActivity extends BaseActivity
                 finish();
                 break;
             case GET_COOPERATE_DOC_LIST:
-                ArrayList<CooperateDocBean> list = response.getData();
+                ArrayList<CooperateDocBean> list = (ArrayList<CooperateDocBean>)response.getData();
                 if (list != null && list.size() > 0) {
                     llCoopDocLayout.setVisibility(View.VISIBLE);
                     cooperationDocHAdapter.setList(list);

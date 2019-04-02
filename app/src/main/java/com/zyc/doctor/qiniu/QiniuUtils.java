@@ -7,8 +7,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
 
-import com.zyc.doctor.http.data.NormImage;
-import com.zyc.doctor.http.data.NormImgSize;
+import com.zyc.doctor.http.bean.NormImage;
+import com.zyc.doctor.http.bean.NormImgSize;
 import com.zyc.doctor.utils.DirHelper;
 
 import java.io.ByteArrayInputStream;

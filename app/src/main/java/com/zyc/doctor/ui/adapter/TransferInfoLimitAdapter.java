@@ -13,7 +13,7 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.OrderStatus;
-import com.zyc.doctor.http.data.TransPatientBean;
+import com.zyc.doctor.http.bean.TransPatientBean;
 import com.zyc.doctor.utils.AllUtils;
 import com.zyc.doctor.utils.SharePreferenceUtil;
 

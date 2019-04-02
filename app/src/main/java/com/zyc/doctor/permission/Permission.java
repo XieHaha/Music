@@ -13,9 +13,10 @@ import android.Manifest;
 
 /**
  * 定义敏感权限类
+ *
+ * @author dundun
  */
-public class Permission
-{
+public class Permission {
     /**
      * 相机权限
      */

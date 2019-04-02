@@ -14,8 +14,8 @@ import android.widget.TextView;
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.TransPatientBean;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.TransPatientBean;
 import com.zyc.doctor.ui.adapter.TransPatientsListAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
@@ -134,7 +134,7 @@ public class TransferPatientToActivity extends BaseActivity
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         switch (task) {
             case GET_PATIENTS_TO_LIST:
-                patientBeanList = response.getData();
+                patientBeanList = (List<TransPatientBean>)response.getData();
                 if (page == 0) {
                     transPatientsListAdapter.setList(patientBeanList);
                 }
@@ -157,8 +157,8 @@ public class TransferPatientToActivity extends BaseActivity
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response) {
-        super.onResponseCodeError(task, response);
+    public void onResponseCode(Tasks task, BaseResponse response) {
+        super.onResponseCode(task, response);
         if (page > 0) {
             page--;
         }

@@ -21,13 +21,21 @@ import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.zyc.doctor.R;
 import com.zyc.doctor.api.ApiManager;
-import com.zyc.doctor.api.IChange;
-import com.zyc.doctor.api.RegisterType;
+import com.zyc.doctor.api.notify.IChange;
+import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.api.notify.INotifyChangeListenerServer;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.OrderStatus;
+import com.zyc.doctor.http.bean.BaseNetConfig;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.HospitalBean;
+import com.zyc.doctor.http.bean.HttpConstants;
+import com.zyc.doctor.http.bean.RegistrationBean;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.GlideHelper;
 import com.zyc.doctor.utils.LogUtils;
+import com.zyc.doctor.utils.ToastUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,14 +44,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.HospitalBean;
-import com.zyc.doctor.http.data.RegistrationBean;
-import com.zyc.doctor.http.data.BaseNetCode;
-import com.zyc.doctor.http.data.HttpConstants;
-import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.utils.GlideHelper;
-import com.zyc.doctor.utils.ToastUtil;
 
 /**
  * @author dundun
@@ -240,8 +240,8 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponse(object, RegistrationBean.class);
                     if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
-                            registrationBean = baseResponse.getData();
+                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
+                            registrationBean = (RegistrationBean)baseResponse.getData();
                             initPageData();
                         } else {
                             ToastUtil.toast(RegistrationDetailActivity.this, baseResponse.getMsg());

@@ -2,10 +2,10 @@ package com.zyc.doctor.http;
 
 /**
  * 此类为任务队列编号，根据任务队列编号确定是否取消的任务
+ *
+ * @author dundun
  */
-public enum Tasks
-{
-
+public enum Tasks {
     /**
      * 获取环信appkey
      */
@@ -14,7 +14,6 @@ public enum Tasks
      * 获取广告业
      */
     GET_SPLASH,
-
     /**
      * 获取验证码
      */
@@ -95,18 +94,18 @@ public enum Tasks
      * 删除患者（取消关注）
      */
     DELETE_PATIENT,
-//    /**
-//     * 获取患者手术信息
-//     */
-//    GET_PATIENT_SURGERY_INFO,
-//    /**
-//     * 获取患者诊断信息
-//     */
-//    GET_PATIENT_DIAGNOSIS_INFO,
-//    /**
-//     * 获取患者过敏信息
-//     */
-//    GET_PATIENT_ALLERGY_INFO,
+    //    /**
+    //     * 获取患者手术信息
+    //     */
+    //    GET_PATIENT_SURGERY_INFO,
+    //    /**
+    //     * 获取患者诊断信息
+    //     */
+    //    GET_PATIENT_DIAGNOSIS_INFO,
+    //    /**
+    //     * 获取患者过敏信息
+    //     */
+    //    GET_PATIENT_ALLERGY_INFO,
     /**
      * 拒绝患者申请
      */

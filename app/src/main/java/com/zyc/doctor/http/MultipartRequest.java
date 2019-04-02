@@ -16,6 +16,7 @@ import java.util.Map;
 
 /**
  * 上传参数，二进制，文件自定义Request类
+ * @author dundun
  */
 public class MultipartRequest extends Request<String> {
 

@@ -21,32 +21,32 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
-import com.zyc.doctor.R;
-import com.zyc.doctor.YihtApplication;
-import com.zyc.doctor.tools.ThreadPoolHelper;
-import com.zyc.doctor.ui.dialog.ActionSheetDialog;
-import com.zyc.doctor.ui.dialog.SimpleDialog;
-import com.zyc.doctor.utils.AllUtils;
-import com.zyc.doctor.utils.FileUtils;
-import com.zyc.doctor.utils.LogUtils;
-import com.zyc.doctor.utils.ScalingUtils;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
+import com.zyc.doctor.R;
+import com.zyc.doctor.YihtApplication;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.CheckUrl;
+import com.zyc.doctor.http.bean.CooperateDocBean;
+import com.zyc.doctor.permission.Permission;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.ui.dialog.ActionSheetDialog;
+import com.zyc.doctor.ui.dialog.SimpleDialog;
+import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.DirHelper;
+import com.zyc.doctor.utils.FileUtils;
+import com.zyc.doctor.utils.LogUtils;
+import com.zyc.doctor.utils.ScalingUtils;
+import com.zyc.doctor.utils.ThreadPoolHelper;
+import com.zyc.doctor.utils.ToastUtil;
 
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.CheckUrl;
-import com.zyc.doctor.http.data.CooperateDocBean;
-import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.permission.Permission;
-import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.utils.DirHelper;
-import com.zyc.doctor.utils.ToastUtil;
 
 /**
  *
@@ -352,7 +352,7 @@ public class AuthDocActivity extends BaseActivity {
         switch (task) {
             case GET_DOC_INFO:
                 closeProgressDialog();
-                cooperateDocBean = response.getData();
+                cooperateDocBean = (CooperateDocBean)response.getData();
                 initPageData();
                 break;
             case QUALIFIY_DOC:
@@ -374,8 +374,8 @@ public class AuthDocActivity extends BaseActivity {
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response) {
-        super.onResponseCodeError(task, response);
+    public void onResponseCode(Tasks task, BaseResponse response) {
+        super.onResponseCode(task, response);
         switch (task) {
             case GET_DOC_INFO:
                 break;

@@ -5,7 +5,8 @@ import java.util.Date;
 import java.util.Random;
 
 /**
- * Created by luozi on 2016/5/31.
+ * @author luozi
+ * @date 2016/5/31
  */
 public class SoleKeyUtils {
     private Random random = new Random();
@@ -16,10 +17,8 @@ public class SoleKeyUtils {
      *
      * @return img name
      */
-    public String getImgKey(String userid, ImgType imgType,
-                            ImgSize imgSize) {
-        return HEADER + imgType.getValue() + imgSize.getValue() + getShortTime()
-                + userid + getRandomKey(3);
+    public String getImgKey(String userid, ImgType imgType, ImgSize imgSize) {
+        return HEADER + imgType.getValue() + imgSize.getValue() + getShortTime() + userid + getRandomKey(3);
     }
 
     private String getShortTime() {
@@ -31,7 +30,6 @@ public class SoleKeyUtils {
 
     private String getRandomKey(int length) {
         String base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < length; i++) {
             int number = random.nextInt(base.length());
@@ -56,7 +54,6 @@ public class SoleKeyUtils {
         public String toString() {
             return str;
         }
-
     }
 
     public enum ImgSize {
@@ -75,6 +72,5 @@ public class SoleKeyUtils {
         public String toString() {
             return str;
         }
-
     }
 }

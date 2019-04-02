@@ -21,24 +21,22 @@ import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
+import com.zyc.doctor.http.IRequest;
+import com.zyc.doctor.http.bean.Version;
+import com.zyc.doctor.utils.DirHelper;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.NetWorkUtils;
+import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.version.ConstantsVersionMode;
 import com.zyc.doctor.version.model.VersionModel;
 import com.zyc.doctor.version.model.VersionModelListener;
 
 import java.io.File;
 
-import com.zyc.doctor.http.data.Version;
-import com.zyc.doctor.http.IRequest;
-import com.zyc.doctor.utils.DirHelper;
-import com.zyc.doctor.utils.ToastUtil;
-
 /**
  * @author dundun
  */
-public class VersionPresenter implements ConstantsVersionMode
-{
+public class VersionPresenter implements ConstantsVersionMode {
     private static final String TAG = "VersionPresenter";
     private Context context;
     private IRequest request;
@@ -52,21 +50,17 @@ public class VersionPresenter implements ConstantsVersionMode
      * 文件大小
      */
     private long fileSize;
-    //    private boolean isLoading = false;//是否正在下载
 
-    public VersionPresenter(Context context)
-    {
+    public VersionPresenter(Context context) {
         this.context = context;
     }
 
-    public VersionPresenter(Context context, IRequest request)
-    {
+    public VersionPresenter(Context context, IRequest request) {
         this.context = context;
         this.request = request;
     }
 
-    public void init()
-    {
+    public void init() {
         manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         builder = new NotificationCompat.Builder(context);
         builder.setWhen(System.currentTimeMillis())
@@ -83,15 +77,11 @@ public class VersionPresenter implements ConstantsVersionMode
      * 根据网络情况判断是否检查更新
      * 断网时不检查更新，启动网络监听广播
      */
-    public void updateVersionByNetwork()
-    {
-        if (new NetWorkUtils(context).isConnected())
-        {
-            versionModel.getNewestVersion(new VersionModelListener.NewestVersionCallBack()
-            {
+    public void updateVersionByNetwork() {
+        if (new NetWorkUtils(context).isConnected()) {
+            versionModel.getNewestVersion(new VersionModelListener.NewestVersionCallBack() {
                 @Override
-                public void result(Version version)
-                {
+                public void result(Version version) {
                     if (version == null) { return; }
                     nowVersion = version;
                     url = nowVersion.getDownloadUrl();
@@ -99,16 +89,13 @@ public class VersionPresenter implements ConstantsVersionMode
                 }
 
                 @Override
-                public void error(String s)
-                {
+                public void error(String s) {
                     if (!TextUtils.isEmpty(s)) { ToastUtil.toast(context, s); }
                 }
             });
         }
-        else
-        {
-            if (versionViewListener != null)
-            {
+        else {
+            if (versionViewListener != null) {
                 versionViewListener.updateNetWorkError();
             }
         }
@@ -119,72 +106,41 @@ public class VersionPresenter implements ConstantsVersionMode
      *
      * @param isMustUpdate 判断是否是强制更新
      */
-    public void getNewAPK(final boolean isMustUpdate)
-    {
-        if (versionModel != null)
-        {
-            //            versionModel.downloadAPK(url, new VersionModelListener.DownloadAPKCallBack() {
-            //                @Override
-            //                public void downEnd(final File file) {
-            //                    //TODO 下载结束 适配7.0
-            //                }
-            //
-            //                @Override
-            //                public void downloading(long total, long currnetData) {
-            //                    if (isMustUpdate && versionViewListener != null) {
-            //                        versionViewListener.updateLoading(total, currnetData);
-            //                    } else {
-            //                        showCustomProgressNotify((int) total, (int) currnetData);
-            //                    }
-            //                }
-            //
-            //                @Override
-            //                public void downloadError(String s) {
-            //                    ToastUtil.toast(context, s);
-            //                }
-            //            });
-            versionModel.downloadAPK(url, new DownloadListener()
-            {
+    public void getNewAPK(final boolean isMustUpdate) {
+        if (versionModel != null) {
+            versionModel.downloadAPK(url, new DownloadListener() {
                 @Override
-                public void onDownloadError(int what, Exception exception)
-                {
+                public void onDownloadError(int what, Exception exception) {
                     ToastUtil.toast(context, exception.getMessage());
                 }
 
                 @Override
-                public void onStart(int what, boolean isResume, long rangeSize,
-                        Headers responseHeaders, long allCount)
-                {
+                public void onStart(int what, boolean isResume, long rangeSize, Headers responseHeaders,
+                        long allCount) {
                     fileSize = allCount;
                 }
 
                 @Override
-                public void onProgress(int what, int progress, long fileCount, long speed)
-                {
-                    if (isMustUpdate && versionViewListener != null)
-                    {
+                public void onProgress(int what, int progress, long fileCount, long speed) {
+                    if (isMustUpdate && versionViewListener != null) {
                         versionViewListener.updateLoading(fileSize, fileCount);
                     }
-                    else
-                    {
+                    else {
                         showCustomProgressNotify((int)fileSize, (int)fileCount);
                     }
                 }
 
                 @Override
-                public void onFinish(int what, String filePath)
-                {
+                public void onFinish(int what, String filePath) {
                     File file = new File(filePath);
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     Uri uri = null;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-                    {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        uri = FileProvider.getUriForFile(context, YihtApplication.getInstance().getPackageName() + ".fileprovider",
-                                                         file);
+                        uri = FileProvider.getUriForFile(context, YihtApplication.getInstance().getPackageName() +
+                                                                  ".fileprovider", file);
                     }
-                    else
-                    {
+                    else {
                         uri = Uri.fromFile(file);
                     }
                     intent.setDataAndType(uri, "application/vnd.android.package-archive");
@@ -192,8 +148,7 @@ public class VersionPresenter implements ConstantsVersionMode
                 }
 
                 @Override
-                public void onCancel(int what)
-                {
+                public void onCancel(int what) {
                 }
             });
         }
@@ -202,70 +157,60 @@ public class VersionPresenter implements ConstantsVersionMode
     /**
      * 显示自定义带进度条通知栏
      */
-    private void showCustomProgressNotify(int total, int currnetData)
-    {
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
-                                                  R.layout.view_notifycation_content);
-        if (currnetData == total)
-        {
+    private void showCustomProgressNotify(int total, int currnetData) {
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.view_notifycation_content);
+        if (currnetData == total) {
             remoteViews.setViewVisibility(R.id.custom_progressbar, View.GONE);
             remoteViews.setTextViewText(R.id.view_notifycation_content_txt, "已完成");
             remoteViews.setViewVisibility(R.id.view_notifycation_content_percent, View.GONE);
             manager.cancel(UPDATE_VERSION_RESULT);
         }
-        else
-        {
+        else {
             remoteViews.setViewVisibility(R.id.custom_progressbar, View.VISIBLE);
             remoteViews.setViewVisibility(R.id.view_notifycation_content_percent, View.VISIBLE);
             remoteViews.setTextViewText(R.id.view_notifycation_content_percent,
                                         (int)(currnetData / (float)total * 100) + "%");
             remoteViews.setProgressBar(R.id.custom_progressbar, total, currnetData, false);
         }
-        builder.setContent(remoteViews)
-               .setContentIntent(pendingIntent)
-               .setWhen(System.currentTimeMillis());
+        builder.setContent(remoteViews).setContentIntent(pendingIntent).setWhen(System.currentTimeMillis());
         manager.notify(100, builder.build());
     }
 
     /**
      * 版本检测更新
      */
-    private void checkVersion()
-    {
-        String currentVersionName = getVersionName();//当前正在使用的版本
-        String newestVersionName = nowVersion.getNewVersion();//获取最新版本
-        String lowestVersionName = nowVersion.getMinVersion();//获取最低支持版本
+    private void checkVersion() {
+        //当前正在使用的版本
+        String currentVersionName = getVersionName();
+        //获取最新版本
+        String newestVersionName = nowVersion.getNewVersion();
+        //获取最低支持版本
+        String lowestVersionName = nowVersion.getMinVersion();
         int mode = UPDATE_NONE;
         boolean isDownAPK = true;
         //小于0  表示获取的新版本号大于当前使用的版本,需要更新
-        if (compareVersion(currentVersionName, newestVersionName) < 0)
-        {
+        if (compareVersion(currentVersionName, newestVersionName) < 0) {
             //小于0 表示强制更新
-            if (compareVersion(currentVersionName, lowestVersionName) < 0)
-            {
+            if (compareVersion(currentVersionName, lowestVersionName) < 0) {
                 mode = UPDATE_MUST;
             }
-            else
-            {//大于等于0 用户选择更新
+            else {//大于等于0 用户选择更新
                 mode = UPDATE_CHOICE;
             }
             //判断本地apk文件的版本号是否最新
             String apkVersionName = getApkVersion(DirHelper.getPathFile() + "/YHT.apk");
-            if (apkVersionName != null && compareVersion(newestVersionName, apkVersionName) == 0)
-            {
+            if (apkVersionName != null && compareVersion(newestVersionName, apkVersionName) == 0) {
                 isDownAPK = false;
             }
         }
-        if (versionViewListener != null)
-        {
+        if (versionViewListener != null) {
             versionViewListener.updateVersion(nowVersion, mode, isDownAPK);
         }
     }
 
     private VersionViewListener versionViewListener;
 
-    public interface VersionViewListener
-    {
+    public interface VersionViewListener {
         void updateVersion(Version version, int mode, boolean isDownLoading);
 
         void updateLoading(long total, long current);
@@ -273,23 +218,18 @@ public class VersionPresenter implements ConstantsVersionMode
         void updateNetWorkError();
     }
 
-    public void setVersionViewListener(VersionViewListener versionViewListener)
-    {
+    public void setVersionViewListener(VersionViewListener versionViewListener) {
         this.versionViewListener = versionViewListener;
     }
 
     /**
      * 获取当前应用的版本号
      */
-    public String getVersionName()
-    {
-        try
-        {
-            return context.getPackageManager()
-                          .getPackageInfo(context.getPackageName(), 0).versionName + "";
+    public String getVersionName() {
+        try {
+            return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName + "";
         }
-        catch (NameNotFoundException e)
-        {
+        catch (NameNotFoundException e) {
             LogUtils.w(TAG, "Exception error!", e);
         }
         return null;
@@ -300,19 +240,17 @@ public class VersionPresenter implements ConstantsVersionMode
      *
      * @param absPath apk包的绝对路径
      */
-    public String getApkVersion(String absPath)
-    {
-        if (new File(absPath).exists())
-        {
+    public String getApkVersion(String absPath) {
+        if (new File(absPath).exists()) {
             PackageManager pm = context.getPackageManager();
             PackageInfo pkgInfo = pm.getPackageArchiveInfo(absPath, PackageManager.GET_ACTIVITIES);
-            if (pkgInfo != null)
-            {
+            if (pkgInfo != null) {
                 ApplicationInfo appInfo = pkgInfo.applicationInfo;
                 /* 必须加这两句，不然下面icon获取是default icon而不是应用包的icon */
                 appInfo.sourceDir = absPath;
                 appInfo.publicSourceDir = absPath;
-                String version = pkgInfo.versionName; // 得到版本信息
+                // 得到版本信息
+                String version = pkgInfo.versionName;
                 return version;
             }
         }
@@ -326,37 +264,30 @@ public class VersionPresenter implements ConstantsVersionMode
      * @param s1
      * @param s2
      */
-    private int compareVersion(String s1, String s2)
-    {
+    private int compareVersion(String s1, String s2) {
         if (s1 == null && s2 == null) { return 0; }
         else if (s1 == null) { return -1; }
         else if (s2 == null) { return 1; }
         String[] arr1 = s1.split("[^a-zA-Z0-9]+"), arr2 = s2.split("[^a-zA-Z0-9]+");
         int i1, i2, i3;
-        for (int ii = 0, max = Math.min(arr1.length, arr2.length); ii <= max; ii++)
-        {
+        for (int ii = 0, max = Math.min(arr1.length, arr2.length); ii <= max; ii++) {
             if (ii == arr1.length) { return ii == arr2.length ? 0 : -1; }
             else if (ii == arr2.length) { return 1; }
-            try
-            {
+            try {
                 i1 = Integer.parseInt(arr1[ii]);
             }
-            catch (Exception x)
-            {
+            catch (Exception x) {
                 i1 = Integer.MAX_VALUE;
                 LogUtils.w(TAG, "Exception error!", x);
             }
-            try
-            {
+            try {
                 i2 = Integer.parseInt(arr2[ii]);
             }
-            catch (Exception x)
-            {
+            catch (Exception x) {
                 i2 = Integer.MAX_VALUE;
                 LogUtils.w(TAG, "Exception error!", x);
             }
-            if (i1 != i2)
-            {
+            if (i1 != i2) {
                 return i1 - i2;
             }
             i3 = arr1[ii].compareTo(arr2[ii]);

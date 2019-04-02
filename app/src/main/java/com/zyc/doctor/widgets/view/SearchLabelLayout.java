@@ -9,36 +9,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * @author dundun
  * @created on 2015-4-13
  */
-public class SearchLabelLayout extends ViewGroup
-{
-    //存储所有子View
+public class SearchLabelLayout extends ViewGroup {
+    /**
+     * 存储所有子View
+     */
     private List<List<View>> mAllChildViews = new ArrayList<>();
-    //每一行的高度
+    /**
+     * 每一行的高度
+     */
     private List<Integer> mLineHeight = new ArrayList<>();
 
-    public SearchLabelLayout(Context context)
-    {
+    public SearchLabelLayout(Context context) {
         this(context, null);
         // TODO Auto-generated constructor stub
     }
 
-    public SearchLabelLayout(Context context, AttributeSet attrs)
-    {
+    public SearchLabelLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
         // TODO Auto-generated constructor stub
     }
 
-    public SearchLabelLayout(Context context, AttributeSet attrs, int defStyle)
-    {
+    public SearchLabelLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         // TODO Auto-generated constructor stub
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
-    {
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         // TODO Auto-generated method stub
         //父控件传进来的宽度和高度以及对应的测量模式
         int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
@@ -46,15 +46,16 @@ public class SearchLabelLayout extends ViewGroup
         int sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
         int modeHeight = MeasureSpec.getMode(heightMeasureSpec);
         //如果当前ViewGroup的宽高为wrap_content的情况
-        int width = 0;//自己测量的 宽度
-        int height = 0;//自己测量的高度
+        //自己测量的 宽度
+        int width = 0;
+        //自己测量的高度
+        int height = 0;
         //记录每一行的宽度和高度
         int lineWidth = 0;
         int lineHeight = 0;
         //获取子view的个数
         int childCount = getChildCount();
-        for (int i = 0; i < childCount; i++)
-        {
+        for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
             //测量子View的宽和高
             measureChild(child, widthMeasureSpec, heightMeasureSpec);
@@ -65,8 +66,7 @@ public class SearchLabelLayout extends ViewGroup
             //子View占据的高度
             int childHeight = child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin;
             //换行时候
-            if (lineWidth + childWidth > sizeWidth)
-            {
+            if (lineWidth + childWidth > sizeWidth) {
                 //对比得到最大的宽度
                 width = Math.max(width, lineWidth);
                 //重置lineWidth
@@ -75,16 +75,14 @@ public class SearchLabelLayout extends ViewGroup
                 height += lineHeight;
                 lineHeight = childHeight;
             }
-            else
-            {//不换行情况
+            else {//不换行情况
                 //叠加行宽
                 lineWidth += childWidth;
                 //得到最大行高
                 lineHeight = Math.max(lineHeight, childHeight);
             }
             //处理最后一个子View的情况
-            if (i == childCount - 1)
-            {
+            if (i == childCount - 1) {
                 width = Math.max(width, lineWidth);
                 height += lineHeight;
             }
@@ -96,8 +94,7 @@ public class SearchLabelLayout extends ViewGroup
     }
 
     @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b)
-    {
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
         // TODO Auto-generated method stub
         mAllChildViews.clear();
         mLineHeight.clear();
@@ -108,15 +105,13 @@ public class SearchLabelLayout extends ViewGroup
         //记录当前行的view
         List<View> lineViews = new ArrayList<View>();
         int childCount = getChildCount();
-        for (int i = 0; i < childCount; i++)
-        {
+        for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
             LayoutParams lp = child.getLayoutParams();
             int childWidth = child.getMeasuredWidth();
             int childHeight = child.getMeasuredHeight();
             //如果需要换行
-            if (childWidth + lineWidth > width)
-            {
+            if (childWidth + lineWidth > width) {
                 //记录LineHeight
                 mLineHeight.add(lineHeight);
                 //记录当前行的Views
@@ -139,21 +134,17 @@ public class SearchLabelLayout extends ViewGroup
         int top = 0;
         //获取行数
         int lineCount = mAllChildViews.size();
-        if (lineCount > 3)
-        {
+        if (lineCount > 3) {
             lineCount = 3;
         }
-        for (int i = 0; i < lineCount; i++)
-        {
+        for (int i = 0; i < lineCount; i++) {
             //当前行的views和高度
             lineViews = mAllChildViews.get(i);
             lineHeight = mLineHeight.get(i);
-            for (int j = 0; j < lineViews.size(); j++)
-            {
+            for (int j = 0; j < lineViews.size(); j++) {
                 View child = lineViews.get(j);
                 //判断是否显示
-                if (child.getVisibility() == View.GONE)
-                {
+                if (child.getVisibility() == View.GONE) {
                     continue;
                 }
                 LayoutParams lp = child.getLayoutParams();
@@ -174,8 +165,7 @@ public class SearchLabelLayout extends ViewGroup
      * 与当前ViewGroup对应的LayoutParams
      */
     @Override
-    public LayoutParams generateLayoutParams(AttributeSet attrs)
-    {
+    public LayoutParams generateLayoutParams(AttributeSet attrs) {
         // TODO Auto-generated method stub
         return new MarginLayoutParams(getContext(), attrs);
     }

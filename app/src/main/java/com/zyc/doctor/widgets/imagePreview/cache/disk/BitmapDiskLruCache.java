@@ -21,7 +21,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Created by Kyle on 2015/12/14.
+ * @author Kyle
+ * @date 2015/12/14
  */
 public class BitmapDiskLruCache {
     private static DiskLruCache mDiskLruCache;

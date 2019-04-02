@@ -14,9 +14,9 @@ import android.widget.TextView;
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.PatientBean;
-import com.zyc.doctor.http.data.RegistrationBean;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.PatientBean;
+import com.zyc.doctor.http.bean.RegistrationBean;
 import com.zyc.doctor.ui.activity.RegistrationDetailActivity;
 import com.zyc.doctor.ui.adapter.OrderInfoAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
@@ -136,7 +136,7 @@ public class OrderInfoFragment extends BaseFragment
                 if (page == 0) {
                     registrationBeans.clear();
                 }
-                ArrayList<RegistrationBean> list = response.getData();
+                ArrayList<RegistrationBean> list = (ArrayList<RegistrationBean>)response.getData();
                 if (list != null && list.size() > 0) {
                     llNoneLayout.setVisibility(View.GONE);
                     registrationBeans.addAll(list);

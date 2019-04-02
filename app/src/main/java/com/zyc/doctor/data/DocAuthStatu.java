@@ -1,7 +1,9 @@
 package com.zyc.doctor.data;
 
 /**
- * Created by dundun on 19/2/19.
+ *
+ * @author dundun
+ * @date 19/2/19
  * 医生认证状态
  */
 public interface DocAuthStatu

@@ -246,7 +246,7 @@
 
         <!--环信消息点击事件处理-->
         <receiver
-            android:name="com.zyc.doctor.receive.EaseMsgClickBroadCastReceiver"
+            android:name=".chat.receive.EaseMsgClickBroadCastReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>

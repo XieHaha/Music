@@ -12,18 +12,18 @@ import android.widget.TextView;
 
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.PatientBean;
 import com.zyc.doctor.ui.adapter.ApplyPatientAdapter;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
+import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.PatientBean;
-import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
-import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
  * 患者申请
@@ -118,7 +118,7 @@ public class ApplyPatientActivity extends BaseActivity
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         switch (task) {
             case GET_APPLY_PATIENT_LIST:
-                applyPatientList = response.getData();
+                applyPatientList = (List<PatientBean>)response.getData();
                 if (page == 0) {
                     applyPatientAdapter.setList(applyPatientList);
                 } else {
@@ -139,7 +139,7 @@ public class ApplyPatientActivity extends BaseActivity
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response) {
+    public void onResponseCode(Tasks task, BaseResponse response) {
         switch (task) {
             case GET_APPLY_PATIENT_LIST:
                 if (page > 0) {

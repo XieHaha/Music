@@ -6,10 +6,10 @@ import android.view.MotionEvent;
 import android.widget.GridView;
 
 /**
- * Created by thl on 2016-02-29.
+ * @author thl
+ * @date 2016-02-29
  */
 public class CustomGridView extends GridView {
-
     public CustomGridView(Context context) {
         super(context);
     }
@@ -21,17 +21,15 @@ public class CustomGridView extends GridView {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_MOVE) {
-
-            return true;  //禁止GridView滑动
-
+            //禁止GridView滑动
+            return true;
         }
         return super.dispatchTouchEvent(ev);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,
-                                                     MeasureSpec.AT_MOST);
+        int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
         super.onMeasure(widthMeasureSpec, expandSpec);
     }
 }

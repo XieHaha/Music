@@ -1,11 +1,11 @@
 package com.zyc.doctor.data;
 
 /**
- * Created by dundun on 19/2/19.
+ * @author dundun
+ * @date 19/2/19
  * 转诊状态
  */
-public interface TransferStatu
-{
+public interface TransferStatu {
     /**
      * 转诊待接受
      */

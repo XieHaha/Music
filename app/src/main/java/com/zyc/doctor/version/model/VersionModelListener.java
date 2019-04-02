@@ -2,7 +2,7 @@ package com.zyc.doctor.version.model;
 
 import java.io.File;
 
-import com.zyc.doctor.http.data.Version;
+import com.zyc.doctor.http.bean.Version;
 
 /**
  * Created by dundun on 16/6/6.

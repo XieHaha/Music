@@ -10,14 +10,14 @@ import com.bumptech.glide.Glide;
 import com.zyc.doctor.R;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
 import com.zyc.doctor.data.CommonData;
-
-import butterknife.BindView;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.CooperateDocBean;
 import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.CooperateDocBean;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.GlideHelper;
 import com.zyc.doctor.utils.ToastUtil;
+
+import butterknife.BindView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -171,7 +171,7 @@ public class AddFriendsDocActivity extends BaseActivity {
                 finish();
                 break;
             case GET_DOC_INFO:
-                CooperateDocBean cooperateDocBean = response.getData();
+                CooperateDocBean cooperateDocBean = (CooperateDocBean)response.getData();
                 initPageData(cooperateDocBean);
                 break;
             case DEAL_DOC_APPLY:

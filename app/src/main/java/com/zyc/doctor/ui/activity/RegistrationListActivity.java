@@ -18,10 +18,10 @@ import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
-import com.zyc.doctor.http.data.BaseNetCode;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.HttpConstants;
-import com.zyc.doctor.http.data.RegistrationBean;
+import com.zyc.doctor.http.bean.BaseNetConfig;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.HttpConstants;
+import com.zyc.doctor.http.bean.RegistrationBean;
 import com.zyc.doctor.ui.adapter.RegistrationListAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
@@ -153,8 +153,8 @@ public class RegistrationListActivity extends BaseActivity
                     BaseResponse baseResponse = praseBaseResponseList(object,
                             RegistrationBean.class);
                     if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
-                            registrationBeans = baseResponse.getData();
+                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
+                            registrationBeans = (List<RegistrationBean>)baseResponse.getData();
                             if (page == 0) {
                                 registrationListAdapter.setList(registrationBeans);
                             } else {

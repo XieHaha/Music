@@ -12,8 +12,8 @@ import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.utils.RecentContactUtils;
 
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.PatientBean;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.PatientBean;
 import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.ToastUtil;

@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import android.support.v7.widget.AppCompatImageView;
 import android.text.TextUtils;
 
-import com.zyc.doctor.tools.ThreadPoolHelper;
+import com.zyc.doctor.utils.ThreadPoolHelper;
 
 /**
  * @author zhangrj

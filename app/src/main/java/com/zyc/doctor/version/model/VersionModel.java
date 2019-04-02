@@ -3,21 +3,21 @@ package com.zyc.doctor.version.model;
 import android.content.Context;
 
 import com.yanzhenjie.nohttp.download.DownloadListener;
-import com.zyc.doctor.tools.FileTransferServer;
+import com.zyc.doctor.http.IRequest;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.Version;
+import com.zyc.doctor.http.listener.ResponseListener;
+import com.zyc.doctor.utils.DirHelper;
+import com.zyc.doctor.utils.FileTransferServer;
 import com.zyc.doctor.utils.LogUtils;
 
 import java.io.File;
 import java.util.ArrayList;
 
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.Version;
-import com.zyc.doctor.http.IRequest;
-import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.listener.ResponseListener;
-import com.zyc.doctor.utils.DirHelper;
-
 /**
- * Created by dundun on 16/6/6.
+ * @author dundun
+ * @date 16/6/6
  */
 public class VersionModel implements ResponseListener<BaseResponse>, VersionModelListener {
     private static final String TAG = "VersionModel";
@@ -60,14 +60,14 @@ public class VersionModel implements ResponseListener<BaseResponse>, VersionMode
             }
         }
         //        url = "http://gdown.baidu.com/data/wisegame/89eb17d6287ae627/weixin_1300.apk";
-        FileTransferServer.getInstance(context).downloadFile(url, DirHelper.getPathFile(), "YHT" +
-                ".apk", downloadListener);
+        FileTransferServer.getInstance(context)
+                          .downloadFile(url, DirHelper.getPathFile(), "YHT" + ".apk", downloadListener);
     }
 
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         if (callBack != null) {
-            ArrayList<Version> list = response.getData();
+            ArrayList<Version> list = (ArrayList<Version>)response.getData();
             if (list != null && list.size() > 0) {
                 for (Version bean : list) {
                     if ("android".equals(bean.getDeviceSystem())) {
@@ -97,23 +97,9 @@ public class VersionModel implements ResponseListener<BaseResponse>, VersionMode
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response) {
+    public void onResponseCode(Tasks task, BaseResponse response) {
         if (callBack != null) {
             callBack.error(response.getMsg());
-        }
-    }
-
-    @Override
-    public void onResponseFile(Tasks task, File file) {
-        if (downloadAPKCallBack != null) {
-            downloadAPKCallBack.downEnd(file);
-        }
-    }
-
-    @Override
-    public void onResponseLoading(Tasks task, boolean isUpload, long total, long current) {
-        if (downloadAPKCallBack != null) {
-            downloadAPKCallBack.downloading(total, current);
         }
     }
 

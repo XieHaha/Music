@@ -19,7 +19,14 @@ import android.widget.TextView;
 
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.CooperateHospitalDocBean;
+import com.zyc.doctor.http.bean.HospitalBean;
 import com.zyc.doctor.ui.adapter.CooperateHospitalDocListAdapter;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
+import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
 
 import org.litepal.crud.DataSupport;
 
@@ -27,13 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.CooperateHospitalDocBean;
-import com.zyc.doctor.http.data.HospitalBean;
-import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
-import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
  * 合作医院医生列表
@@ -193,7 +193,7 @@ public class CooperateDocActivity extends BaseActivity
         switch (task) {
             case GET_COOPERATE_HOSPITAL_DOCTOR_LIST:
                 if (response.getData() != null) {
-                    cooperateHospitalDocBeans = response.getData();
+                    cooperateHospitalDocBeans = (List<CooperateHospitalDocBean>)response.getData();
                     if (page == 0) {
                         cooperateHospitalDocListAdapter.setList(cooperateHospitalDocBeans);
                     } else {
@@ -218,8 +218,8 @@ public class CooperateDocActivity extends BaseActivity
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response) {
-        super.onResponseCodeError(task, response);
+    public void onResponseCode(Tasks task, BaseResponse response) {
+        super.onResponseCode(task, response);
         if (page > 0) {
             page--;
         }

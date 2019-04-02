@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.zyc.doctor.R;
-import com.zyc.doctor.http.data.NormImage;
+import com.zyc.doctor.http.bean.NormImage;
 import com.zyc.doctor.utils.GlideHelper;
 
 import java.util.ArrayList;

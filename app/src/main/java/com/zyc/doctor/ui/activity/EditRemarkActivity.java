@@ -15,13 +15,13 @@ import android.widget.TextView;
 
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
-
-import butterknife.BindView;
-import com.zyc.doctor.http.data.BaseResponse;
 import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.widgets.FilterEmojiEditText;
+
+import butterknife.BindView;
 
 /**
  * @author dundun
@@ -51,7 +51,7 @@ public class EditRemarkActivity extends BaseActivity {
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("设置备注");
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("设置备注");
         if (getIntent() != null) {
             userId = getIntent().getStringExtra(CommonData.KEY_ID);
             nickName = getIntent().getStringExtra(CommonData.KEY_PUBLIC);
@@ -89,7 +89,8 @@ public class EditRemarkActivity extends BaseActivity {
                     //如果不在这个范围比如是汉字的话就是两个字符
                     if (charAt >= 32 && charAt <= 122) {
                         mTextMaxlenght++;
-                    } else {
+                    }
+                    else {
                         mTextMaxlenght += 2;
                     }
                     // 当最大字符大于10时,进行字段的截取,并进行提示字段的大小
@@ -133,8 +134,7 @@ public class EditRemarkActivity extends BaseActivity {
      * 设置备注  患者
      */
     private void modifyNickNameByPatient() {
-        mIRequest.modifyNickNameByPatient(loginSuccessBean.getDoctorId(), userId, remark, "d",
-                this);
+        mIRequest.modifyNickNameByPatient(loginSuccessBean.getDoctorId(), userId, remark, "d", this);
     }
 
     @Override
@@ -144,16 +144,14 @@ public class EditRemarkActivity extends BaseActivity {
             case R.id.act_edit_remark_save:
                 hideSoftInputFromWindow();
                 remark = actEditRemarkNickname.getText().toString().trim();
-                //                if (TextUtils.isEmpty(remark))
-                //                {
-                //                    ToastUtil.toast(this, "备注不能为空");
-                //                    return;
-                //                }
                 if (isDealDoctor) {
                     modifyNickName();
-                } else {
+                }
+                else {
                     modifyNickNameByPatient();
                 }
+                break;
+            default:
                 break;
         }
     }
@@ -168,15 +166,19 @@ public class EditRemarkActivity extends BaseActivity {
                 setResult(RESULT_OK, intent);
                 finish();
                 break;
+            default:
+                break;
         }
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response) {
-        super.onResponseCodeError(task, response);
+    public void onResponseCode(Tasks task, BaseResponse response) {
+        super.onResponseCode(task, response);
         switch (task) {
             case MODIFY_NICK_NAME:
                 ToastUtil.toast(this, response.getMsg());
+                break;
+            default:
                 break;
         }
     }
@@ -185,8 +187,7 @@ public class EditRemarkActivity extends BaseActivity {
      * 隐藏软键盘
      */
     private void hideSoftInputFromWindow() {
-        InputMethodManager inputmanger =
-                (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager inputmanger = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         inputmanger.hideSoftInputFromWindow(actEditRemarkNickname.getWindowToken(), 0);
     }
 }

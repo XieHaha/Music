@@ -38,6 +38,7 @@
     <string name="toast_txt_phone_error">您输入的手机号码有误，请重新输入</string>
     <string name="toast_txt_verify_hint">请输入验证码</string>
     <string name="toast_txt_verifycode_success">验证码获取成功</string>
+    <string name="toast_txt_read_protol">请先阅读并勾选使用协议</string>
     <!--主页-->
     <string name="main_tab_msg">消息</string>
     <string name="main_tab_patients">首页</string>

@@ -1,5 +1,4 @@
 package com.zyc.doctor.widgets.imagePreview.cache.disk;
-
 /**
  * Created by Kyle on 2015/12/14.
  */
@@ -31,12 +30,10 @@ import java.nio.charset.Charset;
  * The default charset is US_ASCII.
  */
 class StrictLineReader implements Closeable {
-    private static final byte CR = (byte) '\r';
-    private static final byte LF = (byte) '\n';
-
+    private static final byte CR = (byte)'\r';
+    private static final byte LF = (byte)'\n';
     private final InputStream in;
     private final Charset charset;
-
     /**
      * Buffered data is stored in {@code buf}. As long as no exception occurs, 0 <= pos <= end
      * and the data in the range [pos, end) is buffered for reading. At end of input, if there is
@@ -81,7 +78,6 @@ class StrictLineReader implements Closeable {
         if (!(charset.equals(Util.US_ASCII))) {
             throw new IllegalArgumentException("Unsupported encoding");
         }
-
         this.in = in;
         this.charset = charset;
         buf = new byte[capacity];
@@ -116,7 +112,6 @@ class StrictLineReader implements Closeable {
             if (buf == null) {
                 throw new IOException("LineReader is closed");
             }
-
             // Read more data if we are at the end of the buffered data.
             // Though it's an error to read after an exception, we will let {@code fillBuf()}
             // throw again if that happens; thus we need to handle end == -1 as well as end == pos.
@@ -132,7 +127,6 @@ class StrictLineReader implements Closeable {
                     return res;
                 }
             }
-
             // Let's anticipate up to 80 characters on top of those already read.
             ByteArrayOutputStream out = new ByteArrayOutputStream(end - pos + 80) {
                 @Override
@@ -140,13 +134,13 @@ class StrictLineReader implements Closeable {
                     int length = (count > 0 && buf[count - 1] == CR) ? count - 1 : count;
                     try {
                         return new String(buf, 0, length, charset.name());
-                    } catch (UnsupportedEncodingException e) {
+                    }
+                    catch (UnsupportedEncodingException e) {
                         // Since we control the charset this will never happen.
                         throw new AssertionError(e);
                     }
                 }
             };
-
             while (true) {
                 out.write(buf, pos, end - pos);
                 // Mark unterminated line in case fillBuf throws EOFException or IOException.

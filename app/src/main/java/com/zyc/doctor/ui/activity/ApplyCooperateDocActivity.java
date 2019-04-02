@@ -13,19 +13,19 @@ import android.widget.TextView;
 import com.zyc.doctor.R;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
 import com.zyc.doctor.data.CommonData;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.CooperateDocBean;
 import com.zyc.doctor.ui.adapter.ApplyCooperateAdapter;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
+import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.CooperateDocBean;
-import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.utils.ToastUtil;
-import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
-import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
  * 申请合作的医生
@@ -123,7 +123,7 @@ public class ApplyCooperateDocActivity extends BaseActivity
         super.onResponseSuccess(task, response);
         switch (task) {
             case GET_APPLY_COOPERATE_DOC_LIST:
-                applyCooperateList = response.getData();
+                applyCooperateList = (List<CooperateDocBean>)response.getData();
                 if (page == 0) {
                     applyCooperateAdapter.setList(applyCooperateList);
                 } else {
@@ -150,8 +150,8 @@ public class ApplyCooperateDocActivity extends BaseActivity
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response) {
-        super.onResponseCodeError(task, response);
+    public void onResponseCode(Tasks task, BaseResponse response) {
+        super.onResponseCode(task, response);
         if (page > 0) {
             page--;
         }

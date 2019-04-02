@@ -22,17 +22,28 @@ import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.zyc.doctor.R;
 import com.zyc.doctor.api.ApiManager;
-import com.zyc.doctor.api.IChange;
-import com.zyc.doctor.api.RegisterType;
+import com.zyc.doctor.api.notify.IChange;
+import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.api.notify.INotifyChangeListenerServer;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.TransferStatu;
+import com.zyc.doctor.http.bean.BaseNetConfig;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.CooperateDocBean;
+import com.zyc.doctor.http.bean.CooperateHospitalBean;
+import com.zyc.doctor.http.bean.HttpConstants;
+import com.zyc.doctor.http.bean.PatientBean;
+import com.zyc.doctor.http.bean.TransPatientBean;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.HintDialog;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.GlideHelper;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.RecentContactUtils;
+import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.widgets.FilterEmojiEditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,17 +52,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.CooperateDocBean;
-import com.zyc.doctor.http.data.CooperateHospitalBean;
-import com.zyc.doctor.http.data.PatientBean;
-import com.zyc.doctor.http.data.TransPatientBean;
-import com.zyc.doctor.http.data.BaseNetCode;
-import com.zyc.doctor.http.data.HttpConstants;
-import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.utils.GlideHelper;
-import com.zyc.doctor.utils.ToastUtil;
-import com.zyc.doctor.widgets.FilterEmojiEditText;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -425,8 +425,8 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponse(object, TransPatientBean.class);
                     if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
-                            transPatientBean = baseResponse.getData();
+                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
+                            transPatientBean = (TransPatientBean)baseResponse.getData();
                             initPageData();
                         }
                         ToastUtil.toast(TransferPatientActivity.this, baseResponse.getMsg());
@@ -489,7 +489,7 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponse(object, String.class);
                     if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
+                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
                             //保存最近联系人
                             RecentContactUtils.save(patientBean.getPatientId());
                             NotifyChangeListenerManager.getInstance().notifyRecentContactChange("");
@@ -545,7 +545,7 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                     BaseResponse baseResponse = praseBaseResponse(object, String.class);
 
                     if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
+                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
                             setResult(RESULT_OK);
                             tvTransferCancel.setVisibility(View.GONE);
                             tvTransferStatus.setText(R.string.txt_transfer_patient_to_cancel_visit);
@@ -597,7 +597,7 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                     BaseResponse baseResponse = praseBaseResponse(object, String.class);
 
                     if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
+                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
                             setResult(RESULT_OK);
                             tvTransferCancel.setVisibility(View.GONE);
                             tvTransferNext.setVisibility(View.GONE);
@@ -653,7 +653,7 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                     BaseResponse baseResponse = praseBaseResponse(object, String.class);
 
                     if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
+                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
                             setResult(RESULT_OK);
                             orderState = 2;
                             tvTransferRefuse.setVisibility(View.GONE);

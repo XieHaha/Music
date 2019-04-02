@@ -8,7 +8,7 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
 
 import butterknife.BindView;
-import com.zyc.doctor.http.data.HospitalBean;
+import com.zyc.doctor.http.bean.HospitalBean;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 
 /**

@@ -1,10 +1,10 @@
 package com.zyc.doctor.data;
 
 /**
- * Created by dundun on 18/8/14.
+ * @author dundun
+ * @date 18/8/14
  */
-public interface OrderStatus
-{
+public interface OrderStatus {
     /**
      * 未预约
      */

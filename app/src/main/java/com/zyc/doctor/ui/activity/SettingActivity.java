@@ -20,9 +20,9 @@ import org.litepal.crud.DataSupport;
 
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
-import com.zyc.doctor.http.data.CooperateDocBean;
-import com.zyc.doctor.http.data.PatientBean;
-import com.zyc.doctor.http.data.Version;
+import com.zyc.doctor.http.bean.CooperateDocBean;
+import com.zyc.doctor.http.bean.PatientBean;
+import com.zyc.doctor.http.bean.Version;
 import com.zyc.doctor.ui.base.activity.AppManager;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.ToastUtil;

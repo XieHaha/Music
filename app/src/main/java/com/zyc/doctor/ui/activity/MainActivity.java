@@ -36,18 +36,27 @@ import com.hyphenate.easeui.ui.EaseConversationListFragment;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
-import com.zyc.doctor.chat.AbstractEMContactListener;
-import com.zyc.doctor.chat.AbstractEMMessageListener;
 import com.zyc.doctor.chat.ChatActivity;
+import com.zyc.doctor.chat.listener.AbstractEMContactListener;
+import com.zyc.doctor.chat.listener.AbstractEMMessageListener;
+import com.zyc.doctor.chat.receive.EaseMsgClickBroadCastReceiver;
 import com.zyc.doctor.data.CommonData;
-import com.zyc.doctor.receive.EaseMsgClickBroadCastReceiver;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.RegistrationTypeBean;
+import com.zyc.doctor.http.bean.Version;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.ui.fragment.CooperateDocFragment;
 import com.zyc.doctor.ui.fragment.MainFragment;
 import com.zyc.doctor.ui.fragment.UserFragment;
+import com.zyc.doctor.utils.DensityUtil;
 import com.zyc.doctor.utils.LogUtils;
+import com.zyc.doctor.utils.ScreenUtils;
+import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.version.presenter.VersionPresenter;
 import com.zyc.doctor.version.view.VersionUpdateDialog;
+import com.zyc.doctor.widgets.ripples.RippleLinearLayout;
 import com.zyc.shortcutbadge.ShortcutBadger;
 
 import org.litepal.crud.DataSupport;
@@ -57,16 +66,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
-
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.RegistrationTypeBean;
-import com.zyc.doctor.http.data.Version;
-import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.utils.DensityUtil;
-import com.zyc.doctor.utils.ScreenUtils;
-import com.zyc.doctor.utils.ToastUtil;
-import com.zyc.doctor.widgets.ripples.RippleLinearLayout;
 
 import static android.support.v4.app.NotificationCompat.DEFAULT_SOUND;
 import static android.support.v4.app.NotificationCompat.DEFAULT_VIBRATE;
@@ -322,7 +321,7 @@ public class MainActivity extends BaseActivity
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         switch (task) {
             case GET_ALL_PRODUCT:
-                registrationTypeBeans = response.getData();
+                registrationTypeBeans = (ArrayList<RegistrationTypeBean>)response.getData();
                 //数据存储
                 DataSupport.deleteAll(RegistrationTypeBean.class);
                 DataSupport.saveAll(registrationTypeBeans);

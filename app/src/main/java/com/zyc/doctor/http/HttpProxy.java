@@ -2,13 +2,14 @@ package com.zyc.doctor.http;
 
 import android.content.Context;
 
-import com.zyc.doctor.http.data.BaseNetCode;
-import com.zyc.doctor.http.data.HttpConstants;
+import com.zyc.doctor.BuildConfig;
+import com.zyc.doctor.http.bean.BaseNetConfig;
+import com.zyc.doctor.http.bean.HttpConstants;
 
 /**
  * @author dundun
  */
-public class HttpProxy implements HttpConstants, BaseNetCode
+public class HttpProxy implements HttpConstants, BaseNetConfig
 {
     private Context context;
 
@@ -22,6 +23,6 @@ public class HttpProxy implements HttpConstants, BaseNetCode
      */
     public String getAPPUrl()
     {
-        return BASE_BASIC_URL;
+        return BuildConfig.BASE_BASIC_URL;
     }
 }

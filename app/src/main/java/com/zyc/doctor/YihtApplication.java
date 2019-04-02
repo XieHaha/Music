@@ -12,19 +12,20 @@ import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.domain.EaseAvatarOptions;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.yanzhenjie.nohttp.NoHttp;
-import com.zyc.doctor.api.ApiHelper;
+import com.zyc.doctor.api.notify.NotifyHelper;
+import com.zyc.doctor.http.retrofit.RetrofitManager;
 import com.zyc.doctor.chat.HxHelper;
 import com.zyc.doctor.data.CommonData;
+import com.zyc.doctor.http.IRequest;
+import com.zyc.doctor.http.bean.LoginSuccessBean;
+import com.zyc.doctor.utils.ImageLoadUtil;
 import com.zyc.doctor.utils.RecentContactUtils;
+import com.zyc.doctor.utils.SharePreferenceUtil;
 
 import org.litepal.LitePal;
 import org.litepal.LitePalApplication;
 
 import cn.jpush.android.api.JPushInterface;
-import com.zyc.doctor.http.data.LoginSuccessBean;
-import com.zyc.doctor.http.IRequest;
-import com.zyc.doctor.utils.ImageLoadUtil;
-import com.zyc.doctor.utils.SharePreferenceUtil;
 import me.jessyan.autosize.AutoSize;
 import me.jessyan.autosize.AutoSizeConfig;
 import me.jessyan.autosize.unit.Subunits;
@@ -68,11 +69,11 @@ public class YihtApplication extends LitePalApplication {
         super.onCreate();
         initContext();
         initAndroidAutoSize();
-        //小鱼
-        //        initXYSDk();
+        //网络
+        RetrofitManager.getInstance().init();
         mIRequest = IRequest.getInstance(this);
         //监听类初始化
-        ApiHelper.init(this);
+        NotifyHelper.init(this);
         //处理文件下载上传
         NoHttp.initialize(this);
         //数据库
@@ -95,6 +96,9 @@ public class YihtApplication extends LitePalApplication {
         sApplication = this;
     }
 
+    /**
+     * 界面适配
+     */
     private void initAndroidAutoSize() {
         //当 App 中出现多进程, 并且您需要适配所有的进程, 就需要在 App 初始化时调用 initCompatMultiProcess()
         //在 Demo 中跳转的三方库中的 DefaultErrorActivity 就是在另外一个进程中, 所以要想适配这个 Activity 就需要调用
@@ -102,14 +106,13 @@ public class YihtApplication extends LitePalApplication {
         AutoSize.initCompatMultiProcess(this);
         AutoSizeConfig.getInstance().getUnitsManager().setSupportSP(false).setSupportSubunits(Subunits.MM);
         AutoSizeConfig.getInstance()
-                //是否让框架支持自定义 Fragment 的适配参数, 由于这个需求是比较少见的, 所以须要使用者手动开启
-                //如果没有这个需求建议不开启
-                .setCustomFragment(true)
-                //是否屏蔽系统字体大小对 AndroidAutoSize 的影响, 如果为 true, App 内的字体的大小将不会跟随系统设置中字体大小的改变
-                //如果为 false, 则会跟随系统设置中字体大小的改变, 默认为 false
-                .setExcludeFontScale(true);
+                      //是否让框架支持自定义 Fragment 的适配参数, 由于这个需求是比较少见的, 所以须要使用者手动开启
+                      //如果没有这个需求建议不开启
+                      .setCustomFragment(true)
+                      //是否屏蔽系统字体大小对 AndroidAutoSize 的影响, 如果为 true, App 内的字体的大小将不会跟随系统设置中字体大小的改变
+                      //如果为 false, 则会跟随系统设置中字体大小的改变, 默认为 false
+                      .setExcludeFontScale(true);
     }
-
 
     /**
      * 环信初始化
@@ -162,39 +165,12 @@ public class YihtApplication extends LitePalApplication {
         ImageLoadUtil.getInstance().initImageLoader(getApplicationContext());
     }
 
-    //    /**
-    //     * 小鱼sdk
-    //     */
-    //    private void initXYSDk() {
-    //        Settings settings = new Settings("23a05bc3dcdaa4ec9936a5c01aa0804757f99a66");   //测试环境
-    //        int pId = Process.myPid();
-    //        String processName = "";
-    //        ActivityManager am =
-    //                (ActivityManager) getApplicationContext().getSystemService(ACTIVITY_SERVICE);
-    //        List<ActivityManager.RunningAppProcessInfo> ps = am.getRunningAppProcesses();
-    //        for (ActivityManager.RunningAppProcessInfo p : ps) {
-    //            if (p.pid == pId) {
-    //                processName = p.processName;
-    //                break;
-    //            }
-    //        }
-    //        // 避免被初始化多次
-    //        if (processName.equals(getPackageName())) {
-    //            NemoSDK nemoSDK = NemoSDK.getInstance();
-    //            nemoSDK.init(this, settings);
-    //            // 被叫服务，不使用被叫功能的请忽略
-    //            Intent incomingCallService = new Intent(this, IncomingCallService.class);
-    //            startService(incomingCallService);
-    //        }
-    //    }
-
     public static YihtApplication getInstance() {
         return sApplication;
     }
 
     public LoginSuccessBean getLoginSuccessBean() {
-        String userStr = (String) SharePreferenceUtil.getObject(this,
-                CommonData.KEY_LOGIN_SUCCESS_BEAN, "");
+        String userStr = (String)SharePreferenceUtil.getObject(this, CommonData.KEY_LOGIN_SUCCESS_BEAN, "");
         if (!TextUtils.isEmpty(userStr)) {
             loginSuccessBean = JSON.parseObject(userStr, LoginSuccessBean.class);
         }

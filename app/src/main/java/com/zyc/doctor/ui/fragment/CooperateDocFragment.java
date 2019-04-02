@@ -23,13 +23,13 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.zyc.doctor.R;
 import com.zyc.doctor.api.ApiManager;
-import com.zyc.doctor.api.IChange;
-import com.zyc.doctor.api.RegisterType;
+import com.zyc.doctor.api.notify.IChange;
+import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.api.notify.INotifyChangeListenerServer;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.CooperateDocBean;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.CooperateDocBean;
 import com.zyc.doctor.ui.activity.AddFriendsDocActivity;
 import com.zyc.doctor.ui.activity.AddFriendsPatientActivity;
 import com.zyc.doctor.ui.activity.ApplyCooperateDocActivity;
@@ -304,7 +304,7 @@ public class CooperateDocFragment extends BaseFragment
         switch (task) {
             case GET_COOPERATE_DOC_LIST:
                 if (response.getData() != null) {
-                    cooperateDocBeanList = response.getData();
+                    cooperateDocBeanList = (List<CooperateDocBean>)response.getData();
                     if (page == 0) {
                         cooperateDocListAdapter.setList(cooperateDocBeanList);
                     }
@@ -334,7 +334,7 @@ public class CooperateDocFragment extends BaseFragment
                 getCooperateList();
                 break;
             case GET_APPLY_COOPERATE_DOC_LIST:
-                ArrayList<CooperateDocBean> list = response.getData();
+                ArrayList<CooperateDocBean> list = (ArrayList<CooperateDocBean>)response.getData();
                 if (list.size() > 0) {
                     rlMsgHint.setVisibility(View.VISIBLE);
                     tvNum.setText(String.valueOf(list.size()));
@@ -353,8 +353,8 @@ public class CooperateDocFragment extends BaseFragment
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response) {
-        super.onResponseCodeError(task, response);
+    public void onResponseCode(Tasks task, BaseResponse response) {
+        super.onResponseCode(task, response);
         if (page > 0) {
             page--;
         }

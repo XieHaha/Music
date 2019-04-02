@@ -2,9 +2,6 @@ package com.zyc.doctor.api.notify;
 
 import android.support.annotation.NonNull;
 
-import com.zyc.doctor.api.IChange;
-import com.zyc.doctor.api.RegisterType;
-
 /**
  * Created by dundun on 18/4/27.
  */

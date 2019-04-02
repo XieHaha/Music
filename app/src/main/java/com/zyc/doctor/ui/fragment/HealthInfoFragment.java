@@ -14,11 +14,11 @@ import android.widget.TextView;
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.data.BaseNetCode;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.CooperateDocBean;
-import com.zyc.doctor.http.data.PatientBean;
-import com.zyc.doctor.http.data.PatientCaseDetailBean;
+import com.zyc.doctor.http.bean.BaseNetConfig;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.CooperateDocBean;
+import com.zyc.doctor.http.bean.PatientBean;
+import com.zyc.doctor.http.bean.PatientCaseDetailBean;
 import com.zyc.doctor.ui.activity.HealthDetailActivity;
 import com.zyc.doctor.ui.adapter.HealthInfoAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
@@ -164,7 +164,7 @@ public class HealthInfoFragment extends BaseFragment implements LoadMoreListener
                 if (page == 0) {
                     caseRecordList.clear();
                 }
-                ArrayList<PatientCaseDetailBean> list1 = response.getData();
+                ArrayList<PatientCaseDetailBean> list1 = (ArrayList<PatientCaseDetailBean>)response.getData();
                 if (list1 != null && list1.size() > 0) {
                     llNoneLayout.setVisibility(View.GONE);
                     caseRecordList.addAll(list1);
@@ -191,8 +191,8 @@ public class HealthInfoFragment extends BaseFragment implements LoadMoreListener
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response) {
-        super.onResponseCodeError(task, response);
+    public void onResponseCode(Tasks task, BaseResponse response) {
+        super.onResponseCode(task, response);
         switch (task) {
             case GET_PATIENT_LIMIT_CASE_LIST:
                 if (page > 0) {
@@ -202,7 +202,7 @@ public class HealthInfoFragment extends BaseFragment implements LoadMoreListener
                 autoLoadRecyclerView.loadFinish();
                 break;
             case DELETE_PATIENT_CASE:
-                if (BaseNetCode.CODE_MODIFY_CASE_RECORD == response.getCode()) {
+                if (BaseNetConfig.CODE_MODIFY_CASE_RECORD == response.getCode()) {
                     ToastUtil.toast(getActivity(), response.getMsg());
                 }
                 break;

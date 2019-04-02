@@ -16,8 +16,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.Global;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.Global;
 import com.zyc.doctor.http.listener.ResponseListener;
 
 import org.json.JSONArray;
@@ -32,6 +32,8 @@ import java.util.Map;
 
 /**
  * baseRequest include requestString and requestBaseResponse and requestList
+ *
+ * @author dundun
  */
 public class BaseRequest<T> extends HttpProxy {
     private RequestQueue mQueue = null;
@@ -184,7 +186,7 @@ public class BaseRequest<T> extends HttpProxy {
                          * 调用请求码异常
                          * */
                         if (listener != null) {
-                            listener.onResponseCodeError(task, baseResponse);
+                            listener.onResponseCode(task, baseResponse);
                             listener.onResponseEnd(task);
                         }
                     }
@@ -289,7 +291,7 @@ public class BaseRequest<T> extends HttpProxy {
                          * 调用请求码异常
                          * */
                         if (listener != null) {
-                            listener.onResponseCodeError(task, baseResponse);
+                            listener.onResponseCode(task, baseResponse);
                             listener.onResponseEnd(task);
                         }
                     }
@@ -366,7 +368,7 @@ public class BaseRequest<T> extends HttpProxy {
                          * 调用请求码异常
                          * */
                         if (listener != null) {
-                            listener.onResponseCodeError(task, baseResponse);
+                            listener.onResponseCode(task, baseResponse);
                             listener.onResponseEnd(task);
                         }
                     }
@@ -451,7 +453,7 @@ public class BaseRequest<T> extends HttpProxy {
                          * 调用请求码异常
                          * */
                         if (listener != null) {
-                            listener.onResponseCodeError(task, baseResponse);
+                            listener.onResponseCode(task, baseResponse);
                             listener.onResponseEnd(task);
                         }
                     }
@@ -538,7 +540,7 @@ public class BaseRequest<T> extends HttpProxy {
                          * 调用请求码异常
                          * */
                         if (listener != null) {
-                            listener.onResponseCodeError(task, baseResponse);
+                            listener.onResponseCode(task, baseResponse);
                             listener.onResponseEnd(task);
                         }
                     }
@@ -618,7 +620,7 @@ public class BaseRequest<T> extends HttpProxy {
                          * 调用请求码异常
                          * */
                         if (listener != null) {
-                            listener.onResponseCodeError(task, baseResponse);
+                            listener.onResponseCode(task, baseResponse);
                             listener.onResponseEnd(task);
                         }
                     }
@@ -738,9 +740,6 @@ public class BaseRequest<T> extends HttpProxy {
     private final void printfRequestLog(Tasks task, String url) {
         if (url != null) {
             Log.d(Global.getInstance().getAppDebugHeader() + "#" + HTTP_TAG, task + " Request url:" + url.toString());
-        }
-        else {
-            Log.d(Global.getInstance().getAppDebugHeader() + "#" + HTTP_TAG, " Request url:" + getAPPUrl());
         }
     }
 

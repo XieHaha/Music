@@ -1,5 +1,8 @@
 package com.zyc.doctor.data;
 
+/**
+ * @author dundun
+ */
 public interface CommonData
 {
     /**

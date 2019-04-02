@@ -15,8 +15,8 @@ import com.alibaba.fastjson.JSON;
 import com.zyc.doctor.R;
 import com.zyc.doctor.http.IRequest;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.LoginSuccessBean;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.LoginSuccessBean;
 import com.zyc.doctor.http.listener.ResponseListener;
 import com.zyc.doctor.ui.base.activity.AppManager;
 import com.zyc.doctor.utils.SharePreferenceUtil;
@@ -26,7 +26,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -252,7 +251,7 @@ public abstract class BaseFragment<T> extends Fragment
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response) {
+    public void onResponseCode(Tasks task, BaseResponse response) {
     }
 
     @Override
@@ -269,14 +268,6 @@ public abstract class BaseFragment<T> extends Fragment
         if (task != null && requestList != null) {
             requestList.remove(task);
         }
-    }
-
-    @Override
-    public void onResponseLoading(Tasks task, boolean isUpload, long total, long current) {
-    }
-
-    @Override
-    public void onResponseFile(Tasks task, File file) {
     }
 
     @Override

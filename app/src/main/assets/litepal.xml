@@ -6,7 +6,7 @@
     	If you didn't name your database end with .db,
     	LitePal would plus the suffix automatically for you.
     	For example:
-    	<dbname value="demo" />
+    	<dbname value="data" />
     -->
     <dbname value="yhtd" />
 
@@ -32,11 +32,11 @@
     	</list>
     -->
     <list>
-        <mapping class="com.zyc.doctor.http.data.PatientBean"></mapping>
-        <mapping class="com.zyc.doctor.http.data.CooperateDocBean"></mapping>
-        <mapping class="com.zyc.doctor.http.data.CooperateHospitalDocBean"></mapping>
-        <mapping class="com.zyc.doctor.http.data.RegistrationTypeBean"></mapping>
-        <mapping class="com.zyc.doctor.http.data.HospitalProductBean"></mapping>
+        <mapping class="com.zyc.doctor.http.bean.PatientBean"></mapping>
+        <mapping class="com.zyc.doctor.http.bean.CooperateDocBean"></mapping>
+        <mapping class="com.zyc.doctor.http.bean.CooperateHospitalDocBean"></mapping>
+        <mapping class="com.zyc.doctor.http.bean.RegistrationTypeBean"></mapping>
+        <mapping class="com.zyc.doctor.http.bean.HospitalProductBean"></mapping>
     </list>
 
     <!--

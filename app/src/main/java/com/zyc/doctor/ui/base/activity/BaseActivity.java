@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -16,11 +15,12 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSON;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.zyc.doctor.R;
 import com.zyc.doctor.http.IRequest;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.LoginSuccessBean;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.LoginSuccessBean;
 import com.zyc.doctor.http.listener.ResponseListener;
 import com.zyc.doctor.permission.OnPermissionCallback;
 import com.zyc.doctor.permission.Permission;
@@ -32,7 +32,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +42,7 @@ import butterknife.ButterKnife;
  *
  * @author DUNDUN
  */
-public abstract class BaseActivity<T> extends FragmentActivity
+public abstract class BaseActivity<T> extends RxAppCompatActivity
         implements ActivityInterface, ResponseListener<BaseResponse>, View.OnClickListener, OnPermissionCallback {
     private ProgressDialog mProgressDialog;
     /**
@@ -389,7 +388,7 @@ public abstract class BaseActivity<T> extends FragmentActivity
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response) {
+    public void onResponseCode(Tasks task, BaseResponse response) {
     }
 
     @Override
@@ -412,14 +411,6 @@ public abstract class BaseActivity<T> extends FragmentActivity
         if (task != null && requestList != null) {
             requestList.remove(task);
         }
-    }
-
-    @Override
-    public void onResponseLoading(Tasks task, boolean isUpload, long total, long current) {
-    }
-
-    @Override
-    public void onResponseFile(Tasks task, File file) {
     }
 
     @Override

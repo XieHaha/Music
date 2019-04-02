@@ -32,13 +32,13 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.data.BaseNetCode;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.HospitalBean;
-import com.zyc.doctor.http.data.HospitalProductBean;
-import com.zyc.doctor.http.data.HospitalProductTypeBean;
-import com.zyc.doctor.http.data.HttpConstants;
-import com.zyc.doctor.http.data.PatientBean;
+import com.zyc.doctor.http.bean.BaseNetConfig;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.HospitalBean;
+import com.zyc.doctor.http.bean.HospitalProductBean;
+import com.zyc.doctor.http.bean.HospitalProductTypeBean;
+import com.zyc.doctor.http.bean.HttpConstants;
+import com.zyc.doctor.http.bean.PatientBean;
 import com.zyc.doctor.ui.adapter.RegistrationAdapter;
 import com.zyc.doctor.ui.adapter.RegistrationProductAdapter;
 import com.zyc.doctor.ui.adapter.RegistrationProductTypeAdapter;
@@ -406,7 +406,7 @@ public class ServicePackActivity extends BaseActivity {
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponse(object, String.class);
                     if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
+                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
                             HintDialog hintDialog = new HintDialog(ServicePackActivity.this);
                             hintDialog.isShowCancelBtn(false);
                             hintDialog.setContentString("已发送给患者，请等待患者答复");
@@ -468,11 +468,11 @@ public class ServicePackActivity extends BaseActivity {
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         switch (task) {
             case GET_HOSPITAL_LIST_BY_DOCTORID:
-                hospitalList = response.getData();
+                hospitalList = (List<HospitalBean>)response.getData();
                 registrationAdapter.setList(hospitalList);
                 break;
             case GET_HOSPITAL_PRODUCT_LIST_BY_HOSPITALID:
-                productTypeBeans = response.getData();
+                productTypeBeans = (List<HospitalProductTypeBean>)response.getData();
                 registrationProductTypeAdapter.setList(productTypeBeans);
                 break;
             case ADD_PRODUCT_ORDER:
@@ -483,7 +483,7 @@ public class ServicePackActivity extends BaseActivity {
                 hintDialog.show();
                 break;
             case GET_PATIENT_INFO:
-                patientBean = response.getData();
+                patientBean = (PatientBean)response.getData();
                 break;
             default:
                 break;

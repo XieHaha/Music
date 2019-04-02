@@ -13,8 +13,8 @@ import android.widget.TextView;
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.HospitalBean;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.HospitalBean;
 import com.zyc.doctor.ui.adapter.CooperateHospitalAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
@@ -114,7 +114,7 @@ public class CooperateHospitalActivity extends BaseActivity
         super.onResponseSuccess(task, response);
         switch (task) {
             case GET_HOSPITAL_LIST_BY_DOCTORID:
-                hospitalBeans = response.getData();
+                hospitalBeans = (List<HospitalBean>)response.getData();
                 if (page == 0) {
                     cooperateHospitalAdapter.setList(hospitalBeans);
                 } else {
@@ -135,8 +135,8 @@ public class CooperateHospitalActivity extends BaseActivity
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response) {
-        super.onResponseCodeError(task, response);
+    public void onResponseCode(Tasks task, BaseResponse response) {
+        super.onResponseCode(task, response);
         if (page > 0) {
             page--;
         }

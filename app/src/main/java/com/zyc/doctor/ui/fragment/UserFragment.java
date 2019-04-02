@@ -32,16 +32,16 @@ import com.zhihu.matisse.engine.impl.PicassoEngine;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.api.ApiManager;
-import com.zyc.doctor.api.IChange;
-import com.zyc.doctor.api.RegisterType;
+import com.zyc.doctor.api.notify.IChange;
+import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.api.notify.INotifyChangeListenerServer;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.CooperateDocBean;
-import com.zyc.doctor.http.data.HttpConstants;
-import com.zyc.doctor.http.data.LoginSuccessBean;
-import com.zyc.doctor.http.data.PatientBean;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.CooperateDocBean;
+import com.zyc.doctor.http.bean.HttpConstants;
+import com.zyc.doctor.http.bean.LoginSuccessBean;
+import com.zyc.doctor.http.bean.PatientBean;
 import com.zyc.doctor.permission.OnPermissionCallback;
 import com.zyc.doctor.permission.Permission;
 import com.zyc.doctor.permission.PermissionHelper;
@@ -410,7 +410,7 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
         super.onResponseSuccess(task, response);
         switch (task) {
             case UPLOAD_FILE:
-                headImgUrl = response.getData();
+                headImgUrl = (String)response.getData();
                 Log.i("test", "headImgUrl:" + headImgUrl);
                 updateBasicInfo();
                 break;

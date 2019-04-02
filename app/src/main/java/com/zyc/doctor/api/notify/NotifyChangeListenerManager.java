@@ -2,8 +2,6 @@ package com.zyc.doctor.api.notify;
 
 import android.support.annotation.NonNull;
 
-import com.zyc.doctor.api.IChange;
-import com.zyc.doctor.api.RegisterType;
 import com.zyc.doctor.utils.LogUtils;
 
 import java.util.List;

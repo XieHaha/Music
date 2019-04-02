@@ -16,11 +16,12 @@ import com.bumptech.glide.Glide;
 import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.zyc.doctor.R;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.DocAuthStatu;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.tools.FileTransferServer;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.utils.FileTransferServer;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.DirHelper;
 import com.zyc.doctor.utils.LogUtils;
@@ -157,7 +158,7 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu {
     private void getSplash() {
         try {
             String name = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            mIRequest.getSplash("doctor", "android", name, this);
+            RequestUtils.getSplash(this, "doctor", "android", name, this);
         }
         catch (PackageManager.NameNotFoundException e) {
             LogUtils.w(TAG, "Exception error!", e);
@@ -186,7 +187,7 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu {
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         switch (task) {
             case GET_SPLASH:
-                String url = response.getData();
+                String url = (String)response.getData();
                 String oldUrl = sharePreferenceUtil.getString(CommonData.KEY_SPLASH_IMG_URL);
                 if (!TextUtils.isEmpty(url) && !url.equals(oldUrl) || !isExist()) {
                     sharePreferenceUtil.putString(CommonData.KEY_SPLASH_IMG_URL, url);

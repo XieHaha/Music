@@ -25,20 +25,33 @@ import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.PicassoEngine;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
 import com.zyc.doctor.data.CommonData;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.bean.BaseNetConfig;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.HttpConstants;
+import com.zyc.doctor.http.bean.NormImage;
+import com.zyc.doctor.http.bean.PatientCaseDetailBean;
+import com.zyc.doctor.permission.Permission;
+import com.zyc.doctor.qiniu.QiniuUtils;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.ActionSheetDialog;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.DirHelper;
 import com.zyc.doctor.utils.FileUtils;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.RecentContactUtils;
 import com.zyc.doctor.utils.ScalingUtils;
-import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.PicassoEngine;
+import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.widgets.gridview.AutoGridView;
+import com.zyc.doctor.widgets.textview.ExspandTextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,19 +67,6 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.NormImage;
-import com.zyc.doctor.http.data.PatientCaseDetailBean;
-import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.data.BaseNetCode;
-import com.zyc.doctor.http.data.HttpConstants;
-import com.zyc.doctor.permission.Permission;
-import com.zyc.doctor.qiniu.QiniuUtils;
-import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.utils.DirHelper;
-import com.zyc.doctor.utils.ToastUtil;
-import com.zyc.doctor.widgets.gridview.AutoGridView;
-import com.zyc.doctor.widgets.textview.ExspandTextView;
 
 /**
  * 病例详情（编辑）
@@ -336,7 +336,7 @@ public class HealthDetailActivity extends BaseActivity
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponse(object, String.class);
                     if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
+                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
                             //保存最近联系人
                             RecentContactUtils.save(patientId);
                             NotifyChangeListenerManager.getInstance().notifyRecentContactChange("");
@@ -402,7 +402,7 @@ public class HealthDetailActivity extends BaseActivity
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponse(object, String.class);
                     if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
+                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
                             ToastUtil.toast(HealthDetailActivity.this, baseResponse.getMsg());
                             ivTitlebBarMore.setVisibility(View.VISIBLE);
                             tvTitleBarMore.setVisibility(View.GONE);
@@ -618,8 +618,8 @@ public class HealthDetailActivity extends BaseActivity
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response) {
-        super.onResponseCodeError(task, response);
+    public void onResponseCode(Tasks task, BaseResponse response) {
+        super.onResponseCode(task, response);
         switch (task) {
             case UPLOAD_FILE:
                 closeProgressDialog();

@@ -6,18 +6,17 @@ import android.support.v4.util.LruCache;
 import com.zyc.doctor.widgets.imagePreview.cache.memory.IImageMemoryCache;
 
 /**
- * Created by Kyle on 2015/12/14.
+ * @author Kyle
+ * @date 2015/12/14
  */
-public class LruBitmapMemoryCache implements IImageMemoryCache
-{
-
+public class LruBitmapMemoryCache implements IImageMemoryCache {
     private LruCache<String, Bitmap> lruCache;
 
-    public LruBitmapMemoryCache(){
+    public LruBitmapMemoryCache() {
         //获取系统分配给每个应用程序的最大内存，每个应用系统分配32M
-        int maxMemory = (int) Runtime.getRuntime().maxMemory();
+        int maxMemory = (int)Runtime.getRuntime().maxMemory();
         int mCacheSize = maxMemory / 8;
-        lruCache = new LruCache<String, Bitmap>(mCacheSize ){
+        lruCache = new LruCache<String, Bitmap>(mCacheSize) {
             //必须重写此方法，来测量Bitmap的大小
             @Override
             protected int sizeOf(String key, Bitmap value) {
@@ -34,7 +33,7 @@ public class LruBitmapMemoryCache implements IImageMemoryCache
      */
     @Override
     public boolean put(String key, Bitmap value) {
-        if( lruCache.put(key, value) == null ){
+        if (lruCache.put(key, value) == null) {
             return true;
         }
         return false;
@@ -67,5 +66,4 @@ public class LruBitmapMemoryCache implements IImageMemoryCache
     public void clear() {
         lruCache.evictAll();
     }
-
 }

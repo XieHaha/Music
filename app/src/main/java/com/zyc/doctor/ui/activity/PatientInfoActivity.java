@@ -24,10 +24,10 @@ import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
 import com.zyc.doctor.chat.ChatActivity;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.CombineBean;
-import com.zyc.doctor.http.data.CombineChildBean;
-import com.zyc.doctor.http.data.PatientBean;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.CombineBean;
+import com.zyc.doctor.http.bean.CombineChildBean;
+import com.zyc.doctor.http.bean.PatientBean;
 import com.zyc.doctor.ui.adapter.FragmentVpAdapter;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
@@ -438,11 +438,11 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
         super.onResponseSuccess(task, response);
         switch (task) {
             case GET_PATIENT_INFO:
-                patientBean = response.getData();
+                patientBean = (PatientBean)response.getData();
                 initPageData();
                 break;
             case GET_PATIENT_COMBINE:
-                combineBean = response.getData();
+                combineBean = (CombineBean)response.getData();
                 if (combineBean != null) {
                     patientDiagnosisList = combineBean.getDiagnosisInfo();
                     patientAllergyList = combineBean.getAllergyInfo();

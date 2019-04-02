@@ -18,10 +18,10 @@ import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
-import com.zyc.doctor.http.data.BaseNetCode;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.CooperateHospitalBean;
-import com.zyc.doctor.http.data.HttpConstants;
+import com.zyc.doctor.http.bean.BaseNetConfig;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.CooperateHospitalBean;
+import com.zyc.doctor.http.bean.HttpConstants;
 import com.zyc.doctor.ui.adapter.SelectHospitalAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
@@ -129,8 +129,8 @@ public class SelectTransferHospitalActivity extends BaseActivity
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponseList(object, CooperateHospitalBean.class);
                     if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
-                            ArrayList<CooperateHospitalBean> list = baseResponse.getData();
+                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
+                            ArrayList<CooperateHospitalBean> list = (ArrayList<CooperateHospitalBean>)baseResponse.getData();
                             selectHospitalAdapter.setList(list);
                         }
                         else {

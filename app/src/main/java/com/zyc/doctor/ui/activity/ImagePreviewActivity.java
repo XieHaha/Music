@@ -17,11 +17,11 @@ import android.widget.Toast;
 import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.zyc.doctor.R;
-import com.zyc.doctor.tools.FileTransferServer;
+import com.zyc.doctor.utils.FileTransferServer;
 
 import java.util.ArrayList;
 
-import com.zyc.doctor.http.data.NormImage;
+import com.zyc.doctor.http.bean.NormImage;
 import com.zyc.doctor.utils.DirHelper;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.widgets.imagePreview.options.PreviewOptions;

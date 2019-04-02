@@ -14,8 +14,8 @@ import android.widget.TextView;
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.TransPatientBean;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.TransPatientBean;
 import com.zyc.doctor.ui.activity.ApplyPatientActivity;
 import com.zyc.doctor.ui.activity.TransferPatientActivity;
 import com.zyc.doctor.ui.adapter.TransPatientsListAdapter;
@@ -34,9 +34,9 @@ import butterknife.BindView;
  * @date 18/10/11
  * 我转给合作医生的
  */
-public class TransferPatientToFragment extends BaseFragment implements LoadMoreListener,
-        SwipeRefreshLayout.OnRefreshListener,
-        BaseRecyclerAdapter.OnItemClickListener<TransPatientBean> {
+public class TransferPatientToFragment extends BaseFragment
+        implements LoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
+                   BaseRecyclerAdapter.OnItemClickListener<TransPatientBean> {
     @BindView(R.id.act_patients_recycler_view)
     AutoLoadRecyclerView autoLoadRecyclerView;
     @BindView(R.id.act_patients_swipe_layout)
@@ -75,17 +75,16 @@ public class TransferPatientToFragment extends BaseFragment implements LoadMoreL
         super.initView(view, savedInstanceState);
         footerView = LayoutInflater.from(getActivity()).inflate(R.layout.view_list_footerr, null);
         tvFooterHintTxt = footerView.findViewById(R.id.footer_hint_txt);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                android.R.color.holo_red_light, android.R.color.holo_orange_light,
-                android.R.color.holo_green_light);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
+                                                   android.R.color.holo_orange_light, android.R.color.holo_green_light);
     }
 
     @Override
     public void initListener() {
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
-        autoLoadRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),
-                LinearLayoutManager.VERTICAL, false));
+        autoLoadRecyclerView.setLayoutManager(
+                new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         transPatientsListAdapter = new TransPatientsListAdapter(getActivity(), new ArrayList<>());
         transPatientsListAdapter.addFooterView(footerView);
@@ -135,17 +134,19 @@ public class TransferPatientToFragment extends BaseFragment implements LoadMoreL
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         switch (task) {
             case GET_PATIENTS_TO_LIST:
-                patientBeanList = response.getData();
+                patientBeanList = (List<TransPatientBean>)response.getData();
                 if (page == 0) {
                     transPatientsListAdapter.setList(patientBeanList);
-                } else {
+                }
+                else {
                     transPatientsListAdapter.addList(patientBeanList);
                 }
                 transPatientsListAdapter.notifyDataSetChanged();
                 if (patientBeanList.size() < PAGE_SIZE) {
                     tvFooterHintTxt.setText("暂无更多数据");
                     autoLoadRecyclerView.loadFinish(false);
-                } else {
+                }
+                else {
                     tvFooterHintTxt.setText("上拉加载更多");
                     autoLoadRecyclerView.loadFinish(true);
                 }
@@ -156,8 +157,8 @@ public class TransferPatientToFragment extends BaseFragment implements LoadMoreL
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response) {
-        super.onResponseCodeError(task, response);
+    public void onResponseCode(Tasks task, BaseResponse response) {
+        super.onResponseCode(task, response);
         if (page > 0) {
             page--;
         }
@@ -195,5 +196,4 @@ public class TransferPatientToFragment extends BaseFragment implements LoadMoreL
                 break;
         }
     }
-
 }

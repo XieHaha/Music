@@ -36,18 +36,18 @@ import com.yanzhenjie.nohttp.rest.RequestQueue;
 import com.yanzhenjie.nohttp.rest.Response;
 import com.zyc.doctor.R;
 import com.zyc.doctor.api.ApiManager;
-import com.zyc.doctor.api.IChange;
-import com.zyc.doctor.api.RegisterType;
+import com.zyc.doctor.api.notify.IChange;
+import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.api.notify.INotifyChangeListenerServer;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.OrderStatus;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.data.BaseNetCode;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.HttpConstants;
-import com.zyc.doctor.http.data.PatientBean;
-import com.zyc.doctor.http.data.RegistrationBean;
-import com.zyc.doctor.http.data.TransPatientBean;
+import com.zyc.doctor.http.bean.BaseNetConfig;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.HttpConstants;
+import com.zyc.doctor.http.bean.PatientBean;
+import com.zyc.doctor.http.bean.RegistrationBean;
+import com.zyc.doctor.http.bean.TransPatientBean;
 import com.zyc.doctor.qrcode.BarCodeImageView;
 import com.zyc.doctor.qrcode.CaptureQrCodeActivity;
 import com.zyc.doctor.qrcode.DialogPersonalBarCode;
@@ -512,8 +512,8 @@ public class MainFragment extends BaseFragment implements OrderStatus, SwipeRefr
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponseList(object, TransPatientBean.class);
                     if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
-                            transPatientBeans = baseResponse.getData();
+                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
+                            transPatientBeans = (ArrayList<TransPatientBean>)baseResponse.getData();
                             initTransferData();
                         }
                         else {
@@ -563,8 +563,8 @@ public class MainFragment extends BaseFragment implements OrderStatus, SwipeRefr
                     JSONObject object = new JSONObject(s);
                     BaseResponse baseResponse = praseBaseResponseList(object, RegistrationBean.class);
                     if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetCode.REQUEST_SUCCESS) {
-                            registrationBeans = baseResponse.getData();
+                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
+                            registrationBeans = (ArrayList<RegistrationBean>)baseResponse.getData();
                             initOrderData();
                         }
                         else {
@@ -635,14 +635,14 @@ public class MainFragment extends BaseFragment implements OrderStatus, SwipeRefr
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         switch (task) {
             case GET_PATIENTS_LIST:
-                List<PatientBean> list = response.getData();
+                List<PatientBean> list = (List<PatientBean>)response.getData();
                 if (list != null && list.size() > 0) {
                     tvPatientNum.setText(list.size() + "人");
                 }
                 break;
             //患者申请
             case GET_APPLY_PATIENT_LIST:
-                ArrayList<PatientBean> patientBeans = response.getData();
+                ArrayList<PatientBean> patientBeans = (ArrayList<PatientBean>)response.getData();
                 if (patientBeans != null && patientBeans.size() > 0) {
                     rlApplyPatientNumLayout.setVisibility(View.VISIBLE);
                     tvApplyPatientNum.setText(String.valueOf(patientBeans.size()));

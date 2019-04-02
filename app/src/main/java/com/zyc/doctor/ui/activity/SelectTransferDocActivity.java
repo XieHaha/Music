@@ -12,18 +12,18 @@ import android.widget.TextView;
 
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.CooperateDocBean;
 import com.zyc.doctor.ui.adapter.CooperateDocListAdapter;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
+import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.CooperateDocBean;
-import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
-import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
 
 /**
  * 转诊医生
@@ -126,7 +126,7 @@ public class SelectTransferDocActivity extends BaseActivity
         switch (task) {
             case GET_COOPERATE_DOC_LIST:
                 if (response.getData() != null) {
-                    cooperateDocBeanList = response.getData();
+                    cooperateDocBeanList = (List<CooperateDocBean>)response.getData();
                     if (page == 0) {
                         cooperateDocListAdapter.setList(cooperateDocBeanList);
                     } else {
@@ -148,8 +148,8 @@ public class SelectTransferDocActivity extends BaseActivity
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response) {
-        super.onResponseCodeError(task, response);
+    public void onResponseCode(Tasks task, BaseResponse response) {
+        super.onResponseCode(task, response);
         if (page > 0) {
             page--;
         }

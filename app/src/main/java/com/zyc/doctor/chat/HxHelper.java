@@ -6,18 +6,17 @@ import android.text.TextUtils;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.easeui.UserInfoCallback;
 import com.hyphenate.easeui.domain.EaseUser;
+import com.zyc.doctor.http.IRequest;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.CooperateDocBean;
+import com.zyc.doctor.http.bean.PatientBean;
+import com.zyc.doctor.http.listener.AbstractResponseAdapter;
 
 import org.litepal.crud.DataSupport;
 
 import java.util.List;
 import java.util.Map;
-
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.CooperateDocBean;
-import com.zyc.doctor.http.data.PatientBean;
-import com.zyc.doctor.http.IRequest;
-import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.listener.AbstractResponseAdapter;
 
 /**
  * @author dundun
@@ -91,7 +90,7 @@ public class HxHelper {
                 iRequest.getPatientInfo(username, new AbstractResponseAdapter<BaseResponse>() {
                     @Override
                     public void onResponseSuccess(Tasks task, BaseResponse response) {
-                        PatientBean patientBean = response.getData();
+                        PatientBean patientBean = (PatientBean)response.getData();
                         if (patientBean != null) {
                             if (!TextUtils.isEmpty(patientBean.getNickname()) && patientBean.getNickname().length() < 20) {
                                 user.setNickname(patientBean.getNickname());
@@ -121,7 +120,7 @@ public class HxHelper {
                 iRequest.getDocInfo(username, new AbstractResponseAdapter<BaseResponse>() {
                     @Override
                     public void onResponseSuccess(Tasks task, BaseResponse response) {
-                        CooperateDocBean bean = response.getData();
+                        CooperateDocBean bean = (CooperateDocBean)response.getData();
                         if (bean != null) {
                             if (!TextUtils.isEmpty(bean.getNickname()) && bean.getNickname().length() < 20) {
                                 user.setNickname(bean.getNickname());

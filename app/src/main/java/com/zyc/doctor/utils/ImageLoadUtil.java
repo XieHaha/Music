@@ -12,8 +12,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.zyc.doctor.R;
-import com.zyc.doctor.http.data.Global;
-import com.zyc.doctor.http.data.Mode;
+import com.zyc.doctor.http.bean.Global;
+import com.zyc.doctor.http.bean.Mode;
 
 /**
  * @author dundun

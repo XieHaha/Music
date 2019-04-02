@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.zyc.doctor.http.data.PatientBean;
+import com.zyc.doctor.http.bean.PatientBean;
 
 /**
  * @author dundun

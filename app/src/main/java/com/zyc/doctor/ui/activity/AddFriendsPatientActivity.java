@@ -11,10 +11,10 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.CombineBean;
-import com.zyc.doctor.http.data.CombineChildBean;
-import com.zyc.doctor.http.data.PatientBean;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.CombineBean;
+import com.zyc.doctor.http.bean.CombineChildBean;
+import com.zyc.doctor.http.bean.PatientBean;
 import com.zyc.doctor.ui.LabelsView;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.AllUtils;
@@ -246,11 +246,11 @@ public class AddFriendsPatientActivity extends BaseActivity {
                 finish();
                 break;
             case GET_PATIENT_INFO:
-                PatientBean bean = response.getData();
+                PatientBean bean = (PatientBean)response.getData();
                 iniPageData(bean);
                 break;
             case GET_PATIENT_COMBINE:
-                combineBean = response.getData();
+                combineBean = (CombineBean)response.getData();
                 if (combineBean != null) {
                     patientDiagnosisList = combineBean.getDiagnosisInfo();
                     patientAllergyList = combineBean.getAllergyInfo();
@@ -276,7 +276,7 @@ public class AddFriendsPatientActivity extends BaseActivity {
     }
 
     @Override
-    public void onResponseCodeError(Tasks task, BaseResponse response) {
+    public void onResponseCode(Tasks task, BaseResponse response) {
         switch (task) {
             case AGREE_PATIENT_APPLY:
                 ToastUtil.toast(this, response.getMsg());

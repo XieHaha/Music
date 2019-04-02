@@ -19,8 +19,8 @@ import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.chat.ChatActivity;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.CooperateDocBean;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.CooperateDocBean;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.utils.AllUtils;
@@ -232,10 +232,10 @@ public class UserInfoActivity extends BaseActivity {
         switch (task) {
             case UPLOAD_FILE:
                 ToastUtil.toast(this, response.getMsg());
-                headImgUrl = response.getData();
+                headImgUrl = (String)response.getData();
                 break;
             case GET_DOC_INFO:
-                cooperateDocBean = response.getData();
+                cooperateDocBean = (CooperateDocBean)response.getData();
                 initPageData();
                 break;
             case CANCEL_COOPERATE_DOC:

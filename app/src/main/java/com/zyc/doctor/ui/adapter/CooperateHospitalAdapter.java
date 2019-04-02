@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zyc.doctor.R;
-import com.zyc.doctor.http.data.HospitalBean;
+import com.zyc.doctor.http.bean.HospitalBean;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
 

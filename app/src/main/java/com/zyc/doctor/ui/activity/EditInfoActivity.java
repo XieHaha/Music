@@ -21,29 +21,29 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
-import com.zyc.doctor.R;
-import com.zyc.doctor.YihtApplication;
-import com.zyc.doctor.ui.dialog.ActionSheetDialog;
-import com.zyc.doctor.ui.dialog.SimpleDialog;
-import com.zyc.doctor.utils.AllUtils;
-import com.zyc.doctor.utils.FileUtils;
-import com.zyc.doctor.utils.LogUtils;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
+import com.zyc.doctor.R;
+import com.zyc.doctor.YihtApplication;
+import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.permission.Permission;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
+import com.zyc.doctor.ui.dialog.ActionSheetDialog;
+import com.zyc.doctor.ui.dialog.SimpleDialog;
+import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.DirHelper;
+import com.zyc.doctor.utils.FileUtils;
+import com.zyc.doctor.utils.GlideHelper;
+import com.zyc.doctor.utils.LogUtils;
+import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.widgets.FilterEmojiEditText;
 
 import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.permission.Permission;
-import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.utils.DirHelper;
-import com.zyc.doctor.utils.GlideHelper;
-import com.zyc.doctor.utils.ToastUtil;
-import com.zyc.doctor.widgets.FilterEmojiEditText;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -291,7 +291,7 @@ public class EditInfoActivity extends BaseActivity {
         super.onResponseSuccess(task, response);
         switch (task) {
             case UPLOAD_FILE:
-                headImgUrl = response.getData();
+                headImgUrl = (String)response.getData();
                 break;
             case UPDATE_USER_INFO:
                 ToastUtil.toast(this, "保存成功");

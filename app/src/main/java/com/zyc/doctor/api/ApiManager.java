@@ -7,6 +7,7 @@ import com.zyc.doctor.utils.LogUtils;
 
 /**
  * SDK 初始化
+ * @author dundun
  */
 public class ApiManager {
     private static final String TAG = ApiManager.class.getName();

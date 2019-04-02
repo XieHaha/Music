@@ -3,26 +3,26 @@ package com.zyc.doctor.http;
 import android.content.Context;
 
 import com.android.volley.RequestParams;
-import com.zyc.doctor.http.data.BaseResponse;
-import com.zyc.doctor.http.data.CombineBean;
-import com.zyc.doctor.http.data.CooperateDocBean;
-import com.zyc.doctor.http.data.CooperateHospitalDocBean;
-import com.zyc.doctor.http.data.HospitalBean;
-import com.zyc.doctor.http.data.HospitalProductTypeBean;
-import com.zyc.doctor.http.data.LoginSuccessBean;
-import com.zyc.doctor.http.data.PatientBean;
-import com.zyc.doctor.http.data.PatientCaseDetailBean;
-import com.zyc.doctor.http.data.RegistrationBean;
-import com.zyc.doctor.http.data.RegistrationTypeBean;
-import com.zyc.doctor.http.data.TransPatientBean;
-import com.zyc.doctor.http.data.Version;
+import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.bean.CombineBean;
+import com.zyc.doctor.http.bean.CooperateDocBean;
+import com.zyc.doctor.http.bean.CooperateHospitalDocBean;
+import com.zyc.doctor.http.bean.HospitalBean;
+import com.zyc.doctor.http.bean.HospitalProductTypeBean;
+import com.zyc.doctor.http.bean.LoginSuccessBean;
+import com.zyc.doctor.http.bean.PatientBean;
+import com.zyc.doctor.http.bean.PatientCaseDetailBean;
+import com.zyc.doctor.http.bean.RegistrationBean;
+import com.zyc.doctor.http.bean.RegistrationTypeBean;
+import com.zyc.doctor.http.bean.TransPatientBean;
+import com.zyc.doctor.http.bean.Version;
 import com.zyc.doctor.http.listener.ResponseListener;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.zyc.doctor.http.data.HttpConstants.Method.GET;
+import static com.zyc.doctor.http.bean.HttpConstants.Method.GET;
 
 /**
  * baseRequest include requestString and requestObject and requestList
