@@ -138,7 +138,7 @@ dependencies {
     //圆形图片
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     //图片管理库
-    implementation 'com.zhihu.android:matisse:0.4.3'
+    implementation 'com.zhihu.android:matisse:0.5.2-beta3'
     //注解
     implementation 'com.jakewharton:butterknife:8.8.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.0'

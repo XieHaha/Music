@@ -16,6 +16,7 @@ import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.TransPatientBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.activity.ApplyPatientActivity;
 import com.zyc.doctor.ui.activity.TransferPatientActivity;
 import com.zyc.doctor.ui.adapter.TransPatientsListAdapter;
@@ -93,7 +94,7 @@ public class TransferPatientToFragment extends BaseFragment
     }
 
     private void getPatientToList() {
-        mIRequest.getTransferPatientToList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
+        RequestUtils.getTransferPatientToList(getContext(), loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
     }
 
     @Override

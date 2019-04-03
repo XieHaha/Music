@@ -17,12 +17,9 @@ import android.widget.Toast;
 import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.zyc.doctor.R;
-import com.zyc.doctor.utils.FileTransferServer;
-
-import java.util.ArrayList;
-
 import com.zyc.doctor.http.bean.NormImage;
 import com.zyc.doctor.utils.DirHelper;
+import com.zyc.doctor.utils.FileTransferServer;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.widgets.imagePreview.options.PreviewOptions;
 import com.zyc.doctor.widgets.imagePreview.transformer.CustomTransformer;
@@ -31,10 +28,14 @@ import com.zyc.doctor.widgets.imagePreview.utils.NavigaterPageIndex;
 import com.zyc.doctor.widgets.imagePreview.view.ImageLoadingView;
 import com.zyc.doctor.widgets.imagePreview.view.ImagePreviewView;
 
+import java.util.ArrayList;
+
+/**
+ * @author dundun
+ */
 public class ImagePreviewActivity extends Activity implements ViewPager.OnPageChangeListener {
     public static final String INTENT_URLS = "intent_urls";
     public static final String INTENT_POSITION = "intent_position";
-
     /**
      * 图片对象
      */
@@ -58,7 +59,6 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
      * 当前page 游标
      */
     private int currentIndex;
-
     /**
      * 图片加载  开始
      */
@@ -75,8 +75,6 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
      * 图片加载  取消
      */
     private final int LOAD_CANCEL = 300;
-
-
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -104,40 +102,37 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
         //状态栏透明
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.activity_image_view);
-
         Intent intent = getIntent();
         if (intent != null) {
-            urls = (ArrayList<NormImage>) intent.getSerializableExtra(INTENT_URLS);
+            urls = (ArrayList<NormImage>)intent.getSerializableExtra(INTENT_URLS);
             currentIndex = intent.getIntExtra(INTENT_POSITION, 0);
         }
-
-        mLoadingView = (ImageLoadingView) findViewById(R.id.act_image_view_loading);
-        btnSaveImage = (ImageView) findViewById(R.id.act_image_view_save_image);
+        mLoadingView = (ImageLoadingView)findViewById(R.id.act_image_view_loading);
+        btnSaveImage = (ImageView)findViewById(R.id.act_image_view_save_image);
         //图片游标
-        indicator = (NavigaterPageIndex) findViewById(R.id.act_image_view_page_indicator);
+        indicator = (NavigaterPageIndex)findViewById(R.id.act_image_view_page_indicator);
         indicator.initPageIndex(urls.size());
         //当只有一张图，不显示图片游标
         if (urls.size() == 1) {
             indicator.setVisibility(View.GONE);
         }
-
-        imgViewPager = (ViewPager) findViewById(R.id.act_image_view_viewpager);
+        imgViewPager = (ViewPager)findViewById(R.id.act_image_view_viewpager);
         //滑动效果
         imgViewPager.setPageTransformer(true, new CustomTransformer());
         imgViewPager.addOnPageChangeListener(this);
         imgViewPager.setAdapter(new TouchImageAdapter());
         imgViewPager.setCurrentItem(currentIndex);
-
         btnSaveImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String imageUri = urls.get(currentIndex).getBigImageUrl();
                 String fileName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
                 if (CacheUtils.getInstance(getBaseContext()).saveImageFileToDisk(imageUri)) {
-                    Toast.makeText(ImagePreviewActivity.this, "图片 " + fileName + " 已保存到 " +
-                                    PreviewOptions.ImageDownloadOptions.IMAGE_SAVE_REL_DIR,
-                            Toast.LENGTH_SHORT).show();
-                } else {
+                    Toast.makeText(ImagePreviewActivity.this,
+                                   "图片 " + fileName + " 已保存到 " + PreviewOptions.ImageDownloadOptions.IMAGE_SAVE_REL_DIR,
+                                   Toast.LENGTH_SHORT).show();
+                }
+                else {
                     downloadImg(imageUri, fileName);
                 }
             }
@@ -158,38 +153,32 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
      */
     private void downloadImg(String imageUri, String fileName) {
         FileTransferServer.getInstance(ImagePreviewActivity.this)
-                .downloadFile(imageUri, DirHelper.getPathImage(), fileName,
-                        new DownloadListener() {
-                            @Override
-                            public void onDownloadError(int what,
-                                                        Exception exception) {
-                                Toast.makeText(ImagePreviewActivity.this, "保存失败",
-                                        Toast.LENGTH_SHORT).show();
-                            }
+                          .downloadFile(imageUri, DirHelper.getPathImage(), fileName, new DownloadListener() {
+                              @Override
+                              public void onDownloadError(int what, Exception exception) {
+                                  Toast.makeText(ImagePreviewActivity.this, "保存失败", Toast.LENGTH_SHORT).show();
+                              }
 
-                            @Override
-                            public void onStart(int what, boolean isResume,
-                                                long rangeSize, Headers responseHeaders,
-                                                long allCount) {
-                            }
+                              @Override
+                              public void onStart(int what, boolean isResume, long rangeSize, Headers responseHeaders,
+                                      long allCount) {
+                              }
 
-                            @Override
-                            public void onProgress(int what, int progress,
-                                                   long fileCount, long speed) {
-                            }
+                              @Override
+                              public void onProgress(int what, int progress, long fileCount, long speed) {
+                              }
 
-                            @Override
-                            public void onFinish(int what, String filePath) {
-                                Toast.makeText(ImagePreviewActivity.this,
-                                        "图片 " + fileName + " 已保存到 " +
-                                                PreviewOptions.ImageDownloadOptions.IMAGE_SAVE_REL_DIR,
-                                        Toast.LENGTH_SHORT).show();
-                            }
+                              @Override
+                              public void onFinish(int what, String filePath) {
+                                  Toast.makeText(ImagePreviewActivity.this, "图片 " + fileName + " 已保存到 " +
+                                                                            PreviewOptions.ImageDownloadOptions.IMAGE_SAVE_REL_DIR,
+                                                 Toast.LENGTH_SHORT).show();
+                              }
 
-                            @Override
-                            public void onCancel(int what) {
-                            }
-                        });
+                              @Override
+                              public void onCancel(int what) {
+                              }
+                          });
     }
 
     @Override
@@ -202,11 +191,8 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
         super.onPause();
     }
 
-
     @Override
-    public void onPageScrolled(int position, float positionOffset,
-                               int positionOffsetPixels) {
-
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
     }
 
     @Override
@@ -219,9 +205,7 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
     public void onPageScrollStateChanged(int state) {
     }
 
-
     class TouchImageAdapter extends PagerAdapter {
-
         @Override
         public int getCount() {
             return urls.size();
@@ -230,21 +214,23 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
         @Override
         public View instantiateItem(final ViewGroup container, final int position) {
             currentPreviceView = imgPreViews.get(position);
-            currentPreviceView.loadingImageAsync(urls.get(position).getImagePath(), urls.get(position).getMiddleImageUrl(), urls.get(position).getBigImageUrl(), position);
-            container.addView(currentPreviceView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            currentPreviceView.loadingImageAsync(urls.get(position).getImagePath(),
+                                                 urls.get(position).getMiddleImageUrl(),
+                                                 urls.get(position).getBigImageUrl(), position);
+            container.addView(currentPreviceView, LinearLayout.LayoutParams.MATCH_PARENT,
+                              LinearLayout.LayoutParams.MATCH_PARENT);
             return currentPreviceView;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((View) object);
+            container.removeView((View)object);
         }
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
         }
-
     }
 
     @Override

@@ -10,33 +10,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.rest.OnResponseListener;
-import com.yanzhenjie.nohttp.rest.Request;
-import com.yanzhenjie.nohttp.rest.RequestQueue;
-import com.yanzhenjie.nohttp.rest.Response;
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
-import com.zyc.doctor.http.bean.BaseNetConfig;
+import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
-import com.zyc.doctor.http.bean.HttpConstants;
 import com.zyc.doctor.http.bean.RegistrationBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.adapter.RegistrationListAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.utils.LogUtils;
-import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
 import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 
@@ -47,17 +34,14 @@ import butterknife.BindView;
  */
 public class RegistrationListActivity extends BaseActivity
         implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener,
-        BaseRecyclerAdapter.OnItemClickListener<RegistrationBean> {
+                   BaseRecyclerAdapter.OnItemClickListener<RegistrationBean> {
     private static final String TAG = "RegistrationListActivit";
     @BindView(R.id.fragment_patients_recycler_view)
     AutoLoadRecyclerView autoLoadRecyclerView;
     @BindView(R.id.fragment_patients_swipe_layout)
     SwipeRefreshLayout swipeRefreshLayout;
-
     private RegistrationListAdapter registrationListAdapter;
     private View footerView;
-    private TextView tvFooterHintTxt;
-    private int typeId;
     private List<RegistrationBean> registrationBeans = new ArrayList<>();
     /**
      * 当前页码
@@ -84,22 +68,14 @@ public class RegistrationListActivity extends BaseActivity
         page = 0;
     }
 
-    public void setTypeId(int typeId) {
-        this.typeId = typeId;
-    }
-
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("开单记录");
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("开单记录");
         footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
-        tvFooterHintTxt = footerView.findViewById(R.id.footer_hint_txt);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                android.R.color.holo_red_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_green_light);
-        autoLoadRecyclerView.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
+                                                   android.R.color.holo_orange_light, android.R.color.holo_green_light);
+        autoLoadRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         registrationListAdapter = new RegistrationListAdapter(this, registrationBeans);
         autoLoadRecyclerView.setAdapter(registrationListAdapter);
@@ -110,13 +86,14 @@ public class RegistrationListActivity extends BaseActivity
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
-            registrationBeans = (List<RegistrationBean>) getIntent().getSerializableExtra(
+            registrationBeans = (List<RegistrationBean>)getIntent().getSerializableExtra(
                     CommonData.KEY_REGISTRATION_LIST);
         }
         if (registrationBeans != null && registrationBeans.size() > 0) {
             registrationListAdapter.setList(registrationBeans);
             registrationListAdapter.notifyDataSetChanged();
-        } else {
+        }
+        else {
             getOrderList();
         }
     }
@@ -131,56 +108,7 @@ public class RegistrationListActivity extends BaseActivity
      * 开单记录
      */
     private void getOrderList() {
-        RequestQueue queue = NoHttp.getRequestQueueInstance();
-        final Request<String> request = NoHttp.createStringRequest(
-                HttpConstants.BASE_BASIC_URL + "/order/doctor/orders/list", RequestMethod.POST);
-        Map<String, Object> params = new HashMap<>();
-        params.put("doctorId", loginSuccessBean.getDoctorId());
-        params.put("pageNo", page);
-        params.put("pageSize", PAGE_SIZE);
-        JSONObject jsonObject = new JSONObject(params);
-        request.setDefineRequestBodyForJson(jsonObject.toString());
-        queue.add(1, request, new OnResponseListener<String>() {
-            @Override
-            public void onStart(int what) {
-            }
-
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                String s = response.get();
-                try {
-                    JSONObject object = new JSONObject(s);
-                    BaseResponse baseResponse = praseBaseResponseList(object,
-                            RegistrationBean.class);
-                    if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
-                            registrationBeans = (List<RegistrationBean>)baseResponse.getData();
-                            if (page == 0) {
-                                registrationListAdapter.setList(registrationBeans);
-                            } else {
-                                registrationListAdapter.addList(registrationBeans);
-                            }
-                            registrationListAdapter.notifyDataSetChanged();
-                        } else {
-                            ToastUtil.toast(RegistrationListActivity.this, baseResponse.getMsg());
-                        }
-                    }
-                } catch (JSONException e) {
-                    LogUtils.w(TAG, "Exception error!", e);
-                }
-            }
-
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                ToastUtil.toast(RegistrationListActivity.this,
-                        response.getException().getMessage());
-            }
-
-            @Override
-            public void onFinish(int what) {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
+        RequestUtils.getOrderList(this, loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
     }
 
     @Override
@@ -188,6 +116,31 @@ public class RegistrationListActivity extends BaseActivity
         Intent intent = new Intent(this, RegistrationDetailActivity.class);
         intent.putExtra(CommonData.KEY_REGISTRATION_BEAN, item);
         startActivity(intent);
+    }
+
+    @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case GET_ORDER_LIST:
+                registrationBeans = (List<RegistrationBean>)response.getData();
+                if (page == 0) {
+                    registrationListAdapter.setList(registrationBeans);
+                }
+                else {
+                    registrationListAdapter.addList(registrationBeans);
+                }
+                registrationListAdapter.notifyDataSetChanged();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onResponseEnd(Tasks task) {
+        super.onResponseEnd(task);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

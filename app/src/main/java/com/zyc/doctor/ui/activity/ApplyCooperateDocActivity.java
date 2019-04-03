@@ -11,14 +11,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.zyc.doctor.R;
-import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.CooperateDocBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.adapter.ApplyCooperateAdapter;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
 import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
 
@@ -68,11 +67,9 @@ public class ApplyCooperateDocActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("医生申请");
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                android.R.color.holo_red_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_green_light);
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("医生申请");
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
+                                                   android.R.color.holo_orange_light, android.R.color.holo_green_light);
         footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
     }
@@ -91,23 +88,15 @@ public class ApplyCooperateDocActivity extends BaseActivity
         super.initListener();
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
-        autoLoadRecyclerView.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        autoLoadRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(applyCooperateAdapter);
-        applyCooperateAdapter.setOnItemClickListener((v, position, item) ->
-        {
-            Intent intent = new Intent(
-                    ApplyCooperateDocActivity.this,
-                    AddFriendsDocActivity.class);
-            intent.putExtra(CommonData.KEY_DOCTOR_ID,
-                    item.getDoctorId());
-            intent.putExtra(CommonData.KEY_PUBLIC,
-                    false);
-            intent.putExtra("requestSource",
-                    item.getRequestSource());
-            startActivityForResult(intent,
-                    REQUEST_CODE_APPLY);
+        applyCooperateAdapter.setOnItemClickListener((v, position, item) -> {
+            Intent intent = new Intent(ApplyCooperateDocActivity.this, AddFriendsDocActivity.class);
+            intent.putExtra(CommonData.KEY_DOCTOR_ID, item.getDoctorId());
+            intent.putExtra(CommonData.KEY_PUBLIC, false);
+            intent.putExtra("requestSource", item.getRequestSource());
+            startActivityForResult(intent, REQUEST_CODE_APPLY);
         });
     }
 
@@ -115,7 +104,7 @@ public class ApplyCooperateDocActivity extends BaseActivity
      * 获取申请合作医生列表数据
      */
     private void getApplyCooperateList() {
-        mIRequest.getApplyCooperateList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
+        RequestUtils.getApplyCooperateList(this, loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
     }
 
     @Override
@@ -126,23 +115,19 @@ public class ApplyCooperateDocActivity extends BaseActivity
                 applyCooperateList = (List<CooperateDocBean>)response.getData();
                 if (page == 0) {
                     applyCooperateAdapter.setList(applyCooperateList);
-                } else {
+                }
+                else {
                     applyCooperateAdapter.addList(applyCooperateList);
                 }
                 applyCooperateAdapter.notifyDataSetChanged();
                 if (applyCooperateList.size() < PAGE_SIZE) {
                     tvHintTxt.setText(R.string.txt_list_none_data_hint);
                     autoLoadRecyclerView.loadFinish(false);
-                } else {
+                }
+                else {
                     tvHintTxt.setText(R.string.txt_list_push_hint);
                     autoLoadRecyclerView.loadFinish(true);
                 }
-                break;
-            case DEAL_DOC_APPLY:
-                ToastUtil.toast(this, response.getMsg());
-                getApplyCooperateList();
-                //通知合作医生列表
-                NotifyChangeListenerManager.getInstance().notifyDoctorStatusChange("");
                 break;
             default:
                 break;

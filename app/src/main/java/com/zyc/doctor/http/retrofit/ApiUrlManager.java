@@ -2,8 +2,12 @@ package com.zyc.doctor.http.retrofit;
 
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.CooperateDocBean;
+import com.zyc.doctor.http.bean.CooperateHospitalBean;
+import com.zyc.doctor.http.bean.HospitalBean;
+import com.zyc.doctor.http.bean.HospitalProductTypeBean;
 import com.zyc.doctor.http.bean.LoginSuccessBean;
 import com.zyc.doctor.http.bean.PatientBean;
+import com.zyc.doctor.http.bean.PatientCaseDetailBean;
 import com.zyc.doctor.http.bean.RegistrationBean;
 import com.zyc.doctor.http.bean.RegistrationTypeBean;
 import com.zyc.doctor.http.bean.TransPatientBean;
@@ -13,9 +17,13 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 /**
@@ -138,4 +146,251 @@ public interface ApiUrlManager {
      */
     @POST("colleborate/applyList")
     Observable<BaseResponse<List<CooperateDocBean>>> getApplyCooperateList(@Body Map<String, Object> info);
+
+    /**
+     * 上传图片
+     *
+     * @param file
+     * @param type
+     * @return
+     */
+    @Multipart
+    @POST("file/upload")
+    Observable<BaseResponse<String>> uploadImg(@Part MultipartBody.Part file, @Query("type") String type);
+
+    /**
+     * 更改个人信息
+     *
+     * @param info
+     * @return
+     */
+    @POST("doctor/info/update")
+    Observable<BaseResponse<String>> updateUserInfo(@Body Map<String, Object> info);
+
+    /**
+     * 获取转诊出去患者列表
+     *
+     * @param info
+     * @return
+     */
+    @POST("trans/out/doctor/notes")
+    Observable<BaseResponse<List<TransPatientBean>>> getTransferPatientToList(@Body Map<String, Object> info);
+
+    /**
+     * 获取收到转诊患者列表
+     *
+     * @param info
+     * @return
+     */
+    @POST("trans/in/doctor/notes")
+    Observable<BaseResponse<List<TransPatientBean>>> getTransferPatientFromList(@Body Map<String, Object> info);
+
+    /**
+     * 获取某个患者的转诊单
+     *
+     * @param info
+     * @return
+     */
+    @POST("trans/doctor/patient/notes")
+    Observable<BaseResponse<List<TransPatientBean>>> getTransferByPatient(@Body Map<String, Object> info);
+
+    /**
+     * 获取当前医生给患者患者所有订单
+     *
+     * @param info
+     * @return
+     */
+    @POST("order/doctor/patient/notes")
+    Observable<BaseResponse<List<RegistrationBean>>> getPatientOrders(@Body Map<String, Object> info);
+
+    /**
+     * 获取患者病例列表
+     *
+     * @param info
+     * @return
+     */
+    @POST("case/doctor/query")
+    Observable<BaseResponse<List<PatientCaseDetailBean>>> getPatientLimitCaseList(@Body Map<String, Object> info);
+
+    /**
+     * 删除患者病例
+     *
+     * @param info
+     * @return
+     */
+    @POST("case/delete")
+    Observable<BaseResponse<String>> deletePatientCase(@Body Map<String, Object> info);
+
+    /**
+     * 获取医生个人信息
+     *
+     * @param doctorId
+     * @return
+     */
+    @GET("doctor/info")
+    Observable<BaseResponse<CooperateDocBean>> getDocInfo(@Query("doctorId") String doctorId);
+
+    /**
+     * 获取患者个人信息
+     *
+     * @param patientId
+     * @return
+     */
+    @GET("patient/info")
+    Observable<BaseResponse<PatientBean>> getPatientInfo(@Query("patientId") String patientId);
+
+    /**
+     * 获取转诊详情
+     *
+     * @param info
+     * @return
+     */
+    @POST("trans/single/detail")
+    Observable<BaseResponse<TransPatientBean>> getTransferDetailById(@Body Map<String, Integer> info);
+
+    /**
+     * 医生转诊患者
+     *
+     * @param info
+     * @return
+     */
+    @POST("trans/doctor/add/notes")
+    Observable<BaseResponse<String>> addTransferPatient(@Body Map<String, Object> info);
+
+    /**
+     * 取消转诊
+     *
+     * @param info
+     * @return
+     */
+    @POST("trans/doctor/cancel/notes")
+    Observable<BaseResponse<String>> cancelTransferPatient(@Body Map<String, Integer> info);
+
+    /**
+     * 拒绝转诊
+     *
+     * @param info
+     * @return
+     */
+    @POST("trans/doctor/refuse")
+    Observable<BaseResponse<String>> refuseTransferPatient(@Body Map<String, Integer> info);
+
+    /**
+     * 接受转诊
+     *
+     * @param info
+     * @return
+     */
+    @POST("trans/doctor/receive")
+    Observable<BaseResponse<String>> recvTransferPatient(@Body Map<String, Object> info);
+
+    /**
+     * 根据医生id获取医院列表
+     *
+     * @param info
+     * @return
+     */
+    @POST("hospital/doctor/relation/list")
+    Observable<BaseResponse<List<HospitalBean>>> getHospitalListByDoctorId(@Body Map<String, Object> info);
+
+    /**
+     * 根据医院id获取商品类型和类型下的商品详情
+     *
+     * @param info
+     * @return
+     */
+    @POST("product/info/doctor/hospital/type/product")
+    Observable<BaseResponse<List<HospitalProductTypeBean>>> getHospitalProductListByHospitalId(
+            @Body Map<String, Object> info);
+
+    /**
+     * 新增订单
+     *
+     * @param info
+     * @return
+     */
+    @POST("product/info/doctor/operator/add")
+    Observable<BaseResponse<String>> addProductOrderNew(@Body Map<String, Object> info);
+
+    /**
+     * 医生转诊患者
+     *
+     * @param info
+     * @return
+     */
+    @POST("dp/trans/focus/doctor")
+    Observable<BaseResponse<String>> addPatientByScanOrChangePatient(@Body Map<String, Object> info);
+
+    /**
+     * 删除患者 （取消关注）
+     *
+     * @param info
+     * @return
+     */
+    @GET("dp/cancel/focus")
+    Observable<BaseResponse<String>> deletePatient(@QueryMap Map<String, String> info);
+
+    /**
+     * 删除患者 （取消关注）
+     *
+     * @param info
+     * @return
+     */
+    @POST("hospital/doctor/relation/list")
+    Observable<BaseResponse<List<CooperateHospitalBean>>> getCooperateHospitalList(@Body Map<String, String> info);
+
+    /**
+     * 获取病例详情
+     *
+     * @param info
+     * @return
+     */
+    @POST("order/single")
+    Observable<BaseResponse<RegistrationBean>> getDetailById(@Body Map<String, String> info);
+
+    /**
+     * 获取患者综合病史接口
+     *
+     * @param info
+     * @return
+     */
+    @GET("patient/combine")
+    Observable<BaseResponse<RegistrationBean>> getPatientCombine(@QueryMap Map<String, String> info);
+
+    /**
+     * 新增患者病例
+     *
+     * @param info
+     * @return
+     */
+    @POST("case/save")
+    Observable<BaseResponse<String>> addPatientCase(@Body Map<String, Object> info);
+
+    /**
+     * 更新患者病例
+     *
+     * @param info
+     * @return
+     */
+    @POST("case/update")
+    Observable<BaseResponse<String>> updatePatientCase(@Body Map<String, Object> info);
+
+    /**
+     * 合作医生添加备注
+     *
+     * @param info
+     * @return
+     */
+    @POST("colleborate/nickname")
+    Observable<BaseResponse<String>> modifyNickName(@Body Map<String, Object> info);
+
+    /**
+     * 患者备注设置
+     * 医生发起的修改，from为’d’，修改的是显示病人的昵称；病人发起的修改，from为’p’，修改的是显示医生的昵称
+     *
+     * @param info
+     * @return
+     */
+    @POST("dp/nickname")
+    Observable<BaseResponse<String>> modifyNickNameByPatient(@Body Map<String, Object> info);
 }

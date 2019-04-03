@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.widget.TextView;
 
 import com.zyc.doctor.R;
-
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 
 /**
@@ -26,6 +25,6 @@ public class AboutOurActivity extends BaseActivity {
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("关于我们");
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("关于我们");
     }
 }

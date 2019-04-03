@@ -2,7 +2,6 @@ package com.zyc.doctor.ui.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
@@ -24,17 +23,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
+import com.google.gson.JsonObject;
 import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.PicassoEngine;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.api.ApiManager;
 import com.zyc.doctor.api.notify.IChange;
-import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.api.notify.INotifyChangeListenerServer;
+import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
@@ -42,6 +39,7 @@ import com.zyc.doctor.http.bean.CooperateDocBean;
 import com.zyc.doctor.http.bean.HttpConstants;
 import com.zyc.doctor.http.bean.LoginSuccessBean;
 import com.zyc.doctor.http.bean.PatientBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.permission.OnPermissionCallback;
 import com.zyc.doctor.permission.Permission;
 import com.zyc.doctor.permission.PermissionHelper;
@@ -61,6 +59,7 @@ import com.zyc.doctor.utils.DirHelper;
 import com.zyc.doctor.utils.FileUtils;
 import com.zyc.doctor.utils.GlideHelper;
 import com.zyc.doctor.utils.LogUtils;
+import com.zyc.doctor.utils.MatisseUtils;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.widgets.scrollview.CustomListenScrollView;
 
@@ -178,10 +177,6 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
      * 推送回调监听  转诊申请
      */
     private IChange<String> doctorTransferPatientListener = data -> {
-        //        if ("from".equals(data))
-        //        {
-        //            handler.sendEmptyMessage(10);
-        //        }
     };
     /**
      * 医生认证状态
@@ -246,7 +241,7 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
      */
     private void uploadHeadImg(Uri uri) {
         File file = FileUtils.getFileByUri(uri, getActivity());
-        mIRequest.uploadHeadImg(file, "jpg", this);
+        RequestUtils.uploadImg(getContext(), file, "jpg", this);
     }
 
     /**
@@ -256,10 +251,10 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
         if (TextUtils.isEmpty(headImgUrl)) {
             return;
         }
-        JSONObject merchant = new JSONObject();
-        //        Map<String, Object> merchant = new HashMap<>();
-        merchant.put("portraitUrl", headImgUrl);
-        mIRequest.updateUserInfo(loginSuccessBean.getDoctorId(), loginSuccessBean.getFieldId(), merchant, this);
+        JsonObject json = new JsonObject();
+        json.addProperty("portraitUrl", headImgUrl);
+        RequestUtils.updateUserInfo(getContext(), loginSuccessBean.getDoctorId(), loginSuccessBean.getFieldId(), json,
+                                    this);
     }
 
     /**
@@ -442,28 +437,7 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
      * 打开图片库
      */
     private void openPhoto() {
-        Matisse.from(getActivity())
-               // 选择 mime 的类型
-               .choose(MimeType.allOf())
-               // 显示选择的数量
-               .countable(true)
-               //                //相机
-               //               .capture(true)
-               //               .captureStrategy(new CaptureStrategy(true, YihtApplication
-               // .getInstance().getPackageName() +".fileprovider"))
-               // 黑色背景
-               .theme(R.style.Matisse_Dracula)
-               // 图片选择的最多数量
-               .maxSelectable(1)
-               // 列表中显示的图片大小
-               .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.app_picture_size))
-               .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-               // 缩略图的比例
-               .thumbnailScale(0.85f)
-               // 使用的图片加载引擎
-               .imageEngine(new PicassoEngine())
-               // 设置作为标记的请求码，返回图片时使用
-               .forResult(RC_PICK_IMG);
+        MatisseUtils.open(this);
     }
 
     /**

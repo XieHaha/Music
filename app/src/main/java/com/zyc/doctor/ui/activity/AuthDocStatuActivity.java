@@ -16,18 +16,17 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.api.ApiManager;
 import com.zyc.doctor.api.notify.IChange;
-import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.api.notify.INotifyChangeListenerServer;
+import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.DocAuthStatu;
-
-import butterknife.BindView;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.StatusBarUtil;
+
+import butterknife.BindView;
 import me.jessyan.autosize.internal.CustomAdapt;
 
 /**
- *
  * @author dundun
  * @date 19/2/19
  */
@@ -46,7 +45,6 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
     TextView tvNext;
     @BindView(R.id.act_auth_doc_statu_again)
     TextView tvAgain;
-
     private INotifyChangeListenerServer iNotifyChangeListenerServer;
     /**
      * 认证
@@ -80,8 +78,7 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
     /**
      * 医生认证状态
      */
-    private IChange<Integer> doctorAuthStatusChangeListener = data ->
-    {
+    private IChange<Integer> doctorAuthStatusChangeListener = data -> {
         handler.sendEmptyMessage(data);
     };
 
@@ -107,8 +104,7 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
-        tvName.setText(
-                String.format(getString(R.string.txt_doc_auth_name), loginSuccessBean.getName()));
+        tvName.setText(String.format(getString(R.string.txt_doc_auth_name), loginSuccessBean.getName()));
         initPageData();
     }
 
@@ -119,8 +115,8 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
         tvNext.setOnClickListener(this);
         tvAgain.setOnClickListener(this);
         //注册患者状态监听
-        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(
-                doctorAuthStatusChangeListener, RegisterType.REGISTER);
+        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(doctorAuthStatusChangeListener,
+                                                                           RegisterType.REGISTER);
     }
 
     private void initPageData() {
@@ -227,10 +223,9 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
     public void onDestroy() {
         super.onDestroy();
         //注销患者状态监听
-        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(
-                doctorAuthStatusChangeListener, RegisterType.UNREGISTER);
+        iNotifyChangeListenerServer.registerDoctorAuthStatusChangeListener(doctorAuthStatusChangeListener,
+                                                                           RegisterType.UNREGISTER);
     }
-
 
     //===================================屏幕适配
     @Override
@@ -242,6 +237,5 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
     public float getSizeInDp() {
         return 667;
     }
-
     //===================================屏幕适配
 }

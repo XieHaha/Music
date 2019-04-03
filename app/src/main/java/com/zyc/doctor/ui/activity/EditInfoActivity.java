@@ -1,7 +1,6 @@
 package com.zyc.doctor.ui.activity;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
@@ -19,15 +18,14 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
+import com.google.gson.JsonObject;
 import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.PicassoEngine;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.permission.Permission;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.ActionSheetDialog;
@@ -37,6 +35,7 @@ import com.zyc.doctor.utils.DirHelper;
 import com.zyc.doctor.utils.FileUtils;
 import com.zyc.doctor.utils.GlideHelper;
 import com.zyc.doctor.utils.LogUtils;
+import com.zyc.doctor.utils.MatisseUtils;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.widgets.FilterEmojiEditText;
 
@@ -64,7 +63,6 @@ public class EditInfoActivity extends BaseActivity {
     FilterEmojiEditText etHospital;
     @BindView(R.id.act_edit_info_introduce)
     FilterEmojiEditText etIntroduce;
-
     private Uri originUri, cutFileUri;
     private File cameraTempFile;
     private String name, hospital, type, title, introduce, headImgUrl;
@@ -98,7 +96,7 @@ public class EditInfoActivity extends BaseActivity {
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("编辑信息");
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("编辑信息");
         findViewById(R.id.act_edit_info_save).setOnClickListener(this);
         maxCount = 10;
     }
@@ -144,40 +142,35 @@ public class EditInfoActivity extends BaseActivity {
             public void afterTextChanged(Editable s) {
             }
         });
-        etName.setOnEditorActionListener((v, actionId, event) ->
-        {
+        etName.setOnEditorActionListener((v, actionId, event) -> {
             //屏蔽换行符
             if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                 return true;
             }
             return false;
         });
-        etHospital.setOnEditorActionListener((v, actionId, event) ->
-        {
+        etHospital.setOnEditorActionListener((v, actionId, event) -> {
             //屏蔽换行符
             if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                 return true;
             }
             return false;
         });
-        etType.setOnEditorActionListener((v, actionId, event) ->
-        {
+        etType.setOnEditorActionListener((v, actionId, event) -> {
             //屏蔽换行符
             if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                 return true;
             }
             return false;
         });
-        etTitle.setOnEditorActionListener((v, actionId, event) ->
-        {
+        etTitle.setOnEditorActionListener((v, actionId, event) -> {
             //屏蔽换行符
             if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                 return true;
             }
             return false;
         });
-        etIntroduce.setOnEditorActionListener((v, actionId, event) ->
-        {
+        etIntroduce.setOnEditorActionListener((v, actionId, event) -> {
             //屏蔽换行符
             if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                 return true;
@@ -198,7 +191,8 @@ public class EditInfoActivity extends BaseActivity {
             introduce = loginSuccessBean.getDoctorDescription();
             if (!TextUtils.isEmpty(loginSuccessBean.getPortraitUrl())) {
                 headImgUrl = loginSuccessBean.getPortraitUrl();
-            } else if (!TextUtils.isEmpty(YihtApplication.getInstance().getHeadImgUrl())) {
+            }
+            else if (!TextUtils.isEmpty(YihtApplication.getInstance().getHeadImgUrl())) {
                 headImgUrl = YihtApplication.getInstance().getHeadImgUrl();
             }
             if (!TextUtils.isEmpty(headImgUrl)) {
@@ -217,7 +211,7 @@ public class EditInfoActivity extends BaseActivity {
      */
     private void uploadHeadImg(Uri uri) {
         File file = FileUtils.getFileByUri(uri, this);
-        mIRequest.uploadHeadImg(file, "jpg", this);
+        RequestUtils.uploadImg(this, file, "jpg", this);
     }
 
     /**
@@ -230,23 +224,22 @@ public class EditInfoActivity extends BaseActivity {
         type = etType.getText().toString();
         introduce = etIntroduce.getText().toString();
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(hospital) || TextUtils.isEmpty(type) ||
-                TextUtils.isEmpty(title) || TextUtils.isEmpty(introduce)) {
+            TextUtils.isEmpty(title) || TextUtils.isEmpty(introduce)) {
             ToastUtil.toast(this, R.string.toast_upload_job_info_hint);
             return;
         }
         if (headImgUrl == null) {
             headImgUrl = "";
         }
-        JSONObject merchant = new JSONObject();
-        //        Map<String, Object> merchant = new HashMap<>();
-        merchant.put("privateName", name);
-        merchant.put("portraitUrl", headImgUrl);
-        merchant.put("privateDepartment", type);
-        merchant.put("privateDoctorDescription", introduce);
-        merchant.put("privateHospital", hospital);
-        merchant.put("privateTitle", title);
-        mIRequest.updateUserInfo(loginSuccessBean.getDoctorId(), loginSuccessBean.getFieldId(),
-                merchant, this);
+        JsonObject json = new JsonObject();
+        json.addProperty("portraitUrl", headImgUrl);
+        json.addProperty("privateName", name);
+        json.addProperty("portraitUrl", headImgUrl);
+        json.addProperty("privateDepartment", type);
+        json.addProperty("privateDoctorDescription", introduce);
+        json.addProperty("privateHospital", hospital);
+        json.addProperty("privateTitle", title);
+        RequestUtils.updateUserInfo(this, loginSuccessBean.getDoctorId(), loginSuccessBean.getFieldId(), json, this);
     }
 
     @Override
@@ -266,24 +259,19 @@ public class EditInfoActivity extends BaseActivity {
 
     private void editHeadImg() {
         new ActionSheetDialog(this).builder()
-                .setCancelable(true)
-                .setCanceledOnTouchOutside(true)
-                .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Blue,
-                        which ->
-                        {
-                            //动态申请权限
-                            permissionHelper.request(new String[]{
-                                    Permission.STORAGE_WRITE});
-                        })
-                .addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue,
-                        which ->
-                        {
-                            //动态申请权限
-                            permissionHelper.request(new String[]{
-                                    Permission.CAMERA,
-                                    Permission.STORAGE_WRITE});
-                        })
-                .show();
+                                   .setCancelable(true)
+                                   .setCanceledOnTouchOutside(true)
+                                   .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Blue, which -> {
+                                       //动态申请权限
+                                       permissionHelper.request(new String[] {
+                                               Permission.STORAGE_WRITE });
+                                   })
+                                   .addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue, which -> {
+                                       //动态申请权限
+                                       permissionHelper.request(new String[] {
+                                               Permission.CAMERA, Permission.STORAGE_WRITE });
+                                   })
+                                   .show();
     }
 
     @Override
@@ -313,27 +301,7 @@ public class EditInfoActivity extends BaseActivity {
      * 打开图片库
      */
     private void openPhoto() {
-        Matisse.from(this)
-                // 选择 mime 的类型
-                .choose(MimeType.allOf())
-                // 显示选择的数量
-                .countable(true)
-                //                //相机
-                //               .capture(true)
-                //               .captureStrategy(new CaptureStrategy(true, YihtApplication.getInstance().getPackageName() +".fileprovider"))
-                // 黑色背景
-                .theme(R.style.Matisse_Dracula)
-                // 图片选择的最多数量
-                .maxSelectable(1)
-                // 列表中显示的图片大小
-                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.app_picture_size))
-                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                // 缩略图的比例
-                .thumbnailScale(0.85f)
-                // 使用的图片加载引擎
-                .imageEngine(new PicassoEngine())
-                // 设置作为标记的请求码，返回图片时使用
-                .forResult(RC_PICK_IMG);
+        MatisseUtils.open(this);
     }
 
     /**
@@ -349,16 +317,17 @@ public class EditInfoActivity extends BaseActivity {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             uri = FileProvider.getUriForFile(this, YihtApplication.getInstance().getPackageName() + ".fileprovider",
-                    cameraTempFile);
-        } else {
+                                             cameraTempFile);
+        }
+        else {
             uri = Uri.fromFile(cameraTempFile);
         }
         List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(intent,
-                PackageManager.MATCH_DEFAULT_ONLY);
+                                                                                  PackageManager.MATCH_DEFAULT_ONLY);
         for (ResolveInfo resolveInfo : resInfoList) {
             String packageName = resolveInfo.activityInfo.packageName;
-            grantUriPermission(packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            grantUriPermission(packageName, uri,
+                               Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
         // 指定调用相机拍照后照片的储存路径
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
@@ -376,19 +345,18 @@ public class EditInfoActivity extends BaseActivity {
         Intent intent = new Intent("com.android.camera.action.CROP");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             //添加这一句表示对目标应用临时授权该Uri所代表的文件
-            intent.addFlags(
-                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
         // 在Android N中，为了安全起见，您必须获得“写入或读取Uri文件”的权限。如果您希望系统照片裁剪您的“uri文件”，那么您 必须允许系统照片。
         intent.setDataAndType(originUri, "image/*");
         intent.putExtra("crop", "true");
         // aspectX aspectY 是宽高的比例
-        if (Build.BRAND.toUpperCase().contains("HONOR") ||
-                Build.BRAND.toUpperCase().contains("HUAWEI")) {
+        if (Build.BRAND.toUpperCase().contains("HONOR") || Build.BRAND.toUpperCase().contains("HUAWEI")) {
             //华为特殊处理 不然会显示圆
             intent.putExtra("aspectX", 9998);
             intent.putExtra("aspectY", 9999);
-        } else {
+        }
+        else {
             intent.putExtra("aspectX", 1);
             intent.putExtra("aspectY", 1);
         }
@@ -405,18 +373,6 @@ public class EditInfoActivity extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK) {
-            //            Log.e("test","cutFileUri: " + cutFileUri);
-            //            //裁剪完成，上传图片
-            //            if (AllUtils.isNetworkAvaliable(this))
-            //            {
-            //                uploadHeadImg(Uri.fromFile(cameraTempFile));
-            //            }
-            //            else
-            //            {
-            //                ToastUtil.toast(this, R.string.toast_public_current_no_network);
-            //            }
-            //            //上传完成，替换本地图片
-            //            Glide.with(this).load(cameraTempFile).into(headImg);
             return;
         }
         switch (requestCode) {
@@ -436,10 +392,10 @@ public class EditInfoActivity extends BaseActivity {
                     Uri imageUri;
                     Uri cropUri;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        imageUri = FileProvider.getUriForFile(this,
-                                YihtApplication.getInstance().getPackageName() + ".fileprovider",
-                                cameraTempFile);
-                    } else {
+                        imageUri = FileProvider.getUriForFile(this, YihtApplication.getInstance().getPackageName() +
+                                                                    ".fileprovider", cameraTempFile);
+                    }
+                    else {
                         imageUri = Uri.fromFile(cameraTempFile);
                     }
                     cropUri = Uri.fromFile(file);
@@ -450,7 +406,8 @@ public class EditInfoActivity extends BaseActivity {
                 //裁剪完成，上传图片
                 if (AllUtils.isNetworkAvaliable(this)) {
                     uploadHeadImg(cutFileUri);
-                } else {
+                }
+                else {
                     ToastUtil.toast(this, R.string.toast_public_current_no_network);
                 }
                 //上传完成，替换本地图片
@@ -475,7 +432,7 @@ public class EditInfoActivity extends BaseActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+            @NonNull int[] grantResults) {
         if (permissions == null) {
             return;
         }
@@ -489,7 +446,8 @@ public class EditInfoActivity extends BaseActivity {
         }
         if (isSamePermission(Permission.CAMERA, permissionName[0])) {
             openCamera();
-        } else if (isSamePermission(Permission.STORAGE_WRITE, permissionName[0])) {
+        }
+        else if (isSamePermission(Permission.STORAGE_WRITE, permissionName[0])) {
             openPhoto();
         }
     }
@@ -517,9 +475,10 @@ public class EditInfoActivity extends BaseActivity {
     @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
         if (permissionName instanceof String[]) {
-            if (isSamePermission(Permission.STORAGE_WRITE, ((String[]) permissionName)[0])) {
+            if (isSamePermission(Permission.STORAGE_WRITE, ((String[])permissionName)[0])) {
                 openPhoto();
-            } else if (isSamePermission(Permission.CAMERA, ((String[]) permissionName)[0])) {
+            }
+            else if (isSamePermission(Permission.CAMERA, ((String[])permissionName)[0])) {
                 openCamera();
             }
         }

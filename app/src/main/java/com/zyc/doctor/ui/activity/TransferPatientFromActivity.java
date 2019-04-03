@@ -15,6 +15,7 @@ import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.TransPatientBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.adapter.TransPatientsListAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
@@ -99,7 +100,7 @@ public class TransferPatientFromActivity extends BaseActivity
      * 收到转诊申请
      */
     private void getPatientFromList() {
-        mIRequest.getTransferPatientFromList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
+        RequestUtils.getTransferPatientFromList(this, loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
     }
 
     @Override

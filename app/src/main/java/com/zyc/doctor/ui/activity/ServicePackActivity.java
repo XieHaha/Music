@@ -22,23 +22,16 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.rest.OnResponseListener;
-import com.yanzhenjie.nohttp.rest.Request;
-import com.yanzhenjie.nohttp.rest.RequestQueue;
-import com.yanzhenjie.nohttp.rest.Response;
 import com.zyc.doctor.R;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.bean.BaseNetConfig;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.HospitalBean;
 import com.zyc.doctor.http.bean.HospitalProductBean;
 import com.zyc.doctor.http.bean.HospitalProductTypeBean;
-import com.zyc.doctor.http.bean.HttpConstants;
 import com.zyc.doctor.http.bean.PatientBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.adapter.RegistrationAdapter;
 import com.zyc.doctor.ui.adapter.RegistrationProductAdapter;
 import com.zyc.doctor.ui.adapter.RegistrationProductTypeAdapter;
@@ -47,19 +40,14 @@ import com.zyc.doctor.ui.dialog.HintDialog;
 import com.zyc.doctor.ui.dialog.listener.OnEnterClickListener;
 import com.zyc.doctor.utils.AllUtils;
 import com.zyc.doctor.utils.GlideHelper;
-import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.RecentContactUtils;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 
@@ -77,7 +65,7 @@ public class ServicePackActivity extends BaseActivity {
     @BindView(R.id.act_service_pack_hint_txt)
     TextView tvHintTxt;
     @BindView(R.id.act_service_pack_hint_hospital_img)
-    ImageView ivHosspitalImg;
+    ImageView ivHospitalImg;
     @BindView(R.id.act_service_pack_hint_hospital_name)
     TextView tvHospitalName;
     @BindView(R.id.act_service_pack_hint_hospital_address)
@@ -217,7 +205,7 @@ public class ServicePackActivity extends BaseActivity {
             Glide.with(this)
                  .load(curHospital.getHospitalLogo())
                  .apply(GlideHelper.getOptionsHospitalPic())
-                 .into(ivHosspitalImg);
+                 .into(ivHospitalImg);
             autoLoadRecyclerView.setVisibility(View.GONE);
             hospitalProductTypeRecycler.setVisibility(View.VISIBLE);
             getHospitalProductListByHospitalId();
@@ -299,9 +287,6 @@ public class ServicePackActivity extends BaseActivity {
         tvHintTxt.setVisibility(View.GONE);
         rlHospitalLayout.setVisibility(View.VISIBLE);
         llSearchLayout.setVisibility(View.GONE);
-        //        tvHintTxt.setText(
-        //                curHospital.getHospitalName() + " > " + curProductType.getProductTypeName() +
-        //                " > " + curProduct.getProductName());
         tvGoodsName.setText(curProduct.getProductName());
         tvGoodsPrice.setText(curProduct.getProductPrice() + curProduct.getProductPriceUnit());
         tvGoodsType.setText(curProduct.getProductTypeName());
@@ -332,9 +317,9 @@ public class ServicePackActivity extends BaseActivity {
      * @param key
      */
     private void search(String key) {
-        List<HospitalProductBean> datas = DataSupport.where("productName like ?", "%" + key + "%")
-                                                     .find(HospitalProductBean.class);
-        registrationProductAdapter.setList(datas);
+        List<HospitalProductBean> data = DataSupport.where("productName like ?", "%" + key + "%")
+                                                    .find(HospitalProductBean.class);
+        registrationProductAdapter.setList(data);
         registrationProductAdapter.notifyDataSetChanged();
     }
 
@@ -342,21 +327,21 @@ public class ServicePackActivity extends BaseActivity {
      * 获取患者个人信息
      */
     private void getPatientInfo() {
-        mIRequest.getPatientInfo(patientId, this);
+        RequestUtils.getPatientInfo(this, patientId, this);
     }
 
     /**
      * 获取医院列表
      */
     private void getHospitalListByDoctorId() {
-        mIRequest.getHospitalListByDoctorId(loginSuccessBean.getDoctorId(), this);
+        RequestUtils.getHospitalListByDoctorId(this, loginSuccessBean.getDoctorId(), this);
     }
 
     /**
      * 获取医院商品列表
      */
     private void getHospitalProductListByHospitalId() {
-        mIRequest.getHospitalProductListByHospitalId(curHospital.getHospitalId(), this);
+        RequestUtils.getHospitalProductListByHospitalId(this, curHospital.getHospitalId(), this);
     }
 
     /**
@@ -365,74 +350,11 @@ public class ServicePackActivity extends BaseActivity {
     private void addProductOrderNew() {
         String diagnosisInfo = etDes.getText().toString().trim();
         if (TextUtils.isEmpty(diagnosisInfo)) {
-            ToastUtil.toast(this, "请输入描述信息");
+            ToastUtil.toast(this, R.string.toast_add_order_error);
             return;
         }
-        RequestQueue queue = NoHttp.getRequestQueueInstance();
-        final Request<String> request = NoHttp.createStringRequest(
-                HttpConstants.BASE_BASIC_URL + "/product/info/doctor/operator/add", RequestMethod.POST);
-        Map<String, Object> params = new HashMap<>();
-        params.put("diagnosisInfo", diagnosisInfo);
-        params.put("productTypeId", curProductType.getProductTypeId());
-        params.put("productTypeName", curProductType.getProductTypeName());
-        params.put("doctorId", loginSuccessBean.getDoctorId());
-        params.put("doctorName", loginSuccessBean.getName());
-        params.put("hospitalName", curHospital.getHospitalName());
-        params.put("patientSex", patientBean.getSex());
-        params.put("hospitalId", curHospital.getHospitalId());
-        params.put("patientId", patientBean.getPatientId());
-        params.put("patientName", patientBean.getName());
-        params.put("patientBirthDate", patientBean.getBirthDate());
-        params.put("productDescription", curProduct.getProductDescription());
-        params.put("productId", curProduct.getProductId());
-        params.put("productName", curProduct.getProductName());
-        params.put("productPrice", curProduct.getProductPrice());
-        params.put("productPriceUnit", curProduct.getProductPriceUnit());
-        JSONObject jsonObject = new JSONObject(params);
-        request.setDefineRequestBodyForJson(jsonObject.toString());
-        queue.add(1, request, new OnResponseListener<String>() {
-            @Override
-            public void onStart(int what) {
-                showProgressDialog("请稍等...");
-            }
-
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                String s = response.get();
-                try {
-                    //保存最近联系人
-                    RecentContactUtils.save(patientBean.getPatientId());
-                    NotifyChangeListenerManager.getInstance().notifyRecentContactChange("");
-                    JSONObject object = new JSONObject(s);
-                    BaseResponse baseResponse = praseBaseResponse(object, String.class);
-                    if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
-                            HintDialog hintDialog = new HintDialog(ServicePackActivity.this);
-                            hintDialog.isShowCancelBtn(false);
-                            hintDialog.setContentString("已发送给患者，请等待患者答复");
-                            hintDialog.setOnEnterClickListener(() -> finish());
-                            hintDialog.show();
-                        }
-                        else {
-                            ToastUtil.toast(ServicePackActivity.this, baseResponse.getMsg());
-                        }
-                    }
-                }
-                catch (JSONException e) {
-                    LogUtils.w(TAG, "Exception error!", e);
-                }
-            }
-
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                ToastUtil.toast(ServicePackActivity.this, response.getException().getMessage());
-            }
-
-            @Override
-            public void onFinish(int what) {
-                closeProgressDialog();
-            }
-        });
+        RequestUtils.addProductOrderNew(this, diagnosisInfo, loginSuccessBean, patientBean, curHospital, curProduct,
+                                        curProductType, this);
     }
 
     @Override
@@ -445,7 +367,7 @@ public class ServicePackActivity extends BaseActivity {
                 break;
             case R.id.act_service_pack_next:
                 HintDialog hintDialog = new HintDialog(this);
-                hintDialog.setContentString("确定发送给患者？");
+                hintDialog.setContentString(getString(R.string.txt_add_order_notify_patient_hint));
                 hintDialog.setOnEnterClickListener(new OnEnterClickListener() {
                     @Override
                     public void onEnter() {
@@ -466,6 +388,7 @@ public class ServicePackActivity extends BaseActivity {
 
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
+        HintDialog hintDialog;
         switch (task) {
             case GET_HOSPITAL_LIST_BY_DOCTORID:
                 hospitalList = (List<HospitalBean>)response.getData();
@@ -475,15 +398,18 @@ public class ServicePackActivity extends BaseActivity {
                 productTypeBeans = (List<HospitalProductTypeBean>)response.getData();
                 registrationProductTypeAdapter.setList(productTypeBeans);
                 break;
-            case ADD_PRODUCT_ORDER:
-                HintDialog hintDialog = new HintDialog(this);
-                hintDialog.isShowCancelBtn(false);
-                hintDialog.setContentString("已发送给患者，请等待患者答复");
-                hintDialog.setOnEnterClickListener(() -> finish());
-                hintDialog.show();
-                break;
             case GET_PATIENT_INFO:
                 patientBean = (PatientBean)response.getData();
+                break;
+            case ADD_PRODUCT_ORDER_NEW:
+                //保存最近联系人
+                RecentContactUtils.save(patientBean.getPatientId());
+                NotifyChangeListenerManager.getInstance().notifyRecentContactChange("");
+                hintDialog = new HintDialog(ServicePackActivity.this);
+                hintDialog.isShowCancelBtn(false);
+                hintDialog.setContentString(getString(R.string.txt_add_order_hint));
+                hintDialog.setOnEnterClickListener(() -> finish());
+                hintDialog.show();
                 break;
             default:
                 break;
@@ -515,7 +441,6 @@ public class ServicePackActivity extends BaseActivity {
         }
         else if (curPage == 3) {
             curPage = 2;
-            //            tvHintTxt.setText(curHospital.getHospitalName());
             tvHintTxt.setVisibility(View.GONE);
             line.setVisibility(View.GONE);
             llSearchLayout.setVisibility(View.GONE);
@@ -526,7 +451,7 @@ public class ServicePackActivity extends BaseActivity {
             Glide.with(this)
                  .load(curHospital.getHospitalLogo())
                  .apply(GlideHelper.getOptionsHospitalPic())
-                 .into(ivHosspitalImg);
+                 .into(ivHospitalImg);
             tvNext.setVisibility(View.GONE);
             hospitalProductTypeRecycler.setVisibility(View.VISIBLE);
             hospitalProductRecycler.setVisibility(View.GONE);

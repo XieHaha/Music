@@ -19,25 +19,17 @@ import android.widget.TextView;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.view.TimePickerView;
-import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.rest.OnResponseListener;
-import com.yanzhenjie.nohttp.rest.Request;
-import com.yanzhenjie.nohttp.rest.RequestQueue;
-import com.yanzhenjie.nohttp.rest.Response;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.PicassoEngine;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.bean.BaseNetConfig;
 import com.zyc.doctor.http.bean.BaseResponse;
-import com.zyc.doctor.http.bean.HttpConstants;
 import com.zyc.doctor.http.bean.NormImage;
 import com.zyc.doctor.http.bean.PatientCaseDetailBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.permission.Permission;
 import com.zyc.doctor.qiniu.QiniuUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
@@ -46,15 +38,13 @@ import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.utils.AllUtils;
 import com.zyc.doctor.utils.DirHelper;
 import com.zyc.doctor.utils.FileUtils;
+import com.zyc.doctor.utils.GlideEngine;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.RecentContactUtils;
 import com.zyc.doctor.utils.ScalingUtils;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.widgets.gridview.AutoGridView;
 import com.zyc.doctor.widgets.textview.ExspandTextView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -74,8 +64,7 @@ import butterknife.BindView;
  * @author DUNDUN
  */
 public class HealthDetailActivity extends BaseActivity
-        implements AdapterView.OnItemClickListener, ExspandTextView.OnContentClickLinsener,
-        CommonData {
+        implements AdapterView.OnItemClickListener, ExspandTextView.OnContentClickLinsener, CommonData {
     private static final String TAG = "HealthDetailActivity";
     @BindView(R.id.public_title_bar_more)
     ImageView ivTitlebBarMore;
@@ -103,7 +92,6 @@ public class HealthDetailActivity extends BaseActivity
     TextView tvCaseDealType;
     @BindView(R.id.act_health_detail_create_time)
     TextView tvCreateTime;
-
     private PatientCaseDetailBean patientCaseDetailBean;
     private Uri originUri;
     private Uri cutFileUri;
@@ -181,7 +169,7 @@ public class HealthDetailActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("健康详情");
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("健康详情");
     }
 
     @Override
@@ -192,7 +180,7 @@ public class HealthDetailActivity extends BaseActivity
         allImgUrl = new StringBuilder();
         if (getIntent() != null) {
             isAddNewHealth = getIntent().getBooleanExtra(CommonData.KEY_ADD_NEW_HEALTH, false);
-            patientCaseDetailBean = (PatientCaseDetailBean) getIntent().getSerializableExtra(
+            patientCaseDetailBean = (PatientCaseDetailBean)getIntent().getSerializableExtra(
                     CommonData.PATIENT_CASE_DETAIL_BEAN);
             patientId = getIntent().getStringExtra(CommonData.KEY_PATIENT_ID);
         }
@@ -201,7 +189,8 @@ public class HealthDetailActivity extends BaseActivity
             tvTitleBarMore.setText("完成");
             initWidght(true);
             isSelectTime = true;
-        } else {
+        }
+        else {
             ivTitlebBarMore.setVisibility(View.VISIBLE);
             tvHint.setVisibility(View.GONE);
             initWidght(false);
@@ -233,7 +222,8 @@ public class HealthDetailActivity extends BaseActivity
             tvCaseInfo.setOnContentClickLinsener(this);
             tvCaseNow.setOnContentClickLinsener(this);
             tvCaseCheck.setOnContentClickLinsener(this);
-        } else {
+        }
+        else {
             tvDiagnosis.setOnClickListener(null);
             tvDepartment.setOnClickListener(null);
             tvHospital.setOnClickListener(null);
@@ -249,15 +239,13 @@ public class HealthDetailActivity extends BaseActivity
      */
     private void initPageData() {
         if (patientCaseDetailBean != null) {
-            if (!patientCaseDetailBean.getPatientId()
-                    .equals(patientCaseDetailBean.getCaseCreatorId()) &&
-                    !loginSuccessBean.getDoctorId().equals(patientCaseDetailBean.getCaseCreatorId())) {
+            if (!patientCaseDetailBean.getPatientId().equals(patientCaseDetailBean.getCaseCreatorId()) &&
+                !loginSuccessBean.getDoctorId().equals(patientCaseDetailBean.getCaseCreatorId())) {
                 tvTitleBarMore.setVisibility(View.GONE);
                 ivTitlebBarMore.setVisibility(View.GONE);
             }
             tvCreateTime.setText("创建者：" + patientCaseDetailBean.getCreatorName() + "\n创建时间：" +
-                    AllUtils.formatDate(patientCaseDetailBean.getGmtCreate(),
-                            AllUtils.YYYY_MM_DD_HH_MM));
+                                 AllUtils.formatDate(patientCaseDetailBean.getGmtCreate(), AllUtils.YYYY_MM_DD_HH_MM));
             diagnosis = patientCaseDetailBean.getDiagnosisInfo();
             tvDiagnosis.setText(diagnosis);
             diagnosisTimeMil = patientCaseDetailBean.getVisDate();
@@ -297,16 +285,13 @@ public class HealthDetailActivity extends BaseActivity
     private void uploadHeadImg(Uri uri) {
         File file = FileUtils.getFileByUri(uri, this);
         ScalingUtils.resizePic(this, file.getAbsolutePath());
-        mIRequest.uploadHeadImg(file, "jpg", this);
+        RequestUtils.uploadImg(this, file, "jpg", this);
     }
 
     /**
      * 新增患者病例
      */
     private void addPatientCase() {
-        RequestQueue queue = NoHttp.getRequestQueueInstance();
-        final Request<String> request = NoHttp.createStringRequest(
-                HttpConstants.BASE_BASIC_URL + "/case/save", RequestMethod.POST);
         Map<String, Object> params = new HashMap<>();
         params.put("patientId", patientId);
         params.put("caseCreatorId", loginSuccessBean.getDoctorId());
@@ -322,56 +307,15 @@ public class HealthDetailActivity extends BaseActivity
         params.put("reportImgUrl", allImgUrl.toString());
         params.put("treat", caseDealType);
         params.put("visDate", diagnosisTimeMil + "");
-        JSONObject jsonObject = new JSONObject(params);
-        request.setDefineRequestBodyForJson(jsonObject.toString());
-        queue.add(1, request, new OnResponseListener<String>() {
-            @Override
-            public void onStart(int what) {
-            }
-
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                String s = response.get();
-                try {
-                    JSONObject object = new JSONObject(s);
-                    BaseResponse baseResponse = praseBaseResponse(object, String.class);
-                    if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
-                            //保存最近联系人
-                            RecentContactUtils.save(patientId);
-                            NotifyChangeListenerManager.getInstance().notifyRecentContactChange("");
-                            ToastUtil.toast(HealthDetailActivity.this, baseResponse.getMsg());
-                            setResult(RESULT_OK);
-                            finish();
-                        } else {
-                            ToastUtil.toast(HealthDetailActivity.this, baseResponse.getMsg());
-                        }
-                    }
-                } catch (JSONException e) {
-                    ToastUtil.toast(HealthDetailActivity.this, e.getMessage());
-                    LogUtils.w(TAG, "Exception error!", e);
-                }
-            }
-
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                ToastUtil.toast(HealthDetailActivity.this, response.getException().getMessage());
-            }
-
-            @Override
-            public void onFinish(int what) {
-            }
-        });
+        RequestUtils.addPatientCase(this, params, this);
     }
 
     /**
      * 更新患者病例
      */
     private void updatePatientCase() {
-        RequestQueue queue = NoHttp.getRequestQueueInstance();
-        final Request<String> request = NoHttp.createStringRequest(
-                HttpConstants.BASE_BASIC_URL + "/case/update", RequestMethod.POST);
         Map<String, Object> params = new HashMap<>();
+        params.put("patientId", patientId);
         params.put("caseCreatorId", patientCaseDetailBean.getCaseCreatorId());
         params.put("caseCreatorName", patientCaseDetailBean.getCreatorName());
         params.put("caseLastUpdateId", patientCaseDetailBean.getCaseLastUpdateId());
@@ -383,52 +327,11 @@ public class HealthDetailActivity extends BaseActivity
         params.put("fieldId", patientCaseDetailBean.getFieldId());
         params.put("hospital", hospital);
         params.put("importantHistory", caseNow);
-        params.put("patientId", patientId);
         params.put("patientWords", caseInfo);
         params.put("reportImgUrl", allImgUrl.toString());
         params.put("treat", caseDealType);
         params.put("visDate", diagnosisTimeMil + "");
-        JSONObject jsonObject = new JSONObject(params);
-        request.setDefineRequestBodyForJson(jsonObject.toString());
-        queue.add(1, request, new OnResponseListener<String>() {
-            @Override
-            public void onStart(int what) {
-            }
-
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                String s = response.get();
-                try {
-                    JSONObject object = new JSONObject(s);
-                    BaseResponse baseResponse = praseBaseResponse(object, String.class);
-                    if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
-                            ToastUtil.toast(HealthDetailActivity.this, baseResponse.getMsg());
-                            ivTitlebBarMore.setVisibility(View.VISIBLE);
-                            tvTitleBarMore.setVisibility(View.GONE);
-                            //                        initWidght(false);
-                            setResult(RESULT_OK);
-                            finish();
-                        } else {
-                            ToastUtil.toast(HealthDetailActivity.this, baseResponse.getMsg());
-                        }
-                    }
-
-                } catch (JSONException e) {
-                    ToastUtil.toast(HealthDetailActivity.this, e.getMessage());
-                    LogUtils.w(TAG, "Exception error!", e);
-                }
-            }
-
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                ToastUtil.toast(HealthDetailActivity.this, response.getException().getMessage());
-            }
-
-            @Override
-            public void onFinish(int what) {
-            }
-        });
+        RequestUtils.updatePatientCase(this, params, this);
     }
 
     /**
@@ -447,7 +350,8 @@ public class HealthDetailActivity extends BaseActivity
         }
         if (isAddNewHealth) {
             addPatientCase();
-        } else {
+        }
+        else {
             updatePatientCase();
         }
     }
@@ -531,39 +435,52 @@ public class HealthDetailActivity extends BaseActivity
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String time = simpleDateFormat.format(new Date());
         String[] strings = time.split("-");
-        endDate.set(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]) - 1,
-                Integer.parseInt(strings[2]));
+        endDate.set(Integer.parseInt(strings[0]), Integer.parseInt(strings[1]) - 1, Integer.parseInt(strings[2]));
         //当前时间设置
         if (patientCaseDetailBean != null) {
             String curTime = simpleDateFormat.format(patientCaseDetailBean.getVisDate());
             String[] strings1 = curTime.split("-");
             selectedDate.set(Integer.parseInt(strings1[0]), Integer.parseInt(strings1[1]) - 1,
-                    Integer.parseInt(strings1[2]));
+                             Integer.parseInt(strings1[2]));
         }
-        timePicker = new TimePickerBuilder(this, (date, v) ->
-        {
+        timePicker = new TimePickerBuilder(this, (date, v) -> {
             isModifyData = true;
             //选中事件回调
             SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
             tvDiagnosisTime.setText(simpleDateFormat1.format(date));
             diagnosisTimeMil = date.getTime();
-        }).setType(new boolean[]{true, true, true, false, false, false})// 默认全部显示
-                .setCancelText("取消")//取消按钮文字
-                .setSubmitText("确定")//确认按钮文字
-                .setTitleSize(20)//标题文字大小
-                .setTitleText("")//标题文字
-                .setOutSideCancelable(true)//点击屏幕，点在控件外部范围时，是否取消显示
-                .isCyclic(false)//是否循环滚动
-                .setSubmitColor(R.color.app_main_color)//确定按钮文字颜色
-                .setCancelColor(R.color.app_main_color)//取消按钮文字颜色
-                .setTitleBgColor(0xffffffff)//标题背景颜色 Night mode
-                .setBgColor(0xffffffff)//滚轮背景颜色 Night mode
-                .setDate(selectedDate)// 如果不设置的话，默认是系统时间*/
-                .setRangDate(startDate, endDate)//起始终止年月日设定
-                .setLabel("年", "月", "日", "时", "分", "秒")//默认设置为年月日时分秒
-                .isCenterLabel(true) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
-                .isDialog(false)//是否显示为对话框样式
-                .build();
+            // 默认全部显示
+        }).setType(new boolean[] { true, true, true, false, false, false })
+          //取消按钮文字
+          .setCancelText("取消")
+          //确认按钮文字
+          .setSubmitText("确定")
+          //标题文字大小
+          .setTitleSize(20)
+          //标题文字
+          .setTitleText("")
+          //点击屏幕，点在控件外部范围时，是否取消显示
+          .setOutSideCancelable(true)
+          //是否循环滚动
+          .isCyclic(false)
+          //确定按钮文字颜色
+          .setSubmitColor(R.color.app_main_color)
+          //取消按钮文字颜色
+          .setCancelColor(R.color.app_main_color)
+          //标题背景颜色 Night mode
+          .setTitleBgColor(0xffffffff)
+          //滚轮背景颜色 Night mode
+          .setBgColor(0xffffffff)
+          // 如果不设置的话，默认是系统时间*/
+          .setDate(selectedDate)
+          //起始终止年月日设定
+          .setRangDate(startDate, endDate)
+          //默认设置为年月日时分秒
+          .setLabel("年", "月", "日", "时", "分", "秒")
+          //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+          .isCenterLabel(true)
+          //是否显示为对话框样式
+          .isDialog(false).build();
         timePicker.show();
     }
 
@@ -572,14 +489,16 @@ public class HealthDetailActivity extends BaseActivity
         if (position < imageList.size() && imageList.size() <= maxPicNum) {
             if (isAddNewHealth || isSelectTime) {
                 showDeletePhotoDialog(position);
-            } else {
+            }
+            else {
                 Intent intent = new Intent(this, ImagePreviewActivity.class);
                 intent.putExtra(ImagePreviewActivity.INTENT_POSITION, position);
                 intent.putExtra(ImagePreviewActivity.INTENT_URLS, imageList);
                 startActivity(intent);
                 overridePendingTransition(R.anim.fade_in, R.anim.keep);
             }
-        } else {
+        }
+        else {
             currentMaxPicNum = maxPicNum - imageList.size();
             selectImg();
         }
@@ -591,8 +510,7 @@ public class HealthDetailActivity extends BaseActivity
      * @param position
      */
     private void showDeletePhotoDialog(final int position) {
-        new SimpleDialog(this, "确定删除吗?", (dialog, which) ->
-        {
+        new SimpleDialog(this, getString(R.string.txt_delete_hint), (dialog, which) -> {
             imageUrl.remove(position);
             imageList.remove(position);
             autoGridView.updateImg(imageList, true);
@@ -606,13 +524,31 @@ public class HealthDetailActivity extends BaseActivity
             case UPLOAD_FILE:
                 if (mSelectPath.size() - 1 > currentUploadImgIndex) {
                     currentUploadImgIndex++;
-                    showProgressDialog(String.format(getString(R.string.txt_upload_img_num),
-                            (currentUploadImgIndex + 1)));
+                    showProgressDialog(
+                            String.format(getString(R.string.txt_upload_img_num), (currentUploadImgIndex + 1)));
                     uploadHeadImg(mSelectPath.get(currentUploadImgIndex));
-                } else {
+                }
+                else {
                     closeProgressDialog();
                 }
                 imageUrl.add(response.getData().toString());
+                break;
+            case ADD_PATIENT_CASE:
+                //保存最近联系人
+                RecentContactUtils.save(patientId);
+                NotifyChangeListenerManager.getInstance().notifyRecentContactChange("");
+                ToastUtil.toast(HealthDetailActivity.this, response.getMsg());
+                setResult(RESULT_OK);
+                finish();
+                break;
+            case UPDATE_PATIENT_CASE:
+                ToastUtil.toast(HealthDetailActivity.this, response.getMsg());
+                ivTitlebBarMore.setVisibility(View.VISIBLE);
+                tvTitleBarMore.setVisibility(View.GONE);
+                setResult(RESULT_OK);
+                finish();
+                break;
+            default:
                 break;
         }
     }
@@ -624,6 +560,8 @@ public class HealthDetailActivity extends BaseActivity
             case UPLOAD_FILE:
                 closeProgressDialog();
                 ToastUtil.toast(this, response.getMsg());
+                break;
+            default:
                 break;
         }
     }
@@ -638,7 +576,8 @@ public class HealthDetailActivity extends BaseActivity
             for (Uri path : mSelectPath) {
                 try {
                     imageList.add(QiniuUtils.initQuanBitmaps(path, HealthDetailActivity.this));
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
                     LogUtils.w(TAG, "Exception error!", e);
                 }
             }
@@ -648,24 +587,19 @@ public class HealthDetailActivity extends BaseActivity
 
     private void selectImg() {
         new ActionSheetDialog(this).builder()
-                .setCancelable(true)
-                .setCanceledOnTouchOutside(true)
-                .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Blue,
-                        which ->
-                        {
-                            //动态申请权限
-                            permissionHelper.request(new String[]{
-                                    Permission.STORAGE_WRITE});
-                        })
-                .addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue,
-                        which ->
-                        {
-                            //动态申请权限
-                            permissionHelper.request(new String[]{
-                                    Permission.CAMERA,
-                                    Permission.STORAGE_WRITE});
-                        })
-                .show();
+                                   .setCancelable(true)
+                                   .setCanceledOnTouchOutside(true)
+                                   .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Blue, which -> {
+                                       //动态申请权限
+                                       permissionHelper.request(new String[] {
+                                               Permission.STORAGE_WRITE });
+                                   })
+                                   .addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue, which -> {
+                                       //动态申请权限
+                                       permissionHelper.request(new String[] {
+                                               Permission.CAMERA, Permission.STORAGE_WRITE });
+                                   })
+                                   .show();
     }
 
     /**
@@ -673,26 +607,26 @@ public class HealthDetailActivity extends BaseActivity
      */
     private void openPhoto() {
         Matisse.from(this)
-                // 选择 mime 的类型
-                .choose(MimeType.allOf())
-                // 显示选择的数量
-                .countable(true)
-                //                //相机
-                //                .capture(true)
-                //                .captureStrategy(new CaptureStrategy(true, YihtApplication.getInstance().getPackageName() +".fileprovider"))
-                // 黑色背景
-                .theme(R.style.Matisse_Dracula)
-                // 图片选择的最多数量
-                .maxSelectable(currentMaxPicNum)
-                // 列表中显示的图片大小
-                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.app_picture_size))
-                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                // 缩略图的比例
-                .thumbnailScale(0.85f)
-                // 使用的图片加载引擎
-                .imageEngine(new PicassoEngine())
-                // 设置作为标记的请求码，返回图片时使用
-                .forResult(RC_PICK_IMG);
+               // 选择 mime 的类型
+               .choose(MimeType.ofImage())
+               // 显示选择的数量
+               .countable(true)
+               //                //相机
+               //                .capture(true)
+               //                .captureStrategy(new CaptureStrategy(true, YihtApplication.getInstance().getPackageName() +".fileprovider"))
+               // 黑色背景
+               .theme(R.style.Matisse_Dracula)
+               // 图片选择的最多数量
+               .maxSelectable(currentMaxPicNum)
+               // 列表中显示的图片大小
+               .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.app_picture_size))
+               .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+               // 缩略图的比例
+               .thumbnailScale(0.85f)
+               // 使用的图片加载引擎
+               .imageEngine(new GlideEngine())
+               // 设置作为标记的请求码，返回图片时使用
+               .forResult(RC_PICK_IMG);
     }
 
     /**
@@ -708,8 +642,9 @@ public class HealthDetailActivity extends BaseActivity
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             cameraintent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             uri = FileProvider.getUriForFile(this, YihtApplication.getInstance().getPackageName() + ".fileprovider",
-                    cameraTempFile);
-        } else {
+                                             cameraTempFile);
+        }
+        else {
             uri = Uri.fromFile(cameraTempFile);
         }
         // 指定调用相机拍照后照片的储存路径
@@ -779,8 +714,9 @@ public class HealthDetailActivity extends BaseActivity
     private void finishPage() {
         if (isModifyData) {
             new SimpleDialog(this, "编辑内容还未保存，确定退出?", (dialog, which) -> finish(),
-                    (dialog, which) -> dialog.dismiss()).show();
-        } else {
+                             (dialog, which) -> dialog.dismiss()).show();
+        }
+        else {
             finish();
         }
     }
@@ -807,7 +743,7 @@ public class HealthDetailActivity extends BaseActivity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+            @NonNull int[] grantResults) {
         if (permissions == null) {
             return;
         }
@@ -821,7 +757,8 @@ public class HealthDetailActivity extends BaseActivity
         }
         if (isSamePermission(Permission.CAMERA, permissionName[0])) {
             openCamera();
-        } else if (isSamePermission(Permission.STORAGE_WRITE, permissionName[0])) {
+        }
+        else if (isSamePermission(Permission.STORAGE_WRITE, permissionName[0])) {
             openPhoto();
         }
     }
@@ -849,9 +786,10 @@ public class HealthDetailActivity extends BaseActivity
     @Override
     public void onNoPermissionNeeded(@NonNull Object permissionName) {
         if (permissionName instanceof String[]) {
-            if (isSamePermission(Permission.STORAGE_WRITE, ((String[]) permissionName)[0])) {
+            if (isSamePermission(Permission.STORAGE_WRITE, ((String[])permissionName)[0])) {
                 openPhoto();
-            } else if (isSamePermission(Permission.CAMERA, ((String[]) permissionName)[0])) {
+            }
+            else if (isSamePermission(Permission.CAMERA, ((String[])permissionName)[0])) {
                 openCamera();
             }
         }

@@ -6,10 +6,10 @@ import android.widget.TextView;
 
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
-
-import butterknife.BindView;
 import com.zyc.doctor.http.bean.HospitalBean;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
+
+import butterknife.BindView;
 
 /**
  * @author dundun
@@ -43,15 +43,14 @@ public class HospitalInfoActivity extends BaseActivity {
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("医院信息");
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("医院信息");
     }
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
-            hospitalBean =
-                    (HospitalBean) getIntent().getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
+            hospitalBean = (HospitalBean)getIntent().getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
         }
         initPage();
     }

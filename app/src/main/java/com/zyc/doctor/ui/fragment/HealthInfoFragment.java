@@ -19,6 +19,7 @@ import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.CooperateDocBean;
 import com.zyc.doctor.http.bean.PatientBean;
 import com.zyc.doctor.http.bean.PatientCaseDetailBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.activity.HealthDetailActivity;
 import com.zyc.doctor.ui.adapter.HealthInfoAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
@@ -38,10 +39,9 @@ import butterknife.BindView;
  *
  * @author DUNDUN
  */
-public class HealthInfoFragment extends BaseFragment implements LoadMoreListener,
-        SwipeRefreshLayout.OnRefreshListener,
-        BaseRecyclerAdapter.OnItemClickListener<PatientCaseDetailBean>,
-        BaseRecyclerAdapter.OnItemLongClickListener<PatientCaseDetailBean> {
+public class HealthInfoFragment extends BaseFragment implements LoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
+                                                                BaseRecyclerAdapter.OnItemClickListener<PatientCaseDetailBean>,
+                                                                BaseRecyclerAdapter.OnItemLongClickListener<PatientCaseDetailBean> {
     @BindView(R.id.fragment_health_record_recycler)
     AutoLoadRecyclerView autoLoadRecyclerView;
     @BindView(R.id.fragment_swipe_layout)
@@ -88,9 +88,8 @@ public class HealthInfoFragment extends BaseFragment implements LoadMoreListener
         super.initView(view, savedInstanceState);
         footerView = LayoutInflater.from(getActivity()).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                android.R.color.holo_red_light, android.R.color.holo_orange_light,
-                android.R.color.holo_green_light);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
+                                                   android.R.color.holo_orange_light, android.R.color.holo_green_light);
     }
 
     @Override
@@ -109,8 +108,8 @@ public class HealthInfoFragment extends BaseFragment implements LoadMoreListener
         super.initListener();
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
-        autoLoadRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),
-                LinearLayoutManager.VERTICAL, false));
+        autoLoadRecyclerView.setLayoutManager(
+                new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(healthInfoAdapter);
         healthInfoAdapter.setOnItemClickListener(this);
@@ -129,15 +128,15 @@ public class HealthInfoFragment extends BaseFragment implements LoadMoreListener
      * 获取患者病例列表  只能查看当前医生自己开的健康档案
      */
     private void getPatientLimitCaseList() {
-        mIRequest.getPatientLimitCaseList(loginSuccessBean.getDoctorId(), patientId, this);
+        RequestUtils.getPatientLimitCaseList(getContext(), loginSuccessBean.getDoctorId(), patientId, this);
     }
 
     /**
      * 删除患者病例列表
      */
     private void deletePatientCaseList(PatientCaseDetailBean bean) {
-        mIRequest.deletePatientCase(patientId, bean.getFieldId(), bean.getCaseCreatorId(),
-                loginSuccessBean.getDoctorId(), this);
+        RequestUtils.deletePatientCase(getContext(), patientId, bean.getFieldId(), bean.getCaseCreatorId(),
+                                       loginSuccessBean.getDoctorId(), this);
     }
 
     @Override
@@ -151,7 +150,7 @@ public class HealthInfoFragment extends BaseFragment implements LoadMoreListener
 
     @Override
     public void onItemLongClick(View v, int position, PatientCaseDetailBean item) {
-        new SimpleDialog(getActivity(), "删除当前病例", (dialog, which) -> {
+        new SimpleDialog(getActivity(), getString(R.string.txt_delete_case_hint), (dialog, which) -> {
             deletePatientCaseList(caseRecordList.get(position));
         }, (dialog, which) -> dialog.dismiss()).show();
     }
@@ -168,15 +167,17 @@ public class HealthInfoFragment extends BaseFragment implements LoadMoreListener
                 if (list1 != null && list1.size() > 0) {
                     llNoneLayout.setVisibility(View.GONE);
                     caseRecordList.addAll(list1);
-                } else {
+                }
+                else {
                     llNoneLayout.setVisibility(View.VISIBLE);
-                    tvNoneTxt.setText("还没有健康档案哦~");
+                    tvNoneTxt.setText(R.string.txt_health_card_hint);
                 }
                 healthInfoAdapter.notifyDataSetChanged();
                 if (caseRecordList.size() < PAGE_SIZE) {
                     tvHintTxt.setText(R.string.txt_list_none_data_hint);
                     autoLoadRecyclerView.loadFinish(false);
-                } else {
+                }
+                else {
                     tvHintTxt.setText(R.string.txt_list_push_hint);
                     autoLoadRecyclerView.loadFinish(true);
                 }
@@ -238,5 +239,4 @@ public class HealthInfoFragment extends BaseFragment implements LoadMoreListener
         page = 0;
         getPatientLimitCaseList();
     }
-
 }

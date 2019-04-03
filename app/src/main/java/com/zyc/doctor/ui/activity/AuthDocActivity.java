@@ -23,7 +23,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.PicassoEngine;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.http.Tasks;
@@ -37,6 +36,7 @@ import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.utils.AllUtils;
 import com.zyc.doctor.utils.DirHelper;
 import com.zyc.doctor.utils.FileUtils;
+import com.zyc.doctor.utils.GlideEngine;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.ScalingUtils;
 import com.zyc.doctor.utils.ThreadPoolHelper;
@@ -394,7 +394,7 @@ public class AuthDocActivity extends BaseActivity {
     private void openPhoto() {
         Matisse.from(this)
                 // 选择 mime 的类型
-                .choose(MimeType.allOf())
+                .choose(MimeType.ofImage())
                 // 显示选择的数量
                 .countable(true)
                 //                //相机
@@ -410,7 +410,7 @@ public class AuthDocActivity extends BaseActivity {
                 // 缩略图的比例
                 .thumbnailScale(0.85f)
                 // 使用的图片加载引擎
-                .imageEngine(new PicassoEngine())
+                .imageEngine(new GlideEngine())
                 // 设置作为标记的请求码，返回图片时使用
                 .forResult(RC_PICK_IMG);
     }

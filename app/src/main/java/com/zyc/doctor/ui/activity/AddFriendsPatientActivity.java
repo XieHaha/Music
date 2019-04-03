@@ -15,6 +15,7 @@ import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.CombineBean;
 import com.zyc.doctor.http.bean.CombineChildBean;
 import com.zyc.doctor.http.bean.PatientBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.LabelsView;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.AllUtils;
@@ -27,7 +28,6 @@ import butterknife.BindView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- *
  * @author dundun
  * @date 18/11/12
  * 好友验证界面
@@ -98,7 +98,6 @@ public class AddFriendsPatientActivity extends BaseActivity {
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-
     }
 
     @Override
@@ -111,7 +110,8 @@ public class AddFriendsPatientActivity extends BaseActivity {
         if (isAdd) {
             tvTitle.setText("添加好友");
             tvRefuse.setVisibility(View.GONE);
-        } else {
+        }
+        else {
             tvTitle.setText("好友申请");
             tvAgree.setText("通过验证");
             tvRefuse.setVisibility(View.VISIBLE);
@@ -129,14 +129,11 @@ public class AddFriendsPatientActivity extends BaseActivity {
 
     private void iniPageData(PatientBean patientBean) {
         if (patientBean != null) {
-            Glide.with(this)
-                    .load(patientBean.getPatientImgUrl())
-                    .apply(GlideHelper.getOptionsP())
-                    .into(ivHeadImg);
-            if (!TextUtils.isEmpty(patientBean.getNickname()) &&
-                    patientBean.getNickname().length() < 20) {
+            Glide.with(this).load(patientBean.getPatientImgUrl()).apply(GlideHelper.getOptionsP()).into(ivHeadImg);
+            if (!TextUtils.isEmpty(patientBean.getNickname()) && patientBean.getNickname().length() < 20) {
                 tvName.setText(patientBean.getNickname() + "(" + patientBean.getName() + ")");
-            } else {
+            }
+            else {
                 tvName.setText(patientBean.getName());
             }
             tvSex.setText(patientBean.getSex());
@@ -171,11 +168,11 @@ public class AddFriendsPatientActivity extends BaseActivity {
             }
         }
         //缺省值
-        if (values.size() == 0)
-        {
+        if (values.size() == 0) {
             labelsView.setVisibility(View.GONE);
             tvHint.setVisibility(View.VISIBLE);
-        } else {
+        }
+        else {
             labelsView.setVisibility(View.VISIBLE);
             tvHint.setVisibility(View.GONE);
             labelsView.setLabels(values);
@@ -186,14 +183,14 @@ public class AddFriendsPatientActivity extends BaseActivity {
      * 获取患者个人信息
      */
     private void getPatientInfo() {
-        mIRequest.getPatientInfo(patientId, this);
+        RequestUtils.getPatientInfo(this, patientId, this);
     }
 
     /**
      * 获取患者基础信息
      */
     private void getPatientCombine() {
-        mIRequest.getPatientCombine(patientId, this);
+        RequestUtils.getPatientCombine(this, patientId, this);
     }
 
     /**
@@ -225,7 +222,8 @@ public class AddFriendsPatientActivity extends BaseActivity {
             case R.id.act_add_friend_next:
                 if (isAdd) {
                     addPatientByScan();
-                } else {
+                }
+                else {
                     agreePatientApply();
                 }
                 break;

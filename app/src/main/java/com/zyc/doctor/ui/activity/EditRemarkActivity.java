@@ -17,6 +17,7 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.widgets.FilterEmojiEditText;
@@ -127,14 +128,14 @@ public class EditRemarkActivity extends BaseActivity {
      * 设置备注  合作医生
      */
     private void modifyNickName() {
-        mIRequest.modifyNickName(loginSuccessBean.getDoctorId(), userId, remark, this);
+        RequestUtils.modifyNickName(this, loginSuccessBean.getDoctorId(), userId, remark, this);
     }
 
     /**
      * 设置备注  患者
      */
     private void modifyNickNameByPatient() {
-        mIRequest.modifyNickNameByPatient(loginSuccessBean.getDoctorId(), userId, remark, "d", this);
+        RequestUtils.modifyNickNameByPatient(this, loginSuccessBean.getDoctorId(), userId, remark, "d", this);
     }
 
     @Override

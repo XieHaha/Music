@@ -8,7 +8,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zyc.doctor.R;
@@ -16,6 +15,7 @@ import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.TransPatientBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.adapter.TransPatientsListAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
@@ -40,7 +40,6 @@ public class TransferPatientToActivity extends BaseActivity
     @BindView(R.id.act_patients_swipe_layout)
     SwipeRefreshLayout swipeRefreshLayout;
     private TransPatientsListAdapter transPatientsListAdapter;
-    private ImageView ivTitleBarMore;
     private View footerView;
     private TextView tvFooterHintTxt;
     private List<TransPatientBean> patientBeanList = new ArrayList<>();
@@ -93,7 +92,7 @@ public class TransferPatientToActivity extends BaseActivity
     }
 
     private void getPatientToList() {
-        mIRequest.getTransferPatientToList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
+        RequestUtils.getTransferPatientToList(this, loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
     }
 
     @Override

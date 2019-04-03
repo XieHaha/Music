@@ -10,21 +10,20 @@ import android.widget.TextView;
 
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
+import com.zyc.doctor.http.bean.FileBean;
+import com.zyc.doctor.http.bean.NormImage;
 import com.zyc.doctor.ui.adapter.FileListAdapter;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.AllUtils;
 import com.zyc.doctor.utils.FileUtils;
 import com.zyc.doctor.utils.MimeUtils;
+import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import com.zyc.doctor.http.bean.FileBean;
-import com.zyc.doctor.http.bean.NormImage;
-import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
 
 /**
- *
  * @author dundun
  * @date 18/8/24
  */
@@ -48,9 +47,8 @@ public class FileListActivity extends BaseActivity implements FileListAdapter.Op
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("报告列表");
-        autoLoadRecyclerView.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("报告列表");
+        autoLoadRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
@@ -66,8 +64,7 @@ public class FileListActivity extends BaseActivity implements FileListAdapter.Op
                 String fileUrl = values[i];
                 FileBean fileBean = new FileBean();
                 fileBean.setFileUrl(fileUrl);
-                fileBean.setFileName(
-                        AllUtils.getFileName(fileUrl) + "." + AllUtils.getFileExtNoPoint(fileUrl));
+                fileBean.setFileName(AllUtils.getFileName(fileUrl) + "." + AllUtils.getFileExtNoPoint(fileUrl));
                 fileBean.setFileNameNoSuffix(AllUtils.getFileName(fileUrl));
                 fileBean.setFileType(AllUtils.getFileExtNoPoint(fileUrl));
                 fileBeans.add(fileBean);
@@ -82,8 +79,7 @@ public class FileListActivity extends BaseActivity implements FileListAdapter.Op
     public void onOpen(int position, String path, String fileName) {
         String type = MimeUtils.getMime(FileUtils.getFileExtNoPoint(path));
         if ("image/bmp".equals(type) || "image/gif".equals(type) || "image/jpeg".equals(type) ||
-                "image/png".equals(type)) {
-
+            "image/png".equals(type)) {
             ArrayList<NormImage> imageList = new ArrayList<>();
             NormImage normImage = new NormImage();
             normImage.setImagePath(path);
@@ -92,7 +88,8 @@ public class FileListActivity extends BaseActivity implements FileListAdapter.Op
             intent.putExtra(ImagePreviewActivity.INTENT_URLS, imageList);
             startActivity(intent);
             overridePendingTransition(R.anim.fade_in, R.anim.keep);
-        } else {
+        }
+        else {
             FileDisplayActivity.show(this, path, fileName);
         }
     }

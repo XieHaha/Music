@@ -20,7 +20,7 @@ public abstract class AbstractDataObserver<T> implements Observer<BaseResponse<T
 
     @Override
     public void onNext(BaseResponse<T> response) {
-        //在这边对 基础数据 进行统一处理
+        // 基础数据 进行统一处理
         if (response.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
             if (listener != null) {
                 listener.onResponseSuccess(task, response);
@@ -38,7 +38,8 @@ public abstract class AbstractDataObserver<T> implements Observer<BaseResponse<T
     }
 
     @Override
-    public void onError(Throwable e) {//服务器错误信息处理
+    public void onError(Throwable e) {
+        //服务器错误信息处理
     }
 
     @Override

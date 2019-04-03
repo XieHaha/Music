@@ -3,10 +3,10 @@ package com.zyc.doctor.http.bean;
 import java.io.Serializable;
 
 /**
- * Created by dundun on 18/8/14.
+ * @author dundun
+ * @date 18/8/14
  */
-public class RegistrationBean implements Serializable
-{
+public class RegistrationBean implements Serializable {
     private static final long serialVersionUID = -4890286786577633647L;
     private String productOrderId;
     private String hospitalName;
@@ -41,323 +41,259 @@ public class RegistrationBean implements Serializable
     private long hospitalReserveTime;
     private String hospitalReserveTips;
 
-    public String getProductOrderId()
-    {
+    public String getProductOrderId() {
         return productOrderId;
     }
 
-    public void setProductOrderId(String productOrderId)
-    {
+    public void setProductOrderId(String productOrderId) {
         this.productOrderId = productOrderId;
     }
 
-    public String getHospitalName()
-    {
+    public String getHospitalName() {
         return hospitalName;
     }
 
-    public void setHospitalName(String hospitalName)
-    {
+    public void setHospitalName(String hospitalName) {
         this.hospitalName = hospitalName;
     }
 
-    public String getOrderState()
-    {
+    public String getOrderState() {
         return orderState;
     }
 
-    public void setOrderState(String orderState)
-    {
+    public void setOrderState(String orderState) {
         this.orderState = orderState;
     }
 
-    public String getOrderReportAddress()
-    {
+    public String getOrderReportAddress() {
         return orderReportAddress;
     }
 
-    public void setOrderReportAddress(String orderReportAddress)
-    {
+    public void setOrderReportAddress(String orderReportAddress) {
         this.orderReportAddress = orderReportAddress;
     }
 
-    public String getProductName()
-    {
+    public String getProductName() {
         return productName;
     }
 
-    public void setProductName(String productName)
-    {
+    public void setProductName(String productName) {
         this.productName = productName;
     }
 
-    public String getProductTypeName()
-    {
+    public String getProductTypeName() {
         return productTypeName;
     }
 
-    public void setProductTypeName(String productTypeName)
-    {
+    public void setProductTypeName(String productTypeName) {
         this.productTypeName = productTypeName;
     }
 
-    public String getProductPrice()
-    {
+    public String getProductPrice() {
         return productPrice;
     }
 
-    public void setProductPrice(String productPrice)
-    {
+    public void setProductPrice(String productPrice) {
         this.productPrice = productPrice;
     }
 
-    public String getProductPriceUnit()
-    {
+    public String getProductPriceUnit() {
         return productPriceUnit;
     }
 
-    public void setProductPriceUnit(String productPriceUnit)
-    {
+    public void setProductPriceUnit(String productPriceUnit) {
         this.productPriceUnit = productPriceUnit;
     }
 
-    public String getProductDescription()
-    {
+    public String getProductDescription() {
         return productDescription;
     }
 
-    public void setProductDescription(String productDescription)
-    {
+    public void setProductDescription(String productDescription) {
         this.productDescription = productDescription;
     }
 
-    public String getDoctorName()
-    {
+    public String getDoctorName() {
         return doctorName;
     }
 
-    public void setDoctorName(String doctorName)
-    {
+    public void setDoctorName(String doctorName) {
         this.doctorName = doctorName;
     }
 
-    public String getDoctorId()
-    {
+    public String getDoctorId() {
         return doctorId;
     }
 
-    public void setDoctorId(String doctorId)
-    {
+    public void setDoctorId(String doctorId) {
         this.doctorId = doctorId;
     }
 
-    public long getOrderDate()
-    {
+    public long getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(long orderDate)
-    {
+    public void setOrderDate(long orderDate) {
         this.orderDate = orderDate;
     }
 
-    public long getPatientBirthDate()
-    {
+    public long getPatientBirthDate() {
         return patientBirthDate;
     }
 
-    public void setPatientBirthDate(long patientBirthDate)
-    {
+    public void setPatientBirthDate(long patientBirthDate) {
         this.patientBirthDate = patientBirthDate;
     }
 
-    public int getHospitalId()
-    {
+    public int getHospitalId() {
         return hospitalId;
     }
 
-    public void setHospitalId(int hospitalId)
-    {
+    public void setHospitalId(int hospitalId) {
         this.hospitalId = hospitalId;
     }
 
-    public String getProductTypeId()
-    {
+    public String getProductTypeId() {
         return productTypeId;
     }
 
-    public void setProductTypeId(String productTypeId)
-    {
+    public void setProductTypeId(String productTypeId) {
         this.productTypeId = productTypeId;
     }
 
-    public int getProductId()
-    {
+    public int getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId)
-    {
+    public void setProductId(int productId) {
         this.productId = productId;
     }
 
-    public String getPatientId()
-    {
+    public String getPatientId() {
         return patientId;
     }
 
-    public void setPatientId(String patientId)
-    {
+    public void setPatientId(String patientId) {
         this.patientId = patientId;
     }
 
-    public String getPatientName()
-    {
+    public String getPatientName() {
         return patientName;
     }
 
-    public void setPatientName(String patientName)
-    {
+    public void setPatientName(String patientName) {
         this.patientName = patientName;
     }
 
-    public String getPatientSex()
-    {
+    public String getPatientSex() {
         return patientSex;
     }
 
-    public void setPatientSex(String patientSex)
-    {
+    public void setPatientSex(String patientSex) {
         this.patientSex = patientSex;
     }
 
-    public String getDiagnosisInfo()
-    {
+    public String getDiagnosisInfo() {
         return diagnosisInfo;
     }
 
-    public void setDiagnosisInfo(String diagnosisInfo)
-    {
+    public void setDiagnosisInfo(String diagnosisInfo) {
         this.diagnosisInfo = diagnosisInfo;
     }
 
-    public String getProductContactName()
-    {
+    public String getProductContactName() {
         return productContactName;
     }
 
-    public void setProductContactName(String productContactName)
-    {
+    public void setProductContactName(String productContactName) {
         this.productContactName = productContactName;
     }
 
-    public String getProductContactPhone()
-    {
+    public String getProductContactPhone() {
         return productContactPhone;
     }
 
-    public void setProductContactPhone(String productContactPhone)
-    {
+    public void setProductContactPhone(String productContactPhone) {
         this.productContactPhone = productContactPhone;
     }
 
-    public String getProductAccessChannel()
-    {
+    public String getProductAccessChannel() {
         return productAccessChannel;
     }
 
-    public void setProductAccessChannel(String productAccessChannel)
-    {
+    public void setProductAccessChannel(String productAccessChannel) {
         this.productAccessChannel = productAccessChannel;
     }
 
-    public String getProductOtherInfo()
-    {
+    public String getProductOtherInfo() {
         return productOtherInfo;
     }
 
-    public void setProductOtherInfo(String productOtherInfo)
-    {
+    public void setProductOtherInfo(String productOtherInfo) {
         this.productOtherInfo = productOtherInfo;
     }
 
-    public String getCityName()
-    {
+    public String getCityName() {
         return cityName;
     }
 
-    public void setCityName(String cityName)
-    {
+    public void setCityName(String cityName) {
         this.cityName = cityName;
     }
 
-    public String getHospitalLevel()
-    {
+    public String getHospitalLevel() {
         return hospitalLevel;
     }
 
-    public void setHospitalLevel(String hospitalLevel)
-    {
+    public void setHospitalLevel(String hospitalLevel) {
         this.hospitalLevel = hospitalLevel;
     }
 
-    public String getHospitalLogo()
-    {
+    public String getHospitalLogo() {
         return hospitalLogo;
     }
 
-    public void setHospitalLogo(String hospitalLogo)
-    {
+    public void setHospitalLogo(String hospitalLogo) {
         this.hospitalLogo = hospitalLogo;
     }
 
-    public String getHospitalAddress()
-    {
+    public String getHospitalAddress() {
         return hospitalAddress;
     }
 
-    public void setHospitalAddress(String hospitalAddress)
-    {
+    public void setHospitalAddress(String hospitalAddress) {
         this.hospitalAddress = hospitalAddress;
     }
 
-    public String getHospitalPhone()
-    {
+    public String getHospitalPhone() {
         return hospitalPhone;
     }
 
-    public void setHospitalPhone(String hospitalPhone)
-    {
+    public void setHospitalPhone(String hospitalPhone) {
         this.hospitalPhone = hospitalPhone;
     }
 
-    public String getHospitalDescription()
-    {
+    public String getHospitalDescription() {
         return hospitalDescription;
     }
 
-    public void setHospitalDescription(String hospitalDescription)
-    {
+    public void setHospitalDescription(String hospitalDescription) {
         this.hospitalDescription = hospitalDescription;
     }
 
-    public long getHospitalReserveTime()
-    {
+    public long getHospitalReserveTime() {
         return hospitalReserveTime;
     }
 
-    public void setHospitalReserveTime(long hospitalReserveTime)
-    {
+    public void setHospitalReserveTime(long hospitalReserveTime) {
         this.hospitalReserveTime = hospitalReserveTime;
     }
 
-    public String getHospitalReserveTips()
-    {
+    public String getHospitalReserveTips() {
         return hospitalReserveTips;
     }
 
-    public void setHospitalReserveTips(String hospitalReserveTips)
-    {
+    public void setHospitalReserveTips(String hospitalReserveTips) {
         this.hospitalReserveTips = hospitalReserveTips;
     }
 }

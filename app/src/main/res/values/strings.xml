@@ -25,6 +25,24 @@
     <!--public-->
     <string name="txt_list_none_data_hint">暂无更多数据</string>
     <string name="txt_list_push_hint">上拉加载更多</string>
+    <string name="txt_exit_hint">确定退出?</string>
+    <string name="txt_delete_hint">确定删除吗?</string>
+    <string name="txt_download_hint">开始下载</string>
+    <string name="txt_add_order_notify_patient_hint">确定发送给患者？</string>
+    <string name="txt_add_order_hint">已发送给患者，请等待患者答复</string>
+
+    <!--menu-->
+    <string name="txt_menu_doc">合作医院医生</string>
+    <string name="txt_menu_remark">设置备注</string>
+    <string name="txt_menu_delete">删除</string>
+    <string name="txt_menu_chat">对话</string>
+    <string name="txt_menu_transfer">转诊</string>
+    <string name="txt_menu_service">服务包</string>
+    <string name="txt_menu_case">病历</string>
+
+    <!--患者信息-->
+    <string name="txt_health_card_hint">还没有健康档案哦~</string>
+    <string name="txt_delete_case_hint">删除当前病例</string>
 
 
     <!--启动页 引导页-->
@@ -76,6 +94,7 @@
     <!--相机-->
     <string name="txt_camera_hint">将二维码放入框内，即可自动识别</string>
     <string name="txt_camera_error">二维码有误</string>
+    <string name="txt_camera">扫一扫</string>
 
     <!--聊天界面-->
     <string name="txt_registration_type_hint">选择%s医院</string>
@@ -106,6 +125,7 @@
 
     <!--Toast-->
     <string name="toast_limit_emoji">不支持输入Emoji表情</string>
+    <string name="toast_add_order_error">请输入描述信息</string>
 
     <!--dialog-->
     <string name="dialog_public_title">温馨提示</string>

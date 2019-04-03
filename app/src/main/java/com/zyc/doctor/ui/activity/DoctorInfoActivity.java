@@ -16,23 +16,16 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.rest.OnResponseListener;
-import com.yanzhenjie.nohttp.rest.Request;
-import com.yanzhenjie.nohttp.rest.RequestQueue;
-import com.yanzhenjie.nohttp.rest.Response;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.chat.ChatActivity;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.bean.BaseNetConfig;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.CooperateDocBean;
 import com.zyc.doctor.http.bean.CooperateHospitalBean;
 import com.zyc.doctor.http.bean.HospitalBean;
-import com.zyc.doctor.http.bean.HttpConstants;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.adapter.CooperationDocHAdapter;
 import com.zyc.doctor.ui.adapter.CooperationHospitalHAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
@@ -40,16 +33,10 @@ import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.utils.AllUtils;
 import com.zyc.doctor.utils.GlideHelper;
-import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -88,7 +75,6 @@ public class DoctorInfoActivity extends BaseActivity
     AutoLoadRecyclerView hospitalRecyclerView;
     @BindView(R.id.act_user_info_chat)
     TextView tvChat;
-
     private TextView tvChange, tvDelete;
     private PopupWindow mPopupwinow;
     private CooperateDocBean cooperateDocBean;
@@ -135,7 +121,7 @@ public class DoctorInfoActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("医生信息");
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("医生信息");
         findViewById(R.id.public_title_bar_back).setOnClickListener(this);
         findViewById(R.id.public_title_bar_more_two).setOnClickListener(this);
         ivMore.setVisibility(View.VISIBLE);
@@ -144,55 +130,43 @@ public class DoctorInfoActivity extends BaseActivity
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         if (getIntent() != null) {
-            cooperateDocBean = (CooperateDocBean) getIntent().getSerializableExtra(
-                    CommonData.KEY_DOCTOR_BEAN);
+            cooperateDocBean = (CooperateDocBean)getIntent().getSerializableExtra(CommonData.KEY_DOCTOR_BEAN);
             isDealDoc = getIntent().getBooleanExtra(CommonData.KEY_IS_DEAL_DOC, false);
             isForbidChat = getIntent().getBooleanExtra(CommonData.KEY_IS_FORBID_CHAT, false);
         }
         if (isDealDoc) {
             ivMore.setVisibility(View.VISIBLE);
-        } else {
+        }
+        else {
             ivMore.setVisibility(View.GONE);
         }
         if (isForbidChat) {
             tvChat.setVisibility(View.GONE);
-        } else {
+        }
+        else {
             tvChat.setVisibility(View.VISIBLE);
         }
         //合作医生
         cooperationDocHAdapter = new CooperationDocHAdapter(this, cooperateDocBeans);
-        recyclerView.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(cooperationDocHAdapter);
         cooperationDocHAdapter.setOnItemClickListener(this);
         //合作医院
         cooperationHospitalHAdapter = new CooperationHospitalHAdapter(this, cooperateHospitalBeans);
-        hospitalRecyclerView.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        hospitalRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         hospitalRecyclerView.setItemAnimator(new DefaultItemAnimator());
         hospitalRecyclerView.setAdapter(cooperationHospitalHAdapter);
-        cooperationHospitalHAdapter.setOnItemClickListener((v, position, item) ->
-        {
+        cooperationHospitalHAdapter.setOnItemClickListener((v, position, item) -> {
             HospitalBean hospitalBean = new HospitalBean();
-            hospitalBean.setHospitalName(
-                    item.getHospitalName());
-            hospitalBean.setAddress(
-                    item.getAddress());
-            hospitalBean.setCityName(
-                    item.getCityName());
-            hospitalBean.setHospitalPhone(
-                    item.getPhone());
-            hospitalBean.setHospitalLevel(
-                    item.getHospitalLevel());
-            hospitalBean.setHospitalDescription(
-                    item.getHospitalDescription());
-            Intent intent = new Intent(
-                    DoctorInfoActivity.this,
-                    HospitalInfoActivity.class);
-            intent.putExtra(
-                    CommonData.KEY_HOSPITAL_BEAN,
-                    hospitalBean);
+            hospitalBean.setHospitalName(item.getHospitalName());
+            hospitalBean.setAddress(item.getAddress());
+            hospitalBean.setCityName(item.getCityName());
+            hospitalBean.setHospitalPhone(item.getPhone());
+            hospitalBean.setHospitalLevel(item.getHospitalLevel());
+            hospitalBean.setHospitalDescription(item.getHospitalDescription());
+            Intent intent = new Intent(DoctorInfoActivity.this, HospitalInfoActivity.class);
+            intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, hospitalBean);
             startActivity(intent);
         });
         initPageData();
@@ -218,13 +192,13 @@ public class DoctorInfoActivity extends BaseActivity
             }
             if (!TextUtils.isEmpty(doctorNickName) && doctorNickName.length() < 20) {
                 tvName.setText(doctorNickName + "(" + cooperateDocBean.getName() + ")");
-            } else {
+            }
+            else {
                 if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) &&
-                        cooperateDocBean.getNickname().length() < 20) {
-                    tvName.setText(
-                            cooperateDocBean.getNickname() + "(" + cooperateDocBean.getName() +
-                                    ")");
-                } else {
+                    cooperateDocBean.getNickname().length() < 20) {
+                    tvName.setText(cooperateDocBean.getNickname() + "(" + cooperateDocBean.getName() + ")");
+                }
+                else {
                     tvName.setText(cooperateDocBean.getName());
                 }
             }
@@ -233,17 +207,20 @@ public class DoctorInfoActivity extends BaseActivity
             tvType.setText(cooperateDocBean.getDepartment());
             if (cooperateDocBean.getHospitalAuthorityCode() == 1) {
                 tvHospitalVerify.setSelected(true);
-            } else {
+            }
+            else {
                 tvHospitalVerify.setSelected(false);
             }
             if (cooperateDocBean.getChecked() == 6) {
                 tvPlatformVerify.setSelected(true);
-            } else {
+            }
+            else {
                 tvPlatformVerify.setSelected(false);
             }
             if (!TextUtils.isEmpty(cooperateDocBean.getDoctorDescription())) {
                 tvIntroduce.setText(cooperateDocBean.getDoctorDescription());
-            } else {
+            }
+            else {
                 tvIntroduce.setText("暂无简介");
             }
         }
@@ -253,62 +230,21 @@ public class DoctorInfoActivity extends BaseActivity
      * 取消关注医生
      */
     private void deleteDoctor() {
-        mIRequest.cancelCooperateDoc(loginSuccessBean.getDoctorId(), cooperateDocBean.getDoctorId(),
-                this);
+        RequestUtils.cancelCooperateDoc(this, loginSuccessBean.getDoctorId(), cooperateDocBean.getDoctorId(), this);
     }
 
     /**
      * 获取合作医生列表
      */
     private void getCooperationDocList() {
-        mIRequest.getCooperateList(doctorId, 0, PAGE_SIZE, this);
+        RequestUtils.getCooperateList(this, doctorId, 0, PAGE_SIZE, this);
     }
 
     /**
      * 获取合作医院
      */
     private void getCooperateHospitalList() {
-        RequestQueue queue = NoHttp.getRequestQueueInstance();
-        final Request<String> request = NoHttp.createStringRequest(
-                HttpConstants.BASE_BASIC_URL + "/hospital/doctor/relation/list",
-                RequestMethod.POST);
-        Map<String, Object> params = new HashMap<>();
-        params.put("doctorId", doctorId);
-        JSONObject jsonObject = new JSONObject(params);
-        request.setDefineRequestBodyForJson(jsonObject.toString());
-        queue.add(1, request, new OnResponseListener<String>() {
-            @Override
-            public void onStart(int what) {
-            }
-
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                String s = response.get();
-                try {
-                    JSONObject object = new JSONObject(s);
-                    BaseResponse baseResponse = praseBaseResponseList(object, CooperateHospitalBean.class);
-                    if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
-                            ArrayList<CooperateHospitalBean> list = (ArrayList<CooperateHospitalBean>)baseResponse.getData();
-                            cooperationHospitalHAdapter.setList(list);
-                        } else {
-                            ToastUtil.toast(DoctorInfoActivity.this, baseResponse.getMsg());
-                        }
-                    }
-                } catch (JSONException e) {
-                    LogUtils.w(TAG, "Exception error!", e);
-                }
-            }
-
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                ToastUtil.toast(DoctorInfoActivity.this, response.getException().getMessage());
-            }
-
-            @Override
-            public void onFinish(int what) {
-            }
-        });
+        RequestUtils.getHospitalListByDoctorId(this, doctorId, this);
     }
 
     @Override
@@ -320,8 +256,7 @@ public class DoctorInfoActivity extends BaseActivity
                 if (mPopupwinow != null) {
                     mPopupwinow.dismiss();
                 }
-                new SimpleDialog(this, "确定删除?", (dialog, which) ->
-                {
+                new SimpleDialog(this, "确定删除?", (dialog, which) -> {
                     deleteDoctor();
                 }, (dialog, which) -> dialog.dismiss()).show();
                 break;
@@ -332,7 +267,8 @@ public class DoctorInfoActivity extends BaseActivity
                 intent = new Intent(this, EditRemarkActivity.class);
                 if (!TextUtils.isEmpty(doctorNickName)) {
                     intent.putExtra(CommonData.KEY_PUBLIC, doctorNickName);
-                } else {
+                }
+                else {
                     intent.putExtra(CommonData.KEY_PUBLIC, cooperateDocBean.getNickname());
                 }
                 intent.putExtra(CommonData.KEY_DOCTOR_ID, cooperateDocBean.getDoctorId());
@@ -351,16 +287,16 @@ public class DoctorInfoActivity extends BaseActivity
                     intent = new Intent(this, ChatActivity.class);
                     intent.putExtra(CommonData.KEY_CHAT_ID, cooperateDocBean.getDoctorId());
                     if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) &&
-                            cooperateDocBean.getNickname().length() < 20) {
+                        cooperateDocBean.getNickname().length() < 20) {
                         intent.putExtra(CommonData.KEY_CHAT_NAME, cooperateDocBean.getNickname());
                         YihtApplication.getInstance().setEaseName(cooperateDocBean.getNickname());
-                    } else {
+                    }
+                    else {
                         intent.putExtra(CommonData.KEY_CHAT_NAME, cooperateDocBean.getName());
                         //存储临时数据
                         YihtApplication.getInstance().setEaseName(cooperateDocBean.getName());
                     }
-                    YihtApplication.getInstance()
-                            .setEaseHeadImgUrl(cooperateDocBean.getPortraitUrl());
+                    YihtApplication.getInstance().setEaseHeadImgUrl(cooperateDocBean.getPortraitUrl());
                     startActivity(intent);
                 }
                 break;
@@ -389,9 +325,9 @@ public class DoctorInfoActivity extends BaseActivity
      */
     private void showPop() {
         viewPop = LayoutInflater.from(this).inflate(R.layout.main_pop_menu_p_dianjiu, null);
-        tvChange = (TextView) viewPop.findViewById(R.id.remark);
+        tvChange = (TextView)viewPop.findViewById(R.id.remark);
         tvChange.setOnClickListener(this);
-        tvDelete = (TextView) viewPop.findViewById(R.id.change);
+        tvDelete = (TextView)viewPop.findViewById(R.id.change);
         tvDelete.setOnClickListener(this);
         if (mPopupwinow == null) {
             //新建一个popwindow
@@ -401,8 +337,7 @@ public class DoctorInfoActivity extends BaseActivity
         mPopupwinow.setFocusable(true);
         mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mPopupwinow.setOutsideTouchable(true);
-        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0,
-                                   (int) AllUtils.dipToPx(this, 55));
+        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0, (int)AllUtils.dipToPx(this, 55));
     }
 
     @Override
@@ -423,9 +358,14 @@ public class DoctorInfoActivity extends BaseActivity
                 if (list != null && list.size() > 0) {
                     llCoopDocLayout.setVisibility(View.VISIBLE);
                     cooperationDocHAdapter.setList(list);
-                } else {
+                }
+                else {
                     llCoopDocLayout.setVisibility(View.GONE);
                 }
+                break;
+            case GET_HOSPITAL_LIST_BY_DOCTORID:
+                ArrayList<CooperateHospitalBean> list1 = (ArrayList<CooperateHospitalBean>)response.getData();
+                cooperationHospitalHAdapter.setList(list1);
                 break;
             default:
                 break;
@@ -446,7 +386,8 @@ public class DoctorInfoActivity extends BaseActivity
                     if (!TextUtils.isEmpty(remark)) {
                         tvName.setText(remark + "(" + cooperateDocBean.getName() + ")");
                         cooperateDocBean.setNickname(remark);
-                    } else {
+                    }
+                    else {
                         tvName.setText(cooperateDocBean.getName());
                         cooperateDocBean.setNickname(remark);
                     }
@@ -456,5 +397,4 @@ public class DoctorInfoActivity extends BaseActivity
                 break;
         }
     }
-
 }

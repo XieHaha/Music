@@ -9,9 +9,9 @@ import android.widget.TextView;
 import com.fanneng.android.web.file.FileReaderView;
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
 
 import butterknife.BindView;
-import com.zyc.doctor.ui.base.activity.BaseActivity;
 
 /**
  * describe：文件阅读类

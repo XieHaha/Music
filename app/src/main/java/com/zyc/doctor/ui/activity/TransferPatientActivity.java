@@ -14,27 +14,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.yanzhenjie.nohttp.NoHttp;
-import com.yanzhenjie.nohttp.RequestMethod;
-import com.yanzhenjie.nohttp.rest.OnResponseListener;
-import com.yanzhenjie.nohttp.rest.Request;
-import com.yanzhenjie.nohttp.rest.RequestQueue;
-import com.yanzhenjie.nohttp.rest.Response;
 import com.zyc.doctor.R;
 import com.zyc.doctor.api.ApiManager;
 import com.zyc.doctor.api.notify.IChange;
-import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.api.notify.INotifyChangeListenerServer;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
+import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.TransferStatu;
-import com.zyc.doctor.http.bean.BaseNetConfig;
+import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.CooperateDocBean;
 import com.zyc.doctor.http.bean.CooperateHospitalBean;
-import com.zyc.doctor.http.bean.HttpConstants;
 import com.zyc.doctor.http.bean.PatientBean;
 import com.zyc.doctor.http.bean.TransPatientBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.HintDialog;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
@@ -44,12 +38,6 @@ import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.RecentContactUtils;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.widgets.FilterEmojiEditText;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -107,7 +95,6 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
     TextView tvTransferRefuse;
     @BindView(R.id.act_transfer_patient_transfer_cancel)
     TextView tvTransferCancel;
-
     private PatientBean patientBean;
     private CooperateDocBean cooperateDocBean;
     private CooperateHospitalBean cooperateHospitalBean;
@@ -147,12 +134,12 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
     /**
      * 推送回调监听  转诊申请
      */
-    private IChange<String> doctorTransferPatientListener = data ->
-    {
+    private IChange<String> doctorTransferPatientListener = data -> {
         try {
             transferId = Integer.valueOf(data);
             handler.sendEmptyMessage(0);
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e) {
             LogUtils.w(TAG, "Exception error!", e);
         }
     };
@@ -170,17 +157,15 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("转诊信息");
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("转诊信息");
     }
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (getIntent() != null) {
-            patientBean = (PatientBean) getIntent().getSerializableExtra(
-                    CommonData.KEY_PATIENT_BEAN);
-            transPatientBean = (TransPatientBean) getIntent().getSerializableExtra(
-                    CommonData.KEY_TRANSFER_BEAN);
+            patientBean = (PatientBean)getIntent().getSerializableExtra(CommonData.KEY_PATIENT_BEAN);
+            transPatientBean = (TransPatientBean)getIntent().getSerializableExtra(CommonData.KEY_TRANSFER_BEAN);
             transferId = getIntent().getIntExtra(CommonData.KEY_TRANSFER_ID, 0);
             isAddTransferMode = getIntent().getBooleanExtra(CommonData.KEY_PUBLIC, false);
             limit = getIntent().getBooleanExtra("limit", false);
@@ -188,7 +173,8 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
         iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         if (transPatientBean == null && patientBean == null) {
             getTransferDetailById();
-        } else {
+        }
+        else {
             initPageData();
         }
     }
@@ -200,41 +186,37 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
         tvTransferNext.setOnClickListener(this);
         tvTransferRefuse.setOnClickListener(this);
         tvTransferCancel.setOnClickListener(this);
-        filterEmojiEditText.setOnEditorActionListener((v, actionId, event) ->
-        {
+        filterEmojiEditText.setOnEditorActionListener((v, actionId, event) -> {
             //屏蔽换行符
-            if (event.getKeyCode() ==
-                    KeyEvent.KEYCODE_ENTER) {
+            if (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                 return true;
             }
             return false;
         });
         //注册转诊状态监听
-        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(
-                doctorTransferPatientListener, RegisterType.REGISTER);
+        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(doctorTransferPatientListener,
+                                                                          RegisterType.REGISTER);
     }
 
     /**
      * 页面处理
      */
     private void initPageData() {
-        if (patientBean != null && isAddTransferMode)//新增转诊单
-        {
+        //新增转诊单
+        if (patientBean != null && isAddTransferMode) {
             llTransferStatusLayout.setVisibility(View.GONE);
             llTransferDocLayout1.setVisibility(View.GONE);
             llSelectHospitalLayout.setVisibility(View.GONE);
             llTransferDocLayout.setVisibility(View.VISIBLE);
             llTransferDocLayout.setOnClickListener(this);
             llTransferDocLayout1.setOnClickListener(this);
-            Glide.with(this)
-                    .load(patientBean.getPatientImgUrl())
-                    .apply(GlideHelper.getOptions())
-                    .into(ivHeadImg);
+            Glide.with(this).load(patientBean.getPatientImgUrl()).apply(GlideHelper.getOptions()).into(ivHeadImg);
             tvName.setText(patientBean.getName());
             tvSex.setText(patientBean.getSex());
             tvAge.setText(AllUtils.getAge(patientBean.getBirthDate()));
             tvTransferNext.setVisibility(View.GONE);
-        } else//已有转诊单
+        }
+        else//已有转诊单
         {
             filterEmojiEditText.setFocusable(isAddTransferMode);
             filterEmojiEditText.setFocusableInTouchMode(isAddTransferMode);
@@ -246,31 +228,28 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
             if (transPatientBean != null) {
                 //患者信息
                 Glide.with(this)
-                        .load(transPatientBean.getPatientImage())
-                        .apply(GlideHelper.getOptions())
-                        .into(ivHeadImg);
-                tvTime.setText(AllUtils.formatDate(transPatientBean.getTransferDate(),
-                        AllUtils.YYYY_MM_DD_HH_MM));
+                     .load(transPatientBean.getPatientImage())
+                     .apply(GlideHelper.getOptions())
+                     .into(ivHeadImg);
+                tvTime.setText(AllUtils.formatDate(transPatientBean.getTransferDate(), AllUtils.YYYY_MM_DD_HH_MM));
                 tvName.setText(transPatientBean.getPatientName());
                 tvSex.setText(transPatientBean.getPatientSex());
                 tvAge.setText(AllUtils.getAge(transPatientBean.getPatientBirthDate()));
                 filterEmojiEditText.setText(transPatientBean.getFromDoctorDiagnosisInfo());
-                if (!loginSuccessBean.getDoctorId()
-                        .equals(transPatientBean.getFromDoctorId()))//接收转诊
-                {
+                //接收转诊
+                if (!loginSuccessBean.getDoctorId().equals(transPatientBean.getFromDoctorId())) {
                     tvTransferTxt.setText(R.string.txt_transfer_patient_from);
                     //转诊医生信息
                     Glide.with(this)
-                            .load(transPatientBean.getFromDoctorImage())
-                            .apply(GlideHelper.getOptions())
-                            .into(ivDocHeadImg);
+                         .load(transPatientBean.getFromDoctorImage())
+                         .apply(GlideHelper.getOptions())
+                         .into(ivDocHeadImg);
                     tvDocName.setText(transPatientBean.getFromDoctorName());
                     tvDocHospital.setText(transPatientBean.getFromDoctorHospitalName());
                     switch (transPatientBean.getAcceptState()) {
                         case TRANSFER_NONE:
                             tvTransferStatus.setText(R.string.txt_transfer_patient_to_comfirm);
-                            tvTransferStatus.setTextColor(
-                                    ContextCompat.getColor(this, R.color._FF6417));
+                            tvTransferStatus.setTextColor(ContextCompat.getColor(this, R.color._FF6417));
                             llHospitalLayout.setOnClickListener(this);
                             tvTransferNext.setVisibility(View.VISIBLE);
                             tvTransferRefuse.setVisibility(View.VISIBLE);
@@ -281,8 +260,7 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                             break;
                         case TRANSFER_RECV:
                             tvTransferStatus.setText(R.string.txt_transfer_patient_to_wait_visit);
-                            tvTransferStatus.setTextColor(
-                                    ContextCompat.getColor(this, R.color._1F6BAC));
+                            tvTransferStatus.setTextColor(ContextCompat.getColor(this, R.color._1F6BAC));
                             llSelectHospitalLayout.setVisibility(View.VISIBLE);
                             tvSelectHospitalName.setText(transPatientBean.getHospitalName());
                             imageView.setVisibility(View.GONE);
@@ -294,10 +272,8 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                             ivTransferStatu.setImageResource(R.mipmap.icon_wait_visit);
                             break;
                         case TRANSFER_VISIT:
-                            tvTransferStatus.setText(
-                                    R.string.txt_transfer_patient_to_complete_visit);
-                            tvTransferStatus.setTextColor(
-                                    ContextCompat.getColor(this, R.color.app_main_color));
+                            tvTransferStatus.setText(R.string.txt_transfer_patient_to_complete_visit);
+                            tvTransferStatus.setTextColor(ContextCompat.getColor(this, R.color.app_main_color));
                             llSelectHospitalLayout.setVisibility(View.VISIBLE);
                             tvSelectHospitalName.setText(transPatientBean.getHospitalName());
                             imageView.setVisibility(View.GONE);
@@ -314,8 +290,7 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                             tvTransferCancel.setVisibility(View.GONE);
                             llSelectHospitalLayout.setVisibility(View.GONE);
                             tvTransferStatus.setText(R.string.txt_transfer_patient_to_cancel_visit);
-                            tvTransferStatus.setTextColor(
-                                    ContextCompat.getColor(this, R.color._E40505));
+                            tvTransferStatus.setTextColor(ContextCompat.getColor(this, R.color._E40505));
                             ivTransferStatu.setImageResource(R.mipmap.icon_refuse);
                             break;
                         case TRANSFER_REFUSE:
@@ -324,31 +299,30 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                             tvTransferCancel.setVisibility(View.GONE);
                             llSelectHospitalLayout.setVisibility(View.GONE);
                             tvTransferStatus.setText(R.string.txt_transfer_patient_to_refuse_visit);
-                            tvTransferStatus.setTextColor(
-                                    ContextCompat.getColor(this, R.color._E40505));
+                            tvTransferStatus.setTextColor(ContextCompat.getColor(this, R.color._E40505));
                             ivTransferStatu.setImageResource(R.mipmap.icon_refuse);
                             break;
                         default:
                             break;
                     }
-                } else {
+                }
+                else {
                     tvTransferTxt.setText(R.string.txt_transfer_patient_to);
                     tvTransferNext.setVisibility(View.GONE);
                     //转诊医生信息
                     Glide.with(this)
-                            .load(transPatientBean.getToDoctorImage())
-                            .apply(GlideHelper.getOptions())
-                            .into(ivDocHeadImg);
+                         .load(transPatientBean.getToDoctorImage())
+                         .apply(GlideHelper.getOptions())
+                         .into(ivDocHeadImg);
                     tvDocName.setText(transPatientBean.getToDoctorName());
-                    tvDocHospital.setText(transPatientBean.getToDoctorHospitalName() + "-" +
-                            transPatientBean.getToDoctorTitle());
+                    tvDocHospital.setText(
+                            transPatientBean.getToDoctorHospitalName() + "-" + transPatientBean.getToDoctorTitle());
                     switch (transPatientBean.getAcceptState()) {
                         case TRANSFER_NONE:
                             llSelectHospitalLayout.setVisibility(View.GONE);
                             tvTransferCancel.setVisibility(View.VISIBLE);
                             tvTransferStatus.setText(R.string.txt_transfer_patient_to_comfirm);
-                            tvTransferStatus.setTextColor(
-                                    ContextCompat.getColor(this, R.color._FF6417));
+                            tvTransferStatus.setTextColor(ContextCompat.getColor(this, R.color._FF6417));
                             ivTransferStatu.setImageResource(R.mipmap.icon_wait);
                             break;
                         case TRANSFER_RECV:
@@ -357,8 +331,7 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                             tvSelectHospitalName.setText(transPatientBean.getHospitalName());
                             imageView.setVisibility(View.GONE);
                             llHospitalLayout.setOnClickListener(null);
-                            tvTransferStatus.setTextColor(
-                                    ContextCompat.getColor(this, R.color._1F6BAC));
+                            tvTransferStatus.setTextColor(ContextCompat.getColor(this, R.color._1F6BAC));
                             ivTransferStatu.setImageResource(R.mipmap.icon_wait_visit);
                             break;
                         case TRANSFER_VISIT:
@@ -367,10 +340,8 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                             tvSelectHospitalName.setText(transPatientBean.getHospitalName());
                             imageView.setVisibility(View.GONE);
                             llHospitalLayout.setOnClickListener(null);
-                            tvTransferStatus.setText(
-                                    R.string.txt_transfer_patient_to_complete_visit);
-                            tvTransferStatus.setTextColor(
-                                    ContextCompat.getColor(this, R.color.app_main_color));
+                            tvTransferStatus.setText(R.string.txt_transfer_patient_to_complete_visit);
+                            tvTransferStatus.setTextColor(ContextCompat.getColor(this, R.color.app_main_color));
                             ivTransferStatu.setImageResource(R.mipmap.icon_complete);
                             break;
                         case TRANSFER_CANCEL:
@@ -378,16 +349,14 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                             tvTransferCancel.setVisibility(View.GONE);
                             llSelectHospitalLayout.setVisibility(View.GONE);
                             tvTransferStatus.setText(R.string.txt_transfer_patient_to_cancel_visit);
-                            tvTransferStatus.setTextColor(
-                                    ContextCompat.getColor(this, R.color._E40505));
+                            tvTransferStatus.setTextColor(ContextCompat.getColor(this, R.color._E40505));
                             ivTransferStatu.setImageResource(R.mipmap.icon_refuse);
                             break;
                         case TRANSFER_REFUSE:
                             tvTransferCancel.setVisibility(View.GONE);
                             llSelectHospitalLayout.setVisibility(View.GONE);
                             tvTransferStatus.setText(R.string.txt_transfer_patient_to_refuse_visit);
-                            tvTransferStatus.setTextColor(
-                                    ContextCompat.getColor(this, R.color._E40505));
+                            tvTransferStatus.setTextColor(ContextCompat.getColor(this, R.color._E40505));
                             ivTransferStatu.setImageResource(R.mipmap.icon_refuse);
                             break;
                         default:
@@ -406,283 +375,36 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
      * 获取转诊详情  新接口2019年2月22日11:55:40
      */
     private void getTransferDetailById() {
-        RequestQueue queue = NoHttp.getRequestQueueInstance();
-        final Request<String> request = NoHttp.createStringRequest(
-                HttpConstants.BASE_BASIC_URL + "/trans/single/detail", RequestMethod.POST);
-        Map<String, Object> params = new HashMap<>();
-        params.put("transferId", transferId);
-        JSONObject jsonObject = new JSONObject(params);
-        request.setDefineRequestBodyForJson(jsonObject.toString());
-        queue.add(1, request, new OnResponseListener<String>() {
-            @Override
-            public void onStart(int what) {
-            }
-
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                String s = response.get();
-                try {
-                    JSONObject object = new JSONObject(s);
-                    BaseResponse baseResponse = praseBaseResponse(object, TransPatientBean.class);
-                    if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
-                            transPatientBean = (TransPatientBean)baseResponse.getData();
-                            initPageData();
-                        }
-                        ToastUtil.toast(TransferPatientActivity.this, baseResponse.getMsg());
-                    }
-                } catch (JSONException e) {
-                    LogUtils.w(TAG, "Exception error!", e);
-                }
-            }
-
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                ToastUtil.toast(TransferPatientActivity.this, response.getException().getMessage());
-            }
-
-            @Override
-            public void onFinish(int what) {
-                closeProgressDialog();
-            }
-        });
+        RequestUtils.getTransferDetailById(this, transferId, this);
     }
 
     /**
      * 医生转诊患者  新接口2018年10月11日10:45:48
      */
     private void addTransferPatient(String diagnosisInfo) {
-        RequestQueue queue = NoHttp.getRequestQueueInstance();
-        final Request<String> request = NoHttp.createStringRequest(
-                HttpConstants.BASE_BASIC_URL + "/trans/doctor/add/notes", RequestMethod.POST);
-        Map<String, Object> params = new HashMap<>();
-        params.put("fromDoctorDiagnosisInfo", diagnosisInfo);
-        params.put("fromDoctorDepartment", loginSuccessBean.getDepartment());
-        params.put("fromDoctorHospitalName", loginSuccessBean.getHospital());
-        params.put("fromDoctorId", loginSuccessBean.getDoctorId());
-        params.put("fromDoctorImage", loginSuccessBean.getPortraitUrl());
-        params.put("fromDoctorName", loginSuccessBean.getName());
-        params.put("fromDoctorTitle", loginSuccessBean.getTitle());
-        params.put("patientBirthdate", patientBean.getBirthDate());
-        params.put("patientId", patientBean.getPatientId());
-        params.put("patientIdentityNumber", patientBean.getIdentityNum());
-        params.put("patientImage", patientBean.getPatientImgUrl());
-        params.put("patientName", patientBean.getName());
-        params.put("patientSex", patientBean.getSex());
-        params.put("toDoctorDepartment", cooperateDocBean.getDepartment());
-        params.put("toDoctorHospitalName", cooperateDocBean.getHospital());
-        params.put("toDoctorId", cooperateDocBean.getDoctorId());
-        params.put("toDoctorImage", cooperateDocBean.getPortraitUrl());
-        params.put("toDoctorName", cooperateDocBean.getName());
-        params.put("toDoctorTitle", cooperateDocBean.getTitle());
-        JSONObject jsonObject = new JSONObject(params);
-        request.setDefineRequestBodyForJson(jsonObject.toString());
-        queue.add(1, request, new OnResponseListener<String>() {
-            @Override
-            public void onStart(int what) {
-            }
-
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                String s = response.get();
-                try {
-                    JSONObject object = new JSONObject(s);
-                    BaseResponse baseResponse = praseBaseResponse(object, String.class);
-                    if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
-                            //保存最近联系人
-                            RecentContactUtils.save(patientBean.getPatientId());
-                            NotifyChangeListenerManager.getInstance().notifyRecentContactChange("");
-                            HintDialog hintDialog = new HintDialog(TransferPatientActivity.this);
-                            hintDialog.isShowCancelBtn(false);
-                            hintDialog.setContentString(
-                                    String.format(getString(R.string.txt_transfer_patient_to_doc),
-                                            cooperateDocBean.getName()));
-                            hintDialog.setOnEnterClickListener(() -> finish());
-                            hintDialog.show();
-                        } else {
-                            ToastUtil.toast(TransferPatientActivity.this, baseResponse.getMsg());
-                        }
-                    }
-                } catch (JSONException e) {
-                    LogUtils.w(TAG, "Exception error!", e);
-                }
-            }
-
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                ToastUtil.toast(TransferPatientActivity.this, response.getException().getMessage());
-            }
-
-            @Override
-            public void onFinish(int what) {
-                closeProgressDialog();
-            }
-        });
+        RequestUtils.addTransferPatient(this, diagnosisInfo, patientBean, cooperateDocBean, loginSuccessBean, this);
     }
 
     /**
      * 取消转诊  新接口2019年2月21日11:12:40
      */
     private void cancelTransferPatient() {
-        RequestQueue queue = NoHttp.getRequestQueueInstance();
-        final Request<String> request = NoHttp.createStringRequest(
-                HttpConstants.BASE_BASIC_URL + "/trans/doctor/cancel/notes", RequestMethod.POST);
-        Map<String, Object> params = new HashMap<>();
-        params.put("transferId", transPatientBean.getTransferId());
-        JSONObject jsonObject = new JSONObject(params);
-        request.setDefineRequestBodyForJson(jsonObject.toString());
-        queue.add(1, request, new OnResponseListener<String>() {
-            @Override
-            public void onStart(int what) {
-            }
-
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                String s = response.get();
-                try {
-                    JSONObject object = new JSONObject(s);
-                    BaseResponse baseResponse = praseBaseResponse(object, String.class);
-
-                    if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
-                            setResult(RESULT_OK);
-                            tvTransferCancel.setVisibility(View.GONE);
-                            tvTransferStatus.setText(R.string.txt_transfer_patient_to_cancel_visit);
-                            tvTransferStatus.setTextColor(
-                                    ContextCompat.getColor(TransferPatientActivity.this,
-                                            R.color._E40505));
-                            ivTransferStatu.setImageResource(R.mipmap.icon_refuse);
-                        }
-                        ToastUtil.toast(TransferPatientActivity.this, baseResponse.getMsg());
-                    }
-                } catch (JSONException e) {
-                    LogUtils.w(TAG, "Exception error!", e);
-                }
-            }
-
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                ToastUtil.toast(TransferPatientActivity.this, response.getException().getMessage());
-            }
-
-            @Override
-            public void onFinish(int what) {
-                closeProgressDialog();
-            }
-        });
+        RequestUtils.cancelTransferPatient(this, transPatientBean.getTransferId(), this);
     }
 
     /**
      * 拒绝转诊  新接口2019年2月21日15:32:30
      */
     private void refuseTransferPatient() {
-        RequestQueue queue = NoHttp.getRequestQueueInstance();
-        final Request<String> request = NoHttp.createStringRequest(
-                HttpConstants.BASE_BASIC_URL + "/trans/doctor/refuse", RequestMethod.POST);
-        Map<String, Object> params = new HashMap<>();
-        params.put("transferId", transPatientBean.getTransferId());
-        JSONObject jsonObject = new JSONObject(params);
-        request.setDefineRequestBodyForJson(jsonObject.toString());
-        queue.add(1, request, new OnResponseListener<String>() {
-            @Override
-            public void onStart(int what) {
-            }
-
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                String s = response.get();
-                try {
-                    JSONObject object = new JSONObject(s);
-                    BaseResponse baseResponse = praseBaseResponse(object, String.class);
-
-                    if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
-                            setResult(RESULT_OK);
-                            tvTransferCancel.setVisibility(View.GONE);
-                            tvTransferNext.setVisibility(View.GONE);
-                            tvTransferRefuse.setVisibility(View.GONE);
-                            llSelectHospitalLayout.setVisibility(View.GONE);
-                            tvTransferStatus.setText(R.string.txt_transfer_patient_to_refuse_visit);
-                            tvTransferStatus.setTextColor(
-                                    ContextCompat.getColor(TransferPatientActivity.this,
-                                            R.color._E40505));
-                            ivTransferStatu.setImageResource(R.mipmap.icon_refuse);
-                        }
-                        ToastUtil.toast(TransferPatientActivity.this, baseResponse.getMsg());
-                    }
-                } catch (JSONException e) {
-                    LogUtils.w(TAG, "Exception error!", e);
-                }
-            }
-
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                ToastUtil.toast(TransferPatientActivity.this, response.getException().getMessage());
-            }
-
-            @Override
-            public void onFinish(int what) {
-                closeProgressDialog();
-            }
-        });
+        RequestUtils.refuseTransferPatient(this, transPatientBean.getTransferId(), this);
     }
 
     /**
      * 接受转诊  新接口2019年2月21日15:32:30
      */
     private void recvTransferPatient() {
-        RequestQueue queue = NoHttp.getRequestQueueInstance();
-        final Request<String> request = NoHttp.createStringRequest(
-                HttpConstants.BASE_BASIC_URL + "/trans/doctor/receive", RequestMethod.POST);
-        Map<String, Object> params = new HashMap<>();
-        params.put("transferId", transPatientBean.getTransferId());
-        params.put("hospitalId", cooperateHospitalBean.getHospitalId());
-        JSONObject jsonObject = new JSONObject(params);
-        request.setDefineRequestBodyForJson(jsonObject.toString());
-        queue.add(1, request, new OnResponseListener<String>() {
-            @Override
-            public void onStart(int what) {
-            }
-
-            @Override
-            public void onSucceed(int what, Response<String> response) {
-                String s = response.get();
-                try {
-                    JSONObject object = new JSONObject(s);
-                    BaseResponse baseResponse = praseBaseResponse(object, String.class);
-
-                    if (baseResponse != null) {
-                        if (baseResponse.getCode() == BaseNetConfig.REQUEST_SUCCESS) {
-                            setResult(RESULT_OK);
-                            orderState = 2;
-                            tvTransferRefuse.setVisibility(View.GONE);
-                            tvTransferNext.setVisibility(View.GONE);
-                            imageView.setVisibility(View.GONE);
-                            llHospitalLayout.setOnClickListener(null);
-                            tvTransferStatus.setText(R.string.txt_transfer_patient_to_wait_visit);
-                            tvTransferStatus.setTextColor(
-                                    ContextCompat.getColor(TransferPatientActivity.this,
-                                            R.color._1F6BAC));
-                            ivTransferStatu.setImageResource(R.mipmap.icon_wait_visit);
-                        }
-                        ToastUtil.toast(TransferPatientActivity.this, baseResponse.getMsg());
-                    }
-                } catch (JSONException e) {
-                    LogUtils.w(TAG, "Exception error!", e);
-                }
-            }
-
-            @Override
-            public void onFailed(int what, Response<String> response) {
-                ToastUtil.toast(TransferPatientActivity.this, response.getException().getMessage());
-            }
-
-            @Override
-            public void onFinish(int what) {
-                closeProgressDialog();
-            }
-        });
+        RequestUtils.recvTransferPatient(this, transPatientBean.getTransferId(), cooperateHospitalBean.getHospitalId(),
+                                         this);
     }
 
     @Override
@@ -704,11 +426,11 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                     ToastUtil.toast(this, R.string.txt_transfer_patient_to_input_diagnosisinfo);
                     return;
                 }
-                new SimpleDialog(TransferPatientActivity.this, String.format(
-                        getString(R.string.txt_transfer_patient_to_issure_doc),
-                        cooperateDocBean.getName()),
-                        (dialog, which) -> addTransferPatient(diagnosisInfo),
-                        (dialog, which) -> dialog.dismiss()).show();
+                new SimpleDialog(TransferPatientActivity.this,
+                                 String.format(getString(R.string.txt_transfer_patient_to_issure_doc),
+                                               cooperateDocBean.getName()),
+                                 (dialog, which) -> addTransferPatient(diagnosisInfo),
+                                 (dialog, which) -> dialog.dismiss()).show();
                 break;
             case R.id.act_transfer_patient_transfer_next:
                 switch (orderState) {
@@ -718,27 +440,23 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                             ToastUtil.toast(this, R.string.txt_transfer_patient_to_select_hospital);
                             return;
                         }
-                        new SimpleDialog(TransferPatientActivity.this, String.format(
-                                getString(R.string.txt_transfer_patient_to_isrecv_doc),
-                                transPatientBean.getFromDoctorName()), (dialog, which) ->
-                        {
+                        new SimpleDialog(TransferPatientActivity.this,
+                                         String.format(getString(R.string.txt_transfer_patient_to_isrecv_doc),
+                                                       transPatientBean.getFromDoctorName()), (dialog, which) -> {
                             //                                             updateTransferPatient();
                             recvTransferPatient();
                             //保存最近联系人
-                            RecentContactUtils.save(
-                                    transPatientBean.getPatientId());
-                            NotifyChangeListenerManager.getInstance()
-                                    .notifyRecentContactChange(
-                                            "");
+                            RecentContactUtils.save(transPatientBean.getPatientId());
+                            NotifyChangeListenerManager.getInstance().notifyRecentContactChange("");
                         }, (dialog, which) -> dialog.dismiss()).show();
                         break;
                     //确认患者就诊
                     case 2:
-                        new SimpleDialog(TransferPatientActivity.this, String.format(
-                                getString(R.string.txt_transfer_patient_to_isvisit),
-                                transPatientBean.getPatientName()),
-                                //                                         (dialog, which) -> updateTransferPatient(),
-                                (dialog, which) -> dialog.dismiss()).show();
+                        new SimpleDialog(TransferPatientActivity.this,
+                                         String.format(getString(R.string.txt_transfer_patient_to_isvisit),
+                                                       transPatientBean.getPatientName()),
+                                         //                                         (dialog, which) -> updateTransferPatient(),
+                                         (dialog, which) -> dialog.dismiss()).show();
                         break;
                     default:
                         break;
@@ -763,29 +481,81 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
     }
 
     @Override
+    public void onResponseSuccess(Tasks task, BaseResponse response) {
+        super.onResponseSuccess(task, response);
+        switch (task) {
+            case GET_TRANSFER_DETAIL_BY_ID:
+                transPatientBean = (TransPatientBean)response.getData();
+                initPageData();
+                break;
+            case ADD_TRANSFER_PATIENT:
+                //保存最近联系人
+                RecentContactUtils.save(patientBean.getPatientId());
+                NotifyChangeListenerManager.getInstance().notifyRecentContactChange("");
+                HintDialog hintDialog = new HintDialog(TransferPatientActivity.this);
+                hintDialog.isShowCancelBtn(false);
+                hintDialog.setContentString(
+                        String.format(getString(R.string.txt_transfer_patient_to_doc), cooperateDocBean.getName()));
+                hintDialog.setOnEnterClickListener(() -> finish());
+                hintDialog.show();
+                break;
+            case CANCEL_TRANSFER_PATIENT:
+                setResult(RESULT_OK);
+                tvTransferCancel.setVisibility(View.GONE);
+                tvTransferStatus.setText(R.string.txt_transfer_patient_to_cancel_visit);
+                tvTransferStatus.setTextColor(ContextCompat.getColor(TransferPatientActivity.this, R.color._E40505));
+                ivTransferStatu.setImageResource(R.mipmap.icon_refuse);
+                ToastUtil.toast(TransferPatientActivity.this, response.getMsg());
+                break;
+            case REFUSE_TRANSFER_PATIENT:
+                setResult(RESULT_OK);
+                tvTransferCancel.setVisibility(View.GONE);
+                tvTransferNext.setVisibility(View.GONE);
+                tvTransferRefuse.setVisibility(View.GONE);
+                llSelectHospitalLayout.setVisibility(View.GONE);
+                tvTransferStatus.setText(R.string.txt_transfer_patient_to_refuse_visit);
+                tvTransferStatus.setTextColor(ContextCompat.getColor(TransferPatientActivity.this, R.color._E40505));
+                ivTransferStatu.setImageResource(R.mipmap.icon_refuse);
+                ToastUtil.toast(TransferPatientActivity.this, response.getMsg());
+                break;
+            case RECV_TRANSFER_PATIENT:
+                setResult(RESULT_OK);
+                orderState = 2;
+                tvTransferRefuse.setVisibility(View.GONE);
+                tvTransferNext.setVisibility(View.GONE);
+                imageView.setVisibility(View.GONE);
+                llHospitalLayout.setOnClickListener(null);
+                tvTransferStatus.setText(R.string.txt_transfer_patient_to_wait_visit);
+                tvTransferStatus.setTextColor(ContextCompat.getColor(TransferPatientActivity.this, R.color._1F6BAC));
+                ivTransferStatu.setImageResource(R.mipmap.icon_wait_visit);
+                ToastUtil.toast(TransferPatientActivity.this, response.getMsg());
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK) {
             return;
         }
         switch (requestCode) {
             case REQUEST_CODE_TRANSFER_DOC:
-                cooperateDocBean = (CooperateDocBean) data.getSerializableExtra(
-                        CommonData.KEY_DOCTOR_BEAN);
+                cooperateDocBean = (CooperateDocBean)data.getSerializableExtra(CommonData.KEY_DOCTOR_BEAN);
                 if (cooperateDocBean != null) {
                     llTransferDocLayout1.setVisibility(View.VISIBLE);
                     llTransferDocLayout.setVisibility(View.GONE);
                     Glide.with(this)
-                            .load(cooperateDocBean.getPortraitUrl())
-                            .apply(GlideHelper.getOptions())
-                            .into(ivDocHeadImg);
+                         .load(cooperateDocBean.getPortraitUrl())
+                         .apply(GlideHelper.getOptions())
+                         .into(ivDocHeadImg);
                     tvDocName.setText(cooperateDocBean.getName());
-                    tvDocHospital.setText(
-                            cooperateDocBean.getHospital() + "-" + cooperateDocBean.getTitle());
+                    tvDocHospital.setText(cooperateDocBean.getHospital() + "-" + cooperateDocBean.getTitle());
                 }
                 break;
             case REQUEST_CODE_TRANSFER_HOSPITAL:
-                cooperateHospitalBean = (CooperateHospitalBean) data.getSerializableExtra(
-                        CommonData.KEY_HOSPITAL_BEAN);
+                cooperateHospitalBean = (CooperateHospitalBean)data.getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
                 if (cooperateHospitalBean != null) {
                     tvSelectHospitalName.setText(cooperateHospitalBean.getHospitalName());
                 }
@@ -800,8 +570,7 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
     public void onDestroy() {
         super.onDestroy();
         //注销转诊状态监听
-        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(
-                doctorTransferPatientListener, RegisterType.UNREGISTER);
+        iNotifyChangeListenerServer.registerDoctorTransferPatientListener(doctorTransferPatientListener,
+                                                                          RegisterType.UNREGISTER);
     }
-
 }

@@ -28,6 +28,7 @@ import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.CombineBean;
 import com.zyc.doctor.http.bean.CombineChildBean;
 import com.zyc.doctor.http.bean.PatientBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.adapter.FragmentVpAdapter;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
@@ -192,10 +193,10 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
     private void initMenu() {
         //菜单图片,可根据需要设置子菜单个数
         List<String> nameMenuItem = new ArrayList<>();
-        nameMenuItem.add("对话");
-        nameMenuItem.add("转诊");
-        nameMenuItem.add("服务包");
-        nameMenuItem.add("病历");
+        nameMenuItem.add(getString(R.string.txt_menu_chat));
+        nameMenuItem.add(getString(R.string.txt_menu_transfer));
+        nameMenuItem.add(getString(R.string.txt_menu_service));
+        nameMenuItem.add(getString(R.string.txt_menu_case));
         //菜单图片,可根据需要设置子菜单个数
         List<Integer> imageResourceRightBottom = new ArrayList<>();
         imageResourceRightBottom.add(R.mipmap.icon_info_chat);
@@ -332,14 +333,14 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
      * 获取患者基础信息
      */
     private void getPatientCombine() {
-        mIRequest.getPatientCombine(patientId, this);
+        RequestUtils.getPatientCombine(this, patientId, this);
     }
 
     /**
      * 删除病人(取消关注)
      */
     private void deletePatient() {
-        mIRequest.deletePatient(loginSuccessBean.getDoctorId(), patientId, this);
+        RequestUtils.deletePatient(this, loginSuccessBean.getDoctorId(), patientId, this);
     }
 
     @Override

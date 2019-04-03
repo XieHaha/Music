@@ -91,6 +91,26 @@ public enum Tasks {
      */
     GET_DOC_INFO,
     /**
+     * 获取转诊详情
+     */
+    GET_TRANSFER_DETAIL_BY_ID,
+    /**
+     * 取消转诊
+     */
+    CANCEL_TRANSFER_PATIENT,
+    /**
+     * 拒绝转诊
+     */
+    REFUSE_TRANSFER_PATIENT,
+    /**
+     * 接受转诊
+     */
+    RECV_TRANSFER_PATIENT,
+    /**
+     * 医生转诊患者
+     */
+    ADD_TRANSFER_PATIENT,
+    /**
      * 取消合作医生关系
      */
     CANCEL_COOPERATE_DOC,
@@ -102,6 +122,14 @@ public enum Tasks {
      * 删除患者（取消关注）
      */
     DELETE_PATIENT,
+    /**
+     * 获取合作医院
+     */
+    GET_COOPERATE_HOSPITAL_LIST,
+    /**
+     * 获取病例详情
+     */
+    GET_CASE_DETAIL_BY_ID,
     /**
      * 拒绝患者申请
      */
@@ -118,14 +146,6 @@ public enum Tasks {
      * 好友验证
      */
     FRIENDS_VERIFY,
-    /**
-     * 新增患者病例
-     */
-    ADD_PATIENT_CASE,
-    /**
-     * 更新患者病例
-     */
-    UPDATE_PATIENT_CASE,
     /**
      * 删除患者病例
      */
@@ -173,7 +193,7 @@ public enum Tasks {
     /**
      * 新增订单
      */
-    ADD_PRODUCT_ORDER,
+    ADD_PRODUCT_ORDER_NEW,
     /**
      * 获取所有商品
      */
@@ -182,6 +202,14 @@ public enum Tasks {
      * 获取患者综合病史
      */
     GET_PATIENT_COMBINE,
+    /**
+     * 新增患者病例
+     */
+    ADD_PATIENT_CASE,
+    /**
+     * 新增患者病例
+     */
+    UPDATE_PATIENT_CASE,
     /**
      * 我的转诊记录
      */

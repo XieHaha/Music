@@ -15,6 +15,7 @@ import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.PatientBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.adapter.ApplyPatientAdapter;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
@@ -66,11 +67,9 @@ public class ApplyPatientActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("患者申请");
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                android.R.color.holo_red_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_green_light);
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("患者申请");
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
+                                                   android.R.color.holo_orange_light, android.R.color.holo_green_light);
         footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
     }
@@ -89,21 +88,14 @@ public class ApplyPatientActivity extends BaseActivity
         super.initListener();
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
-        autoLoadRecyclerView.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        autoLoadRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(applyPatientAdapter);
-        applyPatientAdapter.setOnItemClickListener((v, position, item) ->
-        {
-            Intent intent = new Intent(
-                    ApplyPatientActivity.this,
-                    AddFriendsPatientActivity.class);
-            intent.putExtra(CommonData.KEY_PATIENT_ID,
-                    item.getPatientId());
-            intent.putExtra(CommonData.KEY_PUBLIC,
-                    false);
-            startActivityForResult(intent,
-                    REQUEST_CODE_APPLY);
+        applyPatientAdapter.setOnItemClickListener((v, position, item) -> {
+            Intent intent = new Intent(ApplyPatientActivity.this, AddFriendsPatientActivity.class);
+            intent.putExtra(CommonData.KEY_PATIENT_ID, item.getPatientId());
+            intent.putExtra(CommonData.KEY_PUBLIC, false);
+            startActivityForResult(intent, REQUEST_CODE_APPLY);
         });
     }
 
@@ -111,7 +103,7 @@ public class ApplyPatientActivity extends BaseActivity
      * 获取患者申请列表
      */
     private void getApplyPatientList() {
-        mIRequest.getApplyPatientList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
+        RequestUtils.getApplyPatientList(this, loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
     }
 
     @Override
@@ -121,14 +113,16 @@ public class ApplyPatientActivity extends BaseActivity
                 applyPatientList = (List<PatientBean>)response.getData();
                 if (page == 0) {
                     applyPatientAdapter.setList(applyPatientList);
-                } else {
+                }
+                else {
                     applyPatientAdapter.addList(applyPatientList);
                 }
                 applyPatientAdapter.notifyDataSetChanged();
                 if (applyPatientList.size() < PAGE_SIZE) {
                     tvHintTxt.setText(R.string.txt_list_none_data_hint);
                     autoLoadRecyclerView.loadFinish(false);
-                } else {
+                }
+                else {
                     tvHintTxt.setText(R.string.txt_list_push_hint);
                     autoLoadRecyclerView.loadFinish(true);
                 }

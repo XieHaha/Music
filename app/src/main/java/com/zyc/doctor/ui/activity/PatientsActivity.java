@@ -19,12 +19,13 @@ import com.google.zxing.integration.android.IntentResult;
 import com.zyc.doctor.R;
 import com.zyc.doctor.api.ApiManager;
 import com.zyc.doctor.api.notify.IChange;
-import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.api.notify.INotifyChangeListenerServer;
+import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.PatientBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.adapter.PatientsListAdapter;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.ToastUtil;
@@ -162,14 +163,14 @@ public class PatientsActivity extends BaseActivity implements SwipeRefreshLayout
      * 获取患者列表数据
      */
     private void getPatientsData() {
-        mIRequest.getPatientList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
+        RequestUtils.getPatientList(this, loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
     }
 
     /**
      * 获取患者申请列表
      */
     private void getApplyPatientList() {
-        mIRequest.getApplyPatientList(loginSuccessBean.getDoctorId(), 0, PAGE_SIZE, this);
+        RequestUtils.getApplyPatientList(this, loginSuccessBean.getDoctorId(), 0, PAGE_SIZE, this);
     }
 
     @Override

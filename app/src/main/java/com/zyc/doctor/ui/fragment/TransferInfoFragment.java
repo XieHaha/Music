@@ -19,6 +19,7 @@ import com.zyc.doctor.http.bean.BaseNetConfig;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.PatientBean;
 import com.zyc.doctor.http.bean.TransPatientBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.activity.TransferPatientActivity;
 import com.zyc.doctor.ui.adapter.TransferInfoAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
@@ -36,9 +37,9 @@ import butterknife.BindView;
  *
  * @author DUNDUN
  */
-public class TransferInfoFragment extends BaseFragment implements LoadMoreListener,
-        SwipeRefreshLayout.OnRefreshListener,
-        BaseRecyclerAdapter.OnItemClickListener<TransPatientBean> {
+public class TransferInfoFragment extends BaseFragment
+        implements LoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
+                   BaseRecyclerAdapter.OnItemClickListener<TransPatientBean> {
     @BindView(R.id.fragment_health_record_recycler)
     AutoLoadRecyclerView autoLoadRecyclerView;
     @BindView(R.id.fragment_swipe_layout)
@@ -95,9 +96,8 @@ public class TransferInfoFragment extends BaseFragment implements LoadMoreListen
         super.initView(view, savedInstanceState);
         footerView = LayoutInflater.from(getActivity()).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                android.R.color.holo_red_light, android.R.color.holo_orange_light,
-                android.R.color.holo_green_light);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
+                                                   android.R.color.holo_orange_light, android.R.color.holo_green_light);
     }
 
     @Override
@@ -114,8 +114,8 @@ public class TransferInfoFragment extends BaseFragment implements LoadMoreListen
     public void initListener() {
         super.initListener();
         swipeRefreshLayout.setOnRefreshListener(this);
-        autoLoadRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),
-                LinearLayoutManager.VERTICAL, false));
+        autoLoadRecyclerView.setLayoutManager(
+                new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(transferInfoAdapter);
         transferInfoAdapter.setOnItemClickListener(this);
@@ -133,8 +133,8 @@ public class TransferInfoFragment extends BaseFragment implements LoadMoreListen
      * 获取我的转诊记录
      */
     private void getTransferInfoList() {
-        mIRequest.getTransferByPatient(loginSuccessBean.getDoctorId(), patientId, page, PAGE_SIZE
-                , DAYS_DATA, this);
+        RequestUtils.getTransferByPatient(getContext(), loginSuccessBean.getDoctorId(), patientId, page, PAGE_SIZE,
+                                          DAYS_DATA, this);
     }
 
     @Override
@@ -153,7 +153,8 @@ public class TransferInfoFragment extends BaseFragment implements LoadMoreListen
                 transferPatientBeanList = (ArrayList<TransPatientBean>)response.getData();
                 if (transferPatientBeanList != null && transferPatientBeanList.size() > 0) {
                     llNoneLayout.setVisibility(View.GONE);
-                } else {
+                }
+                else {
                     llNoneLayout.setVisibility(View.VISIBLE);
                     tvNoneTxt.setText("还没有转诊记录哦~");
                 }
@@ -221,5 +222,4 @@ public class TransferInfoFragment extends BaseFragment implements LoadMoreListen
                 break;
         }
     }
-
 }

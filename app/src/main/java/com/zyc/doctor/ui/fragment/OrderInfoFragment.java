@@ -17,6 +17,7 @@ import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.PatientBean;
 import com.zyc.doctor.http.bean.RegistrationBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.activity.RegistrationDetailActivity;
 import com.zyc.doctor.ui.adapter.OrderInfoAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
@@ -34,9 +35,8 @@ import butterknife.BindView;
  *
  * @author DUNDUN
  */
-public class OrderInfoFragment extends BaseFragment
-        implements LoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
-        BaseRecyclerAdapter.OnItemClickListener<RegistrationBean> {
+public class OrderInfoFragment extends BaseFragment implements LoadMoreListener, SwipeRefreshLayout.OnRefreshListener,
+                                                               BaseRecyclerAdapter.OnItemClickListener<RegistrationBean> {
     @BindView(R.id.fragment_health_record_recycler)
     AutoLoadRecyclerView autoLoadRecyclerView;
     @BindView(R.id.fragment_swipe_layout)
@@ -74,13 +74,10 @@ public class OrderInfoFragment extends BaseFragment
     @Override
     public void initView(@NonNull View view, @NonNull Bundle savedInstanceState) {
         super.initView(view, savedInstanceState);
-
         footerView = LayoutInflater.from(getActivity()).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                android.R.color.holo_red_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_green_light);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
+                                                   android.R.color.holo_orange_light, android.R.color.holo_green_light);
     }
 
     @Override
@@ -118,7 +115,7 @@ public class OrderInfoFragment extends BaseFragment
      * 获取患者订单
      */
     private void getPatientAllOrders() {
-        mIRequest.getPatientOrders(loginSuccessBean.getDoctorId(), patientId, page, PAGE_SIZE, this);
+        RequestUtils.getPatientOrders(getContext(),loginSuccessBean.getDoctorId(), patientId, page, PAGE_SIZE, this);
     }
 
     @Override
@@ -140,7 +137,8 @@ public class OrderInfoFragment extends BaseFragment
                 if (list != null && list.size() > 0) {
                     llNoneLayout.setVisibility(View.GONE);
                     registrationBeans.addAll(list);
-                } else {
+                }
+                else {
                     llNoneLayout.setVisibility(View.VISIBLE);
                     tvNoneTxt.setText("还没有开单记录哦~");
                 }
@@ -148,7 +146,8 @@ public class OrderInfoFragment extends BaseFragment
                 if (registrationBeans.size() < PAGE_SIZE) {
                     tvHintTxt.setText(R.string.txt_list_none_data_hint);
                     autoLoadRecyclerView.loadFinish(false);
-                } else {
+                }
+                else {
                     tvHintTxt.setText(R.string.txt_list_push_hint);
                     autoLoadRecyclerView.loadFinish(true);
                 }
@@ -185,5 +184,4 @@ public class OrderInfoFragment extends BaseFragment
         page = 0;
         getPatientAllOrders();
     }
-
 }

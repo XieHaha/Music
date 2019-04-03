@@ -11,15 +11,15 @@ import android.widget.TextView;
 
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.adapter.FragmentVpAdapter;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.fragment.TransferPatientFromFragment;
 import com.zyc.doctor.ui.fragment.TransferPatientToFragment;
+import com.zyc.doctor.widgets.view.ViewPrepared;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.widgets.view.ViewPrepared;
 
 /**
  * @author dundun
@@ -35,7 +35,6 @@ public class TransferPatientHistoryActivity extends BaseActivity {
     View viewIndicator;
     @BindView(R.id.act_health_card_viewpager)
     ViewPager viewPager;
-
     private FragmentVpAdapter fragmentVpAdapter;
     /**
      * 转入
@@ -60,7 +59,7 @@ public class TransferPatientHistoryActivity extends BaseActivity {
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("转诊记录");
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("转诊记录");
     }
 
     @Override
@@ -87,8 +86,7 @@ public class TransferPatientHistoryActivity extends BaseActivity {
         from.setOnClickListener(this);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset,
-                                       int positionOffsetPixels) {
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 int tabWidth = to.getWidth();
                 viewIndicator.setTranslationX((position * tabWidth) + (positionOffset * tabWidth));
             }

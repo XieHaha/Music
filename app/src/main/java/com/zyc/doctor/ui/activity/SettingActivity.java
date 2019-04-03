@@ -11,8 +11,14 @@ import android.widget.TextView;
 import com.hyphenate.chat.EMClient;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
+import com.zyc.doctor.http.bean.CooperateDocBean;
+import com.zyc.doctor.http.bean.PatientBean;
+import com.zyc.doctor.http.bean.Version;
+import com.zyc.doctor.ui.base.activity.AppManager;
+import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.utils.LogUtils;
+import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.version.presenter.VersionPresenter;
 import com.zyc.doctor.version.view.VersionUpdateDialog;
 
@@ -20,12 +26,6 @@ import org.litepal.crud.DataSupport;
 
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
-import com.zyc.doctor.http.bean.CooperateDocBean;
-import com.zyc.doctor.http.bean.PatientBean;
-import com.zyc.doctor.http.bean.Version;
-import com.zyc.doctor.ui.base.activity.AppManager;
-import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.utils.ToastUtil;
 
 /**
  * @author dundun
@@ -37,7 +37,6 @@ public class SettingActivity extends BaseActivity
     TextView tvVersion;
     @BindView(R.id.act_setting_version_remind)
     TextView tvVersionRemind;
-
     /**
      * 版本检测
      */
@@ -46,10 +45,6 @@ public class SettingActivity extends BaseActivity
      * 版本弹窗
      */
     private VersionUpdateDialog versionUpdateDialog;
-    /**
-     * 是否通过广播检查版本更新
-     */
-    private boolean versionUpdateChecked = false;
 
     @Override
     protected boolean isInitBackBtn() {
@@ -64,7 +59,7 @@ public class SettingActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("设置");
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("设置");
     }
 
     @Override
@@ -75,7 +70,8 @@ public class SettingActivity extends BaseActivity
         mVersionPresenter.setVersionViewListener(this);
         if (YihtApplication.getInstance().isVersionRemind()) {
             tvVersionRemind.setVisibility(View.VISIBLE);
-        } else {
+        }
+        else {
             tvVersionRemind.setVisibility(View.GONE);
         }
         getAppVersionCode();
@@ -95,7 +91,8 @@ public class SettingActivity extends BaseActivity
             if (!TextUtils.isEmpty(name)) {
                 tvVersion.setText("V" + name);
             }
-        } catch (PackageManager.NameNotFoundException e) {
+        }
+        catch (PackageManager.NameNotFoundException e) {
             LogUtils.w(TAG, "Exception error!", e);
         }
     }
@@ -107,8 +104,7 @@ public class SettingActivity extends BaseActivity
                 mVersionPresenter.init();
                 break;
             case R.id.act_setting_exit_layout:
-                new SimpleDialog(this, "确定退出?", (dialog, which) ->
-                {
+                new SimpleDialog(this, getString(R.string.txt_exit_hint), (dialog, which) -> {
                     //清除登录信息
                     YihtApplication.getInstance().clearLoginSuccessBean();
                     //清除数据库数据
@@ -161,13 +157,11 @@ public class SettingActivity extends BaseActivity
      */
     @Override
     public void updateNetWorkError() {
-        versionUpdateChecked = true;
     }
 
     @Override
     public void onEnter(boolean isMustUpdate) {
         mVersionPresenter.getNewAPK(isMustUpdate);
-        ToastUtil.toast(this, "开始下载");
+        ToastUtil.toast(this, R.string.txt_download_hint);
     }
-
 }

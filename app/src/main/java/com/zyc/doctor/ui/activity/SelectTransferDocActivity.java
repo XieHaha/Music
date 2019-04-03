@@ -15,6 +15,7 @@ import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.CooperateDocBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.adapter.CooperateDocListAdapter;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
@@ -36,7 +37,6 @@ public class SelectTransferDocActivity extends BaseActivity
     AutoLoadRecyclerView autoLoadRecyclerView;
     @BindView(R.id.act_cooperate_swipe_layout)
     SwipeRefreshLayout swipeRefreshLayout;
-
     private TextView tvHintTxt;
     private View footerView;
     private CooperateDocListAdapter cooperateDocListAdapter;
@@ -63,13 +63,11 @@ public class SelectTransferDocActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("合作医生");
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("合作医生");
         footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                android.R.color.holo_red_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_green_light);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
+                                                   android.R.color.holo_orange_light, android.R.color.holo_green_light);
     }
 
     @Override
@@ -85,16 +83,12 @@ public class SelectTransferDocActivity extends BaseActivity
     public void initListener() {
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
-        autoLoadRecyclerView.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        autoLoadRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(cooperateDocListAdapter);
-        cooperateDocListAdapter.setOnItemClickListener((v, position, item) ->
-        {
+        cooperateDocListAdapter.setOnItemClickListener((v, position, item) -> {
             Intent intent = new Intent();
-            intent.putExtra(
-                    CommonData.KEY_DOCTOR_BEAN,
-                    item);
+            intent.putExtra(CommonData.KEY_DOCTOR_BEAN, item);
             setResult(RESULT_OK, intent);
             finish();
         });
@@ -104,7 +98,7 @@ public class SelectTransferDocActivity extends BaseActivity
      * 获取合作医生列表数据
      */
     private void getCooperateList() {
-        mIRequest.getCooperateList(loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
+        RequestUtils.getCooperateList(this, loginSuccessBean.getDoctorId(), page, PAGE_SIZE, this);
     }
 
     @Override
@@ -129,14 +123,16 @@ public class SelectTransferDocActivity extends BaseActivity
                     cooperateDocBeanList = (List<CooperateDocBean>)response.getData();
                     if (page == 0) {
                         cooperateDocListAdapter.setList(cooperateDocBeanList);
-                    } else {
+                    }
+                    else {
                         cooperateDocListAdapter.addList(cooperateDocBeanList);
                     }
                     cooperateDocListAdapter.notifyDataSetChanged();
                     if (cooperateDocBeanList.size() < PAGE_SIZE) {
                         tvHintTxt.setText(R.string.txt_list_none_data_hint);
                         autoLoadRecyclerView.loadFinish(false);
-                    } else {
+                    }
+                    else {
                         tvHintTxt.setText(R.string.txt_list_push_hint);
                         autoLoadRecyclerView.loadFinish(true);
                     }
@@ -172,5 +168,4 @@ public class SelectTransferDocActivity extends BaseActivity
         super.onResponseEnd(task);
         swipeRefreshLayout.setRefreshing(false);
     }
-
 }

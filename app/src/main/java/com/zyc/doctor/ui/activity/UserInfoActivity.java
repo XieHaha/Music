@@ -21,6 +21,7 @@ import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.CooperateDocBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.utils.AllUtils;
@@ -163,14 +164,14 @@ public class UserInfoActivity extends BaseActivity {
      * 获取个人信息
      */
     private void getDocInfo() {
-        mIRequest.getDocInfo(cooperateDocBean.getDoctorId(), this);
+        RequestUtils.getDocInfo(this, cooperateDocBean.getDoctorId(), this);
     }
 
     /**
      * 取消关注 合作医生
      */
     private void cancelCooperateDoc() {
-        mIRequest.cancelCooperateDoc(loginSuccessBean.getDoctorId(), cooperateDocBean.getDoctorId(), this);
+        RequestUtils.cancelCooperateDoc(this, loginSuccessBean.getDoctorId(), cooperateDocBean.getDoctorId(), this);
     }
 
     @Override
@@ -278,10 +279,10 @@ public class UserInfoActivity extends BaseActivity {
      */
     private void showPop() {
         viewPop = LayoutInflater.from(this).inflate(R.layout.main_pop_menu, null);
-        tvOne = (TextView)viewPop.findViewById(R.id.txt_one);
-        tvTwo = (TextView)viewPop.findViewById(R.id.txt_two);
-        tvOne.setText("设置备注");
-        tvTwo.setText("删除");
+        tvOne = viewPop.findViewById(R.id.txt_one);
+        tvTwo = viewPop.findViewById(R.id.txt_two);
+        tvOne.setText(R.string.txt_menu_remark);
+        tvTwo.setText(R.string.txt_menu_delete);
         tvOne.setOnClickListener(this);
         tvTwo.setOnClickListener(this);
         if (mPopupwinow == null) {

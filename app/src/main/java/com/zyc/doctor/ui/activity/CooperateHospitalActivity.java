@@ -15,6 +15,7 @@ import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.HospitalBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.adapter.CooperateHospitalAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
@@ -33,8 +34,7 @@ import butterknife.BindView;
  */
 public class CooperateHospitalActivity extends BaseActivity
         implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener,
-        BaseRecyclerAdapter.OnItemClickListener<HospitalBean> {
-
+                   BaseRecyclerAdapter.OnItemClickListener<HospitalBean> {
     @BindView(R.id.act_apply_cooperate_recycler_view)
     AutoLoadRecyclerView autoLoadRecyclerView;
     @BindView(R.id.act_apply_cooperate_swipe_layout)
@@ -65,11 +65,9 @@ public class CooperateHospitalActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView) findViewById(R.id.public_title_bar_title)).setText("合作医院");
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                android.R.color.holo_red_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_green_light);
+        ((TextView)findViewById(R.id.public_title_bar_title)).setText("合作医院");
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
+                                                   android.R.color.holo_orange_light, android.R.color.holo_green_light);
         footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
     }
@@ -88,8 +86,7 @@ public class CooperateHospitalActivity extends BaseActivity
         super.initListener();
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
-        autoLoadRecyclerView.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        autoLoadRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(cooperateHospitalAdapter);
         cooperateHospitalAdapter.setOnItemClickListener(this);
@@ -99,7 +96,7 @@ public class CooperateHospitalActivity extends BaseActivity
      * 获取医院列表
      */
     private void getHospitalListByDoctorId() {
-        mIRequest.getHospitalListByDoctorId(loginSuccessBean.getDoctorId(), this);
+        RequestUtils.getHospitalListByDoctorId(this, loginSuccessBean.getDoctorId(), this);
     }
 
     @Override
@@ -117,14 +114,16 @@ public class CooperateHospitalActivity extends BaseActivity
                 hospitalBeans = (List<HospitalBean>)response.getData();
                 if (page == 0) {
                     cooperateHospitalAdapter.setList(hospitalBeans);
-                } else {
+                }
+                else {
                     cooperateHospitalAdapter.addList(hospitalBeans);
                 }
                 cooperateHospitalAdapter.notifyDataSetChanged();
                 if (hospitalBeans.size() < PAGE_SIZE) {
                     tvHintTxt.setText(R.string.txt_list_none_data_hint);
                     autoLoadRecyclerView.loadFinish(false);
-                } else {
+                }
+                else {
                     tvHintTxt.setText(R.string.txt_list_push_hint);
                     autoLoadRecyclerView.loadFinish(true);
                 }
@@ -172,5 +171,4 @@ public class CooperateHospitalActivity extends BaseActivity
         page++;
         getHospitalListByDoctorId();
     }
-
 }

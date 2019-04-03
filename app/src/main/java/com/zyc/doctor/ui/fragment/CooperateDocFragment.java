@@ -189,8 +189,8 @@ public class CooperateDocFragment extends BaseFragment
         viewPop = LayoutInflater.from(getActivity()).inflate(R.layout.health_pop_menu, null);
         tvOne = viewPop.findViewById(R.id.txt_one);
         tvTwo = viewPop.findViewById(R.id.txt_two);
-        tvOne.setText("扫一扫");
-        tvTwo.setText("合作医院医生");
+        tvOne.setText(R.string.txt_camera);
+        tvTwo.setText(R.string.txt_menu_doc);
         tvOne.setOnClickListener(this);
         tvTwo.setOnClickListener(this);
         if (mPopupwinow == null) {

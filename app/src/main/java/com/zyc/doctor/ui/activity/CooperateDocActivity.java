@@ -50,7 +50,6 @@ public class CooperateDocActivity extends BaseActivity
     AutoLoadRecyclerView autoLoadRecyclerView;
     @BindView(R.id.act_cooperate_swipe_layout)
     SwipeRefreshLayout swipeRefreshLayout;
-
     private TextView tvHintTxt;
     private View footerView;
     private CooperateHospitalDocListAdapter cooperateHospitalDocListAdapter;
@@ -80,22 +79,18 @@ public class CooperateDocActivity extends BaseActivity
         super.initView(savedInstanceState);
         footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
         tvHintTxt = footerView.findViewById(R.id.footer_hint_txt);
-        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
-                android.R.color.holo_red_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_green_light);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
+                                                   android.R.color.holo_orange_light, android.R.color.holo_green_light);
     }
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        cooperateHospitalDocListAdapter = new CooperateHospitalDocListAdapter(this,
-                cooperateHospitalDocBeans);
+        cooperateHospitalDocListAdapter = new CooperateHospitalDocListAdapter(this, cooperateHospitalDocBeans);
         cooperateHospitalDocListAdapter.addFooterView(footerView);
         page = 0;
         if (getIntent() != null) {
-            hospitalBean = (HospitalBean) getIntent().getSerializableExtra(
-                    CommonData.KEY_HOSPITAL_BEAN);
+            hospitalBean = (HospitalBean)getIntent().getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
         }
         if (hospitalBean != null) {
             tvTitle.setText(hospitalBean.getHospitalName());
@@ -107,24 +102,16 @@ public class CooperateDocActivity extends BaseActivity
     public void initListener() {
         swipeRefreshLayout.setOnRefreshListener(this);
         autoLoadRecyclerView.setLoadMoreListener(this);
-        autoLoadRecyclerView.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        autoLoadRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
         autoLoadRecyclerView.setAdapter(cooperateHospitalDocListAdapter);
-        cooperateHospitalDocListAdapter.setOnItemClickListener((v, position, item) ->
-        {
-            Intent intent = new Intent(this,
-                    AddFriendsDocActivity.class);
-            intent.putExtra(
-                    CommonData.KEY_DOCTOR_ID,
-                    item.getDoctorId());
-            intent.putExtra(
-                    CommonData.KEY_PUBLIC,
-                    true);
+        cooperateHospitalDocListAdapter.setOnItemClickListener((v, position, item) -> {
+            Intent intent = new Intent(this, AddFriendsDocActivity.class);
+            intent.putExtra(CommonData.KEY_DOCTOR_ID, item.getDoctorId());
+            intent.putExtra(CommonData.KEY_PUBLIC, true);
             startActivity(intent);
         });
-        editText.setOnEditorActionListener((v, actionId, event) ->
-        {
+        editText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 hideSoftInputFromWindow();
                 search(v.getText().toString());
@@ -140,7 +127,8 @@ public class CooperateDocActivity extends BaseActivity
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!TextUtils.isEmpty(s)) {
                     search(s.toString());
-                } else {
+                }
+                else {
                     cooperateHospitalDocListAdapter.setList(cooperateHospitalDocBeans);
                     cooperateHospitalDocListAdapter.notifyDataSetChanged();
                 }
@@ -157,8 +145,7 @@ public class CooperateDocActivity extends BaseActivity
      */
     private void getCooperateHospitalDoctorList() {
         if (hospitalBean != null) {
-            mIRequest.getCooperateHospitalDoctorList(hospitalBean.getHospitalId(), page, PAGE_SIZE,
-                    this);
+            mIRequest.getCooperateHospitalDoctorList(hospitalBean.getHospitalId(), page, PAGE_SIZE, this);
         }
     }
 
@@ -169,7 +156,7 @@ public class CooperateDocActivity extends BaseActivity
      */
     private void search(String key) {
         List<CooperateHospitalDocBean> datas = DataSupport.where("name like ?", "%" + key + "%")
-                .find(CooperateHospitalDocBean.class);
+                                                          .find(CooperateHospitalDocBean.class);
         cooperateHospitalDocListAdapter.setList(datas);
         cooperateHospitalDocListAdapter.notifyDataSetChanged();
     }
@@ -196,14 +183,16 @@ public class CooperateDocActivity extends BaseActivity
                     cooperateHospitalDocBeans = (List<CooperateHospitalDocBean>)response.getData();
                     if (page == 0) {
                         cooperateHospitalDocListAdapter.setList(cooperateHospitalDocBeans);
-                    } else {
+                    }
+                    else {
                         cooperateHospitalDocListAdapter.addList(cooperateHospitalDocBeans);
                     }
                     cooperateHospitalDocListAdapter.notifyDataSetChanged();
                     if (cooperateHospitalDocBeans.size() < PAGE_SIZE) {
                         tvHintTxt.setText(R.string.txt_list_none_data_hint);
                         autoLoadRecyclerView.loadFinish(false);
-                    } else {
+                    }
+                    else {
                         tvHintTxt.setText(R.string.txt_list_push_hint);
                         autoLoadRecyclerView.loadFinish(true);
                     }
@@ -247,8 +236,7 @@ public class CooperateDocActivity extends BaseActivity
      * 隐藏软键盘
      */
     private void hideSoftInputFromWindow() {
-        InputMethodManager inputmanger = (InputMethodManager) getSystemService(
-                Context.INPUT_METHOD_SERVICE);
+        InputMethodManager inputmanger = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         inputmanger.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 }
