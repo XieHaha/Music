@@ -307,11 +307,11 @@ public class CooperateDocFragment extends BaseFragment
                     }
                     cooperateDocListAdapter.notifyDataSetChanged();
                     if (cooperateDocBeanList.size() < PAGE_SIZE) {
-                        tvHintTxt.setText("暂无更多数据");
+                        tvHintTxt.setText(R.string.txt_list_none_data_hint);
                         autoLoadRecyclerView.loadFinish(false);
                     }
                     else {
-                        tvHintTxt.setText("上拉加载更多");
+                        tvHintTxt.setText(R.string.txt_list_push_hint);
                         autoLoadRecyclerView.loadFinish(true);
                     }
                     //数据存储
@@ -329,14 +329,15 @@ public class CooperateDocFragment extends BaseFragment
                 break;
             case GET_APPLY_COOPERATE_DOC_LIST:
                 ArrayList<CooperateDocBean> list = (ArrayList<CooperateDocBean>)response.getData();
-                if (list.size() > 0) {
+                if (list != null && list.size() > 0) {
                     rlMsgHint.setVisibility(View.VISIBLE);
                     tvNum.setText(String.valueOf(list.size()));
+                    sharePreferenceUtil.putString(CommonData.KEY_DOCTOR_APPLY_NUM, String.valueOf(list.size()));
                 }
                 else {
                     rlMsgHint.setVisibility(View.GONE);
+                    sharePreferenceUtil.putString(CommonData.KEY_DOCTOR_APPLY_NUM, "0");
                 }
-                sharePreferenceUtil.putString(CommonData.KEY_DOCTOR_APPLY_NUM, String.valueOf(list.size()));
                 if (onDocApplyCallbackListener != null) {
                     onDocApplyCallbackListener.onDocApplyCallback();
                 }
@@ -352,7 +353,7 @@ public class CooperateDocFragment extends BaseFragment
         if (page > 0) {
             page--;
         }
-        tvHintTxt.setText("暂无更多数据");
+        tvHintTxt.setText(R.string.txt_list_none_data_hint);
         autoLoadRecyclerView.loadFinish();
     }
 
@@ -362,7 +363,7 @@ public class CooperateDocFragment extends BaseFragment
         if (page > 0) {
             page--;
         }
-        tvHintTxt.setText("暂无更多数据");
+        tvHintTxt.setText(R.string.txt_list_none_data_hint);
         autoLoadRecyclerView.loadFinish();
     }
 
@@ -379,6 +380,9 @@ public class CooperateDocFragment extends BaseFragment
     }
 
     public interface OnDocApplyCallbackListener {
+        /**
+         * 合作医生申请
+         */
         void onDocApplyCallback();
     }
 

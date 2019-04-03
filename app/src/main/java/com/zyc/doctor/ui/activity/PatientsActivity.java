@@ -262,11 +262,11 @@ public class PatientsActivity extends BaseActivity implements SwipeRefreshLayout
                     }
                     patientsListAdapter.notifyDataSetChanged();
                     if (patientBeanList.size() < PAGE_SIZE) {
-                        tvFooterHintTxt.setText("暂无更多数据");
+                        tvFooterHintTxt.setText(R.string.txt_list_none_data_hint);
                         autoLoadRecyclerView.loadFinish(false);
                     }
                     else {
-                        tvFooterHintTxt.setText("上拉加载更多");
+                        tvFooterHintTxt.setText(R.string.txt_list_push_hint);
                         autoLoadRecyclerView.loadFinish(true);
                     }
                     //数据存储
@@ -304,7 +304,7 @@ public class PatientsActivity extends BaseActivity implements SwipeRefreshLayout
         if (page > 0) {
             page--;
         }
-        tvFooterHintTxt.setText("暂无更多数据");
+        tvFooterHintTxt.setText(R.string.txt_list_none_data_hint);
         autoLoadRecyclerView.loadFinish();
     }
 
@@ -314,7 +314,7 @@ public class PatientsActivity extends BaseActivity implements SwipeRefreshLayout
         if (page > 0) {
             page--;
         }
-        tvFooterHintTxt.setText("暂无更多数据");
+        tvFooterHintTxt.setText(R.string.txt_list_none_data_hint);
         autoLoadRecyclerView.loadFinish();
     }
 

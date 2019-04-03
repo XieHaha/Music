@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
  */
 public class FilterEmojiEditText extends AppCompatEditText {
     private int maxTextLength = 100;
-    private String filterImoji = "[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\ud83e\udc00-\ud83e\udfff]||[\u2600-\u27ff]";
+    private String filterImoji = "[\ud83c\udc00-\ud83c\udfff]|[\ud83d\udc00-\ud83d\udfff]|[\u2600-\u27ff]";
     private InputFilter[] emojiFilters;
     private Context context;
 
@@ -55,7 +55,7 @@ public class FilterEmojiEditText extends AppCompatEditText {
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
             Matcher emojiMatcher = emoji.matcher(source);
             if (emojiMatcher.find()) {
-                ToastUtil.toast(getContext(), "不支持输入Emoji表情");
+                ToastUtil.toast(getContext(), R.string.toast_limit_emoji);
                 return "";
             }
             return null;

@@ -22,6 +22,10 @@
     <string name="act_about_our">关于我们</string>
     <string name="act_capture">扫描</string>
 
+    <!--public-->
+    <string name="txt_list_none_data_hint">暂无更多数据</string>
+    <string name="txt_list_push_hint">上拉加载更多</string>
+
 
     <!--启动页 引导页-->
     <string name="txt_splash_btn">开始使用</string>
@@ -99,12 +103,17 @@
     <string name="txt_transfer_patient_to_select_hospital_title">接诊医院</string>
     <string name="txt_transfer_patient_to_select_hospital">请选择接诊医院</string>
     <string name="txt_transfer_patient_reverse_time_title">检查时间</string>
+
+    <!--Toast-->
+    <string name="toast_limit_emoji">不支持输入Emoji表情</string>
+
     <!--dialog-->
     <string name="dialog_public_title">温馨提示</string>
     <string name="dialog_txt_confirm">确定</string>
     <string name="txt_cancel">取消</string>
     <string name="toast_public_the_camera_is_not_available">照相机不可用</string>
     <string name="toast_public_video_not_available">视频不可用</string>
+
     <!--permission-->
     <string name="toast_public_current_no_network">当前无网络连接</string>
     <string name="dialog_no_camera_permission_tip">无法打开摄像头，请检查是否已经打开摄像头权限</string>
@@ -120,8 +129,7 @@
     <string name="dialog_no_record_tip">无法录像，请检查是否打开相机和录音权限</string>
     <string name="dialog_discard_before_vedio">确认将丢弃之前已拍摄的视频</string>
 
-    <string name="title_activity_main">ExspandTextView</string>
-    <string name="title_activity_listview">ExspandTextView in ListView</string>
+    <!--expand TextView-->
     <string name="to_expand_hint">展开&#62;&#62;</string>
     <string name="to_shrink_hint">&#60;&#60;收起</string>
 

@@ -185,7 +185,7 @@ public class TransferInfoFragment extends BaseFragment implements LoadMoreListen
         if (page > 0) {
             page--;
         }
-        tvHintTxt.setText("暂无更多数据");
+        tvHintTxt.setText(R.string.txt_list_none_data_hint);
         autoLoadRecyclerView.loadFinish();
     }
 

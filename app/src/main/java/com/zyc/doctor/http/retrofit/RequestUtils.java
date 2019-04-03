@@ -24,7 +24,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .getSplash(params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, false, Tasks.GET_SPLASH, listener));
+                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_SPLASH, listener));
     }
 
     public static void getNewVersion(Context context, final ResponseListener listener) {
@@ -55,7 +55,7 @@ public class RequestUtils {
         RetrofitManager.getApiUrlManager()
                        .login(params)
                        .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, false, Tasks.LOGIN_AND_REGISTER, listener));
+                       .subscribe(new AbstractBaseObserver<>(context, Tasks.LOGIN_AND_REGISTER, listener));
     }
 
     public static void getAllProduct(Context context, final ResponseListener<BaseResponse> listener) {

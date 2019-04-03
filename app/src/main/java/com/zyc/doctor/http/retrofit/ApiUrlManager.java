@@ -136,6 +136,6 @@ public interface ApiUrlManager {
      * @param info
      * @return
      */
-    @GET("colleborate/applyList")
+    @POST("colleborate/applyList")
     Observable<BaseResponse<List<CooperateDocBean>>> getApplyCooperateList(@Body Map<String, Object> info);
 }

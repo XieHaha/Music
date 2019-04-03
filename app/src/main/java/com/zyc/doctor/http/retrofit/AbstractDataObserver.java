@@ -43,6 +43,9 @@ public abstract class AbstractDataObserver<T> implements Observer<BaseResponse<T
 
     @Override
     public void onComplete() {
+        if (listener != null) {
+            listener.onResponseEnd(task);
+        }
     }
 
     @Override

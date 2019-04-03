@@ -30,7 +30,7 @@ public class AbstractBaseObserver<T> extends AbstractDataObserver<T> {
     }
 
     public AbstractBaseObserver(Context context, Tasks task, ResponseListener listener) {
-        this(context, true, task, listener);
+        this(context, false, task, listener);
     }
 
     @Override

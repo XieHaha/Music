@@ -126,10 +126,10 @@ public class ApplyPatientActivity extends BaseActivity
                 }
                 applyPatientAdapter.notifyDataSetChanged();
                 if (applyPatientList.size() < PAGE_SIZE) {
-                    tvHintTxt.setText("暂无更多数据");
+                    tvHintTxt.setText(R.string.txt_list_none_data_hint);
                     autoLoadRecyclerView.loadFinish(false);
                 } else {
-                    tvHintTxt.setText("上拉加载更多");
+                    tvHintTxt.setText(R.string.txt_list_push_hint);
                     autoLoadRecyclerView.loadFinish(true);
                 }
                 break;
@@ -145,7 +145,7 @@ public class ApplyPatientActivity extends BaseActivity
                 if (page > 0) {
                     page--;
                 }
-                tvHintTxt.setText("暂无更多数据");
+                tvHintTxt.setText(R.string.txt_list_none_data_hint);
                 autoLoadRecyclerView.loadFinish();
                 break;
             default:
@@ -161,7 +161,7 @@ public class ApplyPatientActivity extends BaseActivity
                 if (page > 0) {
                     page--;
                 }
-                tvHintTxt.setText("暂无更多数据");
+                tvHintTxt.setText(R.string.txt_list_none_data_hint);
                 autoLoadRecyclerView.loadFinish();
                 break;
             default:
