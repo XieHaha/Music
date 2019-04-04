@@ -22,7 +22,7 @@ public interface FragmentInterface {
     /**
      * setContentView调用前调用
      */
-    void befordCreateView(@NonNull Bundle savedInstanceState);
+    void beforeCreateView(@NonNull Bundle savedInstanceState);
 
     /**
      * 初始化界面view，调用顺序为1

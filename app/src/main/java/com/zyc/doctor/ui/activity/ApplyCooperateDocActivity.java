@@ -113,6 +113,9 @@ public class ApplyCooperateDocActivity extends BaseActivity
         switch (task) {
             case GET_APPLY_COOPERATE_DOC_LIST:
                 applyCooperateList = (List<CooperateDocBean>)response.getData();
+                if (applyCooperateList == null) {
+                    applyCooperateList = new ArrayList<>();
+                }
                 if (page == 0) {
                     applyCooperateAdapter.setList(applyCooperateList);
                 }

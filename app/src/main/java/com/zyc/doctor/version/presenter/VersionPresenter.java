@@ -21,7 +21,6 @@ import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
-import com.zyc.doctor.http.IRequest;
 import com.zyc.doctor.http.bean.Version;
 import com.zyc.doctor.utils.DirHelper;
 import com.zyc.doctor.utils.LogUtils;
@@ -39,7 +38,6 @@ import java.io.File;
 public class VersionPresenter implements ConstantsVersionMode {
     private static final String TAG = "VersionPresenter";
     private Context context;
-    private IRequest request;
     private VersionModel versionModel;
     private Version nowVersion;
     private NotificationCompat.Builder builder;
@@ -55,11 +53,6 @@ public class VersionPresenter implements ConstantsVersionMode {
         this.context = context;
     }
 
-    public VersionPresenter(Context context, IRequest request) {
-        this.context = context;
-        this.request = request;
-    }
-
     public void init() {
         manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         builder = new NotificationCompat.Builder(context);
@@ -69,7 +62,7 @@ public class VersionPresenter implements ConstantsVersionMode {
                .setSmallIcon(R.mipmap.ic_launcher);
         pendingIntent = PendingIntent.getActivity(context, UPDATE_VERSION_RESULT, new Intent(),
                                                   PendingIntent.FLAG_UPDATE_CURRENT);
-        versionModel = new VersionModel(context, request);
+        versionModel = new VersionModel(context);
         updateVersionByNetwork();
     }
 

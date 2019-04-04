@@ -198,21 +198,21 @@ public class AddFriendsPatientActivity extends BaseActivity {
      * mode {@link #ADD_PATIENT}
      */
     private void addPatientByScan() {
-        mIRequest.addPatientByScan(loginSuccessBean.getDoctorId(), patientId, ADD_PATIENT, this);
+        RequestUtils.addPatientByScan(this, loginSuccessBean.getDoctorId(), patientId, ADD_PATIENT, this);
     }
 
     /**
      * 拒绝患者申请
      */
     private void refusePatientApply() {
-        mIRequest.refusePatientApply(loginSuccessBean.getDoctorId(), patientId, MODE, this);
+        RequestUtils.refusePatientApply(this, loginSuccessBean.getDoctorId(), patientId, MODE, this);
     }
 
     /**
      * 同意患者申请
      */
     private void agreePatientApply() {
-        mIRequest.agreePatientApply(loginSuccessBean.getDoctorId(), patientId, MODE, this);
+        RequestUtils.agreePatientApply(this, loginSuccessBean.getDoctorId(), patientId, MODE, this);
     }
 
     @Override

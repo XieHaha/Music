@@ -17,4 +17,12 @@ public interface BaseNetConfig {
      * 设置默认超时时间
      */
     int DEFAULT_TIME = 10;
+    /**
+     * 用户使用协议
+     */
+    String BASE_BASIC_USER_PROTOCOL_URL = "http://www.zychealth.com/privacy/doctor.html";
+    /**
+     * 下载页面
+     */
+    String BASE_BASIC_DOWNLOAD_URL = "http://www.zychealth.com/downloadapp/index.html?doctorId=";
 }

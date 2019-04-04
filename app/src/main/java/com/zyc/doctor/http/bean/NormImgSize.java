@@ -75,7 +75,6 @@ public enum NormImgSize {
         public String toString() {
             return "station_middle_img";
         }
-
     },
     /**
      * 纵向站点小图
@@ -118,7 +117,6 @@ public enum NormImgSize {
         public String toString() {
             return "quan_middle_img";
         }
-
     },
     /**
      * 纵向站点小图
@@ -142,19 +140,16 @@ public enum NormImgSize {
         return 1;
     }
 
-
     /**
      * 标准头像大图高宽度
      */
     final int NORM_HEAD_BIG_SIZE = 512;
-
     /**
      * 标准站点图片大小
      */
     final float NORM_STATION_BIG_SIZE = 1080f;
 
     NormImgSize() {
-
     }
 
     /**
@@ -175,9 +170,7 @@ public enum NormImgSize {
 
     @Override
     public String toString() {
-        return "NormImgSize{" +
-                "NORM_HEAD_BIG_SIZE=" + NORM_HEAD_BIG_SIZE +
-                ", NORM_STATION_BIG_SIZE=" + NORM_STATION_BIG_SIZE +
-                '}';
+        return "NormImgSize{" + "NORM_HEAD_BIG_SIZE=" + NORM_HEAD_BIG_SIZE + ", NORM_STATION_BIG_SIZE=" +
+               NORM_STATION_BIG_SIZE + '}';
     }
 }

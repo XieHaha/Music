@@ -107,7 +107,6 @@ android {
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':shortcutbadge')
-    implementation project(':volleyNew')
     implementation project(':easeui')
     implementation project(':superweb')
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'

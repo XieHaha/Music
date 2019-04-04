@@ -3,6 +3,7 @@ package com.zyc.doctor.http.retrofit;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.CooperateDocBean;
 import com.zyc.doctor.http.bean.CooperateHospitalBean;
+import com.zyc.doctor.http.bean.CooperateHospitalDocBean;
 import com.zyc.doctor.http.bean.HospitalBean;
 import com.zyc.doctor.http.bean.HospitalProductTypeBean;
 import com.zyc.doctor.http.bean.LoginSuccessBean;
@@ -23,6 +24,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
@@ -129,6 +131,15 @@ public interface ApiUrlManager {
     Observable<BaseResponse<PatientBean>> applyCooperateDoc(@Body Map<String, Object> info);
 
     /**
+     * 处理医生申请合作（proCode为字符1（表示同意）或字符3（表示拒绝））  appliedId被申请人  applyId申请人
+     *
+     * @param info
+     * @return
+     */
+    @POST("colleborate/applyProcess")
+    Observable<BaseResponse<PatientBean>> dealDocApply(@Body Map<String, Object> info);
+
+    /**
      * 取消合作医生关系
      * * doctorId 为操作人id   doctorId2为被操作人id
      *
@@ -157,6 +168,17 @@ public interface ApiUrlManager {
     @Multipart
     @POST("file/upload")
     Observable<BaseResponse<String>> uploadImg(@Part MultipartBody.Part file, @Query("type") String type);
+
+    /**
+     * 医生资质认证
+     *
+     * @param files
+     * @param info
+     * @return
+     */
+    @Multipart
+    @POST("doctor/info/qualifiy")
+    Observable<BaseResponse<String>> qualifiyDoc(@Part MultipartBody.Part[] files, @QueryMap Map<String, Object> info);
 
     /**
      * 更改个人信息
@@ -227,8 +249,8 @@ public interface ApiUrlManager {
      * @param doctorId
      * @return
      */
-    @GET("doctor/info")
-    Observable<BaseResponse<CooperateDocBean>> getDocInfo(@Query("doctorId") String doctorId);
+    @GET("doctor/info/{doctorId}")
+    Observable<BaseResponse<CooperateDocBean>> getDocInfo(@Path("doctorId") String doctorId);
 
     /**
      * 获取患者个人信息
@@ -236,7 +258,7 @@ public interface ApiUrlManager {
      * @param patientId
      * @return
      */
-    @GET("patient/info")
+    @GET("patient/info/{patientId}")
     Observable<BaseResponse<PatientBean>> getPatientInfo(@Query("patientId") String patientId);
 
     /**
@@ -292,6 +314,16 @@ public interface ApiUrlManager {
      */
     @POST("hospital/doctor/relation/list")
     Observable<BaseResponse<List<HospitalBean>>> getHospitalListByDoctorId(@Body Map<String, Object> info);
+
+    /**
+     * 获取合作医院下面的医生
+     *
+     * @param info
+     * @return
+     */
+    @POST("hospital/doctor/relation/internal/doctor/list")
+    Observable<BaseResponse<List<CooperateHospitalDocBean>>> getCooperateHospitalDoctorList(
+            @Body Map<String, Object> info);
 
     /**
      * 根据医院id获取商品类型和类型下的商品详情
@@ -393,4 +425,31 @@ public interface ApiUrlManager {
      */
     @POST("dp/nickname")
     Observable<BaseResponse<String>> modifyNickNameByPatient(@Body Map<String, Object> info);
+
+    /**
+     * 医生扫码添加患者
+     *
+     * @param info
+     * @return
+     */
+    @POST("dp/scan/focus/patient")
+    Observable<BaseResponse<PatientBean>> addPatientByScan(@Body Map<String, Object> info);
+
+    /**
+     * 拒绝患者申请
+     *
+     * @param info
+     * @return
+     */
+    @POST("dp/scan/against/patient")
+    Observable<BaseResponse<String>> refusePatientApply(@Body Map<String, Object> info);
+
+    /**
+     * 同意患者申请
+     *
+     * @param info
+     * @return
+     */
+    @POST("dp/scan/agree/V2.0")
+    Observable<BaseResponse<String>> agreePatientApply(@Body Map<String, Object> info);
 }

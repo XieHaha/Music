@@ -23,6 +23,7 @@ import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.CooperateHospitalDocBean;
 import com.zyc.doctor.http.bean.HospitalBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.adapter.CooperateHospitalDocListAdapter;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
@@ -145,7 +146,7 @@ public class CooperateDocActivity extends BaseActivity
      */
     private void getCooperateHospitalDoctorList() {
         if (hospitalBean != null) {
-            mIRequest.getCooperateHospitalDoctorList(hospitalBean.getHospitalId(), page, PAGE_SIZE, this);
+            RequestUtils.getCooperateHospitalDoctorList(this, hospitalBean.getHospitalId(), page, PAGE_SIZE, this);
         }
     }
 

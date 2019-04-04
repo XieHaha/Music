@@ -6,10 +6,11 @@ import java.io.Serializable;
 
 /**
  * 患者
+ *
+ * @author dundun
  */
 public class PatientBean extends DataSupport implements Serializable {
     private static final long serialVersionUID = -8620697034094662215L;
-
     private int focusStatus;
     private String patientId;
     private String sex;
@@ -152,23 +153,19 @@ public class PatientBean extends DataSupport implements Serializable {
         this.im_username = im_username;
     }
 
-    public String getAddress()
-    {
+    public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address)
-    {
+    public void setAddress(String address) {
         this.address = address;
     }
 
-    public String getUnitName()
-    {
+    public String getUnitName() {
         return unitName;
     }
 
-    public void setUnitName(String unitName)
-    {
+    public void setUnitName(String unitName) {
         this.unitName = unitName;
     }
 
@@ -188,23 +185,19 @@ public class PatientBean extends DataSupport implements Serializable {
         this.gmtModified = gmtModified;
     }
 
-    public long getBirthDate()
-    {
+    public long getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(long birthDate)
-    {
+    public void setBirthDate(long birthDate) {
         this.birthDate = birthDate;
     }
 
-    public String getNickname()
-    {
+    public String getNickname() {
         return nickname;
     }
 
-    public void setNickname(String nickname)
-    {
+    public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 }

@@ -36,8 +36,8 @@ import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.OrderStatus;
 import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.bean.BaseNetConfig;
 import com.zyc.doctor.http.bean.BaseResponse;
-import com.zyc.doctor.http.bean.HttpConstants;
 import com.zyc.doctor.http.bean.PatientBean;
 import com.zyc.doctor.http.bean.RegistrationBean;
 import com.zyc.doctor.http.bean.TransPatientBean;
@@ -271,7 +271,7 @@ public class MainFragment extends BaseFragment implements OrderStatus, SwipeRefr
         orderInfoAdapter.setList(registrationBeans);
         orderInfoListView.setAdapter(orderInfoAdapter);
         barCodeImageView = new BarCodeImageView(getActivity(),
-                                                HttpConstants.BASE_BASIC_DOWNLOAD_URL + loginSuccessBean.getDoctorId());
+                                                BaseNetConfig.BASE_BASIC_DOWNLOAD_URL + loginSuccessBean.getDoctorId());
         mainOptionsAdapter = new MainOptionsAdapter(getActivity());
         mainOptionsAdapter.setOptionsIcon(optionsIcon);
         mainOptionsAdapter.setOptionsTxt(optionsTxt);

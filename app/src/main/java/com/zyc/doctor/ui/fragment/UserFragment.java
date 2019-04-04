@@ -34,9 +34,9 @@ import com.zyc.doctor.api.notify.INotifyChangeListenerServer;
 import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.bean.BaseNetConfig;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.CooperateDocBean;
-import com.zyc.doctor.http.bean.HttpConstants;
 import com.zyc.doctor.http.bean.LoginSuccessBean;
 import com.zyc.doctor.http.bean.PatientBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;
@@ -267,7 +267,7 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
                                        sharePreferenceUtil.getString(CommonData.KEY_DOCTOR_NUM)));
         loginSuccessBean = YihtApplication.getInstance().getLoginSuccessBean();
         if (loginSuccessBean != null) {
-            barCodeImageView = new BarCodeImageView(getActivity(), HttpConstants.BASE_BASIC_DOWNLOAD_URL +
+            barCodeImageView = new BarCodeImageView(getActivity(), BaseNetConfig.BASE_BASIC_DOWNLOAD_URL +
                                                                    loginSuccessBean.getDoctorId());
             if (!TextUtils.isEmpty(loginSuccessBean.getPortraitUrl())) {
                 headImgUrl = loginSuccessBean.getPortraitUrl();

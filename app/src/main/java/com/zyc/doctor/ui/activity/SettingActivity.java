@@ -66,7 +66,7 @@ public class SettingActivity extends BaseActivity
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         //检查更新
-        mVersionPresenter = new VersionPresenter(this, mIRequest);
+        mVersionPresenter = new VersionPresenter(this);
         mVersionPresenter.setVersionViewListener(this);
         if (YihtApplication.getInstance().isVersionRemind()) {
             tvVersionRemind.setVisibility(View.VISIBLE);

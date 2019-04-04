@@ -13,11 +13,10 @@ import com.hyphenate.easeui.domain.EaseAvatarOptions;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.zyc.doctor.api.notify.NotifyHelper;
-import com.zyc.doctor.http.retrofit.RetrofitManager;
 import com.zyc.doctor.chat.HxHelper;
 import com.zyc.doctor.data.CommonData;
-import com.zyc.doctor.http.IRequest;
 import com.zyc.doctor.http.bean.LoginSuccessBean;
+import com.zyc.doctor.http.retrofit.RetrofitManager;
 import com.zyc.doctor.utils.ImageLoadUtil;
 import com.zyc.doctor.utils.RecentContactUtils;
 import com.zyc.doctor.utils.SharePreferenceUtil;
@@ -38,10 +37,6 @@ import me.jessyan.autosize.unit.Subunits;
 public class YihtApplication extends LitePalApplication {
     private static YihtApplication sApplication;
     private LoginSuccessBean loginSuccessBean;
-    /**
-     * 网络请求单例
-     */
-    private IRequest mIRequest = null;
     /**
      * 临时数据  头像url
      */
@@ -71,7 +66,6 @@ public class YihtApplication extends LitePalApplication {
         initAndroidAutoSize();
         //网络
         RetrofitManager.getInstance().init();
-        mIRequest = IRequest.getInstance(this);
         //监听类初始化
         NotifyHelper.init(this);
         //处理文件下载上传
@@ -133,7 +127,7 @@ public class YihtApplication extends LitePalApplication {
         //设置有关环信自定义的相关配置  titlebar、头像、名字处理
         HxHelper.Opts opts = new HxHelper.Opts();
         opts.setShowChatTitle(false);
-        HxHelper.getInstance().init(this, opts, mIRequest);
+        HxHelper.getInstance().init(this);
         EaseUI.getInstance().setUserProfileProvider((username, callback) -> {
             LoginSuccessBean bean = getLoginSuccessBean();
             //如果是当前用户，就设置自己的昵称和头像

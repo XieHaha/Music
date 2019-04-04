@@ -3,7 +3,9 @@ package com.zyc.doctor.http.bean;
 import java.io.Serializable;
 
 /**
- * Created by dundun on 18/4/19.
+ *
+ * @author dundun
+ * @date 18/4/19
  */
 public class CombineChildBean implements Serializable
 {

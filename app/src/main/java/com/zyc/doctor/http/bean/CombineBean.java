@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Created by dundun on 18/4/19.
  * @author dundun
  * 综合病史
  */

@@ -24,8 +24,8 @@ import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.DocAuthStatu;
 import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.http.bean.BaseNetConfig;
 import com.zyc.doctor.http.bean.BaseResponse;
-import com.zyc.doctor.http.bean.HttpConstants;
 import com.zyc.doctor.http.bean.LoginSuccessBean;
 import com.zyc.doctor.http.bean.Version;
 import com.zyc.doctor.http.retrofit.RequestUtils;
@@ -109,7 +109,7 @@ public class LoginActivity extends BaseActivity
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         //检查更新
-        mVersionPresenter = new VersionPresenter(this, mIRequest);
+        mVersionPresenter = new VersionPresenter(this);
         mVersionPresenter.setVersionViewListener(this);
         mVersionPresenter.init();
         phone = sharePreferenceUtil.getString(CommonData.KEY_USER_PHONE);
@@ -179,7 +179,7 @@ public class LoginActivity extends BaseActivity
                 break;
             case R.id.act_login_protocol:
                 Intent intent = new Intent(this, WebViewActivity.class);
-                intent.putExtra("url", HttpConstants.BASE_BASIC_USER_PROTOCOL_URL);
+                intent.putExtra("url", BaseNetConfig.BASE_BASIC_USER_PROTOCOL_URL);
                 startActivity(intent);
                 break;
             case R.id.act_login_protocol_img:

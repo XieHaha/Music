@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 /**
  * 合作医生
+ * @author dundun
  */
 public class CooperateDocBean extends DataSupport implements Serializable {
     private static final long serialVersionUID = -5825956356939935298L;

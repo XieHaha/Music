@@ -307,8 +307,8 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
                 values.add(patientSurgeryList.get(i).getSurgeryName());
             }
         }
-        if (values.size() == 1)//缺省值
-        {
+        //缺省值
+        if (values.size() == 1) {
             values.set(0, "健康标签：未填写健康标签！");
         }
         for (int i = 0; i < values.size(); i++) {
@@ -326,7 +326,7 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
      * 获取患者个人信息
      */
     private void getPatientInfo() {
-        mIRequest.getPatientInfo(patientId, this);
+        RequestUtils.getPatientInfo(this, patientId, this);
     }
 
     /**

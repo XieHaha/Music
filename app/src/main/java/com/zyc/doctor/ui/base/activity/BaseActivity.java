@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import com.alibaba.fastjson.JSON;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.zyc.doctor.R;
-import com.zyc.doctor.http.IRequest;
 import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.LoginSuccessBean;
@@ -27,10 +26,6 @@ import com.zyc.doctor.permission.Permission;
 import com.zyc.doctor.permission.PermissionHelper;
 import com.zyc.doctor.utils.SharePreferenceUtil;
 import com.zyc.doctor.utils.ToastUtil;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,10 +61,6 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
      * 任务白名单列表
      */
     List<Tasks> whiteRequestList;
-    /**
-     * 网络请求单例
-     */
-    protected IRequest mIRequest = null;
     /**
      * 返回按钮对象
      */
@@ -114,7 +105,6 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
         // 数据初始化
         requestList = new ArrayList<>();
         whiteRequestList = new ArrayList<>();
-        mIRequest = IRequest.getInstance(this);
         loginSuccessBean = getLoginSuccessBean();
         sharePreferenceUtil = new SharePreferenceUtil(this);
         initView(savedInstanceState);
@@ -241,7 +231,6 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
                     continue;
                 }
                 Log.d(getMTag(), "移除task任务: " + task);
-                mIRequest.cancel(task, this);
             }
             //清除所有缓存列表
             requestList.clear();
@@ -421,63 +410,6 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
         }
     }
 
-    /**
-     * 把json转换成基础响应对象列表类
-     */
-    public final BaseResponse praseBaseResponseList(JSONObject jsonObject, Class<T> classOfT) throws JSONException {
-        BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(ENTITY_CODE))
-                                                      .setMsg(jsonObject.optString(ENTITY_MSG));
-        List<T> list = new ArrayList<>();
-        if (jsonObject.opt(ENTITY_DATA) != null) {
-            JSONArray jsonArray = jsonObject.optJSONArray(ENTITY_DATA);
-            if (jsonArray != null) {
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    try {
-                        list.add(JSON.parseObject(jsonArray.get(i).toString(), classOfT));
-                    }
-                    catch (Exception e) {
-                    }
-                }
-            }
-        }
-        baseResponse.setData(list);
-        return baseResponse;
-    }
-
-    /**
-     * 把json转换成基础响应对象类
-     *
-     * @param jsonObject jsonobject对象
-     * @param classOfT   待转换的实体类,为空则data为空
-     */
-    public final BaseResponse praseBaseResponse(JSONObject jsonObject, Class<T> classOfT) throws JSONException {
-        Object data = null;
-        if (classOfT != null) {
-            if (classOfT == String.class) {
-                data = jsonObject.optString(ENTITY_DATA);
-            }
-            else {
-                if (jsonObject.opt(ENTITY_DATA) != null) {
-                    try {
-                        data = JSON.parseObject(jsonObject.optString(ENTITY_DATA), classOfT);
-                    }
-                    catch (Exception e) {
-                    }
-                }
-            }
-        }
-        BaseResponse baseResponse = new BaseResponse().setCode(jsonObject.optInt(ENTITY_CODE))
-                                                      .setMsg(jsonObject.optString(ENTITY_MSG))
-                                                      .setData(data);
-        return baseResponse;
-    }
-
-    //=============================================请求辅助方法==============================
-    protected static final String ENTITY_DATA = "data";
-    protected static final String ENTITY_CODE = "code";
-    protected static final String ENTITY_MSG = "msg";
-
-    //    --------------------------------权限申请--------------------------//
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
             @NonNull int[] grantResults) {

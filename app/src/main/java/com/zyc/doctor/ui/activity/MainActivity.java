@@ -241,7 +241,7 @@ public class MainActivity extends BaseActivity
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         //检查更新
-        mVersionPresenter = new VersionPresenter(this, mIRequest);
+        mVersionPresenter = new VersionPresenter(this);
         mVersionPresenter.setVersionViewListener(this);
         mVersionPresenter.init();
         //弹窗参数初始化

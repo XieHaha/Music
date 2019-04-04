@@ -149,6 +149,19 @@ public class RequestUtils {
                        .subscribe(new AbstractBaseObserver<>(context, Tasks.APPLY_COOPERATE_DOC, listener));
     }
 
+    public static void dealDocApply(Context context, String appliedId, String applyId, int proCode, int requestSource,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("appliedId", appliedId);
+        merchant.put("applyId", applyId);
+        merchant.put("proCode", proCode);
+        merchant.put("requestSource", requestSource);
+        RetrofitManager.getApiUrlManager()
+                       .dealDocApply(merchant)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractBaseObserver<>(context, Tasks.DEAL_DOC_APPLY, listener));
+    }
+
     public static void cancelCooperateDoc(Context context, String doctorId, String doctorId2,
             final ResponseListener<BaseResponse> listener) {
         Map<String, Object> merchant = new HashMap<>(16);
@@ -180,6 +193,31 @@ public class RequestUtils {
                        .uploadImg(body, type)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractBaseObserver<>(context, Tasks.UPLOAD_FILE, listener));
+    }
+
+    public static void qualifiyDoc(Context context, String doctorId, String name, String identityNumber, String title,
+            String department, String hospital, File idFront, File idEnd, File qualifiedFront, File qualifiedEnd,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> merchant = new HashMap<>();
+        merchant.put("doctorId", doctorId);
+        merchant.put("name", name);
+        merchant.put("identityNumber", identityNumber);
+        merchant.put("hospital", hospital);
+        merchant.put("title", title);
+        merchant.put("department", department);
+        RequestBody idFrontBody = RequestBody.create(MediaType.parse("image/*"), idFront);
+        RequestBody idEndBody = RequestBody.create(MediaType.parse("image/*"), idEnd);
+        RequestBody qualifiedFrontBody = RequestBody.create(MediaType.parse("image/*"), qualifiedFront);
+        RequestBody qualifiedEndBody = RequestBody.create(MediaType.parse("image/*"), qualifiedEnd);
+        MultipartBody.Part[] file = new MultipartBody.Part[4];
+        file[0] = MultipartBody.Part.createFormData("idFront", idFront.getName(), idFrontBody);
+        file[1] = MultipartBody.Part.createFormData("idEnd", idEnd.getName(), idEndBody);
+        file[2] = MultipartBody.Part.createFormData("qualifiedFront", qualifiedFront.getName(), qualifiedFrontBody);
+        file[3] = MultipartBody.Part.createFormData("qualifiedEnd", qualifiedEnd.getName(), qualifiedEndBody);
+        RetrofitManager.getApiUrlManager()
+                       .qualifiyDoc(file, merchant)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractBaseObserver<>(context, Tasks.QUALIFIY_DOC, listener));
     }
 
     public static void updateUserInfo(Context context, String doctorId, int fieldId, JsonObject json,
@@ -366,6 +404,19 @@ public class RequestUtils {
                        .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_HOSPITAL_LIST_BY_DOCTORID, listener));
     }
 
+    public static void getCooperateHospitalDoctorList(Context context, String hospitalId, int pageNo, int pageSize,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("hospitalId", hospitalId);
+        merchant.put("pageNo", pageNo);
+        merchant.put("pageSize", pageSize);
+        RetrofitManager.getApiUrlManager()
+                       .getCooperateHospitalDoctorList(merchant)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(
+                               new AbstractBaseObserver<>(context, Tasks.GET_COOPERATE_HOSPITAL_DOCTOR_LIST, listener));
+    }
+
     public static void getHospitalProductListByHospitalId(Context context, String hospitalId,
             final ResponseListener<BaseResponse> listener) {
         Map<String, Object> params = new HashMap<>(16);
@@ -496,6 +547,45 @@ public class RequestUtils {
                        .modifyNickNameByPatient(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractBaseObserver<>(context, Tasks.MODIFY_NICK_NAME_BY_PATIENT, listener));
+    }
+
+    public static void addPatientByScan(Context context, String doctorId, String patientId, int requestSource,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("patientId", patientId);
+        merchant.put("requestSource", requestSource);
+        RetrofitManager.getApiUrlManager()
+                       .addPatientByScan(merchant)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractBaseObserver<>(context, Tasks.ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT,
+                                                             listener));
+    }
+
+    public static void refusePatientApply(Context context, String doctorId, String patientId, int requestSource,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("patientId", patientId);
+        merchant.put("requestSource", requestSource);
+        RetrofitManager.getApiUrlManager()
+                       .refusePatientApply(merchant)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractBaseObserver<>(context, Tasks.REFUSE_PATIENT_APPLY, listener));
+    }
+
+    public static void agreePatientApply(Context context, String doctorId, String patientId, int requestSource,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, Object> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("patientId", patientId);
+        //操作者id
+        merchant.put("fromId", doctorId);
+        merchant.put("requestSource", requestSource);
+        RetrofitManager.getApiUrlManager()
+                       .agreePatientApply(merchant)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractBaseObserver<>(context, Tasks.AGREE_PATIENT_APPLY, listener));
     }
 }
 

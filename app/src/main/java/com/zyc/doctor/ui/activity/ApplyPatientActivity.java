@@ -111,6 +111,9 @@ public class ApplyPatientActivity extends BaseActivity
         switch (task) {
             case GET_APPLY_PATIENT_LIST:
                 applyPatientList = (List<PatientBean>)response.getData();
+                if (applyPatientList == null) {
+                    applyPatientList = new ArrayList<>();
+                }
                 if (page == 0) {
                     applyPatientAdapter.setList(applyPatientList);
                 }

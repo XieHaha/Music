@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 /**
  * 合作医院下属医生
+ * @author dundun
  */
 public class CooperateHospitalDocBean extends DataSupport implements Serializable
 {
@@ -24,7 +25,10 @@ public class CooperateHospitalDocBean extends DataSupport implements Serializabl
     private String checkUrl;
     private String identityNumber;
     private String nickname;
-    private int relationId;//1,执业医生   2,合作医生
+    /**
+     * //1,执业医生   2,合作医生
+     */
+    private int relationId;
     private String platformHospitalName;
 
     public int getFieldId()

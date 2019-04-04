@@ -282,14 +282,15 @@ public class PatientsActivity extends BaseActivity implements SwipeRefreshLayout
             //患者申请
             case GET_APPLY_PATIENT_LIST:
                 ArrayList<PatientBean> list = (ArrayList<PatientBean>)response.getData();
-                if (list.size() > 0) {
+                if (list != null && list.size() > 0) {
                     rlMsgHint.setVisibility(View.VISIBLE);
                     tvNum.setText(String.valueOf(list.size()));
+                    sharePreferenceUtil.putString(CommonData.KEY_PATIENT_APPLY_NUM, String.valueOf(list.size()));
                 }
                 else {
                     rlMsgHint.setVisibility(View.GONE);
+                    sharePreferenceUtil.putString(CommonData.KEY_PATIENT_APPLY_NUM, "0");
                 }
-                sharePreferenceUtil.putString(CommonData.KEY_PATIENT_APPLY_NUM, String.valueOf(list.size()));
                 if (onApplyCallbackListener != null) {
                     onApplyCallbackListener.onApplyCallback();
                 }

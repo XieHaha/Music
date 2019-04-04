@@ -3,7 +3,9 @@ package com.zyc.doctor.http.bean;
 import java.io.Serializable;
 
 /**
- * Created by dundun on 18/10/19.
+ *
+ * @author dundun
+ * @date 18/10/19
  * 合作医院
  */
 public class CooperateHospitalBean implements Serializable

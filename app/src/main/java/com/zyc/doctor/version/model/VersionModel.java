@@ -3,7 +3,6 @@ package com.zyc.doctor.version.model;
 import android.content.Context;
 
 import com.yanzhenjie.nohttp.download.DownloadListener;
-import com.zyc.doctor.http.IRequest;
 import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.Version;
@@ -23,13 +22,11 @@ import java.util.ArrayList;
 public class VersionModel implements ResponseListener<BaseResponse>, VersionModelListener {
     private static final String TAG = "VersionModel";
     private Context context;
-    private IRequest request;
     private NewestVersionCallBack callBack;
     private DownloadAPKCallBack downloadAPKCallBack;
 
-    public VersionModel(Context context, IRequest request) {
+    public VersionModel(Context context) {
         this.context = context;
-        this.request = request;
     }
 
     @Override

@@ -13,6 +13,7 @@ import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.CooperateDocBean;
+import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.GlideHelper;
 import com.zyc.doctor.utils.ToastUtil;
@@ -126,21 +127,21 @@ public class AddFriendsDocActivity extends BaseActivity {
      * 获取个人信息
      */
     private void getDocInfo() {
-        mIRequest.getDocInfo(doctorId, this);
+        RequestUtils.getDocInfo(this, doctorId, this);
     }
 
     /**
      * 合作医生申请
      */
     private void applyCooperateDoc() {
-        mIRequest.applyCooperateDoc(loginSuccessBean.getDoctorId(), doctorId, 1, this);
+        RequestUtils.applyCooperateDoc(this, loginSuccessBean.getDoctorId(), doctorId, 1, this);
     }
 
     /**
      * 处理医生合作申请
      */
     private void dealDocApply(int way) {
-        mIRequest.dealDocApply(loginSuccessBean.getDoctorId(), doctorId, way, requestSource, this);
+        RequestUtils.dealDocApply(this, loginSuccessBean.getDoctorId(), doctorId, way, requestSource, this);
     }
 
     @Override

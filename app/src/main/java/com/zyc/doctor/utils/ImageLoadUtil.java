@@ -12,8 +12,6 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.zyc.doctor.R;
-import com.zyc.doctor.http.bean.Global;
-import com.zyc.doctor.http.bean.Mode;
 
 /**
  * @author dundun
@@ -59,10 +57,6 @@ public class ImageLoadUtil {
         config.diskCacheFileNameGenerator(new Md5FileNameGenerator());
         config.memoryCacheSize(MAX_MEMORY_CACHE);
         config.tasksProcessingOrder(QueueProcessingType.LIFO);
-        if (Global.getInstance().launchMode == Mode.Launch.RELEASE) {
-            config.writeDebugLogs(); // Remove for release app
-        }
-        // Initialize ImageLoader with configuration.
         getImageLoader().init(config.build());
     }
 
