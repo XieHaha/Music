@@ -32,11 +32,11 @@
     	</list>
     -->
     <list>
-        <mapping class="com.zyc.doctor.http.bean.PatientBean"></mapping>
-        <mapping class="com.zyc.doctor.http.bean.CooperateDocBean"></mapping>
-        <mapping class="com.zyc.doctor.http.bean.CooperateHospitalDocBean"></mapping>
-        <mapping class="com.zyc.doctor.http.bean.RegistrationTypeBean"></mapping>
-        <mapping class="com.zyc.doctor.http.bean.HospitalProductBean"></mapping>
+        <mapping class="com.zyc.doctor.data.bean.PatientBean"></mapping>
+        <mapping class="com.zyc.doctor.data.bean.CooperateDocBean"></mapping>
+        <mapping class="com.zyc.doctor.data.bean.CooperateHospitalDocBean"></mapping>
+        <mapping class="com.zyc.doctor.data.bean.RegistrationTypeBean"></mapping>
+        <mapping class="com.zyc.doctor.data.bean.HospitalProductBean"></mapping>
     </list>
 
     <!--

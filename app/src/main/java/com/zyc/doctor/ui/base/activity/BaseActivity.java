@@ -18,12 +18,12 @@ import com.alibaba.fastjson.JSON;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.zyc.doctor.R;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.bean.BaseResponse;
-import com.zyc.doctor.http.bean.LoginSuccessBean;
+import com.zyc.doctor.data.bean.BaseResponse;
+import com.zyc.doctor.data.bean.LoginSuccessBean;
 import com.zyc.doctor.http.listener.ResponseListener;
-import com.zyc.doctor.permission.OnPermissionCallback;
-import com.zyc.doctor.permission.Permission;
-import com.zyc.doctor.permission.PermissionHelper;
+import com.zyc.doctor.utils.permission.OnPermissionCallback;
+import com.zyc.doctor.utils.permission.Permission;
+import com.zyc.doctor.utils.permission.PermissionHelper;
 import com.zyc.doctor.utils.SharePreferenceUtil;
 import com.zyc.doctor.utils.ToastUtil;
 

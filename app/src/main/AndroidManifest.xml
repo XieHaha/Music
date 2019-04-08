@@ -223,7 +223,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name=".qrcode.CaptureQrCodeActivity"
+            android:name=".widgets.qrcode.CaptureQrCodeActivity"
             android:label="@string/act_capture"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />

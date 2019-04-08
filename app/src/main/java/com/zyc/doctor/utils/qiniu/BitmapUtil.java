@@ -23,7 +23,7 @@ import android.provider.MediaStore;
 import android.util.Base64;
 import android.view.View;
 
-import com.zyc.doctor.http.bean.NormImgSize;
+import com.zyc.doctor.data.bean.NormImgSize;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

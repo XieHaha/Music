@@ -2,7 +2,7 @@ package com.zyc.doctor.http.retrofit;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.zyc.doctor.BuildConfig;
-import com.zyc.doctor.http.bean.BaseNetConfig;
+import com.zyc.doctor.data.bean.BaseNetConfig;
 
 import java.util.concurrent.TimeUnit;
 

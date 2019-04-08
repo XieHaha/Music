@@ -3,7 +3,7 @@ package com.zyc.doctor.utils;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.zyc.doctor.http.bean.PatientBean;
+import com.zyc.doctor.data.bean.PatientBean;
 
 import org.litepal.crud.DataSupport;
 

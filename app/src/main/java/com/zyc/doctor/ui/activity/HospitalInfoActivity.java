@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
-import com.zyc.doctor.http.bean.HospitalBean;
+import com.zyc.doctor.data.bean.HospitalBean;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 
 import butterknife.BindView;

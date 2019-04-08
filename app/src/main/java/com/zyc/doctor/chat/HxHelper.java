@@ -7,9 +7,9 @@ import com.hyphenate.chat.EMConversation;
 import com.hyphenate.easeui.UserInfoCallback;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.bean.BaseResponse;
-import com.zyc.doctor.http.bean.CooperateDocBean;
-import com.zyc.doctor.http.bean.PatientBean;
+import com.zyc.doctor.data.bean.BaseResponse;
+import com.zyc.doctor.data.bean.CooperateDocBean;
+import com.zyc.doctor.data.bean.PatientBean;
 import com.zyc.doctor.http.listener.AbstractResponseAdapter;
 import com.zyc.doctor.http.retrofit.RequestUtils;
 

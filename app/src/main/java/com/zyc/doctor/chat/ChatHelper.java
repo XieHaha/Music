@@ -7,7 +7,7 @@ import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.zyc.doctor.YihtApplication;
 
-import com.zyc.doctor.http.bean.LoginSuccessBean;
+import com.zyc.doctor.data.bean.LoginSuccessBean;
 
 /**
  * Created by dundun on 18/4/20.

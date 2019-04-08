@@ -100,6 +100,7 @@
     <string name="txt_camera_hint">将二维码放入框内，即可自动识别</string>
     <string name="txt_camera_error">二维码有误</string>
     <string name="txt_camera">扫一扫</string>
+    <string name="txt_camera_qr">二维码</string>
 
     <!--聊天界面-->
     <string name="txt_registration_type_hint">选择%s医院</string>

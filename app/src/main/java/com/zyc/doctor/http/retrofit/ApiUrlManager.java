@@ -1,18 +1,18 @@
 package com.zyc.doctor.http.retrofit;
 
-import com.zyc.doctor.http.bean.BaseResponse;
-import com.zyc.doctor.http.bean.CooperateDocBean;
-import com.zyc.doctor.http.bean.CooperateHospitalBean;
-import com.zyc.doctor.http.bean.CooperateHospitalDocBean;
-import com.zyc.doctor.http.bean.HospitalBean;
-import com.zyc.doctor.http.bean.HospitalProductTypeBean;
-import com.zyc.doctor.http.bean.LoginSuccessBean;
-import com.zyc.doctor.http.bean.PatientBean;
-import com.zyc.doctor.http.bean.PatientCaseDetailBean;
-import com.zyc.doctor.http.bean.RegistrationBean;
-import com.zyc.doctor.http.bean.RegistrationTypeBean;
-import com.zyc.doctor.http.bean.TransPatientBean;
-import com.zyc.doctor.http.bean.Version;
+import com.zyc.doctor.data.bean.BaseResponse;
+import com.zyc.doctor.data.bean.CooperateDocBean;
+import com.zyc.doctor.data.bean.CooperateHospitalBean;
+import com.zyc.doctor.data.bean.CooperateHospitalDocBean;
+import com.zyc.doctor.data.bean.HospitalBean;
+import com.zyc.doctor.data.bean.HospitalProductTypeBean;
+import com.zyc.doctor.data.bean.LoginSuccessBean;
+import com.zyc.doctor.data.bean.PatientBean;
+import com.zyc.doctor.data.bean.PatientCaseDetailBean;
+import com.zyc.doctor.data.bean.RegistrationBean;
+import com.zyc.doctor.data.bean.RegistrationTypeBean;
+import com.zyc.doctor.data.bean.TransPatientBean;
+import com.zyc.doctor.data.bean.Version;
 
 import java.util.List;
 import java.util.Map;

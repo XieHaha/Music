@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
-import com.zyc.doctor.http.bean.FileBean;
-import com.zyc.doctor.http.bean.NormImage;
+import com.zyc.doctor.data.bean.FileBean;
+import com.zyc.doctor.data.bean.NormImage;
 import com.zyc.doctor.ui.adapter.FileListAdapter;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.AllUtils;

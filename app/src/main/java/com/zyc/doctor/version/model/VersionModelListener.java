@@ -1,6 +1,6 @@
 package com.zyc.doctor.version.model;
 
-import com.zyc.doctor.http.bean.Version;
+import com.zyc.doctor.data.bean.Version;
 
 import java.io.File;
 

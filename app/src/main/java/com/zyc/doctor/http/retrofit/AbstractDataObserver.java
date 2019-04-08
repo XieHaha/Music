@@ -1,8 +1,8 @@
 package com.zyc.doctor.http.retrofit;
 
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.bean.BaseNetConfig;
-import com.zyc.doctor.http.bean.BaseResponse;
+import com.zyc.doctor.data.bean.BaseNetConfig;
+import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.http.listener.ResponseListener;
 
 import io.reactivex.Observer;

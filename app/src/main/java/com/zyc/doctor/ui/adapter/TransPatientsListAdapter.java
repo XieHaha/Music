@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.data.TransferStatu;
-import com.zyc.doctor.http.bean.TransPatientBean;
+import com.zyc.doctor.data.bean.TransPatientBean;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
 import com.zyc.doctor.utils.glide.GlideHelper;

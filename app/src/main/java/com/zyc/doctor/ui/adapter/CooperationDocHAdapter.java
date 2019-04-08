@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zyc.doctor.R;
-import com.zyc.doctor.http.bean.CooperateDocBean;
+import com.zyc.doctor.data.bean.CooperateDocBean;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
 import com.zyc.doctor.utils.glide.GlideHelper;

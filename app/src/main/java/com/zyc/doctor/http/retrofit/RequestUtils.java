@@ -4,13 +4,13 @@ import android.content.Context;
 
 import com.google.gson.JsonObject;
 import com.zyc.doctor.http.Tasks;
-import com.zyc.doctor.http.bean.BaseResponse;
-import com.zyc.doctor.http.bean.CooperateDocBean;
-import com.zyc.doctor.http.bean.HospitalBean;
-import com.zyc.doctor.http.bean.HospitalProductBean;
-import com.zyc.doctor.http.bean.HospitalProductTypeBean;
-import com.zyc.doctor.http.bean.LoginSuccessBean;
-import com.zyc.doctor.http.bean.PatientBean;
+import com.zyc.doctor.data.bean.BaseResponse;
+import com.zyc.doctor.data.bean.CooperateDocBean;
+import com.zyc.doctor.data.bean.HospitalBean;
+import com.zyc.doctor.data.bean.HospitalProductBean;
+import com.zyc.doctor.data.bean.HospitalProductTypeBean;
+import com.zyc.doctor.data.bean.LoginSuccessBean;
+import com.zyc.doctor.data.bean.PatientBean;
 import com.zyc.doctor.http.listener.ResponseListener;
 
 import java.io.File;

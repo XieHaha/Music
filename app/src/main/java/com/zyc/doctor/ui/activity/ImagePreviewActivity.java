@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.zyc.doctor.R;
-import com.zyc.doctor.http.bean.NormImage;
+import com.zyc.doctor.data.bean.NormImage;
 import com.zyc.doctor.api.DirHelper;
 import com.zyc.doctor.api.FileTransferServer;
 import com.zyc.doctor.utils.ToastUtil;

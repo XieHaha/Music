@@ -15,7 +15,7 @@ import com.yanzhenjie.nohttp.NoHttp;
 import com.zyc.doctor.api.ApiManager;
 import com.zyc.doctor.chat.HxHelper;
 import com.zyc.doctor.data.CommonData;
-import com.zyc.doctor.http.bean.LoginSuccessBean;
+import com.zyc.doctor.data.bean.LoginSuccessBean;
 import com.zyc.doctor.http.retrofit.RetrofitManager;
 import com.zyc.doctor.api.CrashHandler;
 import com.zyc.doctor.utils.ImageLoadUtil;
