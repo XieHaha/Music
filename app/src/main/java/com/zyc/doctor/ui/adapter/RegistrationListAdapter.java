@@ -82,6 +82,10 @@ public class RegistrationListAdapter extends BaseRecyclerAdapter<RegistrationBea
                     tvOrderStatus.setText("已拒绝");
                     tvOrderStatus.setTextColor(ContextCompat.getColor(context, R.color.app_red_color));
                     break;
+                default:
+                    tvOrderStatus.setText("未确认");
+                    tvOrderStatus.setTextColor(ContextCompat.getColor(context, R.color.app_main_txt_color));
+                    break;
             }
             tvOrderPatientName.setText(item.getPatientName());
             tvOrderPatientSex.setText(item.getPatientSex());

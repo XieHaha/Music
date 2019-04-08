@@ -405,6 +405,8 @@ public class ServicePackActivity extends BaseActivity {
                 //保存最近联系人
                 RecentContactUtils.save(patientBean.getPatientId());
                 NotifyChangeListenerManager.getInstance().notifyRecentContactChange("");
+                //刷新开单记录
+                NotifyChangeListenerManager.getInstance().notifyOrderStatusChange("");
                 hintDialog = new HintDialog(ServicePackActivity.this);
                 hintDialog.isShowCancelBtn(false);
                 hintDialog.setContentString(getString(R.string.txt_add_order_hint));

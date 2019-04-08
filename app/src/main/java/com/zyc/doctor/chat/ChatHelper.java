@@ -3,7 +3,6 @@ package com.zyc.doctor.chat;
 import android.view.View;
 
 import com.hyphenate.chat.EMMessage;
-import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.zyc.doctor.YihtApplication;
 

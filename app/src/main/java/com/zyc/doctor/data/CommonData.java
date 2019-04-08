@@ -3,8 +3,7 @@ package com.zyc.doctor.data;
 /**
  * @author dundun
  */
-public interface CommonData
-{
+public interface CommonData {
     /**
      * 公用数据key
      */
@@ -126,9 +125,13 @@ public interface CommonData
      */
     String KEY_MEETING_BEAN = "key_meeting_bean";
     /**
-     * 新订单、转诊小红点提醒
+     * 转诊小红点提醒
      */
-    String KEY_NEW_MESSAGE_REMIND = "key_new_message_remind";
+    String KEY_NEW_TRANSFER_MESSAGE_REMIND = "key_new_transfer_message_remind";
+    /**
+     * 新订单小红点提醒
+     */
+    String KEY_NEW_ORDER_MESSAGE_REMIND = "key_new_order_message_remind";
     /**
      * 广告页下载链接
      */

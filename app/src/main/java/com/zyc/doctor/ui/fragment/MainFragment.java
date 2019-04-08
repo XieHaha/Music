@@ -29,6 +29,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.zyc.doctor.R;
 import com.zyc.doctor.api.ApiManager;
+import com.zyc.doctor.api.MessageNotifyHelper;
 import com.zyc.doctor.api.notify.IChange;
 import com.zyc.doctor.api.notify.INotifyChangeListenerServer;
 import com.zyc.doctor.api.notify.RegisterType;
@@ -316,25 +317,14 @@ public class MainFragment extends BaseFragment implements OrderStatus, SwipeRefr
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TransPatientBean transPatientBean = transPatientBeans.get(position);
                 String transferId = String.valueOf(transPatientBean.getTransferId());
-                String string = sharePreferenceUtil.getString(CommonData.KEY_NEW_MESSAGE_REMIND);
-                if (!TextUtils.isEmpty(string)) {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    String[] ids = string.split(",");
-                    for (int i = 0; i < ids.length; i++) {
-                        if (!transferId.equals(ids[i])) {
-                            stringBuilder.append(ids[i]);
-                            if (ids.length - 1 != i) {
-                                stringBuilder.append(",");
-                            }
-                        }
-                    }
-                    sharePreferenceUtil.putString(CommonData.KEY_NEW_MESSAGE_REMIND, stringBuilder.toString());
-                }
+                //移除通知红点
+                MessageNotifyHelper.remove(sharePreferenceUtil, transferId, CommonData.KEY_NEW_TRANSFER_MESSAGE_REMIND);
                 Intent intent = new Intent(getActivity(), TransferPatientActivity.class);
                 intent.putExtra(CommonData.KEY_PUBLIC, false);
                 intent.putExtra(CommonData.KEY_TRANSFER_BEAN, transPatientBean);
                 startActivityForResult(intent, REQUEST_CODE_STATUS_CHANGE);
                 transferInfoLimitAdapter.notifyDataSetChanged();
+                //通知首页tab刷新
                 if (mainFragmentCallbackListener != null) {
                     mainFragmentCallbackListener.onOrderStatusCallback();
                 }
@@ -344,25 +334,14 @@ public class MainFragment extends BaseFragment implements OrderStatus, SwipeRefr
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 RegistrationBean registrationBean = registrationBeans.get(position);
-                String transferId = String.valueOf(registrationBean.getProductOrderId());
-                String string = sharePreferenceUtil.getString(CommonData.KEY_NEW_MESSAGE_REMIND);
-                if (!TextUtils.isEmpty(string)) {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    String[] ids = string.split(",");
-                    for (int i = 0; i < ids.length; i++) {
-                        if (!transferId.equals(ids[i])) {
-                            stringBuilder.append(ids[i]);
-                            if (ids.length - 1 != i) {
-                                stringBuilder.append(",");
-                            }
-                        }
-                    }
-                    sharePreferenceUtil.putString(CommonData.KEY_NEW_MESSAGE_REMIND, stringBuilder.toString());
-                }
+                String orderId = String.valueOf(registrationBean.getProductOrderId());
+                //移除通知红点
+                MessageNotifyHelper.remove(sharePreferenceUtil, orderId, CommonData.KEY_NEW_ORDER_MESSAGE_REMIND);
                 Intent intent = new Intent(getActivity(), RegistrationDetailActivity.class);
                 intent.putExtra(CommonData.KEY_REGISTRATION_BEAN, registrationBean);
                 startActivity(intent);
                 orderInfoAdapter.notifyDataSetChanged();
+                //通知tab
                 if (mainFragmentCallbackListener != null) {
                     mainFragmentCallbackListener.onOrderStatusCallback();
                 }
@@ -496,10 +475,22 @@ public class MainFragment extends BaseFragment implements OrderStatus, SwipeRefr
                 startActivity(intent);
                 break;
             case R.id.fragment_main_transfer_info_more:
+                MessageNotifyHelper.clear(sharePreferenceUtil, CommonData.KEY_NEW_TRANSFER_MESSAGE_REMIND);
+                transferInfoLimitAdapter.notifyDataSetChanged();
+                //通知首页tab刷新
+                if (mainFragmentCallbackListener != null) {
+                    mainFragmentCallbackListener.onOrderStatusCallback();
+                }
                 intent = new Intent(getActivity(), TransferPatientHistoryActivity.class);
                 startActivity(intent);
                 break;
             case R.id.fragment_main_order_info_more:
+                MessageNotifyHelper.clear(sharePreferenceUtil, CommonData.KEY_NEW_ORDER_MESSAGE_REMIND);
+                orderInfoAdapter.notifyDataSetChanged();
+                //通知tab
+                if (mainFragmentCallbackListener != null) {
+                    mainFragmentCallbackListener.onOrderStatusCallback();
+                }
                 intent = new Intent(getActivity(), RegistrationListActivity.class);
                 intent.putExtra(CommonData.KEY_REGISTRATION_LIST, registrationBeans);
                 startActivity(intent);

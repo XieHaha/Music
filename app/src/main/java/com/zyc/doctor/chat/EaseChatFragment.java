@@ -1,4 +1,4 @@
-package com.hyphenate.easeui.ui;
+package com.zyc.doctor.chat;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -50,6 +50,9 @@ import com.hyphenate.easeui.model.EaseDingMessageHelper;
 import com.hyphenate.easeui.permission.OnPermissionCallback;
 import com.hyphenate.easeui.permission.Permission;
 import com.hyphenate.easeui.permission.PermissionHelper;
+import com.hyphenate.easeui.ui.EaseBaiduMapActivity;
+import com.hyphenate.easeui.ui.EaseChatRoomListener;
+import com.hyphenate.easeui.ui.EaseGroupListener;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.hyphenate.easeui.widget.EaseAlertDialog;

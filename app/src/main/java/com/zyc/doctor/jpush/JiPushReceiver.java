@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.zyc.doctor.YihtApplication;
+import com.zyc.doctor.api.MessageNotifyHelper;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.ui.activity.ApplyCooperateDocActivity;
@@ -35,7 +36,7 @@ import cn.jpush.android.api.JPushInterface;
  *
  * @author dundun
  */
-public class JPushReceiver extends BroadcastReceiver implements CommonData {
+public class JiPushReceiver extends BroadcastReceiver implements CommonData {
     private static final String TAG = "JIGUANG";
 
     @Override
@@ -47,18 +48,8 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData {
                 JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
                 int type = json.optInt("newsid");
                 int msgId = json.optInt("msg");
-                SharePreferenceUtil sharePreferenceUtil = new SharePreferenceUtil(context);
-                String ids = sharePreferenceUtil.getString(CommonData.KEY_NEW_MESSAGE_REMIND);
-                if (TextUtils.isEmpty(ids)) {
-                    ids = String.valueOf(msgId);
-                }
-                else {
-                    StringBuilder stringBuilder = new StringBuilder(ids);
-                    stringBuilder.append(",");
-                    stringBuilder.append(msgId);
-                    ids = stringBuilder.toString();
-                }
-                sharePreferenceUtil.putString(CommonData.KEY_NEW_MESSAGE_REMIND, ids);
+                //新通知本地存储
+                MessageNotifyHelper.save(new SharePreferenceUtil(context), type, msgId);
                 notifyStatusChange(type, String.valueOf(msgId));
             }
             else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
@@ -68,7 +59,7 @@ public class JPushReceiver extends BroadcastReceiver implements CommonData {
                 jumpPageByType(context, type, msgId);
             }
             else {
-                LogUtils.i(TAG, "[JPushReceiver] Unhandled intent - " + intent.getAction());
+                LogUtils.i(TAG, "[JiPushReceiver] Unhandled intent - " + intent.getAction());
             }
         }
         catch (Exception e) {

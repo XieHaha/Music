@@ -78,7 +78,7 @@ public class TransferInfoLimitAdapter extends BaseAdapter implements OrderStatus
 
     private void initData(ViewHolder holder, int position) {
         TransPatientBean curTransferPatient = list.get(position);
-        String ids = sharePreferenceUtil.getString(CommonData.KEY_NEW_MESSAGE_REMIND);
+        String ids = sharePreferenceUtil.getString(CommonData.KEY_NEW_TRANSFER_MESSAGE_REMIND);
         if (!TextUtils.isEmpty(ids) && ids.contains(String.valueOf(curTransferPatient.getTransferId()))) {
             holder.rlReadHint.setVisibility(View.VISIBLE);
         }

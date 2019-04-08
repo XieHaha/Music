@@ -17,7 +17,6 @@ import android.widget.RelativeLayout;
 
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.permission.OnPermissionCallback;
-import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.data.CommonData;

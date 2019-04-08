@@ -1,4 +1,4 @@
-package com.hyphenate.easeui.ui;
+package com.zyc.doctor.chat;
 
 import android.content.Context;
 import android.os.Bundle;

@@ -125,11 +125,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.ServiceInfoActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-
-        <activity
             android:name="com.zyc.doctor.ui.activity.SettingActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
@@ -380,7 +375,7 @@
 
         <!-- User defined.  For test only  用户自定义的广播接收器-->
         <receiver
-            android:name="com.zyc.doctor.jpush.JPushReceiver"
+            android:name="com.zyc.doctor.jpush.JiPushReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>

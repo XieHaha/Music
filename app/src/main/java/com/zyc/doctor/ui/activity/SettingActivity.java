@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.data.bean.CooperateDocBean;
@@ -18,11 +19,14 @@ import com.zyc.doctor.ui.base.activity.AppManager;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.utils.LogUtils;
+import com.zyc.doctor.utils.SharePreferenceUtil;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.version.presenter.VersionPresenter;
 import com.zyc.doctor.version.view.VersionUpdateDialog;
 
 import org.litepal.crud.DataSupport;
+
+import java.util.Map;
 
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
@@ -105,21 +109,7 @@ public class SettingActivity extends BaseActivity
                 break;
             case R.id.act_setting_exit_layout:
                 new SimpleDialog(this, getString(R.string.txt_exit_hint), (dialog, which) -> {
-                    //清除登录信息
-                    YihtApplication.getInstance().clearLoginSuccessBean();
-                    //清除数据库数据
-                    DataSupport.deleteAll(PatientBean.class);
-                    DataSupport.deleteAll(CooperateDocBean.class);
-                    //极光推送
-                    JPushInterface.deleteAlias(this, 100);
-                    //删除环信会话列表
-                    //TODO
-                    //退出环信
-                    EMClient.getInstance().logout(true);
-                    dialog.dismiss();
-                    AppManager.getInstance().finishAllActivity();
-                    startActivity(new Intent(this, LoginActivity.class));
-                    System.exit(0);
+                    exit();
                 }, (dialog, which) -> dialog.dismiss()).show();
                 break;
             case R.id.act_setting_about_layout:
@@ -128,6 +118,30 @@ public class SettingActivity extends BaseActivity
             default:
                 break;
         }
+    }
+
+    /**
+     * 退出
+     */
+    private void exit() {
+        //清除本地数据
+        SharePreferenceUtil.clear(this);
+        //清除数据库数据
+        DataSupport.deleteAll(PatientBean.class);
+        DataSupport.deleteAll(CooperateDocBean.class);
+        //极光推送
+        JPushInterface.deleteAlias(this, 100);
+        //删除环信会话列表
+        Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
+        //删除和某个user会话，如果需要保留聊天记录，传false
+        for (EMConversation converSation : conversations.values()) {
+            EMClient.getInstance().chatManager().deleteConversation(converSation.conversationId(), true);
+        }
+        //退出环信
+        EMClient.getInstance().logout(true);
+        AppManager.getInstance().finishAllActivity();
+        startActivity(new Intent(this, LoginActivity.class));
+        System.exit(0);
     }
 
     /*********************版本更新回调*************************/

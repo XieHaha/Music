@@ -91,7 +91,7 @@ public class OrderInfoLimitAdapter extends BaseAdapter implements OrderStatus, C
 
     private void initData(ViewHolder holder, int position) {
         RegistrationBean curRegistrationBean = list.get(position);
-        String ids = sharePreferenceUtil.getString(CommonData.KEY_NEW_MESSAGE_REMIND);
+        String ids = sharePreferenceUtil.getString(CommonData.KEY_NEW_ORDER_MESSAGE_REMIND);
         if (!TextUtils.isEmpty(ids) && ids.contains(String.valueOf(curRegistrationBean.getProductOrderId()))) {
             holder.rlReadHint.setVisibility(View.VISIBLE);
         }
@@ -120,6 +120,10 @@ public class OrderInfoLimitAdapter extends BaseAdapter implements OrderStatus, C
             case STATUS_REFUSE:
                 holder.tvOrderStatus.setText("已拒绝");
                 holder.tvOrderStatus.setTextColor(ContextCompat.getColor(context, R.color.app_red_color));
+                break;
+            default:
+                holder.tvOrderStatus.setText("未确认");
+                holder.tvOrderStatus.setTextColor(ContextCompat.getColor(context, R.color.app_main_txt_color));
                 break;
         }
         holder.tvOrderPatientName.setText(curRegistrationBean.getPatientName());

@@ -32,7 +32,7 @@ import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
-import com.hyphenate.easeui.ui.EaseConversationListFragment;
+import com.zyc.doctor.chat.EaseConversationListFragment;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
@@ -736,8 +736,9 @@ public class MainActivity extends BaseActivity
     @Override
     public void onOrderStatusCallback() {
         try {
-            String pNum = sharePreferenceUtil.getString(CommonData.KEY_NEW_MESSAGE_REMIND);
-            if (TextUtils.isEmpty(pNum)) {
+            String transferNum = sharePreferenceUtil.getString(CommonData.KEY_NEW_TRANSFER_MESSAGE_REMIND);
+            String orderNum = sharePreferenceUtil.getString(CommonData.KEY_NEW_ORDER_MESSAGE_REMIND);
+            if (TextUtils.isEmpty(orderNum) && TextUtils.isEmpty(transferNum)) {
                 rlMsgPointSmallLayout.setVisibility(View.GONE);
             }
             else {
