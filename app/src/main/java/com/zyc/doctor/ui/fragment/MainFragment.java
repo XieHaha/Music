@@ -11,7 +11,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +46,7 @@ import com.zyc.doctor.qrcode.CaptureQrCodeActivity;
 import com.zyc.doctor.qrcode.DialogPersonalBarCode;
 import com.zyc.doctor.ui.activity.AddFriendsDocActivity;
 import com.zyc.doctor.ui.activity.AddFriendsPatientActivity;
+import com.zyc.doctor.ui.activity.CameraLoginActivity;
 import com.zyc.doctor.ui.activity.CooperateHospitalActivity;
 import com.zyc.doctor.ui.activity.PatientInfoActivity;
 import com.zyc.doctor.ui.activity.PatientsActivity;
@@ -609,7 +609,9 @@ public class MainFragment extends BaseFragment implements OrderStatus, SwipeRefr
                 break;
             case REQUEST_CODE_LOGIN:
                 String contents = data.getStringExtra(Intents.Scan.RESULT);
-                Log.e("test", "111--contents:" + contents);
+                Intent intent = new Intent(getActivity(), CameraLoginActivity.class);
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.push_bottom_in, R.anim.keep);
                 break;
             case REQUEST_CODE_STATUS_CHANGE:
                 getTransferList();

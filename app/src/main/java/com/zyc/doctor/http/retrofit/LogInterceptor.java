@@ -41,16 +41,16 @@ public class LogInterceptor implements Interceptor {
         if (!logHeaders && hasRequestBody) {
             requestStartMessage += " (" + requestBody.contentLength() + "-byte body)";
         }
-        LogUtils.i(TAG, "111"+requestStartMessage);
+        LogUtils.i(TAG, "111" + requestStartMessage);
         if (logHeaders) {
             if (hasRequestBody) {
                 // Request body headers are only present when installed as a network interceptor. Force
                 // them to be included (when available) so there values are known.
                 if (requestBody.contentType() != null) {
-                    LogUtils.i(TAG, "222"+"Content-Type: " + requestBody.contentType());
+                    LogUtils.i(TAG, "222" + "Content-Type: " + requestBody.contentType());
                 }
                 if (requestBody.contentLength() != -1) {
-                    LogUtils.i(TAG, "333"+"Content-Length: " + requestBody.contentLength());
+                    LogUtils.i(TAG, "333" + "Content-Length: " + requestBody.contentLength());
                 }
             }
             Headers headers = request.headers();
@@ -62,10 +62,10 @@ public class LogInterceptor implements Interceptor {
                 }
             }
             if (!logBody || !hasRequestBody) {
-                LogUtils.i(TAG, "444"+"--> END " + request.method());
+                LogUtils.i(TAG, "444" + "--> END " + request.method());
             }
             else if (bodyEncoded(request.headers())) {
-                LogUtils.i(TAG, "555"+"--> END " + request.method() + " (encoded body omitted)");
+                LogUtils.i(TAG, "555" + "--> END " + request.method() + " (encoded body omitted)");
             }
             else {
                 Buffer buffer = new Buffer();
@@ -77,11 +77,12 @@ public class LogInterceptor implements Interceptor {
                 }
                 LogUtils.i(TAG, "666");
                 if (isPlaintext(buffer)) {
-                    LogUtils.i(TAG, "777"+buffer.readString(charset));
-                    LogUtils.i(TAG, "888"+"--> END " + request.method() + " (" + requestBody.contentLength() + "-byte body)");
+                    LogUtils.i(TAG, "777" + buffer.readString(charset));
+                    LogUtils.i(TAG, "888" + "--> END " + request.method() + " (" + requestBody.contentLength() +
+                                    "-byte body)");
                 }
                 else {
-                    LogUtils.i(TAG, "999"+"--> END " + request.method() + " (binary " + requestBody.contentLength() +
+                    LogUtils.i(TAG, "999" + "--> END " + request.method() + " (binary " + requestBody.contentLength() +
                                     "-byte body omitted)");
                 }
             }
@@ -92,25 +93,26 @@ public class LogInterceptor implements Interceptor {
             response = chain.proceed(request);
         }
         catch (Exception e) {
-            LogUtils.i(TAG, "aaa"+"<-- HTTP FAILED: " + e);
+            LogUtils.i(TAG, "aaa" + "<-- HTTP FAILED: " + e);
             throw e;
         }
         long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
         ResponseBody responseBody = response.body();
         long contentLength = responseBody.contentLength();
         String bodySize = contentLength != -1 ? contentLength + "-byte" : "unknown-length";
-        LogUtils.i(TAG, "bbb"+"<-- " + response.code() + ' ' + response.message() + ' ' + response.request().url() + " (" +
-                        tookMs + "ms" + (!logHeaders ? ", " + bodySize + " body" : "") + ')');
+        LogUtils.i(TAG,
+                   "bbb" + "<-- " + response.code() + ' ' + response.message() + ' ' + response.request().url() + " (" +
+                   tookMs + "ms" + (!logHeaders ? ", " + bodySize + " body" : "") + ')');
         if (logHeaders) {
             Headers headers = response.headers();
             for (int i = 0, count = headers.size(); i < count; i++) {
-                LogUtils.i(TAG, "ccc"+headers.name(i) + ": " + headers.value(i));
+                LogUtils.i(TAG, "ccc" + headers.name(i) + ": " + headers.value(i));
             }
             if (!logBody || !HttpHeaders.hasBody(response)) {
-                LogUtils.i(TAG, "ddd"+"<-- END HTTP");
+                LogUtils.i(TAG, "ddd" + "<-- END HTTP");
             }
             else if (bodyEncoded(response.headers())) {
-                LogUtils.i(TAG, "eee"+"<-- END HTTP (encoded body omitted)");
+                LogUtils.i(TAG, "eee" + "<-- END HTTP (encoded body omitted)");
             }
             else {
                 BufferedSource source = responseBody.source();
@@ -125,21 +127,21 @@ public class LogInterceptor implements Interceptor {
                     }
                     catch (UnsupportedCharsetException e) {
                         LogUtils.i(TAG, "fff");
-                        LogUtils.i(TAG, "ggg"+"Couldn't decode the response body; charset is likely malformed.");
-                        LogUtils.i(TAG, "hhh"+"<-- END HTTP");
+                        LogUtils.i(TAG, "ggg" + "Couldn't decode the response body; charset is likely malformed.");
+                        LogUtils.i(TAG, "hhh" + "<-- END HTTP");
                         return response;
                     }
                 }
                 if (!isPlaintext(buffer)) {
-                    LogUtils.i(TAG, "iii"+"");
-                    LogUtils.i(TAG, "jjj"+"<-- END HTTP (binary " + buffer.size() + "-byte body omitted)");
+                    LogUtils.i(TAG, "iii" + "");
+                    LogUtils.i(TAG, "jjj" + "<-- END HTTP (binary " + buffer.size() + "-byte body omitted)");
                     return response;
                 }
                 if (contentLength != 0) {
                     LogUtils.i(TAG, "kkk");
-                    LogUtils.i(TAG, "LLL"+buffer.clone().readString(charset));
+                    LogUtils.i(TAG, "LLL" + buffer.clone().readString(charset));
                 }
-                LogUtils.i(TAG, "mmm"+"<-- END HTTP (" + buffer.size() + "-byte body)");
+                LogUtils.i(TAG, "mmm" + "<-- END HTTP (" + buffer.size() + "-byte body)");
             }
         }
         return response;
@@ -173,6 +175,6 @@ public class LogInterceptor implements Interceptor {
 
     private boolean bodyEncoded(Headers headers) {
         String contentEncoding = headers.get("Content-Encoding");
-        return contentEncoding != null && !contentEncoding.equalsIgnoreCase("identity");
+        return contentEncoding != null && !"identity".equalsIgnoreCase(contentEncoding);
     }
 }

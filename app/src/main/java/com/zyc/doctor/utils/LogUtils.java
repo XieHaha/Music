@@ -12,6 +12,8 @@ package com.zyc.doctor.utils;
 import android.os.Environment;
 import android.util.Log;
 
+import com.zyc.doctor.api.DirHelper;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;

@@ -21,9 +21,9 @@ import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.DocAuthStatu;
 import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
-import com.zyc.doctor.utils.FileTransferServer;
+import com.zyc.doctor.api.FileTransferServer;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.utils.DirHelper;
+import com.zyc.doctor.api.DirHelper;
 import com.zyc.doctor.utils.LogUtils;
 
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;

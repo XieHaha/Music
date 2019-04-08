@@ -15,7 +15,7 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 
 import com.zyc.doctor.http.bean.LoginSuccessBean;
-import com.zyc.doctor.utils.GlideHelper;
+import com.zyc.doctor.utils.glide.GlideHelper;
 
 /**
  * Created by zhangrj on 2017/4/10.

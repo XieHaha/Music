@@ -15,7 +15,7 @@ import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.CooperateDocBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.utils.GlideHelper;
+import com.zyc.doctor.utils.glide.GlideHelper;
 import com.zyc.doctor.utils.ToastUtil;
 
 import butterknife.BindView;

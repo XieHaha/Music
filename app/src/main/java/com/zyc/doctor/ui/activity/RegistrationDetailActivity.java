@@ -27,7 +27,7 @@ import com.zyc.doctor.http.bean.RegistrationBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.AllUtils;
-import com.zyc.doctor.utils.GlideHelper;
+import com.zyc.doctor.utils.glide.GlideHelper;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.ToastUtil;
 

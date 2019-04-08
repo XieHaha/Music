@@ -13,7 +13,6 @@ public class NetWorkUtils {
     private ConnectivityManager connectivityManager;
     private WifiManager wifiManager;
     private NetworkInfo info;
-
     private Context context;
 
     public NetWorkUtils(Context context) {
@@ -25,9 +24,8 @@ public class NetWorkUtils {
      * 网络状态处理
      */
     private void init() {
-        connectivityManager =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.zyc.doctor.utils;
+package com.zyc.doctor.utils.glide;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;

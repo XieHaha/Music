@@ -6,7 +6,7 @@
  * Description: 处理程序中未捕获的异常，将异常写入日志文件
  * <author> - <version> - <date> - <desc>
  */
-package com.zyc.doctor.utils;
+package com.zyc.doctor.api;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -18,6 +18,8 @@ import android.os.Looper;
 import android.os.Process;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.zyc.doctor.utils.LogUtils;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Field;

@@ -46,4 +46,8 @@
 
     <color name="app_main_divide_line">#D9DBDC</color>      <!-- DivideLine-->
 
+    <!--新ui-->
+    <color name="_878787">#878787</color>
+    <color name="_2BB6EC">#2BB6EC</color>
+
 </resources>

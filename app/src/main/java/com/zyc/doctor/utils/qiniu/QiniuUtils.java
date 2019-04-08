@@ -1,4 +1,4 @@
-package com.zyc.doctor.qiniu;
+package com.zyc.doctor.utils.qiniu;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.zyc.doctor.http.bean.NormImage;
 import com.zyc.doctor.http.bean.NormImgSize;
-import com.zyc.doctor.utils.DirHelper;
+import com.zyc.doctor.api.DirHelper;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

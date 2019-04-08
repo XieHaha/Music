@@ -8,8 +8,8 @@ import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.Version;
 import com.zyc.doctor.http.listener.AbstractResponseAdapter;
 import com.zyc.doctor.http.retrofit.RequestUtils;
-import com.zyc.doctor.utils.DirHelper;
-import com.zyc.doctor.utils.FileTransferServer;
+import com.zyc.doctor.api.DirHelper;
+import com.zyc.doctor.api.FileTransferServer;
 import com.zyc.doctor.utils.LogUtils;
 
 import java.io.File;

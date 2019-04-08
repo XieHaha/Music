@@ -1,4 +1,4 @@
-package com.zyc.doctor.utils;
+package com.zyc.doctor.utils.glide;
 
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.request.RequestOptions;

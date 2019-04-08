@@ -63,6 +63,9 @@
     <string name="toast_txt_verify_hint">请输入验证码</string>
     <string name="toast_txt_verifycode_success">验证码获取成功</string>
     <string name="toast_txt_read_protol">请先阅读并勾选使用协议</string>
+    <string name="txt_camera_login_ensure_hint">远程会诊医生身份确认</string>
+    <string name="txt_camera_login_error_hint">这里是%s%s远程会诊系统，您无权使用。</string>
+
     <!--主页-->
     <string name="main_tab_msg">消息</string>
     <string name="main_tab_patients">首页</string>

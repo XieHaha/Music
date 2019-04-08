@@ -1,4 +1,4 @@
-package com.zyc.doctor.qiniu;
+package com.zyc.doctor.utils.qiniu;
 
 import android.annotation.TargetApi;
 import android.content.Context;

@@ -228,6 +228,10 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
+            android:name=".ui.activity.CameraLoginActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
             android:name="com.zyc.doctor.chat.ChatActivity"
             android:launchMode="singleTask"
             android:parentActivityName="com.zyc.doctor.ui.activity.MainActivity"
@@ -309,6 +313,7 @@
                 <category android:name="${applicationId}" />
             </intent-filter>
         </activity>
+
 
         <!-- Required SDK 核心功能-->
         <!-- 可配置android:process参数将PushService放在其他进程中 -->

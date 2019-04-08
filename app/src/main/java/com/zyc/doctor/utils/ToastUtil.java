@@ -22,7 +22,8 @@ public class ToastUtil {
         }
         if (toast == null) {
             toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
-        } else {
+        }
+        else {
             toast.setText(msg);
         }
         toast.show();
@@ -35,10 +36,11 @@ public class ToastUtil {
     public static void toast(Context context, int resId) {
         if (toast == null) {
             toast = Toast.makeText(context, resId, Toast.LENGTH_SHORT);
-        } else {
+        }
+        else {
             toast.setText(resId);
         }
-//        toast.setGravity(Gravity.BOTTOM, 0, 0);
+        //        toast.setGravity(Gravity.BOTTOM, 0, 0);
         toast.show();
     }
 }

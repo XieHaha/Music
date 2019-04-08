@@ -12,7 +12,7 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.http.bean.CooperateDocBean;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
-import com.zyc.doctor.utils.GlideHelper;
+import com.zyc.doctor.utils.glide.GlideHelper;
 
 import java.util.List;
 

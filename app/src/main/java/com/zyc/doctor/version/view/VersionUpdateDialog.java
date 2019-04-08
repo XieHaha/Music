@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.ui.base.activity.AppManager;
-import com.zyc.doctor.utils.DirHelper;
+import com.zyc.doctor.api.DirHelper;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.version.ConstantsVersionMode;
 

@@ -15,7 +15,7 @@ import com.zyc.doctor.http.bean.PatientBean;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
 import com.zyc.doctor.utils.AllUtils;
-import com.zyc.doctor.utils.GlideHelper;
+import com.zyc.doctor.utils.glide.GlideHelper;
 
 import java.util.List;
 

@@ -11,10 +11,10 @@ import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.OnEventTriggerListener;
 import com.zyc.doctor.http.bean.FileBean;
-import com.zyc.doctor.utils.FileTransferServer;
+import com.zyc.doctor.api.FileTransferServer;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
-import com.zyc.doctor.utils.DirHelper;
+import com.zyc.doctor.api.DirHelper;
 import com.zyc.doctor.widgets.view.CircleProgressBar;
 
 import java.io.File;

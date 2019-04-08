@@ -87,12 +87,12 @@ public class ImageLoadUtil {
      */
     public DisplayImageOptions getOptionForExactlyType() {
         return new DisplayImageOptions.Builder().cacheInMemory(true)
-                .cacheOnDisk(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                //                .resetViewBeforeLoading(true)
-                .considerExifParams(true)
-                .imageScaleType(ImageScaleType.EXACTLY)
-                .build();
+                                                .cacheOnDisk(true)
+                                                .bitmapConfig(Bitmap.Config.RGB_565)
+                                                //                .resetViewBeforeLoading(true)
+                                                .considerExifParams(true)
+                                                .imageScaleType(ImageScaleType.EXACTLY)
+                                                .build();
     }
 
     /**
@@ -102,13 +102,13 @@ public class ImageLoadUtil {
      */
     public DisplayImageOptions getOptionsForPortrait() {
         return new DisplayImageOptions.Builder().cacheInMemory(true)
-                .cacheOnDisk(true)
-                //                .bitmapConfig(Bitmap.Config.RGB_565)
-                .showImageForEmptyUri(R.mipmap.icon_default_img)
-                .showImageOnFail(R.mipmap.icon_default_img)
-                .showImageOnLoading(R.mipmap.icon_default_img)
-                //                .displayer(new CircleBitmapDisplayer(Color.WHITE, 5))
-                .build();
+                                                .cacheOnDisk(true)
+                                                //                .bitmapConfig(Bitmap.Config.RGB_565)
+                                                .showImageForEmptyUri(R.mipmap.icon_default_img)
+                                                .showImageOnFail(R.mipmap.icon_default_img)
+                                                .showImageOnLoading(R.mipmap.icon_default_img)
+                                                //                .displayer(new CircleBitmapDisplayer(Color.WHITE, 5))
+                                                .build();
     }
 
     /**
@@ -120,13 +120,13 @@ public class ImageLoadUtil {
      */
     public DisplayImageOptions getOptionsForPictureList(@DrawableRes int loadingResource) {
         return new DisplayImageOptions.Builder().cacheInMemory(true)
-                .cacheOnDisk(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .showImageOnLoading(loadingResource)
-                .considerExifParams(true)
-                //                .resetViewBeforeLoading(true)
-                .showImageForEmptyUri(loadingResource)
-                .showImageOnFail(loadingResource)
-                .build();
+                                                .cacheOnDisk(true)
+                                                .bitmapConfig(Bitmap.Config.RGB_565)
+                                                .showImageOnLoading(loadingResource)
+                                                .considerExifParams(true)
+                                                //                .resetViewBeforeLoading(true)
+                                                .showImageForEmptyUri(loadingResource)
+                                                .showImageOnFail(loadingResource)
+                                                .build();
     }
 }

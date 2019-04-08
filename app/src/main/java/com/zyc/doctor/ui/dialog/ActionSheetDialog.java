@@ -26,6 +26,7 @@ import java.util.List;
  * @author USER
  */
 public class ActionSheetDialog {
+    private static final int MAX_ITEM = 7;
     private Context context;
     private Dialog dialog;
     private TextView txtTitle;
@@ -120,7 +121,7 @@ public class ActionSheetDialog {
             return;
         }
         int size = sheetItemList.size();
-        if (size >= 7) {
+        if (size >= MAX_ITEM) {
             LayoutParams params = (LayoutParams)sLayoutContent.getLayoutParams();
             params.height = display.getHeight() / 2;
             sLayoutContent.setLayoutParams(params);

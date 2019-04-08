@@ -3,14 +3,14 @@ package com.zyc.doctor.utils;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.zyc.doctor.http.bean.PatientBean;
+
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import com.zyc.doctor.http.bean.PatientBean;
 
 /**
  * @author dundun
@@ -88,7 +88,8 @@ public class RecentContactUtils {
             String value = sharePreferenceUtil.getString(KEY);
             if (!TextUtils.isEmpty(value)) {
                 return new ArrayList(Arrays.asList(value.split(",")));
-            } else {
+            }
+            else {
                 sharePreferenceUtil.putString(KEY, id);
                 return null;
             }
@@ -102,8 +103,7 @@ public class RecentContactUtils {
         if (!TextUtils.isEmpty(value)) {
             List<String> ids = Arrays.asList(value.split(","));
             for (String id : ids) {
-                List<PatientBean> list =
-                        DataSupport.where("patientId = ?", id).find(PatientBean.class);
+                List<PatientBean> list = DataSupport.where("patientId = ?", id).find(PatientBean.class);
                 if (list != null && list.size() > 0) {
                     patientBeans.add(list.get(0));
                 }

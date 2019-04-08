@@ -1,4 +1,6 @@
-package com.zyc.doctor.utils;
+package com.zyc.doctor.api;
+
+import com.zyc.doctor.utils.LogUtils;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;

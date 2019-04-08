@@ -7,7 +7,7 @@
  * <author> - <version> - <date> - <desc>
  *
  */
-package com.zyc.doctor.utils;
+package com.zyc.doctor.api;
 
 import android.os.Environment;
 
@@ -23,7 +23,6 @@ public final class DirHelper {
      * 程序根目录
      */
     private static final String PATH_APP_ROOT = "YHT";
-
     /**
      * 头像、图片缓存目录 universalimageloader中使用
      */
@@ -148,21 +147,29 @@ public final class DirHelper {
         String root = addPath(Environment.getExternalStorageDirectory().getPath(), PATH_APP_ROOT);
         if (PATH_APP_ROOT.equals(dir)) {
             return checkDir(root);
-        } else if (PATH_TEMP.equals(dir)) {
+        }
+        else if (PATH_TEMP.equals(dir)) {
             return checkDir(addPath(root, PATH_TEMP));
-        } else if (PATH_LOG.equals(dir)) {
+        }
+        else if (PATH_LOG.equals(dir)) {
             return checkDir(addPath(root, PATH_LOG));
-        } else if (PATH_IMAGE.equals(dir)) {
+        }
+        else if (PATH_IMAGE.equals(dir)) {
             return checkDir(addPath(root, PATH_IMAGE));
-        } else if (PATH_VOICE.equals(dir)) {
+        }
+        else if (PATH_VOICE.equals(dir)) {
             return checkDir(addPath(root, PATH_VOICE));
-        } else if (PATH_FILE.equals(dir)) {
+        }
+        else if (PATH_FILE.equals(dir)) {
             return checkDir(addPath(root, PATH_FILE));
-        } else if (PATH_VIDEO.equals(dir)) {
+        }
+        else if (PATH_VIDEO.equals(dir)) {
             return checkDir(addPath(root, PATH_VIDEO));
-        } else if (PATH_THUMB.equals(dir)) {
+        }
+        else if (PATH_THUMB.equals(dir)) {
             return checkDir(addPath(root, PATH_THUMB));
-        } else if (PATH_CACHE.equals(dir)) {
+        }
+        else if (PATH_CACHE.equals(dir)) {
             return checkDir(addPath(root, PATH_CACHE));
         }
         return checkDir(root);

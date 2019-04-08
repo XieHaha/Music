@@ -36,7 +36,7 @@ import com.zyc.doctor.ui.fragment.HealthInfoFragment;
 import com.zyc.doctor.ui.fragment.OrderInfoFragment;
 import com.zyc.doctor.ui.fragment.TransferInfoFragment;
 import com.zyc.doctor.utils.AllUtils;
-import com.zyc.doctor.utils.GlideHelper;
+import com.zyc.doctor.utils.glide.GlideHelper;
 import com.zyc.doctor.utils.RecentContactUtils;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.widgets.menu.SatelliteMenu;
