@@ -44,7 +44,7 @@ import com.zyc.doctor.utils.RecentContactUtils;
 import com.zyc.doctor.utils.ScalingUtils;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.widgets.gridview.AutoGridView;
-import com.zyc.doctor.widgets.textview.ExspandTextView;
+import com.zyc.doctor.widgets.expandable.ExpandTextView;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,7 +64,7 @@ import butterknife.BindView;
  * @author DUNDUN
  */
 public class HealthDetailActivity extends BaseActivity
-        implements AdapterView.OnItemClickListener, ExspandTextView.OnContentClickLinsener, CommonData {
+        implements AdapterView.OnItemClickListener, ExpandTextView.OnContentClickLinsener, CommonData {
     private static final String TAG = "HealthDetailActivity";
     @BindView(R.id.public_title_bar_more)
     ImageView ivTitlebBarMore;
@@ -81,11 +81,11 @@ public class HealthDetailActivity extends BaseActivity
     @BindView(R.id.act_health_detail_department)
     TextView tvDepartment;
     @BindView(R.id.act_health_detail_case_info)
-    ExspandTextView tvCaseInfo;
+    ExpandTextView tvCaseInfo;
     @BindView(R.id.act_health_detail_case_now)
-    ExspandTextView tvCaseNow;
+    ExpandTextView tvCaseNow;
     @BindView(R.id.act_health_detail_check)
-    ExspandTextView tvCaseCheck;
+    ExpandTextView tvCaseCheck;
     @BindView(R.id.act_health_detail_auto_gridview)
     AutoGridView autoGridView;
     @BindView(R.id.act_health_detail_deal_type)

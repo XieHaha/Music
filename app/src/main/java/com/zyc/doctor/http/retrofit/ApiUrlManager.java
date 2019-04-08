@@ -356,11 +356,13 @@ public interface ApiUrlManager {
     /**
      * 删除患者 （取消关注）
      *
-     * @param info
+     * @param doctorId
+     * @param patientId
      * @return
      */
-    @GET("dp/cancel/focus")
-    Observable<BaseResponse<String>> deletePatient(@QueryMap Map<String, String> info);
+    @GET("dp/cancel/focus/{doctorId}/{patientId}")
+    Observable<BaseResponse<String>> deletePatient(@Path("doctorId") String doctorId,
+            @Path("patientId") String patientId);
 
     /**
      * 删除患者 （取消关注）

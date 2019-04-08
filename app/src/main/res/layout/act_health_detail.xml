@@ -228,7 +228,7 @@
                     android:textColor="@color/app_hint_color"
                     android:textSize="15sp" />
 
-                <com.zyc.doctor.widgets.textview.ExspandTextView
+                <com.zyc.doctor.widgets.expandable.ExpandTextView
                     android:id="@+id/act_health_detail_case_info"
                     android:layout_below="@+id/title_case_info"
                     android:layout_width="match_parent"
@@ -236,7 +236,7 @@
                     android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp"
                     android:layout_height="wrap_content"
-                    android:text=""></com.zyc.doctor.widgets.textview.ExspandTextView>
+                    android:text=""></com.zyc.doctor.widgets.expandable.ExpandTextView>
 
                 <View
                     android:layout_width="match_parent"
@@ -261,7 +261,7 @@
                     android:textColor="@color/app_hint_color"
                     android:textSize="15sp" />
 
-                <com.zyc.doctor.widgets.textview.ExspandTextView
+                <com.zyc.doctor.widgets.expandable.ExpandTextView
                     android:id="@+id/act_health_detail_case_now"
                     android:layout_below="@+id/title_case_now"
                     android:layout_width="match_parent"
@@ -269,7 +269,7 @@
                     android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp"
                     android:layout_height="wrap_content"
-                    android:text=""></com.zyc.doctor.widgets.textview.ExspandTextView>
+                    android:text=""></com.zyc.doctor.widgets.expandable.ExpandTextView>
 
 
                 <View
@@ -295,7 +295,7 @@
                     android:textColor="@color/app_hint_color"
                     android:textSize="15sp" />
 
-                <com.zyc.doctor.widgets.textview.ExspandTextView
+                <com.zyc.doctor.widgets.expandable.ExpandTextView
                     android:id="@+id/act_health_detail_check"
                     android:layout_below="@+id/title_check"
                     android:layout_width="match_parent"
@@ -303,7 +303,7 @@
                     android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp"
                     android:layout_height="wrap_content"
-                    android:text=""></com.zyc.doctor.widgets.textview.ExspandTextView>
+                    android:text=""></com.zyc.doctor.widgets.expandable.ExpandTextView>
 
                 <View
                     android:layout_width="match_parent"

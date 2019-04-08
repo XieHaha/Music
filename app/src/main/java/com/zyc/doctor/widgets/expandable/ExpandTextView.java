@@ -1,4 +1,4 @@
-package com.zyc.doctor.widgets.textview;
+package com.zyc.doctor.widgets.expandable;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -28,7 +28,7 @@ import java.lang.reflect.Field;
  * @author dundun
  * @date 18/11/2
  */
-public class ExspandTextView extends AppCompatTextView {
+public class ExpandTextView extends AppCompatTextView {
     public static final int STATE_SHRINK = 0;
     public static final int STATE_EXPAND = 1;
     private static final String CLASS_NAME_VIEW = "android.view.View";
@@ -82,18 +82,18 @@ public class ExspandTextView extends AppCompatTextView {
      */
     private boolean editMode = false;
 
-    public ExspandTextView(Context context) {
+    public ExpandTextView(Context context) {
         super(context);
         init();
     }
 
-    public ExspandTextView(Context context, AttributeSet attrs) {
+    public ExpandTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initAttr(context, attrs);
         init();
     }
 
-    public ExspandTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ExpandTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initAttr(context, attrs);
         init();
@@ -103,53 +103,53 @@ public class ExspandTextView extends AppCompatTextView {
         if (attrs == null) {
             return;
         }
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ExspandTextView);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ExpandTextView);
         if (a == null) {
             return;
         }
         int n = a.getIndexCount();
         for (int i = 0; i < n; i++) {
             int attr = a.getIndex(i);
-            if (attr == R.styleable.ExspandTextView_etv_MaxLinesOnShrink) {
+            if (attr == R.styleable.ExpandTextView_etv_MaxLinesOnShrink) {
                 mMaxLinesOnShrink = a.getInteger(attr, MAX_LINES_ON_SHRINK);
             }
-            else if (attr == R.styleable.ExspandTextView_etv_EllipsisHint) {
+            else if (attr == R.styleable.ExpandTextView_etv_EllipsisHint) {
                 mEllipsisHint = a.getString(attr);
             }
-            else if (attr == R.styleable.ExspandTextView_etv_ToExpandHint) {
+            else if (attr == R.styleable.ExpandTextView_etv_ToExpandHint) {
                 mToExpandHint = a.getString(attr);
             }
-            else if (attr == R.styleable.ExspandTextView_etv_ToShrinkHint) {
+            else if (attr == R.styleable.ExpandTextView_etv_ToShrinkHint) {
                 mToShrinkHint = a.getString(attr);
             }
-            else if (attr == R.styleable.ExspandTextView_etv_EnableToggle) {
+            else if (attr == R.styleable.ExpandTextView_etv_EnableToggle) {
                 mToggleEnable = a.getBoolean(attr, TOGGLE_ENABLE);
             }
-            else if (attr == R.styleable.ExspandTextView_etv_ToExpandHintShow) {
+            else if (attr == R.styleable.ExpandTextView_etv_ToExpandHintShow) {
                 mShowToExpandHint = a.getBoolean(attr, SHOW_TO_EXPAND_HINT);
             }
-            else if (attr == R.styleable.ExspandTextView_etv_ToShrinkHintShow) {
+            else if (attr == R.styleable.ExpandTextView_etv_ToShrinkHintShow) {
                 mShowToShrinkHint = a.getBoolean(attr, SHOW_TO_SHRINK_HINT);
             }
-            else if (attr == R.styleable.ExspandTextView_etv_ToExpandHintColor) {
+            else if (attr == R.styleable.ExpandTextView_etv_ToExpandHintColor) {
                 mToExpandHintColor = a.getInteger(attr, TO_EXPAND_HINT_COLOR);
             }
-            else if (attr == R.styleable.ExspandTextView_etv_ToShrinkHintColor) {
+            else if (attr == R.styleable.ExpandTextView_etv_ToShrinkHintColor) {
                 mToShrinkHintColor = a.getInteger(attr, TO_SHRINK_HINT_COLOR);
             }
-            else if (attr == R.styleable.ExspandTextView_etv_ToExpandHintColorBgPressed) {
+            else if (attr == R.styleable.ExpandTextView_etv_ToExpandHintColorBgPressed) {
                 mToExpandHintColorBgPressed = a.getInteger(attr, TO_EXPAND_HINT_COLOR_BG_PRESSED);
             }
-            else if (attr == R.styleable.ExspandTextView_etv_ToShrinkHintColorBgPressed) {
+            else if (attr == R.styleable.ExpandTextView_etv_ToShrinkHintColorBgPressed) {
                 mToShrinkHintColorBgPressed = a.getInteger(attr, TO_SHRINK_HINT_COLOR_BG_PRESSED);
             }
-            else if (attr == R.styleable.ExspandTextView_etv_InitState) {
+            else if (attr == R.styleable.ExpandTextView_etv_InitState) {
                 mCurrState = a.getInteger(attr, STATE_SHRINK);
             }
-            else if (attr == R.styleable.ExspandTextView_etv_GapToExpandHint) {
+            else if (attr == R.styleable.ExpandTextView_etv_GapToExpandHint) {
                 mGapToExpandHint = a.getString(attr);
             }
-            else if (attr == R.styleable.ExspandTextView_etv_GapToShrinkHint) {
+            else if (attr == R.styleable.ExpandTextView_etv_GapToShrinkHint) {
                 mGapToShrinkHint = a.getString(attr);
             }
         }
@@ -374,7 +374,7 @@ public class ExspandTextView extends AppCompatTextView {
             }
             else {
                 if (onContentClickLinsener != null) {
-                    onContentClickLinsener.onContentClick(ExspandTextView.this);
+                    onContentClickLinsener.onContentClick(ExpandTextView.this);
                 }
             }
         }
@@ -442,7 +442,7 @@ public class ExspandTextView extends AppCompatTextView {
         @Override
         public void onClick(View widget) {
             if (hasOnClickListeners() &&
-                (getOnClickListener(ExspandTextView.this) instanceof ExpandableClickListener)) {
+                (getOnClickListener(ExpandTextView.this) instanceof ExpandableClickListener)) {
                 tag = true;
                 toggle();
             }

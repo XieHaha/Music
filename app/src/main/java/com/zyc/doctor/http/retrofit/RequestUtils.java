@@ -470,11 +470,8 @@ public class RequestUtils {
 
     public static void deletePatient(Context context, String doctorId, String patientId,
             final ResponseListener<BaseResponse> listener) {
-        Map<String, String> merchant = new HashMap<>(16);
-        merchant.put("doctorId", doctorId);
-        merchant.put("patientId", patientId);
         RetrofitManager.getApiUrlManager()
-                       .deletePatient(merchant)
+                       .deletePatient(doctorId, patientId)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractBaseObserver<>(context, Tasks.DELETE_PATIENT, listener));
     }

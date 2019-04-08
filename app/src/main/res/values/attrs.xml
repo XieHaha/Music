@@ -90,7 +90,7 @@
         <attr name="textLength" format="integer"></attr>
     </declare-styleable>
 
-    <declare-styleable name="ExspandTextView">
+    <declare-styleable name="ExpandTextView">
         <attr name="etv_MaxLinesOnShrink" format="reference|integer" />
         <attr name="etv_EllipsisHint" format="reference|string" /><!--default is ..-->
         <attr name="etv_ToExpandHint" format="reference|string" /><!--"to expand" hint string, default is "Expand"-->
