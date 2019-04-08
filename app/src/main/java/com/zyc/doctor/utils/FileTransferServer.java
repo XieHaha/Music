@@ -65,7 +65,6 @@ public class FileTransferServer {
             OnUploadListener uploadListener) {
         String url = "";
         Request request = new JsonObjectRequest(url, RequestMethod.POST);
-        //todo tag
         request.setTag(filePath);
         request.set("jid", jid);
         request.set("fileType", fileType);

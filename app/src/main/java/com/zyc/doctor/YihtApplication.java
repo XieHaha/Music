@@ -12,11 +12,12 @@ import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.domain.EaseAvatarOptions;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.yanzhenjie.nohttp.NoHttp;
-import com.zyc.doctor.api.notify.NotifyHelper;
+import com.zyc.doctor.api.ApiManager;
 import com.zyc.doctor.chat.HxHelper;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.http.bean.LoginSuccessBean;
 import com.zyc.doctor.http.retrofit.RetrofitManager;
+import com.zyc.doctor.utils.CrashHandler;
 import com.zyc.doctor.utils.ImageLoadUtil;
 import com.zyc.doctor.utils.RecentContactUtils;
 import com.zyc.doctor.utils.SharePreferenceUtil;
@@ -35,7 +36,7 @@ import me.jessyan.autosize.unit.Subunits;
  * @author DUNDUN
  */
 public class YihtApplication extends LitePalApplication {
-    private static YihtApplication sApplication;
+    private static YihtApplication instance;
     private LoginSuccessBean loginSuccessBean;
     /**
      * 临时数据  头像url
@@ -63,11 +64,12 @@ public class YihtApplication extends LitePalApplication {
         MultiDex.install(this);
         super.onCreate();
         initContext();
+        // 界面适配
         initAndroidAutoSize();
+        //app 帮助类
+        ApiManager.getInstance().init(this, true);
         //网络
         RetrofitManager.getInstance().init();
-        //监听类初始化
-        NotifyHelper.init(this);
         //处理文件下载上传
         NoHttp.initialize(this);
         //数据库
@@ -78,6 +80,8 @@ public class YihtApplication extends LitePalApplication {
         initJPush();
         //
         initImageLoader();
+        //日志捕捉
+        CrashHandler.init(this);
     }
 
     @Override
@@ -87,7 +91,7 @@ public class YihtApplication extends LitePalApplication {
     }
 
     private void initContext() {
-        sApplication = this;
+        instance = this;
     }
 
     /**
@@ -160,7 +164,7 @@ public class YihtApplication extends LitePalApplication {
     }
 
     public static YihtApplication getInstance() {
-        return sApplication;
+        return instance;
     }
 
     public LoginSuccessBean getLoginSuccessBean() {

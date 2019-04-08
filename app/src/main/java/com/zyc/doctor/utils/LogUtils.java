@@ -24,10 +24,16 @@ import java.util.Date;
 
 /**
  * log日志打印类
+ *
  * @author dundun
  */
 public class LogUtils {
     private static boolean isEnableLog = false;
+    private static final char V = 'v';
+    private static final char D = 'd';
+    private static final char W = 'w';
+    private static final char I = 'i';
+    private static final char E = 'e';
 
     public static void setIsEnableLog(boolean isEnableLog) {
         LogUtils.isEnableLog = isEnableLog;
@@ -36,18 +42,14 @@ public class LogUtils {
     /**
      * @return True if the settings manager is set and debug logs are enabled, False otherwise
      */
-    public static boolean canLog() {
+    private static boolean canLog() {
         return isEnableLog;
     }
 
     /**
-     * 输入日志类型，w代表只输出告警信息等，v代表输出所有信息
-     */
-    private static char LOG_TYPE = 'v';
-    /**
      * 本类输出的日志文件名称
      */
-    private static String LOG_FILENAME = "Log.txt";
+    private static String logFileName = "Log.txt";
     /**
      * 日志的输出格式
      */
@@ -58,90 +60,115 @@ public class LogUtils {
     private static SimpleDateFormat logfile = new SimpleDateFormat("yyyy-MM-dd");
 
     public static void w(String tag, String text) {
-        log(tag, text, 'w', null);
+        log(tag, text, W, null);
     }
 
     public static void e(String tag, String text) {
-        log(tag, text, 'e', null);
+        log(tag, text, E, null);
     }
 
     public static void d(String tag, String text) {
-        log(tag, text, 'd', null);
+        log(tag, text, D, null);
     }
 
     public static void i(String tag, String text) {
-        log(tag, text, 'i', null);
+        log(tag, text, I, null);
     }
 
     public static void v(String tag, String text) {
-        log(tag, text, 'v', null);
+        log(tag, text, V, null);
     }
 
     public static void w(String tag, String msg, Throwable tr) {
-        log(tag, msg, 'w', tr);
+        log(tag, msg, W, tr);
     }
 
     public static void e(String tag, String msg, Throwable tr) {
-        log(tag, msg, 'e', tr);
+        log(tag, msg, E, tr);
     }
 
     public static void d(String tag, String msg, Throwable tr) {
-        log(tag, msg, 'd', tr);
+        log(tag, msg, D, tr);
     }
 
     public static void i(String tag, String msg, Throwable tr) {
-        log(tag, msg, 'i', tr);
+        log(tag, msg, I, tr);
     }
 
     public static void v(String tag, String msg, Throwable tr) {
-        log(tag, msg, 'v', tr);
+        log(tag, msg, V, tr);
     }
 
     private static void log(String tag, String msg, char level, Throwable tr) {
         if (!canLog()) { return; }
-        if ('e' == level && ('e' == LOG_TYPE || 'v' == LOG_TYPE)) {
-            //输出错误信息
-            if (tr == null) { Log.e(tag, msg); }
-            else { Log.e(tag, msg, tr); }
+        switch (level) {
+            case E:
+                if (tr == null) {
+                    Log.e(tag, msg);
+                }
+                else {
+                    Log.e(tag, msg, tr);
+                }
+                break;
+            case W:
+                if (tr == null) {
+                    Log.w(tag, msg);
+                }
+                else {
+                    Log.w(tag, msg, tr);
+                }
+                break;
+            case D:
+                if (tr == null) {
+                    Log.d(tag, msg);
+                }
+                else {
+                    Log.d(tag, msg, tr);
+                }
+                break;
+            case I:
+                if (tr == null) {
+                    Log.i(tag, msg);
+                }
+                else {
+                    Log.i(tag, msg, tr);
+                }
+                break;
+            default:
+                if (tr == null) {
+                    Log.v(tag, msg);
+                }
+                else {
+                    Log.v(tag, msg, tr);
+                }
+                break;
         }
-        else if ('w' == level && ('w' == LOG_TYPE || 'v' == LOG_TYPE)) {
-            if (tr == null) { Log.w(tag, msg); }
-            else { Log.w(tag, msg, tr); }
-        }
-        else if ('d' == level && ('d' == LOG_TYPE || 'v' == LOG_TYPE)) {
-            if (tr == null) { Log.d(tag, msg); }
-            else { Log.d(tag, msg, tr); }
-        }
-        else if ('i' == level && ('i' == LOG_TYPE || 'v' == LOG_TYPE)) {
-            if (tr == null) { Log.i(tag, msg); }
-            else { Log.i(tag, msg, tr); }
-        }
-        else {
-            if (tr == null) { Log.v(tag, msg); }
-            else { Log.v(tag, msg, tr); }
-        }
-        if (('d' == level) || 'e' == level) {
-            if (tr == null) { writeLogToFile(String.valueOf(level), tag, msg); }
-            else { writeLogToFile(String.valueOf(level), tag + " " + msg, tr); }
+        if (E == level) {
+            if (tr == null) {
+                writeLogToFile(String.valueOf(level), tag, msg);
+            }
+            else {
+                writeLogToFile(String.valueOf(level), tag + " " + msg, tr);
+            }
         }
     }
 
     /**
      * 新建或打开日志文件
      *
-     * @param mylogtype
-     * @param tag
-     * @param text
+     * @param logType type
+     * @param tag     tag
+     * @param text    错误内容
      */
-    private static void writeLogToFile(String mylogtype, String tag, String text) {
+    private static void writeLogToFile(String logType, String tag, String text) {
         if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) { return; }
         Date nowTime = new Date();
         String needWriteFile = logfile.format(nowTime);
-        String needWriteMessage = mLogSdf.format(nowTime) + "    " + mylogtype + "    " + tag + "    " + text;
+        String needWriteMessage = mLogSdf.format(nowTime) + "    " + logType + "    " + tag + "    " + text;
         String pathLog = DirHelper.getPathLog();
         File file = new File(pathLog);
         if (!file.exists() && !file.mkdirs()) { return; }
-        file = new File(pathLog, needWriteFile + "-" + LOG_FILENAME);
+        file = new File(pathLog, needWriteFile + "-" + logFileName);
         FileWriter filerWriter = null;
         BufferedWriter bufWriter = null;
         try {
@@ -167,9 +194,9 @@ public class LogUtils {
     /**
      * 记录日志
      *
-     * @param level
-     * @param tag
-     * @param ex
+     * @param level l
+     * @param tag   t
+     * @param ex    t
      */
     private static void writeLogToFile(String level, String tag, Throwable ex) {
         StringBuilder sb = new StringBuilder();

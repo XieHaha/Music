@@ -6,7 +6,7 @@ import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.zyc.doctor.http.Tasks;
 import com.zyc.doctor.http.bean.BaseResponse;
 import com.zyc.doctor.http.bean.Version;
-import com.zyc.doctor.http.listener.ResponseListener;
+import com.zyc.doctor.http.listener.AbstractResponseAdapter;
 import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.utils.DirHelper;
 import com.zyc.doctor.utils.FileTransferServer;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * @author dundun
  * @date 16/6/6
  */
-public class VersionModel implements ResponseListener<BaseResponse>, VersionModelListener {
+public class VersionModel extends AbstractResponseAdapter<BaseResponse> implements VersionModelListener {
     private static final String TAG = "VersionModel";
     private Context context;
     private NewestVersionCallBack callBack;
@@ -57,7 +57,6 @@ public class VersionModel implements ResponseListener<BaseResponse>, VersionMode
                 LogUtils.e(TAG, "delete error");
             }
         }
-        //        url = "http://gdown.baidu.com/data/wisegame/89eb17d6287ae627/weixin_1300.apk";
         FileTransferServer.getInstance(context)
                           .downloadFile(url, DirHelper.getPathFile(), "YHT" + ".apk", downloadListener);
     }
@@ -99,17 +98,5 @@ public class VersionModel implements ResponseListener<BaseResponse>, VersionMode
         if (callBack != null) {
             callBack.error(response.getMsg());
         }
-    }
-
-    @Override
-    public void onResponseStart(Tasks task) {
-    }
-
-    @Override
-    public void onResponseEnd(Tasks task) {
-    }
-
-    @Override
-    public void onResponseCancel(Tasks task) {
     }
 }

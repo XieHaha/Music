@@ -259,7 +259,7 @@ public interface ApiUrlManager {
      * @return
      */
     @GET("patient/info/{patientId}")
-    Observable<BaseResponse<PatientBean>> getPatientInfo(@Query("patientId") String patientId);
+    Observable<BaseResponse<PatientBean>> getPatientInfo(@Path("patientId") String patientId);
 
     /**
      * 获取转诊详情
@@ -383,11 +383,11 @@ public interface ApiUrlManager {
     /**
      * 获取患者综合病史接口
      *
-     * @param info
+     * @param patientId
      * @return
      */
-    @GET("patient/combine")
-    Observable<BaseResponse<RegistrationBean>> getPatientCombine(@QueryMap Map<String, String> info);
+    @GET("patient/combine/{patientId}")
+    Observable<BaseResponse<RegistrationBean>> getPatientCombine(@Path("patientId") String patientId);
 
     /**
      * 新增患者病例

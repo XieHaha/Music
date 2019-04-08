@@ -166,7 +166,7 @@ public class RequestUtils {
             final ResponseListener<BaseResponse> listener) {
         Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("id1", doctorId);
-        merchant.put("id1", doctorId2);
+        merchant.put("id2", doctorId2);
         RetrofitManager.getApiUrlManager()
                        .cancelCooperateDoc(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
@@ -198,7 +198,7 @@ public class RequestUtils {
     public static void qualifiyDoc(Context context, String doctorId, String name, String identityNumber, String title,
             String department, String hospital, File idFront, File idEnd, File qualifiedFront, File qualifiedEnd,
             final ResponseListener<BaseResponse> listener) {
-        Map<String, Object> merchant = new HashMap<>();
+        Map<String, Object> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
         merchant.put("name", name);
         merchant.put("identityNumber", identityNumber);
@@ -368,7 +368,7 @@ public class RequestUtils {
     public static void addTransferPatient(Context context, String diagnosisInfo, PatientBean patientBean,
             CooperateDocBean cooperateDocBean, LoginSuccessBean loginSuccessBean,
             final ResponseListener<BaseResponse> listener) {
-        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>(20);
         params.put("fromDoctorDiagnosisInfo", diagnosisInfo);
         params.put("fromDoctorDepartment", loginSuccessBean.getDepartment());
         params.put("fromDoctorHospitalName", loginSuccessBean.getHospital());
@@ -431,7 +431,7 @@ public class RequestUtils {
     public static void addProductOrderNew(Context context, String diagnosisInfo, LoginSuccessBean loginSuccessBean,
             PatientBean patientBean, HospitalBean curHospital, HospitalProductBean curProduct,
             HospitalProductTypeBean curProductType, final ResponseListener<BaseResponse> listener) {
-        Map<String, Object> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>(20);
         params.put("diagnosisInfo", diagnosisInfo);
         params.put("productTypeId", curProductType.getProductTypeId());
         params.put("productTypeName", curProductType.getProductTypeName());
@@ -500,10 +500,8 @@ public class RequestUtils {
 
     public static void getPatientCombine(Context context, String patientId,
             final ResponseListener<BaseResponse> listener) {
-        Map<String, String> merchant = new HashMap<>(16);
-        merchant.put("patientId", patientId);
         RetrofitManager.getApiUrlManager()
-                       .getPatientCombine(merchant)
+                       .getPatientCombine(patientId)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_PATIENT_COMBINE, listener));
     }

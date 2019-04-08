@@ -7,6 +7,7 @@ import com.zyc.doctor.utils.LogUtils;
 
 /**
  * SDK 初始化
+ *
  * @author dundun
  */
 public class ApiManager {
@@ -30,8 +31,10 @@ public class ApiManager {
      *
      * @param context
      */
-    public void init(Context context) {
+    public void init(Context context, boolean isEnable) {
         sContext = context;
+        isLogEnable = isEnable;
+        LogUtils.setIsEnableLog(isEnable);
     }
 
     public Context getContext() {
@@ -39,16 +42,6 @@ public class ApiManager {
             LogUtils.w(TAG, "api Context is null, must be initial!");
         }
         return sContext;
-    }
-
-    /**
-     * 设置是否开启log日志
-     *
-     * @param isEnable
-     */
-    public void setLogEnable(boolean isEnable) {
-        isLogEnable = isEnable;
-        LogUtils.setIsEnableLog(isEnable);
     }
 
     /**

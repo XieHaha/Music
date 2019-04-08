@@ -1,11 +1,12 @@
 package com.zyc.doctor.version.model;
 
-import java.io.File;
-
 import com.zyc.doctor.http.bean.Version;
 
+import java.io.File;
+
 /**
- * Created by dundun on 16/6/6.
+ * @author dundun
+ * @date 16/6/6
  */
 public interface VersionModelListener {
     void getNewestVersion(NewestVersionCallBack callBack);
