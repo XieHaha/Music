@@ -308,6 +308,7 @@
                 <category android:name="${applicationId}" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activity.SelectDocTypeActivity" />
 
 
         <!-- Required SDK 核心功能-->
