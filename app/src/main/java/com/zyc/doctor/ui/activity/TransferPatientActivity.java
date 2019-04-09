@@ -22,7 +22,7 @@ import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
 import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.TransferStatu;
-import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.data.bean.CooperateDocBean;
 import com.zyc.doctor.data.bean.CooperateHospitalBean;

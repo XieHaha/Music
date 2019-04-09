@@ -19,6 +19,7 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
@@ -27,6 +28,8 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
+import retrofit2.http.Streaming;
+import retrofit2.http.Url;
 
 /**
  * @author dundun
@@ -454,4 +457,14 @@ public interface ApiUrlManager {
      */
     @POST("dp/scan/agree/V2.0")
     Observable<BaseResponse<String>> agreePatientApply(@Body Map<String, Object> info);
+
+    /**
+     * 文件下载
+     *
+     * @param url
+     * @return
+     */
+    @Streaming
+    @GET
+    Observable<ResponseBody> downloadFile(@Url String url);
 }

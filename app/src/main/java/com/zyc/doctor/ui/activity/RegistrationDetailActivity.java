@@ -20,7 +20,7 @@ import com.zyc.doctor.api.notify.INotifyChangeListenerServer;
 import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.OrderStatus;
-import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.data.bean.HospitalBean;
 import com.zyc.doctor.data.bean.RegistrationBean;

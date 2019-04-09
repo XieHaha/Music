@@ -2,7 +2,6 @@ package com.zyc.doctor.api;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 
 import com.yanzhenjie.nohttp.FileBinary;
 import com.yanzhenjie.nohttp.NoHttp;
@@ -15,6 +14,7 @@ import com.yanzhenjie.nohttp.rest.JsonObjectRequest;
 import com.yanzhenjie.nohttp.rest.OnResponseListener;
 import com.yanzhenjie.nohttp.rest.Request;
 import com.yanzhenjie.nohttp.rest.RequestQueue;
+import com.zyc.doctor.utils.LogUtils;
 
 import java.io.File;
 
@@ -24,6 +24,7 @@ import java.io.File;
  * @author dundun
  */
 public class FileTransferServer {
+    private static final String TAG = "FileTransferServer";
     private static FileTransferServer sInstance;
     private static Context sContext;
     /**
@@ -82,7 +83,7 @@ public class FileTransferServer {
             DownloadListener downloadListener) {
         String url;
         url = urlStr.contains(" ") ? urlStr.replace(" ", "%20") : urlStr;
-        Log.i("test", url);
+        LogUtils.i(TAG, url);
         DownloadRequest request = NoHttp.createDownloadRequest(Uri.encode(url, url), savePath, fileName, false, true);
         downloadQueue.add(what, request, downloadListener);
     }
@@ -116,20 +117,5 @@ public class FileTransferServer {
         downloadQueue = null;
         sContext = null;
         sInstance = null;
-    }
-
-    public interface UploadFileType {
-        /**
-         * 图片
-         */
-        String TYPE_IMAG = "0";
-        /**
-         * 视频
-         */
-        String TYPE_VIDEO = "1";
-        /**
-         * 其他
-         */
-        String TYPE_OTHER = "2";
     }
 }

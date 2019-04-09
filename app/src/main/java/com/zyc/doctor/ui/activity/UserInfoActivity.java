@@ -18,7 +18,7 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.chat.ChatActivity;
 import com.zyc.doctor.data.CommonData;
-import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.data.bean.CooperateDocBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;

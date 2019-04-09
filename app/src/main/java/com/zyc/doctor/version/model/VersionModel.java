@@ -3,7 +3,7 @@ package com.zyc.doctor.version.model;
 import android.content.Context;
 
 import com.yanzhenjie.nohttp.download.DownloadListener;
-import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.data.bean.Version;
 import com.zyc.doctor.http.listener.AbstractResponseAdapter;

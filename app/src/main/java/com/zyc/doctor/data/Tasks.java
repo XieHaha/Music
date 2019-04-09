@@ -1,4 +1,4 @@
-package com.zyc.doctor.http;
+package com.zyc.doctor.data;
 
 /**
  * 此类为任务队列编号，根据任务队列编号确定是否取消的任务

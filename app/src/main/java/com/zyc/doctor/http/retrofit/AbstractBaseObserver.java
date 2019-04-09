@@ -6,7 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
-import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.http.listener.ResponseListener;
 
 import io.reactivex.disposables.Disposable;

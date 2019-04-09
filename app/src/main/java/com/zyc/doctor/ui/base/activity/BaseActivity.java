@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import com.alibaba.fastjson.JSON;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.zyc.doctor.R;
-import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.data.bean.LoginSuccessBean;
 import com.zyc.doctor.http.listener.ResponseListener;

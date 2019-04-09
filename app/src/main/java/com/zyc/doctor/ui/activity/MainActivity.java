@@ -41,7 +41,7 @@ import com.zyc.doctor.chat.listener.AbstractEMContactListener;
 import com.zyc.doctor.chat.listener.AbstractEMMessageListener;
 import com.zyc.doctor.chat.receive.EaseMsgClickBroadCastReceiver;
 import com.zyc.doctor.data.CommonData;
-import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.data.bean.RegistrationTypeBean;
 import com.zyc.doctor.data.bean.Version;

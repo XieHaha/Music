@@ -1,6 +1,6 @@
 package com.zyc.doctor.http.retrofit;
 
-import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseNetConfig;
 import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.http.listener.ResponseListener;

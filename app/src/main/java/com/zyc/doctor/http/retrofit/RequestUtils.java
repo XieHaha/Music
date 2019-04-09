@@ -3,7 +3,7 @@ package com.zyc.doctor.http.retrofit;
 import android.content.Context;
 
 import com.google.gson.JsonObject;
-import com.zyc.doctor.http.Tasks;
+import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.data.bean.CooperateDocBean;
 import com.zyc.doctor.data.bean.HospitalBean;

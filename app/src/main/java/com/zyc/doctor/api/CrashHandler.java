@@ -19,6 +19,7 @@ import android.os.Process;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.zyc.doctor.ui.base.activity.AppManager;
 import com.zyc.doctor.utils.LogUtils;
 
 import java.lang.Thread.UncaughtExceptionHandler;
@@ -97,9 +98,10 @@ public class CrashHandler implements UncaughtExceptionHandler {
                 catch (InterruptedException e) {
                     Log.e(TAG, "error : ", e);
                 }
-                //退出程序
-                android.os.Process.killProcess(android.os.Process.myPid());
-                System.exit(0);
+                //                //退出程序
+                //                android.os.Process.killProcess(android.os.Process.myPid());
+                //                System.exit(0);
+                AppManager.getInstance().finishAllActivity();
             }
         }
     }
