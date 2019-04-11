@@ -16,27 +16,27 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.JsonObject;
 import com.zhihu.matisse.Matisse;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
+import com.zyc.doctor.api.DirHelper;
+import com.zyc.doctor.data.BaseData;
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.http.retrofit.RequestUtils;
-import com.zyc.doctor.utils.permission.Permission;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.ActionSheetDialog;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.utils.AllUtils;
-import com.zyc.doctor.api.DirHelper;
 import com.zyc.doctor.utils.FileUtils;
-import com.zyc.doctor.utils.glide.GlideHelper;
 import com.zyc.doctor.utils.LogUtils;
-import com.zyc.doctor.utils.glide.MatisseUtils;
 import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.utils.glide.GlideHelper;
+import com.zyc.doctor.utils.glide.MatisseUtils;
+import com.zyc.doctor.utils.permission.Permission;
 import com.zyc.doctor.widgets.FilterEmojiEditText;
 
 import java.io.File;
@@ -96,7 +96,6 @@ public class EditInfoActivity extends BaseActivity {
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("编辑信息");
         findViewById(R.id.act_edit_info_save).setOnClickListener(this);
         maxCount = 10;
     }
@@ -261,16 +260,18 @@ public class EditInfoActivity extends BaseActivity {
         new ActionSheetDialog(this).builder()
                                    .setCancelable(true)
                                    .setCanceledOnTouchOutside(true)
-                                   .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Blue, which -> {
-                                       //动态申请权限
-                                       permissionHelper.request(new String[] {
-                                               Permission.STORAGE_WRITE });
-                                   })
-                                   .addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue, which -> {
-                                       //动态申请权限
-                                       permissionHelper.request(new String[] {
-                                               Permission.CAMERA, Permission.STORAGE_WRITE });
-                                   })
+                                   .addSheetItem(getString(R.string.txt_capture_img),
+                                                 ActionSheetDialog.SheetItemColor.Blue, which -> {
+                                               //动态申请权限
+                                               permissionHelper.request(new String[] {
+                                                       Permission.STORAGE_WRITE });
+                                           })
+                                   .addSheetItem(getString(R.string.txt_camera_img),
+                                                 ActionSheetDialog.SheetItemColor.Blue, which -> {
+                                               //动态申请权限
+                                               permissionHelper.request(new String[] {
+                                                       Permission.CAMERA, Permission.STORAGE_WRITE });
+                                           })
                                    .show();
     }
 
@@ -351,7 +352,8 @@ public class EditInfoActivity extends BaseActivity {
         intent.setDataAndType(originUri, "image/*");
         intent.putExtra("crop", "true");
         // aspectX aspectY 是宽高的比例
-        if (Build.BRAND.toUpperCase().contains("HONOR") || Build.BRAND.toUpperCase().contains("HUAWEI")) {
+        if (Build.BRAND.toUpperCase().contains(BaseData.BASE_HONOR_NAME) ||
+            Build.BRAND.toUpperCase().contains(BaseData.BASE_HUAWEI_NAME)) {
             //华为特殊处理 不然会显示圆
             intent.putExtra("aspectX", 9998);
             intent.putExtra("aspectY", 9999);

@@ -90,14 +90,17 @@
         <activity
             android:name="com.zyc.doctor.ui.activity.HealthDetailActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_health_detail"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.ApplyCooperateDocActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_apply_doctor"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.ApplyPatientActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_apply_patient"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.UserInfoActivity"
@@ -107,10 +110,12 @@
         <activity
             android:name="com.zyc.doctor.ui.activity.EditInfoActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_editUser_info"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.SelectTransferDocActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_cooperate_doc"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.ImagePreviewActivity"
@@ -119,14 +124,17 @@
         <activity
             android:name="com.zyc.doctor.ui.activity.AuthDocActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_auth_doctor"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.EditRemarkActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_editRemark"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.SettingActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_setting"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.ServicePackActivity"
@@ -135,18 +143,22 @@
         <activity
             android:name="com.zyc.doctor.ui.activity.HospitalInfoActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_hospital_info"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.TransferPatientActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_transfer_patient"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.TransferPatientFromActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_transfer_from"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.TransferPatientToActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_transfer_to"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.AddCaseInfoActivity"
@@ -159,6 +171,7 @@
         <activity
             android:name="com.zyc.doctor.ui.activity.AboutOurActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_about_our"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.AddFriendsPatientActivity"
@@ -171,30 +184,37 @@
         <activity
             android:name="com.zyc.doctor.ui.activity.PatientsActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_my_patient"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.TransferPatientHistoryActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_transfer_patient_history"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.RegistrationDetailActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_registration_detail"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.RegistrationListActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_registration_list"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.FileListActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_file_list"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.PatientInfoActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_patient_info"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.DoctorInfoActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_doctor_info"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.AuthDocStatuActivity"
@@ -203,6 +223,7 @@
         <activity
             android:name="com.zyc.doctor.ui.activity.CooperateHospitalActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_cooperate_hospital"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.CooperateDocActivity"
@@ -211,6 +232,7 @@
         <activity
             android:name="com.zyc.doctor.ui.activity.SelectTransferHospitalActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_cooperate_hospital"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name="com.zyc.doctor.ui.activity.FileDisplayActivity"

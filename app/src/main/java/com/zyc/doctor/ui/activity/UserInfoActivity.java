@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.chat.ChatActivity;
+import com.zyc.doctor.data.BaseData;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
@@ -25,8 +26,8 @@ import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.utils.AllUtils;
-import com.zyc.doctor.utils.glide.GlideHelper;
 import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.utils.glide.GlideHelper;
 
 import org.litepal.crud.DataSupport;
 
@@ -147,7 +148,7 @@ public class UserInfoActivity extends BaseActivity {
             else {
                 Glide.with(this).load(R.mipmap.icon_uncertified).into(imgAuth);
             }
-            if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) && cooperateDocBean.getNickname().length() < 20) {
+            if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) && cooperateDocBean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
                 tvName.setText(cooperateDocBean.getNickname() + "(" + cooperateDocBean.getName() + ")");
             }
             else {
@@ -186,7 +187,7 @@ public class UserInfoActivity extends BaseActivity {
                     Intent intent = new Intent(this, ChatActivity.class);
                     intent.putExtra(CommonData.KEY_CHAT_ID, cooperateDocBean.getDoctorId());
                     if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) &&
-                        cooperateDocBean.getNickname().length() < 20) {
+                        cooperateDocBean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
                         intent.putExtra(CommonData.KEY_CHAT_NAME, cooperateDocBean.getNickname());
                         YihtApplication.getInstance().setEaseName(cooperateDocBean.getNickname());
                     }

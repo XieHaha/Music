@@ -38,8 +38,6 @@ import butterknife.BindView;
  */
 public class RegistrationDetailActivity extends BaseActivity implements OrderStatus {
     private static final String TAG = "RegistrationDetailActiv";
-    @BindView(R.id.public_title_bar_title)
-    TextView tvTitle;
     @BindView(R.id.act_service_pack_hint_hospital_img)
     ImageView ivHospitalImg;
     @BindView(R.id.act_service_pack_hint_hospital_name)
@@ -130,7 +128,6 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
             registrationBean = (RegistrationBean)getIntent().getSerializableExtra(CommonData.KEY_REGISTRATION_BEAN);
             registrationId = getIntent().getStringExtra(CommonData.KEY_REGISTRATION_ID);
         }
-        tvTitle.setText("订单详情");
         iNotifyChangeListenerServer = ApiManager.getInstance().getServer();
         if (registrationBean == null) {
             getDetailById();

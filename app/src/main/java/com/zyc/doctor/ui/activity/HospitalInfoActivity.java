@@ -41,12 +41,6 @@ public class HospitalInfoActivity extends BaseActivity {
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState) {
-        super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("医院信息");
-    }
-
-    @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         if (getIntent() != null) {

@@ -7,6 +7,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.zyc.doctor.R;
+import com.zyc.doctor.data.BaseData;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 
 import butterknife.BindView;
@@ -68,6 +69,6 @@ public class CameraLoginActivity extends BaseActivity implements CustomAdapt {
 
     @Override
     public float getSizeInDp() {
-        return 667;
+        return BaseData.BASE_DEVICE_DEFAULT_WIDTH;
     }
 }

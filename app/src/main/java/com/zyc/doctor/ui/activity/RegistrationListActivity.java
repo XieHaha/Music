@@ -8,7 +8,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
 
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
@@ -71,7 +70,6 @@ public class RegistrationListActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("开单记录");
         footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
                                                    android.R.color.holo_orange_light, android.R.color.holo_green_light);

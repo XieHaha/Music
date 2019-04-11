@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zyc.doctor.R;
+import com.zyc.doctor.data.BaseData;
 import com.zyc.doctor.data.bean.CooperateDocBean;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
@@ -72,7 +73,7 @@ public class CooperateDocListAdapter extends BaseRecyclerAdapter<CooperateDocBea
                  .load(item.getPortraitUrl())
                  .apply(GlideHelper.getOptions())
                  .into(ivHeadImg);
-            if (!TextUtils.isEmpty(item.getNickname()) && item.getNickname().length() < 20)
+            if (!TextUtils.isEmpty(item.getNickname()) && item.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH)
             {
                 tvName.setText(item.getNickname());
             }

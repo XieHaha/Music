@@ -6,9 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
-import android.widget.TextView;
 
 import com.zyc.doctor.R;
+import com.zyc.doctor.data.BaseData;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.bean.FileBean;
 import com.zyc.doctor.data.bean.NormImage;
@@ -47,7 +47,6 @@ public class FileListActivity extends BaseActivity implements FileListAdapter.Op
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("报告列表");
         autoLoadRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         autoLoadRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
@@ -78,8 +77,7 @@ public class FileListActivity extends BaseActivity implements FileListAdapter.Op
     @Override
     public void onOpen(int position, String path, String fileName) {
         String type = MimeUtils.getMime(FileUtils.getFileExtNoPoint(path));
-        if ("image/bmp".equals(type) || "image/gif".equals(type) || "image/jpeg".equals(type) ||
-            "image/png".equals(type)) {
+        if (BaseData.BASE_IMAGE_TYPE.contains(type)) {
             ArrayList<NormImage> imageList = new ArrayList<>();
             NormImage normImage = new NormImage();
             normImage.setImagePath(path);

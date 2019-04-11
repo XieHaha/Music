@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.easeui.UserInfoCallback;
 import com.hyphenate.easeui.domain.EaseUser;
+import com.zyc.doctor.data.BaseData;
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.data.bean.CooperateDocBean;
@@ -67,7 +68,7 @@ public class HxHelper {
                 List<PatientBean> list = DataSupport.where("patientId = ?", username).find(PatientBean.class);
                 if (list != null && list.size() > 0) {
                     PatientBean bean = list.get(0);
-                    if (!TextUtils.isEmpty(bean.getNickname()) && bean.getNickname().length() < 20) {
+                    if (!TextUtils.isEmpty(bean.getNickname()) && bean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
                         user.setNickname(bean.getNickname());
                     }
                     else {
@@ -83,7 +84,7 @@ public class HxHelper {
                         PatientBean patientBean = (PatientBean)response.getData();
                         if (patientBean != null) {
                             if (!TextUtils.isEmpty(patientBean.getNickname()) &&
-                                patientBean.getNickname().length() < 20) {
+                                patientBean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
                                 user.setNickname(patientBean.getNickname());
                             }
                             else {
@@ -99,7 +100,7 @@ public class HxHelper {
                 List<CooperateDocBean> list = DataSupport.where("doctorId = ?", username).find(CooperateDocBean.class);
                 if (list != null && list.size() > 0) {
                     CooperateDocBean bean = list.get(0);
-                    if (!TextUtils.isEmpty(bean.getNickname()) && bean.getNickname().length() < 20) {
+                    if (!TextUtils.isEmpty(bean.getNickname()) && bean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
                         user.setNickname(bean.getNickname());
                     }
                     else {
@@ -114,7 +115,7 @@ public class HxHelper {
                     public void onResponseSuccess(Tasks task, BaseResponse response) {
                         CooperateDocBean bean = (CooperateDocBean)response.getData();
                         if (bean != null) {
-                            if (!TextUtils.isEmpty(bean.getNickname()) && bean.getNickname().length() < 20) {
+                            if (!TextUtils.isEmpty(bean.getNickname()) && bean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
                                 user.setNickname(bean.getNickname());
                             }
                             else {

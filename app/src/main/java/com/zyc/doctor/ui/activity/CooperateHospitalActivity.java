@@ -65,7 +65,6 @@ public class CooperateHospitalActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("合作医院");
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
                                                    android.R.color.holo_orange_light, android.R.color.holo_green_light);
         footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);

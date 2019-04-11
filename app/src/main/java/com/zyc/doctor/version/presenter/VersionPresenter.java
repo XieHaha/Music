@@ -21,7 +21,7 @@ import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
-import com.zyc.doctor.data.bean.Version;
+import com.zyc.doctor.data.bean.VersionBean;
 import com.zyc.doctor.api.DirHelper;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.NetWorkUtils;
@@ -39,7 +39,7 @@ public class VersionPresenter implements ConstantsVersionMode {
     private static final String TAG = "VersionPresenter";
     private Context context;
     private VersionModel versionModel;
-    private Version nowVersion;
+    private VersionBean nowVersion;
     private NotificationCompat.Builder builder;
     private NotificationManager manager;
     private PendingIntent pendingIntent;
@@ -74,7 +74,7 @@ public class VersionPresenter implements ConstantsVersionMode {
         if (new NetWorkUtils(context).isConnected()) {
             versionModel.getNewestVersion(new VersionModelListener.NewestVersionCallBack() {
                 @Override
-                public void result(Version version) {
+                public void result(VersionBean version) {
                     if (version == null) { return; }
                     nowVersion = version;
                     url = nowVersion.getDownloadUrl();
@@ -204,7 +204,7 @@ public class VersionPresenter implements ConstantsVersionMode {
     private VersionViewListener versionViewListener;
 
     public interface VersionViewListener {
-        void updateVersion(Version version, int mode, boolean isDownLoading);
+        void updateVersion(VersionBean version, int mode, boolean isDownLoading);
 
         void updateLoading(long total, long current);
 

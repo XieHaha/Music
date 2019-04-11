@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.zyc.doctor.R;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
+import com.zyc.doctor.data.BaseData;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
@@ -68,7 +69,7 @@ public class AddFriendsDocActivity extends BaseActivity {
         if (getIntent() != null) {
             isAdd = getIntent().getBooleanExtra(CommonData.KEY_PUBLIC, false);
             doctorId = getIntent().getStringExtra(CommonData.KEY_DOCTOR_ID);
-            requestSource = getIntent().getIntExtra("requestSource", -1);
+            requestSource = getIntent().getIntExtra(CommonData.KEY_REQUESTSOURCE, -1);
         }
         if (isAdd) {
             publicTitleBarTitle.setText("添加好友");
@@ -105,7 +106,8 @@ public class AddFriendsDocActivity extends BaseActivity {
             if (!TextUtils.isEmpty(headImgUrl)) {
                 Glide.with(this).load(headImgUrl).apply(GlideHelper.getOptions()).into(actAddFriendImg);
             }
-            if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) && cooperateDocBean.getNickname().length() < 20) {
+            if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) &&
+                cooperateDocBean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
                 tvName.setText(cooperateDocBean.getNickname() + "(" + cooperateDocBean.getName() + ")");
             }
             else {

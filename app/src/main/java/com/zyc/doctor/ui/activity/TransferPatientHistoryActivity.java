@@ -7,7 +7,6 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.adapter.FragmentVpAdapter;
@@ -54,12 +53,6 @@ public class TransferPatientHistoryActivity extends BaseActivity {
     @Override
     public int getLayoutID() {
         return R.layout.act_transfer_patient_history;
-    }
-
-    @Override
-    public void initView(@NonNull Bundle savedInstanceState) {
-        super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("转诊记录");
     }
 
     @Override

@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.chat.ChatActivity;
+import com.zyc.doctor.data.BaseData;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
@@ -120,7 +121,6 @@ public class DoctorInfoActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("医生信息");
         findViewById(R.id.public_title_bar_back).setOnClickListener(this);
         findViewById(R.id.public_title_bar_more_two).setOnClickListener(this);
         ivMore.setVisibility(View.VISIBLE);
@@ -188,12 +188,12 @@ public class DoctorInfoActivity extends BaseActivity
             if (!TextUtils.isEmpty(headImgUrl)) {
                 Glide.with(this).load(headImgUrl).apply(GlideHelper.getOptions()).into(ivHeadImg);
             }
-            if (!TextUtils.isEmpty(doctorNickName) && doctorNickName.length() < 20) {
+            if (!TextUtils.isEmpty(doctorNickName) && doctorNickName.length() < BaseData.BASE_NICK_NAME_LENGTH) {
                 tvName.setText(doctorNickName + "(" + cooperateDocBean.getName() + ")");
             }
             else {
                 if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) &&
-                    cooperateDocBean.getNickname().length() < 20) {
+                    cooperateDocBean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
                     tvName.setText(cooperateDocBean.getNickname() + "(" + cooperateDocBean.getName() + ")");
                 }
                 else {
@@ -292,7 +292,7 @@ public class DoctorInfoActivity extends BaseActivity
                     intent = new Intent(this, ChatActivity.class);
                     intent.putExtra(CommonData.KEY_CHAT_ID, cooperateDocBean.getDoctorId());
                     if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) &&
-                        cooperateDocBean.getNickname().length() < 20) {
+                        cooperateDocBean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
                         intent.putExtra(CommonData.KEY_CHAT_NAME, cooperateDocBean.getNickname());
                         YihtApplication.getInstance().setEaseName(cooperateDocBean.getNickname());
                     }

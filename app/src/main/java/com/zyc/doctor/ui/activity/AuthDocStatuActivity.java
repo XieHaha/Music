@@ -18,6 +18,7 @@ import com.zyc.doctor.api.ApiManager;
 import com.zyc.doctor.api.notify.IChange;
 import com.zyc.doctor.api.notify.INotifyChangeListenerServer;
 import com.zyc.doctor.api.notify.RegisterType;
+import com.zyc.doctor.data.BaseData;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.DocAuthStatu;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
@@ -163,13 +164,13 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
                 intent = new Intent(this, AuthDocActivity.class);
                 //认证失败
                 if (VERIFY_FAILD == loginSuccessBean.getChecked()) {
-                    intent.putExtra("again", true);
+                    intent.putExtra(CommonData.KEY_DOC_AUTH_AGAIN, true);
                 }
                 startActivityForResult(intent, REQUEST_CODE_AUTH);
                 break;
             case R.id.act_auth_doc_statu_again:
                 intent = new Intent(this, AuthDocActivity.class);
-                intent.putExtra("again", true);
+                intent.putExtra(CommonData.KEY_DOC_AUTH_AGAIN, true);
                 startActivityForResult(intent, REQUEST_CODE_AUTH_AGAIN);
                 break;
             case R.id.public_title_bar_back:
@@ -235,7 +236,7 @@ public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, 
 
     @Override
     public float getSizeInDp() {
-        return 667;
+        return BaseData.BASE_DEVICE_DEFAULT_WIDTH;
     }
     //===================================屏幕适配
 }

@@ -68,15 +68,7 @@ public class RecentContactAdapter extends BaseRecyclerAdapter<PatientBean>
                  .load(patientBean.getPatientImgUrl())
                  .apply(GlideHelper.getOptionsP())
                  .into(ivHeadImg);
-            //            if (!TextUtils.isEmpty(patientBean.getNickname()) &&
-            //                patientBean.getNickname().length() < 20)
-            //            {
-            //                tvName.setText(patientBean.getNickname());
-            //            }
-            //            else
-            //            {
             tvName.setText(patientBean.getName());
-            //            }
         }
     }
 }

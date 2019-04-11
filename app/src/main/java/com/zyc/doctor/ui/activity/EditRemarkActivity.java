@@ -11,9 +11,9 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
 
 import com.zyc.doctor.R;
+import com.zyc.doctor.data.BaseData;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
@@ -52,13 +52,12 @@ public class EditRemarkActivity extends BaseActivity {
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("设置备注");
         if (getIntent() != null) {
             userId = getIntent().getStringExtra(CommonData.KEY_ID);
             nickName = getIntent().getStringExtra(CommonData.KEY_PUBLIC);
             isDealDoctor = getIntent().getBooleanExtra(CommonData.KEY_IS_DEAL_DOC, false);
         }
-        if (!TextUtils.isEmpty(nickName) && nickName.length() < 20) {
+        if (!TextUtils.isEmpty(nickName) && nickName.length() < BaseData.BASE_NICK_NAME_LENGTH) {
             actEditRemarkNickname.setText(nickName);
             actEditRemarkNickname.setSelection(nickName.length());
         }
@@ -95,7 +94,7 @@ public class EditRemarkActivity extends BaseActivity {
                         mTextMaxlenght += 2;
                     }
                     // 当最大字符大于10时,进行字段的截取,并进行提示字段的大小
-                    if (mTextMaxlenght > 20) {
+                    if (mTextMaxlenght > BaseData.BASE_NICK_NAME_LENGTH) {
                         // 截取最大的字段
                         String newStr = str.substring(0, i);
                         actEditRemarkNickname.setText(newStr);

@@ -72,7 +72,6 @@ public class TransferPatientFromActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("转给我的患者");
         footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
         tvFooterHintTxt = footerView.findViewById(R.id.footer_hint_txt);
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,

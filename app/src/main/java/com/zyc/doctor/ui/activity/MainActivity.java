@@ -40,11 +40,12 @@ import com.zyc.doctor.chat.ChatActivity;
 import com.zyc.doctor.chat.listener.AbstractEMContactListener;
 import com.zyc.doctor.chat.listener.AbstractEMMessageListener;
 import com.zyc.doctor.chat.receive.EaseMsgClickBroadCastReceiver;
+import com.zyc.doctor.data.BaseData;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.data.bean.RegistrationTypeBean;
-import com.zyc.doctor.data.bean.Version;
+import com.zyc.doctor.data.bean.VersionBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
@@ -339,7 +340,7 @@ public class MainActivity extends BaseActivity
         msgUnReadCount = EMClient.getInstance().chatManager().getUnreadMessageCount();
         if (msgUnReadCount > 0) {
             rlMsgPointLayout2.setVisibility(View.VISIBLE);
-            tvUnReadMsgCount2.setText(msgUnReadCount > 99 ? "99+" : msgUnReadCount + "");
+            tvUnReadMsgCount2.setText(msgUnReadCount > BaseData.BASE_MEAASGE_DISPLAY_NUM ? "99+" : msgUnReadCount + "");
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 //                sendSubscribeMsg(msgUnReadCount);
             }
@@ -372,7 +373,7 @@ public class MainActivity extends BaseActivity
         if (message.getFrom().equals(YihtApplication.getInstance().getChatId())) {
             return;
         }
-        if (pendingCount > 10000) {
+        if (pendingCount > BaseData.BASE_PENDING_COUNT) {
             pendingCount = 1;
         }
         pendingCount++;
@@ -633,7 +634,7 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void updateVersion(Version version, int mode, boolean isDownLoading) {
+    public void updateVersion(VersionBean version, int mode, boolean isDownLoading) {
         if (mode == -1) {
             YihtApplication.getInstance().setVersionRemind(false);
             return;
@@ -665,7 +666,7 @@ public class MainActivity extends BaseActivity
     @Override
     public void onEnter(boolean isMustUpdate) {
         mVersionPresenter.getNewAPK(isMustUpdate);
-        ToastUtil.toast(this, "开始下载");
+        ToastUtil.toast(this, R.string.toast_download_start);
     }
 
     /**
@@ -681,7 +682,7 @@ public class MainActivity extends BaseActivity
             int num = Integer.valueOf(pNum);
             if (num > 0) {
                 rlMsgPointLayout3.setVisibility(View.VISIBLE);
-                tvUnReadMsgCount3.setText(num > 99 ? "99+" : num + "");
+                tvUnReadMsgCount3.setText(num > BaseData.BASE_MEAASGE_DISPLAY_NUM ? "99+" : num + "");
             }
             else {
                 rlMsgPointLayout3.setVisibility(View.GONE);
@@ -722,7 +723,7 @@ public class MainActivity extends BaseActivity
             int num = Integer.valueOf(pNum);
             if (num > 0) {
                 rlMsgPointLayout.setVisibility(View.VISIBLE);
-                tvUnReadMsgCount.setText(num > 99 ? "99+" : num + "");
+                tvUnReadMsgCount.setText(num > BaseData.BASE_MEAASGE_DISPLAY_NUM ? "99+" : num + "");
             }
             else {
                 rlMsgPointLayout.setVisibility(View.GONE);

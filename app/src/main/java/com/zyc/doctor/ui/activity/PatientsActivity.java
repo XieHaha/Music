@@ -113,7 +113,6 @@ public class PatientsActivity extends BaseActivity implements SwipeRefreshLayout
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("我的患者");
         ivTitleBarMore.setVisibility(View.VISIBLE);
         headerView = LayoutInflater.from(this).inflate(R.layout.view_cooperate_doc_header, null);
         exHeaderView = LayoutInflater.from(this).inflate(R.layout.view_change_patient_header, null);

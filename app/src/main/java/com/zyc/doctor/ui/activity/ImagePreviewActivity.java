@@ -84,7 +84,7 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
                     break;
                 case LOAD_ERROR:
                     mLoadingView.setVisibility(View.GONE);
-                    ToastUtil.toast(ImagePreviewActivity.this, "图片加载失败");
+                    ToastUtil.toast(ImagePreviewActivity.this, R.string.toast_load_image_error);
                     break;
                 case LOAD_SUCCESS:
                     mLoadingView.setVisibility(View.GONE);
@@ -156,7 +156,7 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
                           .downloadFile(imageUri, DirHelper.getPathImage(), fileName, new DownloadListener() {
                               @Override
                               public void onDownloadError(int what, Exception exception) {
-                                  Toast.makeText(ImagePreviewActivity.this, "保存失败", Toast.LENGTH_SHORT).show();
+                                  ToastUtil.toast(ImagePreviewActivity.this, R.string.toast_save_image_error);
                               }
 
                               @Override
@@ -170,9 +170,8 @@ public class ImagePreviewActivity extends Activity implements ViewPager.OnPageCh
 
                               @Override
                               public void onFinish(int what, String filePath) {
-                                  Toast.makeText(ImagePreviewActivity.this, "图片 " + fileName + " 已保存到 " +
-                                                                            PreviewOptions.ImageDownloadOptions.IMAGE_SAVE_REL_DIR,
-                                                 Toast.LENGTH_SHORT).show();
+                                  ToastUtil.toast(ImagePreviewActivity.this, "图片 " + fileName + " 已保存到 " +
+                                                                             PreviewOptions.ImageDownloadOptions.IMAGE_SAVE_REL_DIR);
                               }
 
                               @Override

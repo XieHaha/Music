@@ -12,7 +12,7 @@ import com.zyc.doctor.data.bean.PatientCaseDetailBean;
 import com.zyc.doctor.data.bean.RegistrationBean;
 import com.zyc.doctor.data.bean.RegistrationTypeBean;
 import com.zyc.doctor.data.bean.TransPatientBean;
-import com.zyc.doctor.data.bean.Version;
+import com.zyc.doctor.data.bean.VersionBean;
 
 import java.util.List;
 import java.util.Map;
@@ -51,7 +51,7 @@ public interface ApiUrlManager {
      * @return
      */
     @POST("app/version")
-    Observable<BaseResponse<Version>> getNewVersion(@Body Map<String, String> info);
+    Observable<BaseResponse<VersionBean>> getNewVersion(@Body Map<String, String> info);
 
     /**
      * 获取验证码

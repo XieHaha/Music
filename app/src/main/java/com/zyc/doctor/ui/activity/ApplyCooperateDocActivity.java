@@ -67,7 +67,6 @@ public class ApplyCooperateDocActivity extends BaseActivity
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("医生申请");
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light,
                                                    android.R.color.holo_orange_light, android.R.color.holo_green_light);
         footerView = LayoutInflater.from(this).inflate(R.layout.view_list_footerr, null);
@@ -95,7 +94,7 @@ public class ApplyCooperateDocActivity extends BaseActivity
             Intent intent = new Intent(ApplyCooperateDocActivity.this, AddFriendsDocActivity.class);
             intent.putExtra(CommonData.KEY_DOCTOR_ID, item.getDoctorId());
             intent.putExtra(CommonData.KEY_PUBLIC, false);
-            intent.putExtra("requestSource", item.getRequestSource());
+            intent.putExtra(CommonData.KEY_REQUESTSOURCE, item.getRequestSource());
             startActivityForResult(intent, REQUEST_CODE_APPLY);
         });
     }

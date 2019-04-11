@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
@@ -21,11 +22,11 @@ import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.data.bean.LoginSuccessBean;
 import com.zyc.doctor.http.listener.ResponseListener;
+import com.zyc.doctor.utils.SharePreferenceUtil;
+import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.utils.permission.OnPermissionCallback;
 import com.zyc.doctor.utils.permission.Permission;
 import com.zyc.doctor.utils.permission.PermissionHelper;
-import com.zyc.doctor.utils.SharePreferenceUtil;
-import com.zyc.doctor.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +66,10 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
      * 返回按钮对象
      */
     protected ImageView backBtn;
+    /**
+     * 标题
+     */
+    private TextView tvTitle;
 
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
@@ -98,7 +103,7 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
      * @param savedInstanceState
      */
     private void init(@NonNull Bundle savedInstanceState) {
-        initBackViews();
+        initBaseViews();
         if (isInitBackBtn()) {
             initBackBtn();
         }
@@ -113,9 +118,10 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
         initListener();
     }
 
-    private void initBackViews() {
+    private void initBaseViews() {
         try {
             backBtn = findViewById(R.id.public_title_bar_back);
+            tvTitle = findViewById(R.id.public_title_bar_title);
         }
         catch (Exception e) {
             Log.e(getMTag(), e.getMessage());
@@ -134,6 +140,7 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
                     finish();
                 }
             });
+            tvTitle.setText(getTitle().toString());
         }
         catch (Exception e) {
             Log.e(getMTag(), e.getMessage());

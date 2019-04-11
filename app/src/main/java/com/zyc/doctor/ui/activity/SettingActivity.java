@@ -14,7 +14,7 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.data.bean.CooperateDocBean;
 import com.zyc.doctor.data.bean.PatientBean;
-import com.zyc.doctor.data.bean.Version;
+import com.zyc.doctor.data.bean.VersionBean;
 import com.zyc.doctor.ui.base.activity.AppManager;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
@@ -58,12 +58,6 @@ public class SettingActivity extends BaseActivity
     @Override
     public int getLayoutID() {
         return R.layout.act_setting;
-    }
-
-    @Override
-    public void initView(@NonNull Bundle savedInstanceState) {
-        super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("设置");
     }
 
     @Override
@@ -146,7 +140,7 @@ public class SettingActivity extends BaseActivity
 
     /*********************版本更新回调*************************/
     @Override
-    public void updateVersion(Version version, int mode, boolean isDownLoading) {
+    public void updateVersion(VersionBean version, int mode, boolean isDownLoading) {
         if (mode == -1) {
             ToastUtil.toast(this, "当前已是最新版本");
             return;

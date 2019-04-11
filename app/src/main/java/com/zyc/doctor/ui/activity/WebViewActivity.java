@@ -33,7 +33,7 @@ import java.io.File;
  * @author dundun
  */
 public class WebViewActivity extends AppCompatActivity {
-    private final static String TAG = "villa";
+    private static final String TAG = "WebView";
     private WebView webView;
     private ValueCallback<Uri> mUploadMessage;
     private ValueCallback<Uri[]> mUploadCallbackAboveL;
@@ -144,9 +144,9 @@ public class WebViewActivity extends AppCompatActivity {
         /**
          * For Android 5.0+
          *
-         * @param webView
-         * @param filePathCallback
-         * @param fileChooserParams
+         * @param webView           w
+         * @param filePathCallback  q
+         * @param fileChooserParams q
          * @return
          */
         @Override

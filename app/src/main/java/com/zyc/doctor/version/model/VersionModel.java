@@ -5,7 +5,7 @@ import android.content.Context;
 import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
-import com.zyc.doctor.data.bean.Version;
+import com.zyc.doctor.data.bean.VersionBean;
 import com.zyc.doctor.http.listener.AbstractResponseAdapter;
 import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.api.DirHelper;
@@ -64,9 +64,9 @@ public class VersionModel extends AbstractResponseAdapter<BaseResponse> implemen
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
         if (callBack != null) {
-            ArrayList<Version> list = (ArrayList<Version>)response.getData();
+            ArrayList<VersionBean> list = (ArrayList<VersionBean>)response.getData();
             if (list != null && list.size() > 0) {
-                for (Version bean : list) {
+                for (VersionBean bean : list) {
                     if ("android".equals(bean.getDeviceSystem())) {
                         callBack.result(bean);
                     }

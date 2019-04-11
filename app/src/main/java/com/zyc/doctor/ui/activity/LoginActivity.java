@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -21,16 +20,18 @@ import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
+import com.zyc.doctor.data.BaseData;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.DocAuthStatu;
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseNetConfig;
 import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.data.bean.LoginSuccessBean;
-import com.zyc.doctor.data.bean.Version;
+import com.zyc.doctor.data.bean.VersionBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.version.presenter.VersionPresenter;
 import com.zyc.doctor.version.view.VersionUpdateDialog;
@@ -52,6 +53,7 @@ import me.jessyan.autosize.internal.CustomAdapt;
 public class LoginActivity extends BaseActivity
         implements DocAuthStatu, VersionPresenter.VersionViewListener, VersionUpdateDialog.OnEnterClickListener,
                    CustomAdapt {
+    private static final String TAG = "LoginActivity";
     @BindView(R.id.act_login_phone)
     EditText etPhone;
     @BindView(R.id.act_login_verifycode)
@@ -74,7 +76,6 @@ public class LoginActivity extends BaseActivity
      * 是否获取过验证码
      */
     private boolean isSendVerifyCode = false;
-    private static final int MAX_RESEND_TIME = 60;
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
@@ -141,7 +142,7 @@ public class LoginActivity extends BaseActivity
                 if (TextUtils.isEmpty(string)) {
                     return;
                 }
-                if (string.length() == 11) {
+                if (string.length() == BaseData.BASE_PHONE_DEFAULT_LENGTH) {
                     tvGetVerify.setSelected(true);
                 }
                 else {
@@ -233,7 +234,7 @@ public class LoginActivity extends BaseActivity
     }
 
     @Override
-    public void updateVersion(Version version, int mode, boolean isDownLoading) {
+    public void updateVersion(VersionBean version, int mode, boolean isDownLoading) {
         if (mode == -1) {
             YihtApplication.getInstance().setVersionRemind(false);
             return;
@@ -265,7 +266,7 @@ public class LoginActivity extends BaseActivity
     @Override
     public void onEnter(boolean isMustUpdate) {
         mVersionPresenter.getNewAPK(isMustUpdate);
-        ToastUtil.toast(this, "开始下载");
+        ToastUtil.toast(this, R.string.toast_download_start);
     }
 
     @Override
@@ -275,7 +276,7 @@ public class LoginActivity extends BaseActivity
             case GET_VERIFY_CODE:
                 isSendVerifyCode = true;
                 ToastUtil.toast(this, R.string.toast_txt_verifycode_success);
-                time = MAX_RESEND_TIME;
+                time = BaseData.BASE_MAX_RESEND_TIME;
                 //org.apache.commons.lang3.concurrent.BasicThreadFactory
                 final ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1,
                                                                                                  new BasicThreadFactory.Builder()
@@ -300,30 +301,31 @@ public class LoginActivity extends BaseActivity
                 YihtApplication.getInstance().setLoginSuccessBean(loginSuccessBean);
                 //保存登录账号
                 sharePreferenceUtil.putString(CommonData.KEY_USER_PHONE, phone);
-                EMClient.getInstance().login(loginSuccessBean.getDoctorId(), "111111", new EMCallBack() {
-                    @Override
-                    public void onSuccess() {
-                        runOnUiThread(() -> {
-                            EMClient.getInstance().chatManager().loadAllConversations();
-                            EMClient.getInstance().groupManager().loadAllGroups();
-                            Log.d("main", "登录聊天服务器成功！");
-                            jumpTopage();
+                EMClient.getInstance()
+                        .login(loginSuccessBean.getDoctorId(), BaseData.BASE_EASE_DEFAULT_PWD, new EMCallBack() {
+                            @Override
+                            public void onSuccess() {
+                                runOnUiThread(() -> {
+                                    EMClient.getInstance().chatManager().loadAllConversations();
+                                    EMClient.getInstance().groupManager().loadAllGroups();
+                                    LogUtils.d(TAG, getString(R.string.toast_login_ease_success));
+                                    jumpTopage();
+                                });
+                            }
+
+                            @Override
+                            public void onProgress(int progress, String status) {
+                            }
+
+                            @Override
+                            public void onError(int code, String message) {
+                                LogUtils.d(TAG, getString(R.string.toast_login_ease_error));
+                                ToastUtil.toast(LoginActivity.this, R.string.toast_login_ease_error);
+                                //环信登陆失败 清除服务器登录信息
+                                YihtApplication.getInstance().clearLoginSuccessBean();
+                                closeProgressDialog();
+                            }
                         });
-                    }
-
-                    @Override
-                    public void onProgress(int progress, String status) {
-                    }
-
-                    @Override
-                    public void onError(int code, String message) {
-                        Log.d("main", "登录聊天服务器失败！");
-                        ToastUtil.toast(LoginActivity.this, "登录聊天服务器失败");
-                        //环信登陆失败 清除服务器登录信息
-                        YihtApplication.getInstance().clearLoginSuccessBean();
-                        closeProgressDialog();
-                    }
-                });
                 break;
             default:
                 break;
@@ -374,6 +376,6 @@ public class LoginActivity extends BaseActivity
 
     @Override
     public float getSizeInDp() {
-        return 667;
+        return BaseData.BASE_DEVICE_DEFAULT_WIDTH;
     }
 }

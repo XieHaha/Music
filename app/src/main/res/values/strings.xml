@@ -5,11 +5,18 @@
     <!--title-->
     <string name="act_complete_info">个人信息</string>
     <string name="act_health_detail">健康详情</string>
+    <string name="act_cooperate_doc">合作医生</string>
     <string name="act_apply_doctor">医生申请</string>
+    <string name="act_doctor_info">医生信息</string>
+    <string name="act_apply_patient">患者申请</string>
+    <string name="act_patient_info">患者信息</string>
+    <string name="act_my_patient">我的患者</string>
+    <string name="act_auth_doctor">认证</string>
     <string name="act_user_info">个人详情</string>
     <string name="act_editUser_info">编辑信息</string>
     <string name="act_editRemark">设置备注</string>
     <string name="act_registration_detail">订单详情</string>
+    <string name="act_registration_list">开单记录</string>
     <string name="act_file_list">报告列表</string>
     <string name="act_setting">设置</string>
     <string name="act_hospital_info">医院信息</string>
@@ -21,6 +28,9 @@
     <string name="act_add_address">地址</string>
     <string name="act_about_our">关于我们</string>
     <string name="act_capture">扫描</string>
+    <string name="act_cooperate_hospital">合作医院</string>
+    <string name="act_transfer_from">转给我的患者</string>
+    <string name="act_transfer_to">我转出的患者</string>
 
     <!--public-->
     <string name="txt_list_none_data_hint">暂无更多数据</string>
@@ -36,7 +46,7 @@
     <!--menu-->
     <string name="txt_menu_doc">合作医院医生</string>
     <string name="txt_menu_remark">设置备注</string>
-    <string name="txt_menu_delete">删除</string>
+    <string name="txt_menu_delete">删除好友</string>
     <string name="txt_menu_chat">对话</string>
     <string name="txt_menu_transfer">转诊</string>
     <string name="txt_menu_service">服务包</string>
@@ -132,6 +142,11 @@
     <!--Toast-->
     <string name="toast_limit_emoji">不支持输入Emoji表情</string>
     <string name="toast_add_order_error">请输入描述信息</string>
+    <string name="toast_load_image_error">图片加载失败</string>
+    <string name="toast_save_image_error">保存失败</string>
+    <string name="toast_login_ease_error">登录聊天服务器失败</string>
+    <string name="toast_login_ease_success">登录聊天服务器成功</string>
+    <string name="toast_download_start">开始下载</string>
 
     <!--dialog-->
     <string name="dialog_public_title">温馨提示</string>

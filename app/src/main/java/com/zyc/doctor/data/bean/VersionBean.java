@@ -7,7 +7,7 @@ import java.io.Serializable;
  *
  * @author dundun
  */
-public class Version implements Serializable {
+public class VersionBean implements Serializable {
     private static final long serialVersionUID = -8438526479985188981L;
     private String newVersion;
     private String minVersion;

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.zyc.doctor.R;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
+import com.zyc.doctor.data.BaseData;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
@@ -19,8 +20,8 @@ import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.LabelsView;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.AllUtils;
-import com.zyc.doctor.utils.glide.GlideHelper;
 import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.utils.glide.GlideHelper;
 
 import java.util.ArrayList;
 
@@ -130,7 +131,7 @@ public class AddFriendsPatientActivity extends BaseActivity {
     private void iniPageData(PatientBean patientBean) {
         if (patientBean != null) {
             Glide.with(this).load(patientBean.getPatientImgUrl()).apply(GlideHelper.getOptionsP()).into(ivHeadImg);
-            if (!TextUtils.isEmpty(patientBean.getNickname()) && patientBean.getNickname().length() < 20) {
+            if (!TextUtils.isEmpty(patientBean.getNickname()) && patientBean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
                 tvName.setText(patientBean.getNickname() + "(" + patientBean.getName() + ")");
             }
             else {

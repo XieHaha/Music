@@ -73,14 +73,7 @@ public class CooperateHospitalDocListAdapter extends BaseRecyclerAdapter<Coopera
                  .load(item.getPortraitUrl())
                  .apply(GlideHelper.getOptions())
                  .into(ivHeadImg);
-            //            if (!TextUtils.isEmpty(item.getNickname()) && item.getNickname().length() < 20)
-            //            {
-            //                tvName.setText(item.getNickname());
-            //            }
-            //            else
-            //            {
             tvName.setText(item.getName());
-            //            }
             tvHopital.setText(item.getPlatformHospitalName());
             tvType.setText(item.getDepartment());
             tvTitle.setText(item.getTitle());

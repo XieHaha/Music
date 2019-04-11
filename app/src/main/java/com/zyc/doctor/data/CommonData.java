@@ -137,6 +137,14 @@ public interface CommonData {
      */
     String KEY_SPLASH_IMG_URL = "key_splash_img_url";
     /**
+     * 处理医生合作申请 requestSource
+     */
+    String KEY_REQUESTSOURCE = "key_requestsource";
+    /**
+     * 医生重新认证
+     */
+    String KEY_DOC_AUTH_AGAIN = "key_doc_auth_again";
+    /**
      * 首页列表基础显示条数
      */
     int DATA_LIST_BASE_NUM = 3;

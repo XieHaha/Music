@@ -22,6 +22,7 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
 import com.zyc.doctor.chat.ChatActivity;
+import com.zyc.doctor.data.BaseData;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
@@ -36,9 +37,9 @@ import com.zyc.doctor.ui.fragment.HealthInfoFragment;
 import com.zyc.doctor.ui.fragment.OrderInfoFragment;
 import com.zyc.doctor.ui.fragment.TransferInfoFragment;
 import com.zyc.doctor.utils.AllUtils;
-import com.zyc.doctor.utils.glide.GlideHelper;
 import com.zyc.doctor.utils.RecentContactUtils;
 import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.utils.glide.GlideHelper;
 import com.zyc.doctor.widgets.menu.SatelliteMenu;
 import com.zyc.doctor.widgets.view.SearchLabelLayout;
 import com.zyc.doctor.widgets.view.ViewPrepared;
@@ -136,7 +137,6 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
     @Override
     public void initView(@NonNull Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("患者信息");
         ivTitleMore.setVisibility(View.VISIBLE);
     }
 
@@ -259,7 +259,8 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
      */
     private void initPageData() {
         if (patientBean != null) {
-            if (!TextUtils.isEmpty(patientBean.getNickname()) && patientBean.getNickname().length() < 20) {
+            if (!TextUtils.isEmpty(patientBean.getNickname()) &&
+                patientBean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
                 tvName.setText(patientBean.getNickname() + "(" + patientBean.getName() + ")");
             }
             else {
@@ -496,7 +497,7 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
         viewPop = LayoutInflater.from(this).inflate(R.layout.health_pop_menu, null);
         tvOne = viewPop.findViewById(R.id.txt_one);
         tvTwo = viewPop.findViewById(R.id.txt_two);
-        tvTwo.setText("删除好友");
+        tvTwo.setText(R.string.txt_menu_delete);
         tvOne.setOnClickListener(this);
         tvTwo.setOnClickListener(this);
         if (mPopupwinow == null) {

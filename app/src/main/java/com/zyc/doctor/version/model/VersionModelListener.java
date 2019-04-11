@@ -1,6 +1,6 @@
 package com.zyc.doctor.version.model;
 
-import com.zyc.doctor.data.bean.Version;
+import com.zyc.doctor.data.bean.VersionBean;
 
 import java.io.File;
 
@@ -14,7 +14,7 @@ public interface VersionModelListener {
     void downloadAPK(String url, DownloadAPKCallBack downloadAPKCallBack);
 
     interface NewestVersionCallBack {
-        void result(Version version);
+        void result(VersionBean version);
 
         void error(String s);
     }

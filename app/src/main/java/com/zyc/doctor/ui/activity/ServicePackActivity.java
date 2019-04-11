@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.zyc.doctor.R;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
+import com.zyc.doctor.data.BaseData;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
@@ -39,9 +40,9 @@ import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.HintDialog;
 import com.zyc.doctor.ui.dialog.listener.OnEnterClickListener;
 import com.zyc.doctor.utils.AllUtils;
-import com.zyc.doctor.utils.glide.GlideHelper;
 import com.zyc.doctor.utils.RecentContactUtils;
 import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.utils.glide.GlideHelper;
 import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
 
 import org.litepal.crud.DataSupport;
@@ -298,7 +299,7 @@ public class ServicePackActivity extends BaseActivity {
         hospitalProductRecycler.setVisibility(View.GONE);
         llProductDetaillayout.setVisibility(View.VISIBLE);
         if (patientBean != null) {
-            if (!TextUtils.isEmpty(patientBean.getNickname()) && patientBean.getNickname().length() < 20) {
+            if (!TextUtils.isEmpty(patientBean.getNickname()) && patientBean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
                 tvPatientName.setText(patientBean.getNickname());
             }
             else {

@@ -167,12 +167,6 @@ public class HealthDetailActivity extends BaseActivity
     };
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState) {
-        super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("健康详情");
-    }
-
-    @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
         diagnosisTimeMil = System.currentTimeMillis();
@@ -589,16 +583,18 @@ public class HealthDetailActivity extends BaseActivity
         new ActionSheetDialog(this).builder()
                                    .setCancelable(true)
                                    .setCanceledOnTouchOutside(true)
-                                   .addSheetItem("相册", ActionSheetDialog.SheetItemColor.Blue, which -> {
-                                       //动态申请权限
-                                       permissionHelper.request(new String[] {
-                                               Permission.STORAGE_WRITE });
-                                   })
-                                   .addSheetItem("拍照", ActionSheetDialog.SheetItemColor.Blue, which -> {
-                                       //动态申请权限
-                                       permissionHelper.request(new String[] {
-                                               Permission.CAMERA, Permission.STORAGE_WRITE });
-                                   })
+                                   .addSheetItem(getString(R.string.txt_capture_img),
+                                                 ActionSheetDialog.SheetItemColor.Blue, which -> {
+                                               //动态申请权限
+                                               permissionHelper.request(new String[] {
+                                                       Permission.STORAGE_WRITE });
+                                           })
+                                   .addSheetItem(getString(R.string.txt_camera_img),
+                                                 ActionSheetDialog.SheetItemColor.Blue, which -> {
+                                               //动态申请权限
+                                               permissionHelper.request(new String[] {
+                                                       Permission.CAMERA, Permission.STORAGE_WRITE });
+                                           })
                                    .show();
     }
 

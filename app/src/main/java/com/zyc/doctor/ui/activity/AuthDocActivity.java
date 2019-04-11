@@ -23,6 +23,7 @@ import com.bumptech.glide.request.FutureTarget;
 import com.zhihu.matisse.Matisse;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
+import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.data.bean.CheckUrl;
@@ -132,15 +133,10 @@ public class AuthDocActivity extends BaseActivity {
     }
 
     @Override
-    public void initView(@NonNull Bundle savedInstanceState) {
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("认证");
-        tvTitleMore.setText("重新认证");
-    }
-
-    @Override
     public void initData(@NonNull Bundle savedInstanceState) {
+        tvTitleMore.setText("重新认证");
         if (getIntent() != null) {
-            again = getIntent().getBooleanExtra("again", false);
+            again = getIntent().getBooleanExtra(CommonData.KEY_DOC_AUTH_AGAIN, false);
         }
         authStatus = loginSuccessBean.getChecked();
         if (authStatus == 0 || again) {

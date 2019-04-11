@@ -1,9 +1,5 @@
 package com.zyc.doctor.ui.activity;
 
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.widget.TextView;
-
 import com.zyc.doctor.R;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 
@@ -20,11 +16,5 @@ public class AboutOurActivity extends BaseActivity {
     @Override
     public int getLayoutID() {
         return R.layout.act_about_our;
-    }
-
-    @Override
-    public void initView(@NonNull Bundle savedInstanceState) {
-        super.initView(savedInstanceState);
-        ((TextView)findViewById(R.id.public_title_bar_title)).setText("关于我们");
     }
 }
