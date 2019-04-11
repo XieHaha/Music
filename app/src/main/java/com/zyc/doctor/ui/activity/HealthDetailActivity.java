@@ -161,7 +161,7 @@ public class HealthDetailActivity extends BaseActivity
             autoGridView.updateImg(imageList, true);
             //图片显示完开始上传图片
             currentUploadImgIndex = 0;
-            showProgressDialog("正在上传第1张图片");
+            showProgressDialog(String.format(getString(R.string.txt_upload_img_num), 1));
             uploadHeadImg(mSelectPath.get(currentUploadImgIndex));
         }
     };
@@ -180,7 +180,7 @@ public class HealthDetailActivity extends BaseActivity
         }
         if (isAddNewHealth) {
             tvTitleBarMore.setVisibility(View.VISIBLE);
-            tvTitleBarMore.setText("完成");
+            tvTitleBarMore.setText(R.string.txt_complete);
             initWidght(true);
             isSelectTime = true;
         }
@@ -333,7 +333,7 @@ public class HealthDetailActivity extends BaseActivity
      */
     public void onTitleMoreClick(View view) {
         if (TextUtils.isEmpty(diagnosis)) {
-            ToastUtil.toast(this, "带星号为必填项");
+            ToastUtil.toast(this, R.string.toast_add_health_detail);
             return;
         }
         for (int i = 0; i < imageUrl.size(); i++) {
@@ -358,7 +358,7 @@ public class HealthDetailActivity extends BaseActivity
                 ivTitlebBarMore.setVisibility(View.GONE);
                 tvHint.setVisibility(View.VISIBLE);
                 tvTitleBarMore.setVisibility(View.VISIBLE);
-                tvTitleBarMore.setText("完成");
+                tvTitleBarMore.setText(R.string.txt_complete);
                 autoGridView.updateImg(imageList, true);
                 initWidght(true);
                 isSelectTime = true;
@@ -709,7 +709,7 @@ public class HealthDetailActivity extends BaseActivity
      */
     private void finishPage() {
         if (isModifyData) {
-            new SimpleDialog(this, "编辑内容还未保存，确定退出?", (dialog, which) -> finish(),
+            new SimpleDialog(this, getString(R.string.dialog_txt_exit_hint), (dialog, which) -> finish(),
                              (dialog, which) -> dialog.dismiss()).show();
         }
         else {

@@ -42,6 +42,12 @@
     <string name="txt_add_order_hint">已发送给患者，请等待患者答复</string>
     <string name="txt_capture_img">相册</string>
     <string name="txt_camera_img">拍照</string>
+    <string name="txt_complete">完成</string>
+    <string name="txt_cancel">取消</string>
+    <string name="txt_add_friend">添加好友</string>
+    <string name="txt_add_friend_apply">好友申请</string>
+    <string name="txt_add_friend_agree">通过验证</string>
+    <string name="txt_name_format">%s(%s)</string>
 
     <!--menu-->
     <string name="txt_menu_doc">合作医院医生</string>
@@ -147,13 +153,15 @@
     <string name="toast_login_ease_error">登录聊天服务器失败</string>
     <string name="toast_login_ease_success">登录聊天服务器成功</string>
     <string name="toast_download_start">开始下载</string>
+    <string name="toast_add_health_detail">带星号为必填项</string>
+    <string name="toast_content_null_hint">内容不能为空</string>
 
     <!--dialog-->
     <string name="dialog_public_title">温馨提示</string>
     <string name="dialog_txt_confirm">确定</string>
-    <string name="txt_cancel">取消</string>
-    <string name="toast_public_the_camera_is_not_available">照相机不可用</string>
-    <string name="toast_public_video_not_available">视频不可用</string>
+    <string name="dialog_txt_exit_hint">编辑内容还未保存，确定退出?</string>
+    <string name="dialog_txt_delete_hint">删除后，将清空该聊天的消息记录?</string>
+
 
     <!--permission-->
     <string name="toast_public_current_no_network">当前无网络连接</string>

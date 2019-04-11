@@ -109,12 +109,12 @@ public class AddFriendsPatientActivity extends BaseActivity {
             patientId = getIntent().getStringExtra(CommonData.KEY_PATIENT_ID);
         }
         if (isAdd) {
-            tvTitle.setText("添加好友");
+            tvTitle.setText(R.string.txt_add_friend);
             tvRefuse.setVisibility(View.GONE);
         }
         else {
-            tvTitle.setText("好友申请");
-            tvAgree.setText("通过验证");
+            tvTitle.setText(R.string.txt_add_friend_apply);
+            tvAgree.setText(R.string.txt_add_friend_agree);
             tvRefuse.setVisibility(View.VISIBLE);
         }
         getPatientInfo();
@@ -132,7 +132,8 @@ public class AddFriendsPatientActivity extends BaseActivity {
         if (patientBean != null) {
             Glide.with(this).load(patientBean.getPatientImgUrl()).apply(GlideHelper.getOptionsP()).into(ivHeadImg);
             if (!TextUtils.isEmpty(patientBean.getNickname()) && patientBean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
-                tvName.setText(patientBean.getNickname() + "(" + patientBean.getName() + ")");
+                tvName.setText(String.format(getString(R.string.txt_name_format), patientBean.getNickname(),
+                                             patientBean.getName()));
             }
             else {
                 tvName.setText(patientBean.getName());

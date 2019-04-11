@@ -46,7 +46,7 @@ import com.zyc.doctor.utils.permission.PermissionHelper;
 import com.zyc.doctor.widgets.qrcode.BarCodeImageView;
 import com.zyc.doctor.widgets.qrcode.DialogPersonalBarCode;
 import com.zyc.doctor.ui.activity.AuthDocActivity;
-import com.zyc.doctor.ui.activity.AuthDocStatuActivity;
+import com.zyc.doctor.ui.activity.AuthDocStatusActivity;
 import com.zyc.doctor.ui.activity.EditInfoActivity;
 import com.zyc.doctor.ui.activity.SettingActivity;
 import com.zyc.doctor.ui.activity.TransferPatientFromActivity;
@@ -555,7 +555,7 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
                 //清除数据库数据
                 DataSupport.deleteAll(PatientBean.class);
                 DataSupport.deleteAll(CooperateDocBean.class);
-                startActivity(new Intent(getActivity(), AuthDocStatuActivity.class));
+                startActivity(new Intent(getActivity(), AuthDocStatusActivity.class));
                 getActivity().finish();
                 break;
             default:

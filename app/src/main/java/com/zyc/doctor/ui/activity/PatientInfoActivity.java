@@ -261,7 +261,8 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
         if (patientBean != null) {
             if (!TextUtils.isEmpty(patientBean.getNickname()) &&
                 patientBean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
-                tvName.setText(patientBean.getNickname() + "(" + patientBean.getName() + ")");
+                tvName.setText(String.format(getString(R.string.txt_name_format), patientBean.getNickname(),
+                                             patientBean.getName()));
             }
             else {
                 tvName.setText(patientBean.getName());
@@ -476,7 +477,8 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
                 if (data != null) {
                     String remark = data.getStringExtra(CommonData.KEY_PUBLIC);
                     if (!TextUtils.isEmpty(remark)) {
-                        tvName.setText(remark + "(" + patientBean.getName() + ")");
+                        tvName.setText(
+                                String.format(getString(R.string.txt_name_format), remark, patientBean.getName()));
                         patientBean.setNickname(remark);
                     }
                     else {

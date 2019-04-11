@@ -148,8 +148,10 @@ public class UserInfoActivity extends BaseActivity {
             else {
                 Glide.with(this).load(R.mipmap.icon_uncertified).into(imgAuth);
             }
-            if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) && cooperateDocBean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
-                tvName.setText(cooperateDocBean.getNickname() + "(" + cooperateDocBean.getName() + ")");
+            if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) &&
+                cooperateDocBean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
+                tvName.setText(String.format(getString(R.string.txt_name_format), cooperateDocBean.getNickname(),
+                                             cooperateDocBean.getName()));
             }
             else {
                 tvName.setText(cooperateDocBean.getName());
@@ -261,7 +263,8 @@ public class UserInfoActivity extends BaseActivity {
                 if (data != null) {
                     String remark = data.getStringExtra(CommonData.KEY_PUBLIC);
                     if (!TextUtils.isEmpty(remark)) {
-                        tvName.setText(remark + "(" + cooperateDocBean.getName() + ")");
+                        tvName.setText(
+                                String.format(getString(R.string.txt_name_format), remark, cooperateDocBean.getName()));
                         cooperateDocBean.setNickname(remark);
                     }
                     else {

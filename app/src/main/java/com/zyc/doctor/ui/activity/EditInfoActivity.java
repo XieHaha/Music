@@ -283,7 +283,7 @@ public class EditInfoActivity extends BaseActivity {
                 headImgUrl = (String)response.getData();
                 break;
             case UPDATE_USER_INFO:
-                ToastUtil.toast(this, "保存成功");
+                ToastUtil.toast(this, response.getMsg());
                 loginSuccessBean.setDepartment(type);
                 loginSuccessBean.setHospital(hospital);
                 loginSuccessBean.setDoctorDescription(introduce);

@@ -12,7 +12,7 @@ import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.ui.activity.ApplyCooperateDocActivity;
 import com.zyc.doctor.ui.activity.ApplyPatientActivity;
-import com.zyc.doctor.ui.activity.AuthDocStatuActivity;
+import com.zyc.doctor.ui.activity.AuthDocStatusActivity;
 import com.zyc.doctor.ui.activity.MainActivity;
 import com.zyc.doctor.ui.activity.PatientsActivity;
 import com.zyc.doctor.ui.activity.RegistrationDetailActivity;
@@ -172,7 +172,7 @@ public class JiPushReceiver extends BroadcastReceiver implements CommonData {
                 break;
             case JIGUANG_CODE_DOCTOR_INFO_CHECK_SUCCESS:
             case JIGUANG_CODE_DOCTOR_INFO_CHECK_FAILED:
-                mainIntent = new Intent(context, AuthDocStatuActivity.class);
+                mainIntent = new Intent(context, AuthDocStatusActivity.class);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(mainIntent);
                 NotifyChangeListenerManager.getInstance().notifyDoctorAuthStatus(type);

@@ -31,7 +31,7 @@ import me.jessyan.autosize.internal.CustomAdapt;
  * @author dundun
  * @date 19/2/19
  */
-public class AuthDocStatuActivity extends BaseActivity implements DocAuthStatu, CommonData, CustomAdapt {
+public class AuthDocStatusActivity extends BaseActivity implements DocAuthStatu, CommonData, CustomAdapt {
     @BindView(R.id.public_title_bar_back)
     ImageView ivBack;
     @BindView(R.id.act_auth_doc_statu_verifying)

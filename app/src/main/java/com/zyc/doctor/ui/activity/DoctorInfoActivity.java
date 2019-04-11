@@ -189,12 +189,14 @@ public class DoctorInfoActivity extends BaseActivity
                 Glide.with(this).load(headImgUrl).apply(GlideHelper.getOptions()).into(ivHeadImg);
             }
             if (!TextUtils.isEmpty(doctorNickName) && doctorNickName.length() < BaseData.BASE_NICK_NAME_LENGTH) {
-                tvName.setText(doctorNickName + "(" + cooperateDocBean.getName() + ")");
+                tvName.setText(
+                        String.format(getString(R.string.txt_name_format), doctorNickName, cooperateDocBean.getName()));
             }
             else {
                 if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) &&
                     cooperateDocBean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
-                    tvName.setText(cooperateDocBean.getNickname() + "(" + cooperateDocBean.getName() + ")");
+                    tvName.setText(String.format(getString(R.string.txt_name_format), cooperateDocBean.getNickname(),
+                                                 cooperateDocBean.getName()));
                 }
                 else {
                     tvName.setText(cooperateDocBean.getName());
@@ -393,7 +395,8 @@ public class DoctorInfoActivity extends BaseActivity
                 if (data != null) {
                     String remark = data.getStringExtra(CommonData.KEY_PUBLIC);
                     if (!TextUtils.isEmpty(remark)) {
-                        tvName.setText(remark + "(" + cooperateDocBean.getName() + ")");
+                        tvName.setText(
+                                String.format(getString(R.string.txt_name_format), remark, cooperateDocBean.getName()));
                         cooperateDocBean.setNickname(remark);
                     }
                     else {

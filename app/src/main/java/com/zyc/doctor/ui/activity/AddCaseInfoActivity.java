@@ -101,7 +101,8 @@ public class AddCaseInfoActivity extends BaseActivity implements CommonData {
                 hideSoftInputFromWindow();
                 String value = actAddHealthInfoEdit.getText().toString().trim();
                 if (TextUtils.isEmpty(value)) {
-                    ToastUtil.toast(this, "内容不能为空哦");
+                    ToastUtil.toast(this, R.string.toast_content_null_hint);
+                    return;
                 }
                 Intent intent = new Intent(this, HealthDetailActivity.class);
                 intent.putExtra(KEY_PUBLIC, value);

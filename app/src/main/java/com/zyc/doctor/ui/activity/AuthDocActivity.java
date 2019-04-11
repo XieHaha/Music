@@ -134,7 +134,7 @@ public class AuthDocActivity extends BaseActivity {
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
-        tvTitleMore.setText("重新认证");
+        tvTitleMore.setText(R.string.txt_doc_auth_again);
         if (getIntent() != null) {
             again = getIntent().getBooleanExtra(CommonData.KEY_DOC_AUTH_AGAIN, false);
         }

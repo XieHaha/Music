@@ -116,7 +116,7 @@ public class SplashActivity extends BaseActivity implements DocAuthStatu {
                 case NONE:
                 case VERIFYING:
                 case VERIFY_FAILD:
-                    startActivity(new Intent(this, AuthDocStatuActivity.class));
+                    startActivity(new Intent(this, AuthDocStatusActivity.class));
                     finish();
                     break;
                 case VERIFY_SUCCESS:

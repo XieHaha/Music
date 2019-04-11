@@ -72,13 +72,13 @@ public class AddFriendsDocActivity extends BaseActivity {
             requestSource = getIntent().getIntExtra(CommonData.KEY_REQUESTSOURCE, -1);
         }
         if (isAdd) {
-            publicTitleBarTitle.setText("添加好友");
-            tvAgree.setText("加为好友");
+            publicTitleBarTitle.setText(R.string.txt_add_friend);
+            tvAgree.setText(R.string.txt_add_friend);
             tvRefuse.setVisibility(View.GONE);
         }
         else {
-            publicTitleBarTitle.setText("好友申请");
-            tvAgree.setText("通过验证");
+            publicTitleBarTitle.setText(R.string.txt_add_friend_apply);
+            tvAgree.setText(R.string.txt_add_friend_agree);
             tvRefuse.setVisibility(View.VISIBLE);
         }
         if (loginSuccessBean.getDoctorId().equals(doctorId)) {
@@ -108,7 +108,8 @@ public class AddFriendsDocActivity extends BaseActivity {
             }
             if (!TextUtils.isEmpty(cooperateDocBean.getNickname()) &&
                 cooperateDocBean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
-                tvName.setText(cooperateDocBean.getNickname() + "(" + cooperateDocBean.getName() + ")");
+                tvName.setText(String.format(getString(R.string.txt_name_format), cooperateDocBean.getNickname(),
+                                             cooperateDocBean.getName()));
             }
             else {
                 tvName.setText(cooperateDocBean.getName());

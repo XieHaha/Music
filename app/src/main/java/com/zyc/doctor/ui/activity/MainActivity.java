@@ -290,7 +290,7 @@ public class MainActivity extends BaseActivity
         EMClient.getInstance().contactManager().setContactListener(contactListener);
         tvDelete.setOnClickListener(v -> {
             popupWindow.dismiss();
-            new SimpleDialog(this, "删除后，将清空该聊天的消息记录?", (dialog, which) -> {
+            new SimpleDialog(this, getString(R.string.dialog_txt_delete_hint), (dialog, which) -> {
                 if (curConversation != null) {
                     //删除和某个user会话，如果需要保留聊天记录，传false
                     EMClient.getInstance().chatManager().deleteConversation(curConversation.conversationId(), true);
