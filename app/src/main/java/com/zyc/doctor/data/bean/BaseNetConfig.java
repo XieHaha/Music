@@ -12,7 +12,7 @@ public interface BaseNetConfig {
     /**
      * 修改患者健康档案 无权限
      */
-    int CODE_MODIFY_CASE_RECORD = 101;
+    int CODE_101 = 101;
     /**
      * 设置默认超时时间
      */

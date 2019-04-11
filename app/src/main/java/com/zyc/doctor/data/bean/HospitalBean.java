@@ -16,10 +16,16 @@ public class HospitalBean implements Serializable {
     private String hospitalDescription;
     private String hospitalPhone;
     private String address;
+    private String provinceName;
+    private String userName;
+    private String password;
+    private String phone;
+    private String image;
     /**
      * //1，执业医院   2，合作医院
      */
     private int relationshipId;
+
 
     public String getHospitalName() {
         return hospitalName;
@@ -83,6 +89,46 @@ public class HospitalBean implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public int getRelationshipId() {

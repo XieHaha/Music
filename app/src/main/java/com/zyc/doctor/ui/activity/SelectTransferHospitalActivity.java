@@ -14,7 +14,7 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
-import com.zyc.doctor.data.bean.CooperateHospitalBean;
+import com.zyc.doctor.data.bean.HospitalBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.adapter.SelectHospitalAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
@@ -34,7 +34,7 @@ import butterknife.BindView;
  */
 public class SelectTransferHospitalActivity extends BaseActivity
         implements SwipeRefreshLayout.OnRefreshListener, LoadMoreListener,
-                   BaseRecyclerAdapter.OnItemClickListener<CooperateHospitalBean> {
+                   BaseRecyclerAdapter.OnItemClickListener<HospitalBean> {
     private static final String TAG = "SelectTransferHospitalA";
     @BindView(R.id.act_apply_cooperate_recycler_view)
     AutoLoadRecyclerView autoLoadRecyclerView;
@@ -42,7 +42,7 @@ public class SelectTransferHospitalActivity extends BaseActivity
     SwipeRefreshLayout swipeRefreshLayout;
     private View footerView;
     private SelectHospitalAdapter selectHospitalAdapter;
-    private List<CooperateHospitalBean> hospitalBeans = new ArrayList<>();
+    private List<HospitalBean> hospitalBeans = new ArrayList<>();
     /**
      * 当前页码
      */
@@ -99,7 +99,7 @@ public class SelectTransferHospitalActivity extends BaseActivity
     }
 
     @Override
-    public void onItemClick(View v, int position, CooperateHospitalBean item) {
+    public void onItemClick(View v, int position, HospitalBean item) {
         Intent intent = new Intent();
         intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, item);
         setResult(RESULT_OK, intent);
@@ -111,7 +111,7 @@ public class SelectTransferHospitalActivity extends BaseActivity
         super.onResponseSuccess(task, response);
         switch (task) {
             case GET_COOPERATE_HOSPITAL_LIST:
-                ArrayList<CooperateHospitalBean> list = (ArrayList<CooperateHospitalBean>)response.getData();
+                ArrayList<HospitalBean> list = (ArrayList<HospitalBean>)response.getData();
                 selectHospitalAdapter.setList(list);
                 break;
             default:

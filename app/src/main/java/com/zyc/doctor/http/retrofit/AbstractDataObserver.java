@@ -1,9 +1,12 @@
 package com.zyc.doctor.http.retrofit;
 
+import android.util.Log;
+
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseNetConfig;
 import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.http.listener.ResponseListener;
+import com.zyc.doctor.utils.LogUtils;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -15,6 +18,7 @@ import io.reactivex.disposables.Disposable;
  * @author dundun
  */
 public abstract class AbstractDataObserver<T> implements Observer<BaseResponse<T>> {
+    private static final String TAG = "OkHttp error:";
     private ResponseListener listener;
     private Tasks task;
 
@@ -26,9 +30,10 @@ public abstract class AbstractDataObserver<T> implements Observer<BaseResponse<T
                 listener.onResponseSuccess(task, response);
             }
         }
-        else if (response.getCode() == BaseNetConfig.CODE_MODIFY_CASE_RECORD) {
-        }
         else {
+            if (listener != null) {
+                listener.onResponseCode(task, response);
+            }
         }
     }
 
@@ -40,6 +45,15 @@ public abstract class AbstractDataObserver<T> implements Observer<BaseResponse<T
     @Override
     public void onError(Throwable e) {
         //服务器错误信息处理
+        if (listener != null) {
+            listener.onResponseError(task, new Exception("网络繁忙，请稍后再试"));
+            LogUtils.e(TAG, task + "   onError:" + e);
+            if (e.getStackTrace() != null) {
+                for (StackTraceElement element : e.getStackTrace()) {
+                    Log.e(TAG, "onError element:" + element.toString());
+                }
+            }
+        }
     }
 
     @Override

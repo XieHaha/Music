@@ -203,7 +203,7 @@ public class HealthInfoFragment extends BaseFragment implements LoadMoreListener
                 autoLoadRecyclerView.loadFinish();
                 break;
             case DELETE_PATIENT_CASE:
-                if (BaseNetConfig.CODE_MODIFY_CASE_RECORD == response.getCode()) {
+                if (BaseNetConfig.CODE_101 == response.getCode()) {
                     ToastUtil.toast(getActivity(), response.getMsg());
                 }
                 break;

@@ -21,11 +21,11 @@ import com.zyc.doctor.api.notify.INotifyChangeListenerServer;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
 import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.data.CommonData;
-import com.zyc.doctor.data.TransferStatu;
 import com.zyc.doctor.data.Tasks;
+import com.zyc.doctor.data.TransferStatu;
 import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.data.bean.CooperateDocBean;
-import com.zyc.doctor.data.bean.CooperateHospitalBean;
+import com.zyc.doctor.data.bean.HospitalBean;
 import com.zyc.doctor.data.bean.PatientBean;
 import com.zyc.doctor.data.bean.TransPatientBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;
@@ -33,10 +33,10 @@ import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.HintDialog;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.utils.AllUtils;
-import com.zyc.doctor.utils.glide.GlideHelper;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.RecentContactUtils;
 import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.utils.glide.GlideHelper;
 import com.zyc.doctor.widgets.FilterEmojiEditText;
 
 import butterknife.BindView;
@@ -97,7 +97,7 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
     TextView tvTransferCancel;
     private PatientBean patientBean;
     private CooperateDocBean cooperateDocBean;
-    private CooperateHospitalBean cooperateHospitalBean;
+    private HospitalBean cooperateHospitalBean;
     private TransPatientBean transPatientBean;
     private int transferId;
     /**
@@ -536,6 +536,18 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
     }
 
     @Override
+    public void onResponseCode(Tasks task, BaseResponse response) {
+        super.onResponseCode(task, response);
+        switch (task) {
+            case ADD_TRANSFER_PATIENT:
+                break;
+            default:
+                break;
+        }
+        ToastUtil.toast(this, response.getMsg());
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK) {
             return;
@@ -555,7 +567,7 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                 }
                 break;
             case REQUEST_CODE_TRANSFER_HOSPITAL:
-                cooperateHospitalBean = (CooperateHospitalBean)data.getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
+                cooperateHospitalBean = (HospitalBean)data.getSerializableExtra(CommonData.KEY_HOSPITAL_BEAN);
                 if (cooperateHospitalBean != null) {
                     tvSelectHospitalName.setText(cooperateHospitalBean.getHospitalName());
                 }

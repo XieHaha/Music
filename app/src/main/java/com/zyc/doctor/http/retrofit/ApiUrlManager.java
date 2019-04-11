@@ -1,8 +1,8 @@
 package com.zyc.doctor.http.retrofit;
 
 import com.zyc.doctor.data.bean.BaseResponse;
+import com.zyc.doctor.data.bean.CombineBean;
 import com.zyc.doctor.data.bean.CooperateDocBean;
-import com.zyc.doctor.data.bean.CooperateHospitalBean;
 import com.zyc.doctor.data.bean.CooperateHospitalDocBean;
 import com.zyc.doctor.data.bean.HospitalBean;
 import com.zyc.doctor.data.bean.HospitalProductTypeBean;
@@ -280,7 +280,7 @@ public interface ApiUrlManager {
      * @return
      */
     @POST("trans/doctor/add/notes")
-    Observable<BaseResponse<String>> addTransferPatient(@Body Map<String, Object> info);
+    Observable<BaseResponse<TransPatientBean>> addTransferPatient(@Body Map<String, Object> info);
 
     /**
      * 取消转诊
@@ -374,7 +374,7 @@ public interface ApiUrlManager {
      * @return
      */
     @POST("hospital/doctor/relation/list")
-    Observable<BaseResponse<List<CooperateHospitalBean>>> getCooperateHospitalList(@Body Map<String, String> info);
+    Observable<BaseResponse<List<HospitalBean>>> getCooperateHospitalList(@Body Map<String, String> info);
 
     /**
      * 获取病例详情
@@ -392,7 +392,7 @@ public interface ApiUrlManager {
      * @return
      */
     @GET("patient/combine/{patientId}")
-    Observable<BaseResponse<RegistrationBean>> getPatientCombine(@Path("patientId") String patientId);
+    Observable<BaseResponse<CombineBean>> getPatientCombine(@Path("patientId") String patientId);
 
     /**
      * 新增患者病例
@@ -401,7 +401,7 @@ public interface ApiUrlManager {
      * @return
      */
     @POST("case/save")
-    Observable<BaseResponse<String>> addPatientCase(@Body Map<String, Object> info);
+    Observable<BaseResponse<PatientCaseDetailBean>> addPatientCase(@Body Map<String, Object> info);
 
     /**
      * 更新患者病例

@@ -136,6 +136,9 @@ public class TransferPatientToFragment extends BaseFragment
         switch (task) {
             case GET_PATIENTS_TO_LIST:
                 patientBeanList = (List<TransPatientBean>)response.getData();
+                if (patientBeanList == null) {
+                    patientBeanList = new ArrayList<>();
+                }
                 if (page == 0) {
                     transPatientsListAdapter.setList(patientBeanList);
                 }

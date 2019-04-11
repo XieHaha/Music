@@ -23,7 +23,6 @@ import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.data.bean.CooperateDocBean;
-import com.zyc.doctor.data.bean.CooperateHospitalBean;
 import com.zyc.doctor.data.bean.HospitalBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.adapter.CooperationDocHAdapter;
@@ -32,8 +31,8 @@ import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.utils.AllUtils;
-import com.zyc.doctor.utils.glide.GlideHelper;
 import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.utils.glide.GlideHelper;
 import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
 
 import java.util.ArrayList;
@@ -90,7 +89,7 @@ public class DoctorInfoActivity extends BaseActivity
     /**
      * 合作医院列表
      */
-    private ArrayList<CooperateHospitalBean> cooperateHospitalBeans = new ArrayList<>();
+    private ArrayList<HospitalBean> cooperateHospitalBeans = new ArrayList<>();
     /**
      * 是否可以取消关注
      */
@@ -364,7 +363,7 @@ public class DoctorInfoActivity extends BaseActivity
                 }
                 break;
             case GET_HOSPITAL_LIST_BY_DOCTORID:
-                ArrayList<CooperateHospitalBean> list1 = (ArrayList<CooperateHospitalBean>)response.getData();
+                ArrayList<HospitalBean> list1 = (ArrayList<HospitalBean>)response.getData();
                 cooperationHospitalHAdapter.setList(list1);
                 break;
             default:

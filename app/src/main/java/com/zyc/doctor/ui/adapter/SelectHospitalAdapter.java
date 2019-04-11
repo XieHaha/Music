@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zyc.doctor.R;
-import com.zyc.doctor.data.bean.CooperateHospitalBean;
+import com.zyc.doctor.data.bean.HospitalBean;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
 
@@ -18,10 +18,10 @@ import java.util.List;
  *
  * @author DUNDUN
  */
-public class SelectHospitalAdapter extends BaseRecyclerAdapter<CooperateHospitalBean> {
+public class SelectHospitalAdapter extends BaseRecyclerAdapter<HospitalBean> {
     private Context context;
 
-    public SelectHospitalAdapter(Context context, List<CooperateHospitalBean> list) {
+    public SelectHospitalAdapter(Context context, List<HospitalBean> list) {
         super(list);
         this.context = context;
     }
@@ -33,12 +33,12 @@ public class SelectHospitalAdapter extends BaseRecyclerAdapter<CooperateHospital
     }
 
     @Override
-    public void onBindViewHolder(BaseViewHolder holder, int position, CooperateHospitalBean item) {
+    public void onBindViewHolder(BaseViewHolder holder, int position, HospitalBean item) {
         super.onBindViewHolder(holder, position, item);
         holder.showView(position, item);
     }
 
-    public class ApplyCooperateHolder extends BaseViewHolder<CooperateHospitalBean> {
+    public class ApplyCooperateHolder extends BaseViewHolder<HospitalBean> {
         private TextView tvHospitalName, tvHospitalType;
 
         public ApplyCooperateHolder(View itemView) {
@@ -48,15 +48,18 @@ public class SelectHospitalAdapter extends BaseRecyclerAdapter<CooperateHospital
         }
 
         @Override
-        public void showView(final int position, final CooperateHospitalBean item) {
+        public void showView(final int position, final HospitalBean item) {
             tvHospitalName.setText(item.getHospitalName());
             switch (item.getRelationshipId()) {
-                case 1://执业医院
+                //执业医院
+                case 1:
                     tvHospitalType.setText("执业医院");
                     break;
-                case 2://合作医院
+                //合作医院
+                case 2:
                     tvHospitalType.setText("合作医院");
-                    break;
+                    default:
+                        break;
             }
         }
     }
