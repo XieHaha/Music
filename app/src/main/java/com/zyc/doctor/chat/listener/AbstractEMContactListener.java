@@ -4,9 +4,9 @@ package com.zyc.doctor.chat.listener;
 import com.hyphenate.EMContactListener;
 
 /**
- * @创建者 顿顿
- * @创建时间 ${DATA} 14:55
- * @描述
+ * @author 顿顿
+ * @date ${DATA} 14:55
+ * @des
  */
 public abstract class AbstractEMContactListener implements EMContactListener {
 

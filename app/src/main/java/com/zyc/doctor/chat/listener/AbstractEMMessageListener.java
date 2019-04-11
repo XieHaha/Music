@@ -7,8 +7,8 @@ import java.util.List;
 
 /**
  * @author dundun
- * @创建时间 ${DATA} 14:52
- * @描述
+ * @date ${DATA} 14:52
+ * @des
  */
 public abstract class AbstractEMMessageListener implements EMMessageListener {
 

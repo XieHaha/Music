@@ -132,6 +132,7 @@ public class DoctorInfoActivity extends BaseActivity
             cooperateDocBean = (CooperateDocBean)getIntent().getSerializableExtra(CommonData.KEY_DOCTOR_BEAN);
             isDealDoc = getIntent().getBooleanExtra(CommonData.KEY_IS_DEAL_DOC, false);
             isForbidChat = getIntent().getBooleanExtra(CommonData.KEY_IS_FORBID_CHAT, false);
+            doctorId = getIntent().getStringExtra(CommonData.KEY_DOCTOR_ID);
         }
         if (isDealDoc) {
             ivMore.setVisibility(View.VISIBLE);
@@ -157,18 +158,16 @@ public class DoctorInfoActivity extends BaseActivity
         hospitalRecyclerView.setItemAnimator(new DefaultItemAnimator());
         hospitalRecyclerView.setAdapter(cooperationHospitalHAdapter);
         cooperationHospitalHAdapter.setOnItemClickListener((v, position, item) -> {
-            HospitalBean hospitalBean = new HospitalBean();
-            hospitalBean.setHospitalName(item.getHospitalName());
-            hospitalBean.setAddress(item.getAddress());
-            hospitalBean.setCityName(item.getCityName());
-            hospitalBean.setHospitalPhone(item.getPhone());
-            hospitalBean.setHospitalLevel(item.getHospitalLevel());
-            hospitalBean.setHospitalDescription(item.getHospitalDescription());
             Intent intent = new Intent(DoctorInfoActivity.this, HospitalInfoActivity.class);
-            intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, hospitalBean);
+            intent.putExtra(CommonData.KEY_HOSPITAL_BEAN, item);
             startActivity(intent);
         });
-        initPageData();
+        if (cooperateDocBean == null) {
+            getDocInfo();
+        }
+        else {
+            initPageData();
+        }
         getCooperationDocList();
         getCooperateHospitalList();
     }
@@ -230,6 +229,13 @@ public class DoctorInfoActivity extends BaseActivity
      */
     private void deleteDoctor() {
         RequestUtils.cancelCooperateDoc(this, loginSuccessBean.getDoctorId(), cooperateDocBean.getDoctorId(), this);
+    }
+
+    /**
+     * 获取医生个人信息
+     */
+    private void getDocInfo() {
+        RequestUtils.getDocInfo(this, doctorId, this);
     }
 
     /**
@@ -324,12 +330,12 @@ public class DoctorInfoActivity extends BaseActivity
      */
     private void showPop() {
         viewPop = LayoutInflater.from(this).inflate(R.layout.main_pop_menu_p_dianjiu, null);
-        tvChange = (TextView)viewPop.findViewById(R.id.remark);
+        tvChange = viewPop.findViewById(R.id.remark);
         tvChange.setOnClickListener(this);
-        tvDelete = (TextView)viewPop.findViewById(R.id.change);
+        tvDelete = viewPop.findViewById(R.id.change);
         tvDelete.setOnClickListener(this);
         if (mPopupwinow == null) {
-            //新建一个popwindow
+            //新建一个PopupWindow
             mPopupwinow = new PopupWindow(viewPop, LinearLayout.LayoutParams.WRAP_CONTENT,
                                           LinearLayout.LayoutParams.WRAP_CONTENT, true);
         }
@@ -365,6 +371,10 @@ public class DoctorInfoActivity extends BaseActivity
             case GET_HOSPITAL_LIST_BY_DOCTORID:
                 ArrayList<HospitalBean> list1 = (ArrayList<HospitalBean>)response.getData();
                 cooperationHospitalHAdapter.setList(list1);
+                break;
+            case GET_DOC_INFO:
+                cooperateDocBean = (CooperateDocBean)response.getData();
+                initPageData();
                 break;
             default:
                 break;

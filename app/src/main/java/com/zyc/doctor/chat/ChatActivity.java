@@ -24,15 +24,14 @@ import com.zyc.doctor.ui.activity.DoctorInfoActivity;
 import com.zyc.doctor.ui.activity.PatientInfoActivity;
 import com.zyc.doctor.ui.activity.ServicePackActivity;
 import com.zyc.doctor.utils.AllUtils;
-
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 
 /**
  * @author dundun
  * @date 18/4/16
  */
-public class ChatActivity extends BaseActivity implements OnPermissionCallback,
-        EaseChatFragment.OnRightTitleBarClickListener {
+public class ChatActivity extends BaseActivity
+        implements OnPermissionCallback, EaseChatFragment.OnRightTitleBarClickListener {
     private String chatId, chatName;
     private EaseChatFragment easeChatFragment;
     private PopupWindow mPopupwinow;
@@ -69,7 +68,7 @@ public class ChatActivity extends BaseActivity implements OnPermissionCallback,
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        manager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.cancel(chatId, 1);
     }
 
@@ -80,13 +79,13 @@ public class ChatActivity extends BaseActivity implements OnPermissionCallback,
      * @param fragment       目标Fragment
      * @param tag            替换后Tag
      */
-    public void replaceFragment(final int containerResId, final EaseChatFragment fragment,
-                                final String tag) {
+    public void replaceFragment(final int containerResId, final EaseChatFragment fragment, final String tag) {
         runOnUiThread(() -> {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             if (TextUtils.isEmpty(tag)) {
                 fragmentTransaction.replace(containerResId, fragment);
-            } else {
+            }
+            else {
                 fragmentTransaction.replace(containerResId, fragment, tag);
             }
             fragmentTransaction.commitAllowingStateLoss();
@@ -101,8 +100,11 @@ public class ChatActivity extends BaseActivity implements OnPermissionCallback,
                 if (!TextUtils.isEmpty(chatId)) {
                     if (chatId.contains("d")) {
                         intent = new Intent(this, DoctorInfoActivity.class);
+                        intent.putExtra(CommonData.KEY_IS_FORBID_CHAT,true);
+                        intent.putExtra(CommonData.KEY_DOCTOR_ID,chatId);
                         startActivity(intent);
-                    } else {
+                    }
+                    else {
                         intent = new Intent(this, PatientInfoActivity.class);
                         intent.putExtra(CommonData.KEY_PATIENT_ID, chatId);
                         startActivity(intent);
@@ -131,12 +133,13 @@ public class ChatActivity extends BaseActivity implements OnPermissionCallback,
      */
     private void showPop() {
         viewPop = LayoutInflater.from(this).inflate(R.layout.main_pop_msg, null);
-        rlInfoLayout = (RelativeLayout) viewPop.findViewById(R.id.info_layout);
-        rlServiceLayout = (RelativeLayout) viewPop.findViewById(R.id.service_layout);
+        rlInfoLayout = (RelativeLayout)viewPop.findViewById(R.id.info_layout);
+        rlServiceLayout = (RelativeLayout)viewPop.findViewById(R.id.service_layout);
         rlInfoLayout.setOnClickListener(this);
         if (chatId.contains("d")) {
             rlServiceLayout.setVisibility(View.GONE);
-        } else {
+        }
+        else {
             rlServiceLayout.setOnClickListener(this);
         }
         if (mPopupwinow == null) {
@@ -147,13 +150,12 @@ public class ChatActivity extends BaseActivity implements OnPermissionCallback,
         mPopupwinow.setFocusable(true);
         mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mPopupwinow.setOutsideTouchable(true);
-        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0,
-                                   (int) AllUtils.dipToPx(this, 65));
+        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0, (int)AllUtils.dipToPx(this, 65));
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+            @NonNull int[] grantResults) {
         if (easeChatFragment != null) {
             easeChatFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
