@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
 def releaseTime() {
     return new Date().format("MM月dd日", TimeZone.getTimeZone("UTC"))
 }
@@ -116,6 +120,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.android.support:recyclerview-v7:26.1.0'
+    //kotlin
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     //角标
     implementation 'cn.bingoogolapple:bga-badgeview:1.0.6@aar'

@@ -49,7 +49,7 @@
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
 
     <application
-        android:name="com.zyc.doctor.YihtApplication"
+        android:name=".YihtApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -69,7 +69,7 @@
         <!--屏幕适配 end-->
 
         <activity
-            android:name="com.zyc.doctor.ui.activity.SplashActivity"
+            android:name=".ui.activity.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppFullScreenTheme">
             <intent-filter>
@@ -80,162 +80,162 @@
         </activity>
 
         <activity
-            android:name="com.zyc.doctor.ui.activity.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.LoginActivity"
+            android:name=".ui.activity.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.HealthDetailActivity"
+            android:name=".ui.activity.HealthDetailActivity"
             android:screenOrientation="portrait"
             android:label="@string/act_health_detail"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.ApplyCooperateDocActivity"
+            android:name=".ui.activity.ApplyCooperateDocActivity"
             android:screenOrientation="portrait"
             android:label="@string/act_apply_doctor"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.ApplyPatientActivity"
+            android:name=".ui.activity.ApplyPatientActivity"
             android:screenOrientation="portrait"
             android:label="@string/act_apply_patient"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.UserInfoActivity"
+            android:name=".ui.activity.UserInfoActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.EditInfoActivity"
+            android:name=".ui.activity.EditInfoActivity"
             android:screenOrientation="portrait"
             android:label="@string/act_editUser_info"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.SelectTransferDocActivity"
+            android:name=".ui.activity.SelectTransferDocActivity"
             android:screenOrientation="portrait"
             android:label="@string/act_cooperate_doc"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.ImagePreviewActivity"
+            android:name=".ui.activity.ImagePreviewActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.AuthDocActivity"
+            android:name=".ui.activity.AuthDocActivity"
             android:screenOrientation="portrait"
             android:label="@string/act_auth_doctor"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.EditRemarkActivity"
+            android:name=".ui.activity.EditRemarkActivity"
             android:screenOrientation="portrait"
             android:label="@string/act_editRemark"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.SettingActivity"
+            android:name=".ui.activity.SettingActivity"
             android:screenOrientation="portrait"
             android:label="@string/act_setting"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.ServicePackActivity"
+            android:name=".ui.activity.ServicePackActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.HospitalInfoActivity"
+            android:name=".ui.activity.HospitalInfoActivity"
             android:screenOrientation="portrait"
             android:label="@string/act_hospital_info"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.TransferPatientActivity"
+            android:name=".ui.activity.TransferPatientActivity"
             android:screenOrientation="portrait"
             android:label="@string/act_transfer_patient"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.TransferPatientFromActivity"
+            android:name=".ui.activity.TransferPatientFromActivity"
             android:screenOrientation="portrait"
             android:label="@string/act_transfer_from"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.TransferPatientToActivity"
+            android:name=".ui.activity.TransferPatientToActivity"
             android:screenOrientation="portrait"
             android:label="@string/act_transfer_to"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.AddCaseInfoActivity"
+            android:name=".ui.activity.AddCaseInfoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.WebViewActivity"
+            android:name=".ui.activity.WebViewActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.AboutOurActivity"
+            android:name=".ui.activity.AboutOurActivity"
             android:screenOrientation="portrait"
             android:label="@string/act_about_our"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.AddFriendsPatientActivity"
+            android:name=".ui.activity.AddFriendsPatientActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.AddFriendsDocActivity"
+            android:name=".ui.activity.AddFriendsDocActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.PatientsActivity"
+            android:name=".ui.activity.PatientsActivity"
             android:screenOrientation="portrait"
             android:label="@string/act_my_patient"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.TransferPatientHistoryActivity"
+            android:name=".ui.activity.TransferPatientHistoryActivity"
             android:screenOrientation="portrait"
             android:label="@string/act_transfer_patient_history"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.RegistrationDetailActivity"
+            android:name=".ui.activity.RegistrationDetailActivity"
             android:screenOrientation="portrait"
             android:label="@string/act_registration_detail"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.RegistrationListActivity"
+            android:name=".ui.activity.RegistrationListActivity"
             android:screenOrientation="portrait"
             android:label="@string/act_registration_list"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.FileListActivity"
+            android:name=".ui.activity.FileListActivity"
             android:screenOrientation="portrait"
             android:label="@string/act_file_list"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.PatientInfoActivity"
+            android:name=".ui.activity.PatientInfoActivity"
             android:screenOrientation="portrait"
             android:label="@string/act_patient_info"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.DoctorInfoActivity"
+            android:name=".ui.activity.DoctorInfoActivity"
             android:screenOrientation="portrait"
             android:label="@string/act_doctor_info"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.AuthDocStatusActivity"
+            android:name=".ui.activity.AuthDocStatusActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.CooperateHospitalActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/act_cooperate_hospital"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name="com.zyc.doctor.ui.activity.CooperateDocActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name="com.zyc.doctor.ui.activity.SelectTransferHospitalActivity"
+            android:name=".ui.activity.CooperateHospitalActivity"
             android:screenOrientation="portrait"
             android:label="@string/act_cooperate_hospital"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.ui.activity.FileDisplayActivity"
+            android:name=".ui.activity.CooperateDocActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.activity.SelectTransferHospitalActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/act_cooperate_hospital"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".ui.activity.FileDisplayActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
@@ -248,14 +248,14 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
-            android:name="com.zyc.doctor.chat.ChatActivity"
+            android:name=".chat.ChatActivity"
             android:launchMode="singleTask"
-            android:parentActivityName="com.zyc.doctor.ui.activity.MainActivity"
+            android:parentActivityName=".ui.activity.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.zyc.doctor.ui.activity.MainActivity" />
+                android:value=".ui.activity.MainActivity" />
         </activity>
 
         <!--扫码-->
@@ -397,7 +397,7 @@
 
         <!-- User defined.  For test only  用户自定义的广播接收器-->
         <receiver
-            android:name="com.zyc.doctor.jpush.JiPushReceiver"
+            android:name=".jpush.JiPushReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
