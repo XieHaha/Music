@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zyc.doctor.R;
+import com.zyc.doctor.data.bean.DepartmentTypeBean;
 import com.zyc.doctor.widgets.FullListView;
 import com.zyc.doctor.widgets.expandable.ExpandableLayout;
 
@@ -23,13 +24,13 @@ public class SelectDocTypeAdapter extends RecyclerView.Adapter<SelectDocTypeAdap
     private static final int UNSELECTED = -1;
     private RecyclerView recyclerView;
     private int selectedItem = UNSELECTED;
-    private ArrayList<String> list;
+    private ArrayList<DepartmentTypeBean> list;
 
     public SelectDocTypeAdapter(RecyclerView recyclerView) {
         this.recyclerView = recyclerView;
     }
 
-    public void setList(ArrayList<String> list) {
+    public void setList(ArrayList<DepartmentTypeBean> list) {
         this.list = list;
     }
 
@@ -63,16 +64,16 @@ public class SelectDocTypeAdapter extends RecyclerView.Adapter<SelectDocTypeAdap
             expandTxt = itemView.findViewById(R.id.expand_txt);
             expandLayout.setOnClickListener(this);
             listView = itemView.findViewById(R.id.list);
-            SelectDocTypeChildAdapter adapter = new SelectDocTypeChildAdapter();
-            adapter.setList(list);
-            listView.setAdapter(adapter);
         }
 
         public void bind(int position) {
             //            int position = getAdapterPosition();
             boolean isSelected = position == selectedItem;
-            expandTxt.setText(list.get(position));
+            expandTxt.setText(list.get(position).getLabel());
             expandableLayout.setExpanded(isSelected, false);
+            SelectDocTypeChildAdapter adapter = new SelectDocTypeChildAdapter();
+            adapter.setList(list.get(position).getChildren());
+            listView.setAdapter(adapter);
         }
 
         @Override

@@ -51,6 +51,8 @@ public class FilterEmojiEditText extends AppCompatEditText {
     }
 
     InputFilter emojiFilter = new InputFilter() {
+        Pattern emoji = Pattern.compile(filterImoji, Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
+
         @Override
         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
             Matcher emojiMatcher = emoji.matcher(source);
@@ -60,7 +62,5 @@ public class FilterEmojiEditText extends AppCompatEditText {
             }
             return null;
         }
-
-        Pattern emoji = Pattern.compile(filterImoji, Pattern.UNICODE_CASE | Pattern.CASE_INSENSITIVE);
     };
 }

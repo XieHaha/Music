@@ -2,11 +2,13 @@ package com.zyc.doctor.api;
 
 import com.zyc.doctor.utils.LogUtils;
 
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * 线程池帮助类
@@ -42,9 +44,12 @@ public class ThreadPoolHelper {
         }
 
         private void initThreadPool() {
-            executorSingle = Executors.newSingleThreadExecutor();
-            executorCached = Executors.newCachedThreadPool();
-            executorFixed = Executors.newFixedThreadPool(THREAD_NUM);
+            executorSingle = new ScheduledThreadPoolExecutor(1, new BasicThreadFactory.Builder().namingPattern(
+                    "yht-thread-pool-%d").daemon(true).build());
+            executorCached = new ScheduledThreadPoolExecutor(0, new BasicThreadFactory.Builder().namingPattern(
+                    "yht-thread-pool-%d").daemon(true).build());
+            executorFixed = new ScheduledThreadPoolExecutor(THREAD_NUM, new BasicThreadFactory.Builder().namingPattern(
+                    "yht-thread-pool-%d").daemon(true).build());
         }
 
         /**
@@ -58,7 +63,8 @@ public class ThreadPoolHelper {
 
         public void execInSingle(Runnable r) {
             if (executorSingle == null || executorSingle.isShutdown() || executorSingle.isTerminated()) {
-                executorSingle = Executors.newSingleThreadExecutor();
+                executorSingle = new ScheduledThreadPoolExecutor(1, new BasicThreadFactory.Builder().namingPattern(
+                        "yht-thread-pool-%d").daemon(true).build());
             }
             try {
                 executorSingle.execute(r);
@@ -73,7 +79,8 @@ public class ThreadPoolHelper {
 
         public void execInCached(Runnable r) {
             if (executorCached == null || executorCached.isShutdown() || executorCached.isTerminated()) {
-                executorCached = Executors.newCachedThreadPool();
+                executorCached = new ScheduledThreadPoolExecutor(0, new BasicThreadFactory.Builder().namingPattern(
+                        "yht-thread-pool-%d").daemon(true).build());
             }
             try {
                 executorCached.execute(r);
@@ -88,7 +95,8 @@ public class ThreadPoolHelper {
 
         public <V> Future<V> submitInCached(Callable<V> c) {
             if (executorCached == null || executorCached.isShutdown() || executorCached.isTerminated()) {
-                executorCached = Executors.newCachedThreadPool();
+                executorCached = new ScheduledThreadPoolExecutor(0, new BasicThreadFactory.Builder().namingPattern(
+                        "yht-thread-pool-%d").daemon(true).build());
             }
             try {
                 return executorCached.submit(c);
@@ -101,7 +109,9 @@ public class ThreadPoolHelper {
 
         public void execInFixed(Runnable r) {
             if (executorFixed == null || executorFixed.isShutdown() || executorFixed.isTerminated()) {
-                executorFixed = Executors.newFixedThreadPool(THREAD_NUM);
+                executorFixed = new ScheduledThreadPoolExecutor(THREAD_NUM,
+                                                                new BasicThreadFactory.Builder().namingPattern(
+                                                                        "yht-thread-pool-%d").daemon(true).build());
             }
             try {
                 executorFixed.execute(r);

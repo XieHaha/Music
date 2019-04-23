@@ -582,5 +582,12 @@ public class RequestUtils {
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractBaseObserver<>(context, Tasks.AGREE_PATIENT_APPLY, listener));
     }
+
+    public static void getDepartmentType(Context context, final ResponseListener<BaseResponse> listener) {
+        RetrofitManager.getApiUrlManager()
+                       .getDepartmentType()
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_DEPARTMENT_TYPE, listener));
+    }
 }
 

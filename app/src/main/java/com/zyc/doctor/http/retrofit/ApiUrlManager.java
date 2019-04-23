@@ -4,6 +4,7 @@ import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.data.bean.CombineBean;
 import com.zyc.doctor.data.bean.CooperateDocBean;
 import com.zyc.doctor.data.bean.CooperateHospitalDocBean;
+import com.zyc.doctor.data.bean.DepartmentTypeBean;
 import com.zyc.doctor.data.bean.HospitalBean;
 import com.zyc.doctor.data.bean.HospitalProductTypeBean;
 import com.zyc.doctor.data.bean.LoginSuccessBean;
@@ -457,6 +458,14 @@ public interface ApiUrlManager {
      */
     @POST("dp/scan/agree/V2.0")
     Observable<BaseResponse<String>> agreePatientApply(@Body Map<String, Object> info);
+
+    /**
+     * 科室种类信息
+     *
+     * @return
+     */
+    @GET("department/type/list")
+    Observable<BaseResponse<List<DepartmentTypeBean>>> getDepartmentType();
 
     /**
      * 文件下载

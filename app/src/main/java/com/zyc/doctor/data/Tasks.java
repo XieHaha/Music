@@ -226,5 +226,9 @@ public enum Tasks {
      * 当前医生给患者开的订单记录
      */
     GET_PATIENT_ORDER_LIST,
+    /**
+     * 医生科室类别
+     */
+    GET_DEPARTMENT_TYPE,
 }
 

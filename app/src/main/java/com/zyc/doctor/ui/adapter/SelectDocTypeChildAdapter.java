@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.zyc.doctor.R;
+import com.zyc.doctor.data.bean.DepartmentTypeChildBean;
 
 import java.util.ArrayList;
 
@@ -16,10 +17,10 @@ import java.util.ArrayList;
  * @des
  */
 public class SelectDocTypeChildAdapter extends BaseAdapter {
-    private ArrayList<String> list;
+    private ArrayList<DepartmentTypeChildBean> list;
     private ViewHolder holder;
 
-    public void setList(ArrayList<String> list) {
+    public void setList(ArrayList<DepartmentTypeChildBean> list) {
         this.list = list;
     }
 
@@ -49,7 +50,7 @@ public class SelectDocTypeChildAdapter extends BaseAdapter {
         else {
             holder = (ViewHolder)convertView.getTag();
         }
-        holder.textView.setText(list.get(position));
+        holder.textView.setText(list.get(position).getLabel());
         return convertView;
     }
 

@@ -69,10 +69,12 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.PathUtil;
 
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 /**
  * you can new an EaseChatFragment to use or you can inherit it to expand.
@@ -201,7 +203,8 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         clipboard = (ClipboardManager)getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         if (isRoaming) {
-            fetchQueue = Executors.newSingleThreadExecutor();
+            fetchQueue = new ScheduledThreadPoolExecutor(1, new BasicThreadFactory.Builder().namingPattern(
+                    "yht-thread-pool-%d").daemon(true).build());
         }
         permissionHelper = PermissionHelper.getInstance(getActivity());
     }
