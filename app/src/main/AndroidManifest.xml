@@ -244,6 +244,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
+            android:name=".ui.activity.SelectDocTypeActivity"
+            android:label="@string/act_select_doc_type"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
             android:name=".ui.activity.CameraLoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
@@ -329,7 +334,6 @@
                 <category android:name="${applicationId}" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.SelectDocTypeActivity" />
 
 
         <!-- Required SDK 核心功能-->

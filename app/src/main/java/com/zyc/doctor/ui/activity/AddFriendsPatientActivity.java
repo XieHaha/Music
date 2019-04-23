@@ -17,7 +17,7 @@ import com.zyc.doctor.data.bean.CombineBean;
 import com.zyc.doctor.data.bean.CombineChildBean;
 import com.zyc.doctor.data.bean.PatientBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;
-import com.zyc.doctor.ui.LabelsView;
+import com.zyc.doctor.widgets.view.LabelsView;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.utils.AllUtils;
 import com.zyc.doctor.utils.ToastUtil;

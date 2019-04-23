@@ -2,6 +2,7 @@ package com.zyc.doctor.ui.activity;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -39,7 +40,8 @@ public class SelectDocTypeActivity extends BaseActivity {
         super.initView(savedInstanceState);
         selectDocTypeAdapter = new SelectDocTypeAdapter(actSelectDocTypeRecycler);
         actSelectDocTypeRecycler.setLayoutManager(new LinearLayoutManager(this));
-        for (int i = 0; i < 10; i++) {
+        actSelectDocTypeRecycler.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        for (int i = 0; i < 5; i++) {
             list.add(i + "   GO GO GO");
         }
         selectDocTypeAdapter.setList(list);

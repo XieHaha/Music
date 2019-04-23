@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zyc.doctor.R;
@@ -50,15 +51,17 @@ public class SelectDocTypeAdapter extends RecyclerView.Adapter<SelectDocTypeAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ExpandableLayout expandableLayout;
+        private LinearLayout expandLayout;
+        private TextView expandTxt;
         private FullListView listView;
-        private TextView expandButton;
 
         public ViewHolder(View itemView) {
             super(itemView);
             expandableLayout = itemView.findViewById(R.id.expandable_layout);
             expandableLayout.setInterpolator(new OvershootInterpolator());
-            expandButton = itemView.findViewById(R.id.expand_button);
-            expandButton.setOnClickListener(this);
+            expandLayout = itemView.findViewById(R.id.expand_layout);
+            expandTxt = itemView.findViewById(R.id.expand_txt);
+            expandLayout.setOnClickListener(this);
             listView = itemView.findViewById(R.id.list);
             SelectDocTypeChildAdapter adapter = new SelectDocTypeChildAdapter();
             adapter.setList(list);
@@ -68,8 +71,7 @@ public class SelectDocTypeAdapter extends RecyclerView.Adapter<SelectDocTypeAdap
         public void bind(int position) {
             //            int position = getAdapterPosition();
             boolean isSelected = position == selectedItem;
-            expandButton.setText(list.get(position));
-            expandButton.setSelected(isSelected);
+            expandTxt.setText(list.get(position));
             expandableLayout.setExpanded(isSelected, false);
         }
 
@@ -77,7 +79,7 @@ public class SelectDocTypeAdapter extends RecyclerView.Adapter<SelectDocTypeAdap
         public void onClick(View v) {
             ViewHolder holder = (ViewHolder)recyclerView.findViewHolderForAdapterPosition(selectedItem);
             if (holder != null) {
-                holder.expandButton.setSelected(false);
+                holder.expandLayout.setSelected(false);
                 holder.expandableLayout.collapse();
             }
             int position = getAdapterPosition();
@@ -85,7 +87,7 @@ public class SelectDocTypeAdapter extends RecyclerView.Adapter<SelectDocTypeAdap
                 selectedItem = UNSELECTED;
             }
             else {
-                expandButton.setSelected(true);
+                expandLayout.setSelected(true);
                 expandableLayout.expand();
                 selectedItem = position;
             }

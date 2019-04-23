@@ -54,7 +54,7 @@ public class CameraLoginActivity extends BaseActivity implements CustomAdapt {
             case R.id.act_camera_login_cancel:
             case R.id.act_camera_login_know:
                 finish();
-                overridePendingTransition(R.anim.keep, R.anim.push_top_out);
+                overridePendingTransition(R.anim.keep, R.anim.push_bottom_out);
                 break;
             default:
                 break;

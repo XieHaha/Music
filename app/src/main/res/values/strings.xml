@@ -31,6 +31,7 @@
     <string name="act_cooperate_hospital">合作医院</string>
     <string name="act_transfer_from">转给我的患者</string>
     <string name="act_transfer_to">我转出的患者</string>
+    <string name="act_select_doc_type">科室</string>
 
     <!--public-->
     <string name="txt_list_none_data_hint">暂无更多数据</string>

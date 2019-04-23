@@ -1,8 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--suppress AndroidElementNotAllowed -->
+<?xml version="1.0" encoding="utf-8"?><!--suppress AndroidElementNotAllowed -->
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <external-path name="external" path="YHT/image/"/>
-    <external-cache-path name="cache" path="YHT/cache/" />
-    <root-path name="root" path=""/>
+    <external-path
+        name="external"
+        path="YHT/image/" />
+    <external-cache-path
+        name="cache"
+        path="YHT/cache/" />
+    <root-path
+        name="root"
+        path="" />
 
 </paths>
