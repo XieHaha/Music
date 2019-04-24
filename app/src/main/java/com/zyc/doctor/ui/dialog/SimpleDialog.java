@@ -8,19 +8,17 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.ui.dialog.base.MessageBuilder;
 
 /**
- * Created by yinhao on 16/4/28.
+ * @author yinhao
+ * @date 16/4/28
  */
-public class SimpleDialog extends MessageBuilder
-{
+public class SimpleDialog extends MessageBuilder {
     private Dialog dialog;
 
-    public SimpleDialog(final Activity activity, int resMsg)
-    {
+    public SimpleDialog(final Activity activity, int resMsg) {
         super(activity);
         setTitle(R.string.dialog_public_title);
         setMessage(resMsg);
-        setPositiveButton(R.string.dialog_txt_confirm, (dialog, which) ->
-        {
+        setPositiveButton(R.string.dialog_txt_confirm, (dialog, which) -> {
             dialog.dismiss();
             activity.finish();
         });
@@ -29,16 +27,13 @@ public class SimpleDialog extends MessageBuilder
         dialog.setCanceledOnTouchOutside(false);
     }
 
-    public SimpleDialog(final Activity activity, int resMsg, final boolean isNeedFinish)
-    {
+    public SimpleDialog(final Activity activity, int resMsg, final boolean isNeedFinish) {
         super(activity);
         setTitle(R.string.dialog_public_title);
         setMessage(resMsg);
-        setPositiveButton(R.string.dialog_txt_confirm, (dialog, which) ->
-        {
+        setPositiveButton(R.string.dialog_txt_confirm, (dialog, which) -> {
             dialog.dismiss();
-            if (isNeedFinish)
-            {
+            if (isNeedFinish) {
                 activity.finish();
             }
         });
@@ -47,8 +42,7 @@ public class SimpleDialog extends MessageBuilder
         dialog.setCanceledOnTouchOutside(false);
     }
 
-    public SimpleDialog(final Activity activity, int resMsg, DialogInterface.OnClickListener onClickListener)
-    {
+    public SimpleDialog(final Activity activity, int resMsg, DialogInterface.OnClickListener onClickListener) {
         super(activity);
         setTitle(R.string.dialog_public_title);
         setMessage(resMsg);
@@ -58,13 +52,11 @@ public class SimpleDialog extends MessageBuilder
         dialog.setCanceledOnTouchOutside(false);
     }
 
-    public SimpleDialog(final Activity activity, String msg)
-    {
+    public SimpleDialog(final Activity activity, String msg) {
         super(activity);
         setTitle(R.string.dialog_public_title);
         setMessage(msg);
-        setPositiveButton(R.string.dialog_txt_confirm, (dialog, which) ->
-        {
+        setPositiveButton(R.string.dialog_txt_confirm, (dialog, which) -> {
             dialog.dismiss();
             activity.finish();
         });
@@ -73,16 +65,13 @@ public class SimpleDialog extends MessageBuilder
         dialog.setCanceledOnTouchOutside(false);
     }
 
-    public SimpleDialog(final Activity activity, String msg, final boolean isNeedFinish)
-    {
+    public SimpleDialog(final Activity activity, String msg, final boolean isNeedFinish) {
         super(activity);
         setTitle(R.string.dialog_public_title);
         setMessage(msg);
-        setPositiveButton(R.string.dialog_txt_confirm, (dialog, which) ->
-        {
+        setPositiveButton(R.string.dialog_txt_confirm, (dialog, which) -> {
             dialog.dismiss();
-            if (isNeedFinish)
-            {
+            if (isNeedFinish) {
                 activity.finish();
             }
         });
@@ -91,8 +80,7 @@ public class SimpleDialog extends MessageBuilder
         dialog.setCanceledOnTouchOutside(false);
     }
 
-    public SimpleDialog(final Activity activity, String msg, DialogInterface.OnClickListener onClickListener)
-    {
+    public SimpleDialog(final Activity activity, String msg, DialogInterface.OnClickListener onClickListener) {
         super(activity);
         setTitle(R.string.dialog_public_title);
         setMessage(msg);
@@ -102,26 +90,25 @@ public class SimpleDialog extends MessageBuilder
         dialog.setCanceledOnTouchOutside(false);
     }
 
-    public SimpleDialog(final Activity activity, String msg, DialogInterface.OnClickListener onClickListener, DialogInterface.OnClickListener onCancelListener)
-    {
+    public SimpleDialog(final Activity activity, String msg, DialogInterface.OnClickListener onClickListener,
+            DialogInterface.OnClickListener onCancelListener) {
         super(activity);
         setMessage(msg);
         setPositiveButton(R.string.dialog_txt_confirm, onClickListener);
-        setNegativeButton(R.string.txt_cancel,onCancelListener);
-//        setOnKeyListener(new DialogInterface.OnKeyListener()
-//        {
-//            @Override
-//            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
-//            {
-//                return true;
-//            }
-//        });
+        setNegativeButton(R.string.txt_cancel, onCancelListener);
+        //        setOnKeyListener(new DialogInterface.OnKeyListener()
+        //        {
+        //            @Override
+        //            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event)
+        //            {
+        //                return true;
+        //            }
+        //        });
         dialog = buildAlertDialog();
         dialog.setCanceledOnTouchOutside(false);
     }
 
-    public Dialog show()
-    {
+    public Dialog show() {
         dialog.show();
         return dialog;
     }

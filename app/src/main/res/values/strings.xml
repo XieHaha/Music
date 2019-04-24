@@ -40,7 +40,7 @@
     <string name="txt_delete_hint">确定删除吗?</string>
     <string name="txt_download_hint">开始下载</string>
     <string name="txt_add_order_notify_patient_hint">确定发送给患者？</string>
-    <string name="txt_add_order_hint">已发送给患者，请等待患者答复</string>
+    <string name="txt_add_order_hint">已发送给患者</string>
     <string name="txt_capture_img">相册</string>
     <string name="txt_camera_img">拍照</string>
     <string name="txt_complete">完成</string>

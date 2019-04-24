@@ -468,6 +468,15 @@ public interface ApiUrlManager {
     Observable<BaseResponse<List<DepartmentTypeBean>>> getDepartmentType();
 
     /**
+     * 远程会诊登录
+     *
+     * @param merchant
+     * @return
+     */
+    @POST("remote/qrcode/scan")
+    Observable<BaseResponse<String>> remoteConsultationLogin(@Body Map<String, String> merchant);
+
+    /**
      * 文件下载
      *
      * @param url

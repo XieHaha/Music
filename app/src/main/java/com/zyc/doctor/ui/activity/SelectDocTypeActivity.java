@@ -1,5 +1,6 @@
 package com.zyc.doctor.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DividerItemDecoration;
@@ -7,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.zyc.doctor.R;
+import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.data.bean.DepartmentTypeBean;
@@ -23,7 +25,7 @@ import butterknife.BindView;
  * @date 19/4/8 17:51
  * @des
  */
-public class SelectDocTypeActivity extends BaseActivity {
+public class SelectDocTypeActivity extends BaseActivity implements SelectDocTypeAdapter.OnSelectListener {
     @BindView(R.id.act_select_doc_type_recycler)
     RecyclerView actSelectDocTypeRecycler;
     private SelectDocTypeAdapter selectDocTypeAdapter;
@@ -46,6 +48,7 @@ public class SelectDocTypeActivity extends BaseActivity {
         actSelectDocTypeRecycler.setLayoutManager(new LinearLayoutManager(this));
         actSelectDocTypeRecycler.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         selectDocTypeAdapter.setList(list);
+        selectDocTypeAdapter.setOnSelectListener(this);
         actSelectDocTypeRecycler.setAdapter(selectDocTypeAdapter);
     }
 
@@ -70,5 +73,13 @@ public class SelectDocTypeActivity extends BaseActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onSelect(String name) {
+        Intent intent = new Intent();
+        intent.putExtra(CommonData.KEY_PUBLIC_STRING, name);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

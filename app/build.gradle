@@ -45,8 +45,8 @@ android {
         beta {
             dimension "zyc"
             applicationId "com.yht.yihuantong_test"
-            buildConfigField "String", "BASE_BASIC_URL", "\"http://gray.zychealth.com\""
-//            buildConfigField "String", "BASE_BASIC_URL", "\"http://39.107.249.194:7080/DPView/\""
+//            buildConfigField "String", "BASE_BASIC_URL", "\"http://gray.zychealth.com\""
+            buildConfigField "String", "BASE_BASIC_URL", "\"http://39.107.249.194:7080/DPView/\""
             resValue "string", "APP_NAME", "\"会珍医生灰度版\""
             manifestPlaceholders = [ease_appkey : "1105190122042534#dp-test-app",
                                     jpush_appkey: "0253e6c0183a34f72630c349"]
@@ -129,8 +129,8 @@ dependencies {
     implementation 'com.bigkoo:convenientbanner:2.0.5'
     //image loader
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-    //json
-    implementation 'com.alibaba:fastjson:1.2.8'
+//    //json
+//    implementation 'com.alibaba:fastjson:1.2.8'
     //时间选择器
     implementation 'com.contrarywind:Android-PickerView:4.1.3'
     //二维码

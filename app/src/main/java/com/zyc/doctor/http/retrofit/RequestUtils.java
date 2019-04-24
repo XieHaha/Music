@@ -589,5 +589,16 @@ public class RequestUtils {
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractBaseObserver<>(context, Tasks.GET_DEPARTMENT_TYPE, listener));
     }
+
+    public static void remoteConsultationLogin(Context context, String doctorId, String pageUnicode,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("pageUnicode", pageUnicode);
+        RetrofitManager.getApiUrlManager()
+                       .remoteConsultationLogin(merchant)
+                       .compose(RxJavaHelper.observableIO2Main(context))
+                       .subscribe(new AbstractBaseObserver<>(context, Tasks.REMOTE_CONSULTATION_LOGIN, listener));
+    }
 }
 

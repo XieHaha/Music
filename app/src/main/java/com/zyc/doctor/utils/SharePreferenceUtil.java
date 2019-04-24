@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -100,8 +100,7 @@ public class SharePreferenceUtil {
 
     @Override
     public String toString() {
-        return "SharePreferenceUtil [mContext=" + mContext + ", spKey=" + spKey + ", spValue=" +
-                spValue + "]";
+        return "SharePreferenceUtil [mContext=" + mContext + ", spKey=" + spKey + ", spValue=" + spValue + "]";
     }
 
     /**
@@ -117,19 +116,25 @@ public class SharePreferenceUtil {
             SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
             Editor editor = sp.edit();
             if (object instanceof String) {
-                editor.putString(key, (String) object);
-            } else if (object instanceof Integer) {
-                editor.putInt(key, (Integer) object);
-            } else if (object instanceof Boolean) {
-                editor.putBoolean(key, (Boolean) object);
-            } else if (object instanceof Float) {
-                editor.putFloat(key, (Float) object);
-            } else if (object instanceof Long) {
-                editor.putLong(key, (Long) object);
-            } else if (object instanceof Set<?>) {
-                editor.putStringSet(key, (Set<String>) object);
-            } else {
-                editor.putString(key, JSON.toJSONString(object));
+                editor.putString(key, (String)object);
+            }
+            else if (object instanceof Integer) {
+                editor.putInt(key, (Integer)object);
+            }
+            else if (object instanceof Boolean) {
+                editor.putBoolean(key, (Boolean)object);
+            }
+            else if (object instanceof Float) {
+                editor.putFloat(key, (Float)object);
+            }
+            else if (object instanceof Long) {
+                editor.putLong(key, (Long)object);
+            }
+            else if (object instanceof Set<?>) {
+                editor.putStringSet(key, (Set<String>)object);
+            }
+            else {
+                editor.putString(key, new Gson().toJson(object));
             }
             SharedPreferencesCompat.apply(editor);
         }
@@ -146,15 +151,19 @@ public class SharePreferenceUtil {
     public static Object getObject(Context context, String key, Object defaultObject) {
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         if (defaultObject instanceof String) {
-            return sp.getString(key, (String) defaultObject);
-        } else if (defaultObject instanceof Integer) {
-            return sp.getInt(key, (Integer) defaultObject);
-        } else if (defaultObject instanceof Boolean) {
-            return sp.getBoolean(key, (Boolean) defaultObject);
-        } else if (defaultObject instanceof Float) {
-            return sp.getFloat(key, (Float) defaultObject);
-        } else if (defaultObject instanceof Long) {
-            return sp.getLong(key, (Long) defaultObject);
+            return sp.getString(key, (String)defaultObject);
+        }
+        else if (defaultObject instanceof Integer) {
+            return sp.getInt(key, (Integer)defaultObject);
+        }
+        else if (defaultObject instanceof Boolean) {
+            return sp.getBoolean(key, (Boolean)defaultObject);
+        }
+        else if (defaultObject instanceof Float) {
+            return sp.getFloat(key, (Float)defaultObject);
+        }
+        else if (defaultObject instanceof Long) {
+            return sp.getLong(key, (Long)defaultObject);
         }
         return null;
     }
@@ -244,12 +253,13 @@ public class SharePreferenceUtil {
          *
          * @return
          */
-        @SuppressWarnings({"unchecked", "rawtypes"})
+        @SuppressWarnings({ "unchecked", "rawtypes" })
         private static Method findApplyMethod() {
             try {
                 Class clz = Editor.class;
                 return clz.getMethod("apply");
-            } catch (NoSuchMethodException e) {
+            }
+            catch (NoSuchMethodException e) {
             }
             return null;
         }
@@ -265,9 +275,12 @@ public class SharePreferenceUtil {
                     S_APPLY_METHOD.invoke(editor);
                     return;
                 }
-            } catch (IllegalArgumentException e) {
-            } catch (IllegalAccessException e) {
-            } catch (InvocationTargetException e) {
+            }
+            catch (IllegalArgumentException e) {
+            }
+            catch (IllegalAccessException e) {
+            }
+            catch (InvocationTargetException e) {
             }
             editor.commit();
         }

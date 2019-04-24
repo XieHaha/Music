@@ -600,7 +600,9 @@ public class MainFragment extends BaseFragment implements OrderStatus, SwipeRefr
                 break;
             case REQUEST_CODE_LOGIN:
                 String contents = data.getStringExtra(Intents.Scan.RESULT);
+                LogUtils.i(TAG, contents);
                 Intent intent = new Intent(getActivity(), CameraLoginActivity.class);
+                intent.putExtra(CommonData.KEY_PUBLIC_STRING, contents);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.push_bottom_in, R.anim.keep);
                 break;

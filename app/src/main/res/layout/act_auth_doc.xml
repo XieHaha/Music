@@ -323,7 +323,7 @@
                     android:id="@+id/act_auth_doc_depart"
                     android:layout_width="match_parent"
                     android:textColor="@color/app_main_txt_color"
-                    android:layout_marginLeft="70dp"
+                    android:layout_marginLeft="72dp"
                     android:textSize="15sp"
                     android:maxLines="1"
                     android:gravity="center_vertical"

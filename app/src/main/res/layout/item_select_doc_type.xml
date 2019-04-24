@@ -21,8 +21,9 @@
             android:elevation="6dp" />
 
         <ImageView
+            android:id="@+id/expand_img"
             android:layout_width="wrap_content"
-            android:src="@mipmap/download"
+            android:src="@drawable/item_select_doc_selector"
             android:layout_height="wrap_content" />
     </LinearLayout>
 
@@ -38,6 +39,7 @@
         <com.zyc.doctor.widgets.FullListView
             android:id="@+id/list"
             android:layout_width="match_parent"
+            android:divider="@null"
             android:layout_height="wrap_content">
 
         </com.zyc.doctor.widgets.FullListView>

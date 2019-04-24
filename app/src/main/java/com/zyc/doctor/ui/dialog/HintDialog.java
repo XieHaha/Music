@@ -13,36 +13,38 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.ui.dialog.listener.OnCancelClickListener;
 import com.zyc.doctor.ui.dialog.listener.OnEnterClickListener;
 
+/**
+ * @author dundun
+ */
 public class HintDialog extends Dialog implements OnClickListener {
-    private Context context;
     private Button enter, cancel;
     private View lineView;
     private TextView content;
     private String contentString = "确认合格？";
     private String enterString = "确定";
     private int enterColor = 0;
-    private String cancleString = "取消";
+    private String cancelString = "取消";
     private boolean isShowCancelBtn = true;
     private boolean isShow = false;
 
     public HintDialog(Context context) {
         super(context, R.style.normal_dialog);
-        this.context = context;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);//状态栏透明
+        //状态栏透明
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         setContentView(R.layout.dialog_hint);
         initWidget();
         init();
     }
 
     private void initWidget() {
-        enter = (Button)findViewById(R.id.dialog_simple_hint_enter);
-        cancel = (Button)findViewById(R.id.dialog_simple_hint_cancel);
-        content = (TextView)findViewById(R.id.dialog_simple_hint_content);
+        enter = findViewById(R.id.dialog_simple_hint_enter);
+        cancel = findViewById(R.id.dialog_simple_hint_cancel);
+        content = findViewById(R.id.dialog_simple_hint_content);
         lineView = findViewById(R.id.dialog_simple_hint_line);
         setCanceledOnTouchOutside(true);
         cancel.setOnClickListener(this);
@@ -72,7 +74,7 @@ public class HintDialog extends Dialog implements OnClickListener {
     /**
      * 设置提示语的文本
      *
-     * @param contentString
+     * @param contentString 内容
      */
     public HintDialog setContentString(String contentString) {
         this.contentString = contentString;
@@ -108,7 +110,7 @@ public class HintDialog extends Dialog implements OnClickListener {
      * 设置取消按钮的文本
      */
     public HintDialog setCancleBtnTxt(String str) {
-        this.cancleString = str;
+        this.cancelString = str;
         return this;
     }
 
@@ -124,7 +126,7 @@ public class HintDialog extends Dialog implements OnClickListener {
                 lineView.setVisibility(View.GONE);
             }
             else {
-                cancel.setText(cancleString);
+                cancel.setText(cancelString);
             }
             isShow = true;
         }

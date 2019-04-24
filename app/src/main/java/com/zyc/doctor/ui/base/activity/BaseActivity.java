@@ -15,7 +15,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.Tasks;
@@ -165,7 +165,7 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
     public LoginSuccessBean getLoginSuccessBean() {
         String userStr = (String)SharePreferenceUtil.getObject(this, "key_login_success_bean", "");
         if (!TextUtils.isEmpty(userStr)) {
-            loginSuccessBean = JSON.parseObject(userStr, LoginSuccessBean.class);
+            loginSuccessBean = new Gson().fromJson(userStr, LoginSuccessBean.class);
         }
         return loginSuccessBean;
     }

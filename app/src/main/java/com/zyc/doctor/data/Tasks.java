@@ -230,5 +230,9 @@ public enum Tasks {
      * 医生科室类别
      */
     GET_DEPARTMENT_TYPE,
+    /**
+     * 远程会诊登录
+     */
+    REMOTE_CONSULTATION_LOGIN,
 }
 

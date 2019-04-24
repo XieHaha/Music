@@ -17,30 +17,30 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
+import com.google.gson.Gson;
 import com.zhihu.matisse.Matisse;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
+import com.zyc.doctor.api.DirHelper;
+import com.zyc.doctor.api.ThreadPoolHelper;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.data.bean.CheckUrl;
 import com.zyc.doctor.data.bean.CooperateDocBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;
-import com.zyc.doctor.utils.permission.Permission;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.ActionSheetDialog;
 import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.utils.AllUtils;
-import com.zyc.doctor.api.DirHelper;
 import com.zyc.doctor.utils.FileUtils;
 import com.zyc.doctor.utils.LogUtils;
-import com.zyc.doctor.utils.glide.MatisseUtils;
 import com.zyc.doctor.utils.ScalingUtils;
-import com.zyc.doctor.api.ThreadPoolHelper;
 import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.utils.glide.MatisseUtils;
+import com.zyc.doctor.utils.permission.Permission;
 
 import java.io.File;
 import java.util.List;
@@ -168,7 +168,6 @@ public class AuthDocActivity extends BaseActivity {
             findViewById(R.id.act_auth_doc_doccard_back_layout).setOnClickListener(this);
         }
         findViewById(R.id.act_auth_doc_apply).setOnClickListener(this);
-        tvDepart.setOnClickListener(this);
         tvDepart.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 qualifyDoc();
@@ -187,7 +186,7 @@ public class AuthDocActivity extends BaseActivity {
             etHospital.setText(cooperateDocBean.getHospital());
             etTitle.setText(cooperateDocBean.getTitle());
             tvDepart.setText(cooperateDocBean.getDepartment());
-            CheckUrl checkUrl = JSON.parseObject(cooperateDocBean.getCheckUrl(), CheckUrl.class);
+            CheckUrl checkUrl = new Gson().fromJson(cooperateDocBean.getCheckUrl(), CheckUrl.class);
             if (checkUrl != null) {
                 Glide.with(this).load(checkUrl.getIdFront()).into(ivIdCardFront);
                 Glide.with(this).load(checkUrl.getIdEnd()).into(ivIdCardBack);
@@ -250,13 +249,13 @@ public class AuthDocActivity extends BaseActivity {
         etHospital.setFocusableInTouchMode(isEdit);
         etTitle.setFocusable(isEdit);
         etTitle.setFocusableInTouchMode(isEdit);
-        tvDepart.setFocusable(isEdit);
-        tvDepart.setFocusableInTouchMode(isEdit);
         if (!isEdit) {
             rlApplyLayout.setVisibility(View.GONE);
+            tvDepart.setOnClickListener(null);
         }
         else {
             rlApplyLayout.setVisibility(View.VISIBLE);
+            tvDepart.setOnClickListener(this);
         }
         if (authStatus != 0) {
             if (!isEdit) {
@@ -526,6 +525,8 @@ public class AuthDocActivity extends BaseActivity {
                 }
                 break;
             case REQUEST_DOC_DEPART:
+                txtDepart = data.getStringExtra(CommonData.KEY_PUBLIC_STRING);
+                tvDepart.setText(txtDepart);
                 break;
             default:
                 break;

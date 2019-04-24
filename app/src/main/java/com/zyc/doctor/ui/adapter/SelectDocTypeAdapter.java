@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -73,6 +74,14 @@ public class SelectDocTypeAdapter extends RecyclerView.Adapter<SelectDocTypeAdap
             expandableLayout.setExpanded(isSelected, false);
             SelectDocTypeChildAdapter adapter = new SelectDocTypeChildAdapter();
             adapter.setList(list.get(position).getChildren());
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+                    if (onSelectListener != null) {
+                        onSelectListener.onSelect(list.get(position).getChildren().get(pos).getLabel());
+                    }
+                }
+            });
             listView.setAdapter(adapter);
         }
 
@@ -93,5 +102,15 @@ public class SelectDocTypeAdapter extends RecyclerView.Adapter<SelectDocTypeAdap
                 selectedItem = position;
             }
         }
+    }
+
+    public interface OnSelectListener {
+        void onSelect(String name);
+    }
+
+    private OnSelectListener onSelectListener;
+
+    public void setOnSelectListener(OnSelectListener onSelectListener) {
+        this.onSelectListener = onSelectListener;
     }
 }

@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
@@ -130,7 +130,7 @@ public abstract class BaseFragment<T> extends Fragment
     public LoginSuccessBean getLoginSuccessBean() {
         String userStr = (String)SharePreferenceUtil.getObject(getActivity(), "key_login_success_bean", "");
         if (!TextUtils.isEmpty(userStr)) {
-            loginSuccessBean = JSON.parseObject(userStr, LoginSuccessBean.class);
+            loginSuccessBean = new Gson().fromJson(userStr, LoginSuccessBean.class);
         }
         return loginSuccessBean;
     }

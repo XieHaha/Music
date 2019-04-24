@@ -6,18 +6,18 @@ import android.content.res.Resources;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 
-import com.alibaba.fastjson.JSON;
+import com.google.gson.Gson;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.EaseUI;
 import com.hyphenate.easeui.domain.EaseAvatarOptions;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.yanzhenjie.nohttp.NoHttp;
 import com.zyc.doctor.api.ApiManager;
+import com.zyc.doctor.api.CrashHandler;
 import com.zyc.doctor.chat.HxHelper;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.bean.LoginSuccessBean;
 import com.zyc.doctor.http.retrofit.RetrofitManager;
-import com.zyc.doctor.api.CrashHandler;
 import com.zyc.doctor.utils.ImageLoadUtil;
 import com.zyc.doctor.utils.RecentContactUtils;
 import com.zyc.doctor.utils.SharePreferenceUtil;
@@ -170,7 +170,7 @@ public class YihtApplication extends LitePalApplication {
     public LoginSuccessBean getLoginSuccessBean() {
         String userStr = (String)SharePreferenceUtil.getObject(this, CommonData.KEY_LOGIN_SUCCESS_BEAN, "");
         if (!TextUtils.isEmpty(userStr)) {
-            loginSuccessBean = JSON.parseObject(userStr, LoginSuccessBean.class);
+            loginSuccessBean = new Gson().fromJson(userStr, LoginSuccessBean.class);
         }
         return loginSuccessBean;
     }
