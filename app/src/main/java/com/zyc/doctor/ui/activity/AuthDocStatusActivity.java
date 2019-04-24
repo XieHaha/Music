@@ -140,7 +140,7 @@ public class AuthDocStatusActivity extends BaseActivity implements DocAuthStatu,
                 ivImg.setImageResource(R.mipmap.icon_doc_auth_wait);
                 break;
             case VERIFY_FAILD:
-                tvVerifying.setText(R.string.txt_doc_auth_verify_faild);
+                tvVerifying.setText(R.string.txt_doc_auth_verify_failed);
                 tvHint.setText(R.string.txt_doc_auth_hint2);
                 ivImg.setImageResource(R.mipmap.icon_doc_auth_faild);
                 tvNext.setVisibility(View.VISIBLE);

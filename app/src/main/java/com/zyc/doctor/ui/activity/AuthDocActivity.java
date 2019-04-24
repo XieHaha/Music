@@ -74,7 +74,7 @@ public class AuthDocActivity extends BaseActivity {
     @BindView(R.id.act_auth_doc_title)
     EditText etTitle;
     @BindView(R.id.act_auth_doc_depart)
-    EditText etDepart;
+    TextView tvDepart;
     @BindView(R.id.act_auth_doc_doccard_front)
     ImageView ivDocCardFront;
     @BindView(R.id.act_auth_doc_doccard_front_hint)
@@ -121,6 +121,10 @@ public class AuthDocActivity extends BaseActivity {
      * 医生认证状态
      */
     private int authStatus = -1;
+    /**
+     * 医生科室
+     */
+    public static final int REQUEST_DOC_DEPART = 100;
 
     @Override
     public int getLayoutID() {
@@ -164,9 +168,10 @@ public class AuthDocActivity extends BaseActivity {
             findViewById(R.id.act_auth_doc_doccard_back_layout).setOnClickListener(this);
         }
         findViewById(R.id.act_auth_doc_apply).setOnClickListener(this);
-        etDepart.setOnEditorActionListener((v, actionId, event) -> {
+        tvDepart.setOnClickListener(this);
+        tvDepart.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                qualifiyDoc();
+                qualifyDoc();
             }
             return false;
         });
@@ -181,7 +186,7 @@ public class AuthDocActivity extends BaseActivity {
             etCardNumber.setText(cooperateDocBean.getIdentityNumber());
             etHospital.setText(cooperateDocBean.getHospital());
             etTitle.setText(cooperateDocBean.getTitle());
-            etDepart.setText(cooperateDocBean.getDepartment());
+            tvDepart.setText(cooperateDocBean.getDepartment());
             CheckUrl checkUrl = JSON.parseObject(cooperateDocBean.getCheckUrl(), CheckUrl.class);
             if (checkUrl != null) {
                 Glide.with(this).load(checkUrl.getIdFront()).into(ivIdCardFront);
@@ -245,8 +250,8 @@ public class AuthDocActivity extends BaseActivity {
         etHospital.setFocusableInTouchMode(isEdit);
         etTitle.setFocusable(isEdit);
         etTitle.setFocusableInTouchMode(isEdit);
-        etDepart.setFocusable(isEdit);
-        etDepart.setFocusableInTouchMode(isEdit);
+        tvDepart.setFocusable(isEdit);
+        tvDepart.setFocusableInTouchMode(isEdit);
         if (!isEdit) {
             rlApplyLayout.setVisibility(View.GONE);
         }
@@ -280,24 +285,24 @@ public class AuthDocActivity extends BaseActivity {
     /**
      * 提交审核 医生资质认证
      */
-    private void qualifiyDoc() {
+    private void qualifyDoc() {
         txtName = etName.getText().toString().trim();
         txtCardNum = etCardNumber.getText().toString().trim();
         txtHospital = etHospital.getText().toString().trim();
         txtTitle = etTitle.getText().toString().trim();
-        txtDepart = etDepart.getText().toString().trim();
+        txtDepart = tvDepart.getText().toString().trim();
         if (!AllUtils.isCardNum(txtCardNum)) {
             ToastUtil.toast(this, R.string.toast_upload_card_hint);
             return;
         }
         if (TextUtils.isEmpty(txtName) || TextUtils.isEmpty(txtCardNum) || idCardFrontTempFile == null ||
             idCardBackTempFile == null) {
-            ToastUtil.toast(this, "请完善您的身份信息");
+            ToastUtil.toast(this, R.string.txt_doc_auth_improve_identity);
             return;
         }
         if (TextUtils.isEmpty(txtHospital) || TextUtils.isEmpty(txtTitle) || TextUtils.isEmpty(txtDepart) ||
             docCardFrontTempFile == null || docCardBackTempFile == null) {
-            ToastUtil.toast(this, "请完善您的资质信息");
+            ToastUtil.toast(this, R.string.txt_doc_auth_improve_qualification);
             return;
         }
         showProgressDialog("信息上传中");
@@ -346,7 +351,11 @@ public class AuthDocActivity extends BaseActivity {
                 uploadImg(DOC_CARD_BACK);
                 break;
             case R.id.act_auth_doc_apply:
-                qualifiyDoc();
+                qualifyDoc();
+                break;
+            case R.id.act_auth_doc_depart:
+                Intent intent = new Intent(this, SelectDocTypeActivity.class);
+                startActivityForResult(intent, REQUEST_DOC_DEPART);
                 break;
             default:
                 break;
@@ -515,6 +524,8 @@ public class AuthDocActivity extends BaseActivity {
                     default:
                         break;
                 }
+                break;
+            case REQUEST_DOC_DEPART:
                 break;
             default:
                 break;

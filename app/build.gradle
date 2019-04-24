@@ -37,7 +37,7 @@ android {
             dimension "zyc"
             applicationId "com.yht.yihuantong"
             buildConfigField "String", "BASE_BASIC_URL", "\"http://test.zychealth.com\""
-            resValue "string", "APP_NAME", "\"会珍医生内测版\""
+            resValue "string", "APP_NAME", "\"会珍医生测试版\""
             manifestPlaceholders = [ease_appkey : "1110180330253249#dpappproject",
                                     jpush_appkey: "8b803f7221a77f19b78b3523"]
         }
@@ -45,9 +45,9 @@ android {
         beta {
             dimension "zyc"
             applicationId "com.yht.yihuantong_test"
-//            buildConfigField "String", "BASE_BASIC_URL", "\"http://gray.zychealth.com\""
-            buildConfigField "String", "BASE_BASIC_URL", "\"http://39.107.249.194:7080/DPView/\""
-            resValue "string", "APP_NAME", "\"会珍医生测试版\""
+            buildConfigField "String", "BASE_BASIC_URL", "\"http://gray.zychealth.com\""
+//            buildConfigField "String", "BASE_BASIC_URL", "\"http://39.107.249.194:7080/DPView/\""
+            resValue "string", "APP_NAME", "\"会珍医生灰度版\""
             manifestPlaceholders = [ease_appkey : "1105190122042534#dp-test-app",
                                     jpush_appkey: "0253e6c0183a34f72630c349"]
         }

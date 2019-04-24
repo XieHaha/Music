@@ -42,10 +42,6 @@ import com.zyc.doctor.data.bean.PatientBean;
 import com.zyc.doctor.data.bean.RegistrationBean;
 import com.zyc.doctor.data.bean.TransPatientBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;
-import com.zyc.doctor.ui.activity.SelectDocTypeActivity;
-import com.zyc.doctor.widgets.qrcode.BarCodeImageView;
-import com.zyc.doctor.widgets.qrcode.CaptureQrCodeActivity;
-import com.zyc.doctor.widgets.qrcode.DialogPersonalBarCode;
 import com.zyc.doctor.ui.activity.AddFriendsDocActivity;
 import com.zyc.doctor.ui.activity.AddFriendsPatientActivity;
 import com.zyc.doctor.ui.activity.CameraLoginActivity;
@@ -68,6 +64,9 @@ import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.RecentContactUtils;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.widgets.gridview.CustomGridView;
+import com.zyc.doctor.widgets.qrcode.BarCodeImageView;
+import com.zyc.doctor.widgets.qrcode.CaptureQrCodeActivity;
+import com.zyc.doctor.widgets.qrcode.DialogPersonalBarCode;
 import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
 
 import java.util.ArrayList;
@@ -371,9 +370,6 @@ public class MainFragment extends BaseFragment implements OrderStatus, SwipeRefr
                         startActivity(intent);
                         break;
                     case CULTIVATE:
-                        intent = new Intent(getActivity(), SelectDocTypeActivity.class);
-                        startActivity(intent);
-                        break;
                     case DOCTOR_GROUP:
                     case INTEGRAL:
                     default:

@@ -43,8 +43,9 @@ public class SelectDocTypeChildAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             holder = new ViewHolder();
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_file, parent, false);
-            holder.textView = convertView.findViewById(R.id.item_file_name);
+            convertView = LayoutInflater.from(parent.getContext())
+                                        .inflate(R.layout.item_select_doc_depart, parent, false);
+            holder.textView = convertView.findViewById(R.id.item_depart_name);
             convertView.setTag(holder);
         }
         else {

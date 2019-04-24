@@ -26,7 +26,7 @@
                 android:background="@color/app_minor_bg"
                 android:text="身份认证"
                 android:textSize="13sp"
-                android:textColor="#ff999999"
+                android:textColor="@color/app_hint_color"
                 android:gravity="center_vertical"
                 android:paddingLeft="12dp"
                 android:layout_height="30dp" />
@@ -48,14 +48,14 @@
                     android:layout_width="wrap_content"
                     android:text="姓名"
                     android:textSize="15sp"
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:layout_height="wrap_content" />
 
                 <EditText
                     android:id="@+id/act_auth_doc_name"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="40dp"
-                    android:textColor="#333333"
+                    android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp"
                     android:maxLines="1"
                     android:singleLine="true"
@@ -77,13 +77,13 @@
                     android:layout_width="wrap_content"
                     android:text="身份证号"
                     android:textSize="15sp"
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:layout_height="wrap_content" />
 
                 <EditText
                     android:id="@+id/act_auth_doc_card_num"
                     android:layout_width="match_parent"
-                    android:textColor="#333333"
+                    android:textColor="@color/app_main_txt_color"
                     android:layout_marginLeft="10dp"
                     android:textSize="15sp"
                     android:maxLines="1"
@@ -107,7 +107,7 @@
                     android:layout_width="wrap_content"
                     android:text="附件"
                     android:textSize="15sp"
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:layout_height="wrap_content" />
 
                 <LinearLayout
@@ -165,7 +165,7 @@
                             android:layout_width="wrap_content"
                             android:textSize="11sp"
                             android:layout_marginTop="5dp"
-                            android:textColor="#999999"
+                            android:textColor="@color/app_hint_color"
                             android:text="身份证正面"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
@@ -222,7 +222,7 @@
                             android:layout_width="wrap_content"
                             android:textSize="11sp"
                             android:layout_marginTop="5dp"
-                            android:textColor="#999999"
+                            android:textColor="@color/app_hint_color"
                             android:text="身份证背面"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
@@ -257,14 +257,14 @@
                     android:layout_width="wrap_content"
                     android:text="医院"
                     android:textSize="15sp"
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:layout_height="wrap_content" />
 
                 <EditText
                     android:id="@+id/act_auth_doc_hospital"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="40dp"
-                    android:textColor="#333333"
+                    android:textColor="@color/app_main_txt_color"
                     android:textSize="15sp"
                     android:maxLines="1"
                     android:singleLine="true"
@@ -286,13 +286,13 @@
                     android:layout_width="wrap_content"
                     android:text="职称"
                     android:textSize="15sp"
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:layout_height="wrap_content" />
 
                 <EditText
                     android:id="@+id/act_auth_doc_title"
                     android:layout_width="match_parent"
-                    android:textColor="#333333"
+                    android:textColor="@color/app_main_txt_color"
                     android:layout_marginLeft="40dp"
                     android:textSize="15sp"
                     android:maxLines="1"
@@ -303,7 +303,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
@@ -315,22 +315,32 @@
                     android:layout_width="wrap_content"
                     android:text="科室"
                     android:textSize="15sp"
-                    android:textColor="#999999"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/app_hint_color"
                     android:layout_height="wrap_content" />
 
-                <EditText
+                <TextView
                     android:id="@+id/act_auth_doc_depart"
                     android:layout_width="match_parent"
-                    android:textColor="#333333"
-                    android:layout_marginLeft="40dp"
+                    android:textColor="@color/app_main_txt_color"
+                    android:layout_marginLeft="70dp"
                     android:textSize="15sp"
                     android:maxLines="1"
+                    android:gravity="center_vertical"
                     android:singleLine="true"
                     android:imeOptions="actionDone"
                     android:maxLength="30"
                     android:layout_height="match_parent" />
 
-            </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:background="@color/app_minor_color"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="7dp"
+                    android:layout_marginLeft="72dp"
+                    android:layout_height="2px" />
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -345,7 +355,7 @@
                     android:layout_width="wrap_content"
                     android:text="附件"
                     android:textSize="15sp"
-                    android:textColor="#999999"
+                    android:textColor="@color/app_hint_color"
                     android:layout_height="wrap_content" />
 
                 <LinearLayout
@@ -403,7 +413,7 @@
                             android:layout_width="wrap_content"
                             android:textSize="11sp"
                             android:layout_marginTop="5dp"
-                            android:textColor="#999999"
+                            android:textColor="@color/app_hint_color"
                             android:text="资格证正面"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
@@ -460,7 +470,7 @@
                             android:layout_width="wrap_content"
                             android:textSize="11sp"
                             android:layout_marginTop="5dp"
-                            android:textColor="#999999"
+                            android:textColor="@color/app_hint_color"
                             android:text="资格证背面"
                             android:layout_height="wrap_content" />
                     </LinearLayout>
@@ -489,15 +499,4 @@
             android:textColor="@color/app_white_color"
             android:textSize="18sp" />
     </RelativeLayout>
-    <!--<TextView-->
-    <!--android:id="@+id/act_auth_doc_apply"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:text="提交审核"-->
-    <!--android:textColor="@color/app_white_color"-->
-    <!--android:gravity="center"-->
-    <!--android:textSize="15sp"-->
-    <!--android:background="@color/app_main_color"-->
-    <!--android:layout_alignParentBottom="true"-->
-    <!--android:layout_height="48dp" />-->
-
 </RelativeLayout>

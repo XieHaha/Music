@@ -1,7 +1,5 @@
 package com.zyc.doctor.http.retrofit;
 
-import android.util.Log;
-
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseNetConfig;
 import com.zyc.doctor.data.bean.BaseResponse;
@@ -50,7 +48,7 @@ public abstract class AbstractDataObserver<T> implements Observer<BaseResponse<T
             LogUtils.e(TAG, task + "   onError:" + e);
             if (e.getStackTrace() != null) {
                 for (StackTraceElement element : e.getStackTrace()) {
-                    Log.e(TAG, "onError element:" + element.toString());
+                    LogUtils.e(TAG, "onError element:" + element.toString());
                 }
             }
         }

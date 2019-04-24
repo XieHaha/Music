@@ -101,7 +101,9 @@
     <string name="txt_doc_auth_again">重新认证</string>
     <string name="txt_doc_auth_again_apply">重新提交认证信息</string>
     <string name="txt_doc_auth_verifying">等待后台认证</string>
-    <string name="txt_doc_auth_verify_faild">认证失败</string>
+    <string name="txt_doc_auth_verify_failed">认证失败</string>
+    <string name="txt_doc_auth_improve_identity">请完善您的身份信息</string>
+    <string name="txt_doc_auth_improve_qualification">请完善您的资质信息</string>
     <string name="txt_doc_auth_name">尊敬的&#160;%s&#160;医生</string>
     <string name="txt_doc_auth_hint">您还未通过平台医生认证，认证流程需要您提供身份证照片及相关行医资格证件照片。</string>
     <string name="txt_doc_auth_hint1">您的身份信息我们正在加紧认证中，一般会花费一个工作日，请耐心等待。</string>
