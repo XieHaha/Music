@@ -422,6 +422,8 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                 }
                 HintDialog hintDialog = new HintDialog(this);
                 hintDialog.setContentString(getString(R.string.txt_transfer_patient_to_issure_doc));
+                hintDialog.setContentString(String.format(getString(R.string.txt_transfer_patient_to_issure_doc),
+                                                          cooperateDocBean.getName()));
                 hintDialog.setOnEnterClickListener(new OnEnterClickListener() {
                     @Override
                     public void onEnter() {

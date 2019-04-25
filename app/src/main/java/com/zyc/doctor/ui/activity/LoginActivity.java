@@ -340,6 +340,7 @@ public class LoginActivity extends BaseActivity
             case VERIFYING:
             case VERIFY_FAILD:
                 startActivity(new Intent(this, AuthDocStatusActivity.class));
+                finish();
                 break;
             case VERIFY_SUCCESS:
                 startActivity(new Intent(this, MainActivity.class));

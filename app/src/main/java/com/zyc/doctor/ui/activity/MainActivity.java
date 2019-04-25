@@ -235,7 +235,6 @@ public class MainActivity extends BaseActivity
         tvDelete = messagePop.findViewById(R.id.message_pop_menu_play);
         initTab();
         largeIcon = ((BitmapDrawable)getResources().getDrawable(R.mipmap.ic_launcher)).getBitmap();
-        mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         initNotify();
     }
 
@@ -316,6 +315,9 @@ public class MainActivity extends BaseActivity
             String channelName = "聊天消息";
             int importance = NotificationManager.IMPORTANCE_HIGH;
             createNotificationChannel(channelId, channelName, importance);
+        }
+        else {
+            mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         }
     }
 
@@ -408,10 +410,10 @@ public class MainActivity extends BaseActivity
             mNotificationManager.notify(message.getFrom(), 1, notification);
         }
         else {
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
             builder.setSmallIcon(R.mipmap.ic_launcher);
             builder.setAutoCancel(true);
-            builder.setContentText("收到新消息");
+            builder.setContentText("收到新的消息");
             builder.setContentIntent(pendingIntent);
             int defaults = Notification.DEFAULT_LIGHTS;
             defaults |= Notification.DEFAULT_VIBRATE;
@@ -425,8 +427,8 @@ public class MainActivity extends BaseActivity
     @TargetApi(Build.VERSION_CODES.O)
     private void createNotificationChannel(String channelId, String channelName, int importance) {
         NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
-        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.createNotificationChannel(channel);
+        mNotificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        mNotificationManager.createNotificationChannel(channel);
     }
 
     @Override

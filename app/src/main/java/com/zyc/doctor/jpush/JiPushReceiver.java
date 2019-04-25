@@ -138,7 +138,7 @@ public class JiPushReceiver extends BroadcastReceiver implements CommonData {
             return;
         }
         Intent mainIntent, baseIntent;
-        Intent intents[];
+        Intent[] intents;
         switch (type) {
             case JIGUANG_CODE_DOCTOR_DP_ADD_REQUEST:
                 mainIntent = new Intent(context, MainActivity.class);

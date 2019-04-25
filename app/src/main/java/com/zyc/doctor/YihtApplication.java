@@ -58,6 +58,10 @@ public class YihtApplication extends LitePalApplication {
      * 版本更新标识
      */
     private boolean versionRemind = false;
+    /**
+     * 调试模式
+     */
+    private final boolean debugMode = true;
 
     @Override
     public void onCreate() {
@@ -67,7 +71,7 @@ public class YihtApplication extends LitePalApplication {
         // 界面适配
         initAndroidAutoSize();
         //app 帮助类
-        ApiManager.getInstance().init(this, true);
+        ApiManager.getInstance().init(this, debugMode);
         //网络
         RetrofitManager.getInstance().init();
         //处理文件下载上传
@@ -152,7 +156,7 @@ public class YihtApplication extends LitePalApplication {
      */
     private void initJPush() {
         //极光推送
-        JPushInterface.setDebugMode(false);
+        JPushInterface.setDebugMode(debugMode);
         JPushInterface.init(this);
     }
 
