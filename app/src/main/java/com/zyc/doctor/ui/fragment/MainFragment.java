@@ -525,7 +525,10 @@ public class MainFragment extends BaseFragment implements OrderStatus, SwipeRefr
         switch (task) {
             case GET_PATIENTS_LIST:
                 List<PatientBean> list = (List<PatientBean>)response.getData();
-                if (list != null && list.size() > 0) {
+                if (list == null) {
+                    list = new ArrayList<>();
+                }
+                if (list.size() > 0) {
                     tvPatientNum.setText(list.size() + "人");
                 }
                 break;

@@ -299,7 +299,8 @@ public class ServicePackActivity extends BaseActivity {
         hospitalProductRecycler.setVisibility(View.GONE);
         llProductDetaillayout.setVisibility(View.VISIBLE);
         if (patientBean != null) {
-            if (!TextUtils.isEmpty(patientBean.getNickname()) && patientBean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
+            if (!TextUtils.isEmpty(patientBean.getNickname()) &&
+                patientBean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
                 tvPatientName.setText(patientBean.getNickname());
             }
             else {

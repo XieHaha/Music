@@ -53,7 +53,7 @@
     <!--menu-->
     <string name="txt_menu_doc">合作医院医生</string>
     <string name="txt_menu_remark">设置备注</string>
-    <string name="txt_menu_delete">删除好友</string>
+    <string name="txt_menu_delete">删除</string>
     <string name="txt_menu_chat">对话</string>
     <string name="txt_menu_transfer">转诊</string>
     <string name="txt_menu_service">服务包</string>

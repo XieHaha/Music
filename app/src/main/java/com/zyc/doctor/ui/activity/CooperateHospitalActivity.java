@@ -111,6 +111,9 @@ public class CooperateHospitalActivity extends BaseActivity
         switch (task) {
             case GET_HOSPITAL_LIST_BY_DOCTORID:
                 hospitalBeans = (List<HospitalBean>)response.getData();
+                if (hospitalBeans == null) {
+                    hospitalBeans = new ArrayList<>();
+                }
                 if (page == 0) {
                     cooperateHospitalAdapter.setList(hospitalBeans);
                 }

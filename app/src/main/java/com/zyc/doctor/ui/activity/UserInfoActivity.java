@@ -24,7 +24,8 @@ import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.data.bean.CooperateDocBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.ui.dialog.SimpleDialog;
+import com.zyc.doctor.ui.dialog.HintDialog;
+import com.zyc.doctor.ui.dialog.listener.OnEnterClickListener;
 import com.zyc.doctor.utils.AllUtils;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.utils.glide.GlideHelper;
@@ -219,11 +220,15 @@ public class UserInfoActivity extends BaseActivity {
                 if (mPopupwinow != null) {
                     mPopupwinow.dismiss();
                 }
-                new SimpleDialog(this, "确定删除?", (dialog, which) -> cancelCooperateDoc(),
-                                 (dialog, which) -> dialog.dismiss()).show();
-                break;
-            case R.id.act_user_info_hospital_layout:
-                //                startActivity(new Intent(this, HospitalInfoActivity.class));
+                HintDialog hintDialog = new HintDialog(this);
+                hintDialog.setContentString("确定删除?");
+                hintDialog.setOnEnterClickListener(new OnEnterClickListener() {
+                    @Override
+                    public void onEnter() {
+                        cancelCooperateDoc();
+                    }
+                });
+                hintDialog.show();
                 break;
             default:
                 break;

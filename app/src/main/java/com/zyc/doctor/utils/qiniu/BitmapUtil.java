@@ -402,38 +402,6 @@ public class BitmapUtil {
     }
 
     /**
-     * 水印
-     *
-     * @param src
-     * @return
-     */
-    public static Bitmap createBitmapForWatermark(Bitmap src, Bitmap watermark) {
-        if (src == null) {
-            return null;
-        }
-        int w = src.getWidth();
-        int h = src.getHeight();
-        int ww = watermark.getWidth();
-        int wh = watermark.getHeight();
-        // create the new blank bitmap
-        // 创建一个新的和SRC长度宽度一样的位图
-        Bitmap newb = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-        Canvas cv = new Canvas(newb);
-        // draw src into
-        // 在 0，0坐标开始画入src
-        cv.drawBitmap(src, 0, 0, null);
-        // draw watermark into
-        // 在src的右下角画入水印
-        cv.drawBitmap(watermark, w - ww + 5, h - wh + 5, null);
-        // save all clip
-        // 保存
-        cv.save(Canvas.ALL_SAVE_FLAG);
-        // store
-        cv.restore();// 存储
-        return newb;
-    }
-
-    /**
      * 图片合成
      *
      * @return

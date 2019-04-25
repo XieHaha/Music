@@ -151,7 +151,10 @@ public class TransferInfoFragment extends BaseFragment
         switch (task) {
             case GET_TRANSFER_BY_PATIENT:
                 transferPatientBeanList = (ArrayList<TransPatientBean>)response.getData();
-                if (transferPatientBeanList != null && transferPatientBeanList.size() > 0) {
+                if (transferPatientBeanList == null) {
+                    transferPatientBeanList = new ArrayList<>();
+                }
+                if (transferPatientBeanList.size() > 0) {
                     llNoneLayout.setVisibility(View.GONE);
                 }
                 else {

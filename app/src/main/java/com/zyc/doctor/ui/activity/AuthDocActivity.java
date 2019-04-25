@@ -33,7 +33,7 @@ import com.zyc.doctor.data.bean.CooperateDocBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.ActionSheetDialog;
-import com.zyc.doctor.ui.dialog.SimpleDialog;
+import com.zyc.doctor.ui.dialog.HintDialog;
 import com.zyc.doctor.utils.AllUtils;
 import com.zyc.doctor.utils.FileUtils;
 import com.zyc.doctor.utils.LogUtils;
@@ -277,7 +277,7 @@ public class AuthDocActivity extends BaseActivity {
      * 获取个人信息
      */
     private void getDocInfo() {
-        showProgressDialog("");
+        showLoadingView();
         RequestUtils.getDocInfo(this, loginSuccessBean.getDoctorId(), this);
     }
 
@@ -304,7 +304,7 @@ public class AuthDocActivity extends BaseActivity {
             ToastUtil.toast(this, R.string.txt_doc_auth_improve_qualification);
             return;
         }
-        showProgressDialog("信息上传中");
+        showLoadingView();
         RequestUtils.qualifiyDoc(this, loginSuccessBean.getDoctorId(), txtName, txtCardNum, txtTitle, txtDepart,
                                  txtHospital, idCardFrontTempFile, idCardBackTempFile, docCardFrontTempFile,
                                  docCardBackTempFile, this);
@@ -374,12 +374,12 @@ public class AuthDocActivity extends BaseActivity {
         super.onResponseSuccess(task, response);
         switch (task) {
             case GET_DOC_INFO:
-                closeProgressDialog();
+                closeLoadingView();
                 cooperateDocBean = (CooperateDocBean)response.getData();
                 initPageData();
                 break;
             case QUALIFIY_DOC:
-                closeProgressDialog();
+                closeLoadingView();
                 ToastUtil.toast(this, response.getMsg());
                 //改变认证状态，当前为审核中
                 loginSuccessBean.setChecked(1);
@@ -403,7 +403,7 @@ public class AuthDocActivity extends BaseActivity {
             case GET_DOC_INFO:
                 break;
             case QUALIFIY_DOC:
-                closeProgressDialog();
+                closeLoadingView();
                 ToastUtil.toast(this, response.getMsg());
                 break;
             default:
@@ -584,7 +584,9 @@ public class AuthDocActivity extends BaseActivity {
 
     @Override
     public void onPermissionReallyDeclined(@NonNull String permissionName) {
-        new SimpleDialog(this, R.string.dialog_no_camera_permission_tip, false).show();
+        HintDialog hintDialog = new HintDialog(this);
+        hintDialog.setContentString(getString(R.string.dialog_no_camera_permission_tip));
+        hintDialog.show();
     }
 
     @Override

@@ -182,6 +182,9 @@ public class CooperateDocActivity extends BaseActivity
             case GET_COOPERATE_HOSPITAL_DOCTOR_LIST:
                 if (response.getData() != null) {
                     cooperateHospitalDocBeans = (List<CooperateHospitalDocBean>)response.getData();
+                    if (cooperateHospitalDocBeans == null) {
+                        cooperateHospitalDocBeans = new ArrayList<>();
+                    }
                     if (page == 0) {
                         cooperateHospitalDocListAdapter.setList(cooperateHospitalDocBeans);
                     }

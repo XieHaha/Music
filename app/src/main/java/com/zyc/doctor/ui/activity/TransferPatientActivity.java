@@ -31,7 +31,7 @@ import com.zyc.doctor.data.bean.TransPatientBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.HintDialog;
-import com.zyc.doctor.ui.dialog.SimpleDialog;
+import com.zyc.doctor.ui.dialog.listener.OnEnterClickListener;
 import com.zyc.doctor.utils.AllUtils;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.RecentContactUtils;
@@ -420,11 +420,15 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                     ToastUtil.toast(this, R.string.txt_transfer_patient_to_input_diagnosisinfo);
                     return;
                 }
-                new SimpleDialog(TransferPatientActivity.this,
-                                 String.format(getString(R.string.txt_transfer_patient_to_issure_doc),
-                                               cooperateDocBean.getName()),
-                                 (dialog, which) -> addTransferPatient(diagnosisInfo),
-                                 (dialog, which) -> dialog.dismiss()).show();
+                HintDialog hintDialog = new HintDialog(this);
+                hintDialog.setContentString(getString(R.string.txt_transfer_patient_to_issure_doc));
+                hintDialog.setOnEnterClickListener(new OnEnterClickListener() {
+                    @Override
+                    public void onEnter() {
+                        addTransferPatient(diagnosisInfo);
+                    }
+                });
+                hintDialog.show();
                 break;
             case R.id.act_transfer_patient_transfer_next:
                 switch (orderState) {
@@ -434,23 +438,26 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                             ToastUtil.toast(this, R.string.txt_transfer_patient_to_select_hospital);
                             return;
                         }
-                        new SimpleDialog(TransferPatientActivity.this,
-                                         String.format(getString(R.string.txt_transfer_patient_to_isrecv_doc),
-                                                       transPatientBean.getFromDoctorName()), (dialog, which) -> {
-                            //                                             updateTransferPatient();
-                            recvTransferPatient();
-                            //保存最近联系人
-                            RecentContactUtils.save(transPatientBean.getPatientId());
-                            NotifyChangeListenerManager.getInstance().notifyRecentContactChange("");
-                        }, (dialog, which) -> dialog.dismiss()).show();
+                        HintDialog dialog = new HintDialog(this);
+                        dialog.setContentString(String.format(getString(R.string.txt_transfer_patient_to_isrecv_doc),
+                                                              transPatientBean.getFromDoctorName()));
+                        dialog.setOnEnterClickListener(new OnEnterClickListener() {
+                            @Override
+                            public void onEnter() {
+                                recvTransferPatient();
+                                //保存最近联系人
+                                RecentContactUtils.save(transPatientBean.getPatientId());
+                                NotifyChangeListenerManager.getInstance().notifyRecentContactChange("");
+                            }
+                        });
+                        dialog.show();
                         break;
                     //确认患者就诊
                     case 2:
-                        new SimpleDialog(TransferPatientActivity.this,
-                                         String.format(getString(R.string.txt_transfer_patient_to_isvisit),
-                                                       transPatientBean.getPatientName()),
-                                         //                                         (dialog, which) -> updateTransferPatient(),
-                                         (dialog, which) -> dialog.dismiss()).show();
+                        HintDialog dialog1 = new HintDialog(this);
+                        dialog1.setContentString(String.format(getString(R.string.txt_transfer_patient_to_isvisit),
+                                                               transPatientBean.getPatientName()));
+                        dialog1.show();
                         break;
                     default:
                         break;

@@ -23,6 +23,7 @@ import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
+import com.zyc.doctor.api.DirHelper;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.Tasks;
@@ -30,21 +31,21 @@ import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.data.bean.NormImage;
 import com.zyc.doctor.data.bean.PatientCaseDetailBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;
-import com.zyc.doctor.utils.permission.Permission;
-import com.zyc.doctor.utils.qiniu.QiniuUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.ActionSheetDialog;
-import com.zyc.doctor.ui.dialog.SimpleDialog;
+import com.zyc.doctor.ui.dialog.HintDialog;
+import com.zyc.doctor.ui.dialog.listener.OnEnterClickListener;
 import com.zyc.doctor.utils.AllUtils;
-import com.zyc.doctor.api.DirHelper;
 import com.zyc.doctor.utils.FileUtils;
-import com.zyc.doctor.utils.glide.GlideEngine;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.RecentContactUtils;
 import com.zyc.doctor.utils.ScalingUtils;
 import com.zyc.doctor.utils.ToastUtil;
-import com.zyc.doctor.widgets.gridview.AutoGridView;
+import com.zyc.doctor.utils.glide.GlideEngine;
+import com.zyc.doctor.utils.permission.Permission;
+import com.zyc.doctor.utils.qiniu.QiniuUtils;
 import com.zyc.doctor.widgets.expandable.ExpandTextView;
+import com.zyc.doctor.widgets.gridview.AutoGridView;
 
 import java.io.File;
 import java.io.IOException;
@@ -161,7 +162,7 @@ public class HealthDetailActivity extends BaseActivity
             autoGridView.updateImg(imageList, true);
             //图片显示完开始上传图片
             currentUploadImgIndex = 0;
-            showProgressDialog(String.format(getString(R.string.txt_upload_img_num), 1));
+            showLoadingView();
             uploadHeadImg(mSelectPath.get(currentUploadImgIndex));
         }
     };
@@ -504,11 +505,17 @@ public class HealthDetailActivity extends BaseActivity
      * @param position
      */
     private void showDeletePhotoDialog(final int position) {
-        new SimpleDialog(this, getString(R.string.txt_delete_hint), (dialog, which) -> {
-            imageUrl.remove(position);
-            imageList.remove(position);
-            autoGridView.updateImg(imageList, true);
-        }, (dialog, which) -> dialog.dismiss()).show();
+        HintDialog hintDialog = new HintDialog(this);
+        hintDialog.setContentString(getString(R.string.txt_delete_hint));
+        hintDialog.setOnEnterClickListener(new OnEnterClickListener() {
+            @Override
+            public void onEnter() {
+                imageUrl.remove(position);
+                imageList.remove(position);
+                autoGridView.updateImg(imageList, true);
+            }
+        });
+        hintDialog.show();
     }
 
     @Override
@@ -518,12 +525,11 @@ public class HealthDetailActivity extends BaseActivity
             case UPLOAD_FILE:
                 if (mSelectPath.size() - 1 > currentUploadImgIndex) {
                     currentUploadImgIndex++;
-                    showProgressDialog(
-                            String.format(getString(R.string.txt_upload_img_num), (currentUploadImgIndex + 1)));
+                    showLoadingView();
                     uploadHeadImg(mSelectPath.get(currentUploadImgIndex));
                 }
                 else {
-                    closeProgressDialog();
+                    closeLoadingView();
                 }
                 imageUrl.add(response.getData().toString());
                 break;
@@ -552,7 +558,7 @@ public class HealthDetailActivity extends BaseActivity
         super.onResponseCode(task, response);
         switch (task) {
             case UPLOAD_FILE:
-                closeProgressDialog();
+                closeLoadingView();
                 ToastUtil.toast(this, response.getMsg());
                 break;
             default:
@@ -709,8 +715,15 @@ public class HealthDetailActivity extends BaseActivity
      */
     private void finishPage() {
         if (isModifyData) {
-            new SimpleDialog(this, getString(R.string.dialog_txt_exit_hint), (dialog, which) -> finish(),
-                             (dialog, which) -> dialog.dismiss()).show();
+            HintDialog hintDialog = new HintDialog(this);
+            hintDialog.setContentString(getString(R.string.dialog_txt_exit_hint));
+            hintDialog.setOnEnterClickListener(new OnEnterClickListener() {
+                @Override
+                public void onEnter() {
+                    finish();
+                }
+            });
+            hintDialog.show();
         }
         else {
             finish();
@@ -776,7 +789,6 @@ public class HealthDetailActivity extends BaseActivity
 
     @Override
     public void onPermissionReallyDeclined(@NonNull String permissionName) {
-        new SimpleDialog(this, R.string.dialog_no_camera_permission_tip, false).show();
     }
 
     @Override

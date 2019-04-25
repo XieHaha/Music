@@ -141,6 +141,9 @@ public class TransferPatientFromActivity extends BaseActivity
         switch (task) {
             case GET_PATIENTS_FROM_LIST:
                 patientBeanList = (List<TransPatientBean>)response.getData();
+                if (patientBeanList == null) {
+                    patientBeanList = new ArrayList<>();
+                }
                 if (page == 0) {
                     patientsListAdapter.setList(patientBeanList);
                 }

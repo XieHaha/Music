@@ -122,6 +122,9 @@ public class RegistrationListActivity extends BaseActivity
         switch (task) {
             case GET_ORDER_LIST:
                 registrationBeans = (List<RegistrationBean>)response.getData();
+                if (registrationBeans == null) {
+                    registrationBeans = new ArrayList<>();
+                }
                 if (page == 0) {
                     registrationListAdapter.setList(registrationBeans);
                 }

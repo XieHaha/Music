@@ -229,7 +229,7 @@ public class LoginActivity extends BaseActivity
             ToastUtil.toast(this, R.string.toast_txt_read_protol);
             return;
         }
-        showProgressDialog("加载中...");
+        showLoadingView();
         RequestUtils.login(this, phone, verifyCode, "d", this);
     }
 
@@ -323,7 +323,7 @@ public class LoginActivity extends BaseActivity
                                 ToastUtil.toast(LoginActivity.this, R.string.toast_login_ease_error);
                                 //环信登陆失败 清除服务器登录信息
                                 YihtApplication.getInstance().clearLoginSuccessBean();
-                                closeProgressDialog();
+                                closeLoadingView();
                             }
                         });
                 break;
@@ -333,7 +333,7 @@ public class LoginActivity extends BaseActivity
     }
 
     private void jumpTopage() {
-        closeProgressDialog();
+        closeLoadingView();
         int checked = loginSuccessBean.getChecked();
         switch (checked) {
             case NONE:
@@ -354,7 +354,7 @@ public class LoginActivity extends BaseActivity
 
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
-        closeProgressDialog();
+        closeLoadingView();
         super.onResponseCode(task, response);
         switch (task) {
             case GET_VERIFY_CODE:

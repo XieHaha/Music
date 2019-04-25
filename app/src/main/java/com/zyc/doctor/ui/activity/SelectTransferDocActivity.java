@@ -120,6 +120,9 @@ public class SelectTransferDocActivity extends BaseActivity
             case GET_COOPERATE_DOC_LIST:
                 if (response.getData() != null) {
                     cooperateDocBeanList = (List<CooperateDocBean>)response.getData();
+                    if (cooperateDocBeanList == null) {
+                        cooperateDocBeanList = new ArrayList<>();
+                    }
                     if (page == 0) {
                         cooperateDocListAdapter.setList(cooperateDocBeanList);
                     }

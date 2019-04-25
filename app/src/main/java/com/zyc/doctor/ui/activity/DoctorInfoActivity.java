@@ -30,7 +30,8 @@ import com.zyc.doctor.ui.adapter.CooperationDocHAdapter;
 import com.zyc.doctor.ui.adapter.CooperationHospitalHAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.ui.dialog.SimpleDialog;
+import com.zyc.doctor.ui.dialog.HintDialog;
+import com.zyc.doctor.ui.dialog.listener.OnEnterClickListener;
 import com.zyc.doctor.utils.AllUtils;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.utils.glide.GlideHelper;
@@ -263,9 +264,15 @@ public class DoctorInfoActivity extends BaseActivity
                 if (mPopupwinow != null) {
                     mPopupwinow.dismiss();
                 }
-                new SimpleDialog(this, "确定删除?", (dialog, which) -> {
-                    deleteDoctor();
-                }, (dialog, which) -> dialog.dismiss()).show();
+                HintDialog hintDialog = new HintDialog(this);
+                hintDialog.setContentString("确定删除?");
+                hintDialog.setOnEnterClickListener(new OnEnterClickListener() {
+                    @Override
+                    public void onEnter() {
+                        deleteDoctor();
+                    }
+                });
+                hintDialog.show();
                 break;
             case R.id.remark:
                 if (mPopupwinow != null) {
@@ -372,6 +379,9 @@ public class DoctorInfoActivity extends BaseActivity
                 break;
             case GET_HOSPITAL_LIST_BY_DOCTORID:
                 ArrayList<HospitalBean> list1 = (ArrayList<HospitalBean>)response.getData();
+                if (list1 == null) {
+                    list1 = new ArrayList<>();
+                }
                 cooperationHospitalHAdapter.setList(list1);
                 break;
             case GET_DOC_INFO:

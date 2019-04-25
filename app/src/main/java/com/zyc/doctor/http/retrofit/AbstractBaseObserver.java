@@ -1,6 +1,5 @@
 package com.zyc.doctor.http.retrofit;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -8,6 +7,7 @@ import android.widget.Toast;
 
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.http.listener.ResponseListener;
+import com.zyc.doctor.ui.dialog.LoadingDialog;
 
 import io.reactivex.disposables.Disposable;
 
@@ -19,7 +19,7 @@ import io.reactivex.disposables.Disposable;
  */
 public class AbstractBaseObserver<T> extends AbstractDataObserver<T> {
     private boolean mShowDialog;
-    private ProgressDialog dialog;
+    private LoadingDialog loadingDialog;
     private Context mContext;
     private Disposable d;
 
@@ -43,10 +43,9 @@ public class AbstractBaseObserver<T> extends AbstractDataObserver<T> {
             }
         }
         else {
-            if (dialog == null && mShowDialog == true) {
-                dialog = new ProgressDialog(mContext);
-                dialog.setMessage("正在加载中");
-                dialog.show();
+            if (loadingDialog == null && mShowDialog == true) {
+                loadingDialog = new LoadingDialog(mContext);
+                loadingDialog.show();
             }
         }
     }
@@ -70,8 +69,8 @@ public class AbstractBaseObserver<T> extends AbstractDataObserver<T> {
     }
 
     public void hidDialog() {
-        if (dialog != null && mShowDialog == true) { dialog.dismiss(); }
-        dialog = null;
+        if (loadingDialog != null && mShowDialog == true) { loadingDialog.dismiss(); }
+        loadingDialog = null;
     }
 
     /**

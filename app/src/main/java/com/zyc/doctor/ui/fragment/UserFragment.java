@@ -29,6 +29,7 @@ import com.zhihu.matisse.Matisse;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.api.ApiManager;
+import com.zyc.doctor.api.DirHelper;
 import com.zyc.doctor.api.notify.IChange;
 import com.zyc.doctor.api.notify.INotifyChangeListenerServer;
 import com.zyc.doctor.api.notify.RegisterType;
@@ -40,11 +41,6 @@ import com.zyc.doctor.data.bean.CooperateDocBean;
 import com.zyc.doctor.data.bean.LoginSuccessBean;
 import com.zyc.doctor.data.bean.PatientBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;
-import com.zyc.doctor.utils.permission.OnPermissionCallback;
-import com.zyc.doctor.utils.permission.Permission;
-import com.zyc.doctor.utils.permission.PermissionHelper;
-import com.zyc.doctor.widgets.qrcode.BarCodeImageView;
-import com.zyc.doctor.widgets.qrcode.DialogPersonalBarCode;
 import com.zyc.doctor.ui.activity.AuthDocActivity;
 import com.zyc.doctor.ui.activity.AuthDocStatusActivity;
 import com.zyc.doctor.ui.activity.EditInfoActivity;
@@ -53,14 +49,17 @@ import com.zyc.doctor.ui.activity.TransferPatientFromActivity;
 import com.zyc.doctor.ui.activity.TransferPatientToActivity;
 import com.zyc.doctor.ui.base.fragment.BaseFragment;
 import com.zyc.doctor.ui.dialog.ActionSheetDialog;
-import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.utils.AllUtils;
-import com.zyc.doctor.api.DirHelper;
 import com.zyc.doctor.utils.FileUtils;
-import com.zyc.doctor.utils.glide.GlideHelper;
 import com.zyc.doctor.utils.LogUtils;
-import com.zyc.doctor.utils.glide.MatisseUtils;
 import com.zyc.doctor.utils.ToastUtil;
+import com.zyc.doctor.utils.glide.GlideHelper;
+import com.zyc.doctor.utils.glide.MatisseUtils;
+import com.zyc.doctor.utils.permission.OnPermissionCallback;
+import com.zyc.doctor.utils.permission.Permission;
+import com.zyc.doctor.utils.permission.PermissionHelper;
+import com.zyc.doctor.widgets.qrcode.BarCodeImageView;
+import com.zyc.doctor.widgets.qrcode.DialogPersonalBarCode;
 import com.zyc.doctor.widgets.scrollview.CustomListenScrollView;
 
 import org.litepal.crud.DataSupport;
@@ -627,7 +626,6 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
 
         @Override
         public void onPermissionReallyDeclined(@NonNull String permissionName) {
-            new SimpleDialog(getActivity(), R.string.dialog_no_camera_permission_tip, false).show();
         }
 
         @Override

@@ -29,7 +29,6 @@ import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.ActionSheetDialog;
-import com.zyc.doctor.ui.dialog.SimpleDialog;
 import com.zyc.doctor.utils.AllUtils;
 import com.zyc.doctor.utils.FileUtils;
 import com.zyc.doctor.utils.LogUtils;
@@ -471,7 +470,6 @@ public class EditInfoActivity extends BaseActivity {
 
     @Override
     public void onPermissionReallyDeclined(@NonNull String permissionName) {
-        new SimpleDialog(this, R.string.dialog_no_camera_permission_tip, false).show();
     }
 
     @Override

@@ -110,6 +110,9 @@ public class SelectTransferHospitalActivity extends BaseActivity
         switch (task) {
             case GET_COOPERATE_HOSPITAL_LIST:
                 ArrayList<HospitalBean> list = (ArrayList<HospitalBean>)response.getData();
+                if (list == null) {
+                    list = new ArrayList<>();
+                }
                 selectHospitalAdapter.setList(list);
                 break;
             default:

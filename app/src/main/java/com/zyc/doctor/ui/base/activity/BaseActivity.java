@@ -2,7 +2,6 @@ package com.zyc.doctor.ui.base.activity;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +21,7 @@ import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.data.bean.LoginSuccessBean;
 import com.zyc.doctor.http.listener.ResponseListener;
+import com.zyc.doctor.ui.dialog.LoadingDialog;
 import com.zyc.doctor.utils.SharePreferenceUtil;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.utils.permission.OnPermissionCallback;
@@ -40,7 +40,7 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseActivity<T> extends RxAppCompatActivity
         implements ActivityInterface, ResponseListener<BaseResponse>, View.OnClickListener, OnPermissionCallback {
-    private ProgressDialog mProgressDialog;
+    private LoadingDialog loadingView;
     /**
      * 登录数据
      */
@@ -300,50 +300,33 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
     public void initListener() {
     }
 
-    private void initProgressDialog() {
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setIndeterminateDrawable(getResources().getDrawable(R.drawable.public_progress));
-        mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setCancelable(true);
+    private void initLoadingView() {
+        loadingView = new LoadingDialog(this);
     }
 
     /**
      * 显示进度条
-     *
-     * @param msg 提示消息
      */
-    public void showProgressDialog(final String msg) {
-        showProgressDialog(msg, true);
+    public void showLoadingView() {
+        showLoadingView(true);
     }
 
     /**
      * 显示进度条
      *
-     * @param resid 提示消息
-     */
-    public void showProgressDialog(final int resid) {
-        String msg = getResources().getString(resid);
-        showProgressDialog(msg, true);
-    }
-
-    /**
-     * 显示进度条
-     *
-     * @param msg    提示消息
      * @param cancel 是否可取消
      */
-    public void showProgressDialog(final String msg, final boolean cancel) {
+    public void showLoadingView(final boolean cancel) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (mProgressDialog == null) {
-                    initProgressDialog();
+                if (loadingView == null) {
+                    initLoadingView();
                 }
-                mProgressDialog.setCancelable(cancel);
-                mProgressDialog.setCanceledOnTouchOutside(cancel);
-                mProgressDialog.setMessage(msg);
-                if (!mProgressDialog.isShowing()) {
-                    mProgressDialog.show();
+                loadingView.setCancelable(cancel);
+                loadingView.setCanceledOnTouchOutside(cancel);
+                if (!loadingView.isShowing()) {
+                    loadingView.show();
                 }
             }
         });
@@ -352,19 +335,19 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
     /**
      * 关闭进度条
      */
-    public void closeProgressDialog() {
+    public void closeLoadingView() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (mProgressDialog == null) {
+                if (loadingView == null) {
                     return;
                 }
-                if (!mProgressDialog.isShowing()) {
+                if (!loadingView.isShowing()) {
                     return;
                 }
-                mProgressDialog.setCancelable(true);
-                mProgressDialog.setCanceledOnTouchOutside(true);
-                mProgressDialog.dismiss();
+                loadingView.setCancelable(true);
+                loadingView.setCanceledOnTouchOutside(true);
+                loadingView.dismiss();
             }
         });
     }
@@ -389,7 +372,7 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
 
     @Override
     public void onResponseError(Tasks task, Exception e) {
-        closeProgressDialog();
+        closeLoadingView();
         ToastUtil.toast(this, e.getMessage());
     }
 

@@ -32,11 +32,11 @@ import com.hyphenate.EMError;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;
-import com.zyc.doctor.chat.EaseConversationListFragment;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.api.notify.NotifyChangeListenerManager;
 import com.zyc.doctor.chat.ChatActivity;
+import com.zyc.doctor.chat.EaseConversationListFragment;
 import com.zyc.doctor.chat.listener.AbstractEMContactListener;
 import com.zyc.doctor.chat.listener.AbstractEMMessageListener;
 import com.zyc.doctor.chat.receive.EaseMsgClickBroadCastReceiver;
@@ -48,7 +48,8 @@ import com.zyc.doctor.data.bean.RegistrationTypeBean;
 import com.zyc.doctor.data.bean.VersionBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.ui.dialog.SimpleDialog;
+import com.zyc.doctor.ui.dialog.HintDialog;
+import com.zyc.doctor.ui.dialog.listener.OnEnterClickListener;
 import com.zyc.doctor.ui.fragment.CooperateDocFragment;
 import com.zyc.doctor.ui.fragment.MainFragment;
 import com.zyc.doctor.ui.fragment.UserFragment;
@@ -290,16 +291,22 @@ public class MainActivity extends BaseActivity
         EMClient.getInstance().contactManager().setContactListener(contactListener);
         tvDelete.setOnClickListener(v -> {
             popupWindow.dismiss();
-            new SimpleDialog(this, getString(R.string.dialog_txt_delete_hint), (dialog, which) -> {
-                if (curConversation != null) {
-                    //删除和某个user会话，如果需要保留聊天记录，传false
-                    EMClient.getInstance().chatManager().deleteConversation(curConversation.conversationId(), true);
-                    //收到消息
-                    if (easeConversationListFragment != null) {
-                        easeConversationListFragment.refresh();
+            HintDialog hintDialog = new HintDialog(this);
+            hintDialog.setContentString(getString(R.string.dialog_txt_delete_hint));
+            hintDialog.setOnEnterClickListener(new OnEnterClickListener() {
+                @Override
+                public void onEnter() {
+                    if (curConversation != null) {
+                        //删除和某个user会话，如果需要保留聊天记录，传false
+                        EMClient.getInstance().chatManager().deleteConversation(curConversation.conversationId(), true);
+                        //收到消息
+                        if (easeConversationListFragment != null) {
+                            easeConversationListFragment.refresh();
+                        }
                     }
                 }
-            }, (dialog, which) -> dialog.dismiss()).show();
+            });
+            hintDialog.show();
         });
     }
 
@@ -324,6 +331,9 @@ public class MainActivity extends BaseActivity
         switch (task) {
             case GET_ALL_PRODUCT:
                 registrationTypeBeans = (ArrayList<RegistrationTypeBean>)response.getData();
+                if (registrationTypeBeans == null) {
+                    registrationTypeBeans = new ArrayList<>();
+                }
                 //数据存储
                 DataSupport.deleteAll(RegistrationTypeBean.class);
                 DataSupport.saveAll(registrationTypeBeans);

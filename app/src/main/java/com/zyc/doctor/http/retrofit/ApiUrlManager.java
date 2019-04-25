@@ -147,11 +147,11 @@ public interface ApiUrlManager {
      * 取消合作医生关系
      * * doctorId 为操作人id   doctorId2为被操作人id
      *
-     * @param info
      * @return
      */
-    @GET("colleborate/delete")
-    Observable<BaseResponse<String>> cancelCooperateDoc(@QueryMap Map<String, Object> info);
+    @GET("colleborate/delete/{doctorId}/{doctorId2}")
+    Observable<BaseResponse<String>> cancelCooperateDoc(@Path("doctorId") String doctorId,
+            @Path("doctorId2") String doctorId2);
 
     /**
      * 获取申请合作医生列表

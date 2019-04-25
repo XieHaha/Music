@@ -24,8 +24,8 @@ import com.google.zxing.integration.android.IntentResult;
 import com.zyc.doctor.R;
 import com.zyc.doctor.api.ApiManager;
 import com.zyc.doctor.api.notify.IChange;
-import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.api.notify.INotifyChangeListenerServer;
+import com.zyc.doctor.api.notify.RegisterType;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
@@ -38,7 +38,7 @@ import com.zyc.doctor.ui.activity.CooperateHospitalActivity;
 import com.zyc.doctor.ui.activity.DoctorInfoActivity;
 import com.zyc.doctor.ui.adapter.CooperateDocListAdapter;
 import com.zyc.doctor.ui.base.fragment.BaseFragment;
-import com.zyc.doctor.ui.dialog.SimpleDialog;
+import com.zyc.doctor.ui.dialog.HintDialog;
 import com.zyc.doctor.utils.AllUtils;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
@@ -152,10 +152,13 @@ public class CooperateDocFragment extends BaseFragment
             intent.putExtra(CommonData.KEY_IS_DEAL_DOC, true);
             startActivityForResult(intent, REQUEST_CODE_CANCEL_DOC);
         });
-        cooperateDocListAdapter.setOnItemLongClickListener(
-                (v, position, item) -> new SimpleDialog(getActivity(), "确定取消关注?",
-                                                        (dialog, which) -> cancelCooperateDoc(item.getDoctorId()),
-                                                        (dialog, which) -> dialog.dismiss()).show());
+        cooperateDocListAdapter.setOnItemLongClickListener((v, position, item) -> {
+            HintDialog hintDialog = new HintDialog(getActivity());
+            hintDialog.setContentString("确定取消关注?");
+            hintDialog.setOnEnterClickListener(() -> cancelCooperateDoc(item.getDoctorId()));
+            hintDialog.setOnCancelClickListener(() -> hintDialog.dismiss());
+            hintDialog.show();
+        });
         //注册患者状态监听
         iNotifyChangeListenerServer.registerDoctorStatusChangeListener(doctorStatusChangeListener,
                                                                        RegisterType.REGISTER);
@@ -299,6 +302,9 @@ public class CooperateDocFragment extends BaseFragment
             case GET_COOPERATE_DOC_LIST:
                 if (response.getData() != null) {
                     cooperateDocBeanList = (List<CooperateDocBean>)response.getData();
+                    if (cooperateDocBeanList == null) {
+                        cooperateDocBeanList = new ArrayList<>();
+                    }
                     if (page == 0) {
                         cooperateDocListAdapter.setList(cooperateDocBeanList);
                     }

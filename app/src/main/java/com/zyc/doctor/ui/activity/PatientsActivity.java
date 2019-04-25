@@ -254,6 +254,9 @@ public class PatientsActivity extends BaseActivity implements SwipeRefreshLayout
             case GET_PATIENTS_LIST:
                 if (response.getData() != null) {
                     patientBeanList = (List<PatientBean>)response.getData();
+                    if (patientBeanList == null) {
+                        patientBeanList = new ArrayList<>();
+                    }
                     if (page == 0) {
                         patientsListAdapter.setList(patientBeanList);
                     }

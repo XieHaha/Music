@@ -17,7 +17,8 @@ import com.zyc.doctor.data.bean.PatientBean;
 import com.zyc.doctor.data.bean.VersionBean;
 import com.zyc.doctor.ui.base.activity.AppManager;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.ui.dialog.SimpleDialog;
+import com.zyc.doctor.ui.dialog.HintDialog;
+import com.zyc.doctor.ui.dialog.listener.OnEnterClickListener;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.SharePreferenceUtil;
 import com.zyc.doctor.utils.ToastUtil;
@@ -102,9 +103,15 @@ public class SettingActivity extends BaseActivity
                 mVersionPresenter.init();
                 break;
             case R.id.act_setting_exit_layout:
-                new SimpleDialog(this, getString(R.string.txt_exit_hint), (dialog, which) -> {
-                    exit();
-                }, (dialog, which) -> dialog.dismiss()).show();
+                HintDialog hintDialog = new HintDialog(this);
+                hintDialog.setContentString(getString(R.string.txt_exit_hint));
+                hintDialog.setOnEnterClickListener(new OnEnterClickListener() {
+                    @Override
+                    public void onEnter() {
+                        exit();
+                    }
+                });
+                hintDialog.show();
                 break;
             case R.id.act_setting_about_layout:
                 startActivity(new Intent(this, AboutOurActivity.class));

@@ -164,11 +164,8 @@ public class RequestUtils {
 
     public static void cancelCooperateDoc(Context context, String doctorId, String doctorId2,
             final ResponseListener<BaseResponse> listener) {
-        Map<String, Object> merchant = new HashMap<>(16);
-        merchant.put("id1", doctorId);
-        merchant.put("id2", doctorId2);
         RetrofitManager.getApiUrlManager()
-                       .cancelCooperateDoc(merchant)
+                       .cancelCooperateDoc(doctorId, doctorId2)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractBaseObserver<>(context, Tasks.CANCEL_COOPERATE_DOC, listener));
     }

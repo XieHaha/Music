@@ -32,7 +32,8 @@ import com.zyc.doctor.data.bean.PatientBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.adapter.FragmentVpAdapter;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.ui.dialog.SimpleDialog;
+import com.zyc.doctor.ui.dialog.HintDialog;
+import com.zyc.doctor.ui.dialog.listener.OnEnterClickListener;
 import com.zyc.doctor.ui.fragment.HealthInfoFragment;
 import com.zyc.doctor.ui.fragment.OrderInfoFragment;
 import com.zyc.doctor.ui.fragment.TransferInfoFragment;
@@ -384,8 +385,15 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
                 if (mPopupwinow != null) {
                     mPopupwinow.dismiss();
                 }
-                new SimpleDialog(this, "确定删除当前患者?", (dialog, which) -> deletePatient(),
-                                 (dialog, which) -> dialog.dismiss()).show();
+                HintDialog hintDialog = new HintDialog(this);
+                hintDialog.setContentString("确定删除当前患者?");
+                hintDialog.setOnEnterClickListener(new OnEnterClickListener() {
+                    @Override
+                    public void onEnter() {
+                        deletePatient();
+                    }
+                });
+                hintDialog.show();
                 break;
             default:
                 break;

@@ -24,7 +24,8 @@ import com.zyc.doctor.ui.activity.HealthDetailActivity;
 import com.zyc.doctor.ui.adapter.HealthInfoAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.base.fragment.BaseFragment;
-import com.zyc.doctor.ui.dialog.SimpleDialog;
+import com.zyc.doctor.ui.dialog.HintDialog;
+import com.zyc.doctor.ui.dialog.listener.OnEnterClickListener;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
 import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
@@ -150,9 +151,15 @@ public class HealthInfoFragment extends BaseFragment implements LoadMoreListener
 
     @Override
     public void onItemLongClick(View v, int position, PatientCaseDetailBean item) {
-        new SimpleDialog(getActivity(), getString(R.string.txt_delete_case_hint), (dialog, which) -> {
-            deletePatientCaseList(caseRecordList.get(position));
-        }, (dialog, which) -> dialog.dismiss()).show();
+        HintDialog hintDialog = new HintDialog(getActivity());
+        hintDialog.setContentString(getString(R.string.txt_delete_case_hint));
+        hintDialog.setOnEnterClickListener(new OnEnterClickListener() {
+            @Override
+            public void onEnter() {
+                deletePatientCaseList(caseRecordList.get(position));
+            }
+        });
+        hintDialog.show();
     }
 
     @Override
@@ -164,7 +171,10 @@ public class HealthInfoFragment extends BaseFragment implements LoadMoreListener
                     caseRecordList.clear();
                 }
                 ArrayList<PatientCaseDetailBean> list1 = (ArrayList<PatientCaseDetailBean>)response.getData();
-                if (list1 != null && list1.size() > 0) {
+                if (list1 == null) {
+                    list1 = new ArrayList<>();
+                }
+                if (list1.size() > 0) {
                     llNoneLayout.setVisibility(View.GONE);
                     caseRecordList.addAll(list1);
                 }
