@@ -159,7 +159,6 @@ public class TransferPatientToActivity extends BaseActivity
 
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
-        super.onResponseCode(task, response);
         if (page > 0) {
             page--;
         }

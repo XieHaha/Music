@@ -592,7 +592,7 @@ public class RequestUtils {
         Map<String, String> merchant = new HashMap<>(16);
         merchant.put("doctorId", doctorId);
         merchant.put("pageUnicode", pageUnicode);
-        RetrofitManager.getApiUrlManager()
+        RetrofitSpecialManager.getApiUrlManager()
                        .remoteConsultationLogin(merchant)
                        .compose(RxJavaHelper.observableIO2Main(context))
                        .subscribe(new AbstractBaseObserver<>(context, Tasks.REMOTE_CONSULTATION_LOGIN, listener));

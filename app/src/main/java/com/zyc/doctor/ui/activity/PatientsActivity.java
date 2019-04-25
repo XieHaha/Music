@@ -304,7 +304,6 @@ public class PatientsActivity extends BaseActivity implements SwipeRefreshLayout
 
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
-        super.onResponseCode(task, response);
         if (page > 0) {
             page--;
         }

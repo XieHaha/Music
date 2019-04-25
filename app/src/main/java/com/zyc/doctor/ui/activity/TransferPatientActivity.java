@@ -538,7 +538,6 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
 
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
-        super.onResponseCode(task, response);
         switch (task) {
             case ADD_TRANSFER_PATIENT:
                 break;

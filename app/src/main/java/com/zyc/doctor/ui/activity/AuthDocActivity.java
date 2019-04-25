@@ -398,7 +398,6 @@ public class AuthDocActivity extends BaseActivity {
 
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
-        super.onResponseCode(task, response);
         switch (task) {
             case GET_DOC_INFO:
                 break;

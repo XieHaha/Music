@@ -171,7 +171,6 @@ public class TransferInfoFragment extends BaseFragment
 
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
-        super.onResponseCode(task, response);
         switch (task) {
             case DELETE_PATIENT_CASE:
                 if (BaseNetConfig.CODE_101 == response.getCode()) {

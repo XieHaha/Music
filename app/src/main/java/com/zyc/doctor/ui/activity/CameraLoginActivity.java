@@ -61,7 +61,7 @@ public class CameraLoginActivity extends BaseActivity implements CustomAdapt {
     }
 
     private void initPageData() {
-        if (isSameHospital(cameraLoginBean.getHospitalName())) {
+        if (!isSameHospital(cameraLoginBean.getHospitalName())) {
             actCameraLoginNext.setVisibility(View.GONE);
             actCameraLoginCancel.setVisibility(View.GONE);
             actCameraLoginKnow.setVisibility(View.VISIBLE);
@@ -113,7 +113,19 @@ public class CameraLoginActivity extends BaseActivity implements CustomAdapt {
 
     @Override
     public void onResponseSuccess(Tasks task, BaseResponse response) {
-        super.onResponseSuccess(task, response);
+        switch (task) {
+            case REMOTE_CONSULTATION_LOGIN:
+                ToastUtil.toast(this, response.getMsg());
+                finish();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onResponseCode(Tasks task, BaseResponse response) {
+        super.onResponseCode(task, response);
         switch (task) {
             case REMOTE_CONSULTATION_LOGIN:
                 ToastUtil.toast(this, response.getMsg());

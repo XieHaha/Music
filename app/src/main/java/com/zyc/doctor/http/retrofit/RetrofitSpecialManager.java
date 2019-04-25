@@ -1,7 +1,6 @@
 package com.zyc.doctor.http.retrofit;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import com.zyc.doctor.BuildConfig;
 import com.zyc.doctor.data.bean.BaseNetConfig;
 
 import java.util.concurrent.TimeUnit;
@@ -15,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  *
  * @author dundun
  */
-public class RetrofitManager {
+public class RetrofitSpecialManager {
     private static RetrofitServer retrofitServer;
     private static volatile ApiUrlManager apiUrlManager;
 
@@ -60,7 +59,7 @@ public class RetrofitManager {
          */
         private void initRetrofit() {
             retrofit = new Retrofit.Builder().client(okHttpClient)
-                                             .baseUrl(BuildConfig.BASE_BASIC_URL)
+                                             .baseUrl("http://39.107.249.194:5080/Remote/")
                                              .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                                              .addConverterFactory(GsonConverterFactory.create())
                                              .build();

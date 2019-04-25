@@ -355,7 +355,6 @@ public class LoginActivity extends BaseActivity
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
         closeLoadingView();
-        super.onResponseCode(task, response);
         switch (task) {
             case GET_VERIFY_CODE:
                 ToastUtil.toast(this, response.getMsg());

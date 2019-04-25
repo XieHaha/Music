@@ -555,7 +555,6 @@ public class HealthDetailActivity extends BaseActivity
 
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
-        super.onResponseCode(task, response);
         switch (task) {
             case UPLOAD_FILE:
                 closeLoadingView();

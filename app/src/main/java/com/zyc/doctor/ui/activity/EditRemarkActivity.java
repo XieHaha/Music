@@ -173,7 +173,6 @@ public class EditRemarkActivity extends BaseActivity {
 
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
-        super.onResponseCode(task, response);
         switch (task) {
             case MODIFY_NICK_NAME:
                 ToastUtil.toast(this, response.getMsg());

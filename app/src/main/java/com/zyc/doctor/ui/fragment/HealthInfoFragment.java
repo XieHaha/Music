@@ -203,7 +203,6 @@ public class HealthInfoFragment extends BaseFragment implements LoadMoreListener
 
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
-        super.onResponseCode(task, response);
         switch (task) {
             case GET_PATIENT_LIMIT_CASE_LIST:
                 if (page > 0) {

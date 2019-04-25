@@ -368,6 +368,7 @@ public abstract class BaseActivity<T> extends RxAppCompatActivity
 
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
+        ToastUtil.toast(this, response.getMsg());
     }
 
     @Override
