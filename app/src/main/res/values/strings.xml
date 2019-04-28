@@ -4,6 +4,7 @@
 
     <!--title-->
     <string name="act_complete_info">个人信息</string>
+    <string name="act_doctor_auth">医生认证</string>
     <string name="act_health_detail">健康详情</string>
     <string name="act_cooperate_doc">合作医生</string>
     <string name="act_apply_doctor">医生申请</string>

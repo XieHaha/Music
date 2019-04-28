@@ -219,6 +219,7 @@
         <activity
             android:name=".ui.activity.AuthDocStatusActivity"
             android:screenOrientation="portrait"
+            android:label="@string/act_doctor_auth"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.activity.CooperateHospitalActivity"
