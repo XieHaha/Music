@@ -252,30 +252,28 @@ public class PatientsActivity extends BaseActivity implements SwipeRefreshLayout
         super.onResponseSuccess(task, response);
         switch (task) {
             case GET_PATIENTS_LIST:
-                if (response.getData() != null) {
-                    patientBeanList = (List<PatientBean>)response.getData();
-                    if (patientBeanList == null) {
-                        patientBeanList = new ArrayList<>();
-                    }
-                    if (page == 0) {
-                        patientsListAdapter.setList(patientBeanList);
-                    }
-                    else {
-                        patientsListAdapter.addList(patientBeanList);
-                    }
-                    patientsListAdapter.notifyDataSetChanged();
-                    if (patientBeanList.size() < PAGE_SIZE) {
-                        tvFooterHintTxt.setText(R.string.txt_list_none_data_hint);
-                        autoLoadRecyclerView.loadFinish(false);
-                    }
-                    else {
-                        tvFooterHintTxt.setText(R.string.txt_list_push_hint);
-                        autoLoadRecyclerView.loadFinish(true);
-                    }
-                    //数据存储
-                    DataSupport.deleteAll(PatientBean.class);
-                    DataSupport.saveAll(patientBeanList);
+                patientBeanList = (List<PatientBean>)response.getData();
+                if (patientBeanList == null) {
+                    patientBeanList = new ArrayList<>();
                 }
+                if (page == 0) {
+                    patientsListAdapter.setList(patientBeanList);
+                }
+                else {
+                    patientsListAdapter.addList(patientBeanList);
+                }
+                patientsListAdapter.notifyDataSetChanged();
+                if (patientBeanList.size() < PAGE_SIZE) {
+                    tvFooterHintTxt.setText(R.string.txt_list_none_data_hint);
+                    autoLoadRecyclerView.loadFinish(false);
+                }
+                else {
+                    tvFooterHintTxt.setText(R.string.txt_list_push_hint);
+                    autoLoadRecyclerView.loadFinish(true);
+                }
+                //数据存储
+                DataSupport.deleteAll(PatientBean.class);
+                DataSupport.saveAll(patientBeanList);
                 sharePreferenceUtil.putString(CommonData.KEY_PATIENT_NUM, String.valueOf(patientBeanList.size()));
                 break;
             case ADD_PATIENT_BY_SCAN_OR_CHANGE_PATIENT:

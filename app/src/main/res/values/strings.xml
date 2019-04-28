@@ -159,6 +159,7 @@
     <string name="toast_download_start">开始下载</string>
     <string name="toast_add_health_detail">带星号为必填项</string>
     <string name="toast_content_null_hint">内容不能为空</string>
+    <string name="toast_version_update_hint">当前已是最新版本</string>
 
     <!--dialog-->
     <string name="dialog_public_title">温馨提示</string>

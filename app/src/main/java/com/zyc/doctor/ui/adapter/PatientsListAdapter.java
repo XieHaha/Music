@@ -77,9 +77,9 @@ public class PatientsListAdapter extends BaseRecyclerAdapter<PatientBean>
                  .load(item.getPatientImgUrl())
                  .apply(GlideHelper.getOptionsP())
                  .into(ivHeadImg);
-            if (!TextUtils.isEmpty(item.getNickname()) && item.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH)
+            if (!TextUtils.isEmpty(item.getNickName()) && item.getNickName().length() < BaseData.BASE_NICK_NAME_LENGTH)
             {
-                tvName.setText(item.getNickname());
+                tvName.setText(item.getNickName());
             }
             else
             {

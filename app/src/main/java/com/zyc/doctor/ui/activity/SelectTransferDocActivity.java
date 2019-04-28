@@ -118,26 +118,24 @@ public class SelectTransferDocActivity extends BaseActivity
         super.onResponseSuccess(task, response);
         switch (task) {
             case GET_COOPERATE_DOC_LIST:
-                if (response.getData() != null) {
-                    cooperateDocBeanList = (List<CooperateDocBean>)response.getData();
-                    if (cooperateDocBeanList == null) {
-                        cooperateDocBeanList = new ArrayList<>();
-                    }
-                    if (page == 0) {
-                        cooperateDocListAdapter.setList(cooperateDocBeanList);
-                    }
-                    else {
-                        cooperateDocListAdapter.addList(cooperateDocBeanList);
-                    }
-                    cooperateDocListAdapter.notifyDataSetChanged();
-                    if (cooperateDocBeanList.size() < PAGE_SIZE) {
-                        tvHintTxt.setText(R.string.txt_list_none_data_hint);
-                        autoLoadRecyclerView.loadFinish(false);
-                    }
-                    else {
-                        tvHintTxt.setText(R.string.txt_list_push_hint);
-                        autoLoadRecyclerView.loadFinish(true);
-                    }
+                cooperateDocBeanList = (List<CooperateDocBean>)response.getData();
+                if (cooperateDocBeanList == null) {
+                    cooperateDocBeanList = new ArrayList<>();
+                }
+                if (page == 0) {
+                    cooperateDocListAdapter.setList(cooperateDocBeanList);
+                }
+                else {
+                    cooperateDocListAdapter.addList(cooperateDocBeanList);
+                }
+                cooperateDocListAdapter.notifyDataSetChanged();
+                if (cooperateDocBeanList.size() < PAGE_SIZE) {
+                    tvHintTxt.setText(R.string.txt_list_none_data_hint);
+                    autoLoadRecyclerView.loadFinish(false);
+                }
+                else {
+                    tvHintTxt.setText(R.string.txt_list_push_hint);
+                    autoLoadRecyclerView.loadFinish(true);
                 }
                 break;
             default:

@@ -252,7 +252,7 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
      * 上传头像
      */
     private void uploadHeadImg(Uri uri) {
-        File file = new File(FileUtils.getFileByUri(uri, getActivity()));
+        File file = new File(FileUtils.getFilePathFromURI(uri, getActivity()));
         RequestUtils.uploadImg(getContext(), file, "jpg", this);
     }
 
@@ -527,7 +527,7 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
             case RC_PICK_IMG:
                 List<Uri> paths = Matisse.obtainResult(data);
                 if (null != paths && 0 != paths.size()) {
-                    cameraTempFile = new File(FileUtils.getFileByUri(paths.get(0), getActivity()));
+                    cameraTempFile = new File(FileUtils.getFilePathFromURI(paths.get(0), getActivity()));
                     String fileName = "corp" + System.currentTimeMillis() + ".jpg";
                     File file = new File(DirHelper.getPathCache(), fileName);
                     startCutImg(paths.get(0), Uri.fromFile(file));
@@ -535,7 +535,7 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
                 break;
             case RC_PICK_CAMERA_IMG:
                 if (cameraTempFile == null) {
-                    cameraTempFile = new File(FileUtils.getFileByUri(uri, getContext()));
+                    cameraTempFile = new File(FileUtils.getFilePathFromURI(uri, getContext()));
                 }
                 if (cameraTempFile.exists()) {
                     String fileName = "corp" + System.currentTimeMillis() + ".jpg";

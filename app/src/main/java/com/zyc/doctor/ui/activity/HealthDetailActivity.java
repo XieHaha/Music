@@ -289,7 +289,7 @@ public class HealthDetailActivity extends BaseActivity
      * 上传图片
      */
     private void uploadHeadImg(Uri uri) {
-        File file = new File(FileUtils.getFileByUri(uri, this));
+        File file = new File(FileUtils.getFilePathFromURI(uri, this));
         ScalingUtils.resizePic(this, file.getAbsolutePath());
         RequestUtils.uploadImg(this, file, "jpg", this);
     }
@@ -679,7 +679,7 @@ public class HealthDetailActivity extends BaseActivity
                 break;
             case RC_PICK_CAMERA_IMG:
                 if (cameraTempFile == null) {
-                    cameraTempFile = new File(FileUtils.getFileByUri(uri, this));
+                    cameraTempFile = new File(FileUtils.getFilePathFromURI(uri, this));
                 }
                 if (cameraTempFile.exists()) {
                     mSelectPath.clear();

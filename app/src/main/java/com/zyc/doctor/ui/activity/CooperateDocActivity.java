@@ -180,30 +180,28 @@ public class CooperateDocActivity extends BaseActivity
         super.onResponseSuccess(task, response);
         switch (task) {
             case GET_COOPERATE_HOSPITAL_DOCTOR_LIST:
-                if (response.getData() != null) {
-                    cooperateHospitalDocBeans = (List<CooperateHospitalDocBean>)response.getData();
-                    if (cooperateHospitalDocBeans == null) {
-                        cooperateHospitalDocBeans = new ArrayList<>();
-                    }
-                    if (page == 0) {
-                        cooperateHospitalDocListAdapter.setList(cooperateHospitalDocBeans);
-                    }
-                    else {
-                        cooperateHospitalDocListAdapter.addList(cooperateHospitalDocBeans);
-                    }
-                    cooperateHospitalDocListAdapter.notifyDataSetChanged();
-                    if (cooperateHospitalDocBeans.size() < PAGE_SIZE) {
-                        tvHintTxt.setText(R.string.txt_list_none_data_hint);
-                        autoLoadRecyclerView.loadFinish(false);
-                    }
-                    else {
-                        tvHintTxt.setText(R.string.txt_list_push_hint);
-                        autoLoadRecyclerView.loadFinish(true);
-                    }
-                    //数据存储
-                    DataSupport.deleteAll(CooperateHospitalDocBean.class);
-                    DataSupport.saveAll(cooperateHospitalDocBeans);
+                cooperateHospitalDocBeans = (List<CooperateHospitalDocBean>)response.getData();
+                if (cooperateHospitalDocBeans == null) {
+                    cooperateHospitalDocBeans = new ArrayList<>();
                 }
+                if (page == 0) {
+                    cooperateHospitalDocListAdapter.setList(cooperateHospitalDocBeans);
+                }
+                else {
+                    cooperateHospitalDocListAdapter.addList(cooperateHospitalDocBeans);
+                }
+                cooperateHospitalDocListAdapter.notifyDataSetChanged();
+                if (cooperateHospitalDocBeans.size() < PAGE_SIZE) {
+                    tvHintTxt.setText(R.string.txt_list_none_data_hint);
+                    autoLoadRecyclerView.loadFinish(false);
+                }
+                else {
+                    tvHintTxt.setText(R.string.txt_list_push_hint);
+                    autoLoadRecyclerView.loadFinish(true);
+                }
+                //数据存储
+                DataSupport.deleteAll(CooperateHospitalDocBean.class);
+                DataSupport.saveAll(cooperateHospitalDocBeans);
                 break;
             default:
                 break;

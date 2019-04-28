@@ -36,8 +36,8 @@ public class LoginOutBroadcastReceiver extends BroadcastReceiver {
         //删除环信会话列表
         Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
         //删除和某个user会话，如果需要保留聊天记录，传false
-        for (EMConversation converSation : conversations.values()) {
-            EMClient.getInstance().chatManager().deleteConversation(converSation.conversationId(), true);
+        for (EMConversation conversation : conversations.values()) {
+            EMClient.getInstance().chatManager().deleteConversation(conversation.conversationId(), true);
         }
         //退出环信
         EMClient.getInstance().logout(true);

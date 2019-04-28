@@ -222,7 +222,7 @@ public class EditInfoActivity extends BaseActivity {
      * 上传头像
      */
     private void uploadHeadImg(Uri uri) {
-        File file = new File(FileUtils.getFileByUri(uri, this));
+        File file = new File(FileUtils.getFilePathFromURI(uri, this));
         RequestUtils.uploadImg(this, file, "jpg", this);
     }
 
@@ -393,7 +393,7 @@ public class EditInfoActivity extends BaseActivity {
             case RC_PICK_IMG:
                 List<Uri> paths = Matisse.obtainResult(data);
                 if (null != paths && 0 != paths.size()) {
-                    cameraTempFile = new File(FileUtils.getFileByUri(paths.get(0), this));
+                    cameraTempFile = new File(FileUtils.getFilePathFromURI(paths.get(0), this));
                     String fileName = "corp" + System.currentTimeMillis() + ".jpg";
                     File file = new File(DirHelper.getPathCache(), fileName);
                     startCutImg(paths.get(0), Uri.fromFile(file));
@@ -401,7 +401,7 @@ public class EditInfoActivity extends BaseActivity {
                 break;
             case RC_PICK_CAMERA_IMG:
                 if (cameraTempFile == null) {
-                    cameraTempFile = new File(FileUtils.getFileByUri(uri, this));
+                    cameraTempFile = new File(FileUtils.getFilePathFromURI(uri, this));
                 }
                 if (cameraTempFile.exists()) {
                     String fileName = "corp" + System.currentTimeMillis() + ".jpg";

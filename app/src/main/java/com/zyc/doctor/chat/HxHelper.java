@@ -68,8 +68,8 @@ public class HxHelper {
                 List<PatientBean> list = DataSupport.where("patientId = ?", username).find(PatientBean.class);
                 if (list != null && list.size() > 0) {
                     PatientBean bean = list.get(0);
-                    if (!TextUtils.isEmpty(bean.getNickname()) && bean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
-                        user.setNickname(bean.getNickname());
+                    if (!TextUtils.isEmpty(bean.getNickName()) && bean.getNickName().length() < BaseData.BASE_NICK_NAME_LENGTH) {
+                        user.setNickname(bean.getNickName());
                     }
                     else {
                         user.setNickname(bean.getName());
@@ -83,9 +83,9 @@ public class HxHelper {
                     public void onResponseSuccess(Tasks task, BaseResponse response) {
                         PatientBean patientBean = (PatientBean)response.getData();
                         if (patientBean != null) {
-                            if (!TextUtils.isEmpty(patientBean.getNickname()) &&
-                                patientBean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
-                                user.setNickname(patientBean.getNickname());
+                            if (!TextUtils.isEmpty(patientBean.getNickName()) &&
+                                patientBean.getNickName().length() < BaseData.BASE_NICK_NAME_LENGTH) {
+                                user.setNickname(patientBean.getNickName());
                             }
                             else {
                                 user.setNickname(patientBean.getName());

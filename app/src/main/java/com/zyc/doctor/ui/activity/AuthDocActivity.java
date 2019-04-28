@@ -475,25 +475,25 @@ public class AuthDocActivity extends BaseActivity {
                     switch (type) {
                         case ID_CARD_FRONT:
                             tvIdCardFrontHint.setVisibility(View.GONE);
-                            idCardFrontTempFile = new File(FileUtils.getFileByUri(imgUri, this));
+                            idCardFrontTempFile = new File(FileUtils.getFilePathFromURI(imgUri, this));
                             ScalingUtils.resizePic(this, idCardFrontTempFile.getAbsolutePath());
                             Glide.with(this).load(imgUri).into(ivIdCardFront);
                             break;
                         case ID_CARD_BACK:
                             tvIdCardBackHint.setVisibility(View.GONE);
-                            idCardBackTempFile = new File(FileUtils.getFileByUri(imgUri, this));
+                            idCardBackTempFile = new File(FileUtils.getFilePathFromURI(imgUri, this));
                             ScalingUtils.resizePic(this, idCardBackTempFile.getAbsolutePath());
                             Glide.with(this).load(imgUri).into(ivIdCardBack);
                             break;
                         case DOC_CARD_FRONT:
                             tvDocCardFrontHint.setVisibility(View.GONE);
-                            docCardFrontTempFile = new File(FileUtils.getFileByUri(imgUri, this));
+                            docCardFrontTempFile = new File(FileUtils.getFilePathFromURI(imgUri, this));
                             ScalingUtils.resizePic(this, docCardFrontTempFile.getAbsolutePath());
                             Glide.with(this).load(imgUri).into(ivDocCardFront);
                             break;
                         case DOC_CARD_BACK:
                             tvDocCardBackHint.setVisibility(View.GONE);
-                            docCardBackTempFile = new File(FileUtils.getFileByUri(imgUri, this));
+                            docCardBackTempFile = new File(FileUtils.getFilePathFromURI(imgUri, this));
                             ScalingUtils.resizePic(this, docCardBackTempFile.getAbsolutePath());
                             Glide.with(this).load(imgUri).into(ivDocCardBack);
                             break;
@@ -504,7 +504,7 @@ public class AuthDocActivity extends BaseActivity {
                 break;
             case RC_PICK_CAMERA_IMG:
                 if (tempFile == null) {
-                    tempFile = new File(FileUtils.getFileByUri(uri, this));
+                    tempFile = new File(FileUtils.getFilePathFromURI(uri, this));
                 }
                 ScalingUtils.resizePic(this, tempFile.getAbsolutePath());
                 switch (type) {

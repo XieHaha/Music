@@ -131,8 +131,8 @@ public class AddFriendsPatientActivity extends BaseActivity {
     private void iniPageData(PatientBean patientBean) {
         if (patientBean != null) {
             Glide.with(this).load(patientBean.getPatientImgUrl()).apply(GlideHelper.getOptionsP()).into(ivHeadImg);
-            if (!TextUtils.isEmpty(patientBean.getNickname()) && patientBean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
-                tvName.setText(String.format(getString(R.string.txt_name_format), patientBean.getNickname(),
+            if (!TextUtils.isEmpty(patientBean.getNickName()) && patientBean.getNickName().length() < BaseData.BASE_NICK_NAME_LENGTH) {
+                tvName.setText(String.format(getString(R.string.txt_name_format), patientBean.getNickName(),
                                              patientBean.getName()));
             }
             else {

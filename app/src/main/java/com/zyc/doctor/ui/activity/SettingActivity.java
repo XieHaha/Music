@@ -117,7 +117,7 @@ public class SettingActivity extends BaseActivity
     @Override
     public void updateVersion(VersionBean version, int mode, boolean isDownLoading) {
         if (mode == -1) {
-            ToastUtil.toast(this, "当前已是最新版本");
+            ToastUtil.toast(this, R.string.toast_version_update_hint);
             return;
         }
         versionUpdateDialog = new VersionUpdateDialog(this);

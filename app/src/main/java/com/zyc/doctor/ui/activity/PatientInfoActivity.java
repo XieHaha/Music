@@ -260,9 +260,9 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
      */
     private void initPageData() {
         if (patientBean != null) {
-            if (!TextUtils.isEmpty(patientBean.getNickname()) &&
-                patientBean.getNickname().length() < BaseData.BASE_NICK_NAME_LENGTH) {
-                tvName.setText(String.format(getString(R.string.txt_name_format), patientBean.getNickname(),
+            if (!TextUtils.isEmpty(patientBean.getNickName()) &&
+                patientBean.getNickName().length() < BaseData.BASE_NICK_NAME_LENGTH) {
+                tvName.setText(String.format(getString(R.string.txt_name_format), patientBean.getNickName(),
                                              patientBean.getName()));
             }
             else {
@@ -377,7 +377,7 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
                 }
                 intent = new Intent(this, EditRemarkActivity.class);
                 intent.putExtra(CommonData.KEY_IS_DEAL_DOC, false);
-                intent.putExtra(CommonData.KEY_PUBLIC, patientBean.getNickname());
+                intent.putExtra(CommonData.KEY_PUBLIC, patientBean.getNickName());
                 intent.putExtra(CommonData.KEY_ID, patientBean.getPatientId());
                 startActivityForResult(intent, REEMARK_REQUEST_CODE);
                 break;
@@ -487,11 +487,11 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
                     if (!TextUtils.isEmpty(remark)) {
                         tvName.setText(
                                 String.format(getString(R.string.txt_name_format), remark, patientBean.getName()));
-                        patientBean.setNickname(remark);
+                        patientBean.setNickName(remark);
                     }
                     else {
                         tvName.setText(patientBean.getName());
-                        patientBean.setNickname(remark);
+                        patientBean.setNickName(remark);
                     }
                 }
                 break;
