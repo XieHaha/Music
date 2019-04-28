@@ -269,6 +269,14 @@
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="portrait"
             tools:replace="screenOrientation" />
+        <receiver
+            android:name=".receiver.LoginOutBroadcastReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="zyc.doctor.logout.action" />
+            </intent-filter>
+        </receiver>
 
         <!--环信消息点击事件处理-->
         <receiver
@@ -401,7 +409,7 @@
 
         <!-- User defined.  For test only  用户自定义的广播接收器-->
         <receiver
-            android:name=".jpush.JiPushReceiver"
+            android:name=".receiver.jpush.JiPushReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>

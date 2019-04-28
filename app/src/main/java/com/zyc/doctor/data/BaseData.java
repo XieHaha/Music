@@ -54,4 +54,8 @@ public interface BaseData {
      * 聊天
      */
     String BASE_CHAT_CHANNEL = "d_base_chat_channel";
+    /**
+     * 登出广播
+     */
+    String BASE_LOGINOUT_ACTION = "zyc.doctor.logout.action";
 }

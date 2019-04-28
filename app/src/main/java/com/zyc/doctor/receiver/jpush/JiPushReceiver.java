@@ -1,4 +1,4 @@
-package com.zyc.doctor.jpush;
+package com.zyc.doctor.receiver.jpush;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
