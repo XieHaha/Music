@@ -46,4 +46,12 @@ public interface BaseData {
      * 图片类型
      */
     String BASE_IMAGE_TYPE = "image/bmp&&image/gif&&image/jpeg&&image/png";
+    /**
+     * 极光推送渠道
+     */
+    String BASE_PUSH_CHANNEL = "d_base_push_channel";
+    /**
+     * 聊天
+     */
+    String BASE_CHAT_CHANNEL = "d_base_chat_channel";
 }

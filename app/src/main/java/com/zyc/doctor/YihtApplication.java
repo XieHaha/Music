@@ -1,8 +1,10 @@
 package com.zyc.doctor;
 
+import android.app.Notification;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 
@@ -25,6 +27,8 @@ import com.zyc.doctor.utils.SharePreferenceUtil;
 import org.litepal.LitePal;
 import org.litepal.LitePalApplication;
 
+import cn.jpush.android.api.BasicPushNotificationBuilder;
+import cn.jpush.android.api.DefaultPushNotificationBuilder;
 import cn.jpush.android.api.JPushInterface;
 import me.jessyan.autosize.AutoSize;
 import me.jessyan.autosize.AutoSizeConfig;
@@ -158,6 +162,17 @@ public class YihtApplication extends LitePalApplication {
         //极光推送
         JPushInterface.setDebugMode(debugMode);
         JPushInterface.init(this);
+        JPushInterface.setDefaultPushNotificationBuilder(new DefaultPushNotificationBuilder());
+        BasicPushNotificationBuilder builder = new BasicPushNotificationBuilder(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.statusBarDrawable = R.mipmap.icon_login_logo;
+        }
+        else {
+            builder.statusBarDrawable = R.mipmap.ic_launcher;
+        }
+        // 设置为铃声、震动、呼吸灯闪烁都要
+        builder.notificationDefaults = Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE;
+        JPushInterface.setPushNotificationBuilder(1, builder);
     }
 
     /**

@@ -145,6 +145,10 @@ public interface CommonData {
      */
     String KEY_DOC_AUTH_AGAIN = "key_doc_auth_again";
     /**
+     * 拍照临时数据
+     */
+    String KEY_SAVE_DATA = "key_save_data";
+    /**
      * 首页列表基础显示条数
      */
     int DATA_LIST_BASE_NUM = 3;

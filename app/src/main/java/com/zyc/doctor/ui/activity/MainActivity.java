@@ -1,7 +1,6 @@
 package com.zyc.doctor.ui.activity;
 
 import android.annotation.TargetApi;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -16,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -169,10 +169,6 @@ public class MainActivity extends BaseActivity
      * 未读消息总数
      */
     private int msgUnReadCount = 0;
-    /**
-     * 聊天渠道
-     */
-    public static final String CHANNEL_CHAT = "channel_chat";
     private Bitmap largeIcon = null;
     private NotificationManager mNotificationManager;
     private int pendingCount = 1;
@@ -311,7 +307,7 @@ public class MainActivity extends BaseActivity
 
     private void initNotify() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String channelId = CHANNEL_CHAT;
+            String channelId = BaseData.BASE_CHAT_CHANNEL;
             String channelName = "聊天消息";
             int importance = NotificationManager.IMPORTANCE_HIGH;
             createNotificationChannel(channelId, channelName, importance);
@@ -394,34 +390,27 @@ public class MainActivity extends BaseActivity
         intent.setAction("ease.msg.android.intent.CLICK");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, pendingCount, intent,
                                                                  PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Notification notification = new NotificationCompat.Builder(this, CHANNEL_CHAT).setContentText("收到新的消息")
-                                                                                          .setWhen(
-                                                                                                  System.currentTimeMillis())
-                                                                                          .setSmallIcon(
-                                                                                                  R.mipmap.ic_launcher)
-                                                                                          .setLargeIcon(largeIcon)
-                                                                                          .setDefaults(DEFAULT_VIBRATE |
-                                                                                                       DEFAULT_SOUND)
-                                                                                          .setAutoCancel(true)
-                                                                                          .setContentIntent(
-                                                                                                  pendingIntent)
-                                                                                          .build();
-            mNotificationManager.notify(message.getFrom(), 1, notification);
+            builder = new NotificationCompat.Builder(this, BaseData.BASE_CHAT_CHANNEL);
+            builder.setLargeIcon(largeIcon);
         }
         else {
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-            builder.setSmallIcon(R.mipmap.ic_launcher);
-            builder.setAutoCancel(true);
-            builder.setContentText("收到新的消息");
-            builder.setContentIntent(pendingIntent);
-            int defaults = Notification.DEFAULT_LIGHTS;
-            defaults |= Notification.DEFAULT_VIBRATE;
-            defaults |= Notification.DEFAULT_SOUND;
-            builder.setDefaults(defaults);
-            builder.setWhen(System.currentTimeMillis());
-            mNotificationManager.notify(message.getFrom(), 1, builder.build());
+            builder = new NotificationCompat.Builder(this, null);
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setSmallIcon(R.mipmap.icon_alpha_logo);
+            builder.setColor(ContextCompat.getColor(this, R.color.app_main_color));
+        }
+        else {
+            builder.setSmallIcon(R.mipmap.ic_launcher);
+        }
+        builder.setAutoCancel(true);
+        builder.setContentText("收到新的消息");
+        builder.setContentIntent(pendingIntent);
+        builder.setDefaults(DEFAULT_VIBRATE | DEFAULT_SOUND);
+        builder.setWhen(System.currentTimeMillis());
+        mNotificationManager.notify(message.getFrom(), 1, builder.build());
     }
 
     @TargetApi(Build.VERSION_CODES.O)

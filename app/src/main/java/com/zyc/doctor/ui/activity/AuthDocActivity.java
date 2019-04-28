@@ -89,6 +89,10 @@ public class AuthDocActivity extends BaseActivity {
     private String txtName, txtCardNum, txtHospital, txtTitle, txtDepart;
     private CooperateDocBean cooperateDocBean;
     /**
+     * 照片路径
+     */
+    private Uri uri;
+    /**
      * 是否为重新提交资料
      */
     private boolean again;
@@ -138,6 +142,9 @@ public class AuthDocActivity extends BaseActivity {
 
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            uri = savedInstanceState.getParcelable(CommonData.KEY_SAVE_DATA);
+        }
         tvTitleMore.setText(R.string.txt_doc_auth_again);
         if (getIntent() != null) {
             again = getIntent().getBooleanExtra(CommonData.KEY_DOC_AUTH_AGAIN, false);
@@ -152,6 +159,12 @@ public class AuthDocActivity extends BaseActivity {
             tvTitleMore.setVisibility(View.VISIBLE);
         }
         getDocInfo();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(CommonData.KEY_SAVE_DATA, uri);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -425,7 +438,6 @@ public class AuthDocActivity extends BaseActivity {
         //选择拍照
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // 指定调用相机拍照后照片的储存路径
-        Uri uri = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -448,6 +460,8 @@ public class AuthDocActivity extends BaseActivity {
         startActivityForResult(intent, RC_PICK_CAMERA_IMG);
     }
 
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK) {
@@ -461,25 +475,25 @@ public class AuthDocActivity extends BaseActivity {
                     switch (type) {
                         case ID_CARD_FRONT:
                             tvIdCardFrontHint.setVisibility(View.GONE);
-                            idCardFrontTempFile = FileUtils.getFileByUri(imgUri, this);
+                            idCardFrontTempFile = new File(FileUtils.getFileByUri(imgUri, this));
                             ScalingUtils.resizePic(this, idCardFrontTempFile.getAbsolutePath());
                             Glide.with(this).load(imgUri).into(ivIdCardFront);
                             break;
                         case ID_CARD_BACK:
                             tvIdCardBackHint.setVisibility(View.GONE);
-                            idCardBackTempFile = FileUtils.getFileByUri(imgUri, this);
+                            idCardBackTempFile = new File(FileUtils.getFileByUri(imgUri, this));
                             ScalingUtils.resizePic(this, idCardBackTempFile.getAbsolutePath());
                             Glide.with(this).load(imgUri).into(ivIdCardBack);
                             break;
                         case DOC_CARD_FRONT:
                             tvDocCardFrontHint.setVisibility(View.GONE);
-                            docCardFrontTempFile = FileUtils.getFileByUri(imgUri, this);
+                            docCardFrontTempFile = new File(FileUtils.getFileByUri(imgUri, this));
                             ScalingUtils.resizePic(this, docCardFrontTempFile.getAbsolutePath());
                             Glide.with(this).load(imgUri).into(ivDocCardFront);
                             break;
                         case DOC_CARD_BACK:
                             tvDocCardBackHint.setVisibility(View.GONE);
-                            docCardBackTempFile = FileUtils.getFileByUri(imgUri, this);
+                            docCardBackTempFile = new File(FileUtils.getFileByUri(imgUri, this));
                             ScalingUtils.resizePic(this, docCardBackTempFile.getAbsolutePath());
                             Glide.with(this).load(imgUri).into(ivDocCardBack);
                             break;
@@ -489,35 +503,30 @@ public class AuthDocActivity extends BaseActivity {
                 }
                 break;
             case RC_PICK_CAMERA_IMG:
-                Uri imageUri;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    imageUri = FileProvider.getUriForFile(this, YihtApplication.getInstance().getPackageName() +
-                                                                ".fileprovider", tempFile);
-                }
-                else {
-                    imageUri = Uri.fromFile(tempFile);
+                if (tempFile == null) {
+                    tempFile = new File(FileUtils.getFileByUri(uri, this));
                 }
                 ScalingUtils.resizePic(this, tempFile.getAbsolutePath());
                 switch (type) {
                     case ID_CARD_FRONT:
                         tvIdCardFrontHint.setVisibility(View.GONE);
                         idCardFrontTempFile = tempFile;
-                        Glide.with(this).load(imageUri).into(ivIdCardFront);
+                        Glide.with(this).load(uri).into(ivIdCardFront);
                         break;
                     case ID_CARD_BACK:
                         tvIdCardBackHint.setVisibility(View.GONE);
                         idCardBackTempFile = tempFile;
-                        Glide.with(this).load(imageUri).into(ivIdCardBack);
+                        Glide.with(this).load(uri).into(ivIdCardBack);
                         break;
                     case DOC_CARD_FRONT:
                         tvDocCardFrontHint.setVisibility(View.GONE);
                         docCardFrontTempFile = tempFile;
-                        Glide.with(this).load(imageUri).into(ivDocCardFront);
+                        Glide.with(this).load(uri).into(ivDocCardFront);
                         break;
                     case DOC_CARD_BACK:
                         tvDocCardBackHint.setVisibility(View.GONE);
                         docCardBackTempFile = tempFile;
-                        Glide.with(this).load(imageUri).into(ivDocCardBack);
+                        Glide.with(this).load(uri).into(ivDocCardBack);
                         break;
                     default:
                         break;

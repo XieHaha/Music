@@ -394,10 +394,16 @@ public class ServicePackActivity extends BaseActivity {
         switch (task) {
             case GET_HOSPITAL_LIST_BY_DOCTORID:
                 hospitalList = (List<HospitalBean>)response.getData();
+                if (hospitalList == null) {
+                    hospitalList = new ArrayList<>();
+                }
                 registrationAdapter.setList(hospitalList);
                 break;
             case GET_HOSPITAL_PRODUCT_LIST_BY_HOSPITALID:
                 productTypeBeans = (List<HospitalProductTypeBean>)response.getData();
+                if (productTypeBeans == null) {
+                    productTypeBeans = new ArrayList<>();
+                }
                 registrationProductTypeAdapter.setList(productTypeBeans);
                 break;
             case GET_PATIENT_INFO:

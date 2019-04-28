@@ -113,6 +113,10 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
     private Uri originUri, cutFileUri;
     private File cameraTempFile;
     /**
+     * 照片路径
+     */
+    private Uri uri;
+    /**
      * 当前页码
      */
     private int page = 0;
@@ -213,6 +217,9 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        if (savedInstanceState != null) {
+            uri = savedInstanceState.getParcelable(CommonData.KEY_SAVE_DATA);
+        }
         /**
          * 权限管理类
          */
@@ -235,11 +242,17 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
                                                                           RegisterType.REGISTER);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(CommonData.KEY_SAVE_DATA, uri);
+        super.onSaveInstanceState(outState);
+    }
+
     /**
      * 上传头像
      */
     private void uploadHeadImg(Uri uri) {
-        File file = FileUtils.getFileByUri(uri, getActivity());
+        File file = new File(FileUtils.getFileByUri(uri, getActivity()));
         RequestUtils.uploadImg(getContext(), file, "jpg", this);
     }
 
@@ -447,7 +460,6 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
         //选择拍照
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // 指定调用相机拍照后照片的储存路径
-        Uri uri = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -515,28 +527,22 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
             case RC_PICK_IMG:
                 List<Uri> paths = Matisse.obtainResult(data);
                 if (null != paths && 0 != paths.size()) {
-                    cameraTempFile = FileUtils.getFileByUri(paths.get(0), getActivity());
+                    cameraTempFile = new File(FileUtils.getFileByUri(paths.get(0), getActivity()));
                     String fileName = "corp" + System.currentTimeMillis() + ".jpg";
                     File file = new File(DirHelper.getPathCache(), fileName);
                     startCutImg(paths.get(0), Uri.fromFile(file));
                 }
                 break;
             case RC_PICK_CAMERA_IMG:
+                if (cameraTempFile == null) {
+                    cameraTempFile = new File(FileUtils.getFileByUri(uri, getContext()));
+                }
                 if (cameraTempFile.exists()) {
                     String fileName = "corp" + System.currentTimeMillis() + ".jpg";
                     File file = new File(DirHelper.getPathCache(), fileName);
-                    Uri imageUri;
                     Uri cropUri;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        imageUri = FileProvider.getUriForFile(getActivity(),
-                                                              YihtApplication.getInstance().getPackageName() +
-                                                              ".fileprovider", cameraTempFile);
-                    }
-                    else {
-                        imageUri = Uri.fromFile(cameraTempFile);
-                    }
                     cropUri = Uri.fromFile(file);
-                    startCutImg(imageUri, cropUri);
+                    startCutImg(uri, cropUri);
                 }
                 break;
             case RC_CROP_IMG:

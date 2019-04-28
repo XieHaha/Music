@@ -94,8 +94,6 @@ public class HealthDetailActivity extends BaseActivity
     @BindView(R.id.act_health_detail_create_time)
     TextView tvCreateTime;
     private PatientCaseDetailBean patientCaseDetailBean;
-    private Uri originUri;
-    private Uri cutFileUri;
     private File cameraTempFile;
     private String patientId;
     private long diagnosisTimeMil;
@@ -105,6 +103,10 @@ public class HealthDetailActivity extends BaseActivity
     private TimePickerView timePicker;
     private String diagnosis = "", department = "", hospital = "", caseInfo = "", caseNow = "", caseImportment = "", caseCheck = "", caseDealType = "";
     private String fieldId = "";
+    /**
+     * 照片路径
+     */
+    private Uri uri;
     /**
      * 是否新增病例
      */
@@ -170,6 +172,9 @@ public class HealthDetailActivity extends BaseActivity
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        if (savedInstanceState != null) {
+            uri = savedInstanceState.getParcelable(CommonData.KEY_SAVE_DATA);
+        }
         diagnosisTimeMil = System.currentTimeMillis();
         tvDiagnosisTime.setText(AllUtils.formatDate(diagnosisTimeMil, AllUtils.YYYY_MM_DD));
         allImgUrl = new StringBuilder();
@@ -200,6 +205,12 @@ public class HealthDetailActivity extends BaseActivity
         autoGridView.setOnItemClickListener(this);
         ivTitlebBarMore.setOnClickListener(this);
         backBtn.setOnClickListener(v -> finishPage());
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(CommonData.KEY_SAVE_DATA, uri);
+        super.onSaveInstanceState(outState);
     }
 
     /**
@@ -278,7 +289,7 @@ public class HealthDetailActivity extends BaseActivity
      * 上传图片
      */
     private void uploadHeadImg(Uri uri) {
-        File file = FileUtils.getFileByUri(uri, this);
+        File file = new File(FileUtils.getFileByUri(uri, this));
         ScalingUtils.resizePic(this, file.getAbsolutePath());
         RequestUtils.uploadImg(this, file, "jpg", this);
     }
@@ -639,7 +650,6 @@ public class HealthDetailActivity extends BaseActivity
         //选择拍照
         Intent cameraintent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // 指定调用相机拍照后照片的储存路径
-        Uri uri = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             cameraintent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             uri = FileProvider.getUriForFile(this, YihtApplication.getInstance().getPackageName() + ".fileprovider",
@@ -668,10 +678,12 @@ public class HealthDetailActivity extends BaseActivity
                 new DealImgThread().start();
                 break;
             case RC_PICK_CAMERA_IMG:
+                if (cameraTempFile == null) {
+                    cameraTempFile = new File(FileUtils.getFileByUri(uri, this));
+                }
                 if (cameraTempFile.exists()) {
-                    Uri originalUri = Uri.fromFile(cameraTempFile);
                     mSelectPath.clear();
-                    mSelectPath.add(originalUri);
+                    mSelectPath.add(uri);
                 }
                 new DealImgThread().start();
                 break;

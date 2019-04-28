@@ -24,6 +24,7 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.api.DirHelper;
 import com.zyc.doctor.data.BaseData;
+import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.http.retrofit.RequestUtils;
@@ -66,6 +67,10 @@ public class EditInfoActivity extends BaseActivity {
     private File cameraTempFile;
     private String name, hospital, type, title, introduce, headImgUrl;
     /**
+     * 照片路径
+     */
+    private Uri uri;
+    /**
      * 名字最长字符
      */
     private int maxCount;
@@ -102,6 +107,9 @@ public class EditInfoActivity extends BaseActivity {
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
+        if (savedInstanceState != null) {
+            uri = savedInstanceState.getParcelable(CommonData.KEY_SAVE_DATA);
+        }
         initPageData();
     }
 
@@ -177,6 +185,12 @@ public class EditInfoActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(CommonData.KEY_SAVE_DATA, uri);
+        super.onSaveInstanceState(outState);
+    }
+
     /**
      * 初始化界面数据
      */
@@ -208,7 +222,7 @@ public class EditInfoActivity extends BaseActivity {
      * 上传头像
      */
     private void uploadHeadImg(Uri uri) {
-        File file = FileUtils.getFileByUri(uri, this);
+        File file = new File(FileUtils.getFileByUri(uri, this));
         RequestUtils.uploadImg(this, file, "jpg", this);
     }
 
@@ -312,7 +326,6 @@ public class EditInfoActivity extends BaseActivity {
         //选择拍照
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // 指定调用相机拍照后照片的储存路径
-        Uri uri = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -380,27 +393,22 @@ public class EditInfoActivity extends BaseActivity {
             case RC_PICK_IMG:
                 List<Uri> paths = Matisse.obtainResult(data);
                 if (null != paths && 0 != paths.size()) {
-                    cameraTempFile = FileUtils.getFileByUri(paths.get(0), this);
+                    cameraTempFile = new File(FileUtils.getFileByUri(paths.get(0), this));
                     String fileName = "corp" + System.currentTimeMillis() + ".jpg";
                     File file = new File(DirHelper.getPathCache(), fileName);
                     startCutImg(paths.get(0), Uri.fromFile(file));
                 }
                 break;
             case RC_PICK_CAMERA_IMG:
+                if (cameraTempFile == null) {
+                    cameraTempFile = new File(FileUtils.getFileByUri(uri, this));
+                }
                 if (cameraTempFile.exists()) {
                     String fileName = "corp" + System.currentTimeMillis() + ".jpg";
                     File file = new File(DirHelper.getPathCache(), fileName);
-                    Uri imageUri;
                     Uri cropUri;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        imageUri = FileProvider.getUriForFile(this, YihtApplication.getInstance().getPackageName() +
-                                                                    ".fileprovider", cameraTempFile);
-                    }
-                    else {
-                        imageUri = Uri.fromFile(cameraTempFile);
-                    }
                     cropUri = Uri.fromFile(file);
-                    startCutImg(imageUri, cropUri);
+                    startCutImg(uri, cropUri);
                 }
                 break;
             case RC_CROP_IMG:
