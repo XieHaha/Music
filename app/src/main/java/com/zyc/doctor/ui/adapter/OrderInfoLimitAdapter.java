@@ -14,7 +14,7 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.OrderStatus;
 import com.zyc.doctor.data.bean.RegistrationBean;
-import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.BaseUtils;
 import com.zyc.doctor.utils.SharePreferenceUtil;
 
 import java.util.ArrayList;
@@ -99,7 +99,7 @@ public class OrderInfoLimitAdapter extends BaseAdapter implements OrderStatus, C
             holder.rlReadHint.setVisibility(View.GONE);
         }
         holder.tvOrderType.setText(curRegistrationBean.getProductName());
-        holder.tvTime.setText(AllUtils.formatDate(curRegistrationBean.getOrderDate(), AllUtils.YYYY_MM_DD_HH_MM));
+        holder.tvTime.setText(BaseUtils.formatDate(curRegistrationBean.getOrderDate(), BaseUtils.YYYY_MM_DD_HH_MM));
         switch (curRegistrationBean.getOrderState()) {
             case STATUS_SUBSCRIBE_NONE:
                 holder.tvOrderStatus.setText("未确认");
@@ -128,7 +128,7 @@ public class OrderInfoLimitAdapter extends BaseAdapter implements OrderStatus, C
         }
         holder.tvOrderPatientName.setText(curRegistrationBean.getPatientName());
         holder.tvOrderPatientSex.setText(curRegistrationBean.getPatientSex());
-        holder.tvOrderPatientAge.setText(AllUtils.getAge(curRegistrationBean.getPatientBirthDate()) + "岁");
+        holder.tvOrderPatientAge.setText(BaseUtils.getAge(curRegistrationBean.getPatientBirthDate()) + "岁");
         holder.tvOrderDetail.setText(curRegistrationBean.getDiagnosisInfo());
         holder.tvOrderHospital.setText(curRegistrationBean.getHospitalName());
     }

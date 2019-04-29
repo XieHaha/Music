@@ -53,7 +53,7 @@ import com.zyc.doctor.ui.dialog.listener.OnEnterClickListener;
 import com.zyc.doctor.ui.fragment.CooperateDocFragment;
 import com.zyc.doctor.ui.fragment.MainFragment;
 import com.zyc.doctor.ui.fragment.UserFragment;
-import com.zyc.doctor.utils.DensityUtil;
+import com.zyc.doctor.utils.BaseUtils;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.ScreenUtils;
 import com.zyc.doctor.utils.ToastUtil;
@@ -243,7 +243,7 @@ public class MainActivity extends BaseActivity
         mVersionPresenter.init();
         //弹窗参数初始化
         screenHeight = ScreenUtils.getScreenHeight(this);
-        popupHeight = DensityUtil.dip2px(this, 48 * 2);
+        popupHeight = (int)BaseUtils.dipToPx(this, 48 * 2);
         getAllProduct();
     }
 

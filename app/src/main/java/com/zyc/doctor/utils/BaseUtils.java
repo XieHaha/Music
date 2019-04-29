@@ -1,19 +1,16 @@
 package com.zyc.doctor.utils;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.Build;
-import android.support.v4.content.FileProvider;
 import android.util.TypedValue;
 
-import com.zyc.doctor.YihtApplication;
-
-import java.io.File;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -24,16 +21,16 @@ import java.util.regex.Pattern;
 
 /**
  * 工具类
+ *
  * @author dundun
  */
-public class AllUtils {
-    private static final String TAG = AllUtils.class.getSimpleName();
+public class BaseUtils {
+    private static final String TAG = BaseUtils.class.getSimpleName();
     private static final String REGEX_PHONE = "^((13[0-9])|(14[0-9])|(15[0-9])|(16[0-9])|(17[0-9])|(18[0-9])|(19[0-9]))\\d{8}$";
     private static final String REGEX_CARD_NUM = "(^[1-8][0-7]{2}\\d{3}([12]\\d{3})(0[1-9]|1[012])(0[1-9]|[12]\\d|3[01])\\d{3}([0-9Xx])$)";
     public static final String YYYY_MM_DD_HH_MM = "yyyy-MM-dd HH:mm";
     public static final String YYYY_MM_DD = "yyyy-MM-dd";
-    public static final String YYYY = "yyyy";
-
+    private static final int BUFFER_SIZE = 1024 * 2;
 
     /**
      * 网络是否可用
@@ -42,8 +39,7 @@ public class AllUtils {
      * @return
      */
     public static boolean isNetworkAvaliable(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(
-                Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         return null != networkInfo && networkInfo.isConnected();
     }
@@ -59,7 +55,8 @@ public class AllUtils {
         Resources r;
         if (mContext == null) {
             r = Resources.getSystem();
-        } else {
+        }
+        else {
             r = mContext.getResources();
         }
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, r.getDisplayMetrics());
@@ -80,9 +77,11 @@ public class AllUtils {
         String formatter = "yyyy-MM-dd HH:mm:ss";
         if ((time.indexOf("/") > -1) && (time.indexOf(" ") > -1)) {
             formatter = "yyyy/MM/dd HH:mm:ss";
-        } else if ((time.indexOf("/") > -1) && (time.indexOf("am") > -1) || (time.indexOf("pm") > -1)) {
+        }
+        else if ((time.indexOf("/") > -1) && (time.indexOf("am") > -1) || (time.indexOf("pm") > -1)) {
             formatter = "yyyy/MM/dd KK:mm:ss a";
-        } else if ((time.indexOf("-") > -1) && (time.indexOf("am") > -1) || (time.indexOf("pm") > -1)) {
+        }
+        else if ((time.indexOf("-") > -1) && (time.indexOf("am") > -1) || (time.indexOf("pm") > -1)) {
             formatter = "yyyy-MM-dd KK:mm:ss a";
         }
         return formatDate(time, formatter);
@@ -137,57 +136,18 @@ public class AllUtils {
                     if (dayOfMonthNow < dayOfMonthBirth) {
                         age--;
                     }
-                } else {
+                }
+                else {
                     age--;
                 }
             }
             return String.valueOf(age);
-        } catch (IllegalArgumentException e) {
-            LogUtils.w(TAG,"IllegalArgumentException error",e);
+        }
+        catch (IllegalArgumentException e) {
+            LogUtils.w(TAG, "IllegalArgumentException error", e);
             return "0";
         }
     }
-
-    /**
-     * 根据文件路径获取文件后缀名
-     *
-     * @param filepath 文件路径
-     * @return 后缀名, 不带.
-     */
-    public static String getFileExtNoPoint(String filepath) {
-        try {
-            if (filepath != null && filepath.lastIndexOf(".") != -1) {
-                int start = filepath.lastIndexOf(".");
-                int end = filepath.length();
-                return filepath.substring(start + 1, end);
-            }
-        } catch (Exception e) {
-            LogUtils.e(TAG, e.getMessage(), e);
-        }
-        return "";
-    }
-
-    /**
-     * 根据文件路径获取文件名称
-     *
-     * @param filepath 文件路径
-     * @return 文件名
-     */
-    public static String getFileName(String filepath) {
-        if (filepath == null) {
-            return null;
-        } else if (filepath.lastIndexOf("/") != -1 && filepath.lastIndexOf(".") != -1) {
-            int strat = filepath.lastIndexOf("/") + 1;
-            int end = filepath.lastIndexOf(".");
-            return strat > end ? "" : filepath.substring(strat, end);
-        } else if (filepath.lastIndexOf("/") == -1 && filepath.lastIndexOf(".") != -1) {
-            int end = filepath.lastIndexOf(".");
-            return filepath.substring(0, end);
-        } else {
-            return null;
-        }
-    }
-
 
     /**
      * 判断是否是手机号码
@@ -217,39 +177,32 @@ public class AllUtils {
         return false;
     }
 
-    /**
-     * 打开文件
-     *
-     * @param context
-     * @param filePath 文件路径
-     */
-    public static void openFile(Context context, String filePath) {
+    public static int copy(InputStream input, OutputStream output) throws Exception, IOException {
+        byte[] buffer = new byte[BUFFER_SIZE];
+        BufferedInputStream in = new BufferedInputStream(input, BUFFER_SIZE);
+        BufferedOutputStream out = new BufferedOutputStream(output, BUFFER_SIZE);
+        int count = 0, n = 0;
         try {
-            String type = "*/*";
-            Intent intent = new Intent();
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            //设置intent的Action属性
-            intent.setAction(Intent.ACTION_VIEW);
-            //获取文件file的MIME类型
-            type = MimeUtils.getMime(FileUtils.getFileExtNoPoint(filePath));
-            Uri uri = null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                uri = FileProvider.getUriForFile(context, YihtApplication.getInstance().getPackageName() + ".fileprovider",
-                        new File(filePath));
-            } else {
-                uri = Uri.fromFile(new File(filePath));
+            while ((n = in.read(buffer, 0, BUFFER_SIZE)) != -1) {
+                out.write(buffer, 0, n);
+                count += n;
             }
-            //设置intent的data和Type属性。
-            intent.setDataAndType(uri, type);
-            //跳转
-            context.startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            ToastUtil.toast(context, "无法打开文件");
-            LogUtils.w(TAG, "Exception error!", e);
-        } catch (Exception ex) {
-            ToastUtil.toast(context, "无法打开文件");
-            LogUtils.w(TAG, "Exception error!", ex);
+            out.flush();
         }
+        finally {
+            try {
+                out.close();
+            }
+            catch (IOException e) {
+                LogUtils.e(TAG, e.getMessage());
+            }
+            try {
+                in.close();
+            }
+            catch (IOException e) {
+                LogUtils.e(TAG, e.getMessage());
+            }
+        }
+        return count;
     }
 }

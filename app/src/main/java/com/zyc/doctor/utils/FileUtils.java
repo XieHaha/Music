@@ -1,16 +1,20 @@
 package com.zyc.doctor.utils;
 
+import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 
+import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.api.DirHelper;
 
 import java.io.File;
@@ -124,6 +128,46 @@ public final class FileUtils {
         }
         else {
             return null;
+        }
+    }
+
+    /**
+     * 打开文件
+     *
+     * @param context
+     * @param filePath 文件路径
+     */
+    public static void openFile(Context context, String filePath) {
+        try {
+            String type = "*/*";
+            Intent intent = new Intent();
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            //设置intent的Action属性
+            intent.setAction(Intent.ACTION_VIEW);
+            //获取文件file的MIME类型
+            type = MimeUtils.getMime(FileUtils.getFileExtNoPoint(filePath));
+            Uri uri = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                uri = FileProvider.getUriForFile(context,
+                                                 YihtApplication.getInstance().getPackageName() + ".fileprovider",
+                                                 new File(filePath));
+            }
+            else {
+                uri = Uri.fromFile(new File(filePath));
+            }
+            //设置intent的data和Type属性。
+            intent.setDataAndType(uri, type);
+            //跳转
+            context.startActivity(intent);
+        }
+        catch (ActivityNotFoundException e) {
+            ToastUtil.toast(context, "无法打开文件");
+            LogUtils.w(TAG, "Exception error!", e);
+        }
+        catch (Exception ex) {
+            ToastUtil.toast(context, "无法打开文件");
+            LogUtils.w(TAG, "Exception error!", ex);
         }
     }
 
@@ -294,7 +338,7 @@ public final class FileUtils {
             InputStream inputStream = context.getContentResolver().openInputStream(srcUri);
             if (inputStream == null) { return; }
             OutputStream outputStream = new FileOutputStream(dstFile);
-            IoUtils.copy(inputStream, outputStream);
+            BaseUtils.copy(inputStream, outputStream);
             inputStream.close();
             outputStream.close();
         }

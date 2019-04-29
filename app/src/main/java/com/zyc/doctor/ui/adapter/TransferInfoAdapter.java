@@ -12,7 +12,7 @@ import com.zyc.doctor.data.TransferStatu;
 import com.zyc.doctor.data.bean.TransPatientBean;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
-import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.BaseUtils;
 
 import java.util.List;
 
@@ -66,8 +66,8 @@ public class TransferInfoAdapter extends BaseRecyclerAdapter<TransPatientBean>
         public void showView(final int position, final TransPatientBean curTransferPatient)
         {
             tvPatientCase.setText(curTransferPatient.getFromDoctorDiagnosisInfo());
-            tvTime.setText(AllUtils.formatDate(curTransferPatient.getTransferDate(),
-                                               AllUtils.YYYY_MM_DD_HH_MM));
+            tvTime.setText(BaseUtils.formatDate(curTransferPatient.getTransferDate(),
+                                                BaseUtils.YYYY_MM_DD_HH_MM));
             tvToDoctorName.setText(curTransferPatient.getToDoctorName());
             tvFromDoctorName.setText(curTransferPatient.getFromDoctorName());
             switch (curTransferPatient.getAcceptState())

@@ -21,10 +21,10 @@ import com.yanzhenjie.nohttp.Headers;
 import com.yanzhenjie.nohttp.download.DownloadListener;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
-import com.zyc.doctor.data.bean.VersionBean;
 import com.zyc.doctor.api.DirHelper;
+import com.zyc.doctor.data.bean.VersionBean;
+import com.zyc.doctor.utils.BaseUtils;
 import com.zyc.doctor.utils.LogUtils;
-import com.zyc.doctor.utils.NetWorkUtils;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.version.ConstantsVersionMode;
 import com.zyc.doctor.version.model.VersionModel;
@@ -71,7 +71,7 @@ public class VersionPresenter implements ConstantsVersionMode {
      * 断网时不检查更新，启动网络监听广播
      */
     public void updateVersionByNetwork() {
-        if (new NetWorkUtils(context).isConnected()) {
+        if (BaseUtils.isNetworkAvaliable(context)) {
             versionModel.getNewestVersion(new VersionModelListener.NewestVersionCallBack() {
                 @Override
                 public void result(VersionBean version) {

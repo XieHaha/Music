@@ -14,7 +14,7 @@ import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.data.OrderStatus;
 import com.zyc.doctor.data.bean.TransPatientBean;
-import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.BaseUtils;
 import com.zyc.doctor.utils.SharePreferenceUtil;
 
 import java.util.ArrayList;
@@ -87,7 +87,7 @@ public class TransferInfoLimitAdapter extends BaseAdapter implements OrderStatus
         }
         holder.tvPatientName.setText(curTransferPatient.getPatientName());
         holder.tvPatientCase.setText(curTransferPatient.getFromDoctorDiagnosisInfo());
-        holder.tvTime.setText(AllUtils.formatDate(curTransferPatient.getTransferDate(), AllUtils.YYYY_MM_DD_HH_MM));
+        holder.tvTime.setText(BaseUtils.formatDate(curTransferPatient.getTransferDate(), BaseUtils.YYYY_MM_DD_HH_MM));
         if (curTransferPatient.getFromDoctorId()
                               .equals(YihtApplication.getInstance().getLoginSuccessBean().getDoctorId())) {
             holder.tvDoctorName.setText(curTransferPatient.getToDoctorName());

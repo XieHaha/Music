@@ -49,7 +49,7 @@ import com.zyc.doctor.ui.activity.TransferPatientFromActivity;
 import com.zyc.doctor.ui.activity.TransferPatientToActivity;
 import com.zyc.doctor.ui.base.fragment.BaseFragment;
 import com.zyc.doctor.ui.dialog.ActionSheetDialog;
-import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.BaseUtils;
 import com.zyc.doctor.utils.FileUtils;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.ToastUtil;
@@ -547,7 +547,7 @@ public class UserFragment extends BaseFragment implements CustomListenScrollView
                 break;
             case RC_CROP_IMG:
                 //裁剪完成，上传图片
-                if (AllUtils.isNetworkAvaliable(getActivity())) {
+                if (BaseUtils.isNetworkAvaliable(getActivity())) {
                     uploadHeadImg(cutFileUri);
                 }
                 else {

@@ -23,7 +23,7 @@ import com.zyc.doctor.data.CommonData;
 import com.zyc.doctor.ui.activity.DoctorInfoActivity;
 import com.zyc.doctor.ui.activity.PatientInfoActivity;
 import com.zyc.doctor.ui.activity.ServicePackActivity;
-import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.BaseUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 
 /**
@@ -150,7 +150,7 @@ public class ChatActivity extends BaseActivity
         mPopupwinow.setFocusable(true);
         mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mPopupwinow.setOutsideTouchable(true);
-        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0, (int)AllUtils.dipToPx(this, 65));
+        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0, (int)BaseUtils.dipToPx(this, 65));
     }
 
     @Override

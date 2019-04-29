@@ -26,7 +26,7 @@ import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.HintDialog;
 import com.zyc.doctor.ui.dialog.listener.OnEnterClickListener;
-import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.BaseUtils;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.utils.glide.GlideHelper;
 
@@ -302,6 +302,6 @@ public class UserInfoActivity extends BaseActivity {
         mPopupwinow.setFocusable(true);
         mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mPopupwinow.setOutsideTouchable(true);
-        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0, (int)AllUtils.dipToPx(this, 55));
+        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0, (int)BaseUtils.dipToPx(this, 55));
     }
 }

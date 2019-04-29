@@ -39,7 +39,7 @@ import com.zyc.doctor.ui.adapter.RegistrationProductTypeAdapter;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.HintDialog;
 import com.zyc.doctor.ui.dialog.listener.OnEnterClickListener;
-import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.BaseUtils;
 import com.zyc.doctor.utils.RecentContactUtils;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.utils.glide.GlideHelper;
@@ -306,7 +306,7 @@ public class ServicePackActivity extends BaseActivity {
             else {
                 tvPatientName.setText(patientBean.getName());
             }
-            tvPatientAge.setText(AllUtils.getAge(patientBean.getBirthDate()));
+            tvPatientAge.setText(BaseUtils.getAge(patientBean.getBirthDate()));
         }
         if (!limit) {
             tvNext.setVisibility(View.VISIBLE);

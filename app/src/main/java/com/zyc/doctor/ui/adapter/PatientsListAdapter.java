@@ -15,7 +15,7 @@ import com.zyc.doctor.data.BaseData;
 import com.zyc.doctor.data.bean.PatientBean;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
-import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.BaseUtils;
 import com.zyc.doctor.utils.glide.GlideHelper;
 
 import java.util.List;
@@ -85,7 +85,7 @@ public class PatientsListAdapter extends BaseRecyclerAdapter<PatientBean>
             {
                 tvName.setText(item.getName());
             }
-            tvAge.setText(AllUtils.getAge(item.getBirthDate()));
+            tvAge.setText(BaseUtils.getAge(item.getBirthDate()));
             if ("男".equals(item.getSex()))
             {
                 lllayout.setSelected(true);

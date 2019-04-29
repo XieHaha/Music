@@ -59,7 +59,7 @@ import com.zyc.doctor.ui.adapter.RecentContactAdapter;
 import com.zyc.doctor.ui.adapter.TransferInfoLimitAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.base.fragment.BaseFragment;
-import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.BaseUtils;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.RecentContactUtils;
 import com.zyc.doctor.utils.ToastUtil;
@@ -644,7 +644,7 @@ public class MainFragment extends BaseFragment implements OrderStatus, SwipeRefr
         mPopupwinow.setFocusable(true);
         mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mPopupwinow.setOutsideTouchable(true);
-        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0, (int)AllUtils.dipToPx(getActivity(), 55));
+        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0, (int)BaseUtils.dipToPx(getActivity(), 55));
     }
 
     /**

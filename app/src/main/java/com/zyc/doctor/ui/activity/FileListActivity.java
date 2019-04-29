@@ -14,7 +14,6 @@ import com.zyc.doctor.data.bean.FileBean;
 import com.zyc.doctor.data.bean.NormImage;
 import com.zyc.doctor.ui.adapter.FileListAdapter;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.utils.AllUtils;
 import com.zyc.doctor.utils.FileUtils;
 import com.zyc.doctor.utils.MimeUtils;
 import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
@@ -63,9 +62,9 @@ public class FileListActivity extends BaseActivity implements FileListAdapter.Op
                 String fileUrl = values[i];
                 FileBean fileBean = new FileBean();
                 fileBean.setFileUrl(fileUrl);
-                fileBean.setFileName(AllUtils.getFileName(fileUrl) + "." + AllUtils.getFileExtNoPoint(fileUrl));
-                fileBean.setFileNameNoSuffix(AllUtils.getFileName(fileUrl));
-                fileBean.setFileType(AllUtils.getFileExtNoPoint(fileUrl));
+                fileBean.setFileName(FileUtils.getFileName(fileUrl) + "." + FileUtils.getFileExtNoPoint(fileUrl));
+                fileBean.setFileNameNoSuffix(FileUtils.getFileName(fileUrl));
+                fileBean.setFileType(FileUtils.getFileExtNoPoint(fileUrl));
                 fileBeans.add(fileBean);
             }
         }

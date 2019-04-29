@@ -32,7 +32,7 @@ import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.HintDialog;
 import com.zyc.doctor.ui.dialog.listener.OnEnterClickListener;
-import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.BaseUtils;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.RecentContactUtils;
 import com.zyc.doctor.utils.ToastUtil;
@@ -207,7 +207,7 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
             Glide.with(this).load(patientBean.getPatientImgUrl()).apply(GlideHelper.getOptions()).into(ivHeadImg);
             tvName.setText(patientBean.getName());
             tvSex.setText(patientBean.getSex());
-            tvAge.setText(AllUtils.getAge(patientBean.getBirthDate()));
+            tvAge.setText(BaseUtils.getAge(patientBean.getBirthDate()));
             tvTransferNext.setVisibility(View.GONE);
         }
         else//已有转诊单
@@ -225,10 +225,10 @@ public class TransferPatientActivity extends BaseActivity implements TransferSta
                      .load(transPatientBean.getPatientImage())
                      .apply(GlideHelper.getOptions())
                      .into(ivHeadImg);
-                tvTime.setText(AllUtils.formatDate(transPatientBean.getTransferDate(), AllUtils.YYYY_MM_DD_HH_MM));
+                tvTime.setText(BaseUtils.formatDate(transPatientBean.getTransferDate(), BaseUtils.YYYY_MM_DD_HH_MM));
                 tvName.setText(transPatientBean.getPatientName());
                 tvSex.setText(transPatientBean.getPatientSex());
-                tvAge.setText(AllUtils.getAge(transPatientBean.getPatientBirthDate()));
+                tvAge.setText(BaseUtils.getAge(transPatientBean.getPatientBirthDate()));
                 filterEmojiEditText.setText(transPatientBean.getFromDoctorDiagnosisInfo());
                 //接收转诊
                 if (!loginSuccessBean.getDoctorId().equals(transPatientBean.getFromDoctorId())) {

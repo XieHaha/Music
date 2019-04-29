@@ -30,7 +30,7 @@ import com.zyc.doctor.data.bean.LoginSuccessBean;
 import com.zyc.doctor.data.bean.VersionBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.BaseUtils;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.version.presenter.VersionPresenter;
@@ -168,7 +168,7 @@ public class LoginActivity extends BaseActivity
                 }
                 //获取验证码
                 phone = etPhone.getText().toString().trim();
-                if (!AllUtils.isMobileNumber(phone)) {
+                if (!BaseUtils.isMobileNumber(phone)) {
                     ToastUtil.toast(this, R.string.toast_txt_phone_error);
                     return;
                 }
@@ -217,7 +217,7 @@ public class LoginActivity extends BaseActivity
             ToastUtil.toast(this, R.string.toast_txt_verify_hint);
             return;
         }
-        if (!AllUtils.isMobileNumber(phone)) {
+        if (!BaseUtils.isMobileNumber(phone)) {
             ToastUtil.toast(this, R.string.toast_txt_phone_error);
             return;
         }

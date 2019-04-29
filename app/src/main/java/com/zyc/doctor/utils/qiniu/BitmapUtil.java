@@ -175,10 +175,10 @@ public class BitmapUtil {
         return result;
     }
 
-    public static final int LEFT = 0;
-    public static final int RIGHT = 1;
-    public static final int TOP = 3;
-    public static final int BOTTOM = 4;
+    private static final int LEFT = 0;
+    private static final int RIGHT = 1;
+    private static final int TOP = 3;
+    private static final int BOTTOM = 4;
 
     /**
      * 转换图片成圆形

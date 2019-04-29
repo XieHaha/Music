@@ -37,7 +37,7 @@ import com.zyc.doctor.ui.dialog.listener.OnEnterClickListener;
 import com.zyc.doctor.ui.fragment.HealthInfoFragment;
 import com.zyc.doctor.ui.fragment.OrderInfoFragment;
 import com.zyc.doctor.ui.fragment.TransferInfoFragment;
-import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.BaseUtils;
 import com.zyc.doctor.utils.RecentContactUtils;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.utils.glide.GlideHelper;
@@ -269,7 +269,7 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
                 tvName.setText(patientBean.getName());
             }
             tvSex.setText(patientBean.getSex());
-            tvAge.setText(AllUtils.getAge(patientBean.getBirthDate()) + "岁");
+            tvAge.setText(BaseUtils.getAge(patientBean.getBirthDate()) + "岁");
             if (!TextUtils.isEmpty(patientBean.getUnitName())) {
                 tvCompany.setText(patientBean.getUnitName());
             }
@@ -518,6 +518,6 @@ public class PatientInfoActivity extends BaseActivity implements SatelliteMenu.O
         mPopupwinow.setFocusable(true);
         mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mPopupwinow.setOutsideTouchable(true);
-        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0, (int)AllUtils.dipToPx(this, 55));
+        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0, (int)BaseUtils.dipToPx(this, 55));
     }
 }

@@ -19,7 +19,7 @@ import com.zyc.doctor.data.bean.PatientBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.widgets.view.LabelsView;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.BaseUtils;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.utils.glide.GlideHelper;
 
@@ -139,7 +139,7 @@ public class AddFriendsPatientActivity extends BaseActivity {
                 tvName.setText(patientBean.getName());
             }
             tvSex.setText(patientBean.getSex());
-            tvAge.setText(AllUtils.getAge(patientBean.getBirthDate()) + "岁");
+            tvAge.setText(BaseUtils.getAge(patientBean.getBirthDate()) + "岁");
             if (!TextUtils.isEmpty(patientBean.getAddress())) {
                 tvAddress.setText(patientBean.getAddress());
             }

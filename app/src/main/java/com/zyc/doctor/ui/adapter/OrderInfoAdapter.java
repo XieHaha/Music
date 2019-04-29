@@ -13,7 +13,7 @@ import com.zyc.doctor.data.bean.RegistrationBean;
 import com.zyc.doctor.data.bean.RegistrationTypeBean;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
-import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.BaseUtils;
 
 import org.litepal.crud.DataSupport;
 
@@ -58,7 +58,7 @@ public class OrderInfoAdapter extends BaseRecyclerAdapter<RegistrationBean> impl
         @Override
         public void showView(final int position, final RegistrationBean curTransferPatient) {
             tvPatientCase.setText(curTransferPatient.getProductName());
-            tvTime.setText(AllUtils.formatDate(curTransferPatient.getOrderDate(), AllUtils.YYYY_MM_DD_HH_MM));
+            tvTime.setText(BaseUtils.formatDate(curTransferPatient.getOrderDate(), BaseUtils.YYYY_MM_DD_HH_MM));
             List<RegistrationTypeBean> list = DataSupport.where("fieldId = ?", curTransferPatient.getProductTypeId())
                                                          .find(RegistrationTypeBean.class);
             if (list != null && list.size() > 0) {

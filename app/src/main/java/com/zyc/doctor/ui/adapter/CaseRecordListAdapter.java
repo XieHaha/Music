@@ -10,7 +10,7 @@ import com.zyc.doctor.R;
 import com.zyc.doctor.data.bean.PatientCaseDetailBean;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
-import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.BaseUtils;
 
 import java.util.List;
 
@@ -51,7 +51,7 @@ public class CaseRecordListAdapter extends BaseRecyclerAdapter<PatientCaseDetail
         @Override
         public void showView(final int position, final PatientCaseDetailBean item) {
             tvContent.setText(item.getDiagnosisInfo());
-            tvTime.setText(AllUtils.formatDate(item.getGmtCreate(), AllUtils.YYYY_MM_DD_HH_MM));
+            tvTime.setText(BaseUtils.formatDate(item.getGmtCreate(), BaseUtils.YYYY_MM_DD_HH_MM));
         }
     }
 }

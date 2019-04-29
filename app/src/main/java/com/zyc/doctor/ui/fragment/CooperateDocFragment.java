@@ -39,7 +39,7 @@ import com.zyc.doctor.ui.activity.DoctorInfoActivity;
 import com.zyc.doctor.ui.adapter.CooperateDocListAdapter;
 import com.zyc.doctor.ui.base.fragment.BaseFragment;
 import com.zyc.doctor.ui.dialog.HintDialog;
-import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.BaseUtils;
 import com.zyc.doctor.utils.ToastUtil;
 import com.zyc.doctor.widgets.recyclerview.AutoLoadRecyclerView;
 import com.zyc.doctor.widgets.recyclerview.callback.LoadMoreListener;
@@ -204,7 +204,7 @@ public class CooperateDocFragment extends BaseFragment
         mPopupwinow.setFocusable(true);
         mPopupwinow.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mPopupwinow.setOutsideTouchable(true);
-        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0, (int)AllUtils.dipToPx(getActivity(), 55));
+        mPopupwinow.showAtLocation(viewPop, Gravity.TOP | Gravity.RIGHT, 0, (int)BaseUtils.dipToPx(getActivity(), 55));
     }
 
     @Override

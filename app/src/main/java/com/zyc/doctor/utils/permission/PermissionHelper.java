@@ -63,7 +63,7 @@ public class PermissionHelper implements OnActivityPermissionCallback {
             }
             else {
                 String[] declinedPermissions = declinedPermissions(context, permissions);
-                List<Boolean> deniedPermissionsLength = new ArrayList<>();//needed
+                List<Boolean> deniedPermissionsLength = new ArrayList<>();
                 for (String permissionName : declinedPermissions) {
                     if (permissionName != null && !isExplanationNeeded(permissionName)) {
                         permissionCallback.onPermissionReallyDeclined(permissionName);
@@ -160,7 +160,8 @@ public class PermissionHelper implements OnActivityPermissionCallback {
      * internal usage.
      */
     private void handleSingle(@NonNull String permissionName) {
-        if (permissionExists(permissionName)) {// android M throws exception when requesting
+        // android M throws exception when requesting
+        if (permissionExists(permissionName)) {
             // run time permission that does not exists in AndroidManifest.
             if (!permissionName.equalsIgnoreCase(Manifest.permission.SYSTEM_ALERT_WINDOW)) {
                 if (isPermissionDeclined(permissionName)) {
@@ -222,11 +223,13 @@ public class PermissionHelper implements OnActivityPermissionCallback {
         ArrayList<String> permissionsToRequest = new ArrayList<>();
         for (String permissionName : permissions) {
             if (isPermissionDeclined(permissionName)) {
-                permissionsToRequest.add(permissionName); // add permission to request
+                // add permission to request
+                permissionsToRequest.add(permissionName);
             }
             else {
                 permissionCallback.onPermissionPreGranted(
-                        permissionName); // do not request, since it is already granted
+                        // do not request, since it is already granted
+                        permissionName);
             }
         }
         if (permissionsToRequest.isEmpty()) { return; }

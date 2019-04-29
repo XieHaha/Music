@@ -12,7 +12,7 @@ import com.zyc.doctor.data.OrderStatus;
 import com.zyc.doctor.data.bean.RegistrationBean;
 import com.zyc.doctor.ui.adapter.base.BaseRecyclerAdapter;
 import com.zyc.doctor.ui.adapter.base.BaseViewHolder;
-import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.BaseUtils;
 
 import java.util.List;
 
@@ -89,9 +89,9 @@ public class RegistrationListAdapter extends BaseRecyclerAdapter<RegistrationBea
             }
             tvOrderPatientName.setText(item.getPatientName());
             tvOrderPatientSex.setText(item.getPatientSex());
-            tvOrderPatientAge.setText(AllUtils.getAge(item.getPatientBirthDate()) + "岁");
+            tvOrderPatientAge.setText(BaseUtils.getAge(item.getPatientBirthDate()) + "岁");
             tvOrderDetail.setText(item.getHospitalName());
-            tvOrderHospital.setText(AllUtils.formatDate(item.getOrderDate(), AllUtils.YYYY_MM_DD_HH_MM));
+            tvOrderHospital.setText(BaseUtils.formatDate(item.getOrderDate(), BaseUtils.YYYY_MM_DD_HH_MM));
         }
     }
 }

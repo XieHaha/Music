@@ -26,7 +26,7 @@ import com.zyc.doctor.data.bean.HospitalBean;
 import com.zyc.doctor.data.bean.RegistrationBean;
 import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
-import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.BaseUtils;
 import com.zyc.doctor.utils.glide.GlideHelper;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.ToastUtil;
@@ -162,7 +162,7 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
         //患者信息
         tvPatientName.setText(registrationBean.getPatientName());
         tvPatientSex.setText(registrationBean.getPatientSex());
-        tvPatientAge.setText(AllUtils.getAge(registrationBean.getPatientBirthDate()) + "岁");
+        tvPatientAge.setText(BaseUtils.getAge(registrationBean.getPatientBirthDate()) + "岁");
         tvDes.setText(registrationBean.getDiagnosisInfo());
         tvDoctorName.setText(registrationBean.getDoctorName());
         tvDoctorHospital.setText(registrationBean.getHospitalName());
@@ -178,7 +178,7 @@ public class RegistrationDetailActivity extends BaseActivity implements OrderSta
         else {
             llReserveLayout.setVisibility(View.VISIBLE);
             tvReserveTime.setText(
-                    AllUtils.formatDate(registrationBean.getHospitalReserveTime(), AllUtils.YYYY_MM_DD_HH_MM));
+                    BaseUtils.formatDate(registrationBean.getHospitalReserveTime(), BaseUtils.YYYY_MM_DD_HH_MM));
             tvReserveTips.setText(registrationBean.getHospitalReserveTips());
         }
         switch (registrationBean.getOrderState()) {

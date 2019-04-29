@@ -34,7 +34,7 @@ import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.ActionSheetDialog;
 import com.zyc.doctor.ui.dialog.HintDialog;
-import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.BaseUtils;
 import com.zyc.doctor.utils.FileUtils;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.ScalingUtils;
@@ -303,7 +303,7 @@ public class AuthDocActivity extends BaseActivity {
         txtHospital = etHospital.getText().toString().trim();
         txtTitle = etTitle.getText().toString().trim();
         txtDepart = tvDepart.getText().toString().trim();
-        if (!AllUtils.isCardNum(txtCardNum)) {
+        if (!BaseUtils.isCardNum(txtCardNum)) {
             ToastUtil.toast(this, R.string.toast_upload_card_hint);
             return;
         }

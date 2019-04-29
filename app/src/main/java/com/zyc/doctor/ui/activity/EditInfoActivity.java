@@ -30,7 +30,7 @@ import com.zyc.doctor.data.bean.BaseResponse;
 import com.zyc.doctor.http.retrofit.RequestUtils;
 import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.ActionSheetDialog;
-import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.BaseUtils;
 import com.zyc.doctor.utils.FileUtils;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.ToastUtil;
@@ -413,7 +413,7 @@ public class EditInfoActivity extends BaseActivity {
                 break;
             case RC_CROP_IMG:
                 //裁剪完成，上传图片
-                if (AllUtils.isNetworkAvaliable(this)) {
+                if (BaseUtils.isNetworkAvaliable(this)) {
                     uploadHeadImg(cutFileUri);
                 }
                 else {

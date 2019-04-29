@@ -1,7 +1,6 @@
 package com.zyc.doctor.ui.activity;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +19,6 @@ import android.widget.TextView;
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
 import com.zyc.doctor.api.DirHelper;
@@ -35,13 +33,13 @@ import com.zyc.doctor.ui.base.activity.BaseActivity;
 import com.zyc.doctor.ui.dialog.ActionSheetDialog;
 import com.zyc.doctor.ui.dialog.HintDialog;
 import com.zyc.doctor.ui.dialog.listener.OnEnterClickListener;
-import com.zyc.doctor.utils.AllUtils;
+import com.zyc.doctor.utils.BaseUtils;
 import com.zyc.doctor.utils.FileUtils;
 import com.zyc.doctor.utils.LogUtils;
 import com.zyc.doctor.utils.RecentContactUtils;
 import com.zyc.doctor.utils.ScalingUtils;
 import com.zyc.doctor.utils.ToastUtil;
-import com.zyc.doctor.utils.glide.GlideEngine;
+import com.zyc.doctor.utils.glide.MatisseUtils;
 import com.zyc.doctor.utils.permission.Permission;
 import com.zyc.doctor.utils.qiniu.QiniuUtils;
 import com.zyc.doctor.widgets.expandable.ExpandTextView;
@@ -176,7 +174,7 @@ public class HealthDetailActivity extends BaseActivity
             uri = savedInstanceState.getParcelable(CommonData.KEY_SAVE_DATA);
         }
         diagnosisTimeMil = System.currentTimeMillis();
-        tvDiagnosisTime.setText(AllUtils.formatDate(diagnosisTimeMil, AllUtils.YYYY_MM_DD));
+        tvDiagnosisTime.setText(BaseUtils.formatDate(diagnosisTimeMil, BaseUtils.YYYY_MM_DD));
         allImgUrl = new StringBuilder();
         if (getIntent() != null) {
             isAddNewHealth = getIntent().getBooleanExtra(CommonData.KEY_ADD_NEW_HEALTH, false);
@@ -251,11 +249,11 @@ public class HealthDetailActivity extends BaseActivity
                 ivTitlebBarMore.setVisibility(View.GONE);
             }
             tvCreateTime.setText("创建者：" + patientCaseDetailBean.getCreatorName() + "\n创建时间：" +
-                                 AllUtils.formatDate(patientCaseDetailBean.getGmtCreate(), AllUtils.YYYY_MM_DD_HH_MM));
+                                 BaseUtils.formatDate(patientCaseDetailBean.getGmtCreate(), BaseUtils.YYYY_MM_DD_HH_MM));
             diagnosis = patientCaseDetailBean.getDiagnosisInfo();
             tvDiagnosis.setText(diagnosis);
             diagnosisTimeMil = patientCaseDetailBean.getVisDate();
-            tvDiagnosisTime.setText(AllUtils.formatDate(diagnosisTimeMil, AllUtils.YYYY_MM_DD));
+            tvDiagnosisTime.setText(BaseUtils.formatDate(diagnosisTimeMil, BaseUtils.YYYY_MM_DD));
             department = patientCaseDetailBean.getDoctorDep();
             tvDepartment.setText(department);
             hospital = patientCaseDetailBean.getHospital();
@@ -618,27 +616,7 @@ public class HealthDetailActivity extends BaseActivity
      * 打开图片库
      */
     private void openPhoto() {
-        Matisse.from(this)
-               // 选择 mime 的类型
-               .choose(MimeType.ofImage())
-               // 显示选择的数量
-               .countable(true)
-               //                //相机
-               //                .capture(true)
-               //                .captureStrategy(new CaptureStrategy(true, YihtApplication.getInstance().getPackageName() +".fileprovider"))
-               // 黑色背景
-               .theme(R.style.Matisse_Dracula)
-               // 图片选择的最多数量
-               .maxSelectable(currentMaxPicNum)
-               // 列表中显示的图片大小
-               .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.app_picture_size))
-               .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-               // 缩略图的比例
-               .thumbnailScale(0.85f)
-               // 使用的图片加载引擎
-               .imageEngine(new GlideEngine())
-               // 设置作为标记的请求码，返回图片时使用
-               .forResult(RC_PICK_IMG);
+        MatisseUtils.open(this);
     }
 
     /**
