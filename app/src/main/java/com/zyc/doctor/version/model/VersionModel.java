@@ -39,7 +39,7 @@ public class VersionModel extends AbstractResponseAdapter<BaseResponse> implemen
     @Override
     public void downloadAPK(String url, DownloadAPKCallBack downloadAPKCallBack) {
         this.downloadAPKCallBack = downloadAPKCallBack;
-        File file = new File(DirHelper.getPathFile() + "/YHT.apk");
+        File file = new File(DirHelper.getPathFile() + "/ZYC.apk");
         if (file.exists()) {
             if (!file.delete()) {
                 LogUtils.e(TAG, "delete error");
@@ -51,14 +51,14 @@ public class VersionModel extends AbstractResponseAdapter<BaseResponse> implemen
      * 下载最新的apk
      */
     public void downloadAPK(String url, DownloadListener downloadListener) {
-        File file = new File(DirHelper.getPathFile() + "/YHT.apk");
+        File file = new File(DirHelper.getPathFile() + "/ZYC.apk");
         if (file.exists()) {
             if (!file.delete()) {
                 LogUtils.e(TAG, "delete error");
             }
         }
         FileTransferServer.getInstance(context)
-                          .downloadFile(url, DirHelper.getPathFile(), "YHT" + ".apk", downloadListener);
+                          .downloadFile(url, DirHelper.getPathFile(), "ZYC" + ".apk", downloadListener);
     }
 
     @Override

@@ -84,10 +84,10 @@ public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode,
         switch (upDateMode) {
             case UPDATE_NONE:
             case UPDATE_CHOICE:
-                tvCancel.setText("忽略");
+                tvCancel.setText(R.string.txt_version_ignore);
                 break;
             case UPDATE_MUST:
-                tvCancel.setText("退出");
+                tvCancel.setText(R.string.txt_version_exit);
                 break;
             default:
                 break;
@@ -109,10 +109,10 @@ public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode,
             tvContent.setVisibility(View.GONE);
         }
         if (isDownNewAPK) {
-            tvUpdate.setText("马上更新");
+            tvUpdate.setText(R.string.txt_version_update);
         }
         else {
-            tvUpdate.setText("立即安装");
+            tvUpdate.setText(R.string.txt_version_install);
         }
     }
 
@@ -172,7 +172,7 @@ public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode,
             isDownNewAPK = false;
             tvCancel.setEnabled(true);
             tvUpdate.setVisibility(View.VISIBLE);
-            tvUpdate.setText("立即安装");
+            tvUpdate.setText(R.string.txt_version_install);
             rlDownloadLayout.setVisibility(View.GONE);
         }
         else {
@@ -217,7 +217,7 @@ public class VersionUpdateDialog extends Dialog implements ConstantsVersionMode,
                     }
                 }
                 else {
-                    File file = new File(DirHelper.getPathFile(), "YHT.apk");
+                    File file = new File(DirHelper.getPathFile(), "ZYC.apk");
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     Uri uri = null;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

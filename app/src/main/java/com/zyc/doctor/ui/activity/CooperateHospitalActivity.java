@@ -74,7 +74,7 @@ public class CooperateHospitalActivity extends BaseActivity
     @Override
     public void initData(@NonNull Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        cooperateHospitalAdapter = new CooperateHospitalAdapter(this, hospitalBeans);
+        cooperateHospitalAdapter = new CooperateHospitalAdapter(hospitalBeans);
         cooperateHospitalAdapter.addFooterView(footerView);
         page = 0;
         getHospitalListByDoctorId();

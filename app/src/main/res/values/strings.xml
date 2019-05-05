@@ -167,6 +167,12 @@
     <string name="dialog_txt_exit_hint">编辑内容还未保存，确定退出?</string>
     <string name="dialog_txt_delete_hint">删除后，将清空该聊天的消息记录?</string>
 
+    <!--版本更新-->
+    <string name="txt_version_ignore">忽略</string>
+    <string name="txt_version_exit">退出</string>
+    <string name="txt_version_update">马上更新</string>
+    <string name="txt_version_install">立即安装</string>
+
 
     <!--permission-->
     <string name="toast_public_current_no_network">当前无网络连接</string>

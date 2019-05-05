@@ -191,7 +191,7 @@ public class VersionPresenter implements ConstantsVersionMode {
                 mode = UPDATE_CHOICE;
             }
             //判断本地apk文件的版本号是否最新
-            String apkVersionName = getApkVersion(DirHelper.getPathFile() + "/YHT.apk");
+            String apkVersionName = getApkVersion(DirHelper.getPathFile() + "/ZYC.apk");
             if (apkVersionName != null && compareVersion(newestVersionName, apkVersionName) == 0) {
                 isDownAPK = false;
             }
