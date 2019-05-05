@@ -149,6 +149,10 @@ public interface CommonData {
      */
     String KEY_SAVE_DATA = "key_save_data";
     /**
+     * 远程登录
+     */
+    String KEY_CAMERA_LOGIN_BEAN = "key_camera_login_bean";
+    /**
      * 首页列表基础显示条数
      */
     int DATA_LIST_BASE_NUM = 3;

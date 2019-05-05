@@ -14,7 +14,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 26
         versionCode 18
-        versionName "2.1.1.3"
+        versionName "2.1.1.4"
         flavorDimensions "default"
         multiDexEnabled true
         ndk {
@@ -24,7 +24,7 @@ android {
     }
     flavorDimensions "zyc"
     productFlavors {
-        zyc {
+        Online {
             dimension "zyc"
             applicationId "com.yht.yihuantong"
             buildConfigField "String", "BASE_BASIC_URL", "\"http://www.zychealth.com\""
@@ -33,7 +33,7 @@ android {
                                     jpush_appkey: "8b803f7221a77f19b78b3523"]
         }
 
-        develop {
+        Develop {
             dimension "zyc"
             applicationId "com.yht.yihuantong"
             buildConfigField "String", "BASE_BASIC_URL", "\"http://test.zychealth.com\""
@@ -42,7 +42,7 @@ android {
                                     jpush_appkey: "8b803f7221a77f19b78b3523"]
         }
 
-        beta {
+        Gray {
             dimension "zyc"
             applicationId "com.yht.yihuantong_test"
 //            buildConfigField "String", "BASE_BASIC_URL", "\"http://gray.zychealth.com\""
@@ -94,7 +94,7 @@ android {
     }
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "会珍医生版V${variant.versionName}-${releaseTime()}.apk"
+            outputFileName = "${variant.productFlavors[0].name}_会珍医生版V${variant.versionName}-${releaseTime()}.apk"
         }
     }
     compileOptions {

@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.zhihu.matisse.Matisse;
 import com.zyc.doctor.R;
 import com.zyc.doctor.YihtApplication;
@@ -88,6 +89,10 @@ public class AuthDocActivity extends BaseActivity {
     private File tempFile, idCardFrontTempFile, idCardBackTempFile, docCardFrontTempFile, docCardBackTempFile;
     private String txtName, txtCardNum, txtHospital, txtTitle, txtDepart;
     private CooperateDocBean cooperateDocBean;
+    /**
+     * 图片链接
+     */
+    private CheckUrl checkUrl;
     /**
      * 照片路径
      */
@@ -199,7 +204,12 @@ public class AuthDocActivity extends BaseActivity {
             etHospital.setText(cooperateDocBean.getHospital());
             etTitle.setText(cooperateDocBean.getTitle());
             tvDepart.setText(cooperateDocBean.getDepartment());
-            CheckUrl checkUrl = new Gson().fromJson(cooperateDocBean.getCheckUrl(), CheckUrl.class);
+            try {
+                checkUrl = new Gson().fromJson(cooperateDocBean.getCheckUrl(), CheckUrl.class);
+            }
+            catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
             if (checkUrl != null) {
                 Glide.with(this).load(checkUrl.getIdFront()).into(ivIdCardFront);
                 Glide.with(this).load(checkUrl.getIdEnd()).into(ivIdCardBack);
@@ -459,8 +469,6 @@ public class AuthDocActivity extends BaseActivity {
         intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
         startActivityForResult(intent, RC_PICK_CAMERA_IMG);
     }
-
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

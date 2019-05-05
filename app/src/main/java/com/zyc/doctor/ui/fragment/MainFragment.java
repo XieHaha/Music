@@ -24,6 +24,8 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.zxing.client.android.Intents;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -38,6 +40,7 @@ import com.zyc.doctor.data.OrderStatus;
 import com.zyc.doctor.data.Tasks;
 import com.zyc.doctor.data.bean.BaseNetConfig;
 import com.zyc.doctor.data.bean.BaseResponse;
+import com.zyc.doctor.data.bean.CameraLoginBean;
 import com.zyc.doctor.data.bean.PatientBean;
 import com.zyc.doctor.data.bean.RegistrationBean;
 import com.zyc.doctor.data.bean.TransPatientBean;
@@ -604,10 +607,17 @@ public class MainFragment extends BaseFragment implements OrderStatus, SwipeRefr
             case REQUEST_CODE_LOGIN:
                 String contents = data.getStringExtra(Intents.Scan.RESULT);
                 LogUtils.i(TAG, contents);
-                Intent intent = new Intent(getActivity(), CameraLoginActivity.class);
-                intent.putExtra(CommonData.KEY_PUBLIC_STRING, contents);
-                startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.push_bottom_in, R.anim.keep);
+                try {
+                    CameraLoginBean cameraLoginBean = new Gson().fromJson(contents, CameraLoginBean.class);
+                    Intent intent = new Intent(getActivity(), CameraLoginActivity.class);
+                    intent.putExtra(CommonData.KEY_CAMERA_LOGIN_BEAN, cameraLoginBean);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.push_bottom_in, R.anim.keep);
+                }
+                catch (JsonSyntaxException e) {
+                    ToastUtil.toast(getContext(), R.string.txt_camera_error);
+                    e.printStackTrace();
+                }
                 break;
             case REQUEST_CODE_STATUS_CHANGE:
                 getTransferList();

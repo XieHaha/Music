@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.zyc.doctor.R;
 import com.zyc.doctor.data.BaseData;
 import com.zyc.doctor.data.CommonData;
@@ -49,19 +48,13 @@ public class CameraLoginActivity extends BaseActivity implements CustomAdapt {
         //状态栏透明
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         if (getIntent() != null) {
-            value = getIntent().getStringExtra(CommonData.KEY_PUBLIC_STRING);
+            cameraLoginBean = (CameraLoginBean)getIntent().getSerializableExtra(CommonData.KEY_CAMERA_LOGIN_BEAN);
         }
-    }
-
-    @Override
-    public void initData(@NonNull Bundle savedInstanceState) {
-        super.initData(savedInstanceState);
-        cameraLoginBean = new Gson().fromJson(value, CameraLoginBean.class);
         initPageData();
     }
 
     private void initPageData() {
-        if (!isSameHospital(cameraLoginBean.getHospitalName())) {
+        if (!isSameHospital()) {
             actCameraLoginNext.setVisibility(View.GONE);
             actCameraLoginCancel.setVisibility(View.GONE);
             actCameraLoginKnow.setVisibility(View.VISIBLE);
@@ -104,11 +97,13 @@ public class CameraLoginActivity extends BaseActivity implements CustomAdapt {
     /**
      * 是否为同一家医院
      *
-     * @param hospital
      * @return
      */
-    private boolean isSameHospital(String hospital) {
-        return loginSuccessBean.getHospital().equals(hospital);
+    private boolean isSameHospital() {
+        if (cameraLoginBean != null) {
+            return loginSuccessBean.getHospital().equals(cameraLoginBean.getHospitalName());
+        }
+        return false;
     }
 
     @Override
