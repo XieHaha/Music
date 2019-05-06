@@ -100,6 +100,7 @@
         android:paddingLeft="12dp"
         android:paddingTop="17dp"
         android:paddingBottom="16dp"
+        android:visibility="invisible"
         android:paddingRight="12dp"
         android:background="@color/app_white_color"
         android:layout_height="wrap_content">

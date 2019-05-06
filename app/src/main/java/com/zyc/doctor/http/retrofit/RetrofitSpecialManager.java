@@ -1,7 +1,9 @@
 package com.zyc.doctor.http.retrofit;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.zyc.doctor.BuildConfig;
 import com.zyc.doctor.data.bean.BaseNetConfig;
+import com.zyc.doctor.http.HttpBase;
 
 import java.util.concurrent.TimeUnit;
 
@@ -59,7 +61,7 @@ public class RetrofitSpecialManager {
          */
         private void initRetrofit() {
             retrofit = new Retrofit.Builder().client(okHttpClient)
-                                             .baseUrl("http://39.107.249.194:5080/Remote/")
+                                             .baseUrl(HttpBase.HTTPS + BuildConfig.BASE_BASIC_URL + "/Remote/")
                                              .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                                              .addConverterFactory(GsonConverterFactory.create())
                                              .build();

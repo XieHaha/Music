@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -69,9 +70,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
-
-import static android.support.v4.app.NotificationCompat.DEFAULT_SOUND;
-import static android.support.v4.app.NotificationCompat.DEFAULT_VIBRATE;
 
 /**
  * @author dundun
@@ -394,6 +392,7 @@ public class MainActivity extends BaseActivity
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder = new NotificationCompat.Builder(this, BaseData.BASE_CHAT_CHANNEL);
             builder.setLargeIcon(largeIcon);
+            builder.setChannelId(BaseData.BASE_CHAT_CHANNEL);
         }
         else {
             builder = new NotificationCompat.Builder(this, null);
@@ -406,17 +405,21 @@ public class MainActivity extends BaseActivity
             builder.setSmallIcon(R.mipmap.ic_launcher);
         }
         builder.setAutoCancel(true);
+        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+        builder.setContentTitle("会珍");
         builder.setContentText("收到新的消息");
         builder.setContentIntent(pendingIntent);
-        builder.setDefaults(DEFAULT_VIBRATE | DEFAULT_SOUND);
+        builder.setDefaults(NotificationCompat.DEFAULT_ALL);
         builder.setWhen(System.currentTimeMillis());
-        mNotificationManager.notify(message.getFrom(), 1, builder.build());
+        mNotificationManager.notify(message.getFrom(), pendingCount, builder.build());
     }
 
     @TargetApi(Build.VERSION_CODES.O)
     private void createNotificationChannel(String channelId, String channelName, int importance) {
         NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
         mNotificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        channel.setLightColor(Color.GREEN);
+        channel.enableVibration(true);
         mNotificationManager.createNotificationChannel(channel);
     }
 

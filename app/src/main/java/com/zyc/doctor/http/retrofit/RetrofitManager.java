@@ -3,6 +3,7 @@ package com.zyc.doctor.http.retrofit;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.zyc.doctor.BuildConfig;
 import com.zyc.doctor.data.bean.BaseNetConfig;
+import com.zyc.doctor.http.HttpBase;
 
 import java.util.concurrent.TimeUnit;
 
@@ -60,7 +61,7 @@ public class RetrofitManager {
          */
         private void initRetrofit() {
             retrofit = new Retrofit.Builder().client(okHttpClient)
-                                             .baseUrl(BuildConfig.BASE_BASIC_URL)
+                                             .baseUrl(HttpBase.HTTP + BuildConfig.BASE_BASIC_URL)
                                              .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                                              .addConverterFactory(GsonConverterFactory.create())
                                              .build();

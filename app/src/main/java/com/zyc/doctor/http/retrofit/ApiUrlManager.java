@@ -52,7 +52,7 @@ public interface ApiUrlManager {
      * @return
      */
     @POST("app/version")
-    Observable<BaseResponse<VersionBean>> getNewVersion(@Body Map<String, String> info);
+    Observable<BaseResponse<List<VersionBean>>> getNewVersion(@Body Map<String, String> info);
 
     /**
      * 获取验证码
