@@ -50,11 +50,11 @@ public class CameraLoginActivity extends BaseActivity implements CustomAdapt {
         if (getIntent() != null) {
             cameraLoginBean = (CameraLoginBean)getIntent().getSerializableExtra(CommonData.KEY_CAMERA_LOGIN_BEAN);
         }
-        initPageData();
+        remoteConsultationVerify();
     }
 
-    private void initPageData() {
-        if (!isSameHospital()) {
+    private void initPageData(boolean tag) {
+        if (!tag) {
             actCameraLoginNext.setVisibility(View.GONE);
             actCameraLoginCancel.setVisibility(View.GONE);
             actCameraLoginKnow.setVisibility(View.VISIBLE);
@@ -62,6 +62,10 @@ public class CameraLoginActivity extends BaseActivity implements CustomAdapt {
                     String.format(getString(R.string.txt_camera_login_error_hint), cameraLoginBean.getHospitalName(),
                                   cameraLoginBean.getDepartmentTypeName()));
             actCameraHint.setTextColor(ContextCompat.getColor(this, R.color._878787));
+        }
+        else {
+            actCameraLoginNext.setVisibility(View.VISIBLE);
+            actCameraLoginCancel.setVisibility(View.VISIBLE);
         }
     }
 
@@ -89,21 +93,14 @@ public class CameraLoginActivity extends BaseActivity implements CustomAdapt {
         }
     }
 
+    private void remoteConsultationVerify() {
+        RequestUtils.remoteConsultationVerify(this, loginSuccessBean.getDoctorId(), cameraLoginBean.getPageUnicode(),
+                                              this);
+    }
+
     private void remoteConsultationLogin() {
         RequestUtils.remoteConsultationLogin(this, loginSuccessBean.getDoctorId(), cameraLoginBean.getPageUnicode(),
                                              this);
-    }
-
-    /**
-     * 是否为同一家医院
-     *
-     * @return
-     */
-    private boolean isSameHospital() {
-        if (cameraLoginBean != null) {
-            return loginSuccessBean.getHospital().equals(cameraLoginBean.getHospitalName());
-        }
-        return false;
     }
 
     @Override
@@ -112,6 +109,9 @@ public class CameraLoginActivity extends BaseActivity implements CustomAdapt {
             case REMOTE_CONSULTATION_LOGIN:
                 ToastUtil.toast(this, response.getMsg());
                 finish();
+                break;
+            case REMOTE_CONSULTATION_VERIFY:
+                initPageData(true);
                 break;
             default:
                 break;
@@ -122,6 +122,9 @@ public class CameraLoginActivity extends BaseActivity implements CustomAdapt {
     public void onResponseCode(Tasks task, BaseResponse response) {
         super.onResponseCode(task, response);
         switch (task) {
+            case REMOTE_CONSULTATION_VERIFY:
+                initPageData(false);
+                break;
             case REMOTE_CONSULTATION_LOGIN:
                 ToastUtil.toast(this, response.getMsg());
                 break;

@@ -234,5 +234,9 @@ public enum Tasks {
      * 远程会诊登录
      */
     REMOTE_CONSULTATION_LOGIN,
+    /**
+     * 远程会诊 参数校验
+     */
+    REMOTE_CONSULTATION_VERIFY,
 }
 

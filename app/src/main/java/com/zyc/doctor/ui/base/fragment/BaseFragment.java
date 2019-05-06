@@ -120,6 +120,17 @@ public abstract class BaseFragment<T> extends Fragment
         initObject(savedInstanceState);
         initData(savedInstanceState);
         initListener();
+        view.post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                if (isAdded())
+                {
+                    fillData();
+                }
+            }
+        });
     }
 
     /**
@@ -215,6 +226,11 @@ public abstract class BaseFragment<T> extends Fragment
 
     @Override
     public void initListener() {
+    }
+
+    public void fillData()
+    {
+
     }
 
     /**

@@ -242,7 +242,12 @@ public class MainActivity extends BaseActivity
         //弹窗参数初始化
         screenHeight = ScreenUtils.getScreenHeight(this);
         popupHeight = (int)BaseUtils.dipToPx(this, 48 * 2);
-        getAllProduct();
+        getWindow().getDecorView().post(new Runnable() {
+            @Override
+            public void run() {
+                getAllProduct();
+            }
+        });
     }
 
     @Override

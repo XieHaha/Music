@@ -477,6 +477,15 @@ public interface ApiUrlManager {
     Observable<BaseResponse<String>> remoteConsultationLogin(@Body Map<String, String> merchant);
 
     /**
+     * 远程会诊 参数验证
+     *
+     * @param merchant
+     * @return
+     */
+    @POST("remote/qrcode/scan/verify")
+    Observable<BaseResponse<String>> remoteConsultationVerify(@Body Map<String, String> merchant);
+
+    /**
      * 文件下载
      *
      * @param url

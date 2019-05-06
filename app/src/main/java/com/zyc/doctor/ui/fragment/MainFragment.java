@@ -292,6 +292,11 @@ public class MainFragment extends BaseFragment implements OrderStatus, SwipeRefr
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(recentContactAdapter);
+    }
+
+    @Override
+    public void fillData() {
+        super.fillData();
         getTransferList();
         getApplyPatientList();
         getOrderList();
@@ -629,10 +634,7 @@ public class MainFragment extends BaseFragment implements OrderStatus, SwipeRefr
 
     @Override
     public void onRefresh() {
-        getTransferList();
-        getApplyPatientList();
-        getOrderList();
-        getPatientsData();
+        fillData();
     }
 
     /**

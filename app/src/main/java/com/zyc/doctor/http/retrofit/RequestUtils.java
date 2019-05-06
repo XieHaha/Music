@@ -593,9 +593,22 @@ public class RequestUtils {
         merchant.put("doctorId", doctorId);
         merchant.put("pageUnicode", pageUnicode);
         RetrofitSpecialManager.getApiUrlManager()
-                       .remoteConsultationLogin(merchant)
-                       .compose(RxJavaHelper.observableIO2Main(context))
-                       .subscribe(new AbstractBaseObserver<>(context, Tasks.REMOTE_CONSULTATION_LOGIN, listener));
+                              .remoteConsultationLogin(merchant)
+                              .compose(RxJavaHelper.observableIO2Main(context))
+                              .subscribe(
+                                      new AbstractBaseObserver<>(context, Tasks.REMOTE_CONSULTATION_LOGIN, listener));
+    }
+
+    public static void remoteConsultationVerify(Context context, String doctorId, String pageUnicode,
+            final ResponseListener<BaseResponse> listener) {
+        Map<String, String> merchant = new HashMap<>(16);
+        merchant.put("doctorId", doctorId);
+        merchant.put("pageUnicode", pageUnicode);
+        RetrofitSpecialManager.getApiUrlManager()
+                              .remoteConsultationVerify(merchant)
+                              .compose(RxJavaHelper.observableIO2Main(context))
+                              .subscribe(new AbstractBaseObserver<>(context, true, Tasks.REMOTE_CONSULTATION_VERIFY,
+                                                                    listener));
     }
 }
 

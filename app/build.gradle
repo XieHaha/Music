@@ -14,7 +14,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 26
         versionCode 18
-        versionName "2.1.1.4"
+        versionName "2.1.1.5"
         flavorDimensions "default"
         multiDexEnabled true
         ndk {
@@ -46,7 +46,6 @@ android {
             dimension "zyc"
             applicationId "com.yht.yihuantong_test"
             buildConfigField "String", "BASE_BASIC_URL", "\"gray.med-value.com\""
-//            buildConfigField "String", "BASE_BASIC_URL", "\"39.107.249.194:7080/DPView/\""
             resValue "string", "APP_NAME", "\"会珍医生灰度版\""
             manifestPlaceholders = [ease_appkey : "1105190122042534#dp-test-app",
                                     jpush_appkey: "ad21b958f6040b2b0ae89f46"]
