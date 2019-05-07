@@ -53,14 +53,15 @@ public class CameraLoginActivity extends BaseActivity implements CustomAdapt {
         remoteConsultationVerify();
     }
 
-    private void initPageData(boolean tag) {
+    private void initPageData(boolean tag, String msg) {
         if (!tag) {
             actCameraLoginNext.setVisibility(View.GONE);
             actCameraLoginCancel.setVisibility(View.GONE);
             actCameraLoginKnow.setVisibility(View.VISIBLE);
-            actCameraHint.setText(
-                    String.format(getString(R.string.txt_camera_login_error_hint), cameraLoginBean.getHospitalName(),
-                                  cameraLoginBean.getDepartmentTypeName()));
+            //            actCameraHint.setText(
+            //                    String.format(getString(R.string.txt_camera_login_error_hint), cameraLoginBean.getHospitalName(),
+            //                                  cameraLoginBean.getDepartmentTypeName()));
+            actCameraHint.setText(msg);
             actCameraHint.setTextColor(ContextCompat.getColor(this, R.color._878787));
         }
         else {
@@ -111,7 +112,7 @@ public class CameraLoginActivity extends BaseActivity implements CustomAdapt {
                 finish();
                 break;
             case REMOTE_CONSULTATION_VERIFY:
-                initPageData(true);
+                initPageData(true, "");
                 break;
             default:
                 break;
@@ -120,10 +121,9 @@ public class CameraLoginActivity extends BaseActivity implements CustomAdapt {
 
     @Override
     public void onResponseCode(Tasks task, BaseResponse response) {
-        super.onResponseCode(task, response);
         switch (task) {
             case REMOTE_CONSULTATION_VERIFY:
-                initPageData(false);
+                initPageData(false, response.getMsg());
                 break;
             case REMOTE_CONSULTATION_LOGIN:
                 ToastUtil.toast(this, response.getMsg());
