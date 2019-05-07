@@ -154,6 +154,7 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:layout_marginTop="10dp"
+                android:visibility="gone"
                 android:layout_below="@id/act_user_info_layout"
                 android:layout_height="wrap_content">
 
