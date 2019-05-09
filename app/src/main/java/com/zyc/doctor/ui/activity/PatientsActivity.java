@@ -207,19 +207,25 @@ public class PatientsActivity extends BaseActivity implements SwipeRefreshLayout
                 IntentResult result = IntentIntegrator.parseActivityResult(resultCode, data);
                 if (result != null && !TextUtils.isEmpty(result.getContents())) {
                     String url = result.getContents();
-                    String doctorId = Uri.parse(url).getQueryParameter("doctorId");
-                    String patientId = Uri.parse(url).getQueryParameter("patientId");
-                    if (!TextUtils.isEmpty(doctorId)) {
-                        Intent intent = new Intent(PatientsActivity.this, AddFriendsDocActivity.class);
-                        intent.putExtra(CommonData.KEY_DOCTOR_ID, doctorId);
-                        intent.putExtra(CommonData.KEY_PUBLIC, true);
-                        startActivity(intent);
-                    }
-                    else if (!TextUtils.isEmpty(patientId)) {
-                        Intent intent = new Intent(PatientsActivity.this, AddFriendsPatientActivity.class);
-                        intent.putExtra(CommonData.KEY_PATIENT_ID, patientId);
-                        intent.putExtra(CommonData.KEY_PUBLIC, true);
-                        startActivity(intent);
+                    Uri uri = Uri.parse(url);
+                    if (uri != null && !uri.isOpaque()) {
+                        String doctorId = uri.getQueryParameter("doctorId");
+                        String patientId = uri.getQueryParameter("patientId");
+                        if (!TextUtils.isEmpty(doctorId)) {
+                            Intent intent = new Intent(PatientsActivity.this, AddFriendsDocActivity.class);
+                            intent.putExtra(CommonData.KEY_DOCTOR_ID, doctorId);
+                            intent.putExtra(CommonData.KEY_PUBLIC, true);
+                            startActivity(intent);
+                        }
+                        else if (!TextUtils.isEmpty(patientId)) {
+                            Intent intent = new Intent(PatientsActivity.this, AddFriendsPatientActivity.class);
+                            intent.putExtra(CommonData.KEY_PATIENT_ID, patientId);
+                            intent.putExtra(CommonData.KEY_PUBLIC, true);
+                            startActivity(intent);
+                        }
+                        else {
+                            ToastUtil.toast(PatientsActivity.this, R.string.txt_camera_error);
+                        }
                     }
                     else {
                         ToastUtil.toast(PatientsActivity.this, R.string.txt_camera_error);

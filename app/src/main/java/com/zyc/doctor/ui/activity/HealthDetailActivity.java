@@ -159,11 +159,22 @@ public class HealthDetailActivity extends BaseActivity
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            autoGridView.updateImg(imageList, true);
-            //图片显示完开始上传图片
-            currentUploadImgIndex = 0;
-            showLoadingView();
-            uploadHeadImg(mSelectPath.get(currentUploadImgIndex));
+            switch (msg.what) {
+                case 0:
+                    autoGridView.updateImg(imageList, true);
+                    //图片显示完开始上传图片
+                    currentUploadImgIndex = 0;
+                    showLoadingView();
+                    uploadHeadImg(mSelectPath.get(currentUploadImgIndex));
+                    break;
+                case 1:
+                    autoGridView.updateImg(imageList, true);
+                    //图片显示完开始上传图片
+                    currentUploadImgIndex = 0;
+                    showLoadingView();
+                    uploadHeadImg(cameraTempFile);
+                    return;
+            }
         }
     };
 
@@ -249,7 +260,8 @@ public class HealthDetailActivity extends BaseActivity
                 ivTitlebBarMore.setVisibility(View.GONE);
             }
             tvCreateTime.setText("创建者：" + patientCaseDetailBean.getCreatorName() + "\n创建时间：" +
-                                 BaseUtils.formatDate(patientCaseDetailBean.getGmtCreate(), BaseUtils.YYYY_MM_DD_HH_MM));
+                                 BaseUtils.formatDate(patientCaseDetailBean.getGmtCreate(),
+                                                      BaseUtils.YYYY_MM_DD_HH_MM));
             diagnosis = patientCaseDetailBean.getDiagnosisInfo();
             tvDiagnosis.setText(diagnosis);
             diagnosisTimeMil = patientCaseDetailBean.getVisDate();
@@ -288,6 +300,14 @@ public class HealthDetailActivity extends BaseActivity
      */
     private void uploadHeadImg(Uri uri) {
         File file = new File(FileUtils.getFilePathFromURI(uri, this));
+        ScalingUtils.resizePic(this, file.getAbsolutePath());
+        RequestUtils.uploadImg(this, file, "jpg", this);
+    }
+
+    /**
+     * 上传图片
+     */
+    private void uploadHeadImg(File file) {
         ScalingUtils.resizePic(this, file.getAbsolutePath());
         RequestUtils.uploadImg(this, file, "jpg", this);
     }
@@ -593,6 +613,25 @@ public class HealthDetailActivity extends BaseActivity
         }
     }
 
+    /**
+     * 处理照片
+     */
+    class DealCameraThread extends Thread {
+        @Override
+        public void run() {
+            super.run();
+            for (Uri path : mSelectPath) {
+                try {
+                    imageList.add(QiniuUtils.initQuanBitmaps(path, HealthDetailActivity.this));
+                }
+                catch (IOException e) {
+                    LogUtils.w(TAG, "Exception error!", e);
+                }
+            }
+            dealImgHandler.sendEmptyMessage(1);
+        }
+    }
+
     private void selectImg() {
         new ActionSheetDialog(this).builder()
                                    .setCancelable(true)
@@ -603,12 +642,12 @@ public class HealthDetailActivity extends BaseActivity
                                                permissionHelper.request(new String[] {
                                                        Permission.STORAGE_WRITE });
                                            })
-                                   .addSheetItem(getString(R.string.txt_camera_img),
-                                                 ActionSheetDialog.SheetItemColor.Blue, which -> {
-                                               //动态申请权限
-                                               permissionHelper.request(new String[] {
-                                                       Permission.CAMERA, Permission.STORAGE_WRITE });
-                                           })
+                                   //                                   .addSheetItem(getString(R.string.txt_camera_img),
+                                   //                                                 ActionSheetDialog.SheetItemColor.Blue, which -> {
+                                   //                                               //动态申请权限
+                                   //                                               permissionHelper.request(new String[] {
+                                   //                                                       Permission.CAMERA, Permission.STORAGE_WRITE });
+                                   //                                           })
                                    .show();
     }
 
@@ -663,7 +702,7 @@ public class HealthDetailActivity extends BaseActivity
                     mSelectPath.clear();
                     mSelectPath.add(uri);
                 }
-                new DealImgThread().start();
+                new DealCameraThread().start();
                 break;
             case CODE_CASE_DIA:
                 diagnosis = data.getStringExtra(KEY_PUBLIC);

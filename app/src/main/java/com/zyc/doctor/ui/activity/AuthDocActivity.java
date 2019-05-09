@@ -102,11 +102,11 @@ public class AuthDocActivity extends BaseActivity {
      */
     private boolean again;
     /**
-     * 请求修改头像 相册
+     *  相册
      */
     private static final int RC_PICK_IMG = 0x0001;
     /**
-     * 请求修改头像 相机
+     *  相机
      */
     private static final int RC_PICK_CAMERA_IMG = RC_PICK_IMG + 1;
     private int type = -1;
